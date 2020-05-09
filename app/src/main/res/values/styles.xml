@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#F30C45</item>
+        <item name="colorPrimaryDark">#F30C45</item>
+        <item name="colorAccent">#F30C45</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+</resources>
