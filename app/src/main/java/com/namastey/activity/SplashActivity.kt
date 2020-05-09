@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 
     override fun openLoginActivity() {
         Log.d("Login","user not login")
-        startActivity(Intent(this, DemoActivity::class.java))
+        startActivity(Intent(this, SignUpActivity::class.java))
         finish()
     }
 

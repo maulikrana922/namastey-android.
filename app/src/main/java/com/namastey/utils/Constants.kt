@@ -18,7 +18,7 @@ object Constants {
     const val TIME_OUT: Long = 60
     const val CACHE_TIME = 432000
 
-    const val BAHNSCHRIFT_REGULAR = 0
+    const val MULI_REGULAR = 0
 
     const val INVALID_SESSION_ERROR_CODE = 201
 

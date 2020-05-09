@@ -1,4 +1,4 @@
-package com.piggycoins.customViews
+package com.namastey.customViews
 
 import android.content.Context
 import android.graphics.Typeface
@@ -44,13 +44,13 @@ class CustomTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(
     @Throws(IllegalArgumentException::class)
     private fun createTypeface(context: Context, typefaceValue: Int): Typeface {
         return when (typefaceValue) {
-            Constants.BAHNSCHRIFT_REGULAR -> Typeface.createFromAsset(context.assets, "bahnschrift.ttf")
+//            Constants.MULI_REGULAR -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
 
-//            Constants.BAHNSCHRIFT_LIGHT -> Typeface.createFromAsset(context.assets, "bahnschrift.ttf")
+//            Constants.BAHNSCHRIFT_LIGHT -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
 
-//            Constants.BAHNSCHRIFT_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "bahnschrift.ttf")
+            Constants.MULI_REGULAR -> Typeface.createFromAsset(context.assets, "Muli-SemiBold.ttf")
 
-            else -> Typeface.createFromAsset(context.assets, "bahnschrift.ttf")
+            else -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
         }
     }
 }

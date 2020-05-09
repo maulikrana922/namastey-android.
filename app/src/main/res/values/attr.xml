@@ -13,8 +13,15 @@
     </declare-styleable>
 
     <attr name="typeface" format="enum">
-        <enum name="BAHNSCHRIFT_REGULAR" value="0"/>
-        <enum name="BAHNSCHRIFT_LIGHT" value="0"/>
-        <enum name="BAHNSCHRIFT_SEMIBOLD" value="0"/>
+        <enum name="MULI_REGULAR" value="0"/>
+        <enum name="MULI_LIGHT" value="0"/>
+        <enum name="MULI_SEMIBOLD" value="0"/>
     </attr>
+
+    <declare-styleable name="IconButton">
+        <attr name="iconSrc" format="reference" />
+        <attr name="iconSize" format="dimension" />
+        <attr name="iconPadding" format="dimension" />
+    </declare-styleable>
+
 </resources>

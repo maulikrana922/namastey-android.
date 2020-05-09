@@ -12,4 +12,14 @@
     <string name="cashbook_expenses">Cash Book - Expenses</string>
     <string name="cashbook_receipts">Cash Book - Receipts, Tranfers, Deposits</string>
     <string name="scan_document">Scan Documents</string>
+
+    <string name="tv_skip">Skip</string>
+    <string name="tv_the_video_profile">The Video Profile</string>
+    <string name="tv_term_condition_message">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u>]] and <![CDATA[<u><font color=#000000>Privacy Policy</font></u>]]>></string>
+
+    <string name="btn_sign_facebook">Continue with Facebook</string>
+    <string name="btn_signup_google">Continue with Google</string>
+    <string name="btn_signup_phone_mail">Signup with phone/mail</string>
+    <string name="btn_signup_snapchat">Continue with Snapchat</string>
+    <string name="btn_signup_tiktok">Continue with Tik Tok</string>
 </resources>
