@@ -1,5 +1,6 @@
 package com.namastey.dagger.component
 
+import android.content.Context
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.module.AppDBModule
 import com.namastey.dagger.module.NetworkModule
@@ -17,4 +18,6 @@ interface AppComponent {
     fun activityComponent(viewModule: ViewModule): ActivityComponent
     fun dbHelper(): DBHelper
     fun networkService(): NetworkService
+    fun context(): Context
+
 }

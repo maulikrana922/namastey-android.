@@ -14,4 +14,12 @@ class SignUpViewModel constructor(private val networkService: NetworkService,
     fun openSignUpPhone(){
         signUpView.openSignUpWithPhone()
     }
+
+    fun signupWithFacebook(){
+        signUpView.onSignupWithFacebook()
+    }
+
+    fun signupWithFacebook(type: String){
+
+    }
 }

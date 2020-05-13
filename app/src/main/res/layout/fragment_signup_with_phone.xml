@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.SignupWithPhoneModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_top_corner_white_solid"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></android.support.design.card.MaterialCardView>
+
+        <ImageView
+            android:id="@+id/ivSignupClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:onClick="@{() -> viewModel.closeSignFragment()}"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvPhoneSignup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:onClick="@{() -> viewModel.onClickPhone()}"
+            android:gravity="center"
+            android:background="@drawable/rectangle_bottom_left_corner_red_solid"
+            android:padding="@dimen/_6sdp"
+            android:text="@string/phone"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/tvEmailSignup"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivSignupClose" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvEmailSignup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:gravity="center"
+            android:background="@drawable/rectangle_top_right_corner_pink_solid"
+            android:onClick="@{() -> viewModel.onClickEmail()}"
+            android:padding="@dimen/_6sdp"
+            android:text="@string/email"
+            android:textColor="@color/colorGray"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvPhoneSignup"
+            app:layout_constraintTop_toTopOf="@+id/tvPhoneSignup" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:text="@string/email"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup"
+            app:layout_constraintTop_toBottomOf="@+id/tvPhoneSignup" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/rectangle_white_round_corner_solid"
+            app:layout_constraintEnd_toEndOf="@id/tvEmailSignup"
+            app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup"
+            app:layout_constraintTop_toBottomOf="@+id/tvLabel">
+
+            <Spinner
+                android:id="@+id/spinnerPhoneCode"
+                android:layout_width="wrap_content"
+                android:spinnerMode="dropdown"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_height="match_parent"/>
+
+            <View
+                android:id="@+id/viewDivider"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:background="@color/colorGray" />
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtEmailPhone"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/hint_phone"
+                />
+        </LinearLayout>
+
+        <com.namastey.customViews.CustomButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:background="@drawable/rectangle_red_round_corner_solid"
+            android:text="@string/next"
+            android:onClick="@{() -> viewModel.onClickNext()}"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvEmailSignup"
+            app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

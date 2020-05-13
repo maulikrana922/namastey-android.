@@ -14,6 +14,9 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#3B5998</color>
     <color name="colorRed">#EA4335</color>
+    <color name="colorButtonRed">#F30C45</color>
     <color name="colorYellow">#FEFC00</color>
+    <color name="colorLightPink">#FFE6EC</color>
+    <color name="colorGray">#ACA2A5</color>
 
 </resources>

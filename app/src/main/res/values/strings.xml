@@ -15,11 +15,28 @@
 
     <string name="tv_skip">Skip</string>
     <string name="tv_the_video_profile">The Video Profile</string>
-    <string name="tv_term_condition_message">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u>]] and <![CDATA[<u><font color=#000000>Privacy Policy</font></u>]]>></string>
+    <string name="tv_term_condition_message">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
     <string name="btn_signup_phone_mail">Signup with phone/mail</string>
     <string name="btn_signup_snapchat">Continue with Snapchat</string>
     <string name="btn_signup_tiktok">Continue with Tik Tok</string>
+
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="next">Next</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="tv_veryfi_otp">Veryfi OTP</string>
+    <string name="tv_sent_otp">We have sent you an OTP</string>
+
+    <string name="hint_email">Enter email address</string>
+    <string name="hint_phone">Enter phone number</string>
+    <string name="hint_otp">Enter OTP</string>
+
+    <string-array name="countryCode">
+        <item>IND +91</item>
+        <item>UK +1</item>
+    </string-array>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
@@ -94,5 +95,11 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
                 getViewModel().afterSnackBarShow()
             }
         })
+    }
+
+    fun addFragment(fragment: Fragment, tag: String) {
+        supportFragmentManager.beginTransaction().addToBackStack(tag)
+            .replace(R.id.flContainer, fragment, tag)
+            .commitAllowingStateLoss()
     }
 }

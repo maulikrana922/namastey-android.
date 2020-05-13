@@ -22,4 +22,8 @@ object Constants {
 
     const val INVALID_SESSION_ERROR_CODE = 201
 
+    const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
+    const val OTP_FRAGMENT = "OTPFragment"
+
+
 }
