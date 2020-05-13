@@ -21,13 +21,22 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_video_tint"
+            android:background="@drawable/video_tint"
             android:fillViewport="true">
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
 
+<!--                <ImageView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    android:src="@drawable/video_tint"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"/>-->
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSkipSignUp"
@@ -36,6 +45,8 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:drawableRight="@drawable/ic_skip_arrow"
                     android:drawablePadding="@dimen/_8sdp"
+                    android:onClick="@{() -> viewModel.onSkipLogin()}"
+                    android:padding="@dimen/_3sdp"
                     android:text="@string/tv_skip"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +79,7 @@
                     android:layout_marginStart="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_40sdp"
                     android:layout_marginEnd="@dimen/_30sdp"
-                    android:background="@drawable/rectangle_blue_round_corner_solid"
+                    android:background="@drawable/rounded_blue_solid"
                     android:gravity="center"
                     android:onClick="@{() -> viewModel.signupWithFacebook()}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rectangle_red_round_corner_solid"
+                    android:background="@drawable/rounded_red_solid"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
@@ -115,7 +126,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rectangle_white_round_corner_solid"
+                    android:background="@drawable/rounded_white_solid"
                     android:gravity="center"
                     android:onClick="@{() -> viewModel.openSignUpPhone()}"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
@@ -136,7 +147,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rectangle_yellow_round_corner_solid"
+                    android:background="@drawable/rounded_yellow_solid"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
@@ -159,7 +170,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rectangle_black_round_corner_solid"
+                    android:background="@drawable/rounded_black_solid"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"

@@ -35,6 +35,12 @@
     <string name="hint_phone">Enter phone number</string>
     <string name="hint_otp">Enter OTP</string>
 
+<!--    select gender fragment-->
+    <string name="select_gender">Select Gender</string>
+    <string name="select_gender_message">Gender can\'t be changed once you saved</string>
+    <string name="date_of_birth">Select date of birth</string>
+    <string name="date_of_birth_message">You must be at least 18+ years old to join namastey app</string>
+
     <string-array name="countryCode">
         <item>IND +91</item>
         <item>UK +1</item>

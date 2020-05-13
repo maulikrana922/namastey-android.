@@ -11,6 +11,9 @@ class SignUpViewModel constructor(private val networkService: NetworkService,
 
     private var signUpView: SignUpView = baseView as SignUpView
 
+    fun onSkipLogin(){
+        signUpView.skipLogin()
+    }
     fun openSignUpPhone(){
         signUpView.openSignUpWithPhone()
     }

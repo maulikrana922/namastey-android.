@@ -24,6 +24,7 @@ object Constants {
 
     const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
     const val OTP_FRAGMENT = "OTPFragment"
+    const val SELECT_GENDER_FRAGMENT = "SelectGenderFragment"
 
 
 }

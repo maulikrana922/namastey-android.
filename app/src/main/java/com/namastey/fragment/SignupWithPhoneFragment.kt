@@ -95,10 +95,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),S
         viewDivider.visibility = View.VISIBLE
         edtEmailPhone.hint = resources.getString(R.string.hint_phone)
         tvLabel.text = resources.getString(R.string.phone)
-        tvPhoneSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rectangle_bottom_left_corner_red_solid)
+        tvPhoneSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rounded_bottom_left_red_solid)
         tvPhoneSignup.setTextColor(ContextCompat.getColor(activity!!,R.color.colorWhite))
 
-        tvEmailSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rectangle_top_right_corner_pink_solid)
+        tvEmailSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rounded_top_right_pink_solid)
         tvEmailSignup.setTextColor(ContextCompat.getColor(activity!!,R.color.colorGray))
     }
 
@@ -107,10 +107,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),S
         viewDivider.visibility = View.GONE
         edtEmailPhone.hint = resources.getString(R.string.hint_email)
         tvLabel.text = resources.getString(R.string.email)
-        tvEmailSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rectangle_top_right_corner_red_solid)
+        tvEmailSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rounded_top_right_red_solid)
         tvEmailSignup.setTextColor(ContextCompat.getColor(activity!!,R.color.colorWhite))
 
-        tvPhoneSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rectangle_bottom_left_corner_pink_solid)
+        tvPhoneSignup.background = ContextCompat.getDrawable(activity!!,R.drawable.rounded_bottom_left_pink_solid)
         tvPhoneSignup.setTextColor(ContextCompat.getColor(activity!!,R.color.colorGray))
     }
 

@@ -2,14 +2,18 @@ package com.namastey.activity
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
+import android.view.View
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySignUpBinding
+import com.namastey.fragment.SelectGenderFragment
 import com.namastey.fragment.SignupWithPhoneFragment
 import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.SignUpViewModel
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
@@ -38,6 +42,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     }
 
     override fun openSignUpWithPhone() {
+        tvSkipSignUp.visibility = View.INVISIBLE
         addFragment(
             SignupWithPhoneFragment.getInstance(
                 "signUp"
@@ -50,4 +55,28 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         signUpViewModel.signupWithFacebook("facebook")
     }
 
+    override fun skipLogin() {
+        tvSkipSignUp.visibility = View.INVISIBLE
+        addFragment(SelectGenderFragment.getInstance("user"),
+            Constants.SELECT_GENDER_FRAGMENT)
+    }
+
+    override fun onBackPressed() {
+        val selectGenderFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SELECT_GENDER_FRAGMENT)
+        tvSkipSignUp.visibility = View.VISIBLE
+        if (selectGenderFragment != null){
+            removeAllFragment()
+        }else
+            super.onBackPressed()
+    }
+
+    /**
+     * Remove all fragment from stack
+     */
+    private fun removeAllFragment() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+    }
 }

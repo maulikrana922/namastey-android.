@@ -2,13 +2,14 @@ package com.namastey.fragment
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentOtpBinding
 import com.namastey.uiView.OTPView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.OTPViewModel
 import javax.inject.Inject
 
@@ -26,7 +27,12 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     override fun onConfirm() {
-        Log.d("onconfirm", "onconfirm")
+        (activity as SignUpActivity).addFragment(
+            SelectGenderFragment.getInstance(
+                "user"
+            ),
+            Constants.SELECT_GENDER_FRAGMENT
+        )
     }
 
     override fun getViewModel() = otpViewModel

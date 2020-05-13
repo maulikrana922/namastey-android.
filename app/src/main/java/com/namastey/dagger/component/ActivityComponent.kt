@@ -7,6 +7,7 @@ import com.namastey.activity.SplashActivity
 import com.namastey.dagger.module.ActivityModule
 import com.namastey.dagger.module.ViewModule
 import com.namastey.fragment.OTPFragment
+import com.namastey.fragment.SelectGenderFragment
 import com.namastey.fragment.SignupWithPhoneFragment
 import com.namastey.scopes.PerActivity
 import dagger.Subcomponent
@@ -20,5 +21,6 @@ interface ActivityComponent {
     fun inject(activity: Demo1Activity)
     fun inject(fragment: SignupWithPhoneFragment)
     fun inject(fragment: OTPFragment)
+    fun inject(fragment: SelectGenderFragment)
 
 }
