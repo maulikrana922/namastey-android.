@@ -64,8 +64,15 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     override fun onBackPressed() {
         val selectGenderFragment =
             supportFragmentManager.findFragmentByTag(Constants.SELECT_GENDER_FRAGMENT)
+        val videoLanguageFrgment =
+            supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAG_EFRAGMENT)
+        val chooseInterestFragment =
+            supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
         tvSkipSignUp.visibility = View.VISIBLE
-        if (selectGenderFragment != null){
+
+        if (videoLanguageFrgment != null || chooseInterestFragment != null){
+            supportFragmentManager.popBackStack()
+        }else if (selectGenderFragment != null){
             removeAllFragment()
         }else
             super.onBackPressed()

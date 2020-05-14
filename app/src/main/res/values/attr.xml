@@ -14,8 +14,9 @@
 
     <attr name="typeface" format="enum">
         <enum name="MULI_REGULAR" value="0"/>
-        <enum name="MULI_LIGHT" value="0"/>
-        <enum name="MULI_SEMIBOLD" value="0"/>
+        <enum name="MULI_LIGHT" value="1"/>
+        <enum name="MULI_SEMIBOLD" value="2"/>
+        <enum name="MULI_BLACK" value="3"/>
     </attr>
 
     <declare-styleable name="IconButton">

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectGenderBinding
 import com.namastey.uiView.SelectGenderView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.BaseViewModel
 import com.namastey.viewModel.SelectGenderViewModel
 import javax.inject.Inject
@@ -26,6 +28,12 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
     }
 
     override fun onNext() {
+        (activity as SignUpActivity).addFragment(
+            VideoLanguageFragment.getInstance(
+                "user"
+            ),
+            Constants.VIDEO_LANGUAG_EFRAGMENT
+        )
     }
 
     override fun getViewModel() = selectGenderViewModel

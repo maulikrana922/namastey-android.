@@ -19,12 +19,17 @@ object Constants {
     const val CACHE_TIME = 432000
 
     const val MULI_REGULAR = 0
+    const val MULI_LIGHT = 1
+    const val MULI_SEMI_BOLD = 2
+    const val MULI_BLACK = 3
 
     const val INVALID_SESSION_ERROR_CODE = 201
 
     const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
     const val OTP_FRAGMENT = "OTPFragment"
     const val SELECT_GENDER_FRAGMENT = "SelectGenderFragment"
+    const val VIDEO_LANGUAG_EFRAGMENT = "VideoLanguageFragment"
+    const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
 
 
 }

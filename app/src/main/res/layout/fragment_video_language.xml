@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.VideoLanguageViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_choose_interest">
+
+        <ImageView
+            android:id="@+id/ivLanguageBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:onClick="@{() -> viewModel.closeFragment()}"
+            android:background="@drawable/circle_white_solid"
+            android:padding="@dimen/_2sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSelectLanguage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="@string/select_video_language"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            app:typeface="MULI_SEMIBOLD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivLanguageBack"
+            app:layout_constraintTop_toTopOf="@id/ivLanguageBack" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSelectLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="@string/select_language"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectLanguage"
+            app:layout_constraintStart_toStartOf="@id/tvSelectLanguage"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvVideoLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="2"
+            android:outlineSpotShadowColor="@color/colorGray"
+            tools:listitem="@layout/row_video_language"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectLabel"
+            app:layout_constraintEnd_toStartOf="@id/rvVideoLanguage"
+            app:layout_constraintEnd_toEndOf="@id/tvSelectLanguage"
+            app:layout_constraintBottom_toTopOf="@id/btnLanguageNext"/>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnLanguageNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/rounded_red_solid"
+            android:text="@string/next"
+            android:onClick="@{() -> viewModel.onNextClick()}"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/rvVideoLanguage"
+            app:layout_constraintStart_toStartOf="@id/rvVideoLanguage"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

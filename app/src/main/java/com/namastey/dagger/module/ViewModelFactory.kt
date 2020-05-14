@@ -24,6 +24,8 @@ class ViewModelFactory @Inject constructor(
             modelClass.isAssignableFrom(SignupWithPhoneModel::class.java) -> SignupWithPhoneModel(networkService,dbHelper,baseView) as T
             modelClass.isAssignableFrom(OTPViewModel::class.java) -> OTPViewModel(networkService,dbHelper,baseView) as T
             modelClass.isAssignableFrom(SelectGenderViewModel::class.java) -> SelectGenderViewModel(networkService,dbHelper,baseView) as T
+            modelClass.isAssignableFrom(VideoLanguageViewModel::class.java) -> VideoLanguageViewModel(networkService,dbHelper,baseView) as T
+            modelClass.isAssignableFrom(ChooseInterestViewModel::class.java) -> ChooseInterestViewModel(networkService,dbHelper,baseView) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
         }
 

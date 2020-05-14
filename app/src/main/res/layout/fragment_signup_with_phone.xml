@@ -14,12 +14,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clickable="true">
 
         <android.support.design.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/rounded_top_white_solid"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
