@@ -8,6 +8,7 @@ import com.namastey.dagger.module.ViewModule
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.scopes.PerApplication
+import com.namastey.utils.SessionManager
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 
@@ -16,6 +17,7 @@ import dagger.android.AndroidInjectionModule
 interface AppComponent {
     fun inject(namasteyApplication: NamasteyApplication)
     fun activityComponent(viewModule: ViewModule): ActivityComponent
+    fun sessionManager(): SessionManager
     fun dbHelper(): DBHelper
     fun networkService(): NetworkService
     fun context(): Context

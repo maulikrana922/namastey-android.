@@ -4,16 +4,24 @@ object Constants {
     const val API_KEY = "apiToken"
     const val HVALUE = "L@titude2018"
 
-    const val BASE = "http://18.130.15.16/mobileapp/api/"
+    //    Live url
+    const val BASE = "https://testyourapp.online/namasteyapp/api/"
+
+    //    api end-point
+    const val REGISTER = "register"
+    const val VERIFY_OTP = "verify-otp"
+    const val GET_COUNTRY = "countries-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
-    const val EMAIL = "email"
     const val PASSWORD = "password"
     const val DEVICE_ID = "device_id"
     const val DEVICE_TYPE = "device_type"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
+
+//    api response error code
+    const val OK = 200
 
     const val TIME_OUT: Long = 60
     const val CACHE_TIME = 432000
@@ -25,11 +33,25 @@ object Constants {
 
     const val INVALID_SESSION_ERROR_CODE = 201
 
+    //    Fragment tag
     const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
     const val OTP_FRAGMENT = "OTPFragment"
     const val SELECT_GENDER_FRAGMENT = "SelectGenderFragment"
     const val VIDEO_LANGUAG_EFRAGMENT = "VideoLanguageFragment"
     const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
 
+    //    Session key
+    const val KEY_USER_ID = "KEY_USER_ID"
+    const val KEY_USER_NAME = "KEY_USER_NAME"
+    const val KEY_SESSION_TOKEN = "KEY_SESSION_TOKEN"
+    const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
+    const val KEY_INTERNET_AVAILABLE = "KEY_INTERNET_AVAILABLE"
+
+
+    //    field key
+    const val MOBILE = "mobile"
+    const val EMAIL = "email"
+    const val OTP = "otp"
+    const val FACEBOOK = "facebook"
 
 }

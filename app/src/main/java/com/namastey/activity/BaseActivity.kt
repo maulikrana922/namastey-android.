@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +19,7 @@ import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
 import com.namastey.uiView.BaseView
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
+import com.namastey.utils.CustomAlertDialog
 import retrofit2.HttpException
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView {
@@ -36,17 +40,23 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     }
 
     override fun showMsg(msgId: Int) {
-        getViewModel().showSnackBar(getString(msgId))
+        hideKeyboard()
+        showAlert(getString(msgId))
     }
 
     override fun showMsg(msg: String) {
-        getViewModel().showSnackBar(msg)
+        hideKeyboard()
+        showAlert(msg)
     }
 
     override fun hideKeyboard() {
-        val inputMethodManager: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        runOnUiThread {
+            val inputMethodManager: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (currentFocus != null) {
+                inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            }
+        }
     }
 
     override fun onHandleException(e: Throwable) {
@@ -101,5 +111,61 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         supportFragmentManager.beginTransaction().addToBackStack(tag)
             .replace(R.id.flContainer, fragment, tag)
             .commitAllowingStateLoss()
+    }
+
+    private fun showAlert(msg: String) {
+        runOnUiThread {
+            object : CustomAlertDialog(
+                this,
+                msg, getString(R.string.ok), ""
+            ) {
+                override fun onBtnClick(id: Int) {
+                }
+            }.show()
+        }
+    }
+
+    override fun isInternetAvailable(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT < 23) {
+            val ni = cm.activeNetworkInfo
+
+            if (ni != null) {
+                val isInternetAvail =
+                    ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == ConnectivityManager.TYPE_MOBILE)
+                NamasteyApplication.appComponent().sessionManager()
+                    .setInternetAvailable(isInternetAvail)
+                return isInternetAvail
+            }
+        } else {
+            val n = cm.activeNetwork
+            if (n != null) {
+                if (Build.VERSION.SDK_INT == 28) {
+                    if (isNetworkConnected()) {
+                        NamasteyApplication.appComponent().sessionManager()
+                            .setInternetAvailable(isNetworkConnected())
+                    }
+                    return isNetworkConnected()
+                } else {
+                    val nc = cm.getNetworkCapabilities(n)
+                    var isInternetAvail = false
+                    if (nc != null) {
+                        isInternetAvail =
+                            nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                                NetworkCapabilities.TRANSPORT_WIFI
+                            )
+                    }
+                    NamasteyApplication.appComponent().sessionManager()
+                        .setInternetAvailable(isInternetAvail)
+                    return isInternetAvail
+                }
+            }
+        }
+        return false
+    }
+    private fun isNetworkConnected(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
     }
 }

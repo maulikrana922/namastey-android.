@@ -6,7 +6,7 @@ class AppResponse<T> {
 
     /*We can also defined response param with @SerializedName("paramname")*/
     @SerializedName("status")
-    var status: Boolean = false
+    var status: Int = 0
 
     var error: Int = 0
 

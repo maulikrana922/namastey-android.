@@ -88,12 +88,13 @@
             app:layout_constraintTop_toBottomOf="@+id/tvPhoneSignup" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/_8sdp"
-            android:padding="@dimen/_10sdp"
             android:background="@drawable/rounded_white_solid"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="@id/tvEmailSignup"
             app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup"
             app:layout_constraintTop_toBottomOf="@+id/tvLabel">
@@ -101,45 +102,59 @@
             <Spinner
                 android:id="@+id/spinnerPhoneCode"
                 android:layout_width="wrap_content"
-                android:spinnerMode="dropdown"
-                android:background="@android:color/transparent"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:layout_height="match_parent"/>
+                android:background="@android:color/transparent"
+                android:spinnerMode="dialog" />
 
             <View
+                android:visibility="gone"
                 android:id="@+id/viewDivider"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:background="@color/colorGray" />
+
             <com.namastey.customViews.CustomEditText
                 android:id="@+id/edtEmailPhone"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_5sdp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
                 android:background="@android:color/transparent"
                 android:hint="@string/hint_phone"
-                />
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp" />
         </LinearLayout>
 
         <com.namastey.customViews.CustomButton
+            android:id="@+id/customButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_25sdp"
             android:background="@drawable/rounded_red_solid"
-            android:text="@string/next"
             android:onClick="@{() -> viewModel.onClickNext()}"
+            android:text="@string/send_otp"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tvEmailSignup"
             app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

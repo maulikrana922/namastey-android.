@@ -18,6 +18,8 @@ interface BaseView {
 
     fun getViewModel(): BaseViewModel
 
+    fun isInternetAvailable(): Boolean
+
     @LayoutRes
     fun getLayoutId(): Int
 

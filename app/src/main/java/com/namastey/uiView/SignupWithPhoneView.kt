@@ -1,5 +1,8 @@
 package com.namastey.uiView
 
+import com.namastey.roomDB.entity.Country
+import com.namastey.roomDB.entity.User
+
 interface SignupWithPhoneView: BaseView {
 
     fun onCloseSignup()
@@ -10,5 +13,8 @@ interface SignupWithPhoneView: BaseView {
 
     fun onClickNext()
 
-    fun onSuccess()
+    fun onSuccessResponse(user: User)
+
+    fun onGetCountry(arrCountry: ArrayList<Country>)
+
 }

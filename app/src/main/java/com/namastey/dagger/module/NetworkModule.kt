@@ -1,6 +1,7 @@
 package com.namastey.dagger.module
 
 import android.content.Context
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -9,6 +10,7 @@ import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.scopes.PerApplication
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -21,7 +23,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Module(includes = [AppDBModule::class])
+@Module(includes = [AppDBModule::class,SessionManagerModule::class])
 class NetworkModule {
 
     @Provides
@@ -77,13 +79,15 @@ class NetworkModule {
 
     @Provides
     @PerApplication
-    fun providesInterceptor(dbHelper: DBHelper): Interceptor {
+    fun providesInterceptor(dbHelper: DBHelper,sessionManager: SessionManager): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
 
             // Customize the request
             val request = original.newBuilder()
-                .addHeader(Constants.API_KEY, Constants.HVALUE)
+                .addHeader(Constants.API_KEY, if (original.url().url().path.contains(Constants.REGISTER) ||
+                    TextUtils.isEmpty(sessionManager.getAccessToken())
+                ) Constants.HVALUE else sessionManager.getAccessToken())
                 .header("Content-Type", "application/json")
                 .removeHeader("Pragma")
                 .header("Cache-Control", String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME))

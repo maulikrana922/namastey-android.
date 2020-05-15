@@ -65,4 +65,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as SignUpActivity).onHandleException(e)
 
     }
+
+    override fun isInternetAvailable() =
+        if (activity != null) {
+            when {
+                activity!! is SignUpActivity -> (activity!! as SignUpActivity).isInternetAvailable()
+                else -> false
+            }
+        } else false
 }

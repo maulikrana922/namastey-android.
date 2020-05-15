@@ -26,7 +26,9 @@
     <string name="phone">Phone</string>
     <string name="email">Email</string>
     <string name="next">Next</string>
+    <string name="send_otp">Send OTP</string>
     <string name="confirm">Confirm</string>
+    <string name="ok">Ok</string>
 
     <string name="tv_veryfi_otp">Veryfi OTP</string>
     <string name="tv_sent_otp">We have sent you an OTP</string>
@@ -51,4 +53,8 @@
         <item>IND +91</item>
         <item>UK +1</item>
     </string-array>
+    
+    <string name="msg_empty_mobile_email">Please enter mobile/email</string>
+    <string name="msg_empty_otp">Please enter OTP</string>
+    <string name="view">View</string>
 </resources>

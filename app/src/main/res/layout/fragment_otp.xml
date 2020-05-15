@@ -71,6 +71,7 @@
             android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_25sdp"
+            android:inputType="number"
             android:background="@drawable/rounded_white_solid"
             android:hint="@string/hint_otp"
             android:padding="@dimen/_10sdp"
@@ -92,6 +93,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/etOtp"
             app:layout_constraintStart_toStartOf="@+id/etOtp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

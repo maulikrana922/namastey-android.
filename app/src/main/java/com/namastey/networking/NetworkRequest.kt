@@ -2,11 +2,13 @@ package com.namastey.networking
 
 
 import com.namastey.model.AppResponse
+import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface NetworkRequest {
@@ -27,4 +29,19 @@ interface NetworkRequest {
 
     @POST(Constants.LOGOUT)
     fun requestLogout(): Deferred<AppResponse<Any>>
+
+    @GET(Constants.GET_COUNTRY)
+    fun requestToGetCountryAsync(): Deferred<AppResponse<ArrayList<Country>>>
+
+    @FormUrlEncoded
+    @POST(Constants.REGISTER)
+    fun sendOTPAsync(@Field(Constants.MOBILE) phone: String, @Field(Constants.EMAIL) email: String): Deferred<AppResponse<User>>
+
+    @FormUrlEncoded
+    @POST(Constants.VERIFY_OTP)
+    fun verifyOTPAsync(
+        @Field(Constants.MOBILE) phone: String, @Field(Constants.EMAIL) email: String, @Field(
+            Constants.OTP
+        ) otp: String
+    ): Deferred<AppResponse<User>>
 }

@@ -44,11 +44,11 @@ class DemoViewModel constructor(
                 try {
                     networkService.requestLogin(email, pass).let { responseLogin ->
                         setIsLoading(false)
-                        if (responseLogin.status) {
-                            saveUserToDB(User(1, name, email, pass))
-                        } else {
-                            demoView.onFailed(responseLogin.message, responseLogin.error)
-                        }
+//                        if (responseLogin.status) {
+////                            saveUserToDB(User(1, name, email, pass))
+//                        } else {
+//                            demoView.onFailed(responseLogin.message, responseLogin.error)
+//                        }
                     }
                 } catch (t: Throwable) {
                     setIsLoading(false)

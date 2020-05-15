@@ -18,7 +18,7 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>(), DemoView {
     lateinit var viewModelFactory: ViewModelFactory
 
     override fun onLogin() {
-        demoViewModel.login(etName.text.toString(), etEmail.text.toString(), etPassword.text.toString())
+//        demoViewModel.login(etName.text.toString(), etEmail.text.toString(), etPassword.text.toString())
     }
 
     private lateinit var demoViewModel: DemoViewModel

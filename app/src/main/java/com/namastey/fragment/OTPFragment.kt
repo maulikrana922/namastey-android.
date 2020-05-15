@@ -8,15 +8,20 @@ import com.namastey.R
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentOtpBinding
+import com.namastey.roomDB.entity.User
 import com.namastey.uiView.OTPView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.OTPViewModel
+import kotlinx.android.synthetic.main.fragment_otp.*
 import javax.inject.Inject
 
 class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var fragmentOtpBinding: FragmentOtpBinding
     private lateinit var otpViewModel: OTPViewModel
@@ -27,6 +32,13 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     override fun onConfirm() {
+
+        otpViewModel.verifyOTP(sessionManager.getUserPhone(),sessionManager.getUserEmail(),etOtp.text.toString())
+
+    }
+
+    override fun onSuccessResponse(user: User) {
+
         (activity as SignUpActivity).addFragment(
             SelectGenderFragment.getInstance(
                 "user"
@@ -42,10 +54,11 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(title: String) =
+        fun getInstance(mobile: String,email: String) =
             OTPFragment().apply {
                 arguments = Bundle().apply {
-                    putString("title", title)
+                    putString("mobile", mobile)
+                    putString("email", email)
                 }
             }
     }
@@ -73,5 +86,10 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
     private fun initUI() {
 
+    }
+
+    override fun onDestroy() {
+        otpViewModel.onDestroy()
+        super.onDestroy()
     }
 }
