@@ -2,6 +2,8 @@ package com.namastey.networking
 
 
 import com.namastey.model.AppResponse
+import com.namastey.model.InterestBean
+import com.namastey.model.VideoLanguageBean
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
@@ -44,4 +46,11 @@ interface NetworkRequest {
             Constants.OTP
         ) otp: String
     ): Deferred<AppResponse<User>>
+
+    @GET(Constants.GET_VIDEO_LANGUAGE)
+    fun requestToGetVideoLanguageAsync(): Deferred<AppResponse<ArrayList<VideoLanguageBean>>>
+
+    @GET(Constants.GET_INTEREST_LIST)
+    fun requestToGetChooseInterestAsync(): Deferred<AppResponse<ArrayList<InterestBean>>>
+
 }

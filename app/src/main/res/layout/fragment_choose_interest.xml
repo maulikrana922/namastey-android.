@@ -92,7 +92,28 @@
             app:layout_constraintStart_toStartOf="@id/rvChooseInterest"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ivSplashBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:src="@drawable/splash"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/ivSplash"
         android:layout_width="match_parent"
@@ -101,5 +122,6 @@
         android:layout_gravity="center"
         android:src="@drawable/splash"
         android:visibility="gone"/>
+
 </FrameLayout>
 </layout>

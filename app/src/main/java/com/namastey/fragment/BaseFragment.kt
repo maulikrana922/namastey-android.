@@ -1,5 +1,7 @@
 package com.namastey.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -7,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.namastey.R
 import com.namastey.activity.SignUpActivity
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -73,4 +76,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 else -> false
             }
         } else false
+
+    fun openActivity(
+        activity: Activity,
+        destinationActivity: Activity
+    ) {
+        startActivity(Intent(activity, destinationActivity::class.java))
+        activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
 }

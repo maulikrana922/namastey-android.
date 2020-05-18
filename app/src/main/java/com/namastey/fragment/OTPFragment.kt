@@ -39,6 +39,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
     override fun onSuccessResponse(user: User) {
 
+        sessionManager.setVerifiedUser(user.is_verified)
         (activity as SignUpActivity).addFragment(
             SelectGenderFragment.getInstance(
                 "user"

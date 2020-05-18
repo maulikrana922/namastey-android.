@@ -9,6 +9,7 @@ buildscript {
     ext.okhttpVersion = '3.11.0'
     ext.lifecycleVersion = "1.1.1"
     ext.livedataKtx = '2.2.0-beta01'
+    ext.glideVersion = '4.9.0'
 
     repositories {
         jcenter()

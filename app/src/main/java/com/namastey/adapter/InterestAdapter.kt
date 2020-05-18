@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.fragment.ChooseInterestFragment
+import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestBean
 import kotlinx.android.synthetic.main.row_choose_interest.view.*
 
 class InterestAdapter(
     var interestList: ArrayList<InterestBean>,
-    var activity: Context
+    var activity: Context,
+    var onImageItemClick: OnImageItemClick
 ) : RecyclerView.Adapter<InterestAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -29,7 +32,17 @@ class InterestAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvInterstTitle.text = interestList.get(position).title
+            tvInterstTitle.text = interestList.get(position).interest_name
+
+            ckbInterest.setOnClickListener(View.OnClickListener { v ->
+                if (ckbInterest.isChecked){
+                    ++ChooseInterestFragment.noOfSelectedImage
+                }else{
+                    --ChooseInterestFragment.noOfSelectedImage
+                }
+                onImageItemClick.onImageItemClick(interestList.get(position))
+            })
+
         }
 
     }

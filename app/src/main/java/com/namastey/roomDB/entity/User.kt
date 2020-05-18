@@ -14,7 +14,7 @@ data class User(
     var mobile: String,
     var token: String,
     @Ignore
-    var is_verified: Boolean
+    var is_verified: Int
 ) {
-    constructor() : this(0,"", "", "", "","",false)
+    constructor() : this(0,"", "", "", "","",0)
 }

@@ -7,7 +7,7 @@ import android.os.Parcelable
 class InterestBean() : Parcelable {
 
     var id: Int = 0
-    var title: String = ""
+    var interest_name: String = ""
     var image: String = ""
 
     constructor(parcel: Parcel) : this() {
@@ -18,7 +18,7 @@ class InterestBean() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeString(title)
+        parcel.writeString(interest_name)
         parcel.writeString(image)
     }
 

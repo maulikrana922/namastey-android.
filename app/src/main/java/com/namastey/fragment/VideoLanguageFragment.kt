@@ -41,6 +41,13 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         )
     }
 
+    override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
+
+        rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 10, false))
+        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!)
+        rvVideoLanguage.adapter = videoLanguageAdapter
+    }
+
     override fun getViewModel() = videoLanguageViewModel
 
     override fun getLayoutId() = R.layout.fragment_video_language
@@ -70,24 +77,9 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
     private fun initUI() {
 
-        setLanguageList()
+        videoLanguageViewModel.getVideoLanguage()
+//        setLanguageList()
 
-    }
-
-    private fun setLanguageList() {
-
-//        Set static data for UI
-        for (int in 0..10) {
-            var languageBean: VideoLanguageBean = VideoLanguageBean()
-            languageBean.first_language = "English"
-            languageBean.second_language = "english"
-            languageList.add(languageBean)
-        }
-//        Set static data for UI
-
-        rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 10, false))
-        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!)
-        rvVideoLanguage.adapter = videoLanguageAdapter
     }
 
     private fun setupViewModel() {
@@ -98,5 +90,10 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
         fragmentVideoLanguageBinding = getViewBinding()
         fragmentVideoLanguageBinding.viewModel = videoLanguageViewModel
+    }
+
+    override fun onDestroy() {
+        videoLanguageViewModel.onDestroy()
+        super.onDestroy()
     }
 }

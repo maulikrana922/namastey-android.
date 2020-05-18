@@ -1,7 +1,9 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.net.ConnectivityManager
@@ -167,5 +169,13 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     private fun isNetworkConnected(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+    }
+
+    fun openActivity(
+        activity: Activity,
+        destinationActivity: Activity
+    ) {
+        startActivity(Intent(activity, destinationActivity::class.java))
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 }

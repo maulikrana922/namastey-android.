@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
+import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
@@ -52,6 +53,20 @@ class SessionManager(context: Context) {
     fun setUserPhone(phone: String) {
         val e = mPrefs.edit()
         e.putString(MOBILE, phone)
+        e.apply()
+    }
+
+    fun isVerifiedUser(): Boolean{
+        return mPrefs.getBoolean(KEY_IS_VERIFIED_USER,false)
+    }
+
+    fun setVerifiedUser(isVerified: Int){
+        val  e = mPrefs.edit()
+        if (isVerified == 1)
+            e.putBoolean(KEY_IS_VERIFIED_USER,true)
+        else
+            e.putBoolean(KEY_IS_VERIFIED_USER,false)
+
         e.apply()
     }
 

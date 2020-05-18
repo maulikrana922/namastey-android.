@@ -14,6 +14,7 @@
     </data>
 
     <ImageView
+        android:id="@+id/ivSplashScreen"
         android:src="@drawable/splash_bg_red"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"

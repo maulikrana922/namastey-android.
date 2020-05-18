@@ -29,8 +29,8 @@ class VideoLanguageAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvFirstLanguage.text = videoLanguageList.get(position).first_language
-            tvSecondLanguage.text = videoLanguageList.get(position).second_language
+            tvFirstLanguage.text = videoLanguageList.get(position).video_lang
+            tvSecondLanguage.text = videoLanguageList.get(position).video_lang_name
 
         }
 

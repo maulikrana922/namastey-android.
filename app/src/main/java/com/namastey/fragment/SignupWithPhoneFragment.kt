@@ -18,7 +18,6 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SignupWithPhoneModel
 import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
-import kotlinx.android.synthetic.main.simple_spinner_dropdown_item.view.*
 import javax.inject.Inject
 
 class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
@@ -88,11 +87,14 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     }
 
     override fun onClickNext() {
-//        var phoneNumber = spinnerPhoneCode.selectedItem.toString() + " " + edtEmailPhone.text.toString()
+        if (spinnerPhoneCode.selectedItem != null){
+            var phoneNumber =
+                spinnerPhoneCode.selectedItem.toString() + " " + edtEmailPhone.text.toString()
+        }
         if (sessionManager.getLoginType().equals(Constants.EMAIL))
-            signupWithPhoneModel.sendOTP("",edtEmailPhone.text.toString(),false)
+            signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString(), false)
         else
-            signupWithPhoneModel.sendOTP(edtEmailPhone.text.toString(),"",true)
+            signupWithPhoneModel.sendOTP(edtEmailPhone.text.toString(), "", true)
 
     }
 
@@ -104,7 +106,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
         (activity as SignUpActivity).addFragment(
             OTPFragment.getInstance(
-                sessionManager.getUserPhone(),sessionManager.getUserEmail()
+                sessionManager.getUserPhone(), sessionManager.getUserEmail()
             ),
             Constants.OTP_FRAGMENT
         )
@@ -112,15 +114,16 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onGetCountry(countryList: ArrayList<Country>) {
 
-        for ((index, value) in countryList.withIndex()){
+        for ((index, value) in countryList.withIndex()) {
             listOfCountry.add(value.sortname + " " + value.phonecode)
         }
         val aa =
-            ArrayAdapter(activity, R.layout.spinner_item,listOfCountry)
+            ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)
 
         viewDivider.visibility = View.VISIBLE
         aa.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        spinnerPhoneCode!!.setAdapter(aa)    }
+        spinnerPhoneCode!!.setAdapter(aa)
+    }
 
     private fun selectPhone() {
         sessionManager.setLoginType(Constants.MOBILE)
@@ -140,7 +143,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     private fun selectEmail() {
         sessionManager.setLoginType(Constants.EMAIL)
-        edtEmailPhone.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        edtEmailPhone.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         spinnerPhoneCode.visibility = View.GONE
         viewDivider.visibility = View.GONE
         edtEmailPhone.hint = resources.getString(R.string.hint_email)

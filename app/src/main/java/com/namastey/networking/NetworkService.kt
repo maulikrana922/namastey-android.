@@ -1,6 +1,8 @@
 package com.namastey.networking
 
 import com.namastey.model.AppResponse
+import com.namastey.model.InterestBean
+import com.namastey.model.VideoLanguageBean
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import kotlinx.coroutines.Dispatchers
@@ -34,4 +36,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestVerifyOTP(phone: String, email: String, otp: String): AppResponse<User> =
         withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp).await() }
+
+    suspend fun requestToGetVideoLanguage(): AppResponse<ArrayList<VideoLanguageBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetVideoLanguageAsync().await()
+        }
+
+    suspend fun requestToGetChooseInterest(): AppResponse<ArrayList<InterestBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetChooseInterestAsync().await()
+        }
 }

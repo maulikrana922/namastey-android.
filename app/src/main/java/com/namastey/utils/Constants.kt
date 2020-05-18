@@ -11,6 +11,8 @@ object Constants {
     const val REGISTER = "register"
     const val VERIFY_OTP = "verify-otp"
     const val GET_COUNTRY = "countries-list"
+    const val GET_VIDEO_LANGUAGE = "video-language-list"
+    const val GET_INTEREST_LIST = "interests-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -46,6 +48,7 @@ object Constants {
     const val KEY_SESSION_TOKEN = "KEY_SESSION_TOKEN"
     const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
     const val KEY_INTERNET_AVAILABLE = "KEY_INTERNET_AVAILABLE"
+    const val KEY_IS_VERIFIED_USER = "KEY_IS_VERIFIED_USER"
 
 
     //    field key
@@ -54,4 +57,7 @@ object Constants {
     const val OTP = "otp"
     const val FACEBOOK = "facebook"
 
+
+//    Other constants
+    const val MIN_CHOOSE_INTEREST = 3
 }
