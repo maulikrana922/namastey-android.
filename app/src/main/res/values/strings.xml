@@ -59,4 +59,5 @@
     <string name="view">View</string>
 
     <string name="msg_min_choose_interest">Please select at least 3</string>
+    <string name="msg_min_language">Minimum 1 video language is mandatory</string>
 </resources>

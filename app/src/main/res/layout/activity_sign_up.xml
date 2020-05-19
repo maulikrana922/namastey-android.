@@ -90,7 +90,7 @@
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
                         android:drawableStart="@drawable/ic_facebook"
-                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:text="@string/btn_sign_facebook"
                         android:textAllCaps="false"
@@ -113,7 +113,7 @@
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
                         android:drawableStart="@drawable/ic_google"
-                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:text="@string/btn_signup_google"
                         android:textAllCaps="false"
@@ -157,7 +157,7 @@
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
                         android:drawableStart="@drawable/ic_snapchat"
-                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:text="@string/btn_signup_snapchat"
                         android:textAllCaps="false"
@@ -180,7 +180,7 @@
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
                         android:drawableStart="@drawable/ic_tiktok"
-                        android:drawablePadding="@dimen/_8sdp"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:text="@string/btn_signup_tiktok"
                         android:textAllCaps="false"

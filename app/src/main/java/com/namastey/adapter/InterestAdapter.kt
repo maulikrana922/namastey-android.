@@ -9,6 +9,7 @@ import com.namastey.R
 import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestBean
+import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_choose_interest.view.*
 
 class InterestAdapter(
@@ -33,6 +34,8 @@ class InterestAdapter(
 
         fun bind(position: Int) = with(itemView) {
             tvInterstTitle.text = interestList.get(position).interest_name
+
+            GlideLib.loadImage(activity,ivInterest,interestList.get(position).image)
 
             ckbInterest.setOnClickListener(View.OnClickListener { v ->
                 if (ckbInterest.isChecked){

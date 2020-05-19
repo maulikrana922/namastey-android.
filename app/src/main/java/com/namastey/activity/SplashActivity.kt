@@ -33,6 +33,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             .alpha(0f);
         Handler().postDelayed({
             startActivity(Intent(this, SignUpActivity::class.java))
+            overridePendingTransition(0, 0)
             finish()
         }, 1000)
 //        openActivity(this,SignUpActivity())
@@ -49,6 +50,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             .alpha(0f);
         Handler().postDelayed({
             startActivity(Intent(this, DashboardActivity::class.java))
+            overridePendingTransition(0, 0)
             finish()
         }, 1000)
     }

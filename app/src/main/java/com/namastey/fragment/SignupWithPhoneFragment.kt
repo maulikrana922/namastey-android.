@@ -32,6 +32,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private lateinit var signupWithPhoneModel: SignupWithPhoneModel
     private lateinit var layoutView: View
     val listOfCountry = ArrayList<String>()
+    private var countryList = ArrayList<Country>()
 
     override fun getViewModel() = signupWithPhoneModel
 
@@ -69,7 +70,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     }
 
     private fun initUI() {
-
+        sessionManager.setLoginType(Constants.MOBILE)
         signupWithPhoneModel.getCountry()
 
     }
@@ -87,15 +88,22 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     }
 
     override fun onClickNext() {
-        if (spinnerPhoneCode.selectedItem != null){
-            var phoneNumber =
-                spinnerPhoneCode.selectedItem.toString() + " " + edtEmailPhone.text.toString()
-        }
+        var phoneNumber = ""
         if (sessionManager.getLoginType().equals(Constants.EMAIL))
-            signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString(), false)
-        else
-            signupWithPhoneModel.sendOTP(edtEmailPhone.text.toString(), "", true)
-
+            signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
+        else {
+            if (spinnerPhoneCode.selectedItem != null) {
+                phoneNumber =
+                    countryList.get(spinnerPhoneCode.selectedItemPosition).phonecode.toString()
+//                phoneNumber =
+//                    spinnerPhoneCode.selectedItem.toString()
+            }
+            signupWithPhoneModel.sendOTP(
+                "+" + phoneNumber + edtEmailPhone.text.toString().trim(),
+                "",
+                true
+            )
+        }
     }
 
     override fun onSuccessResponse(user: User) {
@@ -114,6 +122,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onGetCountry(countryList: ArrayList<Country>) {
 
+        this.countryList = countryList
         for ((index, value) in countryList.withIndex()) {
             listOfCountry.add(value.sortname + " " + value.phonecode)
         }

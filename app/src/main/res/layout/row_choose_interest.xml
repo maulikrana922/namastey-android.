@@ -16,19 +16,33 @@
     <android.support.constraint.ConstraintLayout
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivInterest"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_90sdp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivInterest"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
+                android:contentDescription="@string/app_name"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_placeholder"
+                />
+
+            <View
+                android:id="@+id/view"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#30000000"/>
+        </FrameLayout>
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvInterstTitle"
@@ -36,11 +50,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginEnd="@dimen/_7sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_2sdp"
             android:padding="@dimen/_4sdp"
+            app:typeface="MULI_SEMIBOLD"
+            android:textStyle="bold"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

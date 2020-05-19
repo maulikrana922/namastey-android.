@@ -39,7 +39,7 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
         else
             email
 
-        if (isValidPhone(username)){
+        if (isValidPhone(username.trim())){
             setIsLoading(true)
             job = GlobalScope.launch(Dispatchers.Main){
                 try {

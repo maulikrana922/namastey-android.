@@ -60,4 +60,5 @@ object Constants {
 
 //    Other constants
     const val MIN_CHOOSE_INTEREST = 3
+    const val DATE_FORMATE = "dd/MM/yyyy"
 }

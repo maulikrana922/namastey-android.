@@ -10,17 +10,25 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.namastey.R
+import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.ColorFilterTransformation
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class GlideLib {
     companion object {
-        fun loadImage(context: Context, imageView: ImageView, uri: Uri) {
+        fun loadImage(context: Context, imageView: ImageView, imagePath: String) {
 //            Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).into(imageView)
-            Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform())
+            val multi = MultiTransformation<Bitmap>(
+                ColorFilterTransformation(25)
+            )
+
+            Glide.with(context).load(imagePath)
                 .placeholder(R.drawable.default_placeholder)
                 .into(imageView)
         }
