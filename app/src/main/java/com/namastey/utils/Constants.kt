@@ -32,6 +32,7 @@ object Constants {
     const val MULI_LIGHT = 1
     const val MULI_SEMI_BOLD = 2
     const val MULI_BLACK = 3
+    const val MULI_EXTRA_BOLD = 4
 
     const val INVALID_SESSION_ERROR_CODE = 201
 

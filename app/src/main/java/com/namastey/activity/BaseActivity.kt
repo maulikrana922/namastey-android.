@@ -178,4 +178,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         startActivity(Intent(activity, destinationActivity::class.java))
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
+
+    fun finishActivity(){
+        finish()
+        overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left)
+    }
 }

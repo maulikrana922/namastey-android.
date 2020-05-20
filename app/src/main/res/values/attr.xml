@@ -17,6 +17,7 @@
         <enum name="MULI_LIGHT" value="1"/>
         <enum name="MULI_SEMIBOLD" value="2"/>
         <enum name="MULI_BLACK" value="3"/>
+        <enum name="MULI_EXTRA_BOLD" value="4"/>
     </attr>
 
     <declare-styleable name="IconButton">

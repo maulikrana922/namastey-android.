@@ -20,4 +20,5 @@ interface ActivityComponent {
     fun inject(fragment: VideoLanguageFragment)
     fun inject(fragment: ChooseInterestFragment)
     fun inject(activity: DashboardActivity)
+    fun inject(activity: ProfileActivity)
 }
