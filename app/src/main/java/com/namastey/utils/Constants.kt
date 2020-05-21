@@ -13,6 +13,8 @@ object Constants {
     const val GET_COUNTRY = "countries-list"
     const val GET_VIDEO_LANGUAGE = "video-language-list"
     const val GET_INTEREST_LIST = "interests-list"
+    const val SOCIAL_LOGIN = "social-login"
+    const val REGISTER_GUEST = "register-guest"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -55,9 +57,13 @@ object Constants {
     //    field key
     const val MOBILE = "mobile"
     const val EMAIL = "email"
+    const val USERNAME = "username"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"
-
+    const val ANDROID = "android"
+    const val PROVIDER = "provider"
+    const val PROVIDER_ID = "provider_id"
+    const val USER_UNIQUEID = "user_uniqueId"
 
 //    Other constants
     const val MIN_CHOOSE_INTEREST = 3

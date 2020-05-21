@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Namastey</string>
+
+    <string name="facebook_app_id">2945790898848622</string>
+    <string name="fb_login_protocol_scheme">fb2945790898848622</string>
+
     <string name="no_internet">Make you sure you are connected with internet</string>
     <string name="slow_internet">Your internet connection is very slow</string>
     <string name="server_error">Server Error</string>

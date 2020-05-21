@@ -92,7 +92,6 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
     private fun initUI() {
 
         videoLanguageViewModel.getVideoLanguage()
-//        setLanguageList()
 
     }
 

@@ -12,6 +12,7 @@ import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
 import com.namastey.utils.Constants.KEY_USER_NAME
 import com.namastey.utils.Constants.MOBILE
+import com.namastey.utils.Constants.USER_UNIQUEID
 
 class SessionManager(context: Context) {
 
@@ -53,6 +54,16 @@ class SessionManager(context: Context) {
     fun setUserPhone(phone: String) {
         val e = mPrefs.edit()
         e.putString(MOBILE, phone)
+        e.apply()
+    }
+
+    fun getUserUniqueId(): String {
+        return mPrefs.getString(USER_UNIQUEID, "")!!
+    }
+
+    fun setuserUniqueId(uniqueId: String) {
+        val e = mPrefs.edit()
+        e.putString(USER_UNIQUEID, uniqueId)
         e.apply()
     }
 

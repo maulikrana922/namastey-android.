@@ -88,4 +88,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     implementation 'jp.wasabeef:glide-transformations:3.1.1'
+
+//    Facebook
+    implementation 'com.facebook.android:facebook-login:[5,6)'
+
 }

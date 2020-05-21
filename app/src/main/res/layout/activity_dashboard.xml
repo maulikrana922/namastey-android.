@@ -3,6 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.DashboardViewModel" />
+
+    </data>
+
     <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,10 +45,13 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCategory"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_80sdp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:scrollbars="horizontal"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:clipToPadding="false"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/row_category"/>
 

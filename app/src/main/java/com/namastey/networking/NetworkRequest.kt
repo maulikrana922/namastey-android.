@@ -53,4 +53,14 @@ interface NetworkRequest {
     @GET(Constants.GET_INTEREST_LIST)
     fun requestToGetChooseInterestAsync(): Deferred<AppResponse<ArrayList<InterestBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.SOCIAL_LOGIN)
+    fun requestSocialLoginAsync(
+        @Field(Constants.EMAIL) email: String,
+        @Field(Constants.USERNAME) firstName: String,
+        @Field(Constants.PROVIDER) provider: String,
+        @Field(Constants.PROVIDER_ID) provider_id: String,
+        @Field(Constants.DEVICE_TYPE) deviceType: String = Constants.ANDROID
+    ): Deferred<AppResponse<User>>
+
 }

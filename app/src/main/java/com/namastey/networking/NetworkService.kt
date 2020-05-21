@@ -46,4 +46,18 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetChooseInterestAsync().await()
         }
+
+    suspend fun requestSocialLogin(
+        email: String,
+        username: String,
+        provider: String,
+        providerId: String
+    ): AppResponse<User> = withContext(Dispatchers.IO) {
+        networkRequest.requestSocialLoginAsync(
+            email,
+            username,
+            provider,
+            providerId
+        ).await()
+    }
 }

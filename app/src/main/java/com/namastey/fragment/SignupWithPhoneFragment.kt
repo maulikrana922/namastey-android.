@@ -88,21 +88,24 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     }
 
     override fun onClickNext() {
-        var phoneNumber = ""
-        if (sessionManager.getLoginType().equals(Constants.EMAIL))
-            signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
-        else {
-            if (spinnerPhoneCode.selectedItem != null) {
-                phoneNumber =
-                    countryList.get(spinnerPhoneCode.selectedItemPosition).phonecode.toString()
-//                phoneNumber =
+        var countryCode = ""
+        if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
+            if (sessionManager.getLoginType().equals(Constants.EMAIL))
+                signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
+            else {
+                if (spinnerPhoneCode.selectedItem != null) {
+                    countryCode =
+                        countryList.get(spinnerPhoneCode.selectedItemPosition).phonecode.toString()
+//                countryCode =
 //                    spinnerPhoneCode.selectedItem.toString()
+                }
+
+                signupWithPhoneModel.sendOTP(
+                    "+" + countryCode + edtEmailPhone.text.toString().trim(),
+                    "",
+                    true
+                )
             }
-            signupWithPhoneModel.sendOTP(
-                "+" + phoneNumber + edtEmailPhone.text.toString().trim(),
-                "",
-                true
-            )
         }
     }
 

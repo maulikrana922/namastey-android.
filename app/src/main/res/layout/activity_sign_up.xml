@@ -82,7 +82,7 @@
                     android:layout_marginEnd="@dimen/_30sdp"
                     android:background="@drawable/rounded_blue_solid"
                     android:gravity="center"
-                    android:onClick="@{() -> viewModel.signupWithFacebook()}"
+                    android:onClick="onLoginClick"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvVideoSignUp">
@@ -106,6 +106,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rounded_red_solid"
                     android:gravity="center"
+                    android:onClick="onLoginClick"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithFacebook">
@@ -129,7 +130,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rounded_white_solid"
                     android:gravity="center"
-                    android:onClick="@{() -> viewModel.openSignUpPhone()}"
+                    android:onClick="onLoginClick"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithGoogle">

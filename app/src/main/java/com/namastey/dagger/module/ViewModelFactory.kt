@@ -67,7 +67,13 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(DashboardViewModel::class.java) -> DashboardViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
+
         }
 
     }

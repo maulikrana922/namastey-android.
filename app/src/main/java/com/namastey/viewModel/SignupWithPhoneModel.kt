@@ -34,12 +34,7 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
     }
 
     fun sendOTP(phone: String, email: String,isPhone: Boolean) {
-        var username = if (isPhone)
-            phone
-        else
-            email
 
-        if (isValidPhone(username.trim())){
             setIsLoading(true)
             job = GlobalScope.launch(Dispatchers.Main){
                 try {
@@ -61,14 +56,14 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
                     signupWithPhoneView.onHandleException(exception)
                 }
             }
-        }
+
     }
 
     fun onClickNext(){
         signupWithPhoneView.onClickNext()
     }
 
-    private fun isValidPhone(phone: String): Boolean {
+    fun isValidPhone(phone: String): Boolean {
         var msgId = 0
         when {
             TextUtils.isEmpty(phone) -> msgId = R.string.msg_empty_mobile_email
