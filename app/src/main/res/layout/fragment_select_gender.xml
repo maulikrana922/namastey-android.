@@ -11,7 +11,7 @@
             type="com.namastey.viewModel.SelectGenderViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -42,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/_5sdp"
@@ -86,7 +86,7 @@
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvGenderLabel" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/cvMale"
                     android:layout_width="0dp"
@@ -107,9 +107,9 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/_15sdp"
                         android:src="@drawable/ic_male" />
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cvFemale"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_110sdp"
@@ -129,7 +129,7 @@
                         android:padding="@dimen/_13sdp"
                         android:src="@drawable/ic_female"
                        />
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
 
 
@@ -198,8 +198,8 @@
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvDOB" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.design.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

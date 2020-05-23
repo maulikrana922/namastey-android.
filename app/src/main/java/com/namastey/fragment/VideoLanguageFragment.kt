@@ -1,8 +1,8 @@
 package com.namastey.fragment
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.SignUpActivity
@@ -26,9 +26,9 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
     private lateinit var fragmentVideoLanguageBinding: FragmentVideoLanguageBinding
     private lateinit var videoLanguageViewModel: VideoLanguageViewModel
     private lateinit var layoutView: View
-    private val languageList: ArrayList<VideoLanguageBean> = ArrayList()
     private lateinit var videoLanguageAdapter: VideoLanguageAdapter
     private var selectVideoIdList: ArrayList<Int> = ArrayList()
+    private var dob = ""
 
     override fun onClose() {
         fragmentManager!!.popBackStack()
@@ -38,7 +38,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         if (selectVideoIdList.size >= 1) {
             (activity as SignUpActivity).addFragment(
                 ChooseInterestFragment.getInstance(
-                    "user"
+                    dob,selectVideoIdList
                 ),
                 Constants.CHOOSE_INTEREST_FRAGMENT
             )
@@ -69,10 +69,10 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(title: String) =
+        fun getInstance(dob: String) =
             VideoLanguageFragment().apply {
                 arguments = Bundle().apply {
-                    putString("user", title)
+                    putString(Constants.DATE_OF_BIRTH, dob)
                 }
             }
     }
@@ -93,6 +93,9 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
         videoLanguageViewModel.getVideoLanguage()
 
+        if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)){
+            dob = arguments!!.getString(Constants.DATE_OF_BIRTH)
+        }
     }
 
     private fun setupViewModel() {

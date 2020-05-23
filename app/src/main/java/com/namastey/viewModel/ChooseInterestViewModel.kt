@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
@@ -52,6 +53,27 @@ class ChooseInterestViewModel constructor(
     fun onDestroy(){
         if (::job.isInitialized){
             job.cancel()
+        }
+    }
+
+    fun updateOrCreateUser(jsonObject: JsonObject) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (chooseInterestView.isInternetAvailable()){
+                    networkService.requestToUpdateOrCreateUser(jsonObject).let { appResponse ->
+                                                if (appResponse.status == Constants.OK)
+                            chooseInterestView.onSuccessCreateOrUpdate(appResponse.data!!)
+                        else
+                            chooseInterestView.onFailed(appResponse.message,appResponse.error)
+                    }
+                }else{
+                    setIsLoading(false)
+                    chooseInterestView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                chooseInterestView.onHandleException(t)
+            }
         }
     }
 }

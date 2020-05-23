@@ -1,8 +1,8 @@
 package com.namastey.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.namastey.BR
 import com.namastey.R
@@ -66,9 +66,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
         var categoryAdapter = CategoryAdapter(categoryList, this)
-        var horizontalLayout = LinearLayoutManager(
+        var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
             this@DashboardActivity,
-            LinearLayoutManager.HORIZONTAL,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
             false
         )
         rvCategory.layoutManager = horizontalLayout

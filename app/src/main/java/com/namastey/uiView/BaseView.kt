@@ -1,6 +1,6 @@
 package com.namastey.uiView
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import com.namastey.viewModel.BaseViewModel
 
 interface BaseView {

@@ -1,10 +1,13 @@
 package com.namastey.fragment
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -13,18 +16,21 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChooseInterestBinding
 import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestBean
+import com.namastey.roomDB.entity.User
 import com.namastey.uiView.ChooseInterestView
-import com.namastey.utils.Constants
-import com.namastey.utils.CustomAlertDialog
-import com.namastey.utils.GridSpacingItemDecoration
+import com.namastey.utils.*
 import com.namastey.viewModel.ChooseInterestViewModel
 import kotlinx.android.synthetic.main.fragment_choose_interest.*
 import javax.inject.Inject
 
-class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), ChooseInterestView,OnImageItemClick {
+
+class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), ChooseInterestView,
+    OnImageItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var fragmentChooseInterestBinding: FragmentChooseInterestBinding
     private lateinit var chooseInterestViewModel: ChooseInterestViewModel
@@ -39,27 +45,43 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onNext() {
 
-        if (noOfSelectedImage >= Constants.MIN_CHOOSE_INTEREST){
-            ivSplashBackground.visibility = View.VISIBLE
-            ivSplash.visibility = View.VISIBLE
+        if (noOfSelectedImage >= Constants.MIN_CHOOSE_INTEREST) {
 
-            ivSplash.animate()
-                .setStartDelay(500)
-                .setDuration(1000)
-                .scaleX(20f)
-                .scaleY(20f)
-                .alpha(0f);
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.GENDER, sessionManager.getUserGender())
+            if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)) {
+                jsonObject.addProperty(
+                    Constants.DATE_OF_BIRTH,
+                    Utils.convertDateToAPIFormate(arguments!!.getString(Constants.DATE_OF_BIRTH))
+                )
+            }
+
+            if (arguments!!.containsKey("selectVideoIdList")) {
+                var jsonArray = JsonArray()
+                for (selectVideoIdList in arguments!!.getIntegerArrayList("selectVideoIdList")) {
+                    jsonArray.add(JsonPrimitive(selectVideoIdList))
+                }
+                jsonObject.add(Constants.LANGUAGE, jsonArray)
+            }
+
+            var jsonArrayInterest = JsonArray()
+            for (selectInterest in selectInterestIdList) {
+                jsonArrayInterest.add(JsonPrimitive(selectInterest))
+            }
+            jsonObject.add(Constants.INTEREST, jsonArrayInterest)
+            jsonObject.addProperty(Constants.DEVICE_ID,"23456789")    // Need to change
+            jsonObject.addProperty(Constants.DEVICE_TYPE,Constants.ANDROID)
+            if (sessionManager.getUserUniqueId().isNotEmpty())
+                jsonObject.addProperty(Constants.USER_UNIQUEID,sessionManager.getUserUniqueId())
+
+            chooseInterestViewModel.updateOrCreateUser(jsonObject)
 
 
-            Handler().postDelayed({
-                startActivity(Intent(activity, DashboardActivity::class.java))
-                activity!!.finish()
-            }, 1000)
-        }else{
+        } else {
             object : CustomAlertDialog(
                 activity!!,
                 resources.getString(R.string.msg_min_choose_interest), getString(R.string.ok), ""
-            ){
+            ) {
                 override fun onBtnClick(id: Int) {
                     dismiss()
                 }
@@ -70,8 +92,29 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
         rvChooseInterest.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
-        interestAdapter = InterestAdapter(interestList, activity!!,this)
+        interestAdapter = InterestAdapter(interestList, activity!!, this)
         rvChooseInterest.adapter = interestAdapter
+    }
+
+    override fun onSuccessCreateOrUpdate(user: User) {
+        ivSplashBackground.visibility = View.VISIBLE
+        ivSplash.visibility = View.VISIBLE
+        sessionManager.setAccessToken(user.token)
+        sessionManager.setUserEmail(user.email)
+        sessionManager.setUserPhone(user.mobile)
+        sessionManager.setuserUniqueId(user.user_uniqueId)
+
+        ivSplash.animate()
+            .setStartDelay(500)
+            .setDuration(1000)
+            .scaleX(20f)
+            .scaleY(20f)
+            .alpha(0f);
+
+        Handler().postDelayed({
+            startActivity(Intent(activity, DashboardActivity::class.java))
+            activity!!.finish()
+        }, 1000)
     }
 
     override fun getViewModel() = chooseInterestViewModel
@@ -83,10 +126,14 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
     companion object {
         var noOfSelectedImage = 0
 
-        fun getInstance(title: String) =
+        fun getInstance(
+            dob: String,
+            selectVideoIdList: ArrayList<Int>
+        ) =
             ChooseInterestFragment().apply {
                 arguments = Bundle().apply {
-                    putString("user", title)
+                    putString(Constants.DATE_OF_BIRTH, dob)
+                    putIntegerArrayList("selectVideoIdList", selectVideoIdList)
                 }
                 noOfSelectedImage = 0
             }

@@ -1,6 +1,6 @@
 package com.namastey.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +11,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySplashBinding
 import com.namastey.uiView.SplashNavigatorView
 import com.namastey.utils.AppPreference
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
@@ -19,6 +20,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var splashViewModel: SplashViewModel
     private lateinit var activitySplashBinding: ActivitySplashBinding
@@ -70,7 +73,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         activitySplashBinding = bindViewData()
         activitySplashBinding.viewModel = splashViewModel
 
-        splashViewModel.nextScreen(AppPreference.getInt(this,AppPreference.USER_ID))
+        splashViewModel.nextScreen(sessionManager.getUserGender())
 
     }
 }

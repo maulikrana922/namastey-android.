@@ -1,6 +1,7 @@
 package com.namastey.networking
 
 
+import com.google.gson.JsonObject
 import com.namastey.model.AppResponse
 import com.namastey.model.InterestBean
 import com.namastey.model.VideoLanguageBean
@@ -8,10 +9,7 @@ import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface NetworkRequest {
 
@@ -61,6 +59,11 @@ interface NetworkRequest {
         @Field(Constants.PROVIDER) provider: String,
         @Field(Constants.PROVIDER_ID) provider_id: String,
         @Field(Constants.DEVICE_TYPE) deviceType: String = Constants.ANDROID
+    ): Deferred<AppResponse<User>>
+
+    @POST(Constants.REGISTER_GUEST)
+    fun requestCreateOrUpdateUserAsync(
+        @Body jsonObject: JsonObject
     ): Deferred<AppResponse<User>>
 
 }

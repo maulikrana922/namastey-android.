@@ -1,6 +1,6 @@
 package com.namastey.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide

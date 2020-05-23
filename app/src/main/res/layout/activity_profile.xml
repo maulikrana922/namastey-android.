@@ -13,11 +13,11 @@
             type="com.namastey.viewModel.ProfileViewModel" />
 
     </data>
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
@@ -66,7 +66,7 @@
                 app:layout_constraintStart_toStartOf="@id/ivProfileBack"
                 app:layout_constraintTop_toBottomOf="@id/ivProfileBack">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/myCardView"
                     android:layout_width="@dimen/_70sdp"
                     android:layout_height="@dimen/_70sdp"
@@ -82,7 +82,7 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/ic_male"/>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
             <ImageView
@@ -297,6 +297,6 @@
                 app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"/>
 
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -1,7 +1,7 @@
 package com.namastey.fragment
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.namastey.BR
@@ -11,6 +11,8 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectGenderBinding
 import com.namastey.uiView.SelectGenderView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectGenderViewModel
 import kotlinx.android.synthetic.main.fragment_select_gender.*
 import java.text.SimpleDateFormat
@@ -22,6 +24,8 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var fragmentSelectGenderBinding: FragmentSelectGenderBinding
     private lateinit var selectGenderViewModel: SelectGenderViewModel
@@ -32,12 +36,23 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
     }
 
     override fun onNext() {
-        (activity as SignUpActivity).addFragment(
-            VideoLanguageFragment.getInstance(
-                "user"
-            ),
-            Constants.VIDEO_LANGUAG_EFRAGMENT
-        )
+        if (!sessionManager.getUserGender().equals("")){
+            (activity as SignUpActivity).addFragment(
+                VideoLanguageFragment.getInstance(
+                    tvDOB.text.toString().trim()
+                ),
+                Constants.VIDEO_LANGUAG_EFRAGMENT
+            )
+        }else{
+            object : CustomAlertDialog(
+                activity!!,
+                resources.getString(R.string.msg_select_gender), getString(R.string.ok), ""
+            ){
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
+        }
     }
 
     override fun getViewModel() = selectGenderViewModel
@@ -69,8 +84,9 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
 
     private fun initUI() {
         val date = System.currentTimeMillis()
+        sessionManager.setUserGender("")
 
-        val sdf = SimpleDateFormat(Constants.DATE_FORMATE)
+        val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY)
         tvDOB.text = sdf.format(date)
 
         tvDOB.setOnClickListener(this)
@@ -96,7 +112,7 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
         val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 //            val myFormat = "dd/MM/yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(Constants.DATE_FORMATE, Locale.US)
+            val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.US)
             c.set(Calendar.YEAR, year)
             c.set(Calendar.MONTH, monthOfYear)
             c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -116,11 +132,13 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(),SelectG
             ivMale ->{
                 ivMale.alpha = 0.6f
                 ivFemale.alpha = 1f
+                sessionManager.setUserGender(Constants.Gender.male.name)
             }
 
             ivFemale ->{
                 ivMale.alpha = 1f
                 ivFemale.alpha = 0.6f
+                sessionManager.setUserGender(Constants.Gender.female.name)
             }
         }
     }

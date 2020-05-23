@@ -1,7 +1,7 @@
 package com.namastey.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.row_category.view.*
 class CategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
     var activity: Context
-) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -26,7 +26,7 @@ class CategoryAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             tvCategory.text = categoryList.get(position).name

@@ -1,8 +1,8 @@
 package com.namastey.fragment
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.InputType
 import android.view.View
 import android.widget.ArrayAdapter
@@ -132,7 +132,9 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         val aa =
             ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)
 
-        viewDivider.visibility = View.VISIBLE
+        if (sessionManager.getLoginType().equals(Constants.MOBILE))
+            viewDivider.visibility = View.VISIBLE
+
         aa.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         spinnerPhoneCode!!.setAdapter(aa)
     }

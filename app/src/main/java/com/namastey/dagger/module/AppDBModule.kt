@@ -1,6 +1,6 @@
 package com.namastey.dagger.module
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.namastey.roomDB.AppDB
 import com.namastey.scopes.PerApplication

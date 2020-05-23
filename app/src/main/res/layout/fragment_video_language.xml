@@ -11,7 +11,7 @@
             type="com.namastey.viewModel.VideoLanguageViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_choose_interest">
 
@@ -54,7 +54,7 @@
             app:layout_constraintStart_toStartOf="@id/tvSelectLanguage"/>
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVideoLanguage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -62,7 +62,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginBottom="@dimen/_15sdp"
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             android:outlineSpotShadowColor="@color/colorGray"
             tools:listitem="@layout/row_video_language"
@@ -101,5 +101,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

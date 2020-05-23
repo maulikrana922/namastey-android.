@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
 import com.namastey.utils.Constants.EMAIL
+import com.namastey.utils.Constants.KEY_GENDER
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
 import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
@@ -88,6 +89,16 @@ class SessionManager(context: Context) {
     fun setUserEmail(email: String) {
         val e = mPrefs.edit()
         e.putString(EMAIL, email)
+        e.apply()
+    }
+
+    fun getUserGender(): String {
+        return mPrefs.getString(KEY_GENDER, "")!!
+    }
+
+    fun setUserGender(gender: String) {
+        val e = mPrefs.edit()
+        e.putString(KEY_GENDER, gender)
         e.apply()
     }
 

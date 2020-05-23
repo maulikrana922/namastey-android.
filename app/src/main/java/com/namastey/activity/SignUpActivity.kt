@@ -1,10 +1,12 @@
 package com.namastey.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import android.app.Activity
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.facebook.CallbackManager
@@ -14,6 +16,13 @@ import com.facebook.GraphRequest
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -23,6 +32,7 @@ import com.namastey.fragment.SignupWithPhoneFragment
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
+import com.namastey.utils.Constants.RC_SIGN_IN
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SignUpViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -41,12 +51,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var loginManager: LoginManager
     private lateinit var callbackManager: CallbackManager
-
+    private lateinit var googleSignInOptions: GoogleSignInOptions
+    private lateinit var googleSignInClient: GoogleSignInClient
     private var firstName = ""
     private var lastName = ""
     private var email = ""
     private var providerId = ""
-    private var profileUrl = ""
 
     override fun getViewModel() = signUpViewModel
 
@@ -67,8 +77,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     }
 
     private fun initData() {
-        callbackManager =
-            CallbackManager.Factory.create()
+
+        initializeGoogleApi()
     }
 
     override fun skipLogin() {
@@ -124,7 +134,53 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
             callbackManager.onActivityResult(requestCode, resultCode, data)
         }
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RC_SIGN_IN) {
+                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+                var task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
+                handleSignInResult(task)
+            }
+        }
+    }
+
+    /**
+     * Handle google sign in result
+     */
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
+        try {
+            var account = task.getResult (ApiException::class.java)
+
+            // Signed in successfully, show authenticated UI.
+            providerId = account?.id!!
+            if (account.email != null || account.email != "") {
+                email = account.email.toString()
+            }
+            if (account?.displayName != null) {
+                if (account.displayName.toString() != "" || !TextUtils.isEmpty(
+                        account.displayName.toString()
+                    )
+                ) {
+                    firstName = account.displayName.toString().split(" ")[0]
+                    try {
+                        lastName = account.displayName.toString().split(" ")[1]
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            signUpViewModel.socialLogin(
+                email,
+                "$firstName $lastName",
+                Constants.GOOGLE,
+                providerId
+            )
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("SignUpActivity", "signInResult:failed code=" + e.getStatusCode());
+        }
     }
 
     fun onLoginClick(view: View) {
@@ -147,7 +203,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
      * Click on continue with Google
      */
     private fun googleLogin() {
-
+        var signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     /**
@@ -172,8 +229,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
                                 if (jsonObj.has("email") && !TextUtils.isEmpty(jsonObj.getString("email"))) {
                                     email = jsonObj.getString("email")
                                 }
-                                profileUrl =
-                                    "https://graph.facebook.com/$providerId/picture?type=large"
                                 signUpViewModel.socialLogin(
                                     email,
                                     "$firstName $lastName",
@@ -230,8 +285,34 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         )
     }
 
+    private fun initializeGoogleApi() {
+        //For facebook used initializer
+        callbackManager =
+            CallbackManager.Factory.create()
+
+        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+    }
+
+    override fun onStart() {
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestEmail()
+//            .build()
+//        mGoogleApiClient = GoogleApiClient.Builder(this)
+//            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//            .build()
+//        mGoogleApiClient.connect()
+        super.onStart()
+    }
+
     override fun onDestroy() {
         signUpViewModel.onDestroy()
         super.onDestroy()
     }
+
 }

@@ -1,6 +1,6 @@
 package com.namastey.roomDB.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.namastey.roomDB.entity.User
 
 @Dao

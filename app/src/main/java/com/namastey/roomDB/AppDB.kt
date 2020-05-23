@@ -1,7 +1,7 @@
 package com.namastey.roomDB
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.namastey.roomDB.dao.UserDao
 import com.namastey.roomDB.entity.User
 

@@ -1,6 +1,7 @@
 package com.namastey.uiView
 
 import com.namastey.model.InterestBean
+import com.namastey.roomDB.entity.User
 
 interface ChooseInterestView: BaseView{
 
@@ -9,4 +10,6 @@ interface ChooseInterestView: BaseView{
     fun onNext()
 
     fun onSuccess(interestList: ArrayList<InterestBean>)
+
+    fun onSuccessCreateOrUpdate(user: User)
 }

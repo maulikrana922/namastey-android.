@@ -1,7 +1,7 @@
 package com.namastey.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ class InterestAdapter(
     var interestList: ArrayList<InterestBean>,
     var activity: Context,
     var onImageItemClick: OnImageItemClick
-) : RecyclerView.Adapter<InterestAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<InterestAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -30,7 +30,7 @@ class InterestAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             tvInterstTitle.text = interestList.get(position).interest_name

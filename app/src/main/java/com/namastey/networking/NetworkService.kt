@@ -1,5 +1,6 @@
 package com.namastey.networking
 
+import com.google.gson.JsonObject
 import com.namastey.model.AppResponse
 import com.namastey.model.InterestBean
 import com.namastey.model.VideoLanguageBean
@@ -60,4 +61,13 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             providerId
         ).await()
     }
+
+    suspend fun requestToUpdateOrCreateUser(
+        jsonObject: JsonObject
+    ): AppResponse<User> = withContext(Dispatchers.IO) {
+        networkRequest.requestCreateOrUpdateUserAsync(
+            jsonObject
+        ).await()
+    }
+
 }

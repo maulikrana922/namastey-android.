@@ -1,6 +1,10 @@
 package com.namastey.utils
 
 object Constants {
+    enum class Gender {
+        male, female, other
+    }
+
     const val API_KEY = "apiToken"
     const val HVALUE = "L@titude2018"
 
@@ -52,6 +56,7 @@ object Constants {
     const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
     const val KEY_INTERNET_AVAILABLE = "KEY_INTERNET_AVAILABLE"
     const val KEY_IS_VERIFIED_USER = "KEY_IS_VERIFIED_USER"
+    const val KEY_GENDER = "KEY_GENDER"
 
 
     //    field key
@@ -60,12 +65,20 @@ object Constants {
     const val USERNAME = "username"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"
+    const val GOOGLE = "google"
     const val ANDROID = "android"
     const val PROVIDER = "provider"
     const val PROVIDER_ID = "provider_id"
     const val USER_UNIQUEID = "user_uniqueId"
+    const val GENDER = "gender"
+    const val DATE_OF_BIRTH = "date_of_birth"
+    const val LANGUAGE = "language"
+    const val INTEREST = "interest"
 
 //    Other constants
     const val MIN_CHOOSE_INTEREST = 3
-    const val DATE_FORMATE = "dd/MM/yyyy"
+    const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
+    const val DATE_FORMATE_API = "yyyy-MM-dd"
+    const val RC_SIGN_IN = 100
+
 }

@@ -1,8 +1,8 @@
 package com.namastey.utils
 
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import android.view.View
 
 class GridSpacingItemDecoration(
@@ -13,8 +13,8 @@ class GridSpacingItemDecoration(
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
+        parent: androidx.recyclerview.widget.RecyclerView,
+        state: androidx.recyclerview.widget.RecyclerView.State
     ) {
         val position = parent.getChildAdapterPosition(view) // item position
         val column = position % spanCount // item column
