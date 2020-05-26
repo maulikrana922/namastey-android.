@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context=".activity.SplashActivity">
 
     <data>
@@ -13,13 +15,14 @@
 
     </data>
 
-    <ImageView
-        android:id="@+id/ivSplashScreen"
-        android:src="@drawable/splash_bg_red"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
+    <com.namastey.utils.SplashView
+        android:id="@+id/splash_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:icon="@drawable/videoscreen_logo"
+        app:iconColor="@color/colorRed"
+        app:duration="800"
+        app:holeFillColor="@color/colorWhite"
+        app:removeFromParentOnEnd="true" />
 
-    </ImageView>
 </layout>

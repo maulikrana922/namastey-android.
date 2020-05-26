@@ -1,11 +1,10 @@
 package com.namastey.fragment
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.text.InputType
 import android.view.View
-import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.SignUpActivity
@@ -16,12 +15,14 @@ import com.namastey.roomDB.entity.User
 import com.namastey.uiView.SignupWithPhoneView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.SignupWithPhoneModel
 import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
 import javax.inject.Inject
 
+
 class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
-    SignupWithPhoneView {
+    SignupWithPhoneView, CountryFragment.OnCountrySelectionListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -31,8 +32,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private lateinit var fragmentSignupWithPhoneBinding: FragmentSignupWithPhoneBinding
     private lateinit var signupWithPhoneModel: SignupWithPhoneModel
     private lateinit var layoutView: View
-    val listOfCountry = ArrayList<String>()
     private var countryList = ArrayList<Country>()
+    private lateinit var country: Country
 
     override fun getViewModel() = signupWithPhoneModel
 
@@ -71,6 +72,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     private fun initUI() {
         sessionManager.setLoginType(Constants.MOBILE)
+
+
         signupWithPhoneModel.getCountry()
 
     }
@@ -93,9 +96,9 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
             if (sessionManager.getLoginType().equals(Constants.EMAIL))
                 signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
             else {
-                if (spinnerPhoneCode.selectedItem != null) {
+                if (country != null) {
                     countryCode =
-                        countryList.get(spinnerPhoneCode.selectedItemPosition).phonecode.toString()
+                        country.phonecode.toString()
 //                countryCode =
 //                    spinnerPhoneCode.selectedItem.toString()
                 }
@@ -107,6 +110,17 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 )
             }
         }
+    }
+
+    override fun onClickCountry() {
+        Utils.hideKeyboard(activity!!)
+        (activity as SignUpActivity).addFragmentChild(
+            childFragmentManager,
+            CountryFragment.getInstance(
+                countryList
+            ),
+            Constants.COUNTRY_FRAGMENT
+        )
     }
 
     override fun onSuccessResponse(user: User) {
@@ -126,23 +140,26 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun onGetCountry(countryList: ArrayList<Country>) {
 
         this.countryList = countryList
-        for ((index, value) in countryList.withIndex()) {
-            listOfCountry.add(value.sortname + " " + value.phonecode)
-        }
-        val aa =
-            ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)
 
-        if (sessionManager.getLoginType().equals(Constants.MOBILE))
+        if (countryList.size > 0)
+            tvCountrySelected.text = countryList[0].sortname + " " + countryList[0].phonecode
+
+//        val aa =
+//            ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)
+//
+        if (sessionManager.getLoginType().equals(Constants.MOBILE)) {
             viewDivider.visibility = View.VISIBLE
-
-        aa.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        spinnerPhoneCode!!.setAdapter(aa)
+            tvCountrySelected.visibility = View.VISIBLE
+        }
+//
+//        aa.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+//        spinnerPhoneCode!!.setAdapter(aa)
     }
 
     private fun selectPhone() {
         sessionManager.setLoginType(Constants.MOBILE)
         edtEmailPhone.inputType = InputType.TYPE_CLASS_NUMBER
-        spinnerPhoneCode.visibility = View.VISIBLE
+        tvCountrySelected.visibility = View.VISIBLE
         viewDivider.visibility = View.VISIBLE
         edtEmailPhone.hint = resources.getString(R.string.hint_phone)
         tvLabel.text = resources.getString(R.string.phone)
@@ -159,7 +176,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         sessionManager.setLoginType(Constants.EMAIL)
         edtEmailPhone.inputType =
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-        spinnerPhoneCode.visibility = View.GONE
+        tvCountrySelected.visibility = View.GONE
         viewDivider.visibility = View.GONE
         edtEmailPhone.hint = resources.getString(R.string.hint_email)
         tvLabel.text = resources.getString(R.string.email)
@@ -176,4 +193,14 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         signupWithPhoneModel.onDestroy()
         super.onDestroy()
     }
+
+    /**
+     * Click on select country get selected country model
+     */
+    override fun onCountrySelectionSet(country: Country) {
+        childFragmentManager.popBackStack()
+        this.country = country
+        tvCountrySelected.text = country.sortname + " " + country.phonecode
+    }
+
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.FragmentManager
 import com.namastey.R
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -112,6 +113,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     fun addFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().addToBackStack(tag)
             .replace(R.id.flContainer, fragment, tag)
+            .commitAllowingStateLoss()
+    }
+
+    fun addFragmentChild(childFragmentManager: FragmentManager,fragment: Fragment, tag: String) {
+        childFragmentManager.beginTransaction().addToBackStack(tag)
+            .add(R.id.flContainer, fragment, tag)
             .commitAllowingStateLoss()
     }
 

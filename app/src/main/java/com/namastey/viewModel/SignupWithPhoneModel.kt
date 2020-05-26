@@ -32,7 +32,9 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
     fun onClickEmail(){
         signupWithPhoneView.onClickEmail()
     }
-
+    fun onClickCountry(){
+        signupWithPhoneView.onClickCountry()
+    }
     fun sendOTP(phone: String, email: String,isPhone: Boolean) {
 
             setIsLoading(true)

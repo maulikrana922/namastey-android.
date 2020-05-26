@@ -70,6 +70,8 @@
     <string name="msg_empty_otp">Please enter OTP</string>
     <string name="view">View</string>
 
+    <string name="select_country">Select country/region</string>
+
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>

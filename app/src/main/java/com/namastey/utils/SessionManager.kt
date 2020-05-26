@@ -7,6 +7,7 @@ import android.util.Log
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_GENDER
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
+import com.namastey.utils.Constants.KEY_IS_LOGIN
 import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
@@ -68,16 +69,26 @@ class SessionManager(context: Context) {
         e.apply()
     }
 
-    fun isVerifiedUser(): Boolean{
-        return mPrefs.getBoolean(KEY_IS_VERIFIED_USER,false)
+    fun isVerifiedUser(): Boolean {
+        return mPrefs.getBoolean(KEY_IS_VERIFIED_USER, false)
     }
 
-    fun setVerifiedUser(isVerified: Int){
-        val  e = mPrefs.edit()
+    fun isLoginUser(): Boolean {
+        return mPrefs.getBoolean(KEY_IS_LOGIN, false)
+    }
+
+    fun setLoginUser(isLogin: Boolean) {
+        val e = mPrefs.edit()
+        e.putBoolean(KEY_IS_LOGIN, true)
+        e.apply()
+    }
+
+    fun setVerifiedUser(isVerified: Int) {
+        val e = mPrefs.edit()
         if (isVerified == 1)
-            e.putBoolean(KEY_IS_VERIFIED_USER,true)
+            e.putBoolean(KEY_IS_VERIFIED_USER, true)
         else
-            e.putBoolean(KEY_IS_VERIFIED_USER,false)
+            e.putBoolean(KEY_IS_VERIFIED_USER, false)
 
         e.apply()
     }
@@ -121,6 +132,7 @@ class SessionManager(context: Context) {
     fun getUserName(): String {
         return mPrefs.getString(KEY_USER_NAME, "")!!
     }
+
     fun setInternetAvailable(isInternetAvail: Boolean) {
         val e = mPrefs.edit()
         e.putBoolean(KEY_INTERNET_AVAILABLE, isInternetAvail)

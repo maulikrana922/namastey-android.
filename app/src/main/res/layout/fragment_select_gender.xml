@@ -201,5 +201,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+<!--        <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker-->
+<!--            android:id="@+id/dobPicker"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="230dp"-->
+<!--            app:picker_curved="true"-->
+<!--            app:picker_cyclic="true"-->
+<!--            android:visibility="gone"-->
+<!--            app:picker_visibleItemCount="7"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,7 +11,9 @@
             type="com.namastey.viewModel.SignupWithPhoneModel" />
 
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_35sdp"
-            android:text="@string/email"
+            android:text="@string/phone"
             android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup"
             app:layout_constraintTop_toBottomOf="@+id/tvPhoneSignup" />
@@ -99,6 +101,14 @@
             app:layout_constraintStart_toStartOf="@+id/tvPhoneSignup"
             app:layout_constraintTop_toBottomOf="@+id/tvLabel">
 
+            <com.namastey.customViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/tvCountrySelected"
+                android:visibility="gone"
+                android:onClick="@{() -> viewModel.onClickCountry()}"
+                android:drawableEnd="@drawable/ic_dropdown"
+                />
             <Spinner
                 android:id="@+id/spinnerPhoneCode"
                 android:layout_width="wrap_content"
@@ -157,4 +167,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"/>
+
+</FrameLayout>
 </layout>

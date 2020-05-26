@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.CountryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/rounded_top_white_solid"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:id="@+id/ivCountryBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:onClick="@{() -> viewModel.closeFragment()}"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_close"
+            android:tint="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvCountryTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/select_country"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivCountryBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivCountryBack"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCountry"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:outlineSpotShadowColor="@color/colorGray"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toStartOf="@id/fsvCountry"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCountryBack"
+            tools:listitem="@layout/row_country" />
+
+        <com.reddit.indicatorfastscroll.FastScrollerView
+            android:id="@+id/fsvCountry"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCountryTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rvCountry"/>
+
+        <com.reddit.indicatorfastscroll.FastScrollerThumbView
+            android:id="@+id/fastscroller_thumb"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/fsvCountry"
+            app:layout_constraintBottom_toBottomOf="@id/fsvCountry"
+            app:layout_constraintEnd_toStartOf="@id/fsvCountry"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

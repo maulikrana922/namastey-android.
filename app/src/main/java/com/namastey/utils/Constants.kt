@@ -48,10 +48,12 @@ object Constants {
     const val SELECT_GENDER_FRAGMENT = "SelectGenderFragment"
     const val VIDEO_LANGUAG_EFRAGMENT = "VideoLanguageFragment"
     const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
+    const val COUNTRY_FRAGMENT = "CountryFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
     const val KEY_USER_NAME = "KEY_USER_NAME"
+    const val KEY_IS_LOGIN = "KEY_IS_LOGIN"
     const val KEY_SESSION_TOKEN = "KEY_SESSION_TOKEN"
     const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
     const val KEY_INTERNET_AVAILABLE = "KEY_INTERNET_AVAILABLE"

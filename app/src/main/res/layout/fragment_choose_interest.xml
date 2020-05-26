@@ -114,14 +114,6 @@
         android:src="@drawable/splash"
         android:visibility="gone"/>
 
-    <ImageView
-        android:id="@+id/ivSplash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center"
-        android:src="@drawable/splash"
-        android:visibility="gone"/>
 
 </FrameLayout>
 </layout>

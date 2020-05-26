@@ -1,18 +1,18 @@
 package com.namastey.activity
 
 import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import androidx.fragment.app.FragmentManager
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
+import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -78,6 +78,14 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
 
     private fun initData() {
 
+//        var locale = ""
+//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//    locale = getResources().getConfiguration().getLocales().get(0).country + " " + getResources().getConfiguration().getLocales().get(0).displayCountry
+//} else {
+//    locale = getResources().getConfiguration().locale.country + " " + getResources().getConfiguration().locale.displayCountry
+//}
+//
+//        tvSkipSignUp.text = locale.toString()
         initializeGoogleApi()
     }
 
@@ -90,6 +98,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     }
 
     override fun onSuccessResponse(user: User) {
+        tvSkipSignUp.visibility = View.INVISIBLE
+
         sessionManager.setAccessToken(user.token)
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
@@ -110,12 +120,21 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
             supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAG_EFRAGMENT)
         val chooseInterestFragment =
             supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
+        val signupWithPhoneFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
         tvSkipSignUp.visibility = View.VISIBLE
 
         if (videoLanguageFrgment != null || chooseInterestFragment != null) {
             supportFragmentManager.popBackStack()
         } else if (selectGenderFragment != null) {
             removeAllFragment()
+        }else if (signupWithPhoneFragment != null){
+            var  childFm = signupWithPhoneFragment.getChildFragmentManager()
+            if (childFm.getBackStackEntryCount() > 0) {
+                childFm.popBackStack();
+            }else{
+                supportFragmentManager.popBackStack()
+            }
         } else
             super.onBackPressed()
     }
@@ -136,7 +155,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_SIGN_IN) {
-                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
                 var task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
                 handleSignInResult(task)
@@ -156,7 +174,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
             if (account.email != null || account.email != "") {
                 email = account.email.toString()
             }
-            if (account?.displayName != null) {
+            if (account.displayName != null) {
                 if (account.displayName.toString() != "" || !TextUtils.isEmpty(
                         account.displayName.toString()
                     )
@@ -211,6 +229,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
      * Click on continue with Facebook
      */
     private fun facebookLogin() {
+
         LoginManager.getInstance().logOut()
         loginManager = LoginManager.getInstance()
 
@@ -295,19 +314,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-    }
-
-    override fun onStart() {
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestEmail()
-//            .build()
-//        mGoogleApiClient = GoogleApiClient.Builder(this)
-//            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//            .build()
-//        mGoogleApiClient.connect()
-        super.onStart()
     }
 
     override fun onDestroy() {

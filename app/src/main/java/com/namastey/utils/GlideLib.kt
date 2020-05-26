@@ -24,9 +24,9 @@ class GlideLib {
     companion object {
         fun loadImage(context: Context, imageView: ImageView, imagePath: String) {
 //            Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).into(imageView)
-            val multi = MultiTransformation<Bitmap>(
-                ColorFilterTransformation(25)
-            )
+//            val multi = MultiTransformation<Bitmap>(
+//                ColorFilterTransformation(25)
+//            )
 
             Glide.with(context).load(imagePath)
                 .placeholder(R.drawable.default_placeholder)

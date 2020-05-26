@@ -11,6 +11,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.model.CategoryBean
 import com.namastey.uiView.DashboardView
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import javax.inject.Inject
@@ -20,7 +21,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
     private lateinit var dashboardViewModel: DashboardViewModel
     private val categoryList: ArrayList<CategoryBean> = ArrayList()
@@ -38,6 +40,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     private fun initData() {
+        sessionManager.setLoginUser(true)
         setCategoryList()
     }
 

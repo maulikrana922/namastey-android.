@@ -21,4 +21,5 @@ interface ActivityComponent {
     fun inject(fragment: ChooseInterestFragment)
     fun inject(activity: DashboardActivity)
     fun inject(activity: ProfileActivity)
+    fun inject(fragment: CountryFragment)
 }

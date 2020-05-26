@@ -14,10 +14,10 @@ class SplashViewModel constructor(
 
     private var splashNavigatorView: SplashNavigatorView = baseView as SplashNavigatorView
 
-    fun nextScreen(userId: String) {
+    fun nextScreen(isLogin: Boolean) {
         Handler().postDelayed({
-            if (!userId.equals("")) {
-                splashNavigatorView.openMainActivity()
+            if (isLogin) {
+                splashNavigatorView.openLoginActivity()
             } else {
                 splashNavigatorView.openLoginActivity()
             }

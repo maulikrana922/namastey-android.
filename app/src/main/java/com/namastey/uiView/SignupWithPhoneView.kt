@@ -13,6 +13,8 @@ interface SignupWithPhoneView: BaseView {
 
     fun onClickNext()
 
+    fun onClickCountry()
+
     fun onSuccessResponse(user: User)
 
     fun onGetCountry(arrCountry: ArrayList<Country>)

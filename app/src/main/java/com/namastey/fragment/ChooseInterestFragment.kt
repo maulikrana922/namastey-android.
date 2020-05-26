@@ -98,18 +98,11 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onSuccessCreateOrUpdate(user: User) {
         ivSplashBackground.visibility = View.VISIBLE
-        ivSplash.visibility = View.VISIBLE
         sessionManager.setAccessToken(user.token)
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setuserUniqueId(user.user_uniqueId)
 
-        ivSplash.animate()
-            .setStartDelay(500)
-            .setDuration(1000)
-            .scaleX(20f)
-            .scaleY(20f)
-            .alpha(0f);
 
         Handler().postDelayed({
             startActivity(Intent(activity, DashboardActivity::class.java))
