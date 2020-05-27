@@ -16,16 +16,4 @@ class CountryViewModel constructor(
     fun closeFragment() {
         countryView.onClose()
     }
-
-
-
-    fun onNextClick() {
-//        countryView.onNext()
-    }
-
-    fun getVideoLanguage() {
-
-    }
-
-
 }

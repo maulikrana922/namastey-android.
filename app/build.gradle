@@ -95,9 +95,8 @@ dependencies {
 //    Google play services
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
-    implementation 'com.brucetoo.pickview:library:1.2.3'
-    implementation 'com.contrarywind:Android-PickerView:4.1.9'  // Temp need to remove
-    implementation 'com.github.florent37:singledateandtimepicker:2.2.3'   // Temp need to remove
+//    Date picker like ios
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.5'
 
 //    Indicator fast-scrolling
     implementation 'com.reddit:indicator-fast-scroll:1.3.0'

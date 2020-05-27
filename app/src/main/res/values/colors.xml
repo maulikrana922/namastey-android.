@@ -21,5 +21,7 @@
     <color name="colorDarkGray">#928492</color>
     <color name="colorBlackTransparent">#442E3933</color>
     <color name="black_overlay">#66000000</color>
+    <color name="picker_default_divider_color">#442E3933</color>
+    <color name="picker_default_selector_color">@android:color/transparent</color>
 
 </resources>

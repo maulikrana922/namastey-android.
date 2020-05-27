@@ -41,7 +41,7 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSkipSignUp"
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:drawableEnd="@drawable/ic_skip_arrow"
                     android:drawablePadding="@dimen/_8sdp"
@@ -210,7 +210,7 @@
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-/>
+            android:fitsSystemWindows="true"/>
 
     </FrameLayout>
 </layout>

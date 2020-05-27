@@ -34,11 +34,6 @@ class CountryFragment : BaseFragment<FragmentCountryBinding>(), CountryView,
         fragmentManager!!.popBackStack()
     }
 
-    override fun onSuccess(country: Country) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
     override fun getViewModel() = countryViewModel
 
     override fun getLayoutId() = R.layout.fragment_country
@@ -67,8 +62,6 @@ class CountryFragment : BaseFragment<FragmentCountryBinding>(), CountryView,
     }
 
     private fun initUI() {
-
-        countryViewModel.getVideoLanguage()
 
         if (arguments!!.containsKey("listOfCountry")) {
             listOfCountry = arguments!!.getSerializable("listOfCountry") as ArrayList<Country>

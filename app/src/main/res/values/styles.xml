@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">#F30C45</item>
         <item name="colorAccent">#F30C45</item>
         <item name="android:windowDisablePreview">true</item>
-<!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
 <!--        <item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 

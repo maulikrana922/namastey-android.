@@ -26,7 +26,7 @@
         android:onClick="onClickUser"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_top_profile"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginStart="@dimen/_15sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

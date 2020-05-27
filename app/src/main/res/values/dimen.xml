@@ -2,4 +2,5 @@
 <resources>
 
     <dimen name="tenDp">10dp</dimen>
+    <dimen name="picker_default_divider_height">1dp</dimen>
 </resources>

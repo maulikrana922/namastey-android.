@@ -3,9 +3,9 @@ package com.namastey.fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.bruce.pickerview.popwindow.DatePickerPopWin
-import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.namastey.BR
 import com.namastey.R
@@ -128,108 +128,82 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
     }
 
     private fun showDatePickerDialog() {
-//        val selectedDate = Calendar.getInstance()
-//        val startDate = Calendar.getInstance()
-//        startDate[2013, 0] = 1
-//        val endDate = Calendar.getInstance()
-//        endDate[2020, 11] = 1
+
+//        val calendar = Calendar.getInstance()
+//        year = calendar.get(Calendar.YEAR)
+//        month = calendar.get(Calendar.MONTH)
+//        day = calendar.get(Calendar.DAY_OF_MONTH)
+//        val pickerPopWin =
+//            DatePickerPopWin.Builder(activity,
+//                DatePickerPopWin.OnDatePickedListener { year, month, day, dateDesc ->
 //
-//        var pvTime = TimePickerBuilder(activity,
-//            OnTimeSelectListener { date, v ->
-//                //callback
-//                tvDOB.setText(date.time.toString())
-//            })
-//            .setType(booleanArrayOf(true, true, true, false, false, false)) // type of date
-//            .setCancelText("Cancel")
-//            .setSubmitText("Sure")
-//            .setTitleSize(20)
-//            .setTitleText("")
-//            .setOutSideCancelable(false) // default is true
-//            .isCyclic(true) // default is false
-//            .setTitleColor(Color.WHITE)
-//            .setSubmitColor(Color.GREEN)
-//            .setCancelColor(Color.GRAY)
-//            .setRangDate(startDate, endDate)
-//            .setLabel("", "", "", "hours", "mins", "seconds")
-//            .build()
+//                    val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.ENGLISH)
+//                    calendar.set(Calendar.YEAR, year)
+//                    calendar.set(Calendar.MONTH, month - 1)
+//                    calendar.set(Calendar.DAY_OF_MONTH, day)
 //
-//        pvTime.show()
+//                    this.year = year
+//                    this.month = month
+//                    this.day = day
+//                    tvDOB.text = sdf.format(calendar.time)
+////                    Toast.makeText(
+////                        activity,
+////                        dateDesc,
+////                        Toast.LENGTH_SHORT
+////                    ).show()
+//                }).textConfirm("CONFIRM")
+//                .textCancel("CANCEL")
+//                .btnTextSize(16)
+//                .viewTextSize(28)
+//                .colorCancel(Color.parseColor("#999999"))
+//                .colorConfirm(Color.parseColor("#009900"))
+//                .minYear(1970)
+//                .maxYear(year + 1)
+//                .showDayMonthYear(true) // shows like dd mm yyyy (default is false)
+//                .build()
 
-        val calendar = Calendar.getInstance()
-        year = calendar.get(Calendar.YEAR)
-        month = calendar.get(Calendar.MONTH)
-        day = calendar.get(Calendar.DAY_OF_MONTH)
-        val pickerPopWin =
-            DatePickerPopWin.Builder(activity,
-                DatePickerPopWin.OnDatePickedListener { year, month, day, dateDesc ->
-
-                    val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.ENGLISH)
-                    calendar.set(Calendar.YEAR, year)
-                    calendar.set(Calendar.MONTH, month - 1)
-                    calendar.set(Calendar.DAY_OF_MONTH, day)
-
-                    this.year = year
-                    this.month = month
-                    this.day = day
-                    tvDOB.text = sdf.format(calendar.time)
-//                    Toast.makeText(
-//                        activity,
-//                        dateDesc,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-                }).textConfirm("CONFIRM")
-                .textCancel("CANCEL")
-                .btnTextSize(16)
-                .viewTextSize(28)
-                .colorCancel(Color.parseColor("#999999"))
-                .colorConfirm(Color.parseColor("#009900"))
-                .minYear(1970)
-                .maxYear(year + 1)
-                .showDayMonthYear(true) // shows like dd mm yyyy (default is false)
-                .build()
-
-        pickerPopWin.showPopWin(activity)
-
-
-//        SingleDateAndTimePickerDialog.Builder(activity)
-//            .displayMinutes(false)
-//            .displayHours(false)
-//            .displayDays(false)
-//            .displayMonth(true)
-//            .displayYears(true)
-//            .displayDaysOfMonth(true)
-//            .display()
+//        pickerPopWin.showPopWin(activity)
 
 //        dobPicker.visibility = View.VISIBLE
-//        val changeListener =
-//            SingleDateAndTimePicker.OnDateChangedListener { displayed: String?, date: Date? ->
-////                display(
-////                    displayed
-////                )
-//            }
-//        dobPicker.addOnDateChangedListener(changeListener)
 
+        var b1 = SingleDateAndTimePickerDialog.Builder(context).apply {
+            bottomSheet()
+            curved()
+            mainColor(Color.BLACK)
+            maxDateRange(calendar.time)
+            displayMinutes(false)
+            displayHours(false)
+            displayDays(false)
+            displayMonth(true)
+            displayYears(true)
+            displayDaysOfMonth(true)
+        }
+        b1.displayListener { picker ->
+            var view = picker?.rootView
+            if (view != null) {
+                val buttonOk =
+                    view.findViewById(com.github.florent37.singledateandtimepicker.R.id.buttonOk) as TextView
+                buttonOk.text = "Done"
+            }
+        }
 
-//        val c = Calendar.getInstance()
-//        val year = c.get(Calendar.YEAR)
-//        val month = c.get(Calendar.MONTH)
-//        val day = c.get(Calendar.DAY_OF_MONTH)
-//
-//
-//        val dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//
-////            val myFormat = "dd/MM/yyyy" // mention the format you need
-//            val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.US)
-//            c.set(Calendar.YEAR, year)
-//            c.set(Calendar.MONTH, monthOfYear)
-//            c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-//
-//            tvDOB.text = sdf.format(c.time)
-//
-//        }, year, month, day)
-//        dpd.datePicker.maxDate = System.currentTimeMillis() - 1000
-//        dpd.show()
+        b1.listener { date: Date? ->
+            val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.ENGLISH)
+
+                    calendar.time = date
+
+                    year = calendar.get(Calendar.YEAR)
+                    month = calendar.get(Calendar.MONTH)
+                    day = calendar.get(Calendar.DAY_OF_MONTH)
+            tvDOB.text = sdf.format(date!!.time)
+        }
+        b1.display()
+
     }
+
+//    private fun displayMessage(toDisplay: String) {
+//        Toast.makeText(activity, toDisplay, Toast.LENGTH_SHORT).show()
+//    }
 
     override fun onClick(v: View?) {
         when (v) {

@@ -39,7 +39,7 @@
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_back"
                 android:onClick="onClickProfileBack"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
