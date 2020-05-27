@@ -14,7 +14,7 @@
     card_view:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
+        android:id="@+id/videoSelectMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -41,7 +41,8 @@
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#30000000"/>
+                android:background="@color/black_overlay"
+                />
         </FrameLayout>
 
         <com.namastey.customViews.CustomTextView
@@ -60,7 +61,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/ivVideoCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_white_solid"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/ic_done_red"
+            app:layout_constraintEnd_toEndOf="@id/tvInterstTitle"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <CheckBox
+            android:visibility="gone"
             android:id="@+id/ckbInterest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

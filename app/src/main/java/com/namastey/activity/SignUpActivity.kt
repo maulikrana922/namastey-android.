@@ -122,17 +122,19 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
             supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
         val signupWithPhoneFragment =
             supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
-        tvSkipSignUp.visibility = View.VISIBLE
+
 
         if (videoLanguageFrgment != null || chooseInterestFragment != null) {
             supportFragmentManager.popBackStack()
         } else if (selectGenderFragment != null) {
+            tvSkipSignUp.visibility = View.VISIBLE
             removeAllFragment()
         }else if (signupWithPhoneFragment != null){
             var  childFm = signupWithPhoneFragment.getChildFragmentManager()
             if (childFm.getBackStackEntryCount() > 0) {
                 childFm.popBackStack();
             }else{
+                tvSkipSignUp.visibility = View.VISIBLE
                 supportFragmentManager.popBackStack()
             }
         } else

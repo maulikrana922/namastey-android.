@@ -37,14 +37,27 @@ class InterestAdapter(
 
             GlideLib.loadImage(activity,ivInterest,interestList.get(position).image)
 
-            ckbInterest.setOnClickListener(View.OnClickListener { v ->
-                if (ckbInterest.isChecked){
-                    ++ChooseInterestFragment.noOfSelectedImage
-                }else{
+            view.alpha = 0.3f
+            videoSelectMain.setOnClickListener {
+                if (ivVideoCheck.visibility == View.VISIBLE){
+                    view.alpha = 0.3f
+                    ivVideoCheck.visibility = View.GONE
                     --ChooseInterestFragment.noOfSelectedImage
+                }else{
+                    view.alpha = 0.5f
+                    ivVideoCheck.visibility = View.VISIBLE
+                    ++ChooseInterestFragment.noOfSelectedImage
                 }
                 onImageItemClick.onImageItemClick(interestList.get(position))
-            })
+            }
+//            ckbInterest.setOnClickListener(View.OnClickListener { v ->
+//                if (ckbInterest.isChecked){
+//                    ++ChooseInterestFragment.noOfSelectedImage
+//                }else{
+//                    --ChooseInterestFragment.noOfSelectedImage
+//                }
+//                onImageItemClick.onImageItemClick(interestList.get(position))
+//            })
 
         }
 
