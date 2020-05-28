@@ -2,9 +2,7 @@ package com.namastey.networking
 
 
 import com.google.gson.JsonObject
-import com.namastey.model.AppResponse
-import com.namastey.model.InterestBean
-import com.namastey.model.VideoLanguageBean
+import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
@@ -66,4 +64,9 @@ interface NetworkRequest {
         @Body jsonObject: JsonObject
     ): Deferred<AppResponse<User>>
 
+    @GET(Constants.GET_USER_DETAIL)
+    fun requestToGetUserDetailAsync(): Deferred<AppResponse<DashboardBean>>
+
+    @GET(Constants.GET_CATEGORY_LIST)
+    fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>
 }

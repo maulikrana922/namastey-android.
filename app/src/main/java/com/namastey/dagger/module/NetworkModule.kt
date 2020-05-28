@@ -87,7 +87,7 @@ class NetworkModule {
             val request = original.newBuilder()
                 .addHeader(Constants.API_KEY, if (original.url().url().path.contains(Constants.REGISTER) ||
                     TextUtils.isEmpty(sessionManager.getAccessToken())
-                ) Constants.HVALUE else sessionManager.getAccessToken())
+                ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken())
                 .header("Content-Type", "application/json")
                 .removeHeader("Pragma")
                 .header("Cache-Control", String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME))

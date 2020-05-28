@@ -1,9 +1,8 @@
 package com.namastey.activity
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.CategoryAdapter
@@ -25,7 +24,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     lateinit var sessionManager: SessionManager
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
     private lateinit var dashboardViewModel: DashboardViewModel
-    private val categoryList: ArrayList<CategoryBean> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +39,21 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun initData() {
         sessionManager.setLoginUser(true)
-        setCategoryList()
+        dashboardViewModel.getCategoryList()
+    }
+
+    /**
+     * Success of get category list
+     */
+    override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        var categoryAdapter = CategoryAdapter(categoryBeanList, this)
+        var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
+            this@DashboardActivity,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        rvCategory.layoutManager = horizontalLayout
+        rvCategory.adapter = categoryAdapter
     }
 
     override fun getViewModel() = dashboardViewModel
@@ -56,25 +68,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         openActivity(this, ProfileActivity())
     }
 
-    //    For ui purpose set temp data
-    fun setCategoryList() {
-        for (int in 1..5) {
-            var categoryBean = CategoryBean()
-            categoryBean.name = "Community"
-            categoryList.add(categoryBean)
-
-            categoryBean = CategoryBean()
-            categoryBean.name = "Profession"
-            categoryList.add(categoryBean)
-        }
-
-        var categoryAdapter = CategoryAdapter(categoryList, this)
-        var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
-            this@DashboardActivity,
-            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        rvCategory.layoutManager = horizontalLayout
-        rvCategory.adapter = categoryAdapter
+    override fun onDestroy() {
+        dashboardViewModel.onDestroy()
+        super.onDestroy()
     }
+
 }

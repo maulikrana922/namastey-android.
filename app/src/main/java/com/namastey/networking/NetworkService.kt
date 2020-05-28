@@ -1,9 +1,7 @@
 package com.namastey.networking
 
 import com.google.gson.JsonObject
-import com.namastey.model.AppResponse
-import com.namastey.model.InterestBean
-import com.namastey.model.VideoLanguageBean
+import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import kotlinx.coroutines.Dispatchers
@@ -70,4 +68,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         ).await()
     }
 
+    suspend fun requestToGetUserDetail(): AppResponse<DashboardBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetUserDetailAsync().await()
+        }
+    suspend fun requestToGetCategoryList(): AppResponse<ArrayList<CategoryBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetCategoryListAsync().await()
+        }
 }

@@ -5,7 +5,7 @@ object Constants {
         male, female, other
     }
 
-    const val API_KEY = "apiToken"
+    const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
     //    Live url
@@ -19,6 +19,8 @@ object Constants {
     const val GET_INTEREST_LIST = "interests-list"
     const val SOCIAL_LOGIN = "social-login"
     const val REGISTER_GUEST = "register-guest"
+    const val GET_USER_DETAIL = "user-detail"
+    const val GET_CATEGORY_LIST = "category-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

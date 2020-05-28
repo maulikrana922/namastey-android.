@@ -98,7 +98,8 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onSuccessCreateOrUpdate(user: User) {
         ivSplashBackground.visibility = View.VISIBLE
-        sessionManager.setAccessToken(user.token)
+        if (user.token.isNotEmpty())
+            sessionManager.setAccessToken(user.token)
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setuserUniqueId(user.user_uniqueId)
