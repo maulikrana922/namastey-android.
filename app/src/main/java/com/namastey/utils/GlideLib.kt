@@ -75,13 +75,13 @@ class GlideLib {
             }).into(imageView)
         }
 
-        fun loadImageUrlSimple(context: Context, imageView: ImageView, Url: String) {
-            Log.d("test", Url)
+        fun loadImageUrlRound(context: Context, imageView: ImageView, Url: String) {
             val uri = Uri.parse(Url)
             Glide.with(context).load(uri).apply(RequestOptions.circleCropTransform()).apply(
                 RequestOptions.placeholderOf(
                     R.drawable.default_placeholder
                 )
+                    .centerCrop()
             ).into(imageView)
         }
 

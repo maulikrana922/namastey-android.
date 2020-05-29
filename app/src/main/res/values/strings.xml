@@ -3,6 +3,7 @@
 
     <string name="facebook_app_id">2945790898848622</string>
     <string name="fb_login_protocol_scheme">fb2945790898848622</string>
+    <string name="snapchat_client_id">bbd5ea1d-7a7f-4a7e-a203-1f613f410e48</string>
 
     <string name="no_internet">Make you sure you are connected with internet</string>
     <string name="slow_internet">Your internet connection is very slow</string>
@@ -64,6 +65,7 @@
     <string name="membership">Membership</string>
     <string name="boosts">Boosts</string>
     <string name="get_more">Get more</string>
+    <string name="about_me_text">Write something about you &amp; complete your profile</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text.</string>
 
     <string name="msg_empty_mobile_email">Please enter mobile/email</string>
@@ -71,6 +73,10 @@
     <string name="view">View</string>
 
     <string name="select_country">Select country/region</string>
+
+<!--    Feed string -->
+    <string name="like">Like</string>
+    <string name="comments">Comments</string>
 
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>

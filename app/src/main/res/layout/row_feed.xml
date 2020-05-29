@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_top_chat"
+        android:layout_marginTop="@dimen/_40sdp"
+        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCommentFirst"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_placeholder"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCommentSecond"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_placeholder"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
+        app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCommentThird"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_placeholder"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
+        app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCommentFourth"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_placeholder"
+        app:civ_border_color="@color/colorWhite"
+        app:civ_border_width="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toEndOf="@id/ivCommentThird"
+        app:layout_constraintStart_toEndOf="@id/ivCommentThird"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <com.namastey.customViews.CustomTextView
+        style="@style/tvWrapWhiteStyle"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:text="500 comments"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintStart_toEndOf="@id/ivCommentFourth"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedLike"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:background="@drawable/rounded_red_solid"
+        android:gravity="center"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/like"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toStartOf="@id/tvFeedShare"
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedShare"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:drawableTop="@drawable/ic_shared_cards"
+        android:drawablePadding="@dimen/_3sdp"
+        android:text="1234"
+        android:gravity="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedView"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:drawableTop="@drawable/ic_view"
+        android:drawablePadding="@dimen/_3sdp"
+        android:text="35"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedBoost"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:drawableTop="@drawable/ic_boost"
+        android:drawablePadding="@dimen/_3sdp"
+        android:text="05"
+        android:gravity="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedDesc"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:text="Lorem Ipsum is simply dummy text  of the print"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvFeedView"
+        app:layout_constraintEnd_toStartOf="@id/tvFeedView"
+        app:layout_constraintStart_toStartOf="@id/ivCommentFirst" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedDescFirst"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:text="Lorem Ipsum is simply dummy text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
+        app:layout_constraintEnd_toStartOf="@id/tvFeedView"
+        app:layout_constraintStart_toStartOf="@id/ivCommentFirst" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivFeedProfile"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        app:layout_constraintStart_toStartOf="@id/ivCommentFirst"
+        app:civ_border_width="1dp"
+        android:src="@drawable/default_placeholder"
+        android:layout_marginBottom="@dimen/_15sdp"
+        app:civ_border_color="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedDescFirst"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_add_follow_from_profile"
+        app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
+        app:layout_constraintEnd_toEndOf="@id/ivFeedProfile"
+        app:layout_constraintTop_toBottomOf="@id/ivFeedProfile"
+        app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"/>
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedName"
+        style="@style/tvWrapWhiteStyle"
+        android:text="@string/app_name"
+        app:typeface="MULI_SEMIBOLD"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedJob"
+        app:layout_constraintTop_toTopOf="@id/ivFeedProfile"/>
+
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFeedJob"
+        style="@style/tvWrapWhiteStyle"
+        android:text="Dentist"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tvFeedName"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@id/tvFeedName"
+        app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

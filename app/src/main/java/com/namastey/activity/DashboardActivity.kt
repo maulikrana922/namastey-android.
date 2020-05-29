@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.CategoryAdapter
+import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.model.CategoryBean
+import com.namastey.model.DashboardBean
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
@@ -24,6 +26,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     lateinit var sessionManager: SessionManager
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
     private lateinit var dashboardViewModel: DashboardViewModel
+    private var feedList: ArrayList<DashboardBean> = ArrayList()
+    private lateinit var feedAdapter: FeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,21 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun initData() {
         sessionManager.setLoginUser(true)
         dashboardViewModel.getCategoryList()
+
+    }
+
+    /**
+     * Temp set feed list
+     */
+    private fun setDashboardList() {
+        for (number in  0..10) {
+            var dashboardBean = DashboardBean()
+            dashboardBean.name = "NamasteyApp"
+            feedList.add(dashboardBean)
+        }
+        feedAdapter = FeedAdapter(feedList,this)
+        viewpagerFeed.adapter = feedAdapter
+
     }
 
     /**
@@ -54,6 +73,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         )
         rvCategory.layoutManager = horizontalLayout
         rvCategory.adapter = categoryAdapter
+
+        setDashboardList()
+
     }
 
     override fun getViewModel() = dashboardViewModel

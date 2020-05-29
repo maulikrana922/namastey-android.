@@ -201,7 +201,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:maxLines="4"
-                android:text="@string/dummy_text"
+                android:text="@string/about_me_text"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/rlProfile"

@@ -151,6 +151,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rounded_yellow_solid"
                     android:gravity="center"
+                    android:onClick="onLoginClick"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithPhone">

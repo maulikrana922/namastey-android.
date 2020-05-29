@@ -1,22 +1,21 @@
 package com.namastey.activity
 
 import android.app.Activity
-import android.content.Context
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.telephony.TelephonyManager
-import androidx.fragment.app.FragmentManager
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.facebook.*
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProviders
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.GraphRequest
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -40,7 +39,10 @@ import org.json.JSONException
 import javax.inject.Inject
 
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
+class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
+//    ,LoginStateController.OnLoginStateChangedListener,
+//    FetchUserDataCallback
+    {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -51,6 +53,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var loginManager: LoginManager
     private lateinit var callbackManager: CallbackManager
+//    private lateinit var mLoginStateChangedListener: LoginStateController
     private lateinit var googleSignInOptions: GoogleSignInOptions
     private lateinit var googleSignInClient: GoogleSignInClient
     private var firstName = ""
@@ -129,11 +132,11 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         } else if (selectGenderFragment != null) {
             tvSkipSignUp.visibility = View.VISIBLE
             removeAllFragment()
-        }else if (signupWithPhoneFragment != null){
-            var  childFm = signupWithPhoneFragment.getChildFragmentManager()
+        } else if (signupWithPhoneFragment != null) {
+            var childFm = signupWithPhoneFragment.getChildFragmentManager()
             if (childFm.getBackStackEntryCount() > 0) {
                 childFm.popBackStack();
-            }else{
+            } else {
                 tvSkipSignUp.visibility = View.VISIBLE
                 supportFragmentManager.popBackStack()
             }
@@ -169,7 +172,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
      */
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
-            var account = task.getResult (ApiException::class.java)
+            var account = task.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
             providerId = account?.id!!
@@ -216,7 +219,18 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
             llSignupWithGoogle -> {
                 googleLogin()
             }
+
+            llSignupWithSnapchat -> {
+                loginWithSnapchat()
+            }
         }
+    }
+
+    /**
+     * Click on login with SnapChat
+     */
+    private fun loginWithSnapchat() {
+//        SnapLogin.getAuthTokenManager(this).startTokenGrant()
     }
 
     /**
@@ -307,6 +321,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
     }
 
     private fun initializeGoogleApi() {
+//        SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
+
         //For facebook used initializer
         callbackManager =
             CallbackManager.Factory.create()
@@ -323,4 +339,29 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView {
         super.onDestroy()
     }
 
+//    override fun onSuccess(p0: UserDataResponse?) {
+//        val me = p0!!.data.me
+//        val name = me.displayName
+//        val avatar = me.bitmojiData.avatar
+//    }
+//
+//    override fun onFailure(p0: Boolean, p1: Int) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+//
+//    override fun onLogout() {
+//        print("onLogout")
+//    }
+//
+//    override fun onLoginFailed() {
+//        print("failed")
+//    }
+//
+//    override fun onLoginSucceeded() {
+//        fetchUserData()
+//    }
+//    private fun fetchUserData() {
+//        val query = "{me{bitmoji{avatar},displayName}}"
+//        SnapLogin.fetchUserData(this, query, null, this)
+//    }
 }
