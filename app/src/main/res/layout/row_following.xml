@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/_3sdp"
+    android:paddingBottom="@dimen/_3sdp">
+
+    <ImageView
+        android:id="@+id/ivFollowingUser"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFollowingName"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toStartOf="@id/tvFollowingLabel"
+        app:layout_constraintBottom_toTopOf="@id/tvFollowingJob"
+        app:layout_constraintStart_toEndOf="@id/ivFollowingUser"
+        app:layout_constraintTop_toTopOf="@id/ivFollowingUser"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFollowingJob"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:text="Dancer"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollowingUser"
+        app:layout_constraintEnd_toEndOf="@+id/tvFollowingName"
+        app:layout_constraintStart_toStartOf="@id/tvFollowingName"
+        app:layout_constraintTop_toBottomOf="@id/tvFollowingName"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFollowingLabel"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_27sdp"
+        android:background="@drawable/rounded_white_solid_red_border"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="@string/following"
+        android:textColor="@color/colorRed"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollowingUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivFollowingUser" />
+</androidx.constraintlayout.widget.ConstraintLayout>

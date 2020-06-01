@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -91,7 +92,13 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
     private fun initUI() {
 
-        videoLanguageViewModel.getVideoLanguage()
+        var locale = ""
+        locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resources.configuration.locales.get(0).country
+        } else {
+            resources.configuration.locale.country
+        }
+        videoLanguageViewModel.getVideoLanguage(locale)
 
         if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)){
             dob = arguments!!.getString(Constants.DATE_OF_BIRTH)

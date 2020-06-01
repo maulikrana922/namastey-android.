@@ -80,15 +80,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     }
 
     private fun initData() {
-
-//        var locale = ""
-//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//    locale = getResources().getConfiguration().getLocales().get(0).country + " " + getResources().getConfiguration().getLocales().get(0).displayCountry
-//} else {
-//    locale = getResources().getConfiguration().locale.country + " " + getResources().getConfiguration().locale.displayCountry
-//}
-//
-//        tvSkipSignUp.text = locale.toString()
         initializeGoogleApi()
     }
 

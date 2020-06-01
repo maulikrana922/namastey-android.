@@ -4,8 +4,6 @@ import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
-import com.namastey.uiView.OTPView
-import com.namastey.uiView.SelectGenderView
 import com.namastey.uiView.VideoLanguageView
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
@@ -30,12 +28,12 @@ class VideoLanguageViewModel constructor(
         videoLanguageView.onNext()
     }
 
-    fun getVideoLanguage(){
+    fun getVideoLanguage(locale: String) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (videoLanguageView.isInternetAvailable()){
-                    networkService.requestToGetVideoLanguage().let { appResponse ->
+                    networkService.requestToGetVideoLanguage(locale).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             videoLanguageView.onSuccess(appResponse.data!!)

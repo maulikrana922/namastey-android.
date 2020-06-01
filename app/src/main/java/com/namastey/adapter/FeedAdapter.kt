@@ -32,10 +32,22 @@ class FeedAdapter(
         fun bind(position: Int) = with(itemView) {
             tvFeedName.text = feedList.get(position).name
 
-            GlideLib.loadImageUrlRound(activity,ivCommentFirst,"")
-            GlideLib.loadImageUrlRound(activity,ivCommentSecond,"")
-            GlideLib.loadImageUrlRound(activity,ivCommentThird,"")
-            GlideLib.loadImageUrlRound(activity,ivCommentFourth,"")
+            GlideLib.loadImageUrlRound(activity, ivCommentFirst, "")
+            GlideLib.loadImageUrlRound(activity, ivCommentSecond, "")
+            GlideLib.loadImageUrlRound(activity, ivCommentThird, "")
+            GlideLib.loadImageUrlRound(activity, ivCommentFourth, "")
+
+            // Need to change as per api response
+            ivFeedFollow.tag = R.drawable.ic_add_follow_from_profile
+            ivFeedFollow.setOnClickListener {
+            if (ivFeedFollow.tag == R.drawable.ic_add_follow_from_profile) {
+                ivFeedFollow.tag = R.drawable.ic_check
+                ivFeedFollow.setImageResource(R.drawable.ic_check)
+            } else {
+                ivFeedFollow.tag = R.drawable.ic_add_follow_from_profile
+                ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)
+            }
+        }
         }
 
     }

@@ -25,6 +25,7 @@
             android:paddingBottom="@dimen/_5sdp"
             android:drawablePadding="@dimen/_3sdp"
             android:paddingEnd="@dimen/_3sdp"
+            android:textSize="14sp"
             android:drawableEnd="@drawable/ic_dropdown"
             android:drawableTint="@color/colorWhite"
             app:layout_constraintStart_toStartOf="parent"

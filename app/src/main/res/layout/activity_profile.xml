@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_45sdp"
                 android:contentDescription="@string/app_name"
                 android:onClick="onClickProfileBack"
                 android:src="@drawable/ic_back"
@@ -124,6 +124,7 @@
                 style="@style/tvWrapWhiteStyle"
                 android:layout_weight="1"
                 android:text="@string/followers"
+                android:onClick="onClickFollow"
                 app:layout_constraintEnd_toStartOf="@id/tvFollowing"
                 app:layout_constraintStart_toEndOf="@id/tvViews"
                 app:layout_constraintTop_toTopOf="@id/tvViews" />
@@ -133,6 +134,7 @@
                 style="@style/tvWrapWhiteStyle"
                 android:layout_weight="1"
                 android:text="@string/following"
+                android:onClick="onClickFollow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvFollowers"
                 app:layout_constraintTop_toTopOf="@id/tvViews" />
@@ -150,6 +152,7 @@
                 android:id="@+id/tvFollowersCount"
                 style="@style/tvWrapWhiteStyle"
                 android:text="0"
+                android:onClick="onClickFollow"
                 app:layout_constraintStart_toStartOf="@id/tvFollowers"
                 app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
@@ -158,6 +161,7 @@
                 style="@style/tvWrapWhiteStyle"
                 android:layout_weight="1"
                 android:text="0"
+                android:onClick="onClickFollow"
                 app:layout_constraintStart_toStartOf="@id/tvFollowing"
                 app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 

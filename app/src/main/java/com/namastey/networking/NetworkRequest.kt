@@ -43,8 +43,9 @@ interface NetworkRequest {
         ) otp: String
     ): Deferred<AppResponse<User>>
 
-    @GET(Constants.GET_VIDEO_LANGUAGE)
-    fun requestToGetVideoLanguageAsync(): Deferred<AppResponse<ArrayList<VideoLanguageBean>>>
+    @FormUrlEncoded
+    @POST(Constants.GET_VIDEO_LANGUAGE)
+    fun requestToGetVideoLanguageAsync(@Field(Constants.COUNTRY_CODE) local: String): Deferred<AppResponse<ArrayList<VideoLanguageBean>>>
 
     @GET(Constants.GET_INTEREST_LIST)
     fun requestToGetChooseInterestAsync(): Deferred<AppResponse<ArrayList<InterestBean>>>

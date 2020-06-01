@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.namastey" >
+    package="com.namastey">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,11 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.FollowingFollowersActivity"></activity>
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.DashboardActivity" />
         <activity android:name=".activity.SignUpActivity" />
-        <activity android:name=".activity.SplashActivity" >
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -30,52 +31,14 @@
         <activity android:name=".activity.DemoActivity" />
         <activity android:name=".activity.Demo1Activity" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-<!--        <activity-->
-<!--            android:name="com.facebook.CustomTabActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--                <data android:scheme="@string/fb_login_protocol_scheme" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
-<!--        For SnapChat-->
-<!--        <meta-data android:name="com.snapchat.kit.sdk.clientId" android:value="@string/snapchat_client_id" />-->
-<!--        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="the url that will handle login completion" />-->
-<!--        <meta-data android:name="com.snapchat.kit.sdk.scopes" android:resource="@array/snap_connect_scopes" /> &lt;!&ndash; This should be a string array of scopes !&ndash;&gt;-->
-
-<!--        <activity-->
-<!--            android:name="com.snapchat.kit.sdk.SnapKitActivity"-->
-<!--            android:launchMode="singleTask"-->
-<!--            >-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--                &lt;!&ndash;-->
-<!--                    Enter the parts of your redirect url below-->
-<!--                    e.g., if your redirect url is myapp://snap-kit/oauth2-->
-<!--                        android:scheme="myapp"-->
-<!--                        android:host="snap-kit"-->
-<!--                        android:path="oauth2"-->
-<!--                !&ndash;&gt;-->
-<!--                <data-->
-<!--                    android:scheme="myapp"-->
-<!--                    android:host="snap-kit"-->
-<!--                    android:path="/oauth2"-->
-<!--                    />-->
-<!--            </intent-filter>-->
-
-<!--        </activity>-->
     </application>
 
 </manifest>

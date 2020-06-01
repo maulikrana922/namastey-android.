@@ -77,4 +77,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         profileViewModel.onDestroy()
         super.onDestroy()
     }
+
+    /**
+     * click on followers and following
+     */
+    fun onClickFollow(view: View) {
+        openActivity(this,FollowingFollowersActivity())
+    }
 }

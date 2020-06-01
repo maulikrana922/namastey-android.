@@ -22,4 +22,7 @@ interface ActivityComponent {
     fun inject(activity: DashboardActivity)
     fun inject(activity: ProfileActivity)
     fun inject(fragment: CountryFragment)
+    fun inject(activity: FollowingFollowersActivity)
+    fun inject(fragment: FollowersFragment)
+    fun inject(fragment: FollowingFragment)
 }

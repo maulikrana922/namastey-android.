@@ -78,6 +78,7 @@ object Constants {
     const val DATE_OF_BIRTH = "date_of_birth"
     const val LANGUAGE = "language"
     const val INTEREST = "interest"
+    const val COUNTRY_CODE = "countryCode"
 
 //    Other constants
     const val MIN_CHOOSE_INTEREST = 3

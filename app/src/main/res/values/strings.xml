@@ -56,7 +56,7 @@
     <string name="choose_interest">Choose your interest</string>
     <string name="tv_select">Select</string>
 
-<!--    profile activity-->
+    <!--    profile activity-->
     <string name="views">Views</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
@@ -74,9 +74,13 @@
 
     <string name="select_country">Select country/region</string>
 
-<!--    Feed string -->
+    <!--    Feed string -->
     <string name="like">Like</string>
     <string name="comments">Comments</string>
+
+<!--    Follow screen-->
+    <string name="search">Search</string>
+    <string name="follow_empty_msg">When People follow you. you\'ll see them here </string>
 
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>

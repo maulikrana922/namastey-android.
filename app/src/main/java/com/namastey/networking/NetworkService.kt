@@ -36,9 +36,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestVerifyOTP(phone: String, email: String, otp: String): AppResponse<User> =
         withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp).await() }
 
-    suspend fun requestToGetVideoLanguage(): AppResponse<ArrayList<VideoLanguageBean>> =
+    suspend fun requestToGetVideoLanguage(locale: String): AppResponse<ArrayList<VideoLanguageBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetVideoLanguageAsync().await()
+            networkRequest.requestToGetVideoLanguageAsync(locale).await()
         }
 
     suspend fun requestToGetChooseInterest(): AppResponse<ArrayList<InterestBean>> =
