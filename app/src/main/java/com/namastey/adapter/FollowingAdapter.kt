@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.model.FollowingBean
+import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_following.view.*
 
 class FollowingAdapter(
@@ -31,6 +32,7 @@ class FollowingAdapter(
         fun bind(position: Int) = with(itemView) {
             tvFollowingName.text = followingList.get(position).name
 
+            GlideLib.loadImageUrlRoundCorner(activity,ivFollowingUser,"")
 
         }
 

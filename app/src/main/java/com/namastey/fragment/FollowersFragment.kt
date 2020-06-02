@@ -54,7 +54,6 @@ class FollowersFragment : BaseFragment<FragmentFollowersBinding>(), FollowersVie
     }
 
     override fun onDestroy() {
-//        followersViewModel.onDestroy()
         super.onDestroy()
     }
 

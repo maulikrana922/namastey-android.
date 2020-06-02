@@ -13,9 +13,11 @@ import com.namastey.R
 import com.namastey.adapter.ViewPagerAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFollowingFollowersBinding
+import com.namastey.fragment.FindFriendFragment
 import com.namastey.fragment.FollowersFragment
 import com.namastey.fragment.FollowingFragment
 import com.namastey.uiView.FolloFollowersView
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowFollowersViewModel
 import kotlinx.android.synthetic.main.activity_following_followers.*
@@ -125,10 +127,24 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     override fun getBindingVariable() = BR.viewModel
 
     override fun onBackPressed() {
-        finishActivity()
+        val findFriendFragment =
+            supportFragmentManager.findFragmentByTag(Constants.FIND_FRIEND_FRAGMENT)
+
+        if (findFriendFragment != null)
+            supportFragmentManager.popBackStack()
+        else
+            finishActivity()
     }
 
     fun onClickFollowBack(view: View) {
         onBackPressed()
+    }
+
+    fun onClickFindFriend(view: View) {
+        addFragment(
+            FindFriendFragment.getInstance(
+            ),
+            Constants.FIND_FRIEND_FRAGMENT
+        )
     }
 }

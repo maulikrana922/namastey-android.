@@ -51,6 +51,7 @@ object Constants {
     const val VIDEO_LANGUAG_EFRAGMENT = "VideoLanguageFragment"
     const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
     const val COUNTRY_FRAGMENT = "CountryFragment"
+    const val FIND_FRIEND_FRAGMENT = "FindFriendFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

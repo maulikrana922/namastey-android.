@@ -12,7 +12,9 @@
             name="viewModel"
             type="com.namastey.viewModel.FollowFollowersViewModel" />
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -75,6 +77,8 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:src="@drawable/ic_add_friend"
             app:civ_border_width="1dp"
+            android:onClick="onClickFindFriend"
+            android:padding="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
@@ -102,6 +106,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:focusable="false"
             android:background="@drawable/rounded_white_solid"
             app:defaultQueryHint="@string/search"
             app:layout_constraintEnd_toEndOf="parent"
@@ -124,4 +129,12 @@
             app:layout_constraintTop_toBottomOf="@id/searchFollow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"/>
+
+</FrameLayout>
 </layout>

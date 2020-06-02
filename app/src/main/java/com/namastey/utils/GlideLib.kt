@@ -85,5 +85,16 @@ class GlideLib {
             ).into(imageView)
         }
 
+        fun loadImageUrlRoundCorner(context: Context, imageView: ImageView, Url: String) {
+            val uri = Uri.parse(Url)
+            Glide.with(context).load(uri).apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(10,5,
+                RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT))).apply(
+                RequestOptions.placeholderOf(
+                    R.drawable.default_placeholder
+                )
+                    .centerCrop()
+            ).into(imageView)
+        }
+
     }
 }

@@ -19,7 +19,7 @@
         android:id="@+id/splash_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:icon="@drawable/videoscreen_logo"
+        app:icon="@drawable/ic_splash_icon"
         app:iconColor="@color/colorRed"
         app:duration="800"
         app:holeFillColor="@color/colorWhite"

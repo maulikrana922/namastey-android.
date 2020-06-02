@@ -92,6 +92,11 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(FindFriendViewModel::class.java) -> FindFriendViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }

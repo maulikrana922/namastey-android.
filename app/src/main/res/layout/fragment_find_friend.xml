@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.FindFriendViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlackTransparent"
+        android:clickable="true">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:background="@drawable/rounded_top_white_solid"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:id="@+id/ivFindClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cardView" />
+
+        <com.namastey.customViews.CustomTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/find_friend"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintBottom_toBottomOf="@id/ivFindClose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivFindClose"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivInviteFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/ic_invite_friend"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivFindClose" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvInviteFriend"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:text="@string/invite_friend"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@id/ivInviteFriend"
+            app:layout_constraintStart_toEndOf="@id/ivInviteFriend"
+            app:layout_constraintTop_toTopOf="@id/ivInviteFriend"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivFindContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:src="@drawable/ic_find_contacts"
+            app:layout_constraintStart_toStartOf="@id/ivInviteFriend"
+            app:layout_constraintTop_toBottomOf="@id/ivInviteFriend" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFindContacts"
+            style="@style/tvWrapWhiteStyle"
+            android:text="@string/find_contacts"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@id/ivFindContact"
+            app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
+            app:layout_constraintTop_toTopOf="@id/ivFindContact"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivFindFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:src="@drawable/ic_find_facebook"
+            app:layout_constraintStart_toStartOf="@id/ivInviteFriend"
+            app:layout_constraintTop_toBottomOf="@id/ivFindContact" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFindFacebook"
+            style="@style/tvWrapWhiteStyle"
+            android:text="@string/find_facebook_friends"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@id/ivFindFacebook"
+            app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
+            app:layout_constraintTop_toTopOf="@id/ivFindFacebook"
+            app:typeface="MULI_SEMIBOLD" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

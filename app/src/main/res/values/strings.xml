@@ -82,6 +82,12 @@
     <string name="search">Search</string>
     <string name="follow_empty_msg">When People follow you. you\'ll see them here </string>
 
+<!--    Find friend fragment-->
+    <string name="find_friend">Find Friend</string>
+    <string name="invite_friend">Invite Friends</string>
+    <string name="find_contacts">Find Contacts</string>
+    <string name="find_facebook_friends">Find Facebook Friends</string>
+
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>

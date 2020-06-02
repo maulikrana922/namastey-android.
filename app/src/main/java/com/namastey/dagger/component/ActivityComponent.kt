@@ -25,4 +25,5 @@ interface ActivityComponent {
     fun inject(activity: FollowingFollowersActivity)
     fun inject(fragment: FollowersFragment)
     fun inject(fragment: FollowingFragment)
+    fun inject(fragment: FindFriendFragment)
 }
