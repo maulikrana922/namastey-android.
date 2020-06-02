@@ -44,6 +44,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun initData() {
         sessionManager.setLoginUser(true)
 //        dashboardViewModel.getCategoryList()
+        setCategoryList()
         setDashboardList()
 
     }
@@ -61,7 +62,31 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         viewpagerFeed.adapter = feedAdapter
 
     }
+    /**
+     * Temp set categoryBean list
+     */
+    private fun setCategoryList(){
+        var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
 
+        for (number in  0..10) {
+            var categoryBean = CategoryBean()
+            categoryBean.name = "Community"
+            categoryBeanList.add(categoryBean)
+
+            categoryBean = CategoryBean()
+            categoryBean.name = "Profession"
+            categoryBeanList.add(categoryBean)
+        }
+
+        var categoryAdapter = CategoryAdapter(categoryBeanList, this)
+        var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
+            this@DashboardActivity,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        rvCategory.layoutManager = horizontalLayout
+        rvCategory.adapter = categoryAdapter
+    }
     /**
      * Success of get category list
      */

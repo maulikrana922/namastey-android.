@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_splash_icon"
-        app:iconColor="@color/colorRed"
+        app:iconColor="@color/colorButtonRed"
         app:duration="800"
         app:holeFillColor="@color/colorWhite"
         app:removeFromParentOnEnd="true" />

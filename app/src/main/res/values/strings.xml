@@ -58,6 +58,7 @@
 
     <!--    profile activity-->
     <string name="views">Views</string>
+    <string name="guest_user">Guest User</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="about_me">About me</string>
@@ -91,4 +92,8 @@
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>
+
+    <string name="take_photo">Take Photo</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="upload_profile_pictuare">Upload Profile pictuare</string>
 </resources>

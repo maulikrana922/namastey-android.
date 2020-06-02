@@ -1,5 +1,8 @@
 package com.namastey.utils
 
+import android.os.Environment
+import java.io.File
+
 object Constants {
     enum class Gender {
         male, female, other
@@ -21,6 +24,7 @@ object Constants {
     const val REGISTER_GUEST = "register-guest"
     const val GET_USER_DETAIL = "user-detail"
     const val GET_CATEGORY_LIST = "category-list"
+    const val UPDATE_PROFILE_PIC = "profile/media/view"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -80,11 +84,20 @@ object Constants {
     const val LANGUAGE = "language"
     const val INTEREST = "interest"
     const val COUNTRY_CODE = "countryCode"
+    const val FILE = "file"
+    const val IMAGE_TYPE = "image/*"
+    const val TEXT_PLAIN = "text/plain"
 
 //    Other constants
     const val MIN_CHOOSE_INTEREST = 3
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val RC_SIGN_IN = 100
+    const val PERMISSION_CAMERA = 102
+    const val PERMISSION_STORAGE = 106
+
+    private val ROOT = File.separator + "BRE"
+    private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path
+    val FILE_PATH = SD_CARD_PATH.plus(ROOT)
 
 }

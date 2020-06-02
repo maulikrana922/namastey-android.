@@ -41,8 +41,8 @@ class FeedAdapter(
             ivFeedFollow.tag = R.drawable.ic_add_follow_from_profile
             ivFeedFollow.setOnClickListener {
             if (ivFeedFollow.tag == R.drawable.ic_add_follow_from_profile) {
-                ivFeedFollow.tag = R.drawable.ic_check
-                ivFeedFollow.setImageResource(R.drawable.ic_check)
+                ivFeedFollow.tag = R.drawable.ic_add_right
+                ivFeedFollow.setImageResource(R.drawable.ic_add_right)
             } else {
                 ivFeedFollow.tag = R.drawable.ic_add_follow_from_profile
                 ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)

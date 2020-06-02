@@ -6,6 +6,8 @@ import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class NetworkService(private val networkRequest: NetworkRequest) {
 
@@ -76,4 +78,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetCategoryListAsync().await()
         }
+
+    suspend fun requestUpdateProfilePicAsync(
+        profile_image: MultipartBody.Part,
+        deviceType: RequestBody
+        ): AppResponse<User> = withContext(Dispatchers.IO) {
+        networkRequest.requestUpdateProfilePicAsync(
+            profile_image,
+            deviceType
+        ).await()
+    }
 }

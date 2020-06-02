@@ -7,6 +7,8 @@ import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface NetworkRequest {
@@ -70,4 +72,11 @@ interface NetworkRequest {
 
     @GET(Constants.GET_CATEGORY_LIST)
     fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>
+
+    @Multipart
+    @POST(Constants.UPDATE_PROFILE_PIC)
+    fun requestUpdateProfilePicAsync(
+        @Part file: MultipartBody.Part,
+        @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
+    ): Deferred<AppResponse<User>>
 }
