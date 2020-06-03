@@ -56,6 +56,7 @@ object Constants {
     const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
     const val COUNTRY_FRAGMENT = "CountryFragment"
     const val FIND_FRIEND_FRAGMENT = "FindFriendFragment"
+    const val SELECT_FILTER_FRAGMENT = "SelectFilterFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
@@ -74,6 +75,7 @@ object Constants {
     const val USERNAME = "username"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"
+    const val SNAPCHAT = "snapchat"
     const val GOOGLE = "google"
     const val ANDROID = "android"
     const val PROVIDER = "provider"

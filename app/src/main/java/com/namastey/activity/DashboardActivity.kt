@@ -43,9 +43,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun initData() {
         sessionManager.setLoginUser(true)
-//        dashboardViewModel.getCategoryList()
-        setCategoryList()
-        setDashboardList()
+        dashboardViewModel.getCategoryList()
+//        setCategoryList()
+//        setDashboardList()
 
     }
 

@@ -13,14 +13,16 @@ import com.namastey.fragment.SelectFilterFragment
 import com.namastey.model.CategoryBean
 import com.namastey.utils.Constants
 import kotlinx.android.synthetic.main.row_category.view.*
+import kotlinx.android.synthetic.main.row_sub_category.view.*
 
-class CategoryAdapter(
+class SubCategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
     var context: Activity
-) : androidx.recyclerview.widget.RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.row_category, parent, false
+            R.layout.row_sub_category, parent, false
         )
     )
 
@@ -33,17 +35,8 @@ class CategoryAdapter(
     inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvCategory.text = categoryList.get(position).name
+            tvSubCategory.text = categoryList.get(position).name
 
-            mainCategoryView.setOnClickListener{
-
-                (context as DashboardActivity).addFragment(
-                    SelectFilterFragment.getInstance(
-                        categoryList[position].sub_category
-                    ),
-                    Constants.SELECT_FILTER_FRAGMENT
-                )
-            }
 
         }
 

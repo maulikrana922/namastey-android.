@@ -42,6 +42,35 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
+        <meta-data android:name="com.snapchat.kit.sdk.clientId" android:value="@string/snapchat_client_id" />
+        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="namasteyapp://snap-kit/oauth2" />
+        <meta-data android:name="com.snapchat.kit.sdk.scopes" android:resource="@array/snap_connect_scopes" />
+
+        <activity
+            android:name="com.snapchat.kit.sdk.SnapKitActivity"
+            android:launchMode="singleTask"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--
+                    Enter the parts of your redirect url below
+                    e.g., if your redirect url is myapp://snap-kit/oauth2
+                        android:scheme="myapp"
+                        android:host="snap-kit"
+                        android:path="oauth2"
+                !-->
+                <data
+                    android:scheme="namasteyapp"
+                    android:host="snap-kit"
+                    android:path="/oauth2"
+                    />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

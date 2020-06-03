@@ -3,7 +3,7 @@
 
     <string name="facebook_app_id">2945790898848622</string>
     <string name="fb_login_protocol_scheme">fb2945790898848622</string>
-    <string name="snapchat_client_id">bbd5ea1d-7a7f-4a7e-a203-1f613f410e48</string>
+    <string name="snapchat_client_id">c079e951-7fab-47a2-9b4b-ee3e0c4925cc</string>
 
     <string name="no_internet">Make you sure you are connected with internet</string>
     <string name="slow_internet">Your internet connection is very slow</string>
@@ -89,6 +89,7 @@
     <string name="find_contacts">Find Contacts</string>
     <string name="find_facebook_friends">Find Facebook Friends</string>
 
+    <string name="select_filter">Select Filter</string>
     <string name="msg_min_choose_interest">Please select at least 3</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>

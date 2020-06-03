@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.SelectFilterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/colorBlackTransparent">
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSelectFilter"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            app:typeface="MULI_SEMIBOLD"
+            android:text="@string/select_filter"
+            app:layout_constraintEnd_toStartOf="@id/ivSelectFilter"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rvSelectFilter"/>
+
+        <ImageView
+            android:id="@+id/ivSelectFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_search"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvSelectFilter"
+            app:layout_constraintBottom_toBottomOf="@id/tvSelectFilter"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSelectFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            tools:listitem="@layout/row_sub_category"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            app:layout_constraintStart_toStartOf="@id/tvSelectFilter"
+            app:layout_constraintEnd_toEndOf="@id/ivSelectFilter"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

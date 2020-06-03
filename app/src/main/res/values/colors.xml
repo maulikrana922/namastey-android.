@@ -25,5 +25,5 @@
     <color name="black_overlay">#66000000</color>
     <color name="picker_default_divider_color">#442E3933</color>
     <color name="picker_default_selector_color">@android:color/transparent</color>
-
+    <color name="twitter_blue">#17A9E5</color>
 </resources>
