@@ -18,6 +18,7 @@ class CategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
     var context: Activity
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    var clickPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_category, parent, false
@@ -36,13 +37,26 @@ class CategoryAdapter(
             tvCategory.text = categoryList.get(position).name
 
             mainCategoryView.setOnClickListener{
+                val selectFilterFragment =
+                    (context as DashboardActivity).supportFragmentManager.findFragmentByTag(Constants.SELECT_FILTER_FRAGMENT)
 
-                (context as DashboardActivity).addFragment(
-                    SelectFilterFragment.getInstance(
-                        categoryList[position].sub_category
-                    ),
-                    Constants.SELECT_FILTER_FRAGMENT
-                )
+
+                if (clickPosition != position){
+//                    if (selectFilterFragment == null){
+                        clickPosition = position
+                        (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
+                        (context as DashboardActivity).addFragment(
+                            SelectFilterFragment.getInstance(
+                                categoryList[position].sub_category
+                            ),
+                            Constants.SELECT_FILTER_FRAGMENT
+                        )
+//                    }
+                }else{
+                    clickPosition = -1
+                    (context as DashboardActivity).supportFragmentManager.popBackStack()
+                }
+
             }
 
         }

@@ -17,41 +17,58 @@
         android:clickable="true"
         android:background="@color/colorBlackTransparent">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSelectFilter"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_width="0dp"
-            app:typeface="MULI_SEMIBOLD"
-            android:text="@string/select_filter"
-            app:layout_constraintEnd_toStartOf="@id/ivSelectFilter"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rvSelectFilter"/>
-
-        <ImageView
-            android:id="@+id/ivSelectFilter"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_search"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:background="@drawable/rounded_green_solid"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvSelectFilter"
-            app:layout_constraintBottom_toBottomOf="@id/tvSelectFilter"/>
+            app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSelectFilter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            tools:listitem="@layout/row_sub_category"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            app:layout_constraintStart_toStartOf="@id/tvSelectFilter"
-            app:layout_constraintEnd_toEndOf="@id/ivSelectFilter"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvSelectFilter"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:text="@string/select_filter"
+                app:layout_constraintBottom_toTopOf="@id/rvSelectFilter"
+                app:layout_constraintEnd_toStartOf="@id/ivSelectFilter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <ImageView
+                android:id="@+id/ivSelectFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_search"
+                android:tint="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="@id/tvSelectFilter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvSelectFilter" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSelectFilter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/ivSelectFilter"
+                app:layout_constraintStart_toStartOf="@id/tvSelectFilter"
+                app:spanCount="2"
+                tools:listitem="@layout/row_sub_category" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

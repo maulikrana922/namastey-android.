@@ -24,7 +24,7 @@ object Constants {
     const val REGISTER_GUEST = "register-guest"
     const val GET_USER_DETAIL = "user-detail"
     const val GET_CATEGORY_LIST = "category-list"
-    const val UPDATE_PROFILE_PIC = "profile/media/view"
+    const val UPDATE_PROFILE_PIC = "profile/media/add"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

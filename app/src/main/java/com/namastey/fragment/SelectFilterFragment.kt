@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.FilterActivity
 import com.namastey.adapter.SubCategoryAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectFilterBinding
@@ -15,7 +16,7 @@ import com.namastey.viewModel.SelectFilterViewModel
 import kotlinx.android.synthetic.main.fragment_select_filter.*
 import javax.inject.Inject
 
-class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView {
+class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView, View.OnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -54,11 +55,12 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     private fun initUI() {
 
+        ivSelectFilter.setOnClickListener(this)
         if (arguments!!.containsKey("subCategoryList")) {
             subCategoryList =
                 arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
 
-            rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 10, false))
+            rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
             var subCategoryAdapter = SubCategoryAdapter(subCategoryList, activity!!)
             rvSelectFilter.adapter = subCategoryAdapter
         }
@@ -78,6 +80,14 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun onClick(v: View?) {
+        when(v){
+            ivSelectFilter ->{
+                openActivity(requireActivity(),FilterActivity())
+            }
+        }
     }
 
 

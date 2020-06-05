@@ -99,7 +99,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun getBindingVariable() = BR.viewModel
 
     fun onClickProfileBack(view: View) {
-        finishActivity()
+        onBackPressed()
     }
 
     override fun onBackPressed() {
@@ -361,9 +361,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             }
 
             GlideLib.loadImage(this,ivProfileUser,path)
-//            if (profileFile != null && profileFile!!.exists()){
-//                profileViewModel.updateProfilePic(profileFile!!)
-//            }
+            if (profileFile != null && profileFile!!.exists()){
+                profileViewModel.updateProfilePic(profileFile!!)
+            }
         } catch (e: IOException) {
             e.printStackTrace()
         }

@@ -12,16 +12,17 @@
     </style>
 
 <!--    Used for rounded corner -->
-<!--    <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">-->
-<!--        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>-->
-<!--    </style>-->
-<!--    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">-->
-<!--        <item name="cornerFamily">rounded</item>-->
-<!--        <item name="cornerSizeTopRight">20dp</item>-->
-<!--        <item name="cornerSizeTopLeft">20dp</item>-->
-<!--        <item name="cornerSizeBottomRight">0dp</item>-->
-<!--        <item name="cornerSizeBottomLeft">0dp</item>-->
-<!--    </style>-->
+    <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cornerSizeTopRight">@dimen/_20sdp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">@dimen/_20sdp</item>
+        <item name="cardForegroundColor">@android:color/transparent</item>
+    </style>
     <style name="tvWrapWhiteStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>

@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.FollowingFollowersActivity"></activity>
+        <activity android:name=".activity.FilterActivity"></activity>
+        <activity android:name=".activity.FollowingFollowersActivity" />
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.DashboardActivity" />
         <activity android:name=".activity.SignUpActivity" />
@@ -43,16 +44,22 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
 
-        <meta-data android:name="com.snapchat.kit.sdk.clientId" android:value="@string/snapchat_client_id" />
-        <meta-data android:name="com.snapchat.kit.sdk.redirectUrl" android:value="namasteyapp://snap-kit/oauth2" />
-        <meta-data android:name="com.snapchat.kit.sdk.scopes" android:resource="@array/snap_connect_scopes" />
+        <meta-data
+            android:name="com.snapchat.kit.sdk.clientId"
+            android:value="@string/snapchat_client_id" />
+        <meta-data
+            android:name="com.snapchat.kit.sdk.redirectUrl"
+            android:value="namasteyapp://snap-kit/oauth2" />
+        <meta-data
+            android:name="com.snapchat.kit.sdk.scopes"
+            android:resource="@array/snap_connect_scopes" />
 
         <activity
             android:name="com.snapchat.kit.sdk.SnapKitActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!--
@@ -61,16 +68,14 @@
                         android:scheme="myapp"
                         android:host="snap-kit"
                         android:path="oauth2"
-                !-->
+                !
+                -->
                 <data
-                    android:scheme="namasteyapp"
                     android:host="snap-kit"
                     android:path="/oauth2"
-                    />
+                    android:scheme="namasteyapp" />
             </intent-filter>
-
         </activity>
-
     </application>
 
 </manifest>

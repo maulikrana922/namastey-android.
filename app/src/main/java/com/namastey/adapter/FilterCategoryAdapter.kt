@@ -6,17 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.model.CategoryBean
-import com.namastey.utils.GlideLib
-import kotlinx.android.synthetic.main.row_sub_category.view.*
+import kotlinx.android.synthetic.main.row_filter_category.view.*
 
-class SubCategoryAdapter(
+class FilterCategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
     var context: Activity
-) : androidx.recyclerview.widget.RecyclerView.Adapter<SubCategoryAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.row_sub_category, parent, false
+            R.layout.row_filter_category, parent, false
         )
     )
 
@@ -30,9 +29,8 @@ class SubCategoryAdapter(
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvSubCategory.text = categoryList.get(position).name
+            tvFilterCategory.text = categoryList.get(position).name
 
-//            GlideLib.loadImageUrlRoundCorner(context, ivSubCategory, "")
         }
 
     }

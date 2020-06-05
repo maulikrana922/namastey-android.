@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.MaterialComponents"
+    style="@style/CustomCardViewStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_45sdp"
-    android:clipChildren="true"
-    android:divider="@android:color/transparent"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardUseCompatPadding="true"
-    card_view:cardElevation="0dp"
-    card_view:cardPreventCornerOverlap="false">
+    android:layout_height="wrap_content"
+    app:cardPreventCornerOverlap="false"
+    app:strokeWidth="0dp"
+    app:rippleColor="@color/colorBlackTransparent"
+    >
 
-    <FrameLayout
-        android:id="@+id/mainCategoryView"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_red_solid">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:background="@drawable/rounded_blue_solid"
+        >
 
-        <ImageView
-            android:id="@+id/ivSubCategory"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/default_placeholder"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/ivSubCategory"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:src="@drawable/default_placeholder" />-->
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSubCategory"
-            style="@style/tvWrapWhiteStyle"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_3sdp"
-            android:textSize="16sp"
-            app:typeface="MULI_SEMIBOLD"
-            android:layout_gravity="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </FrameLayout>
-</androidx.cardview.widget.CardView>
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvSubCategory"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_gravity="center"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:typeface="MULI_SEMIBOLD" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

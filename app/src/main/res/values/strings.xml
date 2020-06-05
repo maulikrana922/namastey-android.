@@ -79,15 +79,19 @@
     <string name="like">Like</string>
     <string name="comments">Comments</string>
 
-<!--    Follow screen-->
+    <!--    Follow screen-->
     <string name="search">Search</string>
     <string name="follow_empty_msg">When People follow you. you\'ll see them here </string>
 
-<!--    Find friend fragment-->
+    <!--    Find friend fragment-->
     <string name="find_friend">Find Friend</string>
     <string name="invite_friend">Invite Friends</string>
     <string name="find_contacts">Find Contacts</string>
     <string name="find_facebook_friends">Find Facebook Friends</string>
+
+<!--    Filter screen-->
+    <string name="trandings">Trandings</string>
+    <string name="filters">Filters</string>
 
     <string name="select_filter">Select Filter</string>
     <string name="msg_min_choose_interest">Please select at least 3</string>
