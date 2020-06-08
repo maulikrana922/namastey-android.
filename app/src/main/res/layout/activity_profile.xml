@@ -113,8 +113,9 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvViews"
                 style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:layout_weight="1"
+                android:paddingEnd="@dimen/_5sdp"
                 android:text="@string/views"
                 app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
                 app:layout_constraintTop_toBottomOf="@id/tvViewsCount" />
@@ -122,29 +123,34 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvFollowers"
                 style="@style/tvWrapWhiteStyle"
-                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:text="@string/followers"
                 android:onClick="onClickFollow"
-                app:layout_constraintEnd_toStartOf="@id/tvFollowing"
-                app:layout_constraintStart_toEndOf="@id/tvViews"
+                android:paddingStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                app:layout_constraintEnd_toStartOf="@id/viewSecond"
+                app:layout_constraintStart_toEndOf="@id/viewFirst"
                 app:layout_constraintTop_toTopOf="@id/tvViews" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvFollowing"
                 style="@style/tvWrapWhiteStyle"
-                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:text="@string/following"
+                android:paddingStart="@dimen/_5sdp"
                 android:onClick="onClickFollow"
+                android:layout_marginStart="@dimen/_3sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvFollowers"
+                app:layout_constraintStart_toEndOf="@id/viewSecond"
                 app:layout_constraintTop_toTopOf="@id/tvViews" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvViewsCount"
+                android:layout_width="0dp"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="1"
                 android:text="0"
+                app:layout_constraintEnd_toEndOf="@id/tvViews"
                 app:layout_constraintStart_toStartOf="@id/tvViews"
                 app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
 
@@ -152,31 +158,39 @@
                 android:id="@+id/tvFollowersCount"
                 style="@style/tvWrapWhiteStyle"
                 android:text="0"
+                android:layout_width="0dp"
+                android:paddingStart="@dimen/_5sdp"
                 android:onClick="onClickFollow"
+                app:layout_constraintEnd_toEndOf="@id/tvFollowers"
                 app:layout_constraintStart_toStartOf="@id/tvFollowers"
                 app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvFollowingCount"
                 style="@style/tvWrapWhiteStyle"
-                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:text="0"
+                android:paddingStart="@dimen/_5sdp"
                 android:onClick="onClickFollow"
+                app:layout_constraintEnd_toEndOf="@id/tvFollowing"
                 app:layout_constraintStart_toStartOf="@id/tvFollowing"
                 app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
             <View
+                android:id="@+id/viewFirst"
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:background="@color/colorGray"
+                android:layout_marginStart="@dimen/_3sdp"
                 app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                 app:layout_constraintEnd_toStartOf="@id/tvFollowers"
                 app:layout_constraintStart_toEndOf="@id/tvViews"
                 app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
 
             <View
+                android:id="@+id/viewSecond"
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -243,11 +257,13 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvProfilePassport"
                 style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:text="@string/passport"
+                android:gravity="center"
                 android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toEndOf="@id/ivProfilePassport"
-                app:layout_constraintStart_toStartOf="@id/ivProfilePassport"
+                app:layout_constraintEnd_toStartOf="@id/ivProfileBoosts"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ivProfilePassport" />
 
             <ImageView
@@ -264,10 +280,13 @@
             <com.namastey.customViews.CustomTextView
                 style="@style/tvWrapWhiteStyle"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:layout_width="0dp"
                 android:text="@string/membership"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/_3sdp"
                 android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileMembership"
-                app:layout_constraintStart_toStartOf="@id/ivProfileMembership"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivProfileBoosts"
                 app:layout_constraintTop_toBottomOf="@id/ivProfileMembership" />
 
             <ImageView

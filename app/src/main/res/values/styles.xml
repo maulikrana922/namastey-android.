@@ -28,6 +28,15 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    
+    <style name="searchViewStyle" parent="Widget.AppCompat.Light.SearchView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="android:textColorHint">@color/colorBlack</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"/>

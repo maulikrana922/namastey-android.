@@ -1,7 +1,10 @@
 package com.namastey.fragment
 
+import android.R.attr.shape
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -15,6 +18,7 @@ import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.viewModel.SelectFilterViewModel
 import kotlinx.android.synthetic.main.fragment_select_filter.*
 import javax.inject.Inject
+
 
 class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView, View.OnClickListener {
 
@@ -63,6 +67,14 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
             rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
             var subCategoryAdapter = SubCategoryAdapter(subCategoryList, activity!!)
             rvSelectFilter.adapter = subCategoryAdapter
+
+            val gd = GradientDrawable(
+                GradientDrawable.Orientation.TR_BL, intArrayOf(ContextCompat.getColor(requireActivity(),R.color.colorBlueLight), ContextCompat.getColor(requireActivity(),R.color.colorGreenLight))
+            )
+
+            gd.shape = GradientDrawable.RECTANGLE
+            gd.cornerRadii = floatArrayOf(50f, 50f, 0f, 0f, 50f, 50f, 0f, 0f)
+            llFilterBackground.background = gd
         }
 
     }
@@ -76,10 +88,6 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
         fragmentSelectFilterBinding = getViewBinding()
         fragmentSelectFilterBinding.viewModel = selectFilterViewModel
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onClick(v: View?) {

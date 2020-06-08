@@ -61,23 +61,29 @@
 
     <com.namastey.customViews.CustomTextView
         style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/_5sdp"
         android:text="500 comments"
         android:textSize="14sp"
+        android:gravity="left"
+        android:layout_marginEnd="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
         app:layout_constraintStart_toEndOf="@id/ivCommentFourth"
-        app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+        app:layout_constraintTop_toTopOf="@id/tvFeedShare"
+        app:layout_constraintEnd_toStartOf="@id/tvFeedLike"/>
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFeedLike"
         style="@style/tvWrapWhiteStyle"
-        android:layout_width="@dimen/_80sdp"
+        android:layout_width="wrap_content"
         android:layout_marginEnd="@dimen/_12sdp"
         android:textSize="14sp"
         android:background="@drawable/rounded_red_solid"
         android:gravity="center"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"
+        android:paddingStart="@dimen/_30sdp"
+        android:paddingEnd="@dimen/_30sdp"
         android:text="@string/like"
         app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
         app:layout_constraintEnd_toStartOf="@id/tvFeedShare"

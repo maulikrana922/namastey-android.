@@ -92,6 +92,7 @@
 <!--    Filter screen-->
     <string name="trandings">Trandings</string>
     <string name="filters">Filters</string>
+    <string name="search_user">Search users</string>
 
     <string name="select_filter">Select Filter</string>
     <string name="msg_min_choose_interest">Please select at least 3</string>

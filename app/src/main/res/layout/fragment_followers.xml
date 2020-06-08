@@ -37,7 +37,7 @@
             android:id="@+id/guidlineEmpty"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            app:layout_constraintGuide_percent="0.3"
+            app:layout_constraintGuide_percent="0.25"
             android:orientation="horizontal"/>
 
         <LinearLayout
@@ -67,6 +67,8 @@
             <com.namastey.customViews.CustomTextView
                 style="@style/tvWrapWhiteStyle"
                 android:textColor="@color/colorBlack"
+                android:maxLines="3"
+                android:gravity="center"
                 android:text="@string/follow_empty_msg"
                 android:layout_marginTop="@dimen/_5sdp"/>
         </LinearLayout>

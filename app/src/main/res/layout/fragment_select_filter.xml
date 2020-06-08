@@ -18,13 +18,13 @@
         android:background="@color/colorBlackTransparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llFilterBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_12sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
-            android:background="@drawable/rounded_green_solid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

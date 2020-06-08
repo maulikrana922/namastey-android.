@@ -14,7 +14,8 @@
         android:scaleType="centerCrop"
         android:src="@drawable/default_placeholder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"/>
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFollowingName"
@@ -25,11 +26,17 @@
         android:text="@string/app_name"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@id/tvFollowingLabel"
-        app:layout_constraintBottom_toTopOf="@id/tvFollowingJob"
+        app:layout_constraintBottom_toTopOf="@id/guidlineFollowing"
         app:layout_constraintStart_toEndOf="@id/ivFollowingUser"
         app:layout_constraintTop_toTopOf="@id/ivFollowingUser"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidlineFollowing"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"/>
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFollowingJob"
         style="@style/tvWrapWhiteStyle"
@@ -40,20 +47,26 @@
         app:layout_constraintBottom_toBottomOf="@id/ivFollowingUser"
         app:layout_constraintEnd_toEndOf="@+id/tvFollowingName"
         app:layout_constraintStart_toStartOf="@id/tvFollowingName"
-        app:layout_constraintTop_toBottomOf="@id/tvFollowingName"
+        app:layout_constraintTop_toBottomOf="@id/guidlineFollowing"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFollowingLabel"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_27sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_white_solid_red_border"
         android:gravity="center"
         app:typeface="MULI_SEMIBOLD"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
         android:text="@string/following"
         android:textColor="@color/colorRed"
-        app:layout_constraintBottom_toBottomOf="@id/ivFollowingUser"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivFollowingUser" />
+        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing" />
 </androidx.constraintlayout.widget.ConstraintLayout>

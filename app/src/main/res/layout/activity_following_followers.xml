@@ -109,6 +109,7 @@
             android:focusable="false"
             android:background="@drawable/rounded_white_solid"
             app:defaultQueryHint="@string/search"
+            app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabFollow"
