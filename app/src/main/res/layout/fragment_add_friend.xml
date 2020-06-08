@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.FindFriendViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlackTransparent"
+        android:clickable="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineFind"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.12" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            style="@style/CustomCardViewTopCornerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guidelineFind"></com.google.android.material.card.MaterialCardView>
+
+        <ImageView
+            android:id="@+id/ivAddFriendClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:padding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_15sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cardView" />
+
+        <com.namastey.customViews.CustomTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/add_friend"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintBottom_toBottomOf="@id/ivAddFriendClose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivAddFriendClose"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFindMultiple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:gravity="center"
+            android:text="@string/multiple"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintBottom_toBottomOf="@id/ivAddFriendClose"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivAddFriendClose" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchAddFriend"
+            style="@style/searchViewStyle"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/rounded_white_solid"
+            app:defaultQueryHint="@string/search"
+            app:iconifiedByDefault="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivAddFriendClose"
+            app:queryHint="@string/search"
+            app:searchHintIcon="@drawable/ic_search" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSuggested"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/suggested"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="@id/searchAddFriend"
+            app:layout_constraintTop_toBottomOf="@id/searchAddFriend"
+            app:typeface="MULI_EXTRA_BOLD" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAddFriendSuggested"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_user_suggested"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSuggested" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

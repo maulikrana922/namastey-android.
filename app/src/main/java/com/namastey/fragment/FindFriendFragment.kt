@@ -5,9 +5,11 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.FollowingFollowersActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFindFriendBinding
 import com.namastey.uiView.FindFriendView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.FindFriendViewModel
 import kotlinx.android.synthetic.main.fragment_find_friend.*
 import javax.inject.Inject
@@ -60,12 +62,21 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
     private fun initUI() {
 
         ivFindClose.setOnClickListener(this)
+        ivInviteFriend.setOnClickListener(this)
+        tvInviteFriend.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when(v){
             ivFindClose ->{
                 fragmentManager!!.popBackStack()
+            }
+            ivInviteFriend,tvInviteFriend ->{
+                (requireActivity() as FollowingFollowersActivity).addFragment(
+                    AddFriendFragment.getInstance(
+                    ),
+                    Constants.ADD_FRIEND_FRAGMENT
+                )
             }
         }
     }

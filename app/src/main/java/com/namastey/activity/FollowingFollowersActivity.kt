@@ -130,7 +130,10 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         val findFriendFragment =
             supportFragmentManager.findFragmentByTag(Constants.FIND_FRIEND_FRAGMENT)
 
-        if (findFriendFragment != null)
+        val addFriendFragment =
+            supportFragmentManager.findFragmentByTag(Constants.ADD_FRIEND_FRAGMENT)
+
+        if (findFriendFragment != null || addFriendFragment != null)
             supportFragmentManager.popBackStack()
         else
             finishActivity()

@@ -57,6 +57,7 @@ object Constants {
     const val COUNTRY_FRAGMENT = "CountryFragment"
     const val FIND_FRIEND_FRAGMENT = "FindFriendFragment"
     const val SELECT_FILTER_FRAGMENT = "SelectFilterFragment"
+    const val ADD_FRIEND_FRAGMENT = "AddFriendFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

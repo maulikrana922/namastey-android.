@@ -17,18 +17,25 @@
         android:background="@color/colorBlackTransparent"
         android:clickable="true">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineFind"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.12"/>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
+            android:theme="@style/Theme.MaterialComponents"
+            style="@style/CustomCardViewTopCornerStyle"
+            app:cardBackgroundColor="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_70sdp"
-            android:background="@drawable/rounded_top_white_solid"
-            app:cardCornerRadius="10dp"
+            android:layout_height="0dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toBottomOf="@id/guidelineFind"></com.google.android.material.card.MaterialCardView>
 
         <ImageView
             android:id="@+id/ivFindClose"
@@ -66,10 +73,12 @@
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvInviteFriend"
             style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
             android:layout_marginStart="@dimen/_15sdp"
             android:text="@string/invite_friend"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="@id/ivInviteFriend"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivInviteFriend"
             app:layout_constraintTop_toTopOf="@id/ivInviteFriend"
             app:typeface="MULI_SEMIBOLD" />
@@ -87,8 +96,10 @@
             android:id="@+id/tvFindContacts"
             style="@style/tvWrapWhiteStyle"
             android:text="@string/find_contacts"
+            android:layout_width="0dp"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="@id/ivFindContact"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
             app:layout_constraintTop_toTopOf="@id/ivFindContact"
             app:typeface="MULI_SEMIBOLD" />
@@ -105,9 +116,11 @@
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvFindFacebook"
             style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
             android:text="@string/find_facebook_friends"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="@id/ivFindFacebook"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
             app:layout_constraintTop_toTopOf="@id/ivFindFacebook"
             app:typeface="MULI_SEMIBOLD" />

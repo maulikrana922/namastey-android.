@@ -89,6 +89,13 @@
     <string name="find_contacts">Find Contacts</string>
     <string name="find_facebook_friends">Find Facebook Friends</string>
 
+<!--    Add friend fragment-->
+    <string name="add_friend">Add Friend</string>
+    <string name="multiple">Multiple</string>
+    <string name="recent">Recent</string>
+    <string name="suggested">Suggested</string>
+    <string name="done">Done</string>
+
 <!--    Filter screen-->
     <string name="trandings">Trandings</string>
     <string name="filters">Filters</string>

@@ -28,4 +28,5 @@ interface ActivityComponent {
     fun inject(fragment: FindFriendFragment)
     fun inject(fragment: SelectFilterFragment)
     fun inject(activity: FilterActivity)
+    fun inject(fragment: AddFriendFragment)
 }
