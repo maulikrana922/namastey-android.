@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.model.TrandingBean
+import com.namastey.listeners.OnUserItemClick
+import com.namastey.roomDB.entity.User
 import kotlinx.android.synthetic.main.row_tranding.view.*
 
-class TrandingsAdapter(
-    var trandingsList: ArrayList<TrandingBean>,
-    var activity: Context
-) : androidx.recyclerview.widget.RecyclerView.Adapter<TrandingsAdapter.ViewHolder>() {
+class TrandingsUserAdapter(
+    var trandingsList: ArrayList<User>,
+    var activity: Context,
+    var onUserItemClick: OnUserItemClick
+) : androidx.recyclerview.widget.RecyclerView.Adapter<TrandingsUserAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -31,6 +33,9 @@ class TrandingsAdapter(
         fun bind(position: Int) = with(itemView) {
             tvTrandingUsername.text = trandingsList.get(position).name
 
+            itemView.setOnClickListener {
+                onUserItemClick.onUserItemClick(trandingsList.get(position))
+            }
         }
 
     }

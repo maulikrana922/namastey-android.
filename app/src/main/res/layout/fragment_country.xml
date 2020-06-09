@@ -11,24 +11,24 @@
             name="viewModel"
             type="com.namastey.viewModel.CountryViewModel" />
     </data>
-
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/CustomCardViewTopCornerStyle"
+        app:cardBackgroundColor="@color/colorWhite"
+        android:theme="@style/Theme.MaterialComponents"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/rounded_top_white_solid"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+
 
         <ImageView
             android:id="@+id/ivCountryBack"
@@ -63,7 +63,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:outlineSpotShadowColor="@color/colorGray"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -77,6 +77,7 @@
             android:id="@+id/fsvCountry"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="0dp"
+            android:textColor="@color/colorDarkGray"
             app:layout_constraintTop_toBottomOf="@id/tvCountryTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,4 +92,5 @@
             app:layout_constraintEnd_toStartOf="@id/fsvCountry"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

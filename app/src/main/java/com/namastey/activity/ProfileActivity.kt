@@ -3,7 +3,6 @@ package com.namastey.activity
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -12,16 +11,13 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
-import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
@@ -64,7 +60,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private fun initData() {
 
         profileViewModel.getUserDetails(sessionManager.getAccessToken())
-        if (sessionManager.getUserGender().equals(Constants.Gender.female)) {
+        if (sessionManager.getUserGender().equals(Constants.Gender.female.name)) {
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                 .fitCenter().into(ivProfileUser)
@@ -115,7 +111,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on followers and following
      */
     fun onClickFollow(view: View) {
-        openActivity(this,FollowingFollowersActivity())
+        openActivity(this, FollowingFollowersActivity())
     }
 
     private fun selectImage() {
@@ -127,7 +123,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
 
         val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.upload_profile_pictuare)
+        builder.setTitle(
+            getString(R.string.upload_profile_pictuare)
         )
         builder.setItems(options) { dialog, item ->
             when (item) {
@@ -170,6 +167,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_CODE)
     }
+
     private fun capturePhoto() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
@@ -203,12 +201,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
 
     fun onClickProfile(view: View) {
-        when(view){
-            ivProfileCamera ->{
+        when (view) {
+            ivProfileCamera -> {
                 selectImage()
             }
         }
     }
+
     @TargetApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -315,8 +314,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     }
                 }
             }
-        }else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA){
-            if (data!= null)
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
+            if (data != null)
                 ivProfileUser.setImageBitmap(data.extras.get("data") as Bitmap)
         }
     }
@@ -360,8 +359,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 bitmap.recycle()
             }
 
-            GlideLib.loadImage(this,ivProfileUser,path)
-            if (profileFile != null && profileFile!!.exists()){
+            GlideLib.loadImage(this, ivProfileUser, path)
+            if (profileFile != null && profileFile!!.exists()) {
                 profileViewModel.updateProfilePic(profileFile!!)
             }
         } catch (e: IOException) {

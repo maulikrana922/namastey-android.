@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_blue_border_top_right"
     android:layout_marginEnd="@dimen/_3sdp"
-    android:layout_marginStart="@dimen/_5sdp">
+    android:layout_marginStart="@dimen/_5sdp"
+    android:id="@+id/llMainFilterCategory">
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvFilterCategory"

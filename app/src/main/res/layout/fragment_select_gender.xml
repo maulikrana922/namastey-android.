@@ -33,11 +33,11 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
+            style="@style/CustomCardViewTopCornerStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/rounded_top_white_solid"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorWhite"
+            android:theme="@style/Theme.MaterialComponents"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -86,17 +86,18 @@
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvGenderLabel" />
 
-                <androidx.cardview.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvMale"
                     android:layout_width="0dp"
+                    style="@style/CustomCardViewTopCornerStyle"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    android:theme="@style/Theme.MaterialComponents"
                     android:layout_height="@dimen/_110sdp"
+                    app:cardElevation="0dp"
                     app:layout_constraintBottom_toTopOf="@id/tvDateOfBirth"
                     app:layout_constraintEnd_toStartOf="@id/cvFemale"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    app:cardElevation="0dp"
-                    app:cardMaxElevation="0dp"
+                    android:layout_marginEnd="@dimen/_6sdp"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvGenderMessage" >
 
@@ -107,16 +108,17 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/_15sdp"
                         android:src="@drawable/ic_male" />
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvFemale"
                     android:layout_width="0dp"
+                    style="@style/CustomCardViewTopCornerStyle"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    android:theme="@style/Theme.MaterialComponents"
                     android:layout_height="@dimen/_110sdp"
                     app:cardElevation="0dp"
-                    app:cardMaxElevation="0dp"
-                    android:background="@drawable/rounded_white_solid"
-                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toEndOf="@id/cvMale"
                     app:layout_constraintTop_toTopOf="@id/cvMale" >
@@ -129,7 +131,7 @@
                         android:padding="@dimen/_13sdp"
                         android:src="@drawable/ic_female"
                        />
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
 
 

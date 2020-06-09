@@ -14,6 +14,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectFilterBinding
 import com.namastey.model.CategoryBean
 import com.namastey.uiView.SelectFilterView
+import com.namastey.utils.Constants
 import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.viewModel.SelectFilterViewModel
 import kotlinx.android.synthetic.main.fragment_select_filter.*
@@ -93,7 +94,7 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     override fun onClick(v: View?) {
         when(v){
             ivSelectFilter ->{
-                openActivity(requireActivity(),FilterActivity())
+                openActivityWithResultCode(requireActivity(),FilterActivity(),Constants.FILTER_OK)
             }
         }
     }

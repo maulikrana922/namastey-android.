@@ -17,17 +17,17 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
+            style="@style/CustomCardViewTopCornerStyle"
+            app:cardBackgroundColor="@color/colorWhite"
+            android:theme="@style/Theme.MaterialComponents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rounded_top_white_solid"
-            app:cardCornerRadius="10dp"
-            android:layout_marginTop="@dimen/_8sdp"
             app:cardElevation="0dp"
+            android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
-
+            app:layout_constraintTop_toTopOf="parent"/>
         <ImageView
             android:id="@+id/ivOTPClose"
             android:layout_width="wrap_content"
@@ -72,8 +72,10 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_25sdp"
             android:inputType="number"
+            android:textColor="@color/colorBlack"
             android:background="@drawable/rounded_white_solid"
             android:hint="@string/hint_otp"
+            android:textColorHint="@color/colorDarkGray"
             android:padding="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@+id/tvSentOtpLabel" />
 

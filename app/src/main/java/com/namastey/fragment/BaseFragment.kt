@@ -2,13 +2,13 @@ package com.namastey.fragment
 
 import android.app.Activity
 import android.content.Intent
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import com.namastey.R
 import com.namastey.activity.SignUpActivity
 import com.namastey.application.NamasteyApplication
@@ -63,6 +63,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as SignUpActivity).onFailed(msg, error)
 
     }
+
     override fun onHandleException(e: Throwable) {
         if (activity != null && activity!! is SignUpActivity)
             (activity!! as SignUpActivity).onHandleException(e)
@@ -82,6 +83,15 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         destinationActivity: Activity
     ) {
         startActivity(Intent(activity, destinationActivity::class.java))
+        activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    fun openActivityWithResultCode(
+        activity: Activity,
+        destinationActivity: Activity,
+        result_code: Int
+    ) {
+        startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 }

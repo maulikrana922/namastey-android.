@@ -25,14 +25,15 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/CustomCardViewTopCornerStyle"
+            app:cardBackgroundColor="@color/colorWhite"
+            android:theme="@style/Theme.MaterialComponents"
             android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/rounded_top_white_solid"
-            app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/ivSignupClose"

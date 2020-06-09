@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +13,7 @@ import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.model.CategoryBean
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.DashboardView
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -53,22 +55,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
      * Temp set feed list
      */
     private fun setDashboardList() {
-        for (number in  0..10) {
+        for (number in 0..10) {
             var dashboardBean = DashboardBean()
             dashboardBean.name = "NamasteyApp"
             feedList.add(dashboardBean)
         }
-        feedAdapter = FeedAdapter(feedList,this)
+        feedAdapter = FeedAdapter(feedList, this)
         viewpagerFeed.adapter = feedAdapter
 
     }
+
     /**
      * Temp set categoryBean list
      */
-    private fun setCategoryList(){
+    private fun setCategoryList() {
         var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
 
-        for (number in  0..10) {
+        for (number in 0..10) {
             var categoryBean = CategoryBean()
             categoryBean.name = "Community"
             categoryBeanList.add(categoryBean)
@@ -87,6 +90,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         rvCategory.layoutManager = horizontalLayout
         rvCategory.adapter = categoryAdapter
     }
+
     /**
      * Success of get category list
      */
@@ -121,4 +125,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         super.onDestroy()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Constants.FILTER_OK) {
+            supportFragmentManager.popBackStack()
+        }
+
+    }
 }

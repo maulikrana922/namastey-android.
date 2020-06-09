@@ -98,6 +98,7 @@ object Constants {
     const val RC_SIGN_IN = 100
     const val PERMISSION_CAMERA = 102
     const val PERMISSION_STORAGE = 106
+    const val FILTER_OK = 107
 
     private val ROOT = File.separator + "BRE"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path

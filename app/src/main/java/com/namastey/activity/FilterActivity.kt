@@ -7,28 +7,32 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.FilterCategoryAdapter
 import com.namastey.adapter.InterestAdapter
-import com.namastey.adapter.TrandingsAdapter
+import com.namastey.adapter.TrandingsUserAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
+import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnImageItemClick
+import com.namastey.listeners.OnUserItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.InterestBean
-import com.namastey.model.TrandingBean
+import com.namastey.roomDB.entity.User
 import com.namastey.uiView.FilterView
+import com.namastey.utils.Constants
 import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.viewModel.FilterViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
 
-class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick {
+class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick,
+    OnUserItemClick, OnCategoryItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityFilterBinding: ActivityFilterBinding
     private lateinit var filterViewModel: FilterViewModel
 
-    private lateinit var trandingsAdapter: TrandingsAdapter
-    private var trandingList: ArrayList<TrandingBean> = ArrayList()
+    private lateinit var trandingsUserAdapter: TrandingsUserAdapter
+    private var trandingList: ArrayList<User> = ArrayList()
     private lateinit var interestAdapter: InterestAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,13 +64,13 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
 
     private fun setTrandingList() {
         for (number in 0..10) {
-            var trandingBean = TrandingBean()
+            var trandingBean = User()
             trandingBean.name = "User"
             trandingList.add(trandingBean)
         }
 
-        trandingsAdapter = TrandingsAdapter(trandingList, this@FilterActivity)
-        rvFilterTranding.adapter = trandingsAdapter
+        trandingsUserAdapter = TrandingsUserAdapter(trandingList, this@FilterActivity, this)
+        rvFilterTranding.adapter = trandingsUserAdapter
     }
 
     /**
@@ -85,7 +89,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
             categoryBeanList.add(categoryBean)
         }
 
-        var categoryAdapter = FilterCategoryAdapter(categoryBeanList, this)
+        var categoryAdapter = FilterCategoryAdapter(categoryBeanList, this@FilterActivity, this)
         var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
             this@FilterActivity,
             androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
@@ -104,7 +108,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
         }
 
         rvChooseInterestFilter.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
-        interestAdapter = InterestAdapter(interestList, this@FilterActivity, this)
+        interestAdapter = InterestAdapter(interestList, this@FilterActivity, this, false)
         rvChooseInterestFilter.adapter = interestAdapter
     }
 
@@ -120,6 +124,22 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
      * Click on choose interest row
      */
     override fun onImageItemClick(interestBean: InterestBean) {
+        setResult(Constants.FILTER_OK)
+        finishActivity()
+    }
+
+    /**
+     *  when user click on tranding user list
+     */
+    override fun onUserItemClick(user: User) {
+        setResult(Constants.FILTER_OK)
+        finishActivity()
+    }
+
+    /**
+     * when user click on filter category item
+     */
+    override fun onCategoryItemClick(categoryBean: CategoryBean) {
 
     }
 }

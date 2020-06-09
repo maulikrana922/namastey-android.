@@ -92,7 +92,7 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
         rvChooseInterest.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
-        interestAdapter = InterestAdapter(interestList, activity!!, this)
+        interestAdapter = InterestAdapter(interestList, activity!!, this,true)
         rvChooseInterest.adapter = interestAdapter
     }
 
