@@ -13,7 +13,9 @@
             type="com.namastey.viewModel.ProfileViewModel" />
 
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -234,6 +236,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:background="@drawable/rounded_red_solid"
                 android:text="@string/btn_signup"
+                android:onClick="onClickSign"
                 android:textAllCaps="false"
                 app:typeface="MULI_SEMIBOLD"
                 android:textColor="@color/colorWhite"
@@ -334,4 +337,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"/>
+
+</FrameLayout>
 </layout>

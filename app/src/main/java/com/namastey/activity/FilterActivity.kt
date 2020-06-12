@@ -2,9 +2,11 @@ package com.namastey.activity
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.adapter.AddFriendUserAdapter
 import com.namastey.adapter.FilterCategoryAdapter
 import com.namastey.adapter.InterestAdapter
 import com.namastey.adapter.TrandingsUserAdapter
@@ -23,6 +25,7 @@ import com.namastey.viewModel.FilterViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
 
+
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick,
     OnUserItemClick, OnCategoryItemClick {
 
@@ -34,6 +37,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
     private lateinit var trandingsUserAdapter: TrandingsUserAdapter
     private var trandingList: ArrayList<User> = ArrayList()
     private lateinit var interestAdapter: InterestAdapter
+    private lateinit var addFriendUserAdapter: AddFriendUserAdapter
+    private var userList = ArrayList<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +58,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
         setTrandingList()
         setCategoryList()
         setInterestList()
+        setUserList()
+
     }
 
     override fun getViewModel() = filterViewModel
@@ -141,5 +148,37 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
 
+    }
+
+    // Temp for ui
+    private fun setUserList() {
+
+        userList.clear()
+        for (number in 0..1) {
+            var user = User()
+            user.name = "Sanya"
+            userList.add(user)
+
+            user = User()
+            user.name = "Ankit"
+            userList.add(user)
+        }
+
+        addFriendUserAdapter = AddFriendUserAdapter(userList, this@FilterActivity, false)
+        rvFilterSearch.adapter = addFriendUserAdapter
+
+        searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty())
+                    rvFilterSearch.visibility = View.VISIBLE
+                else
+                    rvFilterSearch.visibility = View.GONE
+                return true
+            }
+        })
     }
 }

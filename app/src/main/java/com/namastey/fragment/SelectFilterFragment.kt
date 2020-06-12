@@ -1,6 +1,5 @@
 package com.namastey.fragment
 
-import android.R.attr.shape
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
@@ -21,7 +20,8 @@ import kotlinx.android.synthetic.main.fragment_select_filter.*
 import javax.inject.Inject
 
 
-class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView, View.OnClickListener {
+class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView,
+    View.OnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -32,10 +32,16 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     private var subCategoryList: ArrayList<CategoryBean> = ArrayList()
 
     companion object {
-        fun getInstance(subCategoryList: ArrayList<CategoryBean>) =
+        fun getInstance(
+            subCategoryList: ArrayList<CategoryBean>,
+            startColor: Int,
+            endColor: Int
+        ) =
             SelectFilterFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("subCategoryList", subCategoryList)
+                    putInt("startColor", startColor)
+                    putInt("endColor", endColor)
                 }
             }
     }
@@ -70,7 +76,11 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
             rvSelectFilter.adapter = subCategoryAdapter
 
             val gd = GradientDrawable(
-                GradientDrawable.Orientation.TR_BL, intArrayOf(ContextCompat.getColor(requireActivity(),R.color.colorBlueLight), ContextCompat.getColor(requireActivity(),R.color.colorGreenLight))
+                GradientDrawable.Orientation.TR_BL,
+                intArrayOf(
+                    arguments!!.getInt("startColor"),
+                    arguments!!.getInt("endColor")
+                )
             )
 
             gd.shape = GradientDrawable.RECTANGLE
@@ -92,9 +102,9 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     }
 
     override fun onClick(v: View?) {
-        when(v){
-            ivSelectFilter ->{
-                openActivityWithResultCode(requireActivity(),FilterActivity(),Constants.FILTER_OK)
+        when (v) {
+            ivSelectFilter -> {
+                openActivityWithResultCode(requireActivity(), FilterActivity(), Constants.FILTER_OK)
             }
         }
     }

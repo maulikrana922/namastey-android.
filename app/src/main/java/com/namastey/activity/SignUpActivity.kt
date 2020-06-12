@@ -124,8 +124,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         if (videoLanguageFrgment != null || chooseInterestFragment != null) {
             supportFragmentManager.popBackStack()
         } else if (selectGenderFragment != null) {
+            if (SelectGenderFragment.datePickerDialog != null)
+                SelectGenderFragment.datePickerDialog!!.dismiss()
+
             tvSkipSignUp.visibility = View.VISIBLE
             removeAllFragment()
+
         } else if (signupWithPhoneFragment != null) {
             var childFm = signupWithPhoneFragment.getChildFragmentManager()
             if (childFm.getBackStackEntryCount() > 0) {

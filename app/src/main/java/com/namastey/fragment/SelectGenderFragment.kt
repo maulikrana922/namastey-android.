@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.namastey.BR
@@ -81,6 +80,8 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
+
+        var datePickerDialog: SingleDateAndTimePickerDialog.Builder? = null
         fun getInstance(title: String) =
             SelectGenderFragment().apply {
                 arguments = Bundle().apply {
@@ -129,48 +130,10 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
 
     private fun showDatePickerDialog() {
 
-//        val calendar = Calendar.getInstance()
-//        year = calendar.get(Calendar.YEAR)
-//        month = calendar.get(Calendar.MONTH)
-//        day = calendar.get(Calendar.DAY_OF_MONTH)
-//        val pickerPopWin =
-//            DatePickerPopWin.Builder(activity,
-//                DatePickerPopWin.OnDatePickedListener { year, month, day, dateDesc ->
-//
-//                    val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.ENGLISH)
-//                    calendar.set(Calendar.YEAR, year)
-//                    calendar.set(Calendar.MONTH, month - 1)
-//                    calendar.set(Calendar.DAY_OF_MONTH, day)
-//
-//                    this.year = year
-//                    this.month = month
-//                    this.day = day
-//                    tvDOB.text = sdf.format(calendar.time)
-////                    Toast.makeText(
-////                        activity,
-////                        dateDesc,
-////                        Toast.LENGTH_SHORT
-////                    ).show()
-//                }).textConfirm("CONFIRM")
-//                .textCancel("CANCEL")
-//                .btnTextSize(16)
-//                .viewTextSize(28)
-//                .colorCancel(Color.parseColor("#999999"))
-//                .colorConfirm(Color.parseColor("#009900"))
-//                .minYear(1970)
-//                .maxYear(year + 1)
-//                .showDayMonthYear(true) // shows like dd mm yyyy (default is false)
-//                .build()
-
-//        pickerPopWin.showPopWin(activity)
-
-//        dobPicker.visibility = View.VISIBLE
-
-        var b1 = SingleDateAndTimePickerDialog.Builder(context).apply {
+        datePickerDialog = SingleDateAndTimePickerDialog.Builder(context).apply {
             bottomSheet()
             curved()
             mainColor(Color.BLACK)
-            maxDateRange(calendar.time)
             displayMinutes(false)
             displayHours(false)
             displayDays(false)
@@ -178,7 +141,8 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
             displayYears(true)
             displayDaysOfMonth(true)
         }
-        b1.displayListener { picker ->
+
+        datePickerDialog!!.displayListener { picker ->
             var view = picker?.rootView
             if (view != null) {
                 val buttonOk =
@@ -186,18 +150,17 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
                 buttonOk.text = "Done"
             }
         }
-
-        b1.listener { date: Date? ->
+        datePickerDialog!!.listener { date: Date? ->
             val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY, Locale.ENGLISH)
 
-                    calendar.time = date
+            calendar.time = date
 
-                    year = calendar.get(Calendar.YEAR)
-                    month = calendar.get(Calendar.MONTH)
-                    day = calendar.get(Calendar.DAY_OF_MONTH)
+            year = calendar.get(Calendar.YEAR)
+            month = calendar.get(Calendar.MONTH)
+            day = calendar.get(Calendar.DAY_OF_MONTH)
             tvDOB.text = sdf.format(date!!.time)
-        }
-        b1.display()
+            }
+        datePickerDialog!!.display()
 
     }
 

@@ -27,16 +27,6 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
-            modelClass.isAssignableFrom(DemoViewModel::class.java) -> DemoViewModel(
-                networkService,
-                dbHelper,
-                baseView
-            ) as T
-            modelClass.isAssignableFrom(DemoView1Model::class.java) -> DemoView1Model(
-                networkService,
-                dbHelper,
-                baseView
-            ) as T
             modelClass.isAssignableFrom(SignupWithPhoneModel::class.java) -> SignupWithPhoneModel(
                 networkService,
                 dbHelper,

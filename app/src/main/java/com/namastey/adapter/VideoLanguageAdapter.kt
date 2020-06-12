@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.namastey.R
 import com.namastey.model.VideoLanguageBean
 import kotlinx.android.synthetic.main.row_video_language.view.*
@@ -17,10 +18,10 @@ class VideoLanguageAdapter(
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<VideoLanguageAdapter.ViewHolder>() {
     var colors = intArrayOf(
         Color.BLACK,
-        activity.resources.getColor(R.color.colorBlueLight),
-        activity.resources.getColor(R.color.colorButtonRed),
-        activity.resources.getColor(R.color.colorGreenLight),
-        activity.resources.getColor(R.color.colorBlue)
+        ContextCompat.getColor(activity, R.color.colorBlueLight),
+        ContextCompat.getColor(activity, R.color.colorButtonRed),
+        ContextCompat.getColor(activity, R.color.colorGreenLight),
+        ContextCompat.getColor(activity, R.color.colorBlue)
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(

@@ -26,4 +26,37 @@
     <color name="picker_default_divider_color">#442E3933</color>
     <color name="picker_default_selector_color">@android:color/transparent</color>
     <color name="twitter_blue">#17A9E5</color>
+
+
+    <color name="gradient_one_end">#28BAD3</color>
+    <color name="gradient_two_end">#A19FEE</color>
+    <color name="gradient_three_end">#FAB26D</color>
+    <color name="gradient_four_end">#DFAA70</color>
+    <color name="gradient_five_end">#7EC67D</color>
+    <color name="gradient_six_end">#FF8A9D</color>
+
+    <color name="gradient_one_start">#B2BAF2</color>
+    <color name="gradient_two_start">#F8CDE7</color>
+    <color name="gradient_three_start">#F68192</color>
+    <color name="gradient_four_start">#FFEE84</color>
+    <color name="gradient_five_start">#8BC8E6</color>
+    <color name="gradient_six_start">#E376E0</color>
+
+    <array name="gradient_color_end">
+        <item>@color/gradient_one_end</item>
+        <item>@color/gradient_two_end</item>
+        <item>@color/gradient_three_end</item>
+        <item>@color/gradient_four_end</item>
+        <item>@color/gradient_five_end</item>
+        <item>@color/gradient_six_end</item>
+    </array>
+
+    <array name="gradient_color_start">
+        <item>@color/gradient_one_start</item>
+        <item>@color/gradient_two_start</item>
+        <item>@color/gradient_three_start</item>
+        <item>@color/gradient_four_start</item>
+        <item>@color/gradient_five_start</item>
+        <item>@color/gradient_six_start</item>
+    </array>
 </resources>

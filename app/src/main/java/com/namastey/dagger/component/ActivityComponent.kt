@@ -12,8 +12,6 @@ import dagger.Subcomponent
 interface ActivityComponent {
     fun inject(activity: SplashActivity)
     fun inject(activity: SignUpActivity)
-    fun inject(activity: DemoActivity)
-    fun inject(activity: Demo1Activity)
     fun inject(fragment: SignupWithPhoneFragment)
     fun inject(fragment: OTPFragment)
     fun inject(fragment: SelectGenderFragment)
@@ -29,4 +27,5 @@ interface ActivityComponent {
     fun inject(fragment: SelectFilterFragment)
     fun inject(activity: FilterActivity)
     fun inject(fragment: AddFriendFragment)
+    fun inject(fragment: SignUpFragment)
 }

@@ -13,6 +13,13 @@ buildscript {
     ext.sdpVersion = '1.0.6'
     ext.playServiceVersion = '18.0.0'
     ext.snapchatVersion = '1.4.0'
+    ext.sdk = 28
+    ext.minSdk = 21
+    ext.libraryDescription = "dateandtimepicker"
+    ext.libraryGroup = "libraryGroup"
+    ext.libraryName = "dateandtimepicker"
+    ext.github = "2.2.5"
+    ext.libraryVersion = "2.2.5"
 
     repositories {
         jcenter()

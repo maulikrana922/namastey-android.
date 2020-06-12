@@ -199,24 +199,28 @@
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvDOB" />
+
+<!--                <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker-->
+<!--                    android:id="@+id/dobPicker"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:picker_curved="true"-->
+<!--                    app:picker_cyclic="true"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:picker_displayHours="false"-->
+<!--                    android:textAlignment="textStart"-->
+<!--                    app:picker_visibleItemCount="7"-->
+<!--                    app:picker_itemSpacing="@dimen/_5sdp"-->
+<!--                    android:background="@color/colorWhite"-->
+<!--                    app:picker_selectorColor="@android:color/transparent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    />-->
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-<!--        <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker-->
-<!--            android:id="@+id/dobPicker"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:picker_curved="true"-->
-<!--            app:picker_cyclic="true"-->
-<!--            android:visibility="gone"-->
-<!--            app:picker_visibleItemCount="7"-->
-<!--            app:picker_itemSpacing="@dimen/_5sdp"-->
-<!--            android:background="@color/colorWhite"-->
-<!--            app:picker_selectorColor="@android:color/transparent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

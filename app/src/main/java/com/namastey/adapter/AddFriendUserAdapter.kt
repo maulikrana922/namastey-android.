@@ -9,6 +9,7 @@ import com.namastey.roomDB.entity.User
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_user_suggested.view.*
 
+
 class AddFriendUserAdapter(
     var userList: ArrayList<User>,
     var activity: Context,
@@ -35,9 +36,9 @@ class AddFriendUserAdapter(
 
             GlideLib.loadImageUrlRoundCorner(activity, ivFindUser, "")
 
-            if (isDisplayCkb){
+            if (isDisplayCkb) {
                 ckbFindUser.visibility = View.VISIBLE
-            }else{
+            } else {
                 ckbFindUser.visibility = View.GONE
             }
         }

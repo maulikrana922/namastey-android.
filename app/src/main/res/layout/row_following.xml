@@ -6,12 +6,14 @@
     android:paddingTop="@dimen/_5sdp"
     android:paddingBottom="@dimen/_5sdp">
 
-    <ImageView
+    <com.namastey.customViews.RoundImageView
         android:id="@+id/ivFollowingUser"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_40sdp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
+        app:cornerRadius="@dimen/_8sdp"
+        app:roundedCorners="topRight|bottomLeft"
         android:src="@drawable/default_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidlineFollowing"

@@ -2,10 +2,13 @@ package com.namastey.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.text.TextUtils
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object Utils {
 
@@ -27,4 +30,12 @@ object Utils {
             return date
     }
 
+    fun customView(v: View, borderColor: Int) {
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        shape.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
+//        shape.setColor(backgroundColor)
+        shape.setStroke(3, borderColor)
+        v.background = shape
+    }
 }

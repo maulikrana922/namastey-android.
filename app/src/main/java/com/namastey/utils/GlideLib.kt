@@ -10,14 +10,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.namastey.R
-import jp.wasabeef.glide.transformations.BlurTransformation
-import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 class GlideLib {
@@ -87,8 +84,14 @@ class GlideLib {
 
         fun loadImageUrlRoundCorner(context: Context, imageView: ImageView, Url: String) {
             val uri = Uri.parse(Url)
-            Glide.with(context).load(uri).apply(RequestOptions.bitmapTransform(RoundedCornersTransformation(10,5,
-                RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT))).apply(
+            Glide.with(context).load(uri).apply(
+                RequestOptions.bitmapTransform(
+                    RoundedCornersTransformation(
+                        10, 5,
+                        RoundedCornersTransformation.CornerType.DIAGONAL_FROM_TOP_RIGHT
+                    )
+                )
+            ).apply(
                 RequestOptions.placeholderOf(
                     R.drawable.default_placeholder
                 )

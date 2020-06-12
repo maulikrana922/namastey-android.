@@ -22,6 +22,7 @@ import com.namastey.R
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
+import com.namastey.fragment.SignUpFragment
 import com.namastey.model.DashboardBean
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.ProfileView
@@ -99,7 +100,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     override fun onBackPressed() {
-        finishActivity()
+        val signUpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_FRAGMENT)
+
+        if (signUpFragment != null)
+            supportFragmentManager.popBackStack()
+        else
+            finishActivity()
     }
 
     override fun onDestroy() {
@@ -201,11 +208,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
 
     fun onClickProfile(view: View) {
-        when (view) {
-            ivProfileCamera -> {
-                selectImage()
-            }
-        }
+//        when (view) {
+//            ivProfileCamera -> {
+//                selectImage()
+//            }
+//        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -366,6 +373,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    fun onClickSign(view: View) {
+        addFragment(
+            SignUpFragment.getInstance(
+            ),
+            Constants.SIGNUP_FRAGMENT
+        )
     }
 
 }

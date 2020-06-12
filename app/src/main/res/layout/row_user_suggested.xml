@@ -18,12 +18,15 @@
         app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
         app:layout_constraintTop_toTopOf="@id/guidlineUser" />
 
-    <ImageView
+    <com.namastey.customViews.RoundImageView
         android:id="@+id/ivFindUser"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_40sdp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        app:cornerRadius="@dimen/_8sdp"
+        app:roundedCorners="topRight|bottomLeft"
         android:layout_marginStart="@dimen/_2sdp"
         android:src="@drawable/default_placeholder"
         app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
