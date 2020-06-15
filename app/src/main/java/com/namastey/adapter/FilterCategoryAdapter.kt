@@ -2,13 +2,10 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.graphics.drawable.DrawableCompat
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
@@ -23,6 +20,7 @@ class FilterCategoryAdapter(
 
     var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
     var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
+    var lastSelectedPos = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -42,50 +40,42 @@ class FilterCategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvFilterCategory.text = categoryList[position].name
 
-            if (categoryList[position].is_selected == 1){
+            if (categoryList[position].is_selected == 1) {
                 tvFilterCategory.setTextColor(Color.WHITE)
-//                tvFilterCategory.setBackgroundResource(R.drawable.rounded_blue_green_top_right_solid)
 
-                val gd = GradientDrawable(
-                    GradientDrawable.Orientation.TR_BL,
-                    intArrayOf(
-                        gradient_color_start[position % 6],
-                        gradient_color_end[position % 6]
-                    )
+                Utils.rectangleShapeGradient(
+                    tvFilterCategory, gradient_color_start[position % 6],
+                    gradient_color_end[position % 6]
                 )
+            } else {
+                tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
+                Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[position % 6])
 
-                gd.shape = GradientDrawable.RECTANGLE
-                gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
-                tvFilterCategory.background = gd
-            }else{
-                tvFilterCategory.setTextColor(getColor(context,R.color.colorDarkGray))
-                Utils.customView(tvFilterCategory,gradient_color_end[position % 6])
-
-//                tvFilterCategory.setBackgroundResource(R.drawable.rounded_blue_border_top_right)
             }
 
-            itemView.setOnClickListener{
-                if (categoryList[position].is_selected == 0) {
+            itemView.setOnClickListener {
+                if (position != lastSelectedPos) {
                     categoryList[position].is_selected = 1
                     tvFilterCategory.setTextColor(Color.WHITE)
-//                    tvFilterCategory.setBackgroundResource(R.drawable.rounded_blue_green_top_right_solid)
-                    val gd = GradientDrawable(
-                        GradientDrawable.Orientation.TR_BL,
-                        intArrayOf(
-                            gradient_color_start[position % 6],
-                            gradient_color_end[position % 6]
-                        )
+
+                    Utils.rectangleShapeGradient(
+                        tvFilterCategory, gradient_color_start[position % 6],
+                        gradient_color_end[position % 6]
                     )
-
-                    gd.shape = GradientDrawable.RECTANGLE
-                    gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
-                    tvFilterCategory.background = gd
-                }else{
+                    // Added this condition because of no need to reload entire adapter
+                    notifyItemChanged(position)
+                    if (lastSelectedPos != -1){
+                        categoryList[lastSelectedPos].is_selected = 0
+                        tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
+                        Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[lastSelectedPos % 6])
+                        notifyItemChanged(lastSelectedPos)
+                    }
+                    lastSelectedPos = position
+                } else {
+                    lastSelectedPos = -1
                     categoryList[position].is_selected = 0
-                    tvFilterCategory.setTextColor(getColor(context,R.color.colorDarkGray))
-                    Utils.customView(tvFilterCategory,gradient_color_end[position % 6])
-
-//                    tvFilterCategory.setBackgroundResource(R.drawable.rounded_blue_border_top_right)
+                    tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
+                    Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[position % 6])
                 }
                 onCategoryItemClick.onCategoryItemClick(categoryList.get(position))
             }

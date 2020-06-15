@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.FilterActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.FilterViewModel" />
+    </data>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/colorWhite">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <ImageView
+            android:id="@+id/llFilterBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yellow_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/ivFilterBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickFilterBack"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="@string/search"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivFilterBack"
+            app:layout_constraintStart_toEndOf="@id/ivFilterBack"
+            app:layout_constraintTop_toTopOf="@id/ivFilterBack"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <LinearLayout
+            android:id="@+id/llSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_white_solid"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchFilter"
+                style="@style/searchViewStyle"
+                app:defaultQueryHint="@string/search_user"
+                app:iconifiedByDefault="false"
+                app:queryHint="@string/search_user"
+                app:searchHintIcon="@drawable/ic_search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFilterSearch"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_user_suggested" />
+
+        </LinearLayout>
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvTranding"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/trandings"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="@id/llSearchView"
+            app:layout_constraintTop_toBottomOf="@id/llSearchView"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFilterTranding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTranding"
+            tools:listitem="@layout/row_tranding" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFiltes"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/filters"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="@id/llSearchView"
+            app:layout_constraintTop_toBottomOf="@id/rvFilterTranding"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFilterCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFiltes"
+            tools:listitem="@layout/row_filter_category" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChooseInterestFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvFilterCategory"
+            app:spanCount="3"
+            tools:listitem="@layout/row_choose_interest" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/llFilterTransparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+</layout>

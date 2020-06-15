@@ -58,7 +58,6 @@ class CategoryAdapter(
                     )
 
                 if (clickPosition != position) {
-//                    if (selectFilterFragment == null){
                     clickPosition = position
                     (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
                     (context as DashboardActivity).addFragment(
@@ -69,10 +68,21 @@ class CategoryAdapter(
                         ),
                         Constants.SELECT_FILTER_FRAGMENT
                     )
-//                    }
                 } else {
-                    clickPosition = -1
-                    (context as DashboardActivity).supportFragmentManager.popBackStack()
+                    if (selectFilterFragment == null){
+                        (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
+                        (context as DashboardActivity).addFragment(
+                            SelectFilterFragment.getInstance(
+                                categoryList[position].sub_category,
+                                gradient_color_start[position % 6],
+                                gradient_color_end[position % 6]
+                            ),
+                            Constants.SELECT_FILTER_FRAGMENT
+                        )
+                    }else{
+                        clickPosition = -1
+                        (context as DashboardActivity).supportFragmentManager.popBackStack()
+                    }
                 }
 
             }

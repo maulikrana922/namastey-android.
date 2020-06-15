@@ -15,11 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        android:id="@+id/mainSelectFilterView"
         android:background="@color/colorBlackTransparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llFilterBackground"
             android:layout_width="match_parent"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_12sdp"

@@ -67,6 +67,8 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     private fun initUI() {
 
         ivSelectFilter.setOnClickListener(this)
+        mainSelectFilterView.setOnClickListener(this)
+
         if (arguments!!.containsKey("subCategoryList")) {
             subCategoryList =
                 arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
@@ -105,6 +107,9 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         when (v) {
             ivSelectFilter -> {
                 openActivityWithResultCode(requireActivity(), FilterActivity(), Constants.FILTER_OK)
+            }
+            mainSelectFilterView ->{
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }

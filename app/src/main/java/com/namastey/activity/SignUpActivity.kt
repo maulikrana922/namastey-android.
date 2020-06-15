@@ -2,6 +2,7 @@ package com.namastey.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -83,7 +84,29 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     }
 
     private fun initData() {
+        var uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo);
+        videoViewSignup.setVideoURI(uri)
+        videoViewSignup.start()
+
+        videoViewSignup.setOnPreparedListener { mp ->
+            //Start Playback
+            videoViewSignup.start()
+            //Loop Video
+            mp!!.isLooping = true;
+        }
         initializeGoogleApi()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        videoViewSignup.pause()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if (videoViewSignup != null)
+            videoViewSignup.start()
     }
 
     override fun skipLogin() {

@@ -11,22 +11,34 @@
     >
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:background="@drawable/rounded_blue_solid"
-        >
+        android:orientation="vertical">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/ivSubCategory"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:contentDescription="@string/app_name"-->
-<!--            android:src="@drawable/default_placeholder" />-->
+        <com.namastey.customViews.RoundImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/default_placeholder"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:cornerRadius="@dimen/_20sdp"
+            app:roundedCorners="topRight|bottomLeft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.namastey.customViews.RoundImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:cornerRadius="@dimen/_20sdp"
+            android:src="@color/black_overlay"
+            app:roundedCorners="topRight|bottomLeft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
     <com.namastey.customViews.CustomTextView
@@ -35,6 +47,8 @@
         android:layout_gravity="center"
         android:paddingStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_3sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:textSize="14sp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,5 +57,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_SEMIBOLD" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
