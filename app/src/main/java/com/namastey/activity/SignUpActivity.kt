@@ -111,6 +111,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 
     override fun skipLogin() {
         tvSkipSignUp.visibility = View.INVISIBLE
+        sessionManager.setGuestUser(true)
         addFragment(
             SelectGenderFragment.getInstance("user"),
             Constants.SELECT_GENDER_FRAGMENT
@@ -119,7 +120,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 
     override fun onSuccessResponse(user: User) {
         tvSkipSignUp.visibility = View.INVISIBLE
-
+        sessionManager.setGuestUser(false)
         sessionManager.setAccessToken(user.token)
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)

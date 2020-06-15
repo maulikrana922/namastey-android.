@@ -12,6 +12,7 @@ import com.namastey.roomDB.entity.User
 import com.namastey.uiView.OTPView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.OTPViewModel
 import kotlinx.android.synthetic.main.fragment_otp.*
 import javax.inject.Inject
@@ -38,9 +39,10 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     override fun onSuccessResponse(user: User) {
-
+        Utils.hideKeyboard(requireActivity())
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
+        sessionManager.setGuestUser(false)
         (activity as SignUpActivity).addFragment(
             SelectGenderFragment.getInstance(
                 "user"

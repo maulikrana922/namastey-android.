@@ -128,7 +128,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
         edtEmailPhone.text!!.clear()
-
+        Utils.hideKeyboard(requireActivity())
         (activity as SignUpActivity).addFragment(
             OTPFragment.getInstance(
                 sessionManager.getUserPhone(), sessionManager.getUserEmail()
@@ -141,9 +141,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
         this.countryList = countryList
 
-        if (countryList.size > 0)
+        if (countryList.size > 0) {
+            country = countryList[0]
             tvCountrySelected.text = countryList[0].sortname + " " + countryList[0].phonecode
-
+        }
 //        val aa =
 //            ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)
 //

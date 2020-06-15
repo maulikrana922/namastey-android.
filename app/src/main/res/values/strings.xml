@@ -89,14 +89,14 @@
     <string name="find_contacts">Find Contacts</string>
     <string name="find_facebook_friends">Find Facebook Friends</string>
 
-<!--    Add friend fragment-->
+    <!--    Add friend fragment-->
     <string name="add_friend">Add Friend</string>
     <string name="multiple">Multiple</string>
     <string name="recent">Recent</string>
     <string name="suggested">Suggested</string>
     <string name="done">Done</string>
 
-<!--    Filter screen-->
+    <!--    Filter screen-->
     <string name="trandings">Trandings</string>
     <string name="filters">Filters</string>
     <string name="search_user">Search users</string>
@@ -109,6 +109,6 @@
     <string name="take_photo">Take Photo</string>
     <string name="select_photo">Select Photo</string>
     <string name="upload_profile_pictuare">Upload Profile pictuare</string>
-    
+
     <string name="signup_with_app">Sign up for NamasteyApp</string>
 </resources>

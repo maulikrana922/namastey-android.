@@ -71,9 +71,11 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
             jsonObject.add(Constants.INTEREST, jsonArrayInterest)
             jsonObject.addProperty(Constants.DEVICE_ID,"23456789")    // Need to change
             jsonObject.addProperty(Constants.DEVICE_TYPE,Constants.ANDROID)
-            if (sessionManager.getUserUniqueId().isNotEmpty())
-                jsonObject.addProperty(Constants.USER_UNIQUEID,sessionManager.getUserUniqueId())
-
+            if (!sessionManager.isGuestUser()) {
+                jsonObject.addProperty(Constants.USER_UNIQUEID, sessionManager.getUserUniqueId())
+            }else{
+                sessionManager.setGuestUser(true)
+            }
             chooseInterestViewModel.updateOrCreateUser(jsonObject)
 
 

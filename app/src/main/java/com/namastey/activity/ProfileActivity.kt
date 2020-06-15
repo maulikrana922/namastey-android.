@@ -376,11 +376,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickSign(view: View) {
-        addFragment(
-            SignUpFragment.getInstance(
-            ),
-            Constants.SIGNUP_FRAGMENT
-        )
+        if (sessionManager.isGuestUser()){
+            addFragment(
+                SignUpFragment.getInstance(
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            openActivity(this@ProfileActivity,ProfileBasicInfoActivity())
+        }
     }
 
 }
