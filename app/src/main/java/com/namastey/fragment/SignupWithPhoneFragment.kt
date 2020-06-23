@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSignupWithPhoneBinding
@@ -34,7 +35,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private lateinit var layoutView: View
     private var countryList = ArrayList<Country>()
     private lateinit var country: Country
-
+    private var isFromProfile = false
     override fun getViewModel() = signupWithPhoneModel
 
     override fun getLayoutId() = R.layout.fragment_signup_with_phone
@@ -42,10 +43,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(title: String) =
+        fun getInstance(isFromProfile: Boolean) =
             SignupWithPhoneFragment().apply {
                 arguments = Bundle().apply {
-                    putString("title", title)
+                    putBoolean("isFromProfile", isFromProfile)
                 }
             }
     }
@@ -73,12 +74,15 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private fun initUI() {
         sessionManager.setLoginType(Constants.MOBILE)
 
-
+        if (arguments != null && arguments!!.containsKey("isFromProfile")){
+            isFromProfile = arguments!!.getBoolean("isFromProfile",false)
+        }
         signupWithPhoneModel.getCountry()
 
     }
 
     override fun onCloseSignup() {
+        Utils.hideKeyboard(requireActivity())
         activity!!.onBackPressed()
     }
 
@@ -114,13 +118,23 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onClickCountry() {
         Utils.hideKeyboard(activity!!)
-        (activity as SignUpActivity).addFragmentChild(
-            childFragmentManager,
-            CountryFragment.getInstance(
-                countryList
-            ),
-            Constants.COUNTRY_FRAGMENT
-        )
+        if (isFromProfile){
+            (activity as ProfileActivity).addFragmentChild(
+                childFragmentManager,
+                CountryFragment.getInstance(
+                    countryList
+                ),
+                Constants.COUNTRY_FRAGMENT
+            )
+        }else{
+            (activity as SignUpActivity).addFragmentChild(
+                childFragmentManager,
+                CountryFragment.getInstance(
+                    countryList
+                ),
+                Constants.COUNTRY_FRAGMENT
+            )
+        }
     }
 
     override fun onSuccessResponse(user: User) {
@@ -129,12 +143,26 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         sessionManager.setUserPhone(user.mobile)
         edtEmailPhone.text!!.clear()
         Utils.hideKeyboard(requireActivity())
-        (activity as SignUpActivity).addFragment(
-            OTPFragment.getInstance(
-                sessionManager.getUserPhone(), sessionManager.getUserEmail()
-            ),
-            Constants.OTP_FRAGMENT
-        )
+
+        if (isFromProfile){
+            (activity as ProfileActivity).addFragment(
+                OTPFragment.getInstance(
+                    sessionManager.getUserPhone(),
+                    sessionManager.getUserEmail(),
+                    isFromProfile
+                ),
+                Constants.OTP_FRAGMENT
+            )
+        }else{
+            (activity as SignUpActivity).addFragment(
+                OTPFragment.getInstance(
+                    sessionManager.getUserPhone(),
+                    sessionManager.getUserEmail(),
+                    isFromProfile
+                ),
+                Constants.OTP_FRAGMENT
+            )
+        }
     }
 
     override fun onGetCountry(countryList: ArrayList<Country>) {

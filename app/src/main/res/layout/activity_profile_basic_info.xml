@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.ProfileBasicInfoActivity">
 
@@ -11,9 +12,124 @@
             name="viewModel"
             type="com.namastey.viewModel.ProfileBasicViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/green_bar_one"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivProfileOneBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickProfileOneBack"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtProfileCasualName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:background="@drawable/rounded_white_solid"
+                android:hint="@string/hint_casual_name"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingTop="@dimen/_13sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_13sdp"
+                android:textColor="@color/colorDarkGray"
+                android:textColorHint="@color/colorDarkGray"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/imgTop"
+                app:typeface="MULI_SEMIBOLD" />
+
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileSelectCategory"
+                style="@style/tvRoundCornerStyle"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/select_category"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/edtProfileCasualName"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileInterestIn"
+                style="@style/tvRoundCornerStyle"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/interest_in"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileSelectCategory"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileEducation"
+                style="@style/tvRoundCornerStyle"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/interest_in"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileInterestIn"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileJobs"
+                style="@style/tvRoundCornerStyle"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/jobs"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileEducation"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileAge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/age"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileJobs"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileAgeMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@string/age_message"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+                app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileAge"
+                app:typeface="MULI_SEMIBOLD" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -46,9 +46,13 @@ class CustomEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(
         return when (typefaceValue) {
             Constants.MULI_REGULAR -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
 
-//            Constants.BAHNSCHRIFT_LIGHT -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
+            Constants.MULI_LIGHT -> Typeface.createFromAsset(context.assets, "Muli-Light.ttf")
 
-//            Constants.BAHNSCHRIFT_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
+            Constants.MULI_BLACK -> Typeface.createFromAsset(context.assets, "Muli-Black.ttf")
+
+            Constants.MULI_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "Muli-SemiBold.ttf")
+
+            Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(context.assets, "Muli-ExtraBold.ttf")
 
             else -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
         }

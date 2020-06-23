@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileActivity
 import com.namastey.activity.ProfileBasicInfoActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSignUpBinding
@@ -63,6 +64,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     }
 
     override fun onSuccessResponse(user: User) {
+        sessionManager.setGuestUser(false)
+        sessionManager.setAccessToken(user.token)
+        sessionManager.setUserEmail(user.email)
+        sessionManager.setUserPhone(user.mobile)
+        sessionManager.setVerifiedUser(user.is_verified)
+        sessionManager.setuserUniqueId(user.user_uniqueId)
+        fragmentManager!!.popBackStack()
         openActivity(requireActivity(), ProfileBasicInfoActivity())
     }
 
@@ -95,6 +103,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         llSignupWithGoogle.setOnClickListener(this)
         llSignupWithFacebook.setOnClickListener(this)
         llSignupWithSnapchat.setOnClickListener(this)
+        llSignupWithPhone.setOnClickListener(this)
 
         initializeGoogleApi()
     }
@@ -139,8 +148,24 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
             llSignupWithSnapchat -> {
                 loginWithSnapchat()
             }
+            llSignupWithPhone ->{
+                loginWithPhoneEmail()
+            }
         }
     }
+
+    /**
+     * Click on sign up with phone/email
+     */
+    private fun loginWithPhoneEmail() {
+        (requireActivity() as ProfileActivity).addFragment(
+            SignupWithPhoneFragment.getInstance(
+                true
+            ),
+            Constants.SIGNUP_WITH_PHONE_FRAGMENT
+        )
+    }
+
     /**
      * Click on login with SnapChat
      */

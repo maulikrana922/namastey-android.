@@ -19,7 +19,7 @@
         android:id="@+id/splash_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:icon="@drawable/ic_splash_icon"
+        app:icon="@drawable/ic_spash_w_img"
         app:iconColor="@color/colorButtonRed"
         app:duration="1000"
         app:holeFillColor="@color/colorWhite"

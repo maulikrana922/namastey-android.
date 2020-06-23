@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -39,5 +40,13 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     private fun initData() {
 
+    }
+
+    fun onClickProfileOneBack(view: View) {
+        onBackPressed()
+    }
+
+    override fun onBackPressed() {
+        finishActivity()
     }
 }

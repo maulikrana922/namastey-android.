@@ -155,9 +155,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
             removeAllFragment()
 
         } else if (signupWithPhoneFragment != null) {
-            var childFm = signupWithPhoneFragment.getChildFragmentManager()
-            if (childFm.getBackStackEntryCount() > 0) {
-                childFm.popBackStack();
+            var childFm = signupWithPhoneFragment.childFragmentManager
+            if (childFm.backStackEntryCount > 0) {
+                childFm.popBackStack()
             } else {
                 tvSkipSignUp.visibility = View.VISIBLE
                 supportFragmentManager.popBackStack()
@@ -337,7 +337,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         tvSkipSignUp.visibility = View.INVISIBLE
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                "signUp"
+                false
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )

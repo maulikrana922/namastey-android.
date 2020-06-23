@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.namastey.R
+import com.namastey.activity.ProfileActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -40,12 +42,15 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
     override fun showMsg(msgId: Int) {
         if (activity != null && activity!! is SignUpActivity)
             (activity!! as SignUpActivity).showMsg(msgId)
+        else if (activity != null && activity!! is ProfileActivity)
+            (activity!! as ProfileActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
         if (activity != null && activity!! is SignUpActivity)
             (activity!! as SignUpActivity).showMsg(msg)
-
+        else if (activity != null && activity!! is ProfileActivity)
+            (activity!! as ProfileActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -74,6 +79,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         if (activity != null) {
             when {
                 activity!! is SignUpActivity -> (activity!! as SignUpActivity).isInternetAvailable()
+                activity!! is ProfileActivity -> (activity!! as ProfileActivity).isInternetAvailable()
                 else -> false
             }
         } else false
@@ -93,5 +99,13 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
     ) {
         startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+    /**
+     * Remove all fragment from stack
+     */
+    fun removeAllFragment(fragmentManager: FragmentManager) {
+        if (fragmentManager.backStackEntryCount > 0) {
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
     }
 }

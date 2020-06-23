@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileBasicInfoActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentOtpBinding
@@ -43,12 +44,21 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
         sessionManager.setGuestUser(false)
-        (activity as SignUpActivity).addFragment(
-            SelectGenderFragment.getInstance(
-                "user"
-            ),
-            Constants.SELECT_GENDER_FRAGMENT
-        )
+        var isFromProfile = false
+        if (arguments != null && arguments!!.containsKey("isFromProfile")){
+            isFromProfile = arguments!!.getBoolean("isFromProfile",false)
+        }
+        if (isFromProfile){
+            removeAllFragment(fragmentManager!!)
+            openActivity(requireActivity(), ProfileBasicInfoActivity())
+        }else{
+            (activity as SignUpActivity).addFragment(
+                SelectGenderFragment.getInstance(
+                    "user"
+                ),
+                Constants.SELECT_GENDER_FRAGMENT
+            )
+        }
     }
 
     override fun getViewModel() = otpViewModel
@@ -58,11 +68,12 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(mobile: String,email: String) =
+        fun getInstance(mobile: String, email: String, isFromProfile: Boolean) =
             OTPFragment().apply {
                 arguments = Bundle().apply {
                     putString("mobile", mobile)
                     putString("email", email)
+                    putBoolean("isFromProfile", isFromProfile)
                 }
             }
     }

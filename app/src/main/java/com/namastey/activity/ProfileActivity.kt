@@ -102,8 +102,19 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun onBackPressed() {
         val signUpFragment =
             supportFragmentManager.findFragmentByTag(Constants.SIGNUP_FRAGMENT)
+        val signupWithPhoneFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
+        val otpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
 
-        if (signUpFragment != null)
+        if (signupWithPhoneFragment != null){
+            var childFm = signupWithPhoneFragment.childFragmentManager
+            if (childFm.backStackEntryCount > 0) {
+                childFm.popBackStack();
+            }else{
+                supportFragmentManager.popBackStack()
+            }
+        }else if (signUpFragment != null || otpFragment != null)
             supportFragmentManager.popBackStack()
         else
             finishActivity()

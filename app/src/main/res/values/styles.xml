@@ -43,6 +43,21 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="tvRoundCornerStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:background">@drawable/rounded_white_solid</item>
+        <item name="android:drawableRight">@drawable/ic_dropdown</item>
+        <item name="android:paddingStart">@dimen/_15sdp</item>
+        <item name="android:paddingEnd">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_12sdp</item>
+        <item name="android:paddingBottom">@dimen/_12sdp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
     
     <style name="searchViewStyle" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:layout_width">match_parent</item>
