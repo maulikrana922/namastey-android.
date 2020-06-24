@@ -118,4 +118,7 @@ dependencies {
             "com.snapchat.kit.sdk:core:$snapchatVersion"
     ])
     implementation project(path: ':dateandtimepicker')
+
+//    Used for range display
+    implementation 'com.crystal:crystalrangeseekbar:1.1.3'
 }

@@ -29,4 +29,5 @@ interface ActivityComponent {
     fun inject(fragment: AddFriendFragment)
     fun inject(fragment: SignUpFragment)
     fun inject(activity: ProfileBasicInfoActivity)
+    fun inject(activity: ProfileInterestActivity)
 }

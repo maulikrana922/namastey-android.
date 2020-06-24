@@ -3,6 +3,7 @@ package com.namastey.activity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -10,7 +11,9 @@ import com.namastey.databinding.ActivityProfileBasicInfoBinding
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ProfileBasicViewModel
+import kotlinx.android.synthetic.main.activity_profile_basic_info.*
 import javax.inject.Inject
+
 
 class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>(), ProfileBasicView {
 
@@ -40,6 +43,13 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     private fun initData() {
 
+        rangeProfileAge.setMaxStartValue(45f)
+        rangeProfileAge.apply()
+        rangeProfileAge.setOnRangeSeekbarChangeListener(OnRangeSeekbarChangeListener { minValue, maxValue ->
+            tvProfileAgeValue.text = minValue.toString() + " and " + maxValue.toString()
+        })
+
+
     }
 
     fun onClickProfileOneBack(view: View) {
@@ -48,5 +58,9 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     override fun onBackPressed() {
         finishActivity()
+    }
+
+    fun onClickProfileNext(view: View) {
+        openActivity(this@ProfileBasicInfoActivity,ProfileInterestActivity())
     }
 }

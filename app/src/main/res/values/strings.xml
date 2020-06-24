@@ -111,13 +111,17 @@
     <string name="upload_profile_pictuare">Upload Profile pictuare</string>
 
     <string name="signup_with_app">Sign up for NamasteyApp</string>
-    
-<!--    profile create -->
+
+    <!--    profile create -->
+    <string name="basic_info">Basic Info</string>
     <string name="hint_casual_name">Casual Name</string>
+    <string name="hint_tagline">Tagline</string>
     <string name="select_category">Select Category</string>
     <string name="interest_in">Interest In</string>
     <string name="education">Education</string>
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
-    <string name="age_message">Your age between 18 and 40</string>
+    <string name="age_message">Your age between</string>
+    
+    <string name="select_interest">Select Interest</string>
 </resources>
