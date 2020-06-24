@@ -55,12 +55,21 @@
         <item name="typeface">MULI_SEMIBOLD</item>
     </style>
 
+    <style name="btnRedStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/_15sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_15sdp</item>
+        <item name="android:background">@drawable/rounded_red_solid</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
     <style name="tvRoundCornerStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:background">@drawable/rounded_white_solid</item>
-        <item name="android:drawableRight">@drawable/ic_dropdown</item>
         <item name="android:paddingStart">@dimen/_15sdp</item>
         <item name="android:paddingEnd">@dimen/_10sdp</item>
         <item name="android:paddingTop">@dimen/_12sdp</item>

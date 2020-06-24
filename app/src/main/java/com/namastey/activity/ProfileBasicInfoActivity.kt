@@ -8,7 +8,9 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBasicInfoBinding
+import com.namastey.fragment.SelectCategoryFragment
 import com.namastey.uiView.ProfileBasicView
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_profile_basic_info.*
@@ -57,10 +59,29 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     }
 
     override fun onBackPressed() {
-        finishActivity()
+        val selectCategoryFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SELECT_CATEGORY_FRAGMENT)
+
+        if (selectCategoryFragment != null){
+            supportFragmentManager.popBackStack()
+        }else{
+            finishActivity()
+        }
     }
 
     fun onClickProfileNext(view: View) {
-        openActivity(this@ProfileBasicInfoActivity,ProfileInterestActivity())
+        openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
+    }
+
+    /**
+     * Click on select category open new fragment
+     */
+    fun onClickSelectCategory(view: View) {
+        addFragment(
+            SelectCategoryFragment.getInstance(
+            ),
+            Constants.SELECT_CATEGORY_FRAGMENT
+        )
+
     }
 }
