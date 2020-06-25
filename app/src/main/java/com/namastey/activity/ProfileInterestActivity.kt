@@ -7,12 +7,14 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileInterestBinding
+import com.namastey.fragment.AddLinksFragment
 import com.namastey.uiView.ProfileInterestView
-import com.namastey.viewModel.ProfileBasicViewModel
+import com.namastey.utils.Constants
 import com.namastey.viewModel.ProfileInterestViewModel
 import javax.inject.Inject
 
-class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(), ProfileInterestView {
+class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
+    ProfileInterestView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -44,8 +46,20 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(), 
     fun onClickInterestBack(view: View) {
         onBackPressed()
     }
+
     override fun onBackPressed() {
-        finishActivity()
+
+        if (supportFragmentManager.backStackEntryCount > 0 )
+            supportFragmentManager.popBackStack()
+        else
+            finishActivity()
+    }
+
+    /**
+     * click on plus button open add links fragment
+     */
+    fun onClickAddLinks(view: View) {
+        addFragment(AddLinksFragment.getInstance(), Constants.ADD_LINKS_FRAGMENT)
     }
 
 }

@@ -138,4 +138,13 @@
     <string name="hint_title">Title</string>
     <string name="hint_company">Company (or just industry)</string>
 
+    <string name="add_links">Add Links</string>
+    <string name="save">Save</string>
+    <string name="snapchat">Snapchat</string>
+    <string name="facebook">Facebook</string>
+    <string name="tiktok">TikTok</string>
+    <string name="instagram">Instagram</string>
+    <string name="spotify">Spotify</string>
+    <string name="linkedin">Linkedin</string>
+
 </resources>

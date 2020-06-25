@@ -34,4 +34,5 @@ interface ActivityComponent {
     fun inject(fragment: InterestInFragment)
     fun inject(fragment: EducationFragment)
     fun inject(fragment: JobFragment)
+    fun inject(fragment: AddLinksFragment)
 }

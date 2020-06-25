@@ -13,46 +13,84 @@
             type="com.namastey.viewModel.ProfileInterestViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:paddingBottom="@dimen/_20sdp">
+            android:background="@color/colorWhite">
 
-            <ImageView
-                android:id="@+id/imgTop"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:src="@drawable/green_bar_two"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:paddingBottom="@dimen/_20sdp">
 
-            <ImageView
-                android:id="@+id/ivProfileOneBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickInterestBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/imgTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/green_bar_two"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.namastey.customViews.CustomTextView
-                style="@style/tvTitleStyle"
-                android:text="@string/select_interest"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfileOneBack"
-                app:layout_constraintStart_toEndOf="@id/ivProfileOneBack"
-                app:layout_constraintTop_toTopOf="@id/ivProfileOneBack" />
+                <ImageView
+                    android:id="@+id/ivProfileOneBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickInterestBack"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <com.namastey.customViews.CustomTextView
+                    style="@style/tvTitleStyle"
+                    android:text="@string/select_interest"
+                    app:layout_constraintBottom_toBottomOf="@id/ivProfileOneBack"
+                    app:layout_constraintStart_toEndOf="@id/ivProfileOneBack"
+                    app:layout_constraintTop_toTopOf="@id/ivProfileOneBack" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAddLinks"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:text="@string/add_links"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@id/ivAddLink"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTop"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <ImageView
+                    android:id="@+id/ivAddLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:src="@drawable/ic_add_album"
+                    android:onClick="onClickAddLinks"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAddLinks"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvAddLinks" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/flContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true" />
+
+    </FrameLayout>
 </layout>

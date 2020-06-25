@@ -27,6 +27,12 @@
     <color name="picker_default_selector_color">@android:color/transparent</color>
     <color name="twitter_blue">#17A9E5</color>
 
+    <color name="color_blue_facebook">#4E598F</color>
+    <color name="color_tiktok">#0BF3EB</color>
+    <color name="color_yellow_snapchat">#FFCA22</color>
+    <color name="color_instagram">#9D5B10</color>
+    <color name="color_spotify">#7AD768</color>
+    <color name="color_linkedin">#4376B1</color>
 
     <color name="gradient_one_end">#28BAD3</color>
     <color name="gradient_two_end">#A19FEE</color>
