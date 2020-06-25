@@ -125,4 +125,17 @@
 
     <string name="choose_minimum_category">Choose a minimum of 03</string>
     <string name="select_interest">Select Interest</string>
+    <string name="im_interest_in">I\'m Interest In</string>
+    <string name="men">Men</string>
+    <string name="women">Women</string>
+    <string name="everyone">Everyone</string>
+
+    <string name="add_education">Add Edcation</string>
+    <string name="hint_enter_name">Enter college name</string>
+    <string name="hint_enter_year">Enter year</string>
+
+    <string name="add_job">Add a Job</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_company">Company (or just industry)</string>
+
 </resources>

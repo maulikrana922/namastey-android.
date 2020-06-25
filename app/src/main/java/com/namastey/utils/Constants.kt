@@ -60,6 +60,9 @@ object Constants {
     const val ADD_FRIEND_FRAGMENT = "AddFriendFragment"
     const val SIGNUP_FRAGMENT = "SignUpFragment"
     const val SELECT_CATEGORY_FRAGMENT = "SelectCategoryFragment"
+    const val INTEREST_IN_FRAGMENT = "InterestInFragment"
+    const val EDUCATION_FRAGMENT = "EducationFragment"
+    const val JOB_FRAGMENT = "JobFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

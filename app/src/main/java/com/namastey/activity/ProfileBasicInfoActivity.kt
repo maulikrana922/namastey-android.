@@ -8,10 +8,14 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBasicInfoBinding
+import com.namastey.fragment.EducationFragment
+import com.namastey.fragment.InterestInFragment
+import com.namastey.fragment.JobFragment
 import com.namastey.fragment.SelectCategoryFragment
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_profile_basic_info.*
 import javax.inject.Inject
@@ -48,7 +52,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         rangeProfileAge.setMaxStartValue(45f)
         rangeProfileAge.apply()
         rangeProfileAge.setOnRangeSeekbarChangeListener(OnRangeSeekbarChangeListener { minValue, maxValue ->
-            tvProfileAgeValue.text = minValue.toString() + " and " + maxValue.toString()
+            tvProfileAgeValue.text = "$minValue and $maxValue"
         })
 
 
@@ -59,10 +63,8 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     }
 
     override fun onBackPressed() {
-        val selectCategoryFragment =
-            supportFragmentManager.findFragmentByTag(Constants.SELECT_CATEGORY_FRAGMENT)
 
-        if (selectCategoryFragment != null){
+        if (supportFragmentManager.backStackEntryCount > 0){
             supportFragmentManager.popBackStack()
         }else{
             finishActivity()
@@ -77,11 +79,42 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
      * Click on select category open new fragment
      */
     fun onClickSelectCategory(view: View) {
+        Utils.hideKeyboard(this@ProfileBasicInfoActivity)
         addFragment(
             SelectCategoryFragment.getInstance(
             ),
             Constants.SELECT_CATEGORY_FRAGMENT
         )
 
+    }
+
+    /**
+     * click on interest in
+     */
+    fun onClickInterestIn(view: View) {
+        Utils.hideKeyboard(this@ProfileBasicInfoActivity)
+        addFragment(
+            InterestInFragment.getInstance(
+            ),
+            Constants.INTEREST_IN_FRAGMENT
+        )
+    }
+
+    fun onClickEducation(view: View) {
+        Utils.hideKeyboard(this@ProfileBasicInfoActivity)
+        addFragment(
+            EducationFragment.getInstance(
+            ),
+            Constants.EDUCATION_FRAGMENT
+        )
+    }
+
+    fun onClickJob(view: View) {
+        Utils.hideKeyboard(this@ProfileBasicInfoActivity)
+        addFragment(
+            JobFragment.getInstance(
+            ),
+            Constants.JOB_FRAGMENT
+        )
     }
 }

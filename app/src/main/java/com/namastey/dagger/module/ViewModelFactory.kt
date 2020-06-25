@@ -112,6 +112,16 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(EducationViewModel::class.java) -> EducationViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(JobViewModel::class.java) -> JobViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }
