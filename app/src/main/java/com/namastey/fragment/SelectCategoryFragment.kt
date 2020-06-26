@@ -5,28 +5,33 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.adapter.CategoryAdapter
 import com.namastey.adapter.SelectCategoryAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectCategoryBinding
+import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.uiView.ProfileSelectCategoryView
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectCategoryViewModel
 import kotlinx.android.synthetic.main.fragment_select_category.*
 import javax.inject.Inject
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
-    ProfileSelectCategoryView, View.OnClickListener {
+    ProfileSelectCategoryView, View.OnClickListener, OnCategoryItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     private lateinit var fragmentSelectCategoryBinding: FragmentSelectCategoryBinding
     private lateinit var selectCategoryViewModel: SelectCategoryViewModel
     private lateinit var layoutView: View
-
+    private var selectedCategoryList: ArrayList<CategoryBean> = ArrayList()
 
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
-        var selectCategoryAdapter = SelectCategoryAdapter(categoryBeanList, requireActivity())
+        var selectCategoryAdapter =
+            SelectCategoryAdapter(categoryBeanList, requireActivity(), this, sessionManager)
         rvSelectCategory.adapter = selectCategoryAdapter
     }
 
@@ -79,7 +84,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
             ivCloseCategory -> {
                 fragmentManager!!.popBackStack()
             }
-            btnSelectCategoryDone ->{
+            btnSelectCategoryDone -> {
+                sessionManager.setCategoryList(ArrayList())
+                sessionManager.setCategoryList(selectedCategoryList)
                 fragmentManager!!.popBackStack()
             }
         }
@@ -88,5 +95,16 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     override fun onDestroy() {
         selectCategoryViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    /**
+     * click on adapter category items
+     */
+    override fun onCategoryItemClick(categoryBean: CategoryBean) {
+        if (selectedCategoryList.any { it.id == categoryBean.id }) {
+            selectedCategoryList.remove(categoryBean)
+        } else {
+            selectedCategoryList.add(categoryBean)
+        }
     }
 }

@@ -3,8 +3,13 @@ package com.namastey.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.text.TextUtils
 import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.namastey.model.CategoryBean
 import com.namastey.utils.Constants.EMAIL
+import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_GENDER
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
 import com.namastey.utils.Constants.KEY_IS_GUEST_USER
@@ -149,5 +154,20 @@ class SessionManager(context: Context) {
         e.putBoolean(KEY_INTERNET_AVAILABLE, isInternetAvail)
         e.apply()
         Log.w("InternetMonitor ", "onAvailable " + mPrefs.getBoolean(KEY_INTERNET_AVAILABLE, false))
+    }
+
+    fun setCategoryList(categoryList: ArrayList<CategoryBean>) {
+        val e = mPrefs.edit()
+        e.putString(KEY_CATEGORY_LIST, Gson().toJson(categoryList))
+        e.apply()
+    }
+
+    fun getCategoryList(): ArrayList<CategoryBean> {
+        val str = mPrefs.getString(KEY_CATEGORY_LIST, "")!!
+        val listType = object : TypeToken<ArrayList<CategoryBean>>() {}.type
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            listType
+        ) else ArrayList<CategoryBean>()
     }
 }

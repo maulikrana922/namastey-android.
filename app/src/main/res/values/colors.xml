@@ -26,6 +26,7 @@
     <color name="picker_default_divider_color">#442E3933</color>
     <color name="picker_default_selector_color">@android:color/transparent</color>
     <color name="twitter_blue">#17A9E5</color>
+    <color name="color_chip_gray">#787878</color>
 
     <color name="color_blue_facebook">#4E598F</color>
     <color name="color_tiktok">#0BF3EB</color>

@@ -146,5 +146,6 @@
     <string name="instagram">Instagram</string>
     <string name="spotify">Spotify</string>
     <string name="linkedin">Linkedin</string>
+    <string name="profile_tag">Profile tag</string>
 
 </resources>

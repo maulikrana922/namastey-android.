@@ -75,6 +75,7 @@ object Constants {
     const val KEY_IS_VERIFIED_USER = "KEY_IS_VERIFIED_USER"
     const val KEY_GENDER = "KEY_GENDER"
     const val KEY_IS_GUEST_USER = "KEY_IS_GUEST_USER"
+    const val KEY_CATEGORY_LIST = "KEY_CATEGORY_LIST"
 
 
     //    field key
