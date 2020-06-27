@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_15sdp"
+    android:background="@drawable/rounded_pink_solid"
+    android:orientation="vertical"
+    android:padding="@dimen/_12sdp"
+    app:layout_constraintEnd_toEndOf="@id/llLinkLayout"
+    app:layout_constraintStart_toStartOf="@id/tvProfileTag"
+    app:layout_constraintTop_toBottomOf="@id/llProfileTag">
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_arrow_down_gray"
+        android:textColor="@color/color_chip_gray" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipProfileTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:visibility="gone"
+        app:chipSpacingVertical="@dimen/_10sdp" />
+
+</LinearLayout>

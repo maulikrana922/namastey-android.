@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <com.namastey.customViews.CustomEditText
+        android:id="@+id/edtAlbumName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_album_name"
+        android:padding="@dimen/_5sdp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/ivEditAlbum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <ImageView
+        android:id="@+id/ivEditAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/ic_edit_gray"
+        app:layout_constraintBottom_toBottomOf="@id/edtAlbumName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/edtAlbumName" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@color/colorDarkGray"
+        app:layout_constraintEnd_toEndOf="@id/ivEditAlbum"
+        app:layout_constraintStart_toStartOf="@id/edtAlbumName"
+        app:layout_constraintTop_toBottomOf="@id/edtAlbumName" />
+
+    <LinearLayout
+        android:id="@+id/llAddAlbum"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/rounded_pink_solid"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@id/edtAlbumName"
+        app:layout_constraintTop_toBottomOf="@id/viewDivider">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_album" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

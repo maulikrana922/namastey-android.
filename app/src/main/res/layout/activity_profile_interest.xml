@@ -20,6 +20,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:background="@color/colorWhite">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +40,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/ivProfileOneBack"
+                    android:id="@+id/ivProfileTwoBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
@@ -53,9 +54,9 @@
                 <com.namastey.customViews.CustomTextView
                     style="@style/tvTitleStyle"
                     android:text="@string/select_interest"
-                    app:layout_constraintBottom_toBottomOf="@id/ivProfileOneBack"
-                    app:layout_constraintStart_toEndOf="@id/ivProfileOneBack"
-                    app:layout_constraintTop_toTopOf="@id/ivProfileOneBack" />
+                    app:layout_constraintBottom_toBottomOf="@id/ivProfileTwoBack"
+                    app:layout_constraintStart_toEndOf="@id/ivProfileTwoBack"
+                    app:layout_constraintTop_toTopOf="@id/ivProfileTwoBack" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAddLinks"
@@ -408,56 +409,30 @@
                     app:layout_constraintTop_toTopOf="@id/tvProfileTag"
                     app:layout_constraintBottom_toBottomOf="@id/tvProfileTag"
                     app:layout_constraintEnd_toEndOf="@id/llLinkLayout"/>
+
                 <LinearLayout
                     android:id="@+id/llProfileTag"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_20sdp"
                     app:layout_constraintStart_toStartOf="@id/tvProfileTag"
                     app:layout_constraintEnd_toEndOf="@id/llLinkLayout"
                     app:layout_constraintTop_toBottomOf="@id/tvProfileTag"/>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:layout_marginTop="@dimen/_15sdp"-->
-<!--                    android:padding="@dimen/_12sdp"-->
-<!--                    android:background="@drawable/rounded_pink_solid"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/tvProfileTag"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/llLinkLayout"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/llProfileTag">-->
 
-<!--                    <com.namastey.customViews.CustomTextView-->
-<!--                        android:id="@+id/tvCategory"-->
-<!--                        android:text="Community"-->
-<!--                        android:drawableRight="@drawable/ic_arrow_down_gray"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"/>-->
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnInterestNext"
+                    style="@style/btnRedStyle"
+                    android:text="@string/next"
+                    android:onClick="onClickNextInterest"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintTop_toBottomOf="@id/llProfileTag"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/llLinkLayout"
+                    app:layout_constraintStart_toStartOf="@id/llLinkLayout" />
 
-<!--                    <com.google.android.material.chip.ChipGroup-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/_5sdp">-->
-
-<!--                        <com.namastey.customViews.CustomButton-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="sdfsdfsfsdf"/>-->
-
-<!--                        <com.namastey.customViews.CustomButton-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="sdfsfsdf"/>-->
-
-<!--                        <com.namastey.customViews.CustomButton-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="d"/>-->
-<!--                    </com.google.android.material.chip.ChipGroup>-->
-
-<!--                </LinearLayout>-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
