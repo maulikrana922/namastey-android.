@@ -36,7 +36,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
     private fun initData() {
 
-
+        addNewAlbum()
     }
 
     override fun getViewModel() = createAlbumViewModel
@@ -57,12 +57,22 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
      * click on add album generate new layout for add album
      */
     fun onClickAddAlbum(view: View) {
+        addNewAlbum()
+    }
+
+    private fun addNewAlbum(){
         var layoutInflater = LayoutInflater.from(this@CreateAlbumActivity)
 
         var view = layoutInflater.inflate(R.layout.view_create_album, llAlbumList, false)
 
-//        view.tvFirstLanguage.setText("Firstlanguage")
-        view.edtAlbumName.setText("Dines")
+//        view.edtAlbumName.setText("")
         llAlbumList.addView(view)
+    }
+
+    /**
+     * click on finish button call api for sign up complete
+     */
+    fun onClickFinish(view: View) {
+
     }
 }

@@ -20,6 +20,7 @@ import com.namastey.R
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
+import com.namastey.listeners.OnInteractionWithFragment
 import com.namastey.uiView.BaseView
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.CustomAlertDialog
@@ -28,6 +29,7 @@ import retrofit2.HttpException
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView {
 
     private lateinit var viewDataBinding: T
+    private lateinit var onInteractionWithFragment: OnInteractionWithFragment
 
     protected fun getActivityComponent(): ActivityComponent {
         return NamasteyApplication.appComponent()
@@ -190,4 +192,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         finish()
         overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left)
     }
+
+    fun setListenerOfInteractionWithFragment(onInteractionWithFragment: OnInteractionWithFragment) {
+        this.onInteractionWithFragment = onInteractionWithFragment
+    }
+
+    fun getOnInteractionWithFragment() =
+        if (::onInteractionWithFragment.isInitialized) onInteractionWithFragment else null
+
 }

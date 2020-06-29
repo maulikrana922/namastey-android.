@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.namastey.customViews.CustomEditText
+        android:id="@+id/edtProfileCasualName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:background="@drawable/rounded_white_solid"
+        android:hint="@string/hint_casual_name"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_13sdp"
+        android:singleLine="true"
+        android:textColor="@color/colorDarkGray"
+        android:textColorHint="@color/colorDarkGray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:typeface="MULI_SEMIBOLD" />
+
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileSelectCategory"
+        style="@style/tvRoundCornerStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/select_category"
+        android:onClick="onClickBasicInfo"
+        android:drawableRight="@drawable/ic_dropdown"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/edtProfileCasualName"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileInterestIn"
+        style="@style/tvRoundCornerStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/interest_in"
+        android:onClick="onClickBasicInfo"
+        android:drawableRight="@drawable/ic_dropdown"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileSelectCategory"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileEducation"
+        style="@style/tvRoundCornerStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/education"
+        android:onClick="onClickBasicInfo"
+        android:drawableRight="@drawable/ic_dropdown"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileInterestIn"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileJobs"
+        style="@style/tvRoundCornerStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/jobs"
+        android:onClick="onClickBasicInfo"
+        android:drawableRight="@drawable/ic_dropdown"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileEducation"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileAge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:text="@string/age"
+        android:textColor="@color/colorBlack"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileJobs"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileAgeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_5sdp"
+        android:text="@string/age_message"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/tvProfileAgeValue"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileAge" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileAgeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_5sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toEndOf="@id/tvProfileAgeMessage"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileAge" />
+
+    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+        android:id="@+id/rangeProfileAge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:bar_color="@color/colorDarkGray"
+        app:bar_highlight_color="@color/colorButtonRed"
+        app:corner_radius="10"
+        app:data_type="_integer"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileAgeMessage"
+        app:left_thumb_color="@color/colorButtonRed"
+        app:left_thumb_color_pressed="@color/colorButtonRed"
+        app:max_value="100"
+        app:min_value="18"
+        app:right_thumb_color="@color/colorButtonRed"
+        app:right_thumb_color_pressed="@color/colorButtonRed" />
+
+    <com.namastey.customViews.CustomEditText
+        android:id="@+id/edtProfileTagline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/rounded_white_solid"
+        android:gravity="top"
+        android:hint="@string/hint_tagline"
+        android:maxLines="5"
+        android:minLines="5"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_13sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_13sdp"
+        android:textColor="@color/colorDarkGray"
+        android:textColorHint="@color/colorDarkGray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/rangeProfileAge"
+        app:typeface="MULI_SEMIBOLD" />
+</androidx.constraintlayout.widget.ConstraintLayout>

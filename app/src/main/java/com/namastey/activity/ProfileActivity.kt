@@ -398,4 +398,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+    /**
+     * click on album or Edit info open edit profile activity
+     */
+    fun onClickEditProfile(view: View) {
+        openActivity(this@ProfileActivity,EditProfileActivity())
+    }
+
 }

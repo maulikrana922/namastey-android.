@@ -74,6 +74,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetUserDetailAsync().await()
         }
+
     suspend fun requestToGetCategoryList(): AppResponse<ArrayList<CategoryBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetCategoryListAsync().await()
@@ -82,10 +83,23 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestUpdateProfilePicAsync(
         profile_image: MultipartBody.Part,
         deviceType: RequestBody
-        ): AppResponse<User> = withContext(Dispatchers.IO) {
+    ): AppResponse<User> = withContext(Dispatchers.IO) {
         networkRequest.requestUpdateProfilePicAsync(
             profile_image,
             deviceType
         ).await()
     }
+
+    suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
+        withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
+
+    suspend fun requestUpdateEducation(
+        id: String,
+        college: String,
+        year: String
+    ): AppResponse<EducationBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.updateEducationAsync(id, college, year).await()
+        }
+
 }

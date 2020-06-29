@@ -25,6 +25,9 @@ object Constants {
     const val GET_USER_DETAIL = "user-detail"
     const val GET_CATEGORY_LIST = "category-list"
     const val UPDATE_PROFILE_PIC = "profile/media/add"
+    const val ADD_EDUCATION = "education/add"
+    const val VIEW_EDUCATION = "education/view"
+    const val UPDATE_EDUCATION = "education/update"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -76,9 +79,11 @@ object Constants {
     const val KEY_GENDER = "KEY_GENDER"
     const val KEY_IS_GUEST_USER = "KEY_IS_GUEST_USER"
     const val KEY_CATEGORY_LIST = "KEY_CATEGORY_LIST"
+    const val KEY_EDUCATION = "KEY_EDUCATION"
 
 
     //    field key
+    const val ID = "id"
     const val MOBILE = "mobile"
     const val EMAIL = "email"
     const val USERNAME = "username"
@@ -95,6 +100,9 @@ object Constants {
     const val LANGUAGE = "language"
     const val INTEREST = "interest"
     const val COUNTRY_CODE = "countryCode"
+    const val COLLEGE = "college"
+    const val PASSING_YEAR = "passing_year"
+
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
     const val TEXT_PLAIN = "text/plain"

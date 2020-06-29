@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.EditProfileActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ProfileBasicViewModel" />
+    </data>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/green_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivEditProfileBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickEditAlbumBack"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.namastey.customViews.CustomTextView
+                style="@style/tvTitleStyle"
+                android:text="@string/edit_profile"
+                app:layout_constraintEnd_toStartOf="@id/ivEditProfileMore"
+                app:layout_constraintBottom_toBottomOf="@id/ivEditProfileBack"
+                app:layout_constraintStart_toEndOf="@id/ivEditProfileBack"
+                app:layout_constraintTop_toTopOf="@id/ivEditProfileBack" />
+
+            <ImageView
+                android:id="@+id/ivEditProfileMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_more"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivEditProfileBack"
+                app:layout_constraintBottom_toBottomOf="@id/ivEditProfileBack"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:tabSelectedTextColor="@color/colorWhite"
+                app:tabTextColor="@color/colorGray"
+                app:tabRippleColor="@android:color/transparent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgTop"
+                app:tabIndicator="@android:color/transparent"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpagerEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tabEditProfile" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" />
+</FrameLayout>
+</layout>

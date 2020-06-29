@@ -1,4 +1,4 @@
-package com.namastey.activity
+package com.namastey.fragment
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,63 +9,95 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EditProfileActivity
 import com.namastey.dagger.module.ViewModelFactory
-import com.namastey.databinding.ActivityProfileInterestBinding
-import com.namastey.fragment.AddLinksFragment
-import com.namastey.uiView.ProfileInterestView
+import com.namastey.databinding.FragmentEditProfileBinding
+import com.namastey.listeners.OnInteractionWithFragment
+import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
-import com.namastey.viewModel.ProfileInterestViewModel
+import com.namastey.viewModel.ProfileBasicViewModel
+import kotlinx.android.synthetic.main.view_profile_basic_info.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import javax.inject.Inject
 
-class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
-    ProfileInterestView {
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileBasicView,
+    OnInteractionWithFragment {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     @Inject
     lateinit var sessionManager: SessionManager
 
-    private lateinit var profileInterestViewModel: ProfileInterestViewModel
-    private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
+    private lateinit var fragmentEditProfileBinding: FragmentEditProfileBinding
+    private lateinit var layoutView: View
+    private lateinit var profileBasicViewModel: ProfileBasicViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        getActivityComponent().inject(this)
+    override fun getViewModel() = profileBasicViewModel
 
-        profileInterestViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(ProfileInterestViewModel::class.java)
-        activityProfileInterestBinding = bindViewData()
-        activityProfileInterestBinding.viewModel = profileInterestViewModel
+    override fun getLayoutId() = R.layout.fragment_edit_profile
+
+    override fun getBindingVariable() = BR.viewModel
+
+    companion object {
+        fun getInstance() =
+            EditProfileFragment().apply {
+
+            }
+    }
+
+    private fun setupViewModel() {
+        profileBasicViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ProfileBasicViewModel::class.java)
+        profileBasicViewModel.setViewInterface(this)
+
+        fragmentEditProfileBinding = getViewBinding()
+        fragmentEditProfileBinding.viewModel = profileBasicViewModel
 
         initData()
     }
 
     private fun initData() {
 
-//        Log.d("TAG", sessionManager.getCategoryList().toString())
+        (activity as EditProfileActivity).setListenerOfInteractionWithFragment(this)
+
+        rangeProfileAge.setMaxStartValue(45f)
+        rangeProfileAge.apply()
+        rangeProfileAge.setOnRangeSeekbarChangeListener(OnRangeSeekbarChangeListener { minValue, maxValue ->
+            tvProfileAgeValue.text = "$minValue and $maxValue"
+        })
+
         generateProfileTagUI()
     }
 
-    /**
-     * Create dynamic layout as per category selected
-     */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getActivityComponent().inject(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutView = view
+//        setupViewModel()
+
+        initData()
+
+    }
     private fun generateProfileTagUI() {
         var profileTagCount = 0
         if (sessionManager.getCategoryList().size > 0) {
-
             for (categoryBean in sessionManager.getCategoryList()) {
-                var layoutInflater = LayoutInflater.from(this@ProfileInterestActivity)
+                var layoutInflater = LayoutInflater.from(requireActivity())
                 var view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
                 view.tvCategory.text = categoryBean.name.toString()
 
                 for (subCategoryBean in categoryBean.sub_category) {
-                    val tvCategory = TextView(this)
+                    val tvCategory = TextView(requireActivity())
                     tvCategory.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -81,7 +113,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                     tvCategory.setOnClickListener {
 
                         if (tvCategory.background.constantState == ContextCompat.getDrawable(
-                                this@ProfileInterestActivity,
+                                requireActivity(),
                                 R.drawable.rounded_gray_solid
                             )?.constantState
                         ) {
@@ -119,42 +151,59 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                             0
                         )
                     }
-//                    }
                 }
             }
         }
     }
 
-    override fun getViewModel() = profileInterestViewModel
 
-    override fun getLayoutId() = R.layout.activity_profile_interest
-
-    override fun getBindingVariable() = BR.viewModel
-
-    fun onClickInterestBack(view: View) {
-        onBackPressed()
+    override fun onClickOfFragmentView(view: View) {
+        onClick(view)
     }
 
-    override fun onBackPressed() {
-
-        if (supportFragmentManager.backStackEntryCount > 0)
-            supportFragmentManager.popBackStack()
-        else
-            finishActivity()
-    }
-
-    fun onClickSelectInterest(view: View){
-        when(view){
-            ivAddLink ->{
-                addFragment(AddLinksFragment.getInstance(), Constants.ADD_LINKS_FRAGMENT)
+    private fun onClick(view: View) {
+        when (view) {
+            tvProfileSelectCategory -> {
+                (activity as EditProfileActivity).addFragment(
+                    SelectCategoryFragment.getInstance(
+                    ),
+                    Constants.SELECT_CATEGORY_FRAGMENT
+                )
+            }
+            tvProfileInterestIn -> {
+                (activity as EditProfileActivity).addFragment(
+                    InterestInFragment.getInstance(
+                    ),
+                    Constants.INTEREST_IN_FRAGMENT
+                )
+            }
+            tvProfileEducation -> {
+                (activity as EditProfileActivity).addFragment(
+                    EducationFragment.getInstance(
+                    ),
+                    Constants.EDUCATION_FRAGMENT
+                )
+            }
+            tvProfileJobs -> {
+                (activity as EditProfileActivity).addFragment(
+                    JobFragment.getInstance(
+                    ),
+                    Constants.JOB_FRAGMENT
+                )
+            }
+            // click on add link button open new fragment social link
+            ivAddLink -> {
+                (activity as EditProfileActivity).addFragment(
+                    AddLinksFragment.getInstance(),
+                    Constants.ADD_LINKS_FRAGMENT
+                )
             }
         }
-    }
-    /**
-     * click on next button open create album screen
-     */
-    fun onClickNextInterest(view: View) {
-        openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
+
     }
 
+//    override fun onDestroy() {
+//        profileBasicViewModel.onDestroy()
+//        super.onDestroy()
+//    }
 }

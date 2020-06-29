@@ -90,6 +90,7 @@
                 android:id="@+id/btnCreateAlbumNext"
                 style="@style/btnRedStyle"
                 android:text="@string/finish"
+                android:onClick="onClickFinish"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/btnAddAlbum"
                 app:layout_constraintStart_toStartOf="@id/btnAddAlbum"

@@ -228,23 +228,51 @@
                 app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
 
             <com.namastey.customViews.CustomButton
+                android:visibility="invisible"
                 android:id="@+id/btnProfileSignup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                style="@style/btnRedStyle"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_red_solid"
                 android:text="@string/btn_signup"
                 android:onClick="onClickSign"
-                android:textAllCaps="false"
-                app:typeface="MULI_SEMIBOLD"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                 app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
                 app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupButtons"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btnProfileAlbums,btnEditProfile"/>
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnProfileAlbums"
+                style="@style/btnRedStyle"
+                android:minHeight="@dimen/_32sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="@string/albums"
+                android:textColor="@color/colorButtonRed"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
+                android:background="@drawable/rounded_white_solid_red_border"
+                app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnEditProfile"
+                style="@style/btnRedStyle"
+                android:minHeight="@dimen/_32sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="@string/edit_info"
+                android:onClick="onClickEditProfile"
+                app:layout_constraintStart_toEndOf="@+id/btnProfileAlbums"
+                app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
 
             <ImageView
                 android:id="@+id/ivProfilePassport"

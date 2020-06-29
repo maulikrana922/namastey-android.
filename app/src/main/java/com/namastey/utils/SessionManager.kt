@@ -8,8 +8,10 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.namastey.model.CategoryBean
+import com.namastey.model.EducationBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
+import com.namastey.utils.Constants.KEY_EDUCATION
 import com.namastey.utils.Constants.KEY_GENDER
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
 import com.namastey.utils.Constants.KEY_IS_GUEST_USER
@@ -169,5 +171,18 @@ class SessionManager(context: Context) {
             str,
             listType
         ) else ArrayList<CategoryBean>()
+    }
+
+    fun setEducationBean(educationBean: EducationBean) {
+        val e = mPrefs.edit()
+        e.putString(KEY_EDUCATION, Gson().toJson(educationBean))
+    }
+
+    fun getEducationBean(): EducationBean {
+        val str = mPrefs.getString(KEY_EDUCATION, "")!!
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            EducationBean::class.java
+        ) else EducationBean()
     }
 }

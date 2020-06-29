@@ -123,6 +123,8 @@
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
     <string name="age_message">Your age between</string>
+    <string name="albums">Albums</string>
+    <string name="edit_info">Edit Info</string>
 
     <string name="choose_minimum_category">Choose a minimum of 03</string>
     <string name="select_interest">Select Interest</string>
@@ -134,6 +136,8 @@
     <string name="add_education">Add Edcation</string>
     <string name="hint_enter_name">Enter college name</string>
     <string name="hint_enter_year">Enter year</string>
+    <string name="msg_empty_college_name">Please enter college name</string>
+    <string name="msg_empty_year">Please enter passing year</string>
 
     <string name="add_job">Add a Job</string>
     <string name="hint_title">Title</string>
@@ -149,8 +153,11 @@
     <string name="linkedin">Linkedin</string>
     <string name="profile_tag">Profile tag</string>
 
-<!--    create album screen-->
+    <!--    create album screen-->
     <string name="create_albums">Create Albums</string>
     <string name="add_album">Add Album</string>
     <string name="hint_album_name">Enter Album Name</string>
+
+<!--    Edit profile -->
+    <string name="edit_profile">Edit Profile</string>
 </resources>

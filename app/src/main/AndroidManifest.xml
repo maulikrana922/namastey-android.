@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.CreateAlbumActivity"></activity>
+        <activity android:name=".activity.EditProfileActivity"></activity>
+        <activity android:name=".activity.CreateAlbumActivity" />
         <activity android:name=".activity.ProfileInterestActivity" />
         <activity android:name=".activity.ProfileBasicInfoActivity" />
         <activity android:name=".activity.FilterActivity" />

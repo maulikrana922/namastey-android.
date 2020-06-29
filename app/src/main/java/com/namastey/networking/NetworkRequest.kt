@@ -79,4 +79,16 @@ interface NetworkRequest {
         @Part file: MultipartBody.Part,
         @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
     ): Deferred<AppResponse<User>>
+
+    @FormUrlEncoded
+    @POST(Constants.ADD_EDUCATION)
+    fun addEducationAsync(
+        @Field(Constants.COLLEGE) college: String, @Field(Constants.PASSING_YEAR) year: String
+    ): Deferred<AppResponse<EducationBean>>
+
+    @FormUrlEncoded
+    @PUT(Constants.UPDATE_EDUCATION)
+    fun updateEducationAsync(
+        @Field(Constants.ID) id: String, @Field(Constants.COLLEGE) college: String, @Field(Constants.PASSING_YEAR) year: String
+    ): Deferred<AppResponse<EducationBean>>
 }
