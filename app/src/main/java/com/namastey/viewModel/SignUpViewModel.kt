@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.google.gson.JsonObject
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -23,15 +24,29 @@ class SignUpViewModel constructor(
         signUpView.skipLogin()
     }
 
-    fun socialLogin(email: String, username: String, provider: String, providerId: String) {
+    fun socialLogin(
+        email: String,
+        username: String,
+        provider: String,
+        providerId: String,
+        user_uniqueId: String
+    ) {
         setIsLoading(true)
+        val jsonObject = JsonObject()
+        jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
+        jsonObject.addProperty(Constants.EMAIL, email)
+        jsonObject.addProperty(Constants.USERNAME, username)
+        jsonObject.addProperty(Constants.PROVIDER, provider)
+        jsonObject.addProperty(Constants.PROVIDER_ID, providerId)
+        if (user_uniqueId.isNotEmpty()) {
+            jsonObject.addProperty(Constants.IS_GUEST, 1)
+            jsonObject.addProperty(Constants.USER_UNIQUEID, user_uniqueId)
+        }
+
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 networkService.requestSocialLogin(
-                    email,
-                    username,
-                    provider,
-                    providerId
+                    jsonObject
                 )
                     .let { response ->
                         setIsLoading(false)

@@ -49,6 +49,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             isFromProfile = arguments!!.getBoolean("isFromProfile",false)
         }
         if (isFromProfile){
+            sessionManager.setGuestUser(false)
             removeAllFragment(fragmentManager!!)
             openActivity(requireActivity(), ProfileBasicInfoActivity())
         }else{

@@ -219,7 +219,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
                 email,
                 "$firstName $lastName",
                 Constants.GOOGLE,
-                providerId
+                providerId,
+                ""
             )
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -291,7 +292,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
                                     email,
                                     "$firstName $lastName",
                                     Constants.FACEBOOK,
-                                    providerId
+                                    providerId,
+                                    ""
                                 )
                             } catch (e: JSONException) {
                                 e.printStackTrace()
@@ -372,7 +374,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
             email,
             name,
             Constants.SNAPCHAT,
-            providerId
+            providerId,
+            ""
         )
     }
 

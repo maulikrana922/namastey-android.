@@ -16,9 +16,8 @@ interface NetworkRequest {
     @GET(Constants.GET_COUNTRY)
     fun requestToGetCountryAsync(): Deferred<AppResponse<ArrayList<Country>>>
 
-    @FormUrlEncoded
     @POST(Constants.REGISTER)
-    fun sendOTPAsync(@Field(Constants.MOBILE) phone: String, @Field(Constants.EMAIL) email: String): Deferred<AppResponse<User>>
+    fun sendOTPAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<User>>
 
     @FormUrlEncoded
     @POST(Constants.VERIFY_OTP)
@@ -35,14 +34,9 @@ interface NetworkRequest {
     @GET(Constants.GET_INTEREST_LIST)
     fun requestToGetChooseInterestAsync(): Deferred<AppResponse<ArrayList<InterestBean>>>
 
-    @FormUrlEncoded
     @POST(Constants.SOCIAL_LOGIN)
     fun requestSocialLoginAsync(
-        @Field(Constants.EMAIL) email: String,
-        @Field(Constants.USERNAME) firstName: String,
-        @Field(Constants.PROVIDER) provider: String,
-        @Field(Constants.PROVIDER_ID) provider_id: String,
-        @Field(Constants.DEVICE_TYPE) deviceType: String = Constants.ANDROID
+        @Body jsonObject: JsonObject
     ): Deferred<AppResponse<User>>
 
     @POST(Constants.REGISTER_GUEST)

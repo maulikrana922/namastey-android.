@@ -5,6 +5,7 @@ import android.text.InputType
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
@@ -97,8 +98,12 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun onClickNext() {
         var countryCode = ""
         if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.DEVICE_TYPE,Constants.ANDROID)
+
             if (sessionManager.getLoginType().equals(Constants.EMAIL))
-                signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
+                jsonObject.addProperty(Constants.EMAIL,edtEmailPhone.text.toString().trim())
+//                signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
             else {
                 if (country != null) {
                     countryCode =
@@ -106,13 +111,19 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 //                countryCode =
 //                    spinnerPhoneCode.selectedItem.toString()
                 }
-
-                signupWithPhoneModel.sendOTP(
-                    "+" + countryCode + edtEmailPhone.text.toString().trim(),
-                    "",
-                    true
-                )
+                jsonObject.addProperty(Constants.MOBILE,"+" + countryCode + edtEmailPhone.text.toString().trim())
+//                signupWithPhoneModel.sendOTP(
+//                    "+" + countryCode + edtEmailPhone.text.toString().trim(),
+//                    "",
+//                    true
+//                )
             }
+
+            if (isFromProfile){
+                jsonObject.addProperty(Constants.IS_GUEST,1)
+                jsonObject.addProperty(Constants.USER_UNIQUEID,sessionManager.getUserUniqueId())
+            }
+            signupWithPhoneModel.sendOTP(jsonObject)
         }
     }
 

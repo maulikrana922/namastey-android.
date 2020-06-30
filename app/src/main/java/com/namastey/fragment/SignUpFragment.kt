@@ -221,7 +221,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                                     email,
                                     "$firstName $lastName",
                                     Constants.FACEBOOK,
-                                    providerId
+                                    providerId,
+                                    sessionManager.getUserUniqueId()
                                 )
                             } catch (e: JSONException) {
                                 e.printStackTrace()
@@ -290,7 +291,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                 email,
                 "$firstName $lastName",
                 Constants.GOOGLE,
-                providerId
+                providerId,
+                sessionManager.getUserUniqueId()
             )
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -309,7 +311,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
             email,
             name,
             Constants.SNAPCHAT,
-            providerId
+            providerId,
+            sessionManager.getUserUniqueId()
         )
     }
 

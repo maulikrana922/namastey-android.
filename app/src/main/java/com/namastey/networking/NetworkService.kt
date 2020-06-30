@@ -22,8 +22,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetCountryAsync().await()
         }
 
-    suspend fun requestSendOTP(phone: String, email: String): AppResponse<User> =
-        withContext(Dispatchers.IO) { networkRequest.sendOTPAsync(phone, email).await() }
+    suspend fun requestSendOTP(jsonObject: JsonObject): AppResponse<User> =
+        withContext(Dispatchers.IO) { networkRequest.sendOTPAsync(jsonObject).await() }
 
     suspend fun requestVerifyOTP(phone: String, email: String, otp: String): AppResponse<User> =
         withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp).await() }
@@ -38,17 +38,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetChooseInterestAsync().await()
         }
 
-    suspend fun requestSocialLogin(
-        email: String,
-        username: String,
-        provider: String,
-        providerId: String
+    suspend fun requestSocialLogin(jsonObject: JsonObject
     ): AppResponse<User> = withContext(Dispatchers.IO) {
         networkRequest.requestSocialLoginAsync(
-            email,
-            username,
-            provider,
-            providerId
+            jsonObject
         ).await()
     }
 

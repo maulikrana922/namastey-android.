@@ -88,6 +88,7 @@ object Constants {
     const val ID = "id"
     const val MOBILE = "mobile"
     const val EMAIL = "email"
+    const val IS_GUEST = "isGuest"
     const val USERNAME = "username"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"

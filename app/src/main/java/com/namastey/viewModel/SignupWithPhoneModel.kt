@@ -1,6 +1,7 @@
 package com.namastey.viewModel
 
 import android.text.TextUtils
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
@@ -35,13 +36,13 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
     fun onClickCountry(){
         signupWithPhoneView.onClickCountry()
     }
-    fun sendOTP(phone: String, email: String,isPhone: Boolean) {
+    fun sendOTP(jsonObject: JsonObject) {
 
             setIsLoading(true)
             job = GlobalScope.launch(Dispatchers.Main){
                 try {
                     if (signupWithPhoneView.isInternetAvailable()){
-                        networkService.requestSendOTP(phone,email).let { appResponse: AppResponse<User> ->
+                        networkService.requestSendOTP(jsonObject).let { appResponse: AppResponse<User> ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK){
                                 signupWithPhoneView.onSuccessResponse(appResponse.data!!)
