@@ -28,6 +28,7 @@ object Constants {
     const val ADD_EDUCATION = "education/add"
     const val VIEW_EDUCATION = "education/view"
     const val UPDATE_EDUCATION = "education/update"
+    const val ADD_UPDATE_JOB = "add-job"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -80,6 +81,7 @@ object Constants {
     const val KEY_IS_GUEST_USER = "KEY_IS_GUEST_USER"
     const val KEY_CATEGORY_LIST = "KEY_CATEGORY_LIST"
     const val KEY_EDUCATION = "KEY_EDUCATION"
+    const val KEY_JOB = "KEY_JOB"
 
 
     //    field key
@@ -102,6 +104,9 @@ object Constants {
     const val COUNTRY_CODE = "countryCode"
     const val COLLEGE = "college"
     const val PASSING_YEAR = "passing_year"
+    const val JOB_ID = "job_id"
+    const val TITLE = "title"
+    const val COMPANY_NAME = "company_name"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

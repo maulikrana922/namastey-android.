@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.namastey.model.CategoryBean
 import com.namastey.model.EducationBean
+import com.namastey.model.JobBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
@@ -17,6 +18,7 @@ import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
 import com.namastey.utils.Constants.KEY_IS_GUEST_USER
 import com.namastey.utils.Constants.KEY_IS_LOGIN
 import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
+import com.namastey.utils.Constants.KEY_JOB
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
@@ -176,6 +178,7 @@ class SessionManager(context: Context) {
     fun setEducationBean(educationBean: EducationBean) {
         val e = mPrefs.edit()
         e.putString(KEY_EDUCATION, Gson().toJson(educationBean))
+        e.apply()
     }
 
     fun getEducationBean(): EducationBean {
@@ -184,5 +187,19 @@ class SessionManager(context: Context) {
             str,
             EducationBean::class.java
         ) else EducationBean()
+    }
+
+    fun setJobBean(jobBean: JobBean) {
+        val e = mPrefs.edit()
+        e.putString(KEY_JOB, Gson().toJson(jobBean))
+        e.apply()
+    }
+
+    fun getJobBean(): JobBean {
+        val str = mPrefs.getString(KEY_JOB, "")!!
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            JobBean()::class.java
+        ) else JobBean()
     }
 }

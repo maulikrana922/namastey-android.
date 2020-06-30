@@ -228,7 +228,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
 
             <com.namastey.customViews.CustomButton
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:id="@+id/btnProfileSignup"
                 style="@style/btnRedStyle"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -242,7 +242,7 @@
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/groupButtons"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="btnProfileAlbums,btnEditProfile"/>

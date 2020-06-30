@@ -17,16 +17,6 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     }
     */
 
-    /*If you want to pass params as a form data request*/
-    suspend fun requestLogin(email: String, password: String): AppResponse<User> =
-        withContext(Dispatchers.IO) {
-            networkRequest.requestLoginAsync(email, password).await()
-        }
-
-    suspend fun requestLogout(): AppResponse<Any> = withContext(Dispatchers.IO) {
-        networkRequest.requestLogout().await()
-    }
-
     suspend fun requestToGetCountry(): AppResponse<ArrayList<Country>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetCountryAsync().await()
@@ -102,4 +92,6 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.updateEducationAsync(id, college, year).await()
         }
 
+    suspend fun requestAddUpdateJob(jsonObject: JsonObject): AppResponse<JobBean> =
+        withContext(Dispatchers.IO) { networkRequest.addUpdateJobAsync(jsonObject).await() }
 }

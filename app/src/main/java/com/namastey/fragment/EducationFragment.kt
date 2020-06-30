@@ -91,15 +91,19 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
             }
             btnEducationDone -> {
                 Utils.hideKeyboard(requireActivity())
-                if (TextUtils.isEmpty(edtCollegeName.text.toString())){
-                    showMsg(getString(R.string.msg_empty_college_name))
-                }else if (TextUtils.isEmpty(edtEducationYear.text.toString())){
-                    showMsg(getString(R.string.msg_empty_year))
-                }else{
-                    if (sessionManager.getEducationBean().collegeName.isEmpty())
-                        educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
-                    else
-                        educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_id,edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
+                when {
+                    TextUtils.isEmpty(edtCollegeName.text.toString()) -> {
+                        showMsg(getString(R.string.msg_empty_college_name))
+                    }
+                    TextUtils.isEmpty(edtEducationYear.text.toString()) -> {
+                        showMsg(getString(R.string.msg_empty_year))
+                    }
+                    else -> {
+                        if (sessionManager.getEducationBean().collegeName.isEmpty())
+                            educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
+                        else
+                            educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_Id,edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
+                    }
                 }
             }
         }
