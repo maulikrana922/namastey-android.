@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
 import com.namastey.activity.ProfileBasicInfoActivity
+import com.namastey.activity.ProfileInterestActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -47,6 +48,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileActivity).showMsg(msgId)
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).showMsg(msgId)
+        else if (activity != null && activity!! is ProfileInterestActivity)
+            (activity!! as ProfileInterestActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -56,6 +59,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileActivity).showMsg(msg)
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).showMsg(msg)
+        else if (activity != null && activity!! is ProfileInterestActivity)
+            (activity!! as ProfileInterestActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -65,6 +70,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileActivity).hideKeyboard()
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).hideKeyboard()
+        else if (activity != null && activity!! is ProfileInterestActivity)
+            (activity!! as ProfileInterestActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -78,6 +85,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileActivity).onFailed(msg, error)
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is ProfileInterestActivity)
+            (activity!! as ProfileInterestActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -87,6 +96,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileActivity).onHandleException(e)
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).onHandleException(e)
+        else if (activity != null && activity!! is ProfileInterestActivity)
+            (activity!! as ProfileInterestActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -95,6 +106,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is SignUpActivity -> (activity!! as SignUpActivity).isInternetAvailable()
                 activity!! is ProfileActivity -> (activity!! as ProfileActivity).isInternetAvailable()
                 activity!! is ProfileBasicInfoActivity -> (activity!! as ProfileBasicInfoActivity).isInternetAvailable()
+                activity!! is ProfileInterestActivity -> (activity!! as ProfileInterestActivity).isInternetAvailable()
                 else -> false
             }
         } else false

@@ -16,6 +16,7 @@ import com.namastey.activity.EditProfileActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEditProfileBinding
 import com.namastey.listeners.OnInteractionWithFragment
+import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -194,7 +195,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             // click on add link button open new fragment social link
             ivAddLink -> {
                 (activity as EditProfileActivity).addFragment(
-                    AddLinksFragment.getInstance(),
+                    AddLinksFragment.getInstance(true,ArrayList<SocialAccountBean>()),
                     Constants.ADD_LINKS_FRAGMENT
                 )
             }

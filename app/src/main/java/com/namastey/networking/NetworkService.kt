@@ -87,4 +87,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestAddUpdateJob(jsonObject: JsonObject): AppResponse<JobBean> =
         withContext(Dispatchers.IO) { networkRequest.addUpdateJobAsync(jsonObject).await() }
+
+    suspend fun requestAddSocialLinks(jsonObject: JsonObject): AppResponse<ArrayList<SocialAccountBean>> =
+        withContext(Dispatchers.IO) { networkRequest.addSocialLinksAsync(jsonObject).await() }
+
+    suspend fun requestToGetSocialLinksList(): AppResponse<ArrayList<SocialAccountBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetSocialLinksAsync().await()
+        }
 }

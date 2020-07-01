@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileInterestBinding
 import com.namastey.fragment.AddLinksFragment
+import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -33,6 +35,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
+    private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +52,15 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     private fun initData() {
 
 //        Log.d("TAG", sessionManager.getCategoryList().toString())
+        getSocialLinkAPI()
         generateProfileTagUI()
+    }
+
+    /**
+     * Get social link api
+     */
+    private fun getSocialLinkAPI() {
+        profileInterestViewModel.getSocialLink()
     }
 
     /**
@@ -125,6 +136,55 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         }
     }
 
+    override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
+        socialAccountList = data
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }){
+            mainFacebook.visibility = View.VISIBLE
+            tvFacebookLink.text = data.single { s -> s.name == getString(R.string.facebook) }
+                .link
+        }else{
+            mainFacebook.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }){
+            mainInstagram.visibility = View.VISIBLE
+            tvInstagramLink.text = data.single { s -> s.name == getString(R.string.instagram) }
+                .link
+        }else{
+            mainInstagram.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }){
+            mainSnapchat.visibility = View.VISIBLE
+            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
+                .link
+        }else{
+            mainSnapchat.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }){
+            mainTikTok.visibility = View.VISIBLE
+            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
+                .link
+        }else{
+            mainTikTok.visibility = View.GONE
+        }
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }){
+            mainSpotify.visibility = View.VISIBLE
+            tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
+                .link
+        }else{
+            mainSpotify.visibility = View.GONE
+        }
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
+            mainLinkedin.visibility = View.VISIBLE
+            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
+                .link
+        }else{
+            mainLinkedin.visibility = View.GONE
+        }
+    }
+
     override fun getViewModel() = profileInterestViewModel
 
     override fun getLayoutId() = R.layout.activity_profile_interest
@@ -143,10 +203,16 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
             finishActivity()
     }
 
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        if (resultCode == Constants.ADD_LINK){
+            profileInterestViewModel.getSocialLink()
+        }
+    }
     fun onClickSelectInterest(view: View){
         when(view){
             ivAddLink ->{
-                addFragment(AddLinksFragment.getInstance(), Constants.ADD_LINKS_FRAGMENT)
+                addFragment(AddLinksFragment.getInstance(false,socialAccountList), Constants.ADD_LINKS_FRAGMENT)
             }
         }
     }
@@ -157,4 +223,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 
+    override fun onDestroy() {
+        profileInterestViewModel.onDestroy()
+        super.onDestroy()
+    }
 }

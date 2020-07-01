@@ -35,7 +35,6 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
     private lateinit var fragmentChooseInterestBinding: FragmentChooseInterestBinding
     private lateinit var chooseInterestViewModel: ChooseInterestViewModel
     private lateinit var layoutView: View
-    private val interestList: ArrayList<InterestBean> = ArrayList()
     private lateinit var interestAdapter: InterestAdapter
     private var selectInterestIdList: ArrayList<Int> = ArrayList()
 

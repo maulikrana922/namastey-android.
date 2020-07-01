@@ -29,6 +29,9 @@ object Constants {
     const val VIEW_EDUCATION = "education/view"
     const val UPDATE_EDUCATION = "education/update"
     const val ADD_UPDATE_JOB = "add-job"
+    const val REMOVE_JOB = "job-remove"
+    const val ADD_SOCIAL_LINK = "social-links-add"
+    const val GET_SOCIAL_LINK = "social-links-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -108,6 +111,8 @@ object Constants {
     const val JOB_ID = "job_id"
     const val TITLE = "title"
     const val COMPANY_NAME = "company_name"
+    const val NAME = "name"
+    const val LINK = "link"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
@@ -121,6 +126,7 @@ object Constants {
     const val PERMISSION_CAMERA = 102
     const val PERMISSION_STORAGE = 106
     const val FILTER_OK = 107
+    const val ADD_LINK = 108
 
     private val ROOT = File.separator + "BRE"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path

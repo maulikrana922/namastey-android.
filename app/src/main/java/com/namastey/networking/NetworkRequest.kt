@@ -72,4 +72,10 @@ interface NetworkRequest {
     @POST(Constants.ADD_UPDATE_JOB)
     fun addUpdateJobAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<JobBean>>
 
+    @POST(Constants.ADD_SOCIAL_LINK)
+    fun addSocialLinksAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<ArrayList<SocialAccountBean>>>
+
+    @GET(Constants.GET_SOCIAL_LINK)
+    fun requestToGetSocialLinksAsync(): Deferred<AppResponse<ArrayList<SocialAccountBean>>>
+
 }

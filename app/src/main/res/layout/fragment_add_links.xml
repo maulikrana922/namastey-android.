@@ -199,8 +199,8 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:textSize="14sp"
                         android:textColor="@color/color_blue_facebook"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                         app:layout_constraintStart_toStartOf="@id/tvFacebook"
@@ -252,8 +252,8 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:textSize="14sp"
                         android:textColor="@color/color_tiktok"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvTiktok"
                         app:layout_constraintStart_toStartOf="@id/tvTiktok"
@@ -305,8 +305,8 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:textSize="14sp"
                         android:textColor="@color/color_instagram"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvInstagram"
                         app:layout_constraintStart_toStartOf="@id/tvInstagram"
@@ -358,8 +358,8 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:textSize="14sp"
                         android:textColor="@color/color_spotify"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvSpotify"
                         app:layout_constraintStart_toStartOf="@id/tvSpotify"
@@ -411,8 +411,8 @@
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:textSize="14sp"
                         android:textColor="@color/color_linkedin"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvLinkedin"
                         app:layout_constraintStart_toStartOf="@id/tvLinkedin"
@@ -420,6 +420,18 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
