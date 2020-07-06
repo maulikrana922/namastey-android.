@@ -13,8 +13,8 @@ import com.namastey.R
 import com.namastey.adapter.ViewPagerAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityEditProfileBinding
+import com.namastey.fragment.AlbumFragment
 import com.namastey.fragment.EditProfileFragment
-import com.namastey.fragment.FollowersFragment
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -58,7 +58,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFrag(EditProfileFragment(), resources.getString(R.string.basic_info))
-        adapter.addFrag(FollowersFragment(), resources.getString(R.string.albums))
+        adapter.addFrag(AlbumFragment(), resources.getString(R.string.albums))
         viewpagerEditProfile.adapter = adapter
 
     }

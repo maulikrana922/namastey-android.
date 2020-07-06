@@ -60,7 +60,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     private fun initData() {
 
-//        profileViewModel.getUserDetails(sessionManager.getAccessToken())
+        profileViewModel.getUserDetails(sessionManager.getAccessToken())
         if (sessionManager.getUserGender().equals(Constants.Gender.female.name)) {
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)

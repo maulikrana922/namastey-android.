@@ -35,6 +35,7 @@
     <string name="send_otp">Send OTP</string>
     <string name="confirm">Confirm</string>
     <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
 
     <string name="tv_veryfi_otp">Veryfi OTP</string>
@@ -133,21 +134,21 @@
     <string name="women">Women</string>
     <string name="everyone">Everyone</string>
 
-<!--    Add education fragment-->
+    <!--    Add education fragment-->
     <string name="add_education">Add Edcation</string>
     <string name="hint_enter_name">Enter college name</string>
     <string name="hint_enter_year">Enter year</string>
     <string name="msg_empty_college_name">Please enter college name</string>
     <string name="msg_empty_year">Please enter passing year</string>
 
-<!--    Add job fragment-->
+    <!--    Add job fragment-->
     <string name="add_job">Add a Job</string>
     <string name="hint_title">Title</string>
     <string name="hint_company">Company (or just industry)</string>
     <string name="msg_empty_job_title">Please enter job title</string>
     <string name="msg_empty_job_company">Please enter company name</string>
 
-<!--    Add link fragment-->
+    <!--    Add link fragment-->
     <string name="add_links">Add Links</string>
     <string name="save">Save</string>
     <string name="snapchat">Snapchat</string>
@@ -162,7 +163,24 @@
     <string name="create_albums">Create Albums</string>
     <string name="add_album">Add Album</string>
     <string name="hint_album_name">Enter Album Name</string>
+    <string name="uploads">Uploads</string>
+    <string name="select_video">Select Video</string>
+    <string name="take_video">Take Video</string>
+    <string name="msg_save_album">Please save album</string>
 
-<!--    Edit profile -->
+<!--    Post video screen-->
+    <string name="post">Post</string>
+    <string name="select_cover">Select cover</string>
+    <string name="hint_video_desc">Describe you video</string>
+    <string name="add_to">Add to</string>
+    <string name="shared_with">Shared with</string>
+    <string name="friends">Friends</string>
+    <string name="no_one">No one</string>
+    <string name="comments_off">Comments Off</string>
+    <string name="automatically_share">Automatically share to</string>
+    <string name="msg_empty_video_desc">Please enter video description</string>
+    <string name="msg_empty_cover_image">Please select cover image</string>
+
+    <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
 </resources>

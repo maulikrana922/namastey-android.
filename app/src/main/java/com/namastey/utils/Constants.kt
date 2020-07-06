@@ -32,6 +32,10 @@ object Constants {
     const val REMOVE_JOB = "job-remove"
     const val ADD_SOCIAL_LINK = "social-links-add"
     const val GET_SOCIAL_LINK = "social-links-list"
+    const val ADD_ALBUM = "add-album"
+    const val GET_ALBUM = "album-list"
+    const val POST_VIDEO = "post-video"
+    const val ADD_MEDIA = "add-media"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -113,9 +117,18 @@ object Constants {
     const val COMPANY_NAME = "company_name"
     const val NAME = "name"
     const val LINK = "link"
+    const val ALBUM_ID = "album_id"
+    const val DESCRIPTION = "description"
+    const val SHARE_WITH = "share_with"
+    const val IS_COMMENT = "is_comment"
+    const val COVER_IMAGE = "cover_image"
+    const val TAG_POST_VIDEO = "post_video"
+    const val POST_VIDEO_ID = "post_video_id"
+    const val FILE_TYPE = "file_type"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
+    const val VIDEO_TYPE = "video/*"
     const val TEXT_PLAIN = "text/plain"
 
 //    Other constants
@@ -128,7 +141,7 @@ object Constants {
     const val FILTER_OK = 107
     const val ADD_LINK = 108
 
-    private val ROOT = File.separator + "BRE"
+    private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path
     val FILE_PATH = SD_CARD_PATH.plus(ROOT)
 

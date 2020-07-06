@@ -188,6 +188,21 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    fun openActivity(
+        intent: Intent
+    ) {
+        startActivity(intent)
+        startActivityForResult(intent,200)
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+    fun openActivityForResult(
+        intent: Intent,
+        resultCode: Int
+    ) {
+        startActivityForResult(intent,resultCode)
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
     fun finishActivity(){
         finish()
         overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left)

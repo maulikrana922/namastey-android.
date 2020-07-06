@@ -35,6 +35,16 @@
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cardForegroundColor">@color/colorWhite</item>
     </style>
+
+    <style name="choose_photo" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_up</item>
+        <item name="android:windowExitAnimation">@anim/nothing</item>
+    </style>
+
     <style name="tvWrapWhiteStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>

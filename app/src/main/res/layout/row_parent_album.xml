@@ -23,13 +23,13 @@
         app:typeface="MULI_SEMIBOLD" />
 
     <ImageView
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/ivEditAlbum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_10sdp"
         android:padding="@dimen/_5sdp"
-        android:src="@drawable/ic_done_red"
+        android:src="@drawable/ic_edit_gray"
         app:layout_constraintBottom_toBottomOf="@id/edtAlbumName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/edtAlbumName" />
@@ -56,8 +56,22 @@
         app:layout_constraintTop_toBottomOf="@id/viewDivider">
 
         <ImageView
+            android:id="@+id/ivAddVideo"
+            android:padding="@dimen/_10sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_album" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChildAlbumPost"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@id/llAddAlbum"
+        app:layout_constraintBottom_toBottomOf="@id/llAddAlbum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/llAddAlbum"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -78,4 +78,27 @@ interface NetworkRequest {
     @GET(Constants.GET_SOCIAL_LINK)
     fun requestToGetSocialLinksAsync(): Deferred<AppResponse<ArrayList<SocialAccountBean>>>
 
+    @POST(Constants.ADD_ALBUM)
+    fun addAlbumAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<AlbumBean>>
+
+    @GET(Constants.GET_ALBUM)
+    fun requestToGetAlbumListAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.POST_VIDEO)
+    fun postVideoAsync(
+        @Field(Constants.DESCRIPTION) description: String, @Field(Constants.ALBUM_ID) album_id: Long, @Field(
+            Constants.SHARE_WITH
+        ) share_with: Int,
+        @Field(Constants.IS_COMMENT) is_comment: Int
+    ): Deferred<AppResponse<VideoBean>>
+
+    @Multipart
+    @POST(Constants.ADD_MEDIA)
+    fun requestToAddMediaAsync(
+        @Part post_video: MultipartBody.Part,
+        @Part(Constants.FILE_TYPE) fileType: RequestBody,
+        @Part(Constants.POST_VIDEO_ID) postVideoId: RequestBody,
+        @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
+    ): Deferred<AppResponse<VideoBean>>
 }

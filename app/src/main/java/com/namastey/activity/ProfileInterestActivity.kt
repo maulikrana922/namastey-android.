@@ -3,6 +3,7 @@ package com.namastey.activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
     private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
+    private var categoryIdList: ArrayList<Int> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,12 +98,14 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                                 R.drawable.rounded_gray_solid
                             )?.constantState
                         ) {
+                            categoryIdList.add(subCategoryBean.id)
                             ++profileTagCount
                             Utils.rectangleShapeGradient(
                                 tvCategory, resources.getColor(R.color.gradient_six_start),
                                 resources.getColor(R.color.gradient_six_end)
                             )
                         } else {
+                            categoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
                             tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
                         }
@@ -220,6 +224,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
      * click on next button open create album screen
      */
     fun onClickNextInterest(view: View) {
+//        Log.d("Profile: ",categoryIdList.toString())
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 

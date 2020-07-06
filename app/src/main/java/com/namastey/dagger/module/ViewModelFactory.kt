@@ -127,6 +127,16 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(AlbumViewModel::class.java) -> AlbumViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(PostVideoViewModel::class.java) -> PostVideoViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }
