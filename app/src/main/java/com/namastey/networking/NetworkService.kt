@@ -54,9 +54,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         ).await()
     }
 
-    suspend fun requestToGetUserDetail(): AppResponse<DashboardBean> =
+    suspend fun requestToGetUserDetail(): AppResponse<ProfileBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetUserDetailAsync().await()
+        }
+
+    suspend fun requestToGetUserFullProfile(): AppResponse<ProfileBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetUserFullProfileAsync().await()
         }
 
     suspend fun requestToGetCategoryList(): AppResponse<ArrayList<CategoryBean>> =
@@ -73,6 +78,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             deviceType
         ).await()
     }
+
+    suspend fun requestToGetProfilePic(): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetProfilePicAsync().await()
+        }
 
     suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
         withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
@@ -100,9 +110,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestAddUpdateAlbum(jsonObject: JsonObject): AppResponse<AlbumBean> =
         withContext(Dispatchers.IO) { networkRequest.addAlbumAsync(jsonObject).await() }
 
-    suspend fun requestToGetAlbumListList(): AppResponse<ArrayList<AlbumBean>> =
+    suspend fun requestToGetAlbumList(): AppResponse<ArrayList<AlbumBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetAlbumListAsync().await()
+        }
+
+    suspend fun requestToGetAlbumWithDetails(): AppResponse<ArrayList<AlbumBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetAlbumWithDetailsAsync().await()
         }
 
     suspend fun requestPostVideo(
@@ -133,5 +148,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             rbDeviceType
         ).await()
     }
+
+    suspend fun requestCreateProfile(jsonObject: JsonObject): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestCreateProfileAsync(jsonObject).await() }
+
+    suspend fun requestToDeletePost(jsonObject: JsonObject): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestToDeletePostAsync(jsonObject).await() }
 
 }

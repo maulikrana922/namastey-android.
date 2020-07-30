@@ -11,9 +11,11 @@ import com.namastey.model.CategoryBean
 import com.namastey.model.EducationBean
 import com.namastey.model.JobBean
 import com.namastey.utils.Constants.EMAIL
+import com.namastey.utils.Constants.KEY_CASUAL_NAME
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
 import com.namastey.utils.Constants.KEY_GENDER
+import com.namastey.utils.Constants.KEY_INTEREST_IN
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
 import com.namastey.utils.Constants.KEY_IS_GUEST_USER
 import com.namastey.utils.Constants.KEY_IS_LOGIN
@@ -202,4 +204,35 @@ class SessionManager(context: Context) {
             JobBean()::class.java
         ) else JobBean()
     }
+
+    fun getInterestIn(): Int {
+        return mPrefs.getInt(KEY_INTEREST_IN, 0)!!
+    }
+
+    fun setInterestIn(interestId: Int) {
+        val e = mPrefs.edit()
+        e.putInt(KEY_INTEREST_IN, interestId)
+        e.apply()
+    }
+
+    fun setStringValue(value: String,key:String) {
+        val e = mPrefs.edit()
+        e.putString(key, value)
+        e.apply()
+    }
+
+    fun getStringValue(key: String): String {
+        return mPrefs.getString(key, "")!!
+    }
+
+    fun setLongValue(value: Long,key:String) {
+        val e = mPrefs.edit()
+        e.putLong(key, value)
+        e.apply()
+    }
+
+    fun getLongValue(key: String): Long {
+        return mPrefs.getLong(key, 0)!!
+    }
+
 }

@@ -103,6 +103,7 @@ dependencies {
 
 //    Google play services
     implementation "com.google.android.gms:play-services-auth:$playServiceVersion"
+//    implementation "com.google.android.gms:play-services-location:$playServiceVersion"
 
 //    Date picker like ios
 //    implementation 'com.github.florent37:singledateandtimepicker:2.2.5'
@@ -118,7 +119,8 @@ dependencies {
             "com.snapchat.kit.sdk:core:$snapchatVersion"
     ])
     implementation project(path: ':dateandtimepicker')
-
+    implementation project(path: ':videothumb')
+//    implementation "org.buffer.android:android-utils:0.3"
 //    Used for range display
     implementation 'com.crystal:crystalrangeseekbar:1.1.3'
 }

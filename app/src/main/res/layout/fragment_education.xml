@@ -94,19 +94,19 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:hint="@string/hint_enter_name"
             android:singleLine="true"
+            android:maxLength="35"
             android:imeOptions="actionNext"
             app:layout_constraintTop_toBottomOf="@id/tvAddEducation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.namastey.customViews.CustomEditText
-            android:id="@+id/edtEducationYear"
+            android:id="@+id/edtEducationCourse"
             style="@style/edtRoundCornerStyle"
             android:layout_marginTop="@dimen/_15sdp"
-            android:hint="@string/hint_enter_name"
-            android:inputType="number"
+            android:hint="@string/hint_enter_cource_title"
             android:singleLine="true"
-            android:maxLength="4"
+            android:maxLength="35"
             app:layout_constraintTop_toBottomOf="@id/edtCollegeName"
             app:layout_constraintStart_toStartOf="@id/edtCollegeName"
             app:layout_constraintEnd_toEndOf="@id/edtCollegeName"/>

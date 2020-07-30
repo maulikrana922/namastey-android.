@@ -2,19 +2,21 @@ package com.namastey.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 
 class AlbumBean() : Parcelable {
 
     var id: Long = 0
     var name: String = ""
+    @SerializedName("video_details")
     var post_video_list: ArrayList<VideoBean> = ArrayList()
-    var is_created: Int  = 1
+    var is_created: Int  = 0
 
     constructor(parcel: Parcel) : this() {
-        parcel.readLong()
-        parcel.readString() ?: ""
-        parcel.createTypedArrayList(VideoBean) ?: ArrayList()
+        id = parcel.readLong()
+        name = parcel.readString() ?: ""
+        post_video_list = parcel.createTypedArrayList(VideoBean) ?: ArrayList()
         is_created = parcel.readInt()
     }
 

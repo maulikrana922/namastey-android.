@@ -67,7 +67,7 @@ class ProfileViewModel constructor(
                         networkService.requestUpdateProfilePicAsync(mbProfile,rbDeviceType).let { appResponse ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK)
-                                profileView.onSuccessProfileResponse(appResponse.data!!)
+                                profileView.onSuccess(appResponse.message)
                             else
                                 profileView.onFailed(appResponse.message, appResponse.error)
                         }

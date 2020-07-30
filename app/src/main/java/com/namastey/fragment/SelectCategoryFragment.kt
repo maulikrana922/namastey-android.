@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -11,6 +12,7 @@ import com.namastey.databinding.FragmentSelectCategoryBinding
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.uiView.ProfileSelectCategoryView
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectCategoryViewModel
 import kotlinx.android.synthetic.main.fragment_select_category.*
@@ -63,6 +65,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
         ivCloseCategory.setOnClickListener(this)
         btnSelectCategoryDone.setOnClickListener(this)
 
+        selectedCategoryList = sessionManager.getCategoryList()
         selectCategoryViewModel.getCategoryList()
     }
 
@@ -85,9 +88,20 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
                 fragmentManager!!.popBackStack()
             }
             btnSelectCategoryDone -> {
-                sessionManager.setCategoryList(ArrayList())
-                sessionManager.setCategoryList(selectedCategoryList)
-                fragmentManager!!.popBackStack()
+                if (selectedCategoryList.size >= 3){
+                    sessionManager.setCategoryList(ArrayList())
+                    sessionManager.setCategoryList(selectedCategoryList)
+                    activity!!.onBackPressed()
+                } else {
+                    object : CustomAlertDialog(
+                        activity!!,
+                        resources.getString(R.string.choose_minimum_category), getString(R.string.ok), ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            dismiss()
+                        }
+                    }.show()
+                }
             }
         }
     }
@@ -100,9 +114,11 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     /**
      * click on adapter category items
      */
+    @SuppressLint("NewApi")
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
         if (selectedCategoryList.any { it.id == categoryBean.id }) {
-            selectedCategoryList.remove(categoryBean)
+//            selectedCategoryList.remove(categoryBean)
+            selectedCategoryList.removeIf { bean -> bean.id == categoryBean.id }
         } else {
             selectedCategoryList.add(categoryBean)
         }

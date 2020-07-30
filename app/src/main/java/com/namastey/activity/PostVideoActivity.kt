@@ -1,29 +1,43 @@
 package com.namastey.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.MediaStore.Images
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.View.OnTouchListener
+import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityPostVideoBinding
+import com.namastey.model.AlbumBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.Utils
 import com.namastey.viewModel.PostVideoViewModel
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import okhttp3.internal.Util
+import org.buffer.android.thumby.ThumbyActivity
+import org.buffer.android.thumby.util.ThumbyUtils
+import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
 
@@ -35,14 +49,17 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private lateinit var activityPostVideoBinding: ActivityPostVideoBinding
     private lateinit var postVideoViewModel: PostVideoViewModel
     private var videoFile: File? = null
-    private var pictuareFile: File? = null
-    private var albumId = 0L
-    private val REQUEST_CODE = 101
+    private var pictureFile: File? = null
+    private var albumBean = AlbumBean()
+    private var albumList: ArrayList<AlbumBean> = ArrayList()
+    private var items: Array<CharSequence> = arrayOf()
+    private val REQUEST_CODE_IMAGE = 101
     private val REQUEST_CODE_CAMERA = 102
+    private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
     private var commentOff = 0
-    var isTouched = false
+    private var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +76,27 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private fun initData() {
 
         if (intent.hasExtra("videoFile")) {
+            albumBean = intent.getParcelableExtra("albumBean") as AlbumBean
             videoFile = intent.getSerializableExtra("videoFile") as File?
-            albumId = intent.getLongExtra("albumId", 0L)
+            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
             Log.d("TAG", videoFile!!.name.toString())
+
+//            GlideLib.loadThumbnailImage(this@PostVideoActivity,ivSelectCover,Uri.fromFile(videoFile))
+//            val thumb: Bitmap =
+//                ThumbnailUtils.createVideoThumbnail(videoFile!!.path, MediaStore.Video.Thumbnails.MINI_KIND)
+
+//            GlideLib.loadImageBitmap(this@PostVideoActivity,ivSelectCover,thumb)
+//            val drawable: BitmapDrawable = ivSelectCover.getDrawable() as BitmapDrawable
+//            val bitmap: Bitmap = drawable.bitmap
+//
+//            val tempUri = getImageUri(applicationContext, thumb)
+//            pictureFile = File(getRealPathFromURI(tempUri))
+
+            val thumb: Bitmap =
+                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
+            GlideLib.loadImageBitmap(this@PostVideoActivity,ivSelectCover,thumb)
+            tvAlbumName.text = albumBean.name
+            postVideoViewModel.getAlbumList()
         }
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->
@@ -80,6 +115,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             }
         })
     }
+
     override fun getViewModel() = postVideoViewModel
 
     override fun getLayoutId() = R.layout.activity_post_video
@@ -89,23 +125,30 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      * success of post video description using this post_video_id call add media api
      */
     override fun onSuccessPostVideoDesc(videoBean: VideoBean) {
-        Log.d("PostVideoActivity",videoBean.toString())
-        postVideoViewModel.addMedia(videoBean.id,videoFile)
+        Log.d("PostVideoActivity", videoBean.toString())
+        postVideoViewModel.addMedia(videoBean.id, videoFile)
     }
 
     override fun onSuccessPostVideo(videoBean: VideoBean) {
-        Log.d("PostVideoActivity",videoBean.toString())
-        postVideoViewModel.addMediaCoverImage(videoBean.id,pictuareFile)
+        Log.d("PostVideoActivity", videoBean.toString())
+        postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
     }
 
     override fun onSuccessPostCoverImage(videoBean: VideoBean) {
-        Log.d("PostVideoActivity",videoBean.toString())
+        Log.d("PostVideoActivity", videoBean.toString())
         val intent = Intent()
-        intent.putExtra("videoBean",videoBean)
-        setResult(Activity.RESULT_OK,intent)
+        intent.putExtra("videoBean", videoBean)
+        setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
     }
 
+
+    /**
+     * successfully got album list
+     */
+    override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
+        albumList = arrayList
+    }
 
     override fun onBackPressed() {
         finishActivity()
@@ -118,10 +161,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     fun onClickPostVideo(view: View) {
         when {
             TextUtils.isEmpty(edtVideoDesc.text.toString()) -> showMsg(getString(R.string.msg_empty_video_desc))
-            pictuareFile == null -> showMsg(getString(R.string.msg_empty_cover_image))
+            pictureFile == null -> showMsg(getString(R.string.msg_empty_cover_image))
             else -> postVideoViewModel.postVideoDesc(
                 edtVideoDesc.text.toString().trim(),
-                albumId,
+                albumBean.id,
                 shareWith,
                 commentOff
             )
@@ -162,20 +205,56 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     private fun openGalleryForImage() {
-        pictuareFile = File(
+        pictureFile = File(
             Constants.FILE_PATH,
             System.currentTimeMillis().toString() + ".jpeg"
         )
 
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE)
+        startActivityForResult(intent, REQUEST_CODE_IMAGE)
+    }
+
+    private fun capturePhoto() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            // Create the File where the photo should go
+            try {
+
+                val photoUri: Uri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    Utils.getCameraFile(this@PostVideoActivity)
+                )
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri)
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+
+                // Continue only if the File was successfully created
+//                if (pictureFile != null) {
+
+//                    var photoURI = FileProvider.getUriForFile(
+//                        this@PostVideoActivity,
+//                        BuildConfig.APPLICATION_ID + ".provider",
+//                        pictureFile!!
+//                    )
+//
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//                    startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+//                }
+            } catch (ex: Exception) {
+                // Error occurred while creating the File
+                showMsg(ex.localizedMessage)
+            }
+        }
+//        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE) {
+            if (requestCode == REQUEST_CODE_IMAGE) {
                 try {
                     val selectedImage = data!!.data
                     val filePathColumn =
@@ -192,14 +271,67 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
                     GlideLib.loadImage(this, ivSelectCover, picturePath)
                     Log.d("Image Path", "Image Path  is $picturePath")
-                    pictuareFile = File(picturePath)
+                    pictureFile = Utils.saveBitmapToFile(File(picturePath))
 
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            } else if (requestCode == REQUEST_CODE_CAMERA) {
+                if (data != null) {
+                    val photoUri = FileProvider.getUriForFile(
+                        this,
+                        applicationContext.packageName + ".provider",
+                        Utils.getCameraFile(this@PostVideoActivity)
+                    )
+                    val bitmap: Bitmap = Utils.scaleBitmapDown(
+                        MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                        1200
+                    )!!
+                    GlideLib.loadImageBitmap(this, ivSelectCover, bitmap)
+//                    GlideLib.loadImageBitmap(this, ivSelectCover, data.extras.get("data") as Bitmap)
+//                    val photo = data.extras["data"] as Bitmap
+//                    val tempUri = Utils.getImageUri(applicationContext, photo)
+//                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
+                    pictureFile = Utils.getCameraFile(this@PostVideoActivity)
+
+//                    pictureFile = Utils.saveBitmapToFile(pictureFile!!)
+                }
+            }else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
+                if (data != null) {
+                    val imageUri = data?.getParcelableExtra(ThumbyActivity.EXTRA_URI) as Uri
+                    val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
+                    val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
+                    Log.d("Image ", "done")
+                    GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, bitmap)
+//                    val tempUri = Utils.getImageUri(applicationContext, bitmap)
+//                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
+                    pictureFile = Utils.bitmapToFile(this@PostVideoActivity,bitmap)
+                }
             }
         }
     }
+
+//    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+//        val bytes = ByteArrayOutputStream()
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+//        val path =
+//            Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+//        return Uri.parse(path)
+//    }
+//    private fun getRealPathFromURI(uri: Uri?): String? {
+//        var path = ""
+//        if (contentResolver != null) {
+//            val cursor =
+//                contentResolver.query(uri, null, null, null, null)
+//            if (cursor != null) {
+//                cursor.moveToFirst()
+//                val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
+//                path = cursor.getString(idx)
+//                cursor.close()
+//            }
+//        }
+//        return path
+//    }
 
     private fun selectImage() {
         bottomSheetDialog = BottomSheetDialog(this@PostVideoActivity, R.style.choose_photo)
@@ -214,14 +346,21 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.tvPhotoTake.text = getString(R.string.take_photo)
         bottomSheetDialog.tvPhotoChoose.text = getString(R.string.select_photo)
+        bottomSheetDialog.tvFromVideo.visibility = View.VISIBLE
 
         bottomSheetDialog.tvPhotoTake.setOnClickListener {
             bottomSheetDialog.dismiss()
+            capturePhoto()
 
         }
         bottomSheetDialog.tvPhotoChoose.setOnClickListener {
             bottomSheetDialog.dismiss()
             openGalleryForImage()
+        }
+        bottomSheetDialog.tvFromVideo.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            var videoUri = Uri.fromFile(videoFile)
+            startActivityForResult(ThumbyActivity.getStartIntent(this, videoUri), RESULT_CODE_PICK_THUMBNAIL)
         }
         bottomSheetDialog.tvPhotoCancel.setOnClickListener {
             bottomSheetDialog.dismiss()
@@ -239,6 +378,40 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     fun onClickSelectImage(view: View) {
         selectImage()
+    }
+
+    /**
+     *  click on album name open list of album. select album to add video
+     */
+    fun onClickSelectAlbum(view: View) {
+        val albumBuilder =
+            AlertDialog.Builder(this@PostVideoActivity)
+        albumBuilder.setTitle(getString(R.string.select_album))
+
+        val arrayAdapter = ArrayAdapter<String>(
+            this@PostVideoActivity,
+            android.R.layout.simple_list_item_1
+        )
+
+        for (album in albumList) {
+            arrayAdapter.add(album.name)
+        }
+
+        albumBuilder.setNegativeButton(
+            getString(R.string.cancel)
+        ) { dialog, which -> dialog.dismiss() }
+
+        albumBuilder.setAdapter(
+            arrayAdapter
+        ) { dialog, which ->
+            val strName = arrayAdapter.getItem(which)
+            tvAlbumName.text = strName
+            var position = arrayAdapter.getPosition(strName)
+            albumBean = albumList[position]
+            Log.d("albumBean", albumBean.name + " " + albumBean.id)
+
+        }
+        albumBuilder.show()
     }
 
 

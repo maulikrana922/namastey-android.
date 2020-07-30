@@ -1,8 +1,18 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -17,7 +27,9 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView {
@@ -30,6 +42,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private lateinit var dashboardViewModel: DashboardViewModel
     private var feedList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
+    private val PERMISSION_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +62,49 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 //        setCategoryList()
 //        setDashboardList()
 
+        setupPermissions()
+
     }
 
+    private fun setupPermissions() {
+        val locationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.location_permission_message))
+                    .setTitle(getString(R.string.permission_required))
+
+                builder.setPositiveButton(
+                    getString(R.string.ok)
+                ) { dialog, id ->
+                   makeRequest()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+            }else
+                makeRequest()
+        }
+
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_REQUEST_CODE
+        )
+    }
     /**
      * Temp set feed list
      */
@@ -132,4 +186,64 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    ) {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.location_permission_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.ok)
+                        ) { dialog, id ->
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                PERMISSION_REQUEST_CODE
+                            )
+                        }
+
+                        val dialog = builder.create()
+                        dialog.show()
+                    } else {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.permission_denied_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.go_to_settings)
+                        ) { dialog, id ->
+                            var intent = Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package",packageName,null))
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog.show()
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
 }

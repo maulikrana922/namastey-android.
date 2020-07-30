@@ -114,6 +114,7 @@
                 style="@style/tvWrapWhiteStyle"
                 android:layout_width="wrap_content"
                 android:text="@string/add_to"
+                android:onClick="onClickSelectAlbum"
                 app:layout_constraintTop_toTopOf="@id/tvAddto"
                 android:drawableTint="@color/colorWhite"
                 android:drawablePadding="@dimen/_3sdp"
@@ -215,7 +216,7 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:src="@drawable/ic_link_facebook"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@id/tvAutoshareMsg"
                 app:layout_constraintStart_toStartOf="@id/tvAutoshareMsg"/>
 
@@ -234,6 +235,8 @@
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:onClick="onClickPostVideo"
                 android:text="@string/post"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                 app:layout_constraintStart_toStartOf="@id/edtVideoDesc" />

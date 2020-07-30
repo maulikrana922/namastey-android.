@@ -48,7 +48,7 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
                     VideoLanguageFragment.getInstance(
                         tvDOB.text.toString().trim()
                     ),
-                    Constants.VIDEO_LANGUAG_EFRAGMENT
+                    Constants.VIDEO_LANGUAGE_FRAGMENT
                 )
             } else {
                 object : CustomAlertDialog(

@@ -70,7 +70,7 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
 //        jobBean.company_name = edtJobCompany.text.toString().trim()
 //        jobBean.title = edtJobTitle.text.toString().trim()
         sessionManager.setJobBean(jobBean)
-        fragmentManager!!.popBackStack()
+        activity!!.onBackPressed()
     }
 
     override fun getViewModel() = jobViewModel

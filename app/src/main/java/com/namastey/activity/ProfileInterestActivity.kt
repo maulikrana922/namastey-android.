@@ -36,8 +36,13 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
-    private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
-    private var categoryIdList: ArrayList<Int> = ArrayList()
+//    private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
+//    private var categoryIdList: ArrayList<Int> = ArrayList()
+
+    companion object{
+        var categoryIdList: ArrayList<Int> = ArrayList()
+        var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +57,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     }
 
     private fun initData() {
-
+        categoryIdList  = ArrayList()
+        socialAccountList  = ArrayList()
 //        Log.d("TAG", sessionManager.getCategoryList().toString())
         getSocialLinkAPI()
         generateProfileTagUI()
@@ -225,6 +231,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
      */
     fun onClickNextInterest(view: View) {
 //        Log.d("Profile: ",categoryIdList.toString())
+        Log.d("CAtegpru od ",categoryIdList.toString())
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 

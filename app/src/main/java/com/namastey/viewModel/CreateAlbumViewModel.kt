@@ -4,7 +4,6 @@ import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.model.AlbumBean
 import com.namastey.model.AppResponse
-import com.namastey.model.JobBean
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -27,7 +26,7 @@ class CreateAlbumViewModel constructor(
     /**
      * Api call for add album with name
      */
-    fun addJob(jsonObject: JsonObject) {
+    fun addAlbum(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -53,8 +52,85 @@ class CreateAlbumViewModel constructor(
     }
 
 
+    fun createProfile(jsonObject: JsonObject){
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (createAlbumView.isInternetAvailable()) {
+                    networkService.requestCreateProfile(jsonObject)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                createAlbumView.onSuccess(appResponse.message)
+                            } else {
+                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    createAlbumView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                createAlbumView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getAlbumList(){
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (createAlbumView.isInternetAvailable()) {
+                    networkService.requestToGetAlbumWithDetails()
+                        .let { appResponse: AppResponse<ArrayList<AlbumBean>> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                createAlbumView.onSuccessAlbumDetails(appResponse.data!!)
+                            } else {
+                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    createAlbumView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                createAlbumView.onHandleException(exception)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()
+    }
+
+    fun removePostVideo(postId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (createAlbumView.isInternetAvailable()) {
+                    var jsonObject = JsonObject()
+                    jsonObject.addProperty(Constants.POST_ID,postId)
+                    networkService.requestToDeletePost(jsonObject)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                createAlbumView.onSuccessDeletePost()
+                            } else {
+                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    createAlbumView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                createAlbumView.onHandleException(exception)
+            }
+        }
+
     }
 }

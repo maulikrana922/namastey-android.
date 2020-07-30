@@ -45,7 +45,10 @@ interface NetworkRequest {
     ): Deferred<AppResponse<User>>
 
     @GET(Constants.GET_USER_DETAIL)
-    fun requestToGetUserDetailAsync(): Deferred<AppResponse<DashboardBean>>
+    fun requestToGetUserDetailAsync(): Deferred<AppResponse<ProfileBean>>
+
+    @GET(Constants.GET_USER_FULL_PROFILE)
+    fun requestToGetUserFullProfileAsync(): Deferred<AppResponse<ProfileBean>>
 
     @GET(Constants.GET_CATEGORY_LIST)
     fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>
@@ -57,16 +60,20 @@ interface NetworkRequest {
         @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
     ): Deferred<AppResponse<User>>
 
+    @GET(Constants.GET_PROFILE_PIC)
+    fun requestToGetProfilePicAsync(): Deferred<AppResponse<Any>>
+
+
     @FormUrlEncoded
     @POST(Constants.ADD_EDUCATION)
     fun addEducationAsync(
-        @Field(Constants.COLLEGE) college: String, @Field(Constants.PASSING_YEAR) year: String
+        @Field(Constants.COLLEGE) college: String, @Field(Constants.COURSE) course: String
     ): Deferred<AppResponse<EducationBean>>
 
     @FormUrlEncoded
     @PUT(Constants.UPDATE_EDUCATION)
     fun updateEducationAsync(
-        @Field(Constants.ID) id: String, @Field(Constants.COLLEGE) college: String, @Field(Constants.PASSING_YEAR) year: String
+        @Field(Constants.ID) id: String, @Field(Constants.COLLEGE) college: String, @Field(Constants.COURSE) course: String
     ): Deferred<AppResponse<EducationBean>>
 
     @POST(Constants.ADD_UPDATE_JOB)
@@ -83,6 +90,9 @@ interface NetworkRequest {
 
     @GET(Constants.GET_ALBUM)
     fun requestToGetAlbumListAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
+
+    @GET(Constants.GET_ALBUM_WITH_VIDEO)
+    fun requestToGetAlbumWithDetailsAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
 
     @FormUrlEncoded
     @POST(Constants.POST_VIDEO)
@@ -101,4 +111,11 @@ interface NetworkRequest {
         @Part(Constants.POST_VIDEO_ID) postVideoId: RequestBody,
         @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
     ): Deferred<AppResponse<VideoBean>>
+
+    @PUT(Constants.CREATE_PROFILE)
+    fun requestCreateProfileAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
+
+    @HTTP(method = "DELETE", path = Constants.POST_DELETE, hasBody = true)
+    fun requestToDeletePostAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
+
 }

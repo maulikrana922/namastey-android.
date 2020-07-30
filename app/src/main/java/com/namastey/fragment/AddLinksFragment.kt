@@ -2,9 +2,18 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.GraphRequest
+import com.facebook.internal.CallbackManagerImpl
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
@@ -17,6 +26,7 @@ import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.ProfileInterestViewModel
 import kotlinx.android.synthetic.main.fragment_add_links.*
+import org.json.JSONException
 import javax.inject.Inject
 
 class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInterestView,
@@ -27,6 +37,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private lateinit var fragmentAddLinksBinding: FragmentAddLinksBinding
     private lateinit var layoutView: View
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
+    private lateinit var loginManager: LoginManager
+    private lateinit var callbackManager: CallbackManager
 
     override fun getLayoutId() = R.layout.fragment_add_links
 
@@ -57,9 +69,14 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private fun initListener() {
         ivCloseAddLink.setOnClickListener(this)
         tvAddLinkSave.setOnClickListener(this)
+        tvFacebook.setOnClickListener(this)
     }
 
     private fun initData() {
+
+        //For facebook used initializer
+        callbackManager =
+            CallbackManager.Factory.create()
 
         if (arguments!!.containsKey("socialAccountList")) {
             var data: ArrayList<SocialAccountBean> =
@@ -129,6 +146,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             tvAddLinkSave -> {
                 createRequest()
             }
+            tvFacebook ->{
+                connectFacebook()
+            }
         }
     }
 
@@ -178,6 +198,67 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         profileInterestViewModel.addSocialLink(jsonObject)
     }
 
+    private fun connectFacebook() {
+
+        LoginManager.getInstance().logOut()
+        loginManager = LoginManager.getInstance()
+
+        LoginManager.getInstance()
+            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
+                    { jsonObj, _ ->
+                        if (jsonObj != null) {
+                            try {
+//                               var providerId = jsonObj.getString("id")
+
+                                if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
+                                    var userLink = jsonObj.getString("link")
+                                    edtFacebook.setText(userLink)
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                                Toast.makeText(
+                                    activity,
+                                    "" + e.printStackTrace(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                    val parameters = Bundle()
+                    parameters.putString("fields", "id,link")
+                    graphRequest.parameters = parameters
+                    graphRequest.executeAsync()
+                }
+
+                override fun onCancel() {
+                }
+
+                override fun onError(error: FacebookException) {
+                    var msg = ""
+                    if (error is java.net.UnknownHostException) {
+                        msg = getString(R.string.no_internet)
+                    } else if (error is java.net.SocketTimeoutException || error is java.net.ConnectException) {
+                        msg = getString(R.string.slow_internet)
+                    }
+                    if (!TextUtils.isEmpty(msg)) {
+                        showMsg(error.message!!)
+                    }
+                }
+            })
+        loginManager.logInWithReadPermissions(
+            this,
+            listOf("email", "public_profile")
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
+            callbackManager.onActivityResult(requestCode, resultCode, data)
+//        }
+    }
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()

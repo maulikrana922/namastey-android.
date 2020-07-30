@@ -130,4 +130,24 @@ class PostVideoViewModel constructor(
         if (::job.isInitialized)
             job.cancel()
     }
+
+    fun getAlbumList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                    networkService.requestToGetAlbumList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            postVideoView.onSuccessAlbumList(appResponse.data!!)
+                        else
+                            postVideoView.onFailed(appResponse.message,appResponse.error)
+                    }
+
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                postVideoView.onHandleException(t)
+            }
+        }
+
+    }
 }

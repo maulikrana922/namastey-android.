@@ -85,6 +85,7 @@
 <!--            </RelativeLayout>-->
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/ivProfileCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,7 +229,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
 
             <com.namastey.customViews.CustomButton
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:id="@+id/btnProfileSignup"
                 style="@style/btnRedStyle"
                 android:layout_marginStart="@dimen/_20sdp"
@@ -255,6 +256,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text="@string/albums"
+                android:onClick="onClickAlbums"
                 android:textColor="@color/colorButtonRed"
                 app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
                 android:background="@drawable/rounded_white_solid_red_border"

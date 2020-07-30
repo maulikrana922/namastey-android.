@@ -1,13 +1,19 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.facebook.CallbackManager
@@ -50,6 +56,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -64,6 +71,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     private var lastName = ""
     private var email = ""
     private var providerId = ""
+    private val PERMISSION_REQUEST_CODE = 101
+    private var TAG = "SignUpActivity"
 
     override fun getViewModel() = signUpViewModel
 
@@ -95,6 +104,69 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
             mp!!.isLooping = true;
         }
         initializeGoogleApi()
+
+        setupPermissions()
+    }
+
+    private fun setupPermissions() {
+        val locationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val coarselocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+//        val cameraPermission = ContextCompat.checkSelfPermission(
+//            this,
+//            Manifest.permission.CAMERA
+//        )
+//
+//        val storagePermission = ContextCompat.checkSelfPermission(
+//            this,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        )
+
+//        if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED || cameraPermission != PackageManager.PERMISSION_GRANTED ||
+//            storagePermission != PackageManager.PERMISSION_GRANTED
+//        )
+            if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission to user")
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.location_permission_message))
+                    .setTitle(getString(R.string.permission_required))
+
+                builder.setPositiveButton(
+                    getString(R.string.ok)
+                ) { dialog, id ->
+                    makeRequest()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+            } else
+                makeRequest()
+        }
+
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+//                Manifest.permission.CAMERA,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ),
+            PERMISSION_REQUEST_CODE
+        )
     }
 
     override fun onPause() {
@@ -138,7 +210,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         val selectGenderFragment =
             supportFragmentManager.findFragmentByTag(Constants.SELECT_GENDER_FRAGMENT)
         val videoLanguageFrgment =
-            supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAG_EFRAGMENT)
+            supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAGE_FRAGMENT)
         val chooseInterestFragment =
             supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
         val signupWithPhoneFragment =
@@ -401,5 +473,66 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     private fun fetchUserData() {
         val query = "{me{bitmoji{avatar},displayName,externalId}}"
         SnapLogin.fetchUserData(this, query, null, this)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Permission has been denied by user CAMERA")
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    ) {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.location_permission_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.ok)
+                        ) { dialog, id ->
+                            ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                PERMISSION_REQUEST_CODE
+                            )
+                        }
+
+                        val dialog = builder.create()
+                        dialog.show()
+                    } else {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.permission_denied_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.go_to_settings)
+                        ) { dialog, id ->
+                            var intent = Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", packageName, null)
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog.show()
+                    }
+
+                }
+            }
+
+        }
+
     }
 }

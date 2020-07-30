@@ -11,10 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.namastey.R
-import com.namastey.activity.ProfileActivity
-import com.namastey.activity.ProfileBasicInfoActivity
-import com.namastey.activity.ProfileInterestActivity
-import com.namastey.activity.SignUpActivity
+import com.namastey.activity.*
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
@@ -50,6 +47,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileBasicInfoActivity).showMsg(msgId)
         else if (activity != null && activity!! is ProfileInterestActivity)
             (activity!! as ProfileInterestActivity).showMsg(msgId)
+        else if (activity != null && activity!! is EditProfileActivity)
+            (activity!! as EditProfileActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -61,6 +60,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileBasicInfoActivity).showMsg(msg)
         else if (activity != null && activity!! is ProfileInterestActivity)
             (activity!! as ProfileInterestActivity).showMsg(msg)
+        else if (activity != null && activity!! is EditProfileActivity)
+            (activity!! as EditProfileActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -72,6 +73,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileBasicInfoActivity).hideKeyboard()
         else if (activity != null && activity!! is ProfileInterestActivity)
             (activity!! as ProfileInterestActivity).hideKeyboard()
+        else if (activity != null && activity!! is EditProfileActivity)
+            (activity!! as EditProfileActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -87,6 +90,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileBasicInfoActivity).onFailed(msg, error)
         else if (activity != null && activity!! is ProfileInterestActivity)
             (activity!! as ProfileInterestActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is EditProfileActivity)
+            (activity!! as EditProfileActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -98,6 +103,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileBasicInfoActivity).onHandleException(e)
         else if (activity != null && activity!! is ProfileInterestActivity)
             (activity!! as ProfileInterestActivity).onHandleException(e)
+        else if (activity != null && activity!! is EditProfileActivity)
+            (activity!! as EditProfileActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -107,6 +114,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is ProfileActivity -> (activity!! as ProfileActivity).isInternetAvailable()
                 activity!! is ProfileBasicInfoActivity -> (activity!! as ProfileBasicInfoActivity).isInternetAvailable()
                 activity!! is ProfileInterestActivity -> (activity!! as ProfileInterestActivity).isInternetAvailable()
+                activity!! is EditProfileActivity -> (activity!! as EditProfileActivity).isInternetAvailable()
                 else -> false
             }
         } else false
@@ -119,6 +127,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    fun openActivity(
+        intent: Intent
+    ) {
+        startActivity(intent)
+        activity!!.overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
     fun openActivityWithResultCode(
         activity: Activity,
         destinationActivity: Activity,

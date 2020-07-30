@@ -4,17 +4,19 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
@@ -23,21 +25,22 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
 import com.namastey.fragment.SignUpFragment
-import com.namastey.model.DashboardBean
-import com.namastey.roomDB.entity.User
+import com.namastey.model.ProfileBean
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
-import java.io.*
+import java.io.File
 import javax.inject.Inject
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var activityProfileBinding: ActivityProfileBinding
@@ -45,6 +48,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private val REQUEST_CODE = 101
     private val REQUEST_CODE_CAMERA = 102
     private var profileFile: File? = null
+    val FILE_NAME = "temp.jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +62,16 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         initData()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        profileViewModel.getUserDetails(sessionManager.getAccessToken())
+
+    }
+
     private fun initData() {
 
         profileViewModel.getUserDetails(sessionManager.getAccessToken())
-        if (sessionManager.getUserGender().equals(Constants.Gender.female.name)) {
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                 .fitCenter().into(ivProfileUser)
@@ -72,22 +82,32 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-    override fun onSuccessResponse(dashboardBean: DashboardBean) {
-//        if (sessionManager.getUserGender().equals(Constants.Gender.female)) {
-//            GlideApp.with(this).load(R.drawable.ic_female)
-//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-//                .fitCenter().into(ivProfileUser)
-//        } else {
-//            GlideApp.with(this).load(R.drawable.ic_male)
-//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-//                .fitCenter().into(ivProfileUser)
-//        }
-//        tvProfileUsername.text = "User" + sessionManager.getUserUniqueId()
+    override fun onSuccessResponse(profileBean: ProfileBean) {
+
+        tvFollowersCount.text = profileBean.followers.toString()
+        tvFollowingCount.text = profileBean.following.toString()
+
+        if (profileBean.is_completly_signup == 1) {
+            sessionManager.setStringValue(profileBean.profileUrl,Constants.KEY_PROFILE_URL)
+            btnProfileSignup.visibility = View.INVISIBLE
+            groupButtons.visibility = View.VISIBLE
+            ivProfileCamera.visibility = View.VISIBLE
+            if (profileBean.profileUrl.isNotBlank()) {
+                GlideLib.loadImage(this@ProfileActivity, ivProfileUser, profileBean.profileUrl)
+            }
+        } else {
+            btnProfileSignup.visibility = View.VISIBLE
+            groupButtons.visibility = View.GONE
+        }
+        if (profileBean.username.isNotBlank()) {
+            tvProfileUsername.text = profileBean.username
+            tvAbouteDesc.text = profileBean.about_me
+        }
     }
 
-    override fun onSuccessProfileResponse(user: User) {
-
-    }
+//    override fun onSuccessProfileResponse(user: User) {
+//
+//    }
 
     override fun getViewModel() = profileViewModel
 
@@ -107,14 +127,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         val otpFragment =
             supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
 
-        if (signupWithPhoneFragment != null){
+        if (signupWithPhoneFragment != null) {
             var childFm = signupWithPhoneFragment.childFragmentManager
             if (childFm.backStackEntryCount > 0) {
                 childFm.popBackStack();
-            }else{
+            } else {
                 supportFragmentManager.popBackStack()
             }
-        }else if (signUpFragment != null || otpFragment != null)
+        } else if (signUpFragment != null || otpFragment != null)
             supportFragmentManager.popBackStack()
         else
             finishActivity()
@@ -187,9 +207,35 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     private fun capturePhoto() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA)
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            try {
+                val photoUri: Uri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    Utils.getCameraFile(this@ProfileActivity)
+                )
+//
+//                profileFile = File(
+//                    Constants.FILE_PATH,
+//                    System.currentTimeMillis().toString() + ".jpeg"
+//                )
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri)
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+//                if (profileFile != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+//                }
+            } catch (ex: Exception) {
+                showMsg(ex.localizedMessage)
+            }
+        }
     }
+
+//    private fun getCameraFile(): File {
+//        val dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//        return File(dir, FILE_NAME)
+//    }
 
     private fun isCameraPermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -219,11 +265,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
 
     fun onClickProfile(view: View) {
-//        when (view) {
-//            ivProfileCamera -> {
-//                selectImage()
-//            }
-//        }
+        when (view) {
+            ivProfileCamera -> {
+                selectImage()
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -250,12 +296,25 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                                 }
                             val showRationale = shouldShowRequestPermissionRationale(permission)
                             if (!showRationale) {
-                                // user also CHECKED "never ask again"
-                                val intent = Intent()
-                                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                                val uri = Uri.fromParts("package", packageName, null)
-                                intent.data = uri
-                                startActivity(intent)
+                                val builder = AlertDialog.Builder(this)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                                builder.setPositiveButton(
+                                    getString(R.string.go_to_settings)
+                                ) { dialog, id ->
+                                    var intent = Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package", packageName, null)
+                                    )
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                val dialog = builder.create()
+                                dialog.setCanceledOnTouchOutside(false)
+                                dialog.show()
                             } else {
                                 // user also UNCHECKED "never ask again"
                                 isReadWritePermissionGranted()
@@ -283,12 +342,29 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                             }
                         val showRationale = shouldShowRequestPermissionRationale(permission)
                         if (!showRationale) {
-                            // user also CHECKED "never ask again"
-                            val intent = Intent()
-                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            val uri = Uri.fromParts("package", packageName, null)
-                            intent.data = uri
-                            startActivity(intent)
+                            val builder = AlertDialog.Builder(this)
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_camera_message))
+
+                            if (grantResults[1] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                            builder.setPositiveButton(
+                                getString(R.string.go_to_settings)
+                            ) { dialog, id ->
+                                var intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                )
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            val dialog = builder.create()
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
                         } else {
                             // user also UNCHECKED "never ask again"
                             isCameraPermissionGranted()
@@ -310,99 +386,85 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 val selectedImage = data.data
 
                 if (selectedImage != null) {
-                    val inputStream: InputStream?
+//                    val inputStream: InputStream?
                     try {
-                        inputStream = contentResolver.openInputStream(selectedImage)
-                        val tempFile = profileFile!!
-                        if (!tempFile.exists()) {
-                            File(Constants.FILE_PATH).mkdirs()
+                        val selectedImage = data!!.data
+                        val filePathColumn =
+                            arrayOf(MediaStore.Images.Media.DATA)
+                            val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
+                            selectedImage!!,
+                            filePathColumn, null, null, null
+                        )
+                        cursor!!.moveToFirst()
+
+                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                        val picturePath: String = cursor.getString(columnIndex)
+                        cursor.close()
+
+                        GlideLib.loadImage(this, ivProfileUser, picturePath)
+                        Log.d("Image Path", "Image Path  is $picturePath")
+                        profileFile = Utils.saveBitmapToFile(File(picturePath))
+
+                        if (profileFile != null && profileFile!!.exists()) {
+                            profileViewModel.updateProfilePic(profileFile!!)
                         }
-                        val fileOutputStream =
-                            FileOutputStream(profileFile!!)
-                        if (inputStream != null) {
-                            copyInputStream(inputStream, fileOutputStream)
-                            inputStream.close()
-                        }
-                        fileOutputStream.close()
-                        applyExifInterface(tempFile.absolutePath)
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
-            if (data != null)
-                ivProfileUser.setImageBitmap(data.extras.get("data") as Bitmap)
-        }
-    }
+            if (data != null) {
+                var imageFile = Utils.getCameraFile(this@ProfileActivity)
+                val photoUri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    imageFile
+                )
+                val bitmap: Bitmap = Utils.scaleBitmapDown(
+                    MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                    1200
+                )!!
+//                GlideLib.loadImageBitmap(this, ivProfileUser, data.extras.get("data") as Bitmap)
+                GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+//                val photo = data.extras["data"] as Bitmap
 
-    private fun copyInputStream(input: InputStream, output: OutputStream) {
-        val buffer = ByteArray(1024)
-        while (true) {
-            val i = (input.read(buffer))
-            if (i == -1) {
-                break
-            }
-            output.write(buffer, 0, i)
-        }
-    }
+//                val tempUri = Utils.getImageUri(applicationContext, photo)
+//                profileFile = File(Utils.getRealPathFromURI(this@ProfileActivity, photoUri))
 
-    private fun applyExifInterface(path: String) {
-        val exif: ExifInterface
-        try {
-            exif = ExifInterface(path)
-            val orientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-            )
-            var angle = 0
-            when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> angle = 90
-                ExifInterface.ORIENTATION_ROTATE_180 -> angle = 180
-                ExifInterface.ORIENTATION_ROTATE_270 -> angle = 270
+                if (imageFile.exists()) {
+                    profileViewModel.updateProfilePic(imageFile)
+                }
             }
-
-            if (angle != 0) {
-                val bmOptions = BitmapFactory.Options()
-                var bitmap = BitmapFactory.decodeFile(path, bmOptions)
-                val matrix = Matrix()
-                matrix.postRotate(angle.toFloat())
-                bitmap =
-                    Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-                val out = FileOutputStream(path)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                out.close()
-                bitmap.recycle()
-            }
-
-            GlideLib.loadImage(this, ivProfileUser, path)
-            if (profileFile != null && profileFile!!.exists()) {
-                profileViewModel.updateProfilePic(profileFile!!)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 
     fun onClickSign(view: View) {
-        if (sessionManager.isGuestUser()){
+        if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
-            openActivity(this@ProfileActivity,ProfileBasicInfoActivity())
+        } else {
+            openActivity(this@ProfileActivity, ProfileBasicInfoActivity())
         }
     }
 
     /**
-     * click on album or Edit info open edit profile activity
+     * click on Edit info open edit profile activity
      */
     fun onClickEditProfile(view: View) {
-        openActivity(this@ProfileActivity,EditProfileActivity())
+        openActivity(this@ProfileActivity, EditProfileActivity())
+    }
+
+    /**
+     * click on album open edit activity with album list
+     */
+    fun onClickAlbums(view: View) {
+        var intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
+        intent.putExtra("onClickAlbum",true)
+        openActivity(intent)
     }
 
 }

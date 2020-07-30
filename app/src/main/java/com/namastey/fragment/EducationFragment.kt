@@ -58,7 +58,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     private fun initData() {
         var educationBean = sessionManager.getEducationBean()
         edtCollegeName.setText(educationBean.collegeName)
-        edtEducationYear.setText(educationBean.year)
+        edtEducationCourse.setText(educationBean.course)
     }
 
 
@@ -69,9 +69,9 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
 
     override fun onSuccessResponse(educationBean: EducationBean) {
         educationBean.collegeName = edtCollegeName.text.toString()
-        educationBean.year = edtEducationYear.text.toString()
+        educationBean.course = edtEducationCourse.text.toString()
         sessionManager.setEducationBean(educationBean)
-        fragmentManager!!.popBackStack()
+        activity!!.onBackPressed()
     }
 
     override fun getViewModel() = educationViewModel
@@ -95,14 +95,14 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                     TextUtils.isEmpty(edtCollegeName.text.toString()) -> {
                         showMsg(getString(R.string.msg_empty_college_name))
                     }
-                    TextUtils.isEmpty(edtEducationYear.text.toString()) -> {
-                        showMsg(getString(R.string.msg_empty_year))
+                    TextUtils.isEmpty(edtEducationCourse.text.toString()) -> {
+                        showMsg(getString(R.string.msg_empty_course))
                     }
                     else -> {
                         if (sessionManager.getEducationBean().collegeName.isEmpty())
-                            educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
+                            educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
                         else
-                            educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_Id,edtCollegeName.text.toString().trim(),edtEducationYear.text.toString().trim())
+                            educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_Id,edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
                     }
                 }
             }

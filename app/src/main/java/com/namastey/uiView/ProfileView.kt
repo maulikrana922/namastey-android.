@@ -1,10 +1,10 @@
 package com.namastey.uiView
 
-import com.namastey.model.DashboardBean
+import com.namastey.model.ProfileBean
 import com.namastey.roomDB.entity.User
 
 interface ProfileView: BaseView {
 
-    fun onSuccessResponse(dashboardBean: DashboardBean)
-    fun onSuccessProfileResponse(user: User)
+    fun onSuccessResponse(profileBean: ProfileBean)
+//    fun onSuccessProfileResponse(user: User)
 }

@@ -45,6 +45,23 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@android:color/darker_gray" />
+
+            <com.namastey.customViews.CustomTextView
+                android:visibility="gone"
+                android:id="@+id/tvFromVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/from_video"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="normal" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -15,6 +15,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityEditProfileBinding
 import com.namastey.fragment.AlbumFragment
 import com.namastey.fragment.EditProfileFragment
+import com.namastey.model.ProfileBean
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -46,6 +47,12 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
         setupViewPager()
         tabEditProfile.setupWithViewPager(viewpagerEditProfile)
         setupTabIcons()
+        if (intent.hasExtra("onClickAlbum"))
+            tabEditProfile.getTabAt(1)?.select()
+    }
+
+    override fun onSuccessProfileDetails(profileBean: ProfileBean) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = profileBasicViewModel
@@ -136,6 +143,12 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
 
     fun onClickEditAlbumBack(view: View) {
         onBackPressed()
+    }
+
+    fun onClickAddAlbum(view: View) {
+        if (getOnInteractionWithFragment() != null) {
+            getOnInteractionWithFragment()!!.onClickOfFragmentView(view)
+        }
     }
 
     override fun onBackPressed() {

@@ -1,1 +1,2 @@
+include ':videothumb'
 include ':app', ':dateandtimepicker'

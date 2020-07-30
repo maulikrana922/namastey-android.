@@ -14,7 +14,7 @@ abstract class CustomAlertDialog(
     private val msg: String,
     private val posBtnName: String,
     private val negBtnName: String
-) : Dialog(activity, R.style.AppTheme) {
+) : Dialog(activity, R.style.MyDialogTheme) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

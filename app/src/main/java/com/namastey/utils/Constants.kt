@@ -23,8 +23,11 @@ object Constants {
     const val SOCIAL_LOGIN = "social-login"
     const val REGISTER_GUEST = "register-guest"
     const val GET_USER_DETAIL = "user-detail"
+    const val GET_USER_FULL_PROFILE = "get-full-profile"
+    const val CREATE_PROFILE = "profile"
     const val GET_CATEGORY_LIST = "category-list"
     const val UPDATE_PROFILE_PIC = "profile/media/add"
+    const val GET_PROFILE_PIC = "profile/media/view"
     const val ADD_EDUCATION = "education/add"
     const val VIEW_EDUCATION = "education/view"
     const val UPDATE_EDUCATION = "education/update"
@@ -34,7 +37,9 @@ object Constants {
     const val GET_SOCIAL_LINK = "social-links-list"
     const val ADD_ALBUM = "add-album"
     const val GET_ALBUM = "album-list"
+    const val GET_ALBUM_WITH_VIDEO = "album-with-video-details"
     const val POST_VIDEO = "post-video"
+    const val POST_DELETE = "post-delete"
     const val ADD_MEDIA = "add-media"
 
     const val LOGIN = "login"
@@ -63,7 +68,7 @@ object Constants {
     const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
     const val OTP_FRAGMENT = "OTPFragment"
     const val SELECT_GENDER_FRAGMENT = "SelectGenderFragment"
-    const val VIDEO_LANGUAG_EFRAGMENT = "VideoLanguageFragment"
+    const val VIDEO_LANGUAGE_FRAGMENT = "VideoLanguageFragment"
     const val CHOOSE_INTEREST_FRAGMENT = "ChooseInterestFragment"
     const val COUNTRY_FRAGMENT = "CountryFragment"
     const val FIND_FRIEND_FRAGMENT = "FindFriendFragment"
@@ -89,6 +94,12 @@ object Constants {
     const val KEY_CATEGORY_LIST = "KEY_CATEGORY_LIST"
     const val KEY_EDUCATION = "KEY_EDUCATION"
     const val KEY_JOB = "KEY_JOB"
+    const val KEY_INTEREST_IN = "KEY_INTEREST_IN"
+    const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
+    const val KEY_TAGLINE = "KEY_TAGLINE"
+    const val KEY_AGE_MIN = "KEY_AGE_MIN"
+    const val KEY_PROFILE_URL = "KEY_PROFILE_URL"
+    const val KEY_AGE_MAX = "KEY_AGE_MAX"
 
 
     //    field key
@@ -111,6 +122,7 @@ object Constants {
     const val INTEREST = "interest"
     const val COUNTRY_CODE = "countryCode"
     const val COLLEGE = "college"
+    const val COURSE = "course"
     const val PASSING_YEAR = "passing_year"
     const val JOB_ID = "job_id"
     const val TITLE = "title"
@@ -125,6 +137,16 @@ object Constants {
     const val TAG_POST_VIDEO = "post_video"
     const val POST_VIDEO_ID = "post_video_id"
     const val FILE_TYPE = "file_type"
+    const val MIN_AGE = "min_age"
+    const val MAX_AGE = "max_age"
+    const val TAG_LINE = "tagline_or_about_detail"
+    const val TAGS = "tags"
+    const val ALBUMS = "albums"
+    const val SOCIAL_ACCOUNTS = "social_accounts"
+    const val EDUCATION = "education"
+    const val JOBS = "jobs"
+    const val CATEGORY_ID = "category_id"
+    const val POST_ID = "post_id"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
@@ -144,5 +166,6 @@ object Constants {
     private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path
     val FILE_PATH = SD_CARD_PATH.plus(ROOT)
+    val FILE_NAME = "temp.jpg"
 
 }

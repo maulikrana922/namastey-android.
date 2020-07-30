@@ -1,7 +1,13 @@
 package com.namastey.fragment
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.provider.Settings
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -15,12 +21,13 @@ import com.namastey.databinding.FragmentSignupWithPhoneBinding
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.SignupWithPhoneView
-import com.namastey.utils.Constants
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.SignupWithPhoneModel
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
@@ -28,6 +35,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -38,6 +46,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private lateinit var country: Country
     private var isFromProfile = false
     override fun getViewModel() = signupWithPhoneModel
+    private var isFirstTime = false
 
     override fun getLayoutId() = R.layout.fragment_signup_with_phone
 
@@ -74,9 +83,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     private fun initUI() {
         sessionManager.setLoginType(Constants.MOBILE)
-
-        if (arguments != null && arguments!!.containsKey("isFromProfile")){
-            isFromProfile = arguments!!.getBoolean("isFromProfile",false)
+        if (arguments != null && arguments!!.containsKey("isFromProfile")) {
+            isFromProfile = arguments!!.getBoolean("isFromProfile", false)
         }
         signupWithPhoneModel.getCountry()
 
@@ -99,10 +107,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         var countryCode = ""
         if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
             val jsonObject = JsonObject()
-            jsonObject.addProperty(Constants.DEVICE_TYPE,Constants.ANDROID)
+            jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
             if (sessionManager.getLoginType().equals(Constants.EMAIL))
-                jsonObject.addProperty(Constants.EMAIL,edtEmailPhone.text.toString().trim())
+                jsonObject.addProperty(Constants.EMAIL, edtEmailPhone.text.toString().trim())
 //                signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
             else {
                 if (country != null) {
@@ -111,7 +119,10 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 //                countryCode =
 //                    spinnerPhoneCode.selectedItem.toString()
                 }
-                jsonObject.addProperty(Constants.MOBILE,"+" + countryCode + edtEmailPhone.text.toString().trim())
+                jsonObject.addProperty(
+                    Constants.MOBILE,
+                    "+" + countryCode + edtEmailPhone.text.toString().trim()
+                )
 //                signupWithPhoneModel.sendOTP(
 //                    "+" + countryCode + edtEmailPhone.text.toString().trim(),
 //                    "",
@@ -119,9 +130,9 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 //                )
             }
 
-            if (isFromProfile){
-                jsonObject.addProperty(Constants.IS_GUEST,1)
-                jsonObject.addProperty(Constants.USER_UNIQUEID,sessionManager.getUserUniqueId())
+            if (isFromProfile) {
+                jsonObject.addProperty(Constants.IS_GUEST, 1)
+                jsonObject.addProperty(Constants.USER_UNIQUEID, sessionManager.getUserUniqueId())
             }
             signupWithPhoneModel.sendOTP(jsonObject)
         }
@@ -129,7 +140,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onClickCountry() {
         Utils.hideKeyboard(activity!!)
-        if (isFromProfile){
+        if (isFromProfile) {
             (activity as ProfileActivity).addFragmentChild(
                 childFragmentManager,
                 CountryFragment.getInstance(
@@ -137,7 +148,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 ),
                 Constants.COUNTRY_FRAGMENT
             )
-        }else{
+        } else {
             (activity as SignUpActivity).addFragmentChild(
                 childFragmentManager,
                 CountryFragment.getInstance(
@@ -155,7 +166,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         edtEmailPhone.text!!.clear()
         Utils.hideKeyboard(requireActivity())
 
-        if (isFromProfile){
+        if (isFromProfile) {
             (activity as ProfileActivity).addFragment(
                 OTPFragment.getInstance(
                     sessionManager.getUserPhone(),
@@ -164,7 +175,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 ),
                 Constants.OTP_FRAGMENT
             )
-        }else{
+        } else {
             (activity as SignUpActivity).addFragment(
                 OTPFragment.getInstance(
                     sessionManager.getUserPhone(),
@@ -176,13 +187,66 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onGetCountry(countryList: ArrayList<Country>) {
 
         this.countryList = countryList
 
         if (countryList.size > 0) {
-            country = countryList[0]
-            tvCountrySelected.text = countryList[0].sortname + " " + countryList[0].phonecode
+            country = countryList[0]  // default if location not found
+
+            var longitude = 0.0
+            var latitude = 0.0
+            var finder: LocationFinder = LocationFinder(activity!!)
+            if (finder.canGetLocation()) {
+                if (finder.getCurrentLocation() != null) {
+
+                    latitude = finder.getCurrentLocation()!!.latitude
+                    longitude = finder.getCurrentLocation()!!.longitude
+                    Log.d("Location", "location :$latitude  $longitude")
+                    if (!isFirstTime) {
+                        isFirstTime = true
+                        val gcd = Geocoder(activity, Locale.getDefault())
+                        val addresses: List<Address> =
+                            gcd.getFromLocation(latitude, longitude, 1)
+
+                        country = if (addresses != null && addresses.isNotEmpty()) {
+                            val countryCode: String = addresses[0].countryCode
+                            Log.d("Location : ", countryCode)
+
+                            countryList.find { it.sortname == countryCode } ?: countryList[0]
+
+                        } else {
+                            countryList[0]
+                        }
+
+                        tvCountrySelected.text = country.sortname + " " + country.phonecode
+                    }
+                }
+            } else {
+                object : CustomAlertDialog(
+                    activity!!,
+                    resources.getString(R.string.gps_disable_message), getString(R.string.go_to_settings), getString(R.string.cancel)
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        when(id){
+                            btnPos.id ->{
+                                val intent =
+                                    Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                                context.startActivity(intent)
+                            }
+                            btnNeg.id ->{
+                                dismiss()
+                            }
+                        }
+                    }
+                }.show()
+
+//                finder.showSettingsAlert();
+            }
+
+            tvCountrySelected.text = country.sortname + " " + country.phonecode
+
         }
 //        val aa =
 //            ArrayAdapter(activity, R.layout.spinner_item, listOfCountry)

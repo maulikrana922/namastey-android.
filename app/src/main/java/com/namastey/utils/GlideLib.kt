@@ -31,7 +31,16 @@ class GlideLib {
         }
 
         fun loadImageBitmap(context: Context, imageView: ImageView, bitmap: Bitmap) {
-            Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform())
+            Glide.with(context)
+                .load(bitmap)
+                .into(imageView)
+        }
+
+        fun loadThumbnailImage(context: Context, imageView: ImageView, uri: Uri) {
+            Glide.with(context)
+                .asBitmap()
+                .load(uri)
+                .thumbnail(0.1f)
                 .into(imageView)
         }
 

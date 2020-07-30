@@ -17,6 +17,13 @@
     <string name="cashbook_expenses">Cash Book - Expenses</string>
     <string name="cashbook_receipts">Cash Book - Receipts, Tranfers, Deposits</string>
     <string name="scan_document">Scan Documents</string>
+    <string name="permission_required">Permission required</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="gps_disable_message">GPS is not enabled. Do you want to go to settings menu?</string>
+    <string name="permission_denied_message">You have denied location permission Allow permission at setting</string>
+    <string name="permission_denied_storage_message">You have denied storage permission Allow permission at setting</string>
+    <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
+    <string name="location_permission_message">Namastey uses your location for features like Filters,Search, Matches advertising and more.</string>
 
     <string name="tv_skip">Skip</string>
     <string name="tv_the_video_profile">The Video Profile</string>
@@ -35,6 +42,7 @@
     <string name="send_otp">Send OTP</string>
     <string name="confirm">Confirm</string>
     <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
 
@@ -133,13 +141,16 @@
     <string name="men">Men</string>
     <string name="women">Women</string>
     <string name="everyone">Everyone</string>
+    <string name="msg_select_interest_in">Please select any one</string>
 
     <!--    Add education fragment-->
     <string name="add_education">Add Edcation</string>
     <string name="hint_enter_name">Enter college name</string>
+    <string name="hint_enter_cource_title">Enter cource title</string>
     <string name="hint_enter_year">Enter year</string>
     <string name="msg_empty_college_name">Please enter college name</string>
     <string name="msg_empty_year">Please enter passing year</string>
+    <string name="msg_empty_course">Please enter course name</string>
 
     <!--    Add job fragment-->
     <string name="add_job">Add a Job</string>
@@ -166,12 +177,14 @@
     <string name="uploads">Uploads</string>
     <string name="select_video">Select Video</string>
     <string name="take_video">Take Video</string>
+    <string name="from_video">From Video</string>
     <string name="msg_save_album">Please save album</string>
+    <string name="msg_remove_post">Are you sure you want to remove?</string>
 
 <!--    Post video screen-->
     <string name="post">Post</string>
     <string name="select_cover">Select cover</string>
-    <string name="hint_video_desc">Describe you video</string>
+    <string name="hint_video_desc">Describe your video</string>
     <string name="add_to">Add to</string>
     <string name="shared_with">Shared with</string>
     <string name="friends">Friends</string>
@@ -180,7 +193,10 @@
     <string name="automatically_share">Automatically share to</string>
     <string name="msg_empty_video_desc">Please enter video description</string>
     <string name="msg_empty_cover_image">Please select cover image</string>
+    <string name="select_album">Select album</string>
 
     <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
+    
+    <string name="posts">Posts</string>
 </resources>
