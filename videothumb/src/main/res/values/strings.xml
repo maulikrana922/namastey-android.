@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Thumby</string>
+    <string name="picker_title">Select Cover</string>
+    <string name="menu_done">Done</string>
+</resources>
