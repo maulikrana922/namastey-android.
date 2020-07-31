@@ -7,7 +7,7 @@ import android.os.Parcelable
 class EducationBean() : Parcelable {
 
     var user_education_Id: Long = 0
-    var collegeName: String = ""
+    var college: String = ""
     var year: String = ""
     var title: String = ""
     var course: String = ""
@@ -22,7 +22,7 @@ class EducationBean() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(user_education_Id)
-        parcel.writeString(collegeName)
+        parcel.writeString(college)
         parcel.writeString(year)
         parcel.writeString(title)
         parcel.writeString(course)

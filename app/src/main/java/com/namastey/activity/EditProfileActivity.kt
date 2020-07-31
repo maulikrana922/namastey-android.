@@ -145,12 +145,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
         onBackPressed()
     }
 
-    fun onClickAddAlbum(view: View) {
-        if (getOnInteractionWithFragment() != null) {
-            getOnInteractionWithFragment()!!.onClickOfFragmentView(view)
-        }
-    }
-
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()

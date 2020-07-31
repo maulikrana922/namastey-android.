@@ -9,7 +9,6 @@ class CategoryBean() : Parcelable {
 
     var id: Int = 0
     var name: String = ""
-    @SerializedName("tags")
     var sub_category: ArrayList<CategoryBean> = ArrayList()
     var is_selected: Int  = 0
 

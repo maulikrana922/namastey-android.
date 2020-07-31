@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import android.net.ConnectivityManager
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import com.namastey.R
 import com.namastey.application.NamasteyApplication
@@ -22,6 +24,7 @@ import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
 import com.namastey.listeners.OnInteractionWithFragment
 import com.namastey.uiView.BaseView
+import com.namastey.utils.Constants
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.CustomAlertDialog
 import retrofit2.HttpException
@@ -213,5 +216,32 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
 
     fun getOnInteractionWithFragment() =
         if (::onInteractionWithFragment.isInitialized) onInteractionWithFragment else null
+
+    fun isPermissionGrantedForCamera(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    Constants.PERMISSION_CAMERA
+                )
+                return false
+            }
+        } else {
+            return true
+        }
+    }
 
 }

@@ -107,16 +107,18 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         if (albumBean.name.equals(getString(R.string.uploads))){
             createAlbumViewModel.getAlbumList()
         }else{
-            albumList[adapterPosition] = albumBean
+            this.albumBean.name = albumBean.name
+            this.albumBean.is_created = 0
+            albumList[adapterPosition] = this.albumBean
             albumAdapter.notifyItemChanged(adapterPosition)
         }
     }
 
-    override fun onSuccessCreateProfile(profileBean: ProfileBean) {
-        Log.d("Success : ", profileBean.username)
-
-//        openActivity(this@CreateAlbumActivity, ProfileActivity())
-    }
+//    override fun onSuccessCreateProfile(profileBean: ProfileBean) {
+//        Log.d("Success : ", profileBean.username)
+//
+////        openActivity(this@CreateAlbumActivity, ProfileActivity())
+//    }
 
     override fun onSuccess(msg: String) {
         Log.d("Success : ", msg)
@@ -174,6 +176,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 //    }
 
     private fun createAlbumApi(albumBean: AlbumBean, isCreate: Boolean) {
+        this.albumBean = albumBean
         var jsonObject = JsonObject()
         jsonObject.addProperty(Constants.NAME, albumBean.name)
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)

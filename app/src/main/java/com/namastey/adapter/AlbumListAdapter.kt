@@ -35,6 +35,7 @@ class AlbumListAdapter(
 
             var albumBean = albumList[position]
             tvAlbumName.text = albumBean.name
+            tvPostCount.text = albumBean.post_count.toString() + " " + context.getString(R.string.posts)
 //            if (videoBean.cover_image_url != null)
 //                GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
         }

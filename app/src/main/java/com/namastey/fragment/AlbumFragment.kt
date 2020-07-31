@@ -7,11 +7,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.CreateAlbumActivity
-import com.namastey.activity.EditProfileActivity
 import com.namastey.adapter.AlbumListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAlbumBinding
-import com.namastey.listeners.OnInteractionWithFragment
 import com.namastey.model.AlbumBean
 import com.namastey.uiView.AlbumView
 import com.namastey.viewModel.AlbumViewModel
@@ -19,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_album.*
 import java.util.*
 import javax.inject.Inject
 
-class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, OnInteractionWithFragment {
+class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -56,8 +54,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, OnInterac
 
     private fun initData() {
 
-        (activity as EditProfileActivity).setListenerOfInteractionWithFragment(this)
-
+        btnAddAlbum.setOnClickListener(this)
         albumViewModel.getAlbumList()
     }
 
@@ -71,12 +68,13 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, OnInterac
         fragmentAlbumBinding.viewModel = albumViewModel
     }
 
-    override fun onClickOfFragmentView(view: View) {
-        onClick(view)
+    override fun onDestroy() {
+        super.onDestroy()
+        albumViewModel.onDestroy()
     }
 
-    private fun onClick(view: View) {
-        when (view) {
+    override fun onClick(v: View?) {
+        when (v) {
             btnAddAlbum -> {
                 var intent = Intent(activity, CreateAlbumActivity::class.java)
                 intent.putExtra("fromAlbumList", true)
@@ -84,11 +82,5 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, OnInterac
             }
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        albumViewModel.onDestroy()
-    }
-
 
 }

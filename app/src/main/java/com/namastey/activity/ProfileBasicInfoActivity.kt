@@ -151,7 +151,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         } else
             llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
 
-        if (sessionManager.getEducationBean().collegeName.isEmpty()) {
+        if (sessionManager.getEducationBean().college.isEmpty()) {
             llEducation.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
             isValid = false
         } else

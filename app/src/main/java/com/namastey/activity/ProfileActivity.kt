@@ -48,7 +48,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private val REQUEST_CODE = 101
     private val REQUEST_CODE_CAMERA = 102
     private var profileFile: File? = null
-    val FILE_NAME = "temp.jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

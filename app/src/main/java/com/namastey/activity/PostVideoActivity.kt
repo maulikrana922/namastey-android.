@@ -1,22 +1,23 @@
 package com.namastey.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ThumbnailUtils
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.MediaStore.Images
+import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
@@ -34,10 +35,8 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.PostVideoViewModel
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import okhttp3.internal.Util
 import org.buffer.android.thumby.ThumbyActivity
 import org.buffer.android.thumby.util.ThumbyUtils
-import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
 
@@ -54,7 +53,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var albumList: ArrayList<AlbumBean> = ArrayList()
     private var items: Array<CharSequence> = arrayOf()
     private val REQUEST_CODE_IMAGE = 101
-    private val REQUEST_CODE_CAMERA = 102
+
+    //    private val REQUEST_CODE_CAMERA = 102
     private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
@@ -94,7 +94,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             val thumb: Bitmap =
                 BitmapFactory.decodeFile(pictureFile!!.absolutePath)
-            GlideLib.loadImageBitmap(this@PostVideoActivity,ivSelectCover,thumb)
+            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
             tvAlbumName.text = albumBean.name
             postVideoViewModel.getAlbumList()
         }
@@ -121,6 +121,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     override fun getLayoutId() = R.layout.activity_post_video
 
     override fun getBindingVariable() = BR.viewModel
+
     /**
      * success of post video description using this post_video_id call add media api
      */
@@ -226,9 +227,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     applicationContext.packageName + ".provider",
                     Utils.getCameraFile(this@PostVideoActivity)
                 )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+                startActivityForResult(takePictureIntent, Constants.PERMISSION_CAMERA)
 
                 // Continue only if the File was successfully created
 //                if (pictureFile != null) {
@@ -276,7 +277,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            } else if (requestCode == REQUEST_CODE_CAMERA) {
+            } else if (requestCode == Constants.PERMISSION_CAMERA) {
                 if (data != null) {
                     val photoUri = FileProvider.getUriForFile(
                         this,
@@ -296,7 +297,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
 //                    pictureFile = Utils.saveBitmapToFile(pictureFile!!)
                 }
-            }else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
+            } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
                 if (data != null) {
                     val imageUri = data?.getParcelableExtra(ThumbyActivity.EXTRA_URI) as Uri
                     val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
@@ -305,7 +306,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, bitmap)
 //                    val tempUri = Utils.getImageUri(applicationContext, bitmap)
 //                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
-                    pictureFile = Utils.bitmapToFile(this@PostVideoActivity,bitmap)
+                    pictureFile = Utils.bitmapToFile(this@PostVideoActivity, bitmap)
                 }
             }
         }
@@ -350,8 +351,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
         bottomSheetDialog.tvPhotoTake.setOnClickListener {
             bottomSheetDialog.dismiss()
-            capturePhoto()
-
+            if (isPermissionGrantedForCamera())
+                capturePhoto()
         }
         bottomSheetDialog.tvPhotoChoose.setOnClickListener {
             bottomSheetDialog.dismiss()
@@ -360,7 +361,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         bottomSheetDialog.tvFromVideo.setOnClickListener {
             bottomSheetDialog.dismiss()
             var videoUri = Uri.fromFile(videoFile)
-            startActivityForResult(ThumbyActivity.getStartIntent(this, videoUri), RESULT_CODE_PICK_THUMBNAIL)
+            startActivityForResult(
+                ThumbyActivity.getStartIntent(this, videoUri),
+                RESULT_CODE_PICK_THUMBNAIL
+            )
         }
         bottomSheetDialog.tvPhotoCancel.setOnClickListener {
             bottomSheetDialog.dismiss()
@@ -414,5 +418,64 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         albumBuilder.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            Constants.PERMISSION_CAMERA -> if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
+                capturePhoto()
+            } else {
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                        // user rejected the permission
+                        val permission: String =
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                                permissions[0]
+                            } else {
+                                permissions[1]
+                            }
+                        val showRationale = shouldShowRequestPermissionRationale(permission)
+                        if (!showRationale) {
+                            val builder = AlertDialog.Builder(this)
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_camera_message))
 
+                            if (grantResults[1] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                            builder.setPositiveButton(
+                                getString(R.string.go_to_settings)
+                            ) { dialog, id ->
+                                var intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                )
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            val dialog = builder.create()
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
+                        } else {
+                            if (isPermissionGrantedForCamera())
+                                capturePhoto()
+                        }
+                    } else {
+                        if (isPermissionGrantedForCamera())
+                            capturePhoto()
+                    }
+                }
+            }
+        }
+    }
 }
+

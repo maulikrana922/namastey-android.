@@ -20,6 +20,7 @@ import com.namastey.activity.ProfileInterestActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEditProfileBinding
 import com.namastey.listeners.OnInteractionWithFragment
+import com.namastey.model.JobBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
@@ -224,6 +225,57 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         tvCountProfileTag.text = profileTagCount.toString()
     }
 
+    /**
+     * Generate social account UI for added on profile
+     */
+    private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }){
+            mainFacebook.visibility = View.VISIBLE
+            tvFacebookLink.text = data.single { s -> s.name == getString(R.string.facebook) }
+                .link
+        }else{
+            mainFacebook.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }){
+            mainInstagram.visibility = View.VISIBLE
+            tvInstagramLink.text = data.single { s -> s.name == getString(R.string.instagram) }
+                .link
+        }else{
+            mainInstagram.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }){
+            mainSnapchat.visibility = View.VISIBLE
+            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
+                .link
+        }else{
+            mainSnapchat.visibility = View.GONE
+        }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }){
+            mainTikTok.visibility = View.VISIBLE
+            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
+                .link
+        }else{
+            mainTikTok.visibility = View.GONE
+        }
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }){
+            mainSpotify.visibility = View.VISIBLE
+            tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
+                .link
+        }else{
+            mainSpotify.visibility = View.GONE
+        }
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
+            mainLinkedin.visibility = View.VISIBLE
+            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
+                .link
+        }else{
+            mainLinkedin.visibility = View.GONE
+        }
+    }
+
 
     override fun onClickOfFragmentView(view: View) {
         onClick(view)
@@ -274,13 +326,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
         sessionManager.setStringValue(profileBean.max_age.toString(),Constants.KEY_AGE_MAX)
         sessionManager.setStringValue(profileBean.min_age.toString(),Constants.KEY_AGE_MIN)
-        sessionManager.setStringValue(profileBean.about_me.toString(),Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(profileBean.about_me,Constants.KEY_TAGLINE)
 
         edtProfileCasualName.setText(profileBean.username)
         edtProfileTagline.setText(profileBean.about_me)
         sessionManager.setCategoryList(profileBean.category)
         generateProfileTagUI()
 
+        if (profileBean.education.size > 0) {
+            sessionManager.setEducationBean(profileBean.education[0])
+            tvProfileEducation.text = sessionManager.getEducationBean().course
+        }
+        if (profileBean.jobs.size > 0) {
+            sessionManager.setJobBean(profileBean.jobs[0])
+            tvProfileJobs.text = sessionManager.getJobBean().title
+        }
         rangeProfileAge.setMaxStartValue(
             sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
         )
@@ -288,36 +348,30 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             sessionManager.getStringValue(Constants.KEY_AGE_MIN).toFloat()
         )
         rangeProfileAge.apply()
-
-        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty())
-            edtProfileCasualName.setText(sessionManager.getStringValue(Constants.KEY_CASUAL_NAME))
-
-        if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
-            edtProfileTagline.setText(sessionManager.getStringValue(Constants.KEY_TAGLINE))
-
-        if (sessionManager.getInterestIn() != 0) {
+        sessionManager.setInterestIn(profileBean.interest_in_gender)
+        if (profileBean.interest_in_gender != 0) {
             when (sessionManager.getInterestIn()) {
                 1 -> tvProfileInterestIn.text = getString(R.string.men)
                 2 -> tvProfileInterestIn.text = getString(R.string.women)
                 3 -> tvProfileInterestIn.text = getString(R.string.everyone)
             }
-
-            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
+//            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
         }
+        var socialAccountList = profileBean.social_accounts
+        socialAccountUI(socialAccountList)
 
         if (sessionManager.getCategoryList().size >= 3) {
             tvProfileSelectCategory.text = sessionManager.getCategoryList().get(0).name
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
         }
 
-        if (sessionManager.getEducationBean().course.isNotEmpty()) {
-            tvProfileEducation.text = sessionManager.getEducationBean().course
-            llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
-        }
-        if (sessionManager.getJobBean().title.isNotEmpty()) {
-            tvProfileJobs.text = sessionManager.getJobBean().title
-            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
-        }
+
+//        llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
+
+//        if (sessionManager.getJobBean().title.isNotEmpty()) {
+//            tvProfileJobs.text = sessionManager.getJobBean().title
+//            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
+//        }
     }
 
     fun editProfileApiCall() {

@@ -57,7 +57,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
 
     private fun initData() {
         var educationBean = sessionManager.getEducationBean()
-        edtCollegeName.setText(educationBean.collegeName)
+        edtCollegeName.setText(educationBean.college)
         edtEducationCourse.setText(educationBean.course)
     }
 
@@ -68,7 +68,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     }
 
     override fun onSuccessResponse(educationBean: EducationBean) {
-        educationBean.collegeName = edtCollegeName.text.toString()
+        educationBean.college = edtCollegeName.text.toString()
         educationBean.course = edtEducationCourse.text.toString()
         sessionManager.setEducationBean(educationBean)
         activity!!.onBackPressed()
@@ -99,7 +99,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                         showMsg(getString(R.string.msg_empty_course))
                     }
                     else -> {
-                        if (sessionManager.getEducationBean().collegeName.isEmpty())
+                        if (sessionManager.getEducationBean().college.isEmpty())
                             educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
                         else
                             educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_Id,edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
