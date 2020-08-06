@@ -2,15 +2,18 @@ package com.namastey.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 
 class EducationBean() : Parcelable {
 
-    var user_education_Id: Long = 0
+    var id: Long = 0
     var college: String = ""
     var year: String = ""
     var title: String = ""
     var course: String = ""
+    @SerializedName("is_selected")
+    var isSelect: Int  = 0
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
@@ -18,14 +21,16 @@ class EducationBean() : Parcelable {
         parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
+        isSelect = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(user_education_Id)
+        parcel.writeLong(id)
         parcel.writeString(college)
         parcel.writeString(year)
         parcel.writeString(title)
         parcel.writeString(course)
+        parcel.writeInt(isSelect)
     }
 
     override fun describeContents(): Int {

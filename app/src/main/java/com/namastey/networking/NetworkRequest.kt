@@ -63,6 +63,8 @@ interface NetworkRequest {
     @GET(Constants.GET_PROFILE_PIC)
     fun requestToGetProfilePicAsync(): Deferred<AppResponse<Any>>
 
+    @GET(Constants.GET_EDUCATION)
+    fun requestToGetEducationAsync(): Deferred<AppResponse<ArrayList<EducationBean>>>
 
     @FormUrlEncoded
     @POST(Constants.ADD_EDUCATION)
@@ -73,8 +75,13 @@ interface NetworkRequest {
     @FormUrlEncoded
     @PUT(Constants.UPDATE_EDUCATION)
     fun updateEducationAsync(
-        @Field(Constants.ID) id: String, @Field(Constants.COLLEGE) college: String, @Field(Constants.COURSE) course: String
+        @Field(Constants.ID) id: String,
+        @Field(Constants.COLLEGE) college: String,
+        @Field(Constants.COURSE) course: String
     ): Deferred<AppResponse<EducationBean>>
+
+    @GET(Constants.GET_JOB)
+    fun requestToGetJobAsync(): Deferred<AppResponse<ArrayList<JobBean>>>
 
     @POST(Constants.ADD_UPDATE_JOB)
     fun addUpdateJobAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<JobBean>>
@@ -97,7 +104,9 @@ interface NetworkRequest {
     @FormUrlEncoded
     @POST(Constants.POST_VIDEO)
     fun postVideoAsync(
-        @Field(Constants.DESCRIPTION) description: String, @Field(Constants.ALBUM_ID) album_id: Long, @Field(
+        @Field(Constants.DESCRIPTION) description: String,
+        @Field(Constants.ALBUM_ID) album_id: Long,
+        @Field(
             Constants.SHARE_WITH
         ) share_with: Int,
         @Field(Constants.IS_COMMENT) is_comment: Int

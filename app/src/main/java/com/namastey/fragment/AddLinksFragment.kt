@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,13 +12,13 @@ import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.GraphRequest
-import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EditProfileActivity
 import com.namastey.activity.ProfileInterestActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddLinksBinding
@@ -45,10 +46,10 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(fromEditProfile: Boolean,socialAccountList: ArrayList<SocialAccountBean>) =
+        fun getInstance(fromEditProfile: Boolean, socialAccountList: ArrayList<SocialAccountBean>) =
             AddLinksFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean("fromEditProfile",fromEditProfile)
+                    putBoolean("fromEditProfile", fromEditProfile)
                     putSerializable("socialAccountList", socialAccountList)
                 }
             }
@@ -122,10 +123,18 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     }
 
     override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
-        (activity as ProfileInterestActivity).onActivityReenter(
-            Constants.ADD_LINK,
-            Intent()
-        )
+        if (activity is ProfileInterestActivity) {
+            (activity as ProfileInterestActivity).onActivityReenter(
+                Constants.ADD_LINK,
+                Intent()
+            )
+        }else if (activity is EditProfileActivity){
+                targetFragment!!.onActivityResult(
+                    Constants.REQUEST_CODE,
+                    Activity.RESULT_OK,
+                    Intent().putExtra("fromAddLink", true)
+                )
+        }
         fragmentManager!!.popBackStack()
     }
 
@@ -146,7 +155,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             tvAddLinkSave -> {
                 createRequest()
             }
-            tvFacebook ->{
+            tvFacebook -> {
                 connectFacebook()
             }
         }
@@ -156,43 +165,36 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         var jsonObject = JsonObject()
         var jsonArray = JsonArray()
 
-        var jsonObjectInner: JsonObject
-//        if (edtSnapchat.text.toString().isNotEmpty()) {
-        jsonObjectInner = JsonObject()
+        var jsonObjectInner: JsonObject = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.snapchat))
         jsonObjectInner.addProperty(Constants.LINK, edtSnapchat.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
-//        if (edtFacebook.text.toString().isNotEmpty()) {
+
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.facebook))
         jsonObjectInner.addProperty(Constants.LINK, edtFacebook.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
-//        if (edtTiktok.text.toString().isNotEmpty()) {
+
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.tiktok))
         jsonObjectInner.addProperty(Constants.LINK, edtTiktok.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
-//        if (edtInstagram.text.toString().isNotEmpty()) {
+
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.instagram))
         jsonObjectInner.addProperty(Constants.LINK, edtInstagram.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
-//        if (edtSpotify.text.toString().isNotEmpty()) {
+
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.spotify))
         jsonObjectInner.addProperty(Constants.LINK, edtSpotify.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
-//        if (edtLinkedin.text.toString().isNotEmpty()) {
+
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.linkedin))
         jsonObjectInner.addProperty(Constants.LINK, edtLinkedin.text.toString().trim())
         jsonArray.add(jsonObjectInner)
-//        }
+
         jsonObject.add("social_links_details", jsonArray)
         Log.d("AddLinkRequest : ", jsonObject.toString())
         profileInterestViewModel.addSocialLink(jsonObject)
@@ -255,10 +257,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
-            callbackManager.onActivityResult(requestCode, resultCode, data)
-//        }
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
+
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()

@@ -76,7 +76,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private fun initData() {
 
         if (intent.hasExtra("videoFile")) {
-            albumBean = intent.getParcelableExtra("albumBean") as AlbumBean
+            albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
             videoFile = intent.getSerializableExtra("videoFile") as File?
             pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
             Log.d("TAG", videoFile!!.name.toString())
@@ -299,7 +299,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 }
             } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
                 if (data != null) {
-                    val imageUri = data?.getParcelableExtra(ThumbyActivity.EXTRA_URI) as Uri
+                    val imageUri = data?.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
                     val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
                     val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
                     Log.d("Image ", "done")

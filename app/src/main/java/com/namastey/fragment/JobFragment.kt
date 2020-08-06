@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -7,15 +8,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentJobBinding
 import com.namastey.model.JobBean
 import com.namastey.uiView.JobView
 import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.JobViewModel
+import kotlinx.android.synthetic.main.activity_education_list.*
 import kotlinx.android.synthetic.main.fragment_job.*
+import kotlinx.android.synthetic.main.fragment_job.ivProfileImage
 import javax.inject.Inject
 
 class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
@@ -23,20 +28,24 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var fragmentJobBinding: FragmentJobBinding
     private lateinit var layoutView: View
     private lateinit var jobViewModel: JobViewModel
+    private var isFromJobListing = false
 
     override fun getLayoutId() = R.layout.fragment_job
 
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance() =
+        fun getInstance(isFromJobListing: Boolean) =
             JobFragment().apply {
-
+                arguments = Bundle().apply {
+                    putBoolean("isFromJobListing", isFromJobListing)
+                }
             }
     }
 
@@ -55,9 +64,17 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
         ivCloseJob.setOnClickListener(this)
         btnJobDone.setOnClickListener(this)
 
-        var jobBean = sessionManager.getJobBean()
-        edtJobTitle.setText(jobBean.title)
-        edtJobCompany.setText(jobBean.company_name)
+        isFromJobListing = arguments!!.getBoolean("isFromJobListing", false)
+
+        if (isFromJobListing) {
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
+                GlideLib.loadImage(requireContext(),ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+            }
+        } else {
+            val jobBean = sessionManager.getJobBean()
+            edtJobTitle.setText(jobBean.title)
+            edtJobCompany.setText(jobBean.company_name)
+        }
     }
 
 
@@ -67,10 +84,19 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
     }
 
     override fun onSuccessResponse(jobBean: JobBean) {
-//        jobBean.company_name = edtJobCompany.text.toString().trim()
-//        jobBean.title = edtJobTitle.text.toString().trim()
-        sessionManager.setJobBean(jobBean)
+        if (activity is JobListingActivity) {
+            activity!!.onActivityReenter(
+                Constants.REQUEST_CODE_JOB,
+                Intent().putExtra("jobBean", jobBean)
+            )
+        } else {
+            sessionManager.setJobBean(jobBean)
+        }
         activity!!.onBackPressed()
+    }
+
+    override fun onSuccessJobList(jobList: ArrayList<JobBean>) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = jobViewModel
@@ -102,13 +128,18 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                         jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
                         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
-                        if (sessionManager.getJobBean().company_name.isNotEmpty())
-                            jsonObject.addProperty(Constants.JOB_ID, sessionManager.getJobBean().id)
+                        if (isFromJobListing) {
 
+                        } else {
+                            if (sessionManager.getJobBean().company_name.isNotEmpty())
+                                jsonObject.addProperty(
+                                    Constants.JOB_ID,
+                                    sessionManager.getJobBean().id
+                                )
+                        }
                         jobViewModel.addJob(jsonObject)
                     }
                 }
-//                fragmentManager!!.popBackStack()
             }
         }
     }

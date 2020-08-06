@@ -94,7 +94,7 @@ object Utils {
             // here i override the original image file
             file.createNewFile()
             val outputStream = FileOutputStream(file)
-            selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            selectedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             file
         } catch (e: Exception) {
             null
@@ -162,10 +162,12 @@ object Utils {
             column
         )
         try {
-            cursor = context.contentResolver.query(
-                uri, projection, selection, selectionArgs,
-                null
-            )
+            cursor = uri?.let {
+                context.contentResolver.query(
+                    it, projection, selection, selectionArgs,
+                    null
+                )
+            }
             if (cursor != null && cursor.moveToFirst()) {
                 val column_index: Int = cursor.getColumnIndexOrThrow(column)
                 return cursor.getString(column_index)
@@ -212,7 +214,7 @@ object Utils {
         var path = ""
         if (context.contentResolver != null) {
             val cursor =
-                context.contentResolver.query(uri, null, null, null, null)
+                uri?.let { context.contentResolver.query(it, null, null, null, null) }
             if (cursor != null) {
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)

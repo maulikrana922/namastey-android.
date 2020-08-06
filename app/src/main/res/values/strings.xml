@@ -144,7 +144,9 @@
     <string name="msg_select_interest_in">Please select any one</string>
 
     <!--    Add education fragment-->
-    <string name="add_education">Add Edcation</string>
+    <string name="add_education">Add Education</string>
+    <string name="edit_education">Edit Education</string>
+    <string name="remove_education">Remove Education</string>
     <string name="hint_enter_name">Enter college name</string>
     <string name="hint_enter_cource_title">Enter cource title</string>
     <string name="hint_enter_year">Enter year</string>
@@ -152,8 +154,16 @@
     <string name="msg_empty_year">Please enter passing year</string>
     <string name="msg_empty_course">Please enter course name</string>
 
+    <!--    List education screen-->
+    <string name="whats_your_education">What\'s Your Education?</string>
+    <string name="education_message">You can only show one institute on your profile at a time</string>
+
+    <string name="job_message">You can only show one job on your profile at a time</string>
+
     <!--    Add job fragment-->
     <string name="add_job">Add a Job</string>
+    <string name="edit_job">Edit Job</string>
+    <string name="remove_job">Remove Job</string>
     <string name="hint_title">Title</string>
     <string name="hint_company">Company (or just industry)</string>
     <string name="msg_empty_job_title">Please enter job title</string>
@@ -181,7 +191,7 @@
     <string name="msg_save_album">Please save album</string>
     <string name="msg_remove_post">Are you sure you want to remove?</string>
 
-<!--    Post video screen-->
+    <!--    Post video screen-->
     <string name="post">Post</string>
     <string name="select_cover">Select cover</string>
     <string name="hint_video_desc">Describe your video</string>
@@ -197,6 +207,6 @@
 
     <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
-    
+
     <string name="posts">Posts</string>
 </resources>

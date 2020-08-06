@@ -101,7 +101,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         videoLanguageViewModel.getVideoLanguage(locale)
 
         if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)){
-            dob = arguments!!.getString(Constants.DATE_OF_BIRTH)
+            dob = arguments!!.getString(Constants.DATE_OF_BIRTH).toString()
         }
     }
 

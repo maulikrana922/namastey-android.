@@ -51,13 +51,13 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
             if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)) {
                 jsonObject.addProperty(
                     Constants.DATE_OF_BIRTH,
-                    Utils.convertDateToAPIFormate(arguments!!.getString(Constants.DATE_OF_BIRTH))
+                    Utils.convertDateToAPIFormate(arguments!!.getString(Constants.DATE_OF_BIRTH).toString())
                 )
             }
 
             if (arguments!!.containsKey("selectVideoIdList")) {
                 var jsonArray = JsonArray()
-                for (selectVideoIdList in arguments!!.getIntegerArrayList("selectVideoIdList")) {
+                for (selectVideoIdList in arguments!!.getIntegerArrayList("selectVideoIdList")!!) {
                     jsonArray.add(JsonPrimitive(selectVideoIdList))
                 }
                 jsonObject.add(Constants.LANGUAGE, jsonArray)

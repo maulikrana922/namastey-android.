@@ -1,5 +1,7 @@
 package com.namastey.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -7,9 +9,12 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EditProfileActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentInterestInBinding
+import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectCategoryViewModel
 import kotlinx.android.synthetic.main.fragment_interest_in.*
@@ -51,6 +56,9 @@ class InterestInFragment : BaseFragment<FragmentInterestInBinding>(),
     }
 
     private fun initData() {
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
+            GlideLib.loadImage(requireActivity(),ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+        }
         if (sessionManager.getInterestIn() != 0){
             interestIn = sessionManager.getInterestIn()
 
@@ -96,7 +104,15 @@ class InterestInFragment : BaseFragment<FragmentInterestInBinding>(),
             btnInterestInDone -> {
                 if (interestIn != 0){
                     sessionManager.setInterestIn(interestIn)
+                    if (activity is EditProfileActivity){
+                        targetFragment!!.onActivityResult(
+                            Constants.REQUEST_CODE,
+                            Activity.RESULT_OK,
+                            Intent().putExtra("fromInterestIn", true)
+                        )
+                    }
                     activity!!.onBackPressed()
+
                 }else{
                     object : CustomAlertDialog(
                         activity!!,

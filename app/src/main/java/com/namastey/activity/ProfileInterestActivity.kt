@@ -36,8 +36,6 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
-//    private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
-//    private var categoryIdList: ArrayList<Int> = ArrayList()
 
     companion object{
         var categoryIdList: ArrayList<Int> = ArrayList()

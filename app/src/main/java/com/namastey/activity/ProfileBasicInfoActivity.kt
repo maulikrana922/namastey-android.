@@ -13,7 +13,9 @@ import com.namastey.fragment.EducationFragment
 import com.namastey.fragment.InterestInFragment
 import com.namastey.fragment.JobFragment
 import com.namastey.fragment.SelectCategoryFragment
+import com.namastey.model.EducationBean
 import com.namastey.model.ProfileBean
+import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -35,6 +37,10 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     private lateinit var profileBasicViewModel: ProfileBasicViewModel
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
         TODO("Not yet implemented")
     }
 
@@ -60,11 +66,11 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
         rangeProfileAge.setMaxStartValue(45f)
         rangeProfileAge.apply()
-        rangeProfileAge.setOnRangeSeekbarChangeListener(OnRangeSeekbarChangeListener { minValue, maxValue ->
+        rangeProfileAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
             tvProfileAgeValue.text = "$minValue and $maxValue"
             sessionManager.setStringValue(minValue.toString(),Constants.KEY_AGE_MIN)
             sessionManager.setStringValue(maxValue.toString(),Constants.KEY_AGE_MAX)
-        })
+        }
 
         initValue()
 
@@ -192,14 +198,14 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             }
             llEducation -> {
                 addFragment(
-                    EducationFragment.getInstance(
+                    EducationFragment.getInstance(false, EducationBean()
                     ),
                     Constants.EDUCATION_FRAGMENT
                 )
             }
             llJob -> {
                 addFragment(
-                    JobFragment.getInstance(
+                    JobFragment.getInstance(false
                     ),
                     Constants.JOB_FRAGMENT
                 )

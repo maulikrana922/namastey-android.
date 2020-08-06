@@ -40,4 +40,6 @@ interface ActivityComponent {
     fun inject(fragment: EditProfileFragment)
     fun inject(fragment: AlbumFragment)
     fun inject(activity: PostVideoActivity)
+    fun inject(activity: EducationListActivity)
+    fun inject(activity: JobListingActivity)
 }

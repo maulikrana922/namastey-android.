@@ -49,6 +49,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileInterestActivity).showMsg(msgId)
         else if (activity != null && activity!! is EditProfileActivity)
             (activity!! as EditProfileActivity).showMsg(msgId)
+        else if (activity != null && activity!! is JobListingActivity)
+            (activity!! as JobListingActivity).showMsg(msgId)
+        else if (activity != null && activity!! is EducationListActivity)
+            (activity!! as EducationListActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -62,6 +66,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileInterestActivity).showMsg(msg)
         else if (activity != null && activity!! is EditProfileActivity)
             (activity!! as EditProfileActivity).showMsg(msg)
+        else if (activity != null && activity!! is JobListingActivity)
+            (activity!! as JobListingActivity).showMsg(msg)
+        else if (activity != null && activity!! is EducationListActivity)
+            (activity!! as EducationListActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -75,6 +83,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileInterestActivity).hideKeyboard()
         else if (activity != null && activity!! is EditProfileActivity)
             (activity!! as EditProfileActivity).hideKeyboard()
+        else if (activity != null && activity!! is JobListingActivity)
+            (activity!! as JobListingActivity).hideKeyboard()
+        else if (activity != null && activity!! is EducationListActivity)
+            (activity!! as EducationListActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -92,6 +104,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileInterestActivity).onFailed(msg,error)
         else if (activity != null && activity!! is EditProfileActivity)
             (activity!! as EditProfileActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is JobListingActivity)
+            (activity!! as JobListingActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is EducationListActivity)
+            (activity!! as EducationListActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -105,6 +121,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileInterestActivity).onHandleException(e)
         else if (activity != null && activity!! is EditProfileActivity)
             (activity!! as EditProfileActivity).onHandleException(e)
+        else if (activity != null && activity!! is JobListingActivity)
+            (activity!! as JobListingActivity).onHandleException(e)
+        else if (activity != null && activity!! is EducationListActivity)
+            (activity!! as EducationListActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -115,6 +135,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is ProfileBasicInfoActivity -> (activity!! as ProfileBasicInfoActivity).isInternetAvailable()
                 activity!! is ProfileInterestActivity -> (activity!! as ProfileInterestActivity).isInternetAvailable()
                 activity!! is EditProfileActivity -> (activity!! as EditProfileActivity).isInternetAvailable()
+                activity!! is JobListingActivity -> (activity!! as JobListingActivity).isInternetAvailable()
+                activity!! is EducationListActivity -> (activity!! as EducationListActivity).isInternetAvailable()
                 else -> false
             }
         } else false

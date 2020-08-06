@@ -20,15 +20,15 @@ class InternetConnectionMonitor(val context: Context) : ConnectivityManager.Netw
         connectivityManager.registerNetworkCallback(networkRequest, this)
     }
 
-    override fun onAvailable(network: Network?) {
-        super.onAvailable(network)
-        Log.w("InternetMonitor", "onAvailable")
-    }
-
-    override fun onLost(network: Network?) {
-        super.onLost(network)
-        Log.w("InternetMonitor", "onLost")
-    }
+//    override fun onAvailable(network: Network?) {
+//        super.onAvailable(network)
+//        Log.w("InternetMonitor", "onAvailable")
+//    }
+//
+//    override fun onLost(network: Network?) {
+//        super.onLost(network)
+//        Log.w("InternetMonitor", "onLost")
+//    }
 
     override fun onUnavailable() {
         super.onUnavailable()

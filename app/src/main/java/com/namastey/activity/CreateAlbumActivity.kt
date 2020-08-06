@@ -232,12 +232,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
             jsonObject.addProperty(
                 Constants.EDUCATION,
-                sessionManager.getEducationBean().user_education_Id
+                sessionManager.getEducationBean().id
             )
-            jsonObject.addProperty(
-                Constants.EDUCATION,
-                sessionManager.getEducationBean().user_education_Id
-            )
+
             jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
             var albumId = ArrayList<Long>()
             for (data in albumList) {
@@ -401,7 +398,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
                 if (selectedVideo != null) {
                     var videoPath = Utils.getPath(this, selectedVideo)
-                    Log.d("Path", videoPath)
+                    Log.d("Path", videoPath.toString())
 //
 //                    val filePathColumn =
 //                        arrayOf(MediaStore.Video.Media.DATA)
@@ -433,7 +430,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
                 if (selectedVideo != null) {
                     var videoPath = Utils.getPath(this, selectedVideo)
-                    Log.d("Path", videoPath)
+                    Log.d("Path", videoPath.toString())
 
                     videoFile = File(videoPath)
 
@@ -448,7 +445,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             }
         } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
             if (data != null) {
-                val imageUri = data?.getParcelableExtra(EXTRA_URI) as Uri
+                val imageUri = data.getParcelableExtra<Uri>(EXTRA_URI) as Uri
                 val location = data.getLongExtra(EXTRA_THUMBNAIL_POSITION, 0)
                 val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
                 Log.d("Image ", "done")

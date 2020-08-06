@@ -1,15 +1,20 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EducationListActivity
+import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEducationBinding
 import com.namastey.model.EducationBean
 import com.namastey.uiView.EducationView
+import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.EducationViewModel
@@ -21,20 +26,26 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var fragmentEducationBinding: FragmentEducationBinding
     private lateinit var layoutView: View
     private lateinit var educationViewModel: EducationViewModel
+    private var isFromListing = false
+    private var educationBean = EducationBean()
 
     override fun getLayoutId() = R.layout.fragment_education
 
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance() =
+        fun getInstance(isFromListing: Boolean, educationBean: EducationBean) =
             EducationFragment().apply {
-
+                arguments = Bundle().apply {
+                    putBoolean("isFromListing", isFromListing)
+                    putParcelable("educationBean", educationBean)
+                }
             }
     }
 
@@ -56,11 +67,29 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     }
 
     private fun initData() {
-        var educationBean = sessionManager.getEducationBean()
-        edtCollegeName.setText(educationBean.college)
-        edtEducationCourse.setText(educationBean.course)
-    }
 
+        isFromListing = arguments!!.getBoolean("isFromListing", false)
+
+        if (isFromListing) {
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+                GlideLib.loadImage(
+                    requireContext(), ivProfileImage, sessionManager.getStringValue(
+                        Constants.KEY_PROFILE_URL
+                    )
+                )
+            }
+            educationBean = arguments!!.getParcelable<EducationBean>("educationBean")!!
+            if (educationBean.college.isNotEmpty()) {
+                tvAddEducation.text = getString(R.string.edit_education)
+                btnEducationRemove.visibility = View.VISIBLE
+                edtCollegeName.setText(educationBean.college)
+                edtEducationCourse.setText(educationBean.course)
+            }
+        } else {
+            edtCollegeName.setText(sessionManager.getEducationBean().college)
+            edtEducationCourse.setText(sessionManager.getEducationBean().course)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +99,20 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     override fun onSuccessResponse(educationBean: EducationBean) {
         educationBean.college = edtCollegeName.text.toString()
         educationBean.course = edtEducationCourse.text.toString()
-        sessionManager.setEducationBean(educationBean)
+
+        if (activity is EducationListActivity) {
+            activity!!.onActivityReenter(
+                Constants.REQUEST_CODE_EDUCATION,
+                Intent().putExtra("educationBean", educationBean)
+            )
+        }else{
+            sessionManager.setEducationBean(educationBean)
+        }
         activity!!.onBackPressed()
+    }
+
+    override fun onSuccessEducationList(educationList: ArrayList<EducationBean>) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = educationViewModel
@@ -99,10 +140,32 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                         showMsg(getString(R.string.msg_empty_course))
                     }
                     else -> {
-                        if (sessionManager.getEducationBean().college.isEmpty())
-                            educationViewModel.addEducation(edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
-                        else
-                            educationViewModel.updateEducation(sessionManager.getEducationBean().user_education_Id,edtCollegeName.text.toString().trim(),edtEducationCourse.text.toString().trim())
+                        if (isFromListing) {
+                            if (educationBean.college.isNotEmpty()) {
+                                educationViewModel.updateEducation(
+                                    educationBean.id,
+                                    edtCollegeName.text.toString().trim(),
+                                    edtEducationCourse.text.toString().trim()
+                                )
+                            } else {
+                                educationViewModel.addEducation(
+                                    edtCollegeName.text.toString().trim(),
+                                    edtEducationCourse.text.toString().trim()
+                                )
+                            }
+                        } else {
+                            if (sessionManager.getEducationBean().college.isEmpty())
+                                educationViewModel.addEducation(
+                                    edtCollegeName.text.toString().trim(),
+                                    edtEducationCourse.text.toString().trim()
+                                )
+                            else
+                                educationViewModel.updateEducation(
+                                    sessionManager.getEducationBean().id,
+                                    edtCollegeName.text.toString().trim(),
+                                    edtEducationCourse.text.toString().trim()
+                                )
+                        }
                     }
                 }
             }

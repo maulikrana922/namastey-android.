@@ -16,6 +16,7 @@ import com.namastey.databinding.ActivityEditProfileBinding
 import com.namastey.fragment.AlbumFragment
 import com.namastey.fragment.EditProfileFragment
 import com.namastey.model.ProfileBean
+import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -52,6 +53,10 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
         TODO("Not yet implemented")
     }
 

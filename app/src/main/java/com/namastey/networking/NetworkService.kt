@@ -84,6 +84,16 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetProfilePicAsync().await()
         }
 
+    suspend fun requestToGetEducationList(): AppResponse<ArrayList<EducationBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetEducationAsync().await()
+        }
+
+    suspend fun requestToGetJobList(): AppResponse<ArrayList<JobBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetJobAsync().await()
+        }
+
     suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
         withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
 

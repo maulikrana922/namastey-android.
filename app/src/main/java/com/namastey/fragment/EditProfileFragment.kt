@@ -1,7 +1,9 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -16,11 +18,11 @@ import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.EditProfileActivity
-import com.namastey.activity.ProfileInterestActivity
+import com.namastey.activity.EducationListActivity
+import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEditProfileBinding
 import com.namastey.listeners.OnInteractionWithFragment
-import com.namastey.model.JobBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
@@ -47,9 +49,33 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     private lateinit var profileBasicViewModel: ProfileBasicViewModel
     private var isEditUsername = false
     private var isEditTagLine = false
+    private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
+    private var subCategoryIdList: ArrayList<Int> = ArrayList()
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
         fillValue(profileBean)
+    }
+
+    override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
+        socialAccountList = data
+        socialAccountUI(socialAccountList)
+
+        editProfileApiCall()
+    }
+
+    override fun onSuccess(msg: String) {
+        Utils.hideKeyboard(requireActivity())
+        Log.d("Success : ", msg)
+        isEditTagLine = false
+        isEditUsername = false
+        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_edit_gray,
+            0
+        );
+        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
+
     }
 
     override fun getViewModel() = profileBasicViewModel
@@ -85,9 +111,25 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             tvProfileAgeValue.text = "$minValue and $maxValue"
         })
 
+        rangeProfileAge.setOnRangeSeekbarFinalValueListener { minValue, maxValue ->
+            Log.d("min max:", "$minValue $maxValue")
+            sessionManager.setStringValue(maxValue.toString(), Constants.KEY_AGE_MAX)
+            sessionManager.setStringValue(minValue.toString(), Constants.KEY_AGE_MIN)
+            editProfileApiCall()
+        }
+        edtProfileCasualName.inputType = InputType.TYPE_NULL
+        edtProfileTagline.inputType = InputType.TYPE_NULL
+        edtProfileTagline.minLines = 5
+        edtProfileTagline.maxLines = 5
+
         profileBasicViewModel.getUserFullProfile()
 //        generateProfileTagUI()
-        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
+        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_edit_gray,
+            0
+        );
         edtProfileCasualName.compoundDrawablePadding = 25
 
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
@@ -99,12 +141,27 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 if (event.getAction() === MotionEvent.ACTION_UP) {
                     if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
-                        if (isEditUsername){
+                        if (isEditUsername) {
                             isEditUsername = false
-                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
-                        }else{
+                            edtProfileCasualName.inputType = InputType.TYPE_NULL
+                            edtProfileCasualName.clearFocus()
+                            editProfileApiCall()
+                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_edit_gray,
+                                0
+                            );
+                        } else {
                             isEditUsername = true
-                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done_red, 0);
+                            edtProfileCasualName.requestFocus()
+                            edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
+                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_done_red,
+                                0
+                            );
                         }
 
                         return true
@@ -119,12 +176,27 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 if (event.getAction() === MotionEvent.ACTION_UP) {
                     if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
-                        if (isEditTagLine){
+                        if (isEditTagLine) {
                             isEditTagLine = false
-                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
-                        }else{
+                            edtProfileTagline.inputType = InputType.TYPE_NULL
+                            edtProfileTagline.clearFocus()
+                            editProfileApiCall()
+                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_edit_gray,
+                                0
+                            );
+                        } else {
                             isEditTagLine = true
-                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_done_red, 0);
+                            edtProfileTagline.inputType = InputType.TYPE_NULL
+                            edtProfileTagline.requestFocus()
+                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_done_red,
+                                0
+                            );
                         }
 
                         return true
@@ -153,8 +225,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         var profileTagCount = 0
         if (sessionManager.getCategoryList().size > 0) {
             for (categoryBean in sessionManager.getCategoryList()) {
-                var layoutInflater = LayoutInflater.from(requireActivity())
-                var view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
+                val layoutInflater = LayoutInflater.from(requireActivity())
+                val view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
                 view.tvCategory.text = categoryBean.name.toString()
 
                 for (subCategoryBean in categoryBean.sub_category) {
@@ -171,7 +243,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
                     view.chipProfileTag.addView(tvCategory)
 
-                    if (subCategoryBean.is_selected == 1){
+                    if (subCategoryBean.is_selected == 1) {
+                        subCategoryIdList.add(subCategoryBean.id)
                         ++profileTagCount
                         Utils.rectangleShapeGradient(
                             tvCategory, resources.getColor(R.color.gradient_six_start),
@@ -185,14 +258,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                                 R.drawable.rounded_gray_solid
                             )?.constantState
                         ) {
+                            subCategoryIdList.add(subCategoryBean.id)
                             ++profileTagCount
                             Utils.rectangleShapeGradient(
                                 tvCategory, resources.getColor(R.color.gradient_six_start),
                                 resources.getColor(R.color.gradient_six_end)
                             )
+
+                            editProfileApiCall()
+
                         } else {
+                            subCategoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
                             tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
+
+                            editProfileApiCall()
                         }
                         tvCountProfileTag.text = profileTagCount.toString()
                     }
@@ -229,49 +309,49 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
      * Generate social account UI for added on profile
      */
     private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }) {
             mainFacebook.visibility = View.VISIBLE
             tvFacebookLink.text = data.single { s -> s.name == getString(R.string.facebook) }
                 .link
-        }else{
+        } else {
             mainFacebook.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }) {
             mainInstagram.visibility = View.VISIBLE
             tvInstagramLink.text = data.single { s -> s.name == getString(R.string.instagram) }
                 .link
-        }else{
+        } else {
             mainInstagram.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }) {
             mainSnapchat.visibility = View.VISIBLE
             tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
                 .link
-        }else{
+        } else {
             mainSnapchat.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }) {
             mainTikTok.visibility = View.VISIBLE
             tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
                 .link
-        }else{
+        } else {
             mainTikTok.visibility = View.GONE
         }
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }) {
             mainSpotify.visibility = View.VISIBLE
             tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
                 .link
-        }else{
+        } else {
             mainSpotify.visibility = View.GONE
         }
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }) {
             mainLinkedin.visibility = View.VISIBLE
             tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
                 .link
-        }else{
+        } else {
             mainLinkedin.visibility = View.GONE
         }
     }
@@ -284,37 +364,41 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     private fun onClick(view: View) {
         when (view) {
             llCategory -> {
+                val categoryFragment = SelectCategoryFragment.getInstance()
+                categoryFragment.setTargetFragment(this, Constants.REQUEST_CODE)
                 (activity as EditProfileActivity).addFragment(
-                    SelectCategoryFragment.getInstance(
-                    ),
+                    categoryFragment,
                     Constants.SELECT_CATEGORY_FRAGMENT
                 )
             }
             llInterestIn -> {
+                val interestInFragment = InterestInFragment.getInstance()
+                interestInFragment.setTargetFragment(this, Constants.REQUEST_CODE)
                 (activity as EditProfileActivity).addFragment(
-                    InterestInFragment.getInstance(
-                    ),
+                    interestInFragment,
                     Constants.INTEREST_IN_FRAGMENT
                 )
             }
             llEducation -> {
-                (activity as EditProfileActivity).addFragment(
-                    EducationFragment.getInstance(
-                    ),
-                    Constants.EDUCATION_FRAGMENT
+                openActivityWithResultCode(
+                    requireActivity(),
+                    EducationListActivity(),
+                    Constants.REQUEST_CODE_EDUCATION
                 )
             }
             llJob -> {
-                (activity as EditProfileActivity).addFragment(
-                    JobFragment.getInstance(
-                    ),
-                    Constants.JOB_FRAGMENT
+                openActivityWithResultCode(
+                    requireActivity(),
+                    JobListingActivity(),
+                    Constants.REQUEST_CODE_JOB
                 )
             }
             // click on add link button open new fragment social link
             ivAddLink -> {
+                val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
+                addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
                 (activity as EditProfileActivity).addFragment(
-                    AddLinksFragment.getInstance(true, ArrayList<SocialAccountBean>()),
+                    addLinksFragment,
                     Constants.ADD_LINKS_FRAGMENT
                 )
             }
@@ -324,9 +408,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
     private fun fillValue(profileBean: ProfileBean) {
 
-        sessionManager.setStringValue(profileBean.max_age.toString(),Constants.KEY_AGE_MAX)
-        sessionManager.setStringValue(profileBean.min_age.toString(),Constants.KEY_AGE_MIN)
-        sessionManager.setStringValue(profileBean.about_me,Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+        sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+        sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
 
         edtProfileCasualName.setText(profileBean.username)
         edtProfileTagline.setText(profileBean.about_me)
@@ -355,26 +440,17 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 2 -> tvProfileInterestIn.text = getString(R.string.women)
                 3 -> tvProfileInterestIn.text = getString(R.string.everyone)
             }
-//            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
         }
-        var socialAccountList = profileBean.social_accounts
+        socialAccountList = profileBean.social_accounts
         socialAccountUI(socialAccountList)
 
         if (sessionManager.getCategoryList().size >= 3) {
             tvProfileSelectCategory.text = sessionManager.getCategoryList().get(0).name
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
         }
-
-
-//        llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
-
-//        if (sessionManager.getJobBean().title.isNotEmpty()) {
-//            tvProfileJobs.text = sessionManager.getJobBean().title
-//            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
-//        }
     }
 
-    fun editProfileApiCall() {
+    private fun editProfileApiCall() {
 
         val jsonObject = JsonObject()
 
@@ -398,43 +474,65 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
         jsonObject.addProperty(
             Constants.TAGS,
-            ProfileInterestActivity.categoryIdList.joinToString()
+            subCategoryIdList.joinToString()
         )
 
-        var categoryIdList: ArrayList<Int> = ArrayList()
-        for (category in  sessionManager.getCategoryList()){
+        val categoryIdList: ArrayList<Int> = ArrayList()
+        for (category in sessionManager.getCategoryList()) {
             categoryIdList.add(category.id)
         }
         jsonObject.addProperty(
             Constants.CATEGORY_ID,
             categoryIdList.joinToString()
         )
-        var socialAccountId = ArrayList<Long>()
-        for (data in ProfileInterestActivity.socialAccountList) {
+        val socialAccountId = ArrayList<Long>()
+        for (data in socialAccountList) {
             socialAccountId.add(data.id)
         }
         jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
         jsonObject.addProperty(
             Constants.EDUCATION,
-            sessionManager.getEducationBean().user_education_Id
+            sessionManager.getEducationBean().id
         )
-        jsonObject.addProperty(
-            Constants.EDUCATION,
-            sessionManager.getEducationBean().user_education_Id
-        )
+
         jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
-        var albumId = ArrayList<Long>()
-//        for (data in albumList) {
-//            albumId.add(data.id)
-//        }
-//        jsonObject.addProperty(Constants.ALBUMS, albumId.joinToString())
 
         jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
-        Log.d("CreateProfile Request:",jsonObject.toString())
+        Log.d("CreateProfile Request:", jsonObject.toString())
 
-//        profileBasicViewModel.getUserFullProfile(jsonObject)
+        profileBasicViewModel.editProfile(jsonObject)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("onActivityResult", "onActivityResult")
+        if (requestCode == Constants.REQUEST_CODE_EDUCATION || requestCode == Constants.REQUEST_CODE_JOB){
+            tvProfileJobs.text = sessionManager.getJobBean().title
+            tvProfileEducation.text = sessionManager.getEducationBean().course
+            editProfileApiCall()
+        }else if (data != null) {
+            if (data.hasExtra("fromInterestIn")) {
+                when (sessionManager.getInterestIn()) {
+                    1 -> tvProfileInterestIn.text = getString(R.string.men)
+                    2 -> tvProfileInterestIn.text = getString(R.string.women)
+                    3 -> tvProfileInterestIn.text = getString(R.string.everyone)
+                }
+                editProfileApiCall()
+            } else if (data.hasExtra("fromSelectCategory")) {
+                tvProfileSelectCategory.text = sessionManager.getCategoryList()[0].name
+                llProfileTag.removeAllViews()
+                subCategoryIdList.clear()
+                generateProfileTagUI()
+
+                editProfileApiCall()
+            } else if (data.hasExtra("fromAddLink")) {
+                profileBasicViewModel.getSocialLink()
+            }
+
+//        Log.d("onActivityResult","onActivityResult")
+        }
     }
 
     override fun onDestroy() {

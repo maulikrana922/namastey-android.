@@ -95,6 +95,7 @@
             android:hint="@string/hint_enter_name"
             android:singleLine="true"
             android:maxLength="35"
+            android:textColor="@color/colorBlack"
             android:imeOptions="actionNext"
             app:layout_constraintTop_toBottomOf="@id/tvAddEducation"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,9 +108,20 @@
             android:hint="@string/hint_enter_cource_title"
             android:singleLine="true"
             android:maxLength="35"
+            android:textColor="@color/colorBlack"
             app:layout_constraintTop_toBottomOf="@id/edtCollegeName"
             app:layout_constraintStart_toStartOf="@id/edtCollegeName"
             app:layout_constraintEnd_toEndOf="@id/edtCollegeName"/>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnEducationRemove"
+            style="@style/btnRedStyle"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:text="@string/remove_education"
+            app:layout_constraintBottom_toTopOf="@id/btnEducationDone"
+            app:layout_constraintEnd_toEndOf="@id/edtCollegeName"
+            app:layout_constraintStart_toStartOf="@id/edtCollegeName" />
 
         <com.namastey.customViews.CustomButton
             android:id="@+id/btnEducationDone"
@@ -120,16 +132,16 @@
             app:layout_constraintEnd_toEndOf="@id/edtCollegeName"
             app:layout_constraintStart_toStartOf="@id/edtCollegeName" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

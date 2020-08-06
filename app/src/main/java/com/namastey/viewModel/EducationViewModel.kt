@@ -72,6 +72,30 @@ class EducationViewModel constructor(
         }
     }
 
+    fun getEducationList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (educationView.isInternetAvailable()) {
+                    networkService.requestToGetEducationList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            educationView.onSuccessEducationList(appResponse.data!!)
+                        else
+                            educationView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    educationView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+
+                educationView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

@@ -1,21 +1,28 @@
 package com.namastey.fragment
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EditProfileActivity
 import com.namastey.adapter.SelectCategoryAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectCategoryBinding
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.uiView.ProfileSelectCategoryView
+import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectCategoryViewModel
+import kotlinx.android.synthetic.main.fragment_interest_in.*
 import kotlinx.android.synthetic.main.fragment_select_category.*
+import kotlinx.android.synthetic.main.fragment_select_category.ivProfileImage
 import javax.inject.Inject
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
@@ -64,7 +71,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private fun initData() {
         ivCloseCategory.setOnClickListener(this)
         btnSelectCategoryDone.setOnClickListener(this)
-
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
+            GlideLib.loadImage(requireActivity(),ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+        }
         selectedCategoryList = sessionManager.getCategoryList()
         selectCategoryViewModel.getCategoryList()
     }
@@ -91,6 +100,13 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
                 if (selectedCategoryList.size >= 3){
                     sessionManager.setCategoryList(ArrayList())
                     sessionManager.setCategoryList(selectedCategoryList)
+                    if (activity is EditProfileActivity){
+                        targetFragment!!.onActivityResult(
+                            Constants.REQUEST_CODE,
+                            Activity.RESULT_OK,
+                            Intent().putExtra("fromSelectCategory", true)
+                        )
+                    }
                     activity!!.onBackPressed()
                 } else {
                     object : CustomAlertDialog(

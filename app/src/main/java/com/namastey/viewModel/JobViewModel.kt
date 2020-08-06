@@ -48,6 +48,30 @@ class JobViewModel constructor(
         }
     }
 
+    fun getJobList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (jobView.isInternetAvailable()) {
+                    networkService.requestToGetJobList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            jobView.onSuccessJobList(appResponse.data!!)
+                        else
+                            jobView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    jobView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+
+                jobView.onHandleException(t)
+            }
+        }
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized)
