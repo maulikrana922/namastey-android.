@@ -153,6 +153,7 @@
     <string name="msg_empty_college_name">Please enter college name</string>
     <string name="msg_empty_year">Please enter passing year</string>
     <string name="msg_empty_course">Please enter course name</string>
+    <string name="msg_selected_education">Your selected education can not be delete</string>
 
     <!--    List education screen-->
     <string name="whats_your_education">What\'s Your Education?</string>
@@ -168,6 +169,7 @@
     <string name="hint_company">Company (or just industry)</string>
     <string name="msg_empty_job_title">Please enter job title</string>
     <string name="msg_empty_job_company">Please enter company name</string>
+    <string name="msg_selected_job">Your selected job can not be delete</string>
 
     <!--    Add link fragment-->
     <string name="add_links">Add Links</string>

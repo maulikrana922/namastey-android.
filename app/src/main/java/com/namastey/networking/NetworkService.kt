@@ -94,6 +94,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetJobAsync().await()
         }
 
+    suspend fun requestToRemoveJob(id: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestToRemoveJobAsync(id).await() }
+
     suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
         withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
 
@@ -105,6 +108,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.updateEducationAsync(id, college, year).await()
         }
+
+    suspend fun requestToRemoveEducation(id: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestToRemoveEducationAsync(id).await() }
 
     suspend fun requestAddUpdateJob(jsonObject: JsonObject): AppResponse<JobBean> =
         withContext(Dispatchers.IO) { networkRequest.addUpdateJobAsync(jsonObject).await() }

@@ -8,16 +8,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.EducationListActivity
-import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEducationBinding
 import com.namastey.model.EducationBean
 import com.namastey.uiView.EducationView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.EducationViewModel
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_education.*
 import javax.inject.Inject
 
@@ -64,6 +61,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     private fun initListener() {
         ivCloseEducation.setOnClickListener(this)
         btnEducationDone.setOnClickListener(this)
+        btnEducationRemove.setOnClickListener(this)
     }
 
     private fun initData() {
@@ -97,18 +95,28 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     }
 
     override fun onSuccessResponse(educationBean: EducationBean) {
-        educationBean.college = edtCollegeName.text.toString()
-        educationBean.course = edtEducationCourse.text.toString()
+//        educationBean.college = edtCollegeName.text.toString()
+//        educationBean.course = edtEducationCourse.text.toString()
 
         if (activity is EducationListActivity) {
             activity!!.onActivityReenter(
                 Constants.REQUEST_CODE_EDUCATION,
                 Intent().putExtra("educationBean", educationBean)
             )
-        }else{
+        } else {
             sessionManager.setEducationBean(educationBean)
         }
         activity!!.onBackPressed()
+    }
+
+    override fun onSuccess(msg: String) {
+        if (activity is EducationListActivity) {
+            activity!!.onActivityReenter(
+                Constants.REQUEST_CODE_EDUCATION,
+                Intent().putExtra("removeEducation", true)
+            )
+            requireActivity().onBackPressed()
+        }
     }
 
     override fun onSuccessEducationList(educationList: ArrayList<EducationBean>) {
@@ -167,6 +175,38 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                                 )
                         }
                     }
+                }
+            }
+            btnEducationRemove -> {
+                if (sessionManager.getEducationBean().id == educationBean.id) {
+                    object : CustomAlertDialog(
+                        requireActivity(),
+                        resources.getString(R.string.msg_selected_education),
+                        getString(R.string.ok),
+                        ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            dismiss()
+                        }
+                    }.show()
+                } else {
+                    object : CustomAlertDialog(
+                        requireActivity(),
+                        resources.getString(R.string.msg_remove_post),
+                        getString(R.string.yes),
+                        getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    educationViewModel.removeEducationAPI(educationBean.id)
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
                 }
             }
         }

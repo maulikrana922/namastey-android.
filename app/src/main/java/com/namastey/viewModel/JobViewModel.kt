@@ -72,6 +72,31 @@ class JobViewModel constructor(
         }
     }
 
+    fun removeJobAPI(id: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (jobView.isInternetAvailable()) {
+                    networkService.requestToRemoveJob(id)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                jobView.onSuccess(appResponse.message)
+                            } else {
+                                jobView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    jobView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                jobView.onHandleException(exception)
+            }
+        }
+
+    }
 
     fun onDestroy() {
         if (::job.isInitialized)

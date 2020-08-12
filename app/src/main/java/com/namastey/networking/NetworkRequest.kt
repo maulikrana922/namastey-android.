@@ -67,6 +67,10 @@ interface NetworkRequest {
     fun requestToGetEducationAsync(): Deferred<AppResponse<ArrayList<EducationBean>>>
 
     @FormUrlEncoded
+    @HTTP(method = "DELETE", path = Constants.REMOVE_EDUCATION, hasBody = true)
+    fun requestToRemoveEducationAsync(@Field(Constants.ID) id: Long): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
     @POST(Constants.ADD_EDUCATION)
     fun addEducationAsync(
         @Field(Constants.COLLEGE) college: String, @Field(Constants.COURSE) course: String
@@ -85,6 +89,10 @@ interface NetworkRequest {
 
     @POST(Constants.ADD_UPDATE_JOB)
     fun addUpdateJobAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<JobBean>>
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = Constants.REMOVE_JOB, hasBody = true)
+    fun requestToRemoveJobAsync(@Field(Constants.ID) id: Long): Deferred<AppResponse<Any>>
 
     @POST(Constants.ADD_SOCIAL_LINK)
     fun addSocialLinksAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<ArrayList<SocialAccountBean>>>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.listeners.OnJobItemClick
 import com.namastey.model.JobBean
 import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_education.view.*
@@ -13,7 +14,8 @@ import kotlinx.android.synthetic.main.row_education.view.*
 class JobListingAdapter(
     var jobListing: ArrayList<JobBean>,
     var activity: Context,
-    var sessionManager: SessionManager
+    var sessionManager: SessionManager,
+    var onItemClick: OnJobItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<JobListingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -40,6 +42,9 @@ class JobListingAdapter(
             tvTitle.text = jobBean.title
             tvSubTitle.text = jobBean.company_name
 
+            mainViewHolder.setOnClickListener{
+                onItemClick.onJobItemClick(jobBean,position)
+            }
             rbSelected.setOnClickListener{
                 if (jobListing[position].isSelect == 0){
                     rbSelected.isChecked = true

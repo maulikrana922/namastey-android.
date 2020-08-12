@@ -42,7 +42,7 @@ class EducationAdapter(
             tvTitle.text = educationBean.college
             tvSubTitle.text = educationBean.course
 
-            mainEducationView.setOnClickListener {
+            mainViewHolder.setOnClickListener {
                 onItemClick.onEducationItemClick(educationBean, position)
             }
             rbSelected.setOnClickListener {

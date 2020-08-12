@@ -30,6 +30,7 @@ object Constants {
     const val GET_PROFILE_PIC = "profile/media/view"
     const val ADD_EDUCATION = "education/add"
     const val GET_EDUCATION = "education/view"
+    const val REMOVE_EDUCATION = "education/remove"
     const val UPDATE_EDUCATION = "education/update"
     const val GET_JOB = "job-list"
     const val ADD_UPDATE_JOB = "add-job"

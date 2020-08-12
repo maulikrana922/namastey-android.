@@ -90,11 +90,37 @@ class EducationViewModel constructor(
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
-
                 educationView.onHandleException(t)
             }
         }
     }
+
+    fun removeEducationAPI(id: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (educationView.isInternetAvailable()) {
+                    networkService.requestToRemoveEducation(id)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                educationView.onSuccess(appResponse.message)
+                            } else {
+                                educationView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    educationView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                educationView.onHandleException(exception)
+            }
+        }
+
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized)

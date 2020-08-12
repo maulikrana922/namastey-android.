@@ -8,19 +8,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.EducationListActivity
 import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentJobBinding
 import com.namastey.model.JobBean
 import com.namastey.uiView.JobView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.JobViewModel
-import kotlinx.android.synthetic.main.activity_education_list.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_job.*
-import kotlinx.android.synthetic.main.fragment_job.ivProfileImage
 import javax.inject.Inject
 
 class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
@@ -35,16 +32,18 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
     private lateinit var layoutView: View
     private lateinit var jobViewModel: JobViewModel
     private var isFromJobListing = false
+    private var jobBean = JobBean()
 
     override fun getLayoutId() = R.layout.fragment_job
 
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(isFromJobListing: Boolean) =
+        fun getInstance(isFromJobListing: Boolean, jobBean: JobBean) =
             JobFragment().apply {
                 arguments = Bundle().apply {
                     putBoolean("isFromJobListing", isFromJobListing)
+                    putParcelable("jobBean", jobBean)
                 }
             }
     }
@@ -63,12 +62,24 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
     private fun initData() {
         ivCloseJob.setOnClickListener(this)
         btnJobDone.setOnClickListener(this)
+        btnJobRemove.setOnClickListener(this)
 
         isFromJobListing = arguments!!.getBoolean("isFromJobListing", false)
 
         if (isFromJobListing) {
-            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
-                GlideLib.loadImage(requireContext(),ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivProfileImage,
+                    sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+                )
+            }
+            jobBean = arguments!!.getParcelable<JobBean>("jobBean")!!
+            if (jobBean.title.isNotEmpty()) {
+                tvJob.text = getString(R.string.edit_job)
+                btnJobRemove.visibility = View.VISIBLE
+                edtJobTitle.setText(jobBean.title)
+                edtJobCompany.setText(jobBean.company_name)
             }
         } else {
             val jobBean = sessionManager.getJobBean()
@@ -95,6 +106,15 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
         activity!!.onBackPressed()
     }
 
+    override fun onSuccess(msg: String) {
+        if (activity is JobListingActivity) {
+            activity!!.onActivityReenter(
+                Constants.REQUEST_CODE_JOB,
+                Intent().putExtra("removeJob", true)
+            )
+            requireActivity().onBackPressed()
+        }
+    }
     override fun onSuccessJobList(jobList: ArrayList<JobBean>) {
         TODO("Not yet implemented")
     }
@@ -129,7 +149,12 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
                         if (isFromJobListing) {
-
+                            if (jobBean.company_name.isNotEmpty()){
+                                jsonObject.addProperty(
+                                    Constants.JOB_ID,
+                                    jobBean.id
+                                )
+                            }
                         } else {
                             if (sessionManager.getJobBean().company_name.isNotEmpty())
                                 jsonObject.addProperty(
@@ -139,6 +164,38 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                         }
                         jobViewModel.addJob(jsonObject)
                     }
+                }
+            }
+            btnJobRemove -> {
+                if (sessionManager.getJobBean().id == jobBean.id) {
+                    object : CustomAlertDialog(
+                        requireActivity(),
+                        resources.getString(R.string.msg_selected_job),
+                        getString(R.string.ok),
+                        ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            dismiss()
+                        }
+                    }.show()
+                } else {
+                    object : CustomAlertDialog(
+                        requireActivity(),
+                        resources.getString(R.string.msg_remove_post),
+                        getString(R.string.yes),
+                        getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    jobViewModel.removeJobAPI(jobBean.id)
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
                 }
             }
         }

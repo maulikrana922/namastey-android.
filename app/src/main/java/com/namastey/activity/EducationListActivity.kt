@@ -33,7 +33,7 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
     private lateinit var educationViewModel: EducationViewModel
     private lateinit var educationAdapter: EducationAdapter
     private var educationList = ArrayList<EducationBean>()
-    private var position: Int = 0
+    private var position: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,11 +86,15 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
         super.onActivityReenter(resultCode, data)
-        if (resultCode == Constants.REQUEST_CODE_EDUCATION) {
-            if (data != null) {
-                val educationBean = data.getParcelableExtra<EducationBean>("educationBean")
+        if (resultCode == Constants.REQUEST_CODE_EDUCATION && data != null) {
 
-                if (position != 0) {
+            if (data.hasExtra("removeEducation")) {
+                educationList.removeAt(position)
+                educationAdapter.notifyItemRemoved(position)
+                educationAdapter.notifyItemRangeChanged(position, educationAdapter.itemCount)
+            } else {
+                val educationBean = data.getParcelableExtra<EducationBean>("educationBean")
+                if (position != -1) {
                     educationBean?.let {
                         educationList[position] = it
                         educationAdapter.notifyItemChanged(position)

@@ -10,6 +10,7 @@ import com.namastey.adapter.JobListingAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityJobListingBinding
 import com.namastey.fragment.JobFragment
+import com.namastey.listeners.OnJobItemClick
 import com.namastey.model.JobBean
 import com.namastey.uiView.JobView
 import com.namastey.utils.Constants
@@ -17,11 +18,9 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.JobViewModel
 import kotlinx.android.synthetic.main.activity_job_listing.*
-import kotlinx.android.synthetic.main.activity_job_listing.ivProfileImage
-import kotlinx.android.synthetic.main.fragment_interest_in.*
 import javax.inject.Inject
 
-class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
+class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView, OnJobItemClick {
 
 
     @Inject
@@ -34,6 +33,7 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
     private lateinit var jobViewModel: JobViewModel
     private var jobList = ArrayList<JobBean>()
     private lateinit var jobAdapter: JobListingAdapter
+    private var position: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
     override fun onSuccessJobList(jobList: ArrayList<JobBean>) {
         this.jobList = jobList
         jobAdapter =
-            JobListingAdapter(this.jobList, this@JobListingActivity, sessionManager)
+            JobListingAdapter(this.jobList, this@JobListingActivity, sessionManager, this)
         rvJobList.adapter = jobAdapter
     }
 
@@ -66,8 +66,12 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
-        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
-            GlideLib.loadImage(this@JobListingActivity,ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+            GlideLib.loadImage(
+                this@JobListingActivity,
+                ivProfileImage,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
         }
         jobViewModel.getJobList()
     }
@@ -82,14 +86,29 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
         super.onActivityReenter(resultCode, data)
-        if (resultCode == Constants.REQUEST_CODE_JOB){
-            if (data != null){
+        if (resultCode == Constants.REQUEST_CODE_JOB && data != null) {
+            if (data.hasExtra("removeJob")) {
+                jobList.removeAt(position)
+                jobAdapter.notifyItemRemoved(position)
+                jobAdapter.notifyItemRangeChanged(position, jobAdapter.itemCount)
+            } else {
                 val jobBean = data.getParcelableExtra<JobBean>("jobBean")
-                jobBean?.let { jobList.add(it)
-                  jobAdapter.notifyItemInserted(jobList.size)}
+                if (position != -1) {
+                    jobBean?.let {
+                        jobList[position] = it
+                        jobAdapter.notifyItemChanged(position)
+
+                    }
+                }else {
+                    jobBean?.let {
+                        jobList.add(it)
+                        jobAdapter.notifyItemInserted(jobList.size)
+                    }
+                }
             }
         }
     }
+
     override fun onDestroy() {
         jobViewModel.onDestroy()
         super.onDestroy()
@@ -101,7 +120,18 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView {
 
     fun onClickAddJob(view: View) {
         addFragment(
-            JobFragment.getInstance(true
+            JobFragment.getInstance(
+                true, JobBean()
+            ),
+            Constants.JOB_FRAGMENT
+        )
+    }
+
+    override fun onJobItemClick(jobBean: JobBean, position: Int) {
+        this.position = position
+        addFragment(
+            JobFragment.getInstance(
+                true, jobBean
             ),
             Constants.JOB_FRAGMENT
         )

@@ -14,6 +14,7 @@ import com.namastey.fragment.InterestInFragment
 import com.namastey.fragment.JobFragment
 import com.namastey.fragment.SelectCategoryFragment
 import com.namastey.model.EducationBean
+import com.namastey.model.JobBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
@@ -205,7 +206,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             }
             llJob -> {
                 addFragment(
-                    JobFragment.getInstance(false
+                    JobFragment.getInstance(false,JobBean()
                     ),
                     Constants.JOB_FRAGMENT
                 )
