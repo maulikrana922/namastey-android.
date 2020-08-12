@@ -24,9 +24,9 @@ class CreateAlbumViewModel constructor(
     private lateinit var job: Job
 
     /**
-     * Api call for add album with name
+     * Api call for add/edit album with name
      */
-    fun addAlbum(jsonObject: JsonObject) {
+    fun addEditAlbum(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -105,6 +105,25 @@ class CreateAlbumViewModel constructor(
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()
+    }
+
+    fun getAlbumDetail(albumId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToGetAlbumDetails(albumId).let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        createAlbumView.onSuccessAlbumDetails(appResponse.data!!)
+                    else
+                        createAlbumView.onFailed(appResponse.message,appResponse.error)
+                }
+
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                createAlbumView.onHandleException(t)
+            }
+        }
     }
 
     fun removePostVideo(postId: Long) {

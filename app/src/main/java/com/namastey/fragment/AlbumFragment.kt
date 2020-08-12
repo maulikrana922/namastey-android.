@@ -2,14 +2,17 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.AlbumDetailActivity
 import com.namastey.activity.CreateAlbumActivity
 import com.namastey.adapter.AlbumListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAlbumBinding
+import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.uiView.AlbumView
 import com.namastey.viewModel.AlbumViewModel
@@ -17,7 +20,8 @@ import kotlinx.android.synthetic.main.fragment_album.*
 import java.util.*
 import javax.inject.Inject
 
-class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnClickListener {
+class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnClickListener,
+    OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -28,7 +32,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
         rvAlbumList.apply {
-            adapter = AlbumListAdapter(arrayList, activity!!)
+            adapter = AlbumListAdapter(arrayList, requireActivity(), this@AlbumFragment)
         }
 
     }
@@ -55,9 +59,15 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     private fun initData() {
 
         btnAddAlbum.setOnClickListener(this)
-        albumViewModel.getAlbumList()
+//        albumViewModel.getAlbumList()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("onResume : ", "onresume")
+        albumViewModel.getAlbumList()
+
+    }
     private fun setupViewModel() {
         albumViewModel = ViewModelProviders.of(this, viewModelFactory).get(
             AlbumViewModel::class.java
@@ -76,11 +86,17 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     override fun onClick(v: View?) {
         when (v) {
             btnAddAlbum -> {
-                var intent = Intent(activity, CreateAlbumActivity::class.java)
+                var intent = Intent(requireActivity(), CreateAlbumActivity::class.java)
                 intent.putExtra("fromAlbumList", true)
                 openActivity(intent)
             }
         }
+    }
+
+    override fun onItemClick(value: Long,position: Int) {
+        var intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
+        intent.putExtra("albumId", value)
+        openActivity(intent)
     }
 
 }

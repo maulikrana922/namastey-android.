@@ -131,6 +131,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetAlbumListAsync().await()
         }
 
+    suspend fun requestToGetAlbumDetails(albumId: Long): AppResponse<ArrayList<AlbumBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetAlbumDetailsAsync(albumId).await()
+        }
+
     suspend fun requestToGetAlbumWithDetails(): AppResponse<ArrayList<AlbumBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetAlbumWithDetailsAsync().await()

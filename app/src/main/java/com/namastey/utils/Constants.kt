@@ -39,6 +39,7 @@ object Constants {
     const val GET_SOCIAL_LINK = "social-links-list"
     const val ADD_ALBUM = "add-album"
     const val GET_ALBUM = "album-list"
+    const val GET_ALBUM_DETAILS = "album-details"
     const val GET_ALBUM_WITH_VIDEO = "album-with-video-details"
     const val POST_VIDEO = "post-video"
     const val POST_DELETE = "post-delete"

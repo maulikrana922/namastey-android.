@@ -1,10 +1,12 @@
 package com.namastey.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.VideoBean
 import com.namastey.utils.GlideLib
@@ -13,7 +15,8 @@ import kotlinx.android.synthetic.main.row_child_video_album.view.*
 
 class AlbumListAdapter(
     var albumList: ArrayList<AlbumBean>,
-    var activity: Context
+    var activity: Activity,
+    var onItemClick: OnItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -38,6 +41,10 @@ class AlbumListAdapter(
             tvPostCount.text = albumBean.post_count.toString() + " " + context.getString(R.string.posts)
 //            if (videoBean.cover_image_url != null)
 //                GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
+
+            itemView.setOnClickListener{
+                onItemClick.onItemClick(albumBean.id,position)
+            }
         }
 
     }

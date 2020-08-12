@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.AlbumDetailActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.CreateAlbumViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imgTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/green_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivAlbumDetailBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickAlbumDetailBack"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            style="@style/tvTitleStyle"
+            android:text="@string/edit_profile"
+            app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
+            app:layout_constraintEnd_toStartOf="@id/ivMore"
+            app:layout_constraintStart_toEndOf="@id/ivAlbumDetailBack"
+            app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack" />
+
+        <ImageView
+            android:id="@+id/ivMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack" />
+
+        <com.namastey.customViews.CustomEditText
+            android:id="@+id/edtAlbumName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_album_name"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:drawableRight="@drawable/ic_edit_gray"
+            app:layout_constraintEnd_toEndOf="@id/ivMore"
+            app:layout_constraintStart_toStartOf="@id/ivAlbumDetailBack"
+            app:layout_constraintTop_toBottomOf="@id/imgTop"
+            app:typeface="MULI_SEMIBOLD" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/ivEditAlbum"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--            android:padding="@dimen/_5sdp"-->
+<!--            android:src="@drawable/ic_edit_gray"-->
+<!--            android:visibility="visible"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/edtAlbumName"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/edtAlbumName" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAlbumDetail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:outlineSpotShadowColor="@color/colorGray"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:spanCount="2"
+            app:layout_constraintEnd_toEndOf="@id/ivMore"
+            app:layout_constraintStart_toStartOf="@id/ivAlbumDetailBack"
+            app:layout_constraintTop_toBottomOf="@id/edtAlbumName"
+            tools:listitem="@layout/row_album_detail" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

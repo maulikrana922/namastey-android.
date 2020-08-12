@@ -106,6 +106,10 @@ interface NetworkRequest {
     @GET(Constants.GET_ALBUM)
     fun requestToGetAlbumListAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.GET_ALBUM_DETAILS)
+    fun requestToGetAlbumDetailsAsync(@Field(Constants.ALBUM_ID) album_id: Long): Deferred<AppResponse<ArrayList<AlbumBean>>>
+
     @GET(Constants.GET_ALBUM_WITH_VIDEO)
     fun requestToGetAlbumWithDetailsAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
 

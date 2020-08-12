@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:clipChildren="true"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0.0px"
+    card_view:cardBackgroundColor="@android:color/transparent"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="false">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivVideoImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_170sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundedCorners="topRight|bottomLeft" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvVideoViewers"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:drawableLeft="@drawable/ic_view"
+            android:drawablePadding="@dimen/_8sdp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRemoveVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/_12sdp"
+            android:src="@drawable/ic_del_photo"
+            app:layout_constraintEnd_toEndOf="@+id/ivVideoImage"
+            app:layout_constraintTop_toTopOf="@id/ivVideoImage" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivCommentFirst"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivVideoImage" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivCommentSecond"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_placeholder"
+            app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
+            app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivCommentThird"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_placeholder"
+            app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
+            app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
+            app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivCommentFourth"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_placeholder"
+            android:visibility="gone"
+            app:civ_border_color="@color/colorWhite"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
+            app:layout_constraintEnd_toEndOf="@id/ivCommentThird"
+            app:layout_constraintStart_toEndOf="@id/ivCommentThird"
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+
+        <com.namastey.customViews.CustomTextView
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="left"
+            android:text="@string/comments"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD"
+            app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
+            app:layout_constraintStart_toEndOf="@id/ivCommentThird"
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

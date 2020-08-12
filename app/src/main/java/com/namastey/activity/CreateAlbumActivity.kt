@@ -184,7 +184,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         if (!isCreate)
             jsonObject.addProperty(Constants.ALBUM_ID, albumBean.id)
 
-        createAlbumViewModel.addAlbum(jsonObject)
+        createAlbumViewModel.addEditAlbum(jsonObject)
     }
 
     /**
@@ -610,7 +610,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     /**
      * Click on post video delete button remove video from album
      */
-    override fun onItemClick(value: Long) {
+    override fun onItemClick(value: Long,position: Int) {
         createAlbumViewModel.removePostVideo(value)
     }
 

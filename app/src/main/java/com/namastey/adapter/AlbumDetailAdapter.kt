@@ -2,8 +2,6 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +13,15 @@ import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.row_child_video_album.view.*
 
-class VideoListAdapter(
+class AlbumDetailAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
     var onItemClick: OnItemClick
-) : androidx.recyclerview.widget.RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
-            R.layout.row_child_video_album, parent, false
+            R.layout.row_album_detail, parent, false
         )
     )
 
@@ -42,17 +40,19 @@ class VideoListAdapter(
             if (videoBean.cover_image_url != null)
                 GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
-            ivRemoveVideo.setOnClickListener{
+            ivRemoveVideo.setOnClickListener {
                 object : CustomAlertDialog(
                     activity!! as Activity,
-                    resources.getString(R.string.msg_remove_post), activity.getString(R.string.yes), activity.getString(R.string.cancel)
-                ){
+                    resources.getString(R.string.msg_remove_post),
+                    activity.getString(R.string.yes),
+                    activity.getString(R.string.cancel)
+                ) {
                     override fun onBtnClick(id: Int) {
-                        when(id){
-                            btnPos.id ->{
+                        when (id) {
+                            btnPos.id -> {
                                 onItemClick.onItemClick(videoBean.id,position)
                             }
-                            btnNeg.id ->{
+                            btnNeg.id -> {
                                 dismiss()
                             }
                         }
