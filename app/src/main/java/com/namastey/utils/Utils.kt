@@ -229,16 +229,16 @@ object Utils {
      * Convert bitmap image to file
      */
     fun bitmapToFile(context: Context,bitmap: Bitmap): File{
-        var bitmapFile = File(context.cacheDir, "Title.jpg");
+        val bitmapFile = File(context.cacheDir, "Title.jpg");
         bitmapFile.createNewFile();
 
 //Convert bitmap to byte array
-        var bos = ByteArrayOutputStream()
+        val bos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
-        var bitmapData = bos.toByteArray()
+        val bitmapData = bos.toByteArray()
 
 //write the bytes in file
-        var fos = FileOutputStream(bitmapFile)
+        val fos = FileOutputStream(bitmapFile)
         fos.write(bitmapData);
         fos.flush()
         fos.close()

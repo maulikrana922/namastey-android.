@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_5sdp">
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvAlbumName"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="@string/albums"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toStartOf="@id/tvAlbumViewall"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvAlbumViewall"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:text="@string/view_all"
+        android:textColor="@color/colorBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvAlbumName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:typeface="MULI_SEMIBOLD" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChildAlbumPost"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAlbumName" />
+</androidx.constraintlayout.widget.ConstraintLayout>

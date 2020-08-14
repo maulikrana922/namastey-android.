@@ -171,7 +171,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 OTPFragment.getInstance(
                     sessionManager.getUserPhone(),
                     sessionManager.getUserEmail(),
-                    isFromProfile
+                    isFromProfile,
+                    0
                 ),
                 Constants.OTP_FRAGMENT
             )
@@ -180,7 +181,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 OTPFragment.getInstance(
                     sessionManager.getUserPhone(),
                     sessionManager.getUserEmail(),
-                    isFromProfile
+                    isFromProfile,
+                    user.is_register
                 ),
                 Constants.OTP_FRAGMENT
             )

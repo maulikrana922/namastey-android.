@@ -4,7 +4,8 @@
     style="@style/CustomCardViewStyle"
     android:layout_width="@dimen/_90sdp"
     android:layout_height="@dimen/_120sdp"
-    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_6sdp"
+    android:layout_marginEnd="@dimen/_6sdp"
     android:elevation="@dimen/_10sdp"
     android:theme="@style/Theme.MaterialComponents"
     app:cardBackgroundColor="@android:color/transparent"
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:padding="@dimen/_10sdp"
+            android:visibility="gone"
             android:src="@drawable/ic_del_photo"
             app:layout_constraintBottom_toBottomOf="@+id/ivVideoImage"
             app:layout_constraintEnd_toEndOf="@+id/ivVideoImage" />

@@ -78,23 +78,12 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         if (intent.hasExtra("videoFile")) {
             albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
             videoFile = intent.getSerializableExtra("videoFile") as File?
-            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
+//            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
             Log.d("TAG", videoFile!!.name.toString())
 
-//            GlideLib.loadThumbnailImage(this@PostVideoActivity,ivSelectCover,Uri.fromFile(videoFile))
 //            val thumb: Bitmap =
-//                ThumbnailUtils.createVideoThumbnail(videoFile!!.path, MediaStore.Video.Thumbnails.MINI_KIND)
-
-//            GlideLib.loadImageBitmap(this@PostVideoActivity,ivSelectCover,thumb)
-//            val drawable: BitmapDrawable = ivSelectCover.getDrawable() as BitmapDrawable
-//            val bitmap: Bitmap = drawable.bitmap
-//
-//            val tempUri = getImageUri(applicationContext, thumb)
-//            pictureFile = File(getRealPathFromURI(tempUri))
-
-            val thumb: Bitmap =
-                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
-            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
+//                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
+//            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
             tvAlbumName.text = albumBean.name
             postVideoViewModel.getAlbumList()
         }
@@ -453,7 +442,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                             builder.setPositiveButton(
                                 getString(R.string.go_to_settings)
                             ) { dialog, id ->
-                                var intent = Intent(
+                                val intent = Intent(
                                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                     Uri.fromParts("package", packageName, null)
                                 )

@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.row_child_video_album.view.*
 class VideoListAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
-    var onItemClick: OnItemClick
+    var onItemClick: OnItemClick,
+    var fromCreate: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -38,7 +39,10 @@ class VideoListAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            var videoBean = videoList[position]
+            val videoBean = videoList[position]
+            if (fromCreate)
+                ivRemoveVideo.visibility = View.VISIBLE
+
             if (videoBean.cover_image_url != null)
                 GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 

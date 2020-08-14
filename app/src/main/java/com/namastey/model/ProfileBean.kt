@@ -27,26 +27,29 @@ class ProfileBean() : Parcelable {
     var education: ArrayList<EducationBean> = ArrayList()
     var jobs: ArrayList<JobBean> = ArrayList()
     var social_accounts: ArrayList<SocialAccountBean> = ArrayList()
-
+    var interest: ArrayList<InterestBean> = ArrayList()
+    var albums: ArrayList<AlbumBean> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
 //        parcel.readInt()
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.readInt() ?: 0
-        parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
-        parcel.createTypedArrayList(EducationBean) ?: ArrayList()
-        parcel.createTypedArrayList(JobBean) ?: ArrayList()
-        parcel.createTypedArrayList(SocialAccountBean) ?: ArrayList()
+        email = parcel.readString() ?: ""
+        name = parcel.readString() ?: ""
+        username = parcel.readString() ?: ""
+        profileUrl = parcel.readString() ?: ""
+        about_me = parcel.readString() ?: ""
+        is_completly_signup = parcel.readInt() ?: 0
+        min_age = parcel.readInt() ?: 0
+        max_age = parcel.readInt() ?: 0
+        following = parcel.readInt() ?: 0
+        followers = parcel.readInt() ?: 0
+        viewers = parcel.readInt() ?: 0
+        interest_in_gender = parcel.readInt() ?: 0
+        category = parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
+        education =parcel.createTypedArrayList(EducationBean) ?: ArrayList()
+        jobs = parcel.createTypedArrayList(JobBean) ?: ArrayList()
+        social_accounts = parcel.createTypedArrayList(SocialAccountBean) ?: ArrayList()
+        interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()
+        albums = parcel.createTypedArrayList(AlbumBean) ?: ArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -67,6 +70,8 @@ class ProfileBean() : Parcelable {
         parcel.writeTypedList(education)
         parcel.writeTypedList(jobs)
         parcel.writeTypedList(social_accounts)
+        parcel.writeTypedList(interest)
+        parcel.writeTypedList(albums)
     }
 
     override fun describeContents(): Int {

@@ -156,4 +156,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         this.position = position
         albumViewModel.removePostVideo(postId)
     }
+
+    override fun onDestroy() {
+        albumViewModel.onDestroy()
+        super.onDestroy()
+    }
 }

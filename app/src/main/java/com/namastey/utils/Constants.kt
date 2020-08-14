@@ -168,6 +168,7 @@ object Constants {
     const val REQUEST_CODE = 109
     const val REQUEST_CODE_EDUCATION = 110
     const val REQUEST_CODE_JOB = 111
+    const val REQUEST_CODE_VIDEO_TRIM = 112
 
     private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path

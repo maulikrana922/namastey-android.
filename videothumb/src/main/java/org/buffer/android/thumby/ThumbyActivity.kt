@@ -35,7 +35,7 @@ class ThumbyActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        videoUri = intent.getParcelableExtra(EXTRA_URI) as Uri
+        videoUri = intent.getParcelableExtra<Uri>(EXTRA_URI) as Uri
 
         setupVideoContent()
     }

@@ -13,6 +13,7 @@
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteBorder">#FDFDFD</color>
     <color name="colorBlue">#3B5998</color>
     <color name="colorBlueLight">#03A9F3</color>
 <!--    <color name="colorRed">#EA4335</color>-->

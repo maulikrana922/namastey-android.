@@ -17,7 +17,9 @@ data class User(
     @Ignore
     var is_verified: Int,
     var user_type : Int,
-    var username: String
+    var username: String,
+    @Ignore
+    var is_register: Int
 ) {
-    constructor() : this(0,"","", "", "", "","",0,0,"")
+    constructor() : this(0,"","", "", "", "","",0,0,"",0)
 }

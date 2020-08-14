@@ -79,6 +79,9 @@
     <string name="about_me_text">Write something about you &amp; complete your profile</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text.</string>
 
+    <string name="matches">Matches</string>
+    <string name="view_all">View All</string>
+
     <string name="msg_empty_mobile_email">Please enter mobile/email</string>
     <string name="msg_empty_otp">Please enter OTP</string>
     <string name="view">View</string>

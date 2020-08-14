@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -48,6 +47,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private val REQUEST_CODE = 101
     private val REQUEST_CODE_CAMERA = 102
     private var profileFile: File? = null
+    private var profileBean = ProfileBean()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,12 +82,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
-
+        this.profileBean = profileBean
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
 
         if (profileBean.is_completly_signup == 1) {
-            sessionManager.setStringValue(profileBean.profileUrl,Constants.KEY_PROFILE_URL)
+            sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE
             ivProfileCamera.visibility = View.VISIBLE
@@ -103,10 +103,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             tvAbouteDesc.text = profileBean.about_me
         }
     }
-
-//    override fun onSuccessProfileResponse(user: User) {
-//
-//    }
 
     override fun getViewModel() = profileViewModel
 
@@ -127,7 +123,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
 
         if (signupWithPhoneFragment != null) {
-            var childFm = signupWithPhoneFragment.childFragmentManager
+            val childFm = signupWithPhoneFragment.childFragmentManager
             if (childFm.backStackEntryCount > 0) {
                 childFm.popBackStack();
             } else {
@@ -214,27 +210,16 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     applicationContext.packageName + ".provider",
                     Utils.getCameraFile(this@ProfileActivity)
                 )
-//
-//                profileFile = File(
-//                    Constants.FILE_PATH,
-//                    System.currentTimeMillis().toString() + ".jpeg"
-//                )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri)
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-//                if (profileFile != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
-//                }
+                startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
             } catch (ex: Exception) {
                 showMsg(ex.localizedMessage)
             }
         }
     }
-
-//    private fun getCameraFile(): File {
-//        val dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//        return File(dir, FILE_NAME)
-//    }
 
     private fun isCameraPermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -390,7 +375,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                         val selectedImage = data.data
                         val filePathColumn =
                             arrayOf(MediaStore.Images.Media.DATA)
-                            val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
+                        val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
                             selectedImage!!,
                             filePathColumn, null, null, null
                         )
@@ -461,9 +446,17 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on album open edit activity with album list
      */
     fun onClickAlbums(view: View) {
-        var intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
-        intent.putExtra("onClickAlbum",true)
+        val intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
+        intent.putExtra("onClickAlbum", true)
         openActivity(intent)
+    }
+
+    fun onClickViewProfile(view: View) {
+        if (!sessionManager.isGuestUser()) {
+            val intent = Intent(this@ProfileActivity, ProfileViewActivity::class.java)
+            intent.putExtra("profileBean", profileBean)
+            openActivity(intent)
+        }
     }
 
 }

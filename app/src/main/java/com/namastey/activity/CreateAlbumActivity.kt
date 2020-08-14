@@ -4,8 +4,6 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,21 +24,20 @@ import com.namastey.databinding.ActivityCreateAlbumBinding
 import com.namastey.listeners.OnCreateAlbumItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
-import com.namastey.model.ProfileBean
 import com.namastey.uiView.CreateAlbumView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.CreateAlbumViewModel
+import com.video_trim.activity.TrimmerActivity
+import com.video_trim.utils.FileUtils
 import kotlinx.android.synthetic.main.activity_create_album.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import org.buffer.android.thumby.ThumbyActivity
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_THUMBNAIL_POSITION
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_URI
 import org.buffer.android.thumby.util.ThumbyUtils
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAlbumView,
@@ -64,6 +61,8 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     private var videoFile: File? = null
     private var albumBean = AlbumBean()
     private var fromAlbumList = false
+    private val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
+//    private var selectedVideo: Uri = TODO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -382,13 +381,27 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_POST_VIDEO) {
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM){
+            if (data != null){
+                val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
+
+                videoFile = File(selectedVideo.toString())
+
+//                startActivityForResult(ThumbyActivity.getStartIntent(this,Uri.fromFile(videoFile)
+//                ), RESULT_CODE_PICK_THUMBNAIL)
+
+//                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
+
+                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+                intent.putExtra("videoFile", videoFile)
+                intent.putExtra("albumId", albumBean.id)
+//                intent.putExtra("thumbnailImage", pictureFile)
+                intent.putExtra("albumBean", albumBean)
+                openActivityForResult(intent, REQUEST_POST_VIDEO)
+
+            }
+        }else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_POST_VIDEO) {
             if (data != null) {      // Temp need to change
-//                var videoBean: VideoBean = data.getParcelableExtra("videoBean")
-//
-//                albumBean.post_video_list.add(videoBean)
-//                albumList[adapterPosition] = albumBean
-//                albumAdapter.notifyItemChanged(adapterPosition)
                 createAlbumViewModel.getAlbumList()
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_VIDEO_SELECT) {
@@ -397,31 +410,18 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 val selectedVideo = data.data
 
                 if (selectedVideo != null) {
-                    var videoPath = Utils.getPath(this, selectedVideo)
+                    val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
-//
-//                    val filePathColumn =
-//                        arrayOf(MediaStore.Video.Media.DATA)
-//                    val cursor: Cursor? = this@CreateAlbumActivity.contentResolver.query(
-//                        selectedVideo!!,
-//                        filePathColumn, null, null, null
-//                    )
-//                    cursor!!.moveToFirst()
-//
-//                    val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-//                    val picturePath: String = cursor.getString(columnIndex)
-//                    cursor.close()
 
-                    videoFile = File(videoPath)
 
-//                    loadThumbnails(videoPath!!)
-                    startActivityForResult(ThumbyActivity.getStartIntent(this, selectedVideo), RESULT_CODE_PICK_THUMBNAIL)
+//                    videoFile = File(videoPath)
+                    val intent =
+                        Intent(this, TrimmerActivity::class.java)
+                    intent.putExtra(
+                        EXTRA_VIDEO_PATH,
+                        videoPath)
 
-//                    var intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
-//                    intent.putExtra("videoFile", videoFile)
-//                    intent.putExtra("albumId", albumBean.id)
-//                    intent.putExtra("albumBean", albumBean)
-//                    openActivityForResult(intent, REQUEST_POST_VIDEO)
+                    openActivityForResult(intent,Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
@@ -429,18 +429,17 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 val selectedVideo = data.data
 
                 if (selectedVideo != null) {
-                    var videoPath = Utils.getPath(this, selectedVideo)
+                    val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
 
-                    videoFile = File(videoPath)
+//                    videoFile = File(videoPath)
 
-                    startActivityForResult(ThumbyActivity.getStartIntent(this, selectedVideo), RESULT_CODE_PICK_THUMBNAIL)
-
-//                    var intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
-//                    intent.putExtra("videoFile", videoFile)
-//                    intent.putExtra("albumId", albumBean.id)
-//                    intent.putExtra("albumBean", albumBean)
-//                    openActivityForResult(intent, REQUEST_POST_VIDEO)
+                    val intent =
+                        Intent(this, TrimmerActivity::class.java)
+                    intent.putExtra(
+                        EXTRA_VIDEO_PATH,
+                        videoPath)
+                    openActivityForResult(intent,Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
@@ -450,12 +449,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
                 Log.d("Image ", "done")
 
-                var pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
+                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
 
-//                val tempUri = Utils.getImageUri(applicationContext, bitmap)
-//                var pictuareFile = File(Utils.getRealPathFromURI(this@CreateAlbumActivity,tempUri))
-
-                var intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
                 intent.putExtra("videoFile", videoFile)
                 intent.putExtra("albumId", albumBean.id)
                 intent.putExtra("thumbnailImage", pictureFile)
@@ -464,46 +460,6 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             }
         }
     }
-//    private fun loadThumbnails(uri: String) {
-//        val metaDataSource = MediaMetadataRetriever()
-////        if (Build.VERSION.SDK_INT >= 14)
-////            metaDataSource.setDataSource(uri.path, HashMap<String, String>())
-////        else
-//            metaDataSource.setDataSource(uri)
-//
-//        val videoLength = (metaDataSource.extractMetadata(
-//            MediaMetadataRetriever.METADATA_KEY_DURATION).toInt() * 1000).toLong()
-//
-//        val thumbnailCount = 7
-//
-//        val interval = videoLength / thumbnailCount
-//
-//        for (i in 0 until thumbnailCount - 1) {
-//            val frameTime = i * interval
-//
-////            var bitmap = metaDataSource.getFrameAtTime(5000000)
-//            var bitmap = metaDataSource.getFrameAtTime(frameTime, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
-//            try {
-//                val targetWidth: Int
-//                val targetHeight: Int
-////                if (bitmap.height > bitmap.width) {
-////                    targetHeight = frameDimension
-////                    val percentage = frameDimension.toFloat() / bitmap.height
-////                    targetWidth = (bitmap.width * percentage).toInt()
-////                } else {
-////                    targetWidth = frameDimension
-////                    val percentage = frameDimension.toFloat() / bitmap.width
-////                    targetHeight = (bitmap.height * percentage).toInt()
-////                }
-////                bitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//
-////            container_thumbnails.addView(ThumbnailView(context).apply { setImageBitmap(bitmap) })
-//        }
-//        metaDataSource.release()
-//    }
 
     @TargetApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(

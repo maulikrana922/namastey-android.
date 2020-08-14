@@ -9,6 +9,9 @@
             name="viewModel"
             type="com.namastey.viewModel.OTPViewModel" />
     </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -108,4 +111,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivSplashBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/splash"
+            android:visibility="gone"/>
+
+
+    </FrameLayout>
 </layout>

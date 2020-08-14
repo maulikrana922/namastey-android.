@@ -40,30 +40,30 @@ class AlbumCreateListAdapter(
             val albumBean = albumList[position]
             edtAlbumName.setText(albumBean.name)
 
-            if (position == 0){
+            if (position == 0) {
                 edtAlbumName.isEnabled = false
                 ivEditAlbum.visibility = View.INVISIBLE
-            }else{
+            } else {
                 ivEditAlbum.visibility = View.VISIBLE
-                if (albumBean.is_created == 1){
+                if (albumBean.is_created == 1) {
                     edtAlbumName.isEnabled = true
                     ivEditAlbum.setImageResource(R.drawable.ic_done_red)
-                }else{
+                } else {
                     edtAlbumName.isEnabled = false
                     ivEditAlbum.setImageResource(R.drawable.ic_edit_gray)
                 }
             }
-            ivEditAlbum.setOnClickListener{
-                if (albumList[position].is_created == 1){
+            ivEditAlbum.setOnClickListener {
+                if (albumList[position].is_created == 1) {
 //                        albumList[position].is_created = 0
 //                        edtAlbumName.isEnabled = false
 //                        ivEditAlbum.setImageResource(R.drawable.ic_edit_gray)
                     albumBean.name = edtAlbumName.text.toString().trim()
                     if (albumList[position].id == 0L)       // If id == 0 then create new album otherwise update album
-                        onCreateAlbumItemClick.onCreateAlbumItemClick(albumBean,position,true)
+                        onCreateAlbumItemClick.onCreateAlbumItemClick(albumBean, position, true)
                     else
-                        onCreateAlbumItemClick.onCreateAlbumItemClick(albumBean,position,false)
-                }else{
+                        onCreateAlbumItemClick.onCreateAlbumItemClick(albumBean, position, false)
+                } else {
                     albumList[position].is_created = 1
                     edtAlbumName.isEnabled = true
                     ivEditAlbum.setImageResource(R.drawable.ic_done_red)
@@ -71,11 +71,11 @@ class AlbumCreateListAdapter(
                 }
             }
 
-            ivAddVideo.setOnClickListener{
+            ivAddVideo.setOnClickListener {
                 onCreateAlbumItemClick.onClickAddVideo(albumBean)
             }
             rvChildAlbumPost.apply {
-                adapter = VideoListAdapter(albumBean.post_video_list,activity,onItemClick)
+                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,true)
                 setRecycledViewPool(viewPool)
             }
 

@@ -14,6 +14,8 @@ class VideoBean() : Parcelable {
     var cover_image_url: String = ""
     var album_id: Long = 0
     var share_with = 0
+    var viewers = 0
+    var comments = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -23,6 +25,8 @@ class VideoBean() : Parcelable {
         cover_image_url = parcel.readString() ?: ""
         album_id = parcel.readLong()
         share_with = parcel.readInt()
+        viewers = parcel.readInt()
+        comments = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -33,6 +37,8 @@ class VideoBean() : Parcelable {
         parcel.writeString(cover_image_url)
         parcel.writeLong(album_id)
         parcel.writeInt(share_with)
+        parcel.writeInt(viewers)
+        parcel.writeInt(comments)
     }
 
     override fun describeContents(): Int {

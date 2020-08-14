@@ -28,15 +28,15 @@ class ProfileViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (profileView.isInternetAvailable()){
+                if (profileView.isInternetAvailable()) {
                     networkService.requestToGetUserDetail().let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessResponse(appResponse.data!!)
                         else
-                            profileView.onFailed(appResponse.message,appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error)
                     }
-                }else{
+                } else {
                     setIsLoading(false)
                     profileView.showMsg(R.string.no_internet)
                 }
@@ -51,7 +51,7 @@ class ProfileViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (profileView.isInternetAvailable()){
+                if (profileView.isInternetAvailable()) {
                     var mbProfile: MultipartBody.Part? = null
                     if (profile_file != null && profile_file.exists()) {
                         mbProfile = MultipartBody.Part.createFormData(
@@ -61,18 +61,43 @@ class ProfileViewModel constructor(
                         )
                     }
 
-                    val rbDeviceType = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
+                    val rbDeviceType =
+                        RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
 
                     if (mbProfile != null) {
-                        networkService.requestUpdateProfilePicAsync(mbProfile,rbDeviceType).let { appResponse ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK)
-                                profileView.onSuccess(appResponse.message)
-                            else
-                                profileView.onFailed(appResponse.message, appResponse.error)
-                        }
+                        networkService.requestUpdateProfilePicAsync(mbProfile, rbDeviceType)
+                            .let { appResponse ->
+                                setIsLoading(false)
+                                if (appResponse.status == Constants.OK)
+                                    profileView.onSuccess(appResponse.message)
+                                else
+                                    profileView.onFailed(appResponse.message, appResponse.error)
+                            }
                     }
-                }else{
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
+    fun getUserFullProfile() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToGetUserFullProfile().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessResponse(appResponse.data!!)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
                     setIsLoading(false)
                     profileView.showMsg(R.string.no_internet)
                 }
@@ -84,9 +109,8 @@ class ProfileViewModel constructor(
     }
 
 
-
-    fun onDestroy(){
-        if (::job.isInitialized){
+    fun onDestroy() {
+        if (::job.isInitialized) {
             job.cancel()
         }
     }

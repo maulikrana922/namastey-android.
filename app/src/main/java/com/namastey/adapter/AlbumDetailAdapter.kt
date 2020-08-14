@@ -11,7 +11,9 @@ import com.namastey.model.VideoBean
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
-import kotlinx.android.synthetic.main.row_child_video_album.view.*
+import kotlinx.android.synthetic.main.row_album_detail.view.*
+import kotlinx.android.synthetic.main.row_child_video_album.view.ivRemoveVideo
+import kotlinx.android.synthetic.main.row_child_video_album.view.ivVideoImage
 
 class AlbumDetailAdapter(
     var videoList: ArrayList<VideoBean>,
@@ -36,13 +38,17 @@ class AlbumDetailAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            var videoBean = videoList[position]
+            val videoBean = videoList[position]
+            tvVideoViewers.text = videoBean.viewers.toString()
+            tvVideoComment.text =
+                videoBean.comments.toString() + " " + activity.getString(R.string.comments)
+
             if (videoBean.cover_image_url != null)
                 GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
             ivRemoveVideo.setOnClickListener {
                 object : CustomAlertDialog(
-                    activity!! as Activity,
+                    activity as Activity,
                     resources.getString(R.string.msg_remove_post),
                     activity.getString(R.string.yes),
                     activity.getString(R.string.cancel)
@@ -50,7 +56,7 @@ class AlbumDetailAdapter(
                     override fun onBtnClick(id: Int) {
                         when (id) {
                             btnPos.id -> {
-                                onItemClick.onItemClick(videoBean.id,position)
+                                onItemClick.onItemClick(videoBean.id, position)
                             }
                             btnNeg.id -> {
                                 dismiss()

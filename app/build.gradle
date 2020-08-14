@@ -119,7 +119,12 @@ dependencies {
             "com.snapchat.kit.sdk:core:$snapchatVersion"
     ])
     implementation project(path: ':dateandtimepicker')
+
+//    For display thumb of video and select cover image
     implementation project(path: ':videothumb')
+
+//    For video trimmer
+    implementation project(path: ':videotrim')
 //    implementation "org.buffer.android:android-utils:0.3"
 //    Used for range display
     implementation 'com.crystal:crystalrangeseekbar:1.1.3'
