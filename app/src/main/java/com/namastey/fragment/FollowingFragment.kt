@@ -10,7 +10,7 @@ import com.namastey.R
 import com.namastey.adapter.FollowingAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowingBinding
-import com.namastey.model.FollowingBean
+import com.namastey.model.ProfileBean
 import com.namastey.uiView.FollowingView
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
@@ -24,8 +24,29 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private lateinit var fragmentFollowingBinding: FragmentFollowingBinding
     private lateinit var followingViewModel: FollowingViewModel
     private lateinit var layoutView: View
-    private var followingList: ArrayList<FollowingBean> = ArrayList()
+    private var followingList: ArrayList<ProfileBean> = ArrayList()
     private lateinit var followingAdapter: FollowingAdapter
+
+
+    override fun onSuccess(list: ArrayList<ProfileBean>) {
+        if (list.size == 0){
+            tvEmptyFollow.text = getString(R.string.following)
+            tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            llEmpty.visibility = View.VISIBLE
+            rvFollowing.visibility = View.GONE
+        }else{
+            llEmpty.visibility = View.GONE
+            rvFollowing.visibility = View.VISIBLE
+            rvFollowing.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
+        followingAdapter = FollowingAdapter(list, activity!!)
+        rvFollowing.adapter = followingAdapter
+    }
 
 
     override fun getViewModel() = followingViewModel
@@ -47,26 +68,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     }
 
     private fun initUI() {
-
-        //Temp
-        setFollowingList()
-    }
-
-    private fun setFollowingList() {
-        for (number in 0..10) {
-            var followingBean = FollowingBean()
-            followingBean.name = "NamasteyApp"
-            followingList.add(followingBean)
-        }
-        rvFollowing.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            )
-        )
-        followingAdapter = FollowingAdapter(followingList, activity!!)
-        rvFollowing.adapter = followingAdapter
-
+        followingViewModel.getFollowingList()
     }
 
     private fun setupViewModel() {
@@ -80,7 +82,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     }
 
     override fun onDestroy() {
-//        followingViewModel.onDestroy()
+        followingViewModel.onDestroy()
         super.onDestroy()
     }
 

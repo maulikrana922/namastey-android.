@@ -1,5 +1,8 @@
 package com.namastey.uiView
 
-interface FollowersView: BaseView {
+import com.namastey.model.ProfileBean
+
+interface FollowersView : BaseView {
+    fun onSuccess(list: ArrayList<ProfileBean>)
 
 }

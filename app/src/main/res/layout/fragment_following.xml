@@ -55,6 +55,7 @@
                 android:contentDescription="@string/app_name"/>
 
             <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvEmptyFollow"
                 style="@style/tvWrapWhiteStyle"
                 android:textColor="@color/colorBlack"
                 android:text="@string/followers"
@@ -62,11 +63,12 @@
                 android:layout_marginTop="@dimen/_12sdp"/>
 
             <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvEmptyFollowMsg"
                 style="@style/tvWrapWhiteStyle"
                 android:textColor="@color/colorBlack"
                 android:maxLines="3"
                 android:gravity="center"
-                android:text="@string/follow_empty_msg"
+                android:text="@string/msg_empty_following"
                 android:layout_marginTop="@dimen/_5sdp"/>
         </LinearLayout>
 

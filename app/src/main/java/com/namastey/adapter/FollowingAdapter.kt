@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.model.FollowingBean
+import com.namastey.model.ProfileBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_following.view.*
 
 class FollowingAdapter(
-    var followingList: ArrayList<FollowingBean>,
+    var followingList: ArrayList<ProfileBean>,
     var activity: Context
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
@@ -30,9 +30,11 @@ class FollowingAdapter(
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvFollowingName.text = followingList.get(position).name
 
-            GlideLib.loadImageUrlRoundCorner(activity,ivFollowingUser,"")
+            val profileBean = followingList[position]
+            tvFollowingName.text = profileBean.username
+
+            GlideLib.loadImageUrlRoundCorner(activity, ivFollowingUser, profileBean.profileUrl)
 
         }
 

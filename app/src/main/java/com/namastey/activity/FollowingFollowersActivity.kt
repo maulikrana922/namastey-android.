@@ -18,6 +18,7 @@ import com.namastey.fragment.FollowersFragment
 import com.namastey.fragment.FollowingFragment
 import com.namastey.uiView.FolloFollowersView
 import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowFollowersViewModel
 import kotlinx.android.synthetic.main.activity_following_followers.*
@@ -29,6 +30,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var activityFollowingFollowersBinding: ActivityFollowingFollowersBinding
@@ -49,6 +51,13 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
     private fun initData() {
 
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+            GlideLib.loadImage(
+                this@FollowingFollowersActivity, ivFollowUser, sessionManager.getStringValue(
+                    Constants.KEY_PROFILE_URL
+                )
+            )
+        }
         searchFollow.queryHint = resources.getString(R.string.search)
         setupViewPager()
         tabFollow.setupWithViewPager(viewpagerFollow)

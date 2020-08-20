@@ -140,6 +140,9 @@ interface NetworkRequest {
     fun requestToDeletePostAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
 
     @GET(Constants.GET_FOLLOWER_LIST)
-    fun requestToGetFollowerListAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
+    fun requestToGetFollowerListAsync(): Deferred<AppResponse<ArrayList<ProfileBean>>>
+
+    @GET(Constants.GET_FOLLOWING_LIST)
+    fun requestToGetFollowingListAsync(): Deferred<AppResponse<ArrayList<ProfileBean>>>
 
 }

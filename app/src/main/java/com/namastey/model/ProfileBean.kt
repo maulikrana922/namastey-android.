@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 class ProfileBean() : Parcelable {
 
-    //    var id: Int = 0
+    var id: Long = 0
     var email: String = ""
     var name: String = ""
     var username: String = ""
@@ -32,7 +32,7 @@ class ProfileBean() : Parcelable {
     var albums: ArrayList<AlbumBean> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
-//        parcel.readInt()
+        parcel.readLong()
         email = parcel.readString() ?: ""
         name = parcel.readString() ?: ""
         username = parcel.readString() ?: ""
@@ -54,7 +54,7 @@ class ProfileBean() : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-//        parcel.writeInt(id)
+        parcel.writeLong(id)
         parcel.writeString(email)
         parcel.writeString(name)
         parcel.writeString(username)

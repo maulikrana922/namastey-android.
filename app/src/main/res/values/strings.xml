@@ -95,7 +95,8 @@
 
     <!--    Follow screen-->
     <string name="search">Search</string>
-    <string name="follow_empty_msg">When People follow you. you\'ll see them here </string>
+    <string name="msg_empty_following">When People follow you. you\'ll see them here </string>
+    <string name="msg_empty_followers">When you follow people. you\'ll see them here</string>
 
     <!--    Find friend fragment-->
     <string name="find_friend">Find Friend</string>
