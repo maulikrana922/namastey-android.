@@ -40,10 +40,10 @@ class AlbumCreateListAdapter(
             val albumBean = albumList[position]
             edtAlbumName.setText(albumBean.name)
 
-            if (position == 0) {
-                edtAlbumName.isEnabled = false
-                ivEditAlbum.visibility = View.INVISIBLE
-            } else {
+//            if (position == 0) {
+//                edtAlbumName.isEnabled = false
+//                ivEditAlbum.visibility = View.INVISIBLE
+//            } else {
                 ivEditAlbum.visibility = View.VISIBLE
                 if (albumBean.is_created == 1) {
                     edtAlbumName.isEnabled = true
@@ -52,7 +52,7 @@ class AlbumCreateListAdapter(
                     edtAlbumName.isEnabled = false
                     ivEditAlbum.setImageResource(R.drawable.ic_edit_gray)
                 }
-            }
+//            }
             ivEditAlbum.setOnClickListener {
                 if (albumList[position].is_created == 1) {
 //                        albumList[position].is_created = 0

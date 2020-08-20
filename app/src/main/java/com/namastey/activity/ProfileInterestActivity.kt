@@ -77,8 +77,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         if (sessionManager.getCategoryList().size > 0) {
 
             for (categoryBean in sessionManager.getCategoryList()) {
-                var layoutInflater = LayoutInflater.from(this@ProfileInterestActivity)
-                var view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
+                val layoutInflater = LayoutInflater.from(this@ProfileInterestActivity)
+                val view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
                 view.tvCategory.text = categoryBean.name.toString()
 
                 for (subCategoryBean in categoryBean.sub_category) {
@@ -130,6 +130,17 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                             0
                         )
                     } else {
+                        val count = llProfileTag.childCount -1
+                        for (index in 0..count){
+                            val viewCategory = llProfileTag.getChildAt(index)
+                            viewCategory.chipProfileTag.visibility = View.GONE
+                            viewCategory.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_arrow_down_gray,
+                                0
+                            )
+                        }
                         view.chipProfileTag.visibility = View.VISIBLE
                         view.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,

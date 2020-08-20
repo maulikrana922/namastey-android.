@@ -1,17 +1,14 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
-import com.namastey.model.VideoBean
-import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_album_list.view.*
-import kotlinx.android.synthetic.main.row_child_video_album.view.*
 
 class AlbumListAdapter(
     var albumList: ArrayList<AlbumBean>,
@@ -36,14 +33,22 @@ class AlbumListAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            var albumBean = albumList[position]
+            val albumBean = albumList[position]
             tvAlbumName.text = albumBean.name
-            tvPostCount.text = albumBean.post_count.toString() + " " + context.getString(R.string.posts)
+            tvPostCount.text =
+                albumBean.post_count.toString() + " " + context.getString(R.string.posts)
 //            if (videoBean.cover_image_url != null)
 //                GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
-            itemView.setOnClickListener{
-                onItemClick.onItemClick(albumBean.id,position)
+            if (albumBean.name == context.getString(R.string.uploads)) {
+                viewUpload.visibility = View.VISIBLE
+                ivSaveAlbum.visibility = View.VISIBLE
+                ivAlbumNormal.visibility = View.GONE
+                tvAlbumName.setTextColor(Color.BLACK)
+                tvPostCount.setTextColor(Color.BLACK)
+            }
+            itemView.setOnClickListener {
+                onItemClick.onItemClick(albumBean.id, position)
             }
         }
 

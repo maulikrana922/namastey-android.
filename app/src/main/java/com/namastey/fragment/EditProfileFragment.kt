@@ -32,6 +32,7 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.view_profile_basic_info.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
+import kotlinx.android.synthetic.main.view_profile_tag.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import javax.inject.Inject
 
@@ -293,6 +294,17 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             0
                         )
                     } else {
+                        val count = llProfileTag.childCount -1
+                        for (index in 0..count){
+                            val viewCategory = llProfileTag.getChildAt(index)
+                            viewCategory.chipProfileTag.visibility = View.GONE
+                            viewCategory.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_arrow_down_gray,
+                                0
+                            )
+                        }
                         view.chipProfileTag.visibility = View.VISIBLE
                         view.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
                             0,

@@ -19,18 +19,42 @@
         android:layout_height="match_parent">
 
         <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivAlbumNormal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
+            android:alpha="0.8"
             android:scaleType="centerCrop"
             android:src="@color/colorBlack"
             app:cornerRadius="@dimen/_20sdp"
-            android:alpha="0.8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:roundedCorners="topRight|bottomLeft" />
+
+        <View
+            android:id="@+id/viewUpload"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_white_solid"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivSaveAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_save"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvAlbumName"
@@ -41,31 +65,31 @@
             android:text="@string/add_to"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvPostCount"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivSaveAlbum"
             app:layout_constraintTop_toTopOf="parent"
             app:typeface="MULI_EXTRA_BOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvPostCount"
             style="@style/tvWrapWhiteStyle"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="@string/posts"
             android:textSize="14sp"
-            android:layout_marginEnd="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:typeface="MULI_SEMIBOLD" />
 
-<!--        Edit icon if display un-comment imageview  -->
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="@dimen/_15sdp"-->
-<!--            android:contentDescription="@string/app_name"-->
-<!--            android:src="@drawable/ic_edit_btn_blue"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        Edit icon if display un-comment imageview  -->
+        <!--        <ImageView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginEnd="@dimen/_15sdp"-->
+        <!--            android:contentDescription="@string/app_name"-->
+        <!--            android:src="@drawable/ic_edit_btn_blue"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

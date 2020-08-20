@@ -109,7 +109,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
     private fun editAlbumApiCall() {
         Utils.hideKeyboard(this@AlbumDetailActivity)
-        var jsonObject = JsonObject()
+        val jsonObject = JsonObject()
         jsonObject.addProperty(Constants.NAME, edtAlbumName.text.toString().trim())
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
         jsonObject.addProperty(Constants.ALBUM_ID, albumId)
@@ -125,8 +125,18 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
         if (arrayList.size > 0) {
             edtAlbumName.setText(arrayList[0].name)
+            if (arrayList[0].name == getString(R.string.uploads)){
+                edtAlbumName.isEnabled = false
+                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            }
             postList = arrayList[0].post_video_list
             rvAlbumDetail.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+            postList.add(VideoBean())
             albumDetailAdapter = AlbumDetailAdapter(postList, this@AlbumDetailActivity, this)
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -135,7 +145,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onSuccessDeletePost() {
         postList.removeAt(position)
         albumDetailAdapter.notifyItemRemoved(position)
-        albumDetailAdapter.notifyItemRangeChanged(position,albumDetailAdapter.itemCount)
+        albumDetailAdapter.notifyItemRangeChanged(position, albumDetailAdapter.itemCount)
     }
 
     override fun getViewModel() = albumViewModel

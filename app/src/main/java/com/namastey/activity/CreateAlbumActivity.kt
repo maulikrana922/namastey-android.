@@ -33,6 +33,7 @@ import com.namastey.viewModel.CreateAlbumViewModel
 import com.video_trim.activity.TrimmerActivity
 import kotlinx.android.synthetic.main.activity_create_album.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_THUMBNAIL_POSITION
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_URI
 import org.buffer.android.thumby.util.ThumbyUtils
@@ -82,17 +83,12 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         if (intent.hasExtra("fromAlbumList")) {
             fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
             createAlbumViewModel.getAlbumList()
-        } else {
+        }else {
 //        Default one album create uploads
             val albumBean = AlbumBean()
             albumBean.name = getString(R.string.uploads)
             createAlbumApi(albumBean, true)
         }
-
-//        albumList.add(albumBean)
-//        createAlbumViewModel.getAlbumList()
-//        albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this)
-//        rvAlbumList.adapter = albumAdapter
     }
 
     /**
@@ -112,12 +108,6 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         }
     }
 
-//    override fun onSuccessCreateProfile(profileBean: ProfileBean) {
-//        Log.d("Success : ", profileBean.username)
-//
-////        openActivity(this@CreateAlbumActivity, ProfileActivity())
-//    }
-
     override fun onSuccess(msg: String) {
         Log.d("Success : ", msg)
 
@@ -130,8 +120,14 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onSuccessAlbumDetails(albumBeanList: ArrayList<AlbumBean>) {
         albumList.clear()
         albumList = albumBeanList
+        if (albumList.any { albumBean -> albumBean.name == getString(R.string.uploads) }) {
+            albumList.remove(albumList.single { s -> s.name == getString(R.string.uploads) })
+        }
         albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this, this)
         rvAlbumList.adapter = albumAdapter
+//        if (fromAlbumList) {
+            onClickAddAlbum(btnAddAlbum)
+//        }
     }
 
     override fun getViewModel() = createAlbumViewModel

@@ -36,33 +36,46 @@ class AlbumDetailAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            val videoBean = videoList[position]
-            tvVideoViewers.text = videoBean.viewers.toString()
-            tvVideoComment.text =
-                videoBean.comments.toString().plus(" ").plus(activity.getString(R.string.comments))
+            if (position == 0) {
+                viewAlbumDetails.visibility = View.GONE
+                llAddAlbum.visibility = View.VISIBLE
 
-            if (videoBean.cover_image_url != null)
-                GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
+                llAddAlbum.setOnClickListener{
 
-            ivRemoveVideo.setOnClickListener {
-                object : CustomAlertDialog(
-                    activity as Activity,
-                    resources.getString(R.string.msg_remove_post),
-                    activity.getString(R.string.yes),
-                    activity.getString(R.string.cancel)
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        when (id) {
-                            btnPos.id -> {
-                                onItemClick.onItemClick(videoBean.id, position)
-                            }
-                            btnNeg.id -> {
-                                dismiss()
+                }
+            } else {
+                viewAlbumDetails.visibility = View.VISIBLE
+                llAddAlbum.visibility = View.GONE
+                val videoBean = videoList[position]
+                tvVideoViewers.text = videoBean.viewers.toString()
+                tvVideoComment.text =
+                    videoBean.comments.toString().plus(" ")
+                        .plus(activity.getString(R.string.comments))
+
+                if (videoBean.cover_image_url != null)
+                    GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
+
+                ivRemoveVideo.setOnClickListener {
+                    object : CustomAlertDialog(
+                        activity as Activity,
+                        resources.getString(R.string.msg_remove_post),
+                        activity.getString(R.string.yes),
+                        activity.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    onItemClick.onItemClick(videoBean.id, position)
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
                             }
                         }
-                    }
-                }.show()
+                    }.show()
+                }
             }
+
         }
 
     }

@@ -118,7 +118,7 @@
             style="@style/btnRedStyle"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_delete_white"
-            android:visibility="visible"
+            android:visibility="gone"
             android:paddingStart="@dimen/_15sdp"
             android:paddingEnd="@dimen/_15sdp"
             android:paddingTop="@dimen/_8sdp"
@@ -138,16 +138,16 @@
             app:layout_constraintEnd_toEndOf="@id/edtCollegeName"
             app:layout_constraintStart_toStartOf="@id/edtCollegeName" />
 
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progressBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
