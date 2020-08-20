@@ -48,6 +48,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private val REQUEST_CODE_CAMERA = 102
     private var profileFile: File? = null
     private var profileBean = ProfileBean()
+    private var isCompletlySignup = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +84,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
         this.profileBean = profileBean
+        isCompletlySignup = profileBean.is_completly_signup
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
 
@@ -95,6 +97,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 GlideLib.loadImage(this@ProfileActivity, ivProfileUser, profileBean.profileUrl)
             }
         } else {
+            if (sessionManager.isGuestUser()){
+                btnProfileSignup.text = getString(R.string.btn_signup)
+            }else{
+                btnProfileSignup.text = getString(R.string.btn_complete_profile)
+            }
             btnProfileSignup.visibility = View.VISIBLE
             groupButtons.visibility = View.GONE
         }
@@ -361,6 +368,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
+            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+            tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
@@ -452,7 +467,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickViewProfile(view: View) {
-        if (!sessionManager.isGuestUser()) {
+        if (isCompletlySignup != 0) {
             val intent = Intent(this@ProfileActivity, ProfileViewActivity::class.java)
             intent.putExtra("profileBean", profileBean)
             openActivity(intent)

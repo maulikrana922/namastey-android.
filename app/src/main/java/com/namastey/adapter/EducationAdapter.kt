@@ -18,6 +18,7 @@ class EducationAdapter(
     var onItemClick: OnEducationItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<EducationAdapter.ViewHolder>() {
 
+    var selectedPosition = 0
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_education, parent, false
@@ -35,13 +36,19 @@ class EducationAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            var educationBean = educationList[position]
+            val educationBean = educationList[position]
 
             rbSelected.isChecked = educationBean.isSelect == 1
 
             tvTitle.text = educationBean.college
             tvSubTitle.text = educationBean.course
 
+            if (educationList[position].isSelect == 1){
+                selectedPosition = position
+                rbSelected.isChecked = true
+            }else{
+                rbSelected.isChecked = false
+            }
             mainViewHolder.setOnClickListener {
                 onItemClick.onEducationItemClick(educationBean, position)
             }
@@ -50,12 +57,14 @@ class EducationAdapter(
                     rbSelected.isChecked = true
                     educationBean.isSelect = 1
                     sessionManager.setEducationBean(educationBean)
-                    (activity as Activity).finish()
+                    educationList[position].isSelect = 1
+                    educationList[selectedPosition].isSelect = 0
+                    selectedPosition = position
                 } else {
                     rbSelected.isChecked = false
                     educationList[position].isSelect = 0
-                    notifyDataSetChanged()
                 }
+                notifyDataSetChanged()
             }
         }
 

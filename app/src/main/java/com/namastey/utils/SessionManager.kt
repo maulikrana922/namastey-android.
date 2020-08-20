@@ -11,7 +11,6 @@ import com.namastey.model.CategoryBean
 import com.namastey.model.EducationBean
 import com.namastey.model.JobBean
 import com.namastey.utils.Constants.EMAIL
-import com.namastey.utils.Constants.KEY_CASUAL_NAME
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
 import com.namastey.utils.Constants.KEY_GENDER
@@ -24,7 +23,6 @@ import com.namastey.utils.Constants.KEY_JOB
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
-import com.namastey.utils.Constants.KEY_USER_NAME
 import com.namastey.utils.Constants.MOBILE
 import com.namastey.utils.Constants.USER_UNIQUEID
 
@@ -145,16 +143,6 @@ class SessionManager(context: Context) {
         e.apply()
     }
 
-    fun setUserName(merchantName: String) {
-        val e = mPrefs.edit()
-        e.putString(KEY_USER_NAME, merchantName)
-        e.apply()
-    }
-
-    fun getUserName(): String {
-        return mPrefs.getString(KEY_USER_NAME, "")!!
-    }
-
     fun setInternetAvailable(isInternetAvail: Boolean) {
         val e = mPrefs.edit()
         e.putBoolean(KEY_INTERNET_AVAILABLE, isInternetAvail)
@@ -215,7 +203,7 @@ class SessionManager(context: Context) {
         e.apply()
     }
 
-    fun setStringValue(value: String,key:String) {
+    fun setStringValue(value: String, key: String) {
         val e = mPrefs.edit()
         e.putString(key, value)
         e.apply()
@@ -225,7 +213,7 @@ class SessionManager(context: Context) {
         return mPrefs.getString(key, "")!!
     }
 
-    fun setLongValue(value: Long,key:String) {
+    fun setLongValue(value: Long, key: String) {
         val e = mPrefs.edit()
         e.putLong(key, value)
         e.apply()

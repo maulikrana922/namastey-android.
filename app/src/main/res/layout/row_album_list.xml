@@ -18,21 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <com.namastey.customViews.RoundImageView-->
-<!--            android:id="@+id/ivVideoImage"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            android:rotation="180"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:src="@drawable/default_album_image"-->
-<!--            app:cornerRadius="@dimen/_20sdp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:roundedCorners="topRight|bottomLeft" />-->
-
         <com.namastey.customViews.RoundImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,21 +50,22 @@
             style="@style/tvWrapWhiteStyle"
             android:text="@string/posts"
             android:textSize="14sp"
+            android:layout_marginEnd="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:typeface="MULI_SEMIBOLD" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_edit_btn_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        Edit icon if display un-comment imageview  -->
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="@dimen/_15sdp"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:src="@drawable/ic_edit_btn_blue"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

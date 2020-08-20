@@ -68,6 +68,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         Log.d("Success : ", msg)
         isEditTagLine = false
         isEditUsername = false
+        sessionManager.setStringValue(edtProfileCasualName.text.toString().trim(),Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(edtProfileTagline.text.toString().trim(),Constants.KEY_TAGLINE)
         edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -174,7 +176,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
                 if (event.getAction() === MotionEvent.ACTION_UP) {
-                    if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
+                    if (event.rawX >= edtProfileTagline.right - (edtProfileTagline.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
                         if (isEditTagLine) {
                             isEditTagLine = false
@@ -189,7 +191,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             );
                         } else {
                             isEditTagLine = true
-                            edtProfileTagline.inputType = InputType.TYPE_NULL
+                            edtProfileTagline.inputType = InputType.TYPE_CLASS_TEXT
                             edtProfileTagline.requestFocus()
                             edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(
                                 0,
@@ -412,6 +414,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
         sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
         sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
 
         edtProfileCasualName.setText(profileBean.username)
         edtProfileTagline.setText(profileBean.about_me)

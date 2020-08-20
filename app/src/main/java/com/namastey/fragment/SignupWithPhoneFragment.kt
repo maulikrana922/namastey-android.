@@ -172,7 +172,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                     sessionManager.getUserPhone(),
                     sessionManager.getUserEmail(),
                     isFromProfile,
-                    0
+                    user.is_register
                 ),
                 Constants.OTP_FRAGMENT
             )
@@ -189,7 +189,6 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         }
     }
 
-    @SuppressLint("MissingPermission")
     override fun onGetCountry(countryList: ArrayList<Country>) {
 
         this.countryList = countryList
@@ -199,7 +198,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
             var longitude = 0.0
             var latitude = 0.0
-            var finder: LocationFinder = LocationFinder(activity!!)
+            val finder: LocationFinder = LocationFinder(activity!!)
             if (finder.canGetLocation()) {
                 if (finder.getCurrentLocation() != null) {
 

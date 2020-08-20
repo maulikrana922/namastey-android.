@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -30,10 +31,8 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.CreateAlbumViewModel
 import com.video_trim.activity.TrimmerActivity
-import com.video_trim.utils.FileUtils
 import kotlinx.android.synthetic.main.activity_create_album.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import org.buffer.android.thumby.ThumbyActivity
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_THUMBNAIL_POSITION
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_URI
 import org.buffer.android.thumby.util.ThumbyUtils
@@ -41,7 +40,7 @@ import java.io.File
 import javax.inject.Inject
 
 class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAlbumView,
-    OnCreateAlbumItemClick,OnItemClick {
+    OnCreateAlbumItemClick, OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -80,12 +79,12 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     private fun initData() {
 //        addNewAlbum()
 
-        if (intent.hasExtra("fromAlbumList")){
-            fromAlbumList = intent.getBooleanExtra("fromAlbumList",false)
+        if (intent.hasExtra("fromAlbumList")) {
+            fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
             createAlbumViewModel.getAlbumList()
-        }else{
+        } else {
 //        Default one album create uploads
-            var albumBean = AlbumBean()
+            val albumBean = AlbumBean()
             albumBean.name = getString(R.string.uploads)
             createAlbumApi(albumBean, true)
         }
@@ -103,9 +102,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         albumBean.is_created = 0    // 0 = display edit icons and disable edittext
         // 1 = display done icons and enable edittext
 
-        if (albumBean.name.equals(getString(R.string.uploads))){
+        if (albumBean.name.equals(getString(R.string.uploads))) {
             createAlbumViewModel.getAlbumList()
-        }else{
+        } else {
             this.albumBean.name = albumBean.name
             this.albumBean.is_created = 0
             albumList[adapterPosition] = this.albumBean
@@ -124,13 +123,14 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
         openActivity(this@CreateAlbumActivity, ProfileActivity())
     }
+
     /**
      * Get album list with video details
      */
     override fun onSuccessAlbumDetails(albumBeanList: ArrayList<AlbumBean>) {
         albumList.clear()
         albumList = albumBeanList
-        albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this,this)
+        albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this, this)
         rvAlbumList.adapter = albumAdapter
     }
 
@@ -152,7 +152,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
      * click on add album generate new layout for add album
      */
     fun onClickAddAlbum(view: View) {
-        var albumBean = AlbumBean()
+        val albumBean = AlbumBean()
         albumBean.is_created = 1
         albumList.add(albumBean)
         albumAdapter.notifyItemInserted(albumList.size)
@@ -176,7 +176,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
     private fun createAlbumApi(albumBean: AlbumBean, isCreate: Boolean) {
         this.albumBean = albumBean
-        var jsonObject = JsonObject()
+        val jsonObject = JsonObject()
         jsonObject.addProperty(Constants.NAME, albumBean.name)
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
@@ -216,7 +216,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 ProfileInterestActivity.categoryIdList.joinToString()
             )
 
-            var categoryIdList: ArrayList<Int> = ArrayList()
+            val categoryIdList: ArrayList<Int> = ArrayList()
             for (category in sessionManager.getCategoryList()) {
                 categoryIdList.add(category.id)
             }
@@ -224,7 +224,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 Constants.CATEGORY_ID,
                 categoryIdList.joinToString()
             )
-            var socialAccountId = ArrayList<Long>()
+            val socialAccountId = ArrayList<Long>()
             for (data in ProfileInterestActivity.socialAccountList) {
                 socialAccountId.add(data.id)
             }
@@ -235,7 +235,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             )
 
             jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
-            var albumId = ArrayList<Long>()
+            val albumId = ArrayList<Long>()
             for (data in albumList) {
                 albumId.add(data.id)
             }
@@ -247,7 +247,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             Log.d("CreateProfile Request:", jsonObject.toString())
 
             createAlbumViewModel.createProfile(jsonObject)
-        }else{
+        } else {
             openActivity(this@CreateAlbumActivity, ProfileActivity())
         }
     }
@@ -381,16 +381,37 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM){
-            if (data != null){
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM) {
+            if (data != null) {
                 val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
 
+//                videoFile = File(selectedVideo.toString())
                 videoFile = File(selectedVideo.toString())
 
 //                startActivityForResult(ThumbyActivity.getStartIntent(this,Uri.fromFile(videoFile)
 //                ), RESULT_CODE_PICK_THUMBNAIL)
 
 //                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
+
+                val retriever = MediaMetadataRetriever()
+//use one of overloaded setDataSource() functions to set your data source
+                retriever.setDataSource(this@CreateAlbumActivity, Uri.fromFile(videoFile));
+                val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                val timeInMillisec: Long = time?.toLong() ?: 0
+
+                val second = timeInMillisec / 1000
+
+                val file_size: Int = java.lang.String.valueOf(videoFile!!.length() / 1024).toInt()
+
+                Log.d("Video time : ", "Video $time")
+                Log.d("Video time : ", "Video $second")
+                Log.d("Video time : ", "file_size  $file_size ")
+
+                retriever.release()
+
+//                        val intent = Intent(Intent.ACTION_VIEW, selectedVideo);
+//        intent.setDataAndType(selectedVideo, "video/mp4");
+//        startActivity(intent);
 
                 val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
                 intent.putExtra("videoFile", videoFile)
@@ -400,7 +421,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 openActivityForResult(intent, REQUEST_POST_VIDEO)
 
             }
-        }else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_POST_VIDEO) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_POST_VIDEO) {
             if (data != null) {      // Temp need to change
                 createAlbumViewModel.getAlbumList()
             }
@@ -413,15 +434,30 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
 
+                    val retriever = MediaMetadataRetriever()
+//use one of overloaded setDataSource() functions to set your data source
+                    retriever.setDataSource(this@CreateAlbumActivity, Uri.fromFile(File(videoPath)))
+                    val time =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val timeInMillisec: Long = time?.toLong() ?: 0
 
+                    val path = File(videoPath)
+                    val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
+
+                    val second = timeInMillisec / 1000
+                    Log.d("Video time : ", "Video $time")
+                    Log.d("Video time : ", "Video $second")
+                    Log.d("Video time : ", "file_size  $file_size ")
 //                    videoFile = File(videoPath)
+
                     val intent =
                         Intent(this, TrimmerActivity::class.java)
                     intent.putExtra(
                         EXTRA_VIDEO_PATH,
-                        videoPath)
+                        videoPath
+                    )
 
-                    openActivityForResult(intent,Constants.REQUEST_CODE_VIDEO_TRIM)
+                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
@@ -438,8 +474,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                         Intent(this, TrimmerActivity::class.java)
                     intent.putExtra(
                         EXTRA_VIDEO_PATH,
-                        videoPath)
-                    openActivityForResult(intent,Constants.REQUEST_CODE_VIDEO_TRIM)
+                        videoPath
+                    )
+                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
@@ -449,7 +486,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
                 Log.d("Image ", "done")
 
-                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
+                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity, bitmap)
 
                 val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
                 intent.putExtra("videoFile", videoFile)
@@ -566,7 +603,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     /**
      * Click on post video delete button remove video from album
      */
-    override fun onItemClick(value: Long,position: Int) {
+    override fun onItemClick(value: Long, position: Int) {
         createAlbumViewModel.removePostVideo(value)
     }
 

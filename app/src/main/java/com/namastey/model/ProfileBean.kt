@@ -3,7 +3,6 @@ package com.namastey.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.Job
 
 
 class ProfileBean() : Parcelable {
@@ -12,8 +11,10 @@ class ProfileBean() : Parcelable {
     var email: String = ""
     var name: String = ""
     var username: String = ""
+
     @SerializedName("profile_url")
     var profileUrl: String = ""
+
     @SerializedName("tagline_or_about_detail")
     var about_me: String = ""
     var is_completly_signup: Int = 0
@@ -45,7 +46,7 @@ class ProfileBean() : Parcelable {
         viewers = parcel.readInt() ?: 0
         interest_in_gender = parcel.readInt() ?: 0
         category = parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
-        education =parcel.createTypedArrayList(EducationBean) ?: ArrayList()
+        education = parcel.createTypedArrayList(EducationBean) ?: ArrayList()
         jobs = parcel.createTypedArrayList(JobBean) ?: ArrayList()
         social_accounts = parcel.createTypedArrayList(SocialAccountBean) ?: ArrayList()
         interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()

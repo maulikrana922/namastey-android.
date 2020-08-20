@@ -139,4 +139,7 @@ interface NetworkRequest {
     @HTTP(method = "DELETE", path = Constants.POST_DELETE, hasBody = true)
     fun requestToDeletePostAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
 
+    @GET(Constants.GET_FOLLOWER_LIST)
+    fun requestToGetFollowerListAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
+
 }

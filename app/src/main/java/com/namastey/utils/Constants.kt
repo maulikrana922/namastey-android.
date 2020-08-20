@@ -44,6 +44,8 @@ object Constants {
     const val POST_VIDEO = "post-video"
     const val POST_DELETE = "post-delete"
     const val ADD_MEDIA = "add-media"
+    const val GET_FOLLOWER_LIST = "follower-list"
+    const val GET_FOLLOWING_LIST = "following-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -86,7 +88,6 @@ object Constants {
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
-    const val KEY_USER_NAME = "KEY_USER_NAME"
     const val KEY_IS_LOGIN = "KEY_IS_LOGIN"
     const val KEY_SESSION_TOKEN = "KEY_SESSION_TOKEN"
     const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
@@ -169,10 +170,12 @@ object Constants {
     const val REQUEST_CODE_EDUCATION = 110
     const val REQUEST_CODE_JOB = 111
     const val REQUEST_CODE_VIDEO_TRIM = 112
+    const val REQUEST_CODE_PROFILE = 113
 
     private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path
     val FILE_PATH = SD_CARD_PATH.plus(ROOT)
     val FILE_NAME = "temp.jpg"
+    val FILE_NAME_VIDEO = "tempvideo.mp4"
 
 }

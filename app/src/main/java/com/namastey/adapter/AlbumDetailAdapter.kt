@@ -12,8 +12,6 @@ import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.row_album_detail.view.*
-import kotlinx.android.synthetic.main.row_child_video_album.view.ivRemoveVideo
-import kotlinx.android.synthetic.main.row_child_video_album.view.ivVideoImage
 
 class AlbumDetailAdapter(
     var videoList: ArrayList<VideoBean>,
@@ -41,7 +39,7 @@ class AlbumDetailAdapter(
             val videoBean = videoList[position]
             tvVideoViewers.text = videoBean.viewers.toString()
             tvVideoComment.text =
-                videoBean.comments.toString() + " " + activity.getString(R.string.comments)
+                videoBean.comments.toString().plus(" ").plus(activity.getString(R.string.comments))
 
             if (videoBean.cover_image_url != null)
                 GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)

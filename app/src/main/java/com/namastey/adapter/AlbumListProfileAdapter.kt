@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
-import com.namastey.listeners.OnCreateAlbumItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.AlbumBean
-import kotlinx.android.synthetic.main.row_parent_album.view.rvChildAlbumPost
 import kotlinx.android.synthetic.main.row_parent_album_profile.view.*
 
 class AlbumListProfileAdapter(
@@ -42,12 +40,16 @@ class AlbumListProfileAdapter(
             val albumBean = albumList[position]
             tvAlbumName.text = albumBean.name
 
-
-            rvChildAlbumPost.apply {
-                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,false)
-                setRecycledViewPool(viewPool)
+            if (albumBean.post_video_list.size > 0) {
+                rvChildAlbumPost.visibility = View.VISIBLE
+                rvChildAlbumPost.apply {
+                    adapter =
+                        VideoListAdapter(albumBean.post_video_list, activity, onItemClick, false)
+                    setRecycledViewPool(viewPool)
+                }
+            }else{
+                rvChildAlbumPost.visibility = View.GONE
             }
-
 
         }
 

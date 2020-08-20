@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_18sdp"
+            android:contentDescription="@string/app_name"
             android:onClick="@{() -> viewModel.closeFragment()}"
             android:background="@drawable/circle_white_solid"
             android:padding="@dimen/_2sdp"

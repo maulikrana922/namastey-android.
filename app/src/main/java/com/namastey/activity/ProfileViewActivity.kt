@@ -160,16 +160,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                 .fitCenter().into(ivProfileUser)
         }
 
-        profileViewModel.getUserFullProfile()
-
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
 
             if (profileBean.profileUrl.isNotBlank()) {
                 GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
             }
-            tvProfileUsername.text = profileBean.username
-            tvAbouteDesc.text = profileBean.about_me
+//            tvProfileUsername.text = profileBean.username
+//            tvAbouteDesc.text = profileBean.about_me
             tvFollowersCount.text = profileBean.followers.toString()
             tvFollowingCount.text = profileBean.following.toString()
             tvViewsCount.text = profileBean.viewers.toString()
@@ -180,6 +178,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
             if (sessionManager.getJobBean().title.isNotEmpty()) {
                 tvJob.text = sessionManager.getJobBean().title
             }
+        }
+
+        profileViewModel.getUserFullProfile()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
+            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+            tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+            tvJob.text = sessionManager.getJobBean().title
+            tvEducation.text = sessionManager.getEducationBean().course
         }
     }
 

@@ -17,6 +17,7 @@ class JobListingAdapter(
     var sessionManager: SessionManager,
     var onItemClick: OnJobItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<JobListingAdapter.ViewHolder>() {
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -35,9 +36,14 @@ class JobListingAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            var jobBean = jobListing[position]
+            val jobBean = jobListing[position]
 
-            rbSelected.isChecked = jobBean.isSelect == 1
+            if (jobListing[position].isSelect == 1){
+                selectedPosition = position
+                rbSelected.isChecked = true
+            }else{
+                rbSelected.isChecked = false
+            }
 
             tvTitle.text = jobBean.title
             tvSubTitle.text = jobBean.company_name
@@ -50,12 +56,14 @@ class JobListingAdapter(
                     rbSelected.isChecked = true
                     jobBean.isSelect = 1
                     sessionManager.setJobBean(jobBean)
-                    (activity as Activity).finish()
+                    jobListing[position].isSelect = 1
+                    jobListing[selectedPosition].isSelect = 0
+                    selectedPosition = position
                 }else{
                     rbSelected.isChecked = false
                     jobListing[position].isSelect = 0
-                    notifyDataSetChanged()
                 }
+                notifyDataSetChanged()
             }
         }
 

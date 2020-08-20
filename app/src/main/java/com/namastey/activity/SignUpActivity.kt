@@ -254,7 +254,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_SIGN_IN) {
-                var task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
                 handleSignInResult(task)
             }

@@ -35,6 +35,7 @@
     <string name="btn_signup_snapchat">Continue with Snapchat</string>
     <string name="btn_signup_tiktok">Continue with Tik Tok</string>
     <string name="btn_signup">Sign up</string>
+    <string name="btn_complete_profile">Complete Profile</string>
 
     <string name="phone">Phone</string>
     <string name="email">Email</string>
