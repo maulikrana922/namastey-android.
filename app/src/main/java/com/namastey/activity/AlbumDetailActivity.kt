@@ -1,11 +1,24 @@
 package com.namastey.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.media.MediaMetadataRetriever
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.Settings
 import android.text.InputType
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -21,7 +34,12 @@ import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.CreateAlbumViewModel
+import com.video_trim.activity.TrimmerActivity
 import kotlinx.android.synthetic.main.activity_album_detail.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import org.buffer.android.thumby.ThumbyActivity
+import org.buffer.android.thumby.util.ThumbyUtils
+import java.io.File
 import javax.inject.Inject
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
@@ -40,6 +58,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var postList = ArrayList<VideoBean>()
     private var albumId = 0L
     private var position = -1
+    private var videoFile: File? = null
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private val REQUEST_VIDEO_SELECT = 101
+    private var albumBean = AlbumBean()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +147,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
         if (arrayList.size > 0) {
             edtAlbumName.setText(arrayList[0].name)
+            albumBean = arrayList[0]
             if (arrayList[0].name == getString(R.string.uploads)){
                 edtAlbumName.isEnabled = false
                 edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
@@ -136,7 +159,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             }
             postList = arrayList[0].post_video_list
             rvAlbumDetail.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-            postList.add(VideoBean())
+            postList.add(0,VideoBean())
             albumDetailAdapter = AlbumDetailAdapter(postList, this@AlbumDetailActivity, this)
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -158,17 +181,281 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         onBackPressed()
     }
 
+    /**
+     * gives option for select video or take video from camera
+     */
+    private fun selectVideo() {
+        bottomSheetDialog = BottomSheetDialog(this@AlbumDetailActivity, R.style.choose_photo)
+        bottomSheetDialog.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.tvPhotoTake.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            if (isPermissionGrantedForCamera())
+                captureVideo()
+        }
+        bottomSheetDialog.tvPhotoChoose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            isReadWritePermissionGranted()
+        }
+        bottomSheetDialog.tvPhotoCancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun captureVideo() {
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        startActivityForResult(cameraIntent, Constants.PERMISSION_CAMERA)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            Constants.PERMISSION_CAMERA -> if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
+                captureVideo()
+            } else {
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                        // user rejected the permission
+                        val permission: String =
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                                permissions[0]
+                            } else {
+                                permissions[1]
+                            }
+                        val showRationale = shouldShowRequestPermissionRationale(permission)
+                        if (!showRationale) {
+                            val builder = AlertDialog.Builder(this)
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_camera_message))
+
+                            if (grantResults[1] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                            builder.setPositiveButton(
+                                getString(R.string.go_to_settings)
+                            ) { dialog, id ->
+                                val intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                )
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            val dialog = builder.create()
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
+                        } else {
+                            if (isPermissionGrantedForCamera())
+                                captureVideo()
+                        }
+                    } else {
+                        if (isPermissionGrantedForCamera())
+                            captureVideo()
+                    }
+                }
+            }
+        }
+    }
+
+
     override fun onBackPressed() {
         finishActivity()
     }
 
+    private fun openGalleryForVideo() {
+
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_GET_CONTENT;
+        startActivityForResult(intent, REQUEST_VIDEO_SELECT)
+    }
+
+
+    private fun isReadWritePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGalleryForVideo()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            openGalleryForVideo()
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM) {
+            if (data != null) {
+                val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
+
+//                videoFile = File(selectedVideo.toString())
+                videoFile = File(selectedVideo.toString())
+
+//                startActivityForResult(ThumbyActivity.getStartIntent(this,Uri.fromFile(videoFile)
+//                ), RESULT_CODE_PICK_THUMBNAIL)
+
+//                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
+
+                val retriever = MediaMetadataRetriever()
+//use one of overloaded setDataSource() functions to set your data source
+                retriever.setDataSource(this@AlbumDetailActivity, Uri.fromFile(videoFile));
+                val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                val timeInMillisec: Long = time?.toLong() ?: 0
+
+                val second = timeInMillisec / 1000
+
+                val file_size: Int = java.lang.String.valueOf(videoFile!!.length() / 1024).toInt()
+
+                Log.d("Video time : ", "Video $time")
+                Log.d("Video time : ", "Video $second")
+                Log.d("Video time : ", "file_size  $file_size ")
+
+                retriever.release()
+
+//                        val intent = Intent(Intent.ACTION_VIEW, selectedVideo);
+//        intent.setDataAndType(selectedVideo, "video/mp4");
+//        startActivity(intent);
+
+                val intent = Intent(this@AlbumDetailActivity, PostVideoActivity::class.java)
+                intent.putExtra("videoFile", videoFile)
+                intent.putExtra("albumId", albumId)
+//                intent.putExtra("thumbnailImage", pictureFile)
+                intent.putExtra("albumBean", albumBean)
+                intent.putExtra("fromAlbumDetail", true)
+                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+            if (data != null) {      // Temp need to change
+                albumViewModel.getAlbumDetail(albumId)
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_VIDEO_SELECT) {
+
+            if (data != null) {
+                val selectedVideo = data.data
+
+                if (selectedVideo != null) {
+                    val videoPath = Utils.getPath(this, selectedVideo)
+                    Log.d("Path", videoPath.toString())
+
+                    val retriever = MediaMetadataRetriever()
+//use one of overloaded setDataSource() functions to set your data source
+                    retriever.setDataSource(this@AlbumDetailActivity, Uri.fromFile(File(videoPath)))
+                    val time =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val timeInMillisec: Long = time?.toLong() ?: 0
+
+                    val path = File(videoPath)
+                    val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
+
+                    val second = timeInMillisec / 1000
+                    Log.d("Video time : ", "Video $time")
+                    Log.d("Video time : ", "Video $second")
+                    Log.d("Video time : ", "file_size  $file_size ")
+//                    videoFile = File(videoPath)
+
+                    val intent =
+                        Intent(this, TrimmerActivity::class.java)
+                    intent.putExtra(
+                        Constants.EXTRA_VIDEO_PATH,
+                        videoPath
+                    )
+
+                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
+                }
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.PERMISSION_CAMERA) {
+            if (data != null) {
+                val selectedVideo = data.data
+
+                if (selectedVideo != null) {
+                    val videoPath = Utils.getPath(this, selectedVideo)
+                    Log.d("Path", videoPath.toString())
+
+//                    videoFile = File(videoPath)
+
+                    val intent =
+                        Intent(this, TrimmerActivity::class.java)
+                    intent.putExtra(
+                        Constants.EXTRA_VIDEO_PATH,
+                        videoPath
+                    )
+                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
+                }
+            }
+        } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
+            if (data != null) {
+                val imageUri = data.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
+                val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
+                val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
+                Log.d("Image ", "done")
+
+                val pictureFile = Utils.bitmapToFile(this@AlbumDetailActivity, bitmap)
+
+                val intent = Intent(this@AlbumDetailActivity, PostVideoActivity::class.java)
+                intent.putExtra("videoFile", videoFile)
+                intent.putExtra("albumId", albumId)
+                intent.putExtra("thumbnailImage", pictureFile)
+                intent.putExtra("albumBean", albumBean)
+                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+            }
+        }
+    }
+
     override fun onItemClick(postId: Long, position: Int) {
-        this.position = position
-        albumViewModel.removePostVideo(postId)
+        if (position == 0){
+            this.position = 0
+            selectVideo()
+        }else{
+            this.position = position
+            albumViewModel.removePostVideo(postId)
+        }
     }
 
     override fun onDestroy() {
-        albumViewModel.onDestroy()
         super.onDestroy()
+        if (::bottomSheetDialog.isInitialized)
+            bottomSheetDialog.dismiss()
+        albumViewModel.onDestroy()
     }
 }

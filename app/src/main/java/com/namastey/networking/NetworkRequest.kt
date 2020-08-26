@@ -145,4 +145,7 @@ interface NetworkRequest {
     @GET(Constants.GET_FOLLOWING_LIST)
     fun requestToGetFollowingListAsync(): Deferred<AppResponse<ArrayList<ProfileBean>>>
 
+    @GET(Constants.GET_FEED_LIST)
+    fun requestToGetFeedListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
 }

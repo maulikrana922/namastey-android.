@@ -85,7 +85,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
 //            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
             tvAlbumName.text = albumBean.name
-            postVideoViewModel.getAlbumList()
+            if (intent.hasExtra("fromAlbumDetail")){
+                tvAlbumName.isEnabled = false
+            }else{
+                postVideoViewModel.getAlbumList()
+            }
         }
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->

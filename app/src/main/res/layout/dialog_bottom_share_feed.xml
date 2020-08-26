@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    style="@style/CustomCardViewTopCornerStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardElevation="0dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:id="@+id/svShareOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_12sdp">
+
+                <ImageView
+                    android:id="@+id/ivShareWhatssapp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_link_facebook"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivShareApp"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_link_facebook"
+                    app:layout_constraintStart_toEndOf="@id/ivShareWhatssapp"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+
+                <ImageView
+                    android:id="@+id/ivShareFacebook"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_link_facebook"
+                    app:layout_constraintStart_toEndOf="@id/ivShareApp"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+
+                <ImageView
+                    android:id="@+id/ivShareInstagram"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_link_instagram"
+                    app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+
+                <ImageView
+                    android:id="@+id/ivShareTwitter"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_link_instagram"
+                    app:layout_constraintStart_toEndOf="@id/ivShareInstagram"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
+
+        <View
+            android:id="@+id/viewShare"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorBlackTransparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/svShareOption" />
+
+        <ImageView
+            android:id="@+id/ivSharePrivacy"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_share_privcay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewShare" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSharePrivacy"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/privacy"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintEnd_toEndOf="@id/ivSharePrivacy"
+            app:layout_constraintStart_toStartOf="@id/ivSharePrivacy"
+            app:layout_constraintTop_toBottomOf="@id/ivSharePrivacy"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivShareSave"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_share_save"
+            app:layout_constraintStart_toEndOf="@id/ivSharePrivacy"
+            app:layout_constraintTop_toTopOf="@id/ivSharePrivacy" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvShareSave"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/save"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintEnd_toEndOf="@id/ivShareSave"
+            app:layout_constraintStart_toStartOf="@id/ivShareSave"
+            app:layout_constraintTop_toBottomOf="@id/ivShareSave"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivShareReport"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_share_report"
+            app:layout_constraintStart_toEndOf="@id/ivShareSave"
+            app:layout_constraintTop_toTopOf="@id/ivSharePrivacy" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvShareReport"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/report"
+            android:textColor="@color/colorDarkGray"
+            app:layout_constraintEnd_toEndOf="@id/ivShareReport"
+            app:layout_constraintStart_toStartOf="@id/ivShareReport"
+            app:layout_constraintTop_toBottomOf="@id/ivShareReport" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvShareCancel"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/cancel"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvShareReport"
+            app:typeface="MULI_SEMIBOLD" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

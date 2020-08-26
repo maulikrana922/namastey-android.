@@ -185,4 +185,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetFollowingListAsync().await()
         }
+
+    suspend fun requestToGetFeedList(): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetFeedListAsync().await()
+        }
 }

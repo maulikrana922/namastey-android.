@@ -41,7 +41,7 @@ class AlbumDetailAdapter(
                 llAddAlbum.visibility = View.VISIBLE
 
                 llAddAlbum.setOnClickListener{
-
+                    onItemClick.onItemClick(0,0)
                 }
             } else {
                 viewAlbumDetails.visibility = View.VISIBLE

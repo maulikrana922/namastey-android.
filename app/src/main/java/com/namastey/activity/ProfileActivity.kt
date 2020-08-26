@@ -87,9 +87,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         isCompletlySignup = profileBean.is_completly_signup
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
+        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
+        sessionManager.setUserGender(profileBean.gender)
 
         if (profileBean.is_completly_signup == 1) {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE
             ivProfileCamera.visibility = View.VISIBLE
@@ -151,7 +154,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on followers and following
      */
     fun onClickFollow(view: View) {
-        openActivity(this, FollowingFollowersActivity())
+        if (!sessionManager.isGuestUser())
+            openActivity(this, FollowingFollowersActivity())
     }
 
     private fun selectImage() {

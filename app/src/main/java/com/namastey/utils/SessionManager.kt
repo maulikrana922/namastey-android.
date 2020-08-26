@@ -213,14 +213,14 @@ class SessionManager(context: Context) {
         return mPrefs.getString(key, "")!!
     }
 
-    fun setLongValue(value: Long, key: String) {
+    fun setBooleanValue(value: Boolean, key: String) {
         val e = mPrefs.edit()
-        e.putLong(key, value)
+        e.putBoolean(key, value)
         e.apply()
     }
 
-    fun getLongValue(key: String): Long {
-        return mPrefs.getLong(key, 0)!!
+    fun getBooleanValue(key: String): Boolean {
+        return mPrefs.getBoolean(key, false)
     }
 
 }

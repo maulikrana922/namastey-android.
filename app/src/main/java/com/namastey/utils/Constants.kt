@@ -46,6 +46,7 @@ object Constants {
     const val ADD_MEDIA = "add-media"
     const val GET_FOLLOWER_LIST = "follower-list"
     const val GET_FOLLOWING_LIST = "following-list"
+    const val GET_FEED_LIST = "feed-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -104,6 +105,7 @@ object Constants {
     const val KEY_AGE_MIN = "KEY_AGE_MIN"
     const val KEY_PROFILE_URL = "KEY_PROFILE_URL"
     const val KEY_AGE_MAX = "KEY_AGE_MAX"
+    const val KEY_IS_COMPLETE_PROFILE = "KEY_IS_COMPLETE_PROFILE"
 
 
     //    field key
@@ -163,6 +165,7 @@ object Constants {
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val RC_SIGN_IN = 100
     const val PERMISSION_CAMERA = 102
+    const val REQUEST_POST_VIDEO = 103
     const val PERMISSION_STORAGE = 106
     const val FILTER_OK = 107
     const val ADD_LINK = 108
@@ -171,6 +174,8 @@ object Constants {
     const val REQUEST_CODE_JOB = 111
     const val REQUEST_CODE_VIDEO_TRIM = 112
     const val REQUEST_CODE_PROFILE = 113
+    const val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
+    const val RESULT_CODE_PICK_THUMBNAIL = 104
 
     private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path

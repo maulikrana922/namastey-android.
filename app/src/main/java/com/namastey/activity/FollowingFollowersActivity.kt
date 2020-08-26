@@ -58,6 +58,14 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
                 )
             )
         }
+        tvFollowUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)){
+            if (sessionManager.getUserGender() == Constants.Gender.male.name)
+                llFollowBackground.background = getDrawable(R.drawable.blue_bar)
+            else
+                llFollowBackground.background = getDrawable(R.drawable.pink_bar)
+        }
         searchFollow.queryHint = resources.getString(R.string.search)
         setupViewPager()
         tabFollow.setupWithViewPager(viewpagerFollow)

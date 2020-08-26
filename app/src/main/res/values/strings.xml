@@ -92,6 +92,8 @@
     <!--    Feed string -->
     <string name="like">Like</string>
     <string name="comments">Comments</string>
+    <string name="privacy">Privacy</string>
+    <string name="report">Report</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>

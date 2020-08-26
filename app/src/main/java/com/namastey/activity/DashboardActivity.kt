@@ -3,23 +3,22 @@ package com.namastey.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.CategoryAdapter
 import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
+import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.DashboardView
@@ -27,15 +26,15 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import java.util.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
-class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView {
+class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
@@ -43,6 +42,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var feedList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
     private val PERMISSION_REQUEST_CODE = 101
+    private lateinit var bottomSheetDialogShare: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,12 +86,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 builder.setPositiveButton(
                     getString(R.string.ok)
                 ) { dialog, id ->
-                   makeRequest()
+                    makeRequest()
                 }
 
                 val dialog = builder.create()
                 dialog.show()
-            }else
+            } else
                 makeRequest()
         }
 
@@ -101,10 +101,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
             PERMISSION_REQUEST_CODE
         )
     }
+
     /**
      * Temp set feed list
      */
@@ -114,36 +116,34 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             dashboardBean.name = "NamasteyApp"
             feedList.add(dashboardBean)
         }
-        feedAdapter = FeedAdapter(feedList, this)
+        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this)
         viewpagerFeed.adapter = feedAdapter
 
     }
 
     /**
-     * Temp set categoryBean list
+     * Display share option if user login
      */
-//    private fun setCategoryList() {
-//        var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
-//
-//        for (number in 0..10) {
-//            var categoryBean = CategoryBean()
-//            categoryBean.name = "Community"
-//            categoryBeanList.add(categoryBean)
-//
-//            categoryBean = CategoryBean()
-//            categoryBean.name = "Profession"
-//            categoryBeanList.add(categoryBean)
-//        }
-//
-//        var categoryAdapter = CategoryAdapter(categoryBeanList, this)
-//        var horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
-//            this@DashboardActivity,
-//            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
-//            false
-//        )
-//        rvCategory.layoutManager = horizontalLayout
-//        rvCategory.adapter = categoryAdapter
-//    }
+    private fun openShareOptionDialog() {
+        bottomSheetDialogShare = BottomSheetDialog(this@DashboardActivity, R.style.choose_photo)
+        bottomSheetDialogShare.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_feed,
+                null
+            )
+        )
+        bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShare.setCancelable(true)
+
+
+
+        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+        }
+        bottomSheetDialogShare.show()
+    }
+
 
     /**
      * Success of get category list
@@ -176,6 +176,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onDestroy() {
         dashboardViewModel.onDestroy()
+        if (::bottomSheetDialogShare.isInitialized)
+            bottomSheetDialogShare.dismiss()
         super.onDestroy()
     }
 
@@ -228,7 +230,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                         ) { dialog, id ->
                             var intent = Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package",packageName,null))
+                                Uri.fromParts("package", packageName, null)
+                            )
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                             finish()
@@ -244,6 +247,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         }
 
+    }
+
+    override fun onItemClick(dashboardBean: DashboardBean) {
+        if (sessionManager.isGuestUser()) {
+
+        } else {
+            openShareOptionDialog()
+        }
     }
 
 }

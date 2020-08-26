@@ -55,13 +55,10 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     private var adapterPosition: Int = 0
     private val REQUEST_VIDEO_SELECT = 101
     private val REQUEST_CODE_CAMERA = 102
-    private val REQUEST_POST_VIDEO = 103
-    private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var videoFile: File? = null
     private var albumBean = AlbumBean()
     private var fromAlbumList = false
-    private val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
 //    private var selectedVideo: Uri = TODO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -414,10 +411,10 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 intent.putExtra("albumId", albumBean.id)
 //                intent.putExtra("thumbnailImage", pictureFile)
                 intent.putExtra("albumBean", albumBean)
-                openActivityForResult(intent, REQUEST_POST_VIDEO)
+                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
 
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_POST_VIDEO) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
             if (data != null) {      // Temp need to change
                 createAlbumViewModel.getAlbumList()
             }
@@ -449,7 +446,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val intent =
                         Intent(this, TrimmerActivity::class.java)
                     intent.putExtra(
-                        EXTRA_VIDEO_PATH,
+                        Constants.EXTRA_VIDEO_PATH,
                         videoPath
                     )
 
@@ -469,13 +466,13 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val intent =
                         Intent(this, TrimmerActivity::class.java)
                     intent.putExtra(
-                        EXTRA_VIDEO_PATH,
+                        Constants.EXTRA_VIDEO_PATH,
                         videoPath
                     )
                     openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
-        } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
+        } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
             if (data != null) {
                 val imageUri = data.getParcelableExtra<Uri>(EXTRA_URI) as Uri
                 val location = data.getLongExtra(EXTRA_THUMBNAIL_POSITION, 0)
@@ -489,7 +486,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 intent.putExtra("albumId", albumBean.id)
                 intent.putExtra("thumbnailImage", pictureFile)
                 intent.putExtra("albumBean", albumBean)
-                openActivityForResult(intent, REQUEST_POST_VIDEO)
+                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
             }
         }
     }
