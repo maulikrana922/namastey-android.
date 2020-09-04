@@ -59,14 +59,19 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetUserDetailAsync().await()
         }
 
-    suspend fun requestToGetUserFullProfile(): AppResponse<ProfileBean> =
+    suspend fun requestToGetUserFullProfile(userId: Long): AppResponse<ProfileBean> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetUserFullProfileAsync().await()
+            networkRequest.requestToGetUserFullProfileAsync(userId).await()
         }
 
     suspend fun requestToGetCategoryList(): AppResponse<ArrayList<CategoryBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetCategoryListAsync().await()
+        }
+
+    suspend fun requestToGetFeed(): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetFeedListAsync().await()
         }
 
     suspend fun requestUpdateProfilePicAsync(
@@ -163,7 +168,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         rbDeviceType: RequestBody
     ): AppResponse<VideoBean> = withContext(Dispatchers.IO) {
         networkRequest.requestToAddMediaAsync(
-           mbVideo,
+            mbVideo,
             fileType,
             postVideoId,
             rbDeviceType
@@ -176,18 +181,55 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToDeletePost(jsonObject: JsonObject): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestToDeletePostAsync(jsonObject).await() }
 
-    suspend fun requestToGetFollowersList(): AppResponse<ArrayList<ProfileBean>> =
+    suspend fun requestToGetFollowersList(): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetFollowerListAsync().await()
         }
 
-    suspend fun requestToGetFollowingList(): AppResponse<ArrayList<ProfileBean>> =
+    suspend fun requestToGetFollowingList(): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetFollowingListAsync().await()
         }
 
-    suspend fun requestToGetFeedList(): AppResponse<ArrayList<DashboardBean>> =
+    suspend fun requestToAddComment(
+        postId: Long, comment: String
+    ): AppResponse<CommentBean> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetFeedListAsync().await()
+            networkRequest.requestToAddCommentAsync(
+                postId, comment
+            ).await()
+        }
+
+    suspend fun requestToGetCommentList(
+        postId: Long
+    ): AppResponse<ArrayList<CommentBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetCommentListAsync(
+                postId
+            ).await()
+        }
+
+    suspend fun requestToDeleteComment(
+        commentId: Long
+    ): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToDeleteCommentAsync(
+                commentId
+            ).await()
+        }
+
+    suspend fun requestToLikeUserProfile(likedUserId: Long, isLike: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToLikeUserAsync(likedUserId, isLike).await()
+        }
+
+    suspend fun requestToFollowUser(followingUserId: Long, isFollow: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToFollowUserAsync(followingUserId,isFollow).await()
+        }
+
+    suspend fun requestToRemoveFollowUser(followersUserId: Long, isFollow: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToRemoveFollowUserAsync(followersUserId,isFollow).await()
         }
 }

@@ -56,14 +56,14 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
             }
 
             if (arguments!!.containsKey("selectVideoIdList")) {
-                var jsonArray = JsonArray()
+                val jsonArray = JsonArray()
                 for (selectVideoIdList in arguments!!.getIntegerArrayList("selectVideoIdList")!!) {
                     jsonArray.add(JsonPrimitive(selectVideoIdList))
                 }
                 jsonObject.add(Constants.LANGUAGE, jsonArray)
             }
 
-            var jsonArrayInterest = JsonArray()
+            val jsonArrayInterest = JsonArray()
             for (selectInterest in selectInterestIdList) {
                 jsonArrayInterest.add(JsonPrimitive(selectInterest))
             }

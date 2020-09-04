@@ -23,12 +23,12 @@ class ProfileBasicViewModel constructor(
     private var profileBasicView: ProfileBasicView = baseView as ProfileBasicView
     private lateinit var job: Job
 
-    fun getUserFullProfile() {
+    fun getUserFullProfile(userId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (profileBasicView.isInternetAvailable()){
-                    networkService.requestToGetUserFullProfile().let { appResponse ->
+                    networkService.requestToGetUserFullProfile(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileBasicView.onSuccessProfileDetails(appResponse.data!!)

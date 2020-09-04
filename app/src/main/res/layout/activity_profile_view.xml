@@ -265,8 +265,15 @@
                     android:id="@+id/groupButtons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     app:constraint_referenced_ids="btnProfileMatches,btnEditProfile" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupButtonsLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="btnProfileFollow,btnProfileLike" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileMatches"
@@ -293,6 +300,31 @@
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileMatches"
                     app:layout_constraintTop_toTopOf="@id/btnProfileMatches" />
+
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnProfileFollow"
+                    style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/rounded_white_solid_red_border"
+                    android:minHeight="@dimen/_32sdp"
+                    android:text="@string/follow"
+                    android:textColor="@color/colorButtonRed"
+                    app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
+
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnProfileLike"
+                    style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:minHeight="@dimen/_32sdp"
+                    android:text="@string/like"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
+                    app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAlbumList"

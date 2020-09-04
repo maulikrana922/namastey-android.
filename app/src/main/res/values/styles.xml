@@ -38,7 +38,7 @@
         <item name="cardForegroundColor">@color/colorWhite</item>
     </style>
 
-    <style name="choose_photo" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="dialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 

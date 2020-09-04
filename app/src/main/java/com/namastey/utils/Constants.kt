@@ -12,7 +12,7 @@ object Constants {
     const val HVALUE = "L@titude2018"
 
     //    Live url
-    const val BASE = "https://testyourapp.online/namasteyapp/api/"
+    const val BASE = "http://testyourapp.online/namasteyapp/api/"
 
     //    api end-point
     const val REGISTER = "register"
@@ -47,6 +47,12 @@ object Constants {
     const val GET_FOLLOWER_LIST = "follower-list"
     const val GET_FOLLOWING_LIST = "following-list"
     const val GET_FEED_LIST = "feed-list"
+    const val ADD_COMMENT = "add-comment"
+    const val GET_COMMENT = "comment-list"
+    const val DELETE_COMMENT = "comment-delete"
+    const val USER_LIKE = "like"
+    const val FOLLOW_REQUEST = "follow"
+    const val REMOVE_FOLLOWERS = "remove-follow"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -56,7 +62,7 @@ object Constants {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
 
-//    api response error code
+    //    api response error code
     const val OK = 200
 
     const val TIME_OUT: Long = 60
@@ -153,13 +159,21 @@ object Constants {
     const val JOBS = "jobs"
     const val CATEGORY_ID = "category_id"
     const val POST_ID = "post_id"
+    const val COMMENT = "comment"
+    const val COMMENT_ID = "comment_id"
+    const val LIKED_USER_ID = "liked_user_id"
+    const val IS_LIKE = "is_like"
+    const val USER_ID = "user_id"
+    const val FOLLOWING_USER_ID = "following_user_id"
+    const val IS_FOLLOWING = "is_following"
+    const val FOLLOWERS_USER_ID = "follower_user_id"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
     const val VIDEO_TYPE = "video/*"
     const val TEXT_PLAIN = "text/plain"
 
-//    Other constants
+    //    Other constants
     const val MIN_CHOOSE_INTEREST = 3
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"

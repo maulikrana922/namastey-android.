@@ -47,8 +47,9 @@ interface NetworkRequest {
     @GET(Constants.GET_USER_DETAIL)
     fun requestToGetUserDetailAsync(): Deferred<AppResponse<ProfileBean>>
 
-    @GET(Constants.GET_USER_FULL_PROFILE)
-    fun requestToGetUserFullProfileAsync(): Deferred<AppResponse<ProfileBean>>
+    @FormUrlEncoded
+    @POST(Constants.GET_USER_FULL_PROFILE)
+    fun requestToGetUserFullProfileAsync(@Field(Constants.USER_ID) userId: Long): Deferred<AppResponse<ProfileBean>>
 
     @GET(Constants.GET_CATEGORY_LIST)
     fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>
@@ -140,12 +141,52 @@ interface NetworkRequest {
     fun requestToDeletePostAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
 
     @GET(Constants.GET_FOLLOWER_LIST)
-    fun requestToGetFollowerListAsync(): Deferred<AppResponse<ArrayList<ProfileBean>>>
+    fun requestToGetFollowerListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @GET(Constants.GET_FOLLOWING_LIST)
-    fun requestToGetFollowingListAsync(): Deferred<AppResponse<ArrayList<ProfileBean>>>
+    fun requestToGetFollowingListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @GET(Constants.GET_FEED_LIST)
     fun requestToGetFeedListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.ADD_COMMENT)
+    fun requestToAddCommentAsync(
+        @Field(Constants.POST_VIDEO_ID) postId: Long,
+        @Field(Constants.COMMENT) comment: String
+    ): Deferred<AppResponse<CommentBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.GET_COMMENT)
+    fun requestToGetCommentListAsync(
+        @Field(Constants.POST_VIDEO_ID) postId: Long
+    ): Deferred<AppResponse<ArrayList<CommentBean>>>
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = Constants.DELETE_COMMENT, hasBody = true)
+    fun requestToDeleteCommentAsync(
+        @Field(Constants.COMMENT_ID) commentId: Long
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.USER_LIKE)
+    fun requestToLikeUserAsync(
+        @Field(Constants.LIKED_USER_ID) likedUserId: Long,
+        @Field(Constants.IS_LIKE) isLike: Int
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.FOLLOW_REQUEST)
+    fun requestToFollowUserAsync(
+        @Field(Constants.FOLLOWING_USER_ID) followingUserId: Long,
+        @Field(Constants.IS_FOLLOWING) isFollow: Int
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.REMOVE_FOLLOWERS)
+    fun requestToRemoveFollowUserAsync(
+        @Field(Constants.FOLLOWERS_USER_ID) followersUserId: Long,
+        @Field(Constants.IS_FOLLOWING) isFollow: Int
+    ): Deferred<AppResponse<Any>>
 
 }

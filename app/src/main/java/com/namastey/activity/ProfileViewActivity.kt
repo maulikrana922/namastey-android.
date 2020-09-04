@@ -25,7 +25,15 @@ import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.activity_profile_view.groupButtons
+import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
+import kotlinx.android.synthetic.main.activity_profile_view.tvAbouteDesc
+import kotlinx.android.synthetic.main.activity_profile_view.tvFollowersCount
+import kotlinx.android.synthetic.main.activity_profile_view.tvFollowingCount
+import kotlinx.android.synthetic.main.activity_profile_view.tvProfileUsername
+import kotlinx.android.synthetic.main.activity_profile_view.tvViewsCount
 import java.io.File
 import javax.inject.Inject
 
@@ -40,9 +48,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     private lateinit var activityProfileViewBinding: ActivityProfileViewBinding
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
-    private val REQUEST_CODE = 101
-    private val REQUEST_CODE_CAMERA = 102
-    private var profileFile: File? = null
     private var profileBean = ProfileBean()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +63,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     }
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
+        if (profileBean.user_id == sessionManager.getUserId()){
+            groupButtons.visibility = View.VISIBLE
+            groupButtonsLike.visibility = View.GONE
+        }else{
+            groupButtons.visibility = View.INVISIBLE
+            groupButtonsLike.visibility = View.VISIBLE
+        }
+
+        // Need to change
+        if (profileBean.gender == Constants.Gender.female.name) {
+            ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
+        } else {
+            ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
+        }
         fillValue(profileBean)
     }
 
@@ -67,12 +86,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
+        GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
         if (profileBean.education.size > 0) {
-            tvEducation.text = sessionManager.getEducationBean().course
+            tvEducation.text = profileBean.education[0].course
         }
         if (profileBean.jobs.size > 0) {
-            tvJob.text = sessionManager.getJobBean().title
+            tvJob.text = profileBean.jobs[0].title
         }
 
         generateChooseInterestUI(profileBean.interest)
@@ -148,26 +168,27 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     private fun initData() {
 
 //        If profile image not set then display default image
-        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
-            ivProfileTop.background = getDrawable(R.drawable.female_bg)
-            GlideApp.with(this).load(R.drawable.ic_female)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-                .fitCenter().into(ivProfileUser)
-        } else {
-            ivProfileTop.background = getDrawable(R.drawable.male_bg)
-            GlideApp.with(this).load(R.drawable.ic_male)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-                .fitCenter().into(ivProfileUser)
-        }
 
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
 
+            if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+                ivProfileTop.background = getDrawable(R.drawable.female_bg)
+                GlideApp.with(this).load(R.drawable.ic_female)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                    .fitCenter().into(ivProfileUser)
+            } else {
+                ivProfileTop.background = getDrawable(R.drawable.male_bg)
+                GlideApp.with(this).load(R.drawable.ic_male)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                    .fitCenter().into(ivProfileUser)
+            }
+
             if (profileBean.profileUrl.isNotBlank()) {
                 GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
             }
-//            tvProfileUsername.text = profileBean.username
-//            tvAbouteDesc.text = profileBean.about_me
+            tvProfileUsername.text = profileBean.username
+            tvAbouteDesc.text = profileBean.about_me
             tvFollowersCount.text = profileBean.followers.toString()
             tvFollowingCount.text = profileBean.following.toString()
             tvViewsCount.text = profileBean.viewers.toString()
@@ -178,18 +199,22 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
             if (sessionManager.getJobBean().title.isNotEmpty()) {
                 tvJob.text = sessionManager.getJobBean().title
             }
+            profileViewModel.getUserFullProfile(sessionManager.getUserId())
+        }else{
+            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID,0))
         }
 
-        profileViewModel.getUserFullProfile()
     }
 
     override fun onResume() {
         super.onResume()
-        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
-            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-            tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
-            tvJob.text = sessionManager.getJobBean().title
-            tvEducation.text = sessionManager.getEducationBean().course
+        if (profileBean.user_id == sessionManager.getUserId()){
+            if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
+                tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+                tvJob.text = sessionManager.getJobBean().title
+                tvEducation.text = sessionManager.getEducationBean().course
+            }
         }
     }
 

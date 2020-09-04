@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp">
+
+    <com.namastey.customViews.RoundImageView
+        android:id="@+id/ivCommentUser"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_placeholder"
+        app:cornerRadius="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/guidlineComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidlineComment"
+        app:roundedCorners="topRight|bottomLeft" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUsername"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:paddingStart="@dimen/_3sdp"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toTopOf="@id/guidlineComment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivCommentUser"
+        app:layout_constraintTop_toTopOf="@id/ivCommentUser"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidlineComment"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvComment"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:paddingStart="@dimen/_3sdp"
+        android:textColor="@color/colorDarkGray"
+        app:layout_constraintBottom_toBottomOf="@id/ivCommentUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@id/guidlineComment"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

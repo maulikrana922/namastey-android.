@@ -72,6 +72,7 @@
     <string name="guest_user">Guest User</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="remove">Remove</string>
     <string name="about_me">About me</string>
     <string name="passport">Passport</string>
     <string name="membership">Membership</string>
@@ -82,6 +83,7 @@
 
     <string name="matches">Matches</string>
     <string name="view_all">View All</string>
+    <string name="follow">Follow</string>
 
     <string name="msg_empty_mobile_email">Please enter mobile/email</string>
     <string name="msg_empty_otp">Please enter OTP</string>
@@ -90,15 +92,22 @@
     <string name="select_country">Select country/region</string>
 
     <!--    Feed string -->
+    <string name="user">User</string>
     <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
     <string name="comments">Comments</string>
     <string name="privacy">Privacy</string>
     <string name="report">Report</string>
+    <string name="send">Send</string>
+    <string name="hint_add_comments">Add Comments</string>
+    <string name="msg_send_follow_request">Send follow request?</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>
     <string name="msg_empty_following">When People follow you. you\'ll see them here </string>
     <string name="msg_empty_followers">When you follow people. you\'ll see them here</string>
+    <string name="msg_unfollow_user">Are you sure you want to un-follow?</string>
+    <string name="msg_remove_followers">Are you sure you want to remove follower?</string>
 
     <!--    Find friend fragment-->
     <string name="find_friend">Find Friend</string>

@@ -10,13 +10,14 @@ import com.namastey.R
 import com.namastey.adapter.FollowingAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowingBinding
-import com.namastey.model.ProfileBean
+import com.namastey.listeners.OnFollowItemClick
+import com.namastey.model.DashboardBean
 import com.namastey.uiView.FollowingView
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
 import javax.inject.Inject
 
-class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingView {
+class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingView,OnFollowItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -24,11 +25,13 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private lateinit var fragmentFollowersBinding: FragmentFollowingBinding
     private lateinit var followersViewModel: FollowingViewModel
     private lateinit var layoutView: View
-    private var followingList: ArrayList<ProfileBean> = ArrayList()
+    private var followersList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var followingAdapter: FollowingAdapter
+    private var position = -1
 
-    override fun onSuccess(list: ArrayList<ProfileBean>) {
-        if (list.size == 0) {
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        followersList = list
+        if (followersList.size == 0) {
             tvEmptyFollow.text = getString(R.string.followers)
             tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
             llEmpty.visibility = View.VISIBLE
@@ -43,7 +46,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
                 )
             )
         }
-        followingAdapter = FollowingAdapter(list, activity!!)
+        followingAdapter = FollowingAdapter(followersList, requireActivity(),false,this)
         rvFollowing.adapter = followingAdapter
     }
 
@@ -85,5 +88,26 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         super.onDestroy()
     }
 
+    override fun onItemRemoveFollowersClick(
+        userId: Long,
+        isFollow: Int,
+        position: Int
+    ) {
+        this.position = position
+        followersViewModel.removeFollowUser(userId,isFollow)
+    }
 
+    override fun onSuccess(msg: String) {
+//        super.onSuccess(msg)
+        followersList.removeAt(position)
+        followingAdapter.notifyItemRemoved(position)
+        followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
+
+        if (followersList.size == 0) {
+            tvEmptyFollow.text = getString(R.string.followers)
+            tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
+            llEmpty.visibility = View.VISIBLE
+            rvFollowing.visibility = View.GONE
+        }
+    }
 }

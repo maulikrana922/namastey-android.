@@ -13,6 +13,9 @@
             type="com.namastey.viewModel.CreateAlbumViewModel" />
     </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -117,6 +120,57 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </androidx.core.widget.NestedScrollView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/trimmerView"
+            android:visibility="gone"
+            android:clickable="true">
+
+            <com.video.trimmer.view.VideoTrimmer
+                android:id="@+id/videoTrimmer"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:background="@color/colorBlack"
+                android:textColor="@color/colorWhite"
+                android:onClick="onClickSave"
+                android:gravity="center"
+                app:layout_constraintStart_toEndOf="@id/btnCancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/_40sdp"/>
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:background="@color/colorBlack"
+                android:textColor="@color/colorWhite"
+                android:onClick="onClickCancel"
+                app:layout_constraintEnd_toStartOf="@id/btnSave"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </layout>

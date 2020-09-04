@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        style="@style/CustomCardViewTopCornerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.MaterialComponents"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/llAddComment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvTotalComment"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/comments"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <ImageView
+                android:id="@+id/ivCloseComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="@id/tvTotalComment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTotalComment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPostComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/row_comment"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTotalComment" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/llAddComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAddComment"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <com.namastey.customViews.CustomEditText
+            android:id="@+id/edtComment"
+            style="@style/edtRoundCornerStyle"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_add_comments"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/ivCommentAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_share_privcay" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

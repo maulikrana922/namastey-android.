@@ -6,20 +6,62 @@ import android.os.Parcelable
 
 class DashboardBean() : Parcelable {
 
-    //    var id: Int = 0
-    var email: String = ""
-    var name: String = ""
+    var id: Long = 0
+    var user_id: Long = 0
+    var album_id: Long = 0
+    var viewers: Long = 0
+    var description: String = ""
+    var username: String = ""
+    var profile_url: String = ""
+    var cover_image_url: String = ""
+    var video_url: String = ""
+    var job: String = ""
+    var is_comment: Int = 0
+    var share_with: Int = 0
+    var is_download: Int = 0
+    var comments: Int = 0
+    var is_follow: Int = 0
+    var is_like: Int = 0
+    var profile_pic: ArrayList<String> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
-//        parcel.readInt()
+        parcel.readLong()
+        parcel.readLong()
+        parcel.readLong()
+        parcel.readLong()
         parcel.readString() ?: ""
         parcel.readString() ?: ""
+        parcel.readString() ?: ""
+        parcel.readString() ?: ""
+        parcel.readString() ?: ""
+        parcel.readString() ?: ""
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.createStringArrayList() ?: ArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-//        parcel.writeInt(id)
-        parcel.writeString(email)
-        parcel.writeString(name)
+        parcel.writeLong(id)
+        parcel.writeLong(user_id)
+        parcel.writeLong(album_id)
+        parcel.writeLong(viewers)
+        parcel.writeString(description)
+        parcel.writeString(username)
+        parcel.writeString(profile_url)
+        parcel.writeString(cover_image_url)
+        parcel.writeString(video_url)
+        parcel.writeString(job)
+        parcel.writeInt(is_comment)
+        parcel.writeInt(share_with)
+        parcel.writeInt(is_download)
+        parcel.writeInt(comments)
+        parcel.writeInt(is_follow)
+        parcel.writeInt(is_like)
+        parcel.writeStringList(profile_pic)
     }
 
     override fun describeContents(): Int {

@@ -93,7 +93,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     }
 
     private fun initData() {
-        var uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo);
+        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo);
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()
 

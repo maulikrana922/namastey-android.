@@ -24,7 +24,7 @@ class ProfileViewModel constructor(
     private var profileView: ProfileView = baseView as ProfileView
     private lateinit var job: Job
 
-    fun getUserDetails(accessToken: String) {
+    fun getUserDetails() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -85,12 +85,12 @@ class ProfileViewModel constructor(
         }
     }
 
-    fun getUserFullProfile() {
+    fun getUserFullProfile(userId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (profileView.isInternetAvailable()) {
-                    networkService.requestToGetUserFullProfile().let { appResponse ->
+                    networkService.requestToGetUserFullProfile(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessResponse(appResponse.data!!)

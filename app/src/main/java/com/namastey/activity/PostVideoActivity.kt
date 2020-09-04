@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -328,7 +327,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //    }
 
     private fun selectImage() {
-        bottomSheetDialog = BottomSheetDialog(this@PostVideoActivity, R.style.choose_photo)
+        bottomSheetDialog = BottomSheetDialog(this@PostVideoActivity, R.style.dialogStyle)
         bottomSheetDialog.setContentView(
             layoutInflater.inflate(
                 R.layout.dialog_bottom_pick,

@@ -64,13 +64,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        profileViewModel.getUserDetails(sessionManager.getAccessToken())
+        profileViewModel.getUserDetails()
 
     }
 
     private fun initData() {
 
-        profileViewModel.getUserDetails(sessionManager.getAccessToken())
+//        profileViewModel.getUserDetails()
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
@@ -89,10 +89,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         tvFollowingCount.text = profileBean.following.toString()
         sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
         sessionManager.setUserGender(profileBean.gender)
+        sessionManager.setUserId(profileBean.user_id)
 
         if (profileBean.is_completly_signup == 1) {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+            sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE
             ivProfileCamera.visibility = View.VISIBLE
@@ -100,9 +102,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 GlideLib.loadImage(this@ProfileActivity, ivProfileUser, profileBean.profileUrl)
             }
         } else {
-            if (sessionManager.isGuestUser()){
+            if (sessionManager.isGuestUser()) {
                 btnProfileSignup.text = getString(R.string.btn_signup)
-            }else{
+            } else {
                 btnProfileSignup.text = getString(R.string.btn_complete_profile)
             }
             btnProfileSignup.visibility = View.VISIBLE
@@ -378,6 +380,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
             tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
         }
+        profileViewModel.getUserDetails()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
