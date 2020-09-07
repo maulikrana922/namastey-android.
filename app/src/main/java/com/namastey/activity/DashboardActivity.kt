@@ -126,16 +126,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     /**
      * Temp set feed list
      */
-    private fun setDashboardList() {
-        for (number in 0..10) {
-            val dashboardBean = DashboardBean()
-            dashboardBean.username = "NamasteyApp"
-            feedList.add(dashboardBean)
-        }
-        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this)
-        viewpagerFeed.adapter = feedAdapter
-
-    }
+//    private fun setDashboardList() {
+//        for (number in 0..10) {
+//            val dashboardBean = DashboardBean()
+//            dashboardBean.username = "NamasteyApp"
+//            feedList.add(dashboardBean)
+//        }
+//        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this)
+//        viewpagerFeed.adapter = feedAdapter
+//
+//    }
 
     /**
      * Display share option if user login
@@ -178,7 +178,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
         feedList = dashboardList
-        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this)
+        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this,sessionManager )
         viewpagerFeed.adapter = feedAdapter
     }
 
@@ -354,13 +354,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDirection: Int) {
-                    dashboardViewModel.deleteComment(data[viewHolder.adapterPosition].id)
-                    data.removeAt(viewHolder.adapterPosition)
-                    commentAdapter.notifyItemRemoved(viewHolder.adapterPosition)
-                    commentAdapter.notifyItemRangeChanged(
-                        viewHolder.adapterPosition,
-                        commentAdapter.itemCount
-                    )
+
+                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id){
+                        dashboardViewModel.deleteComment(data[viewHolder.adapterPosition].id)
+                        data.removeAt(viewHolder.adapterPosition)
+                        commentAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+                        commentAdapter.notifyItemRangeChanged(
+                            viewHolder.adapterPosition,
+                            commentAdapter.itemCount
+                        )
+                    }
                 }
 
                 override fun onChildDraw(

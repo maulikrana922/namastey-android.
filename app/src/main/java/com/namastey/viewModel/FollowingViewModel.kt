@@ -20,12 +20,12 @@ class FollowingViewModel constructor(
     private var followingView: FollowingView = baseView as FollowingView
     private lateinit var job: Job
 
-    fun getFollowingList() {
+    fun getFollowingList(userId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (followingView.isInternetAvailable()) {
-                    networkService.requestToGetFollowingList().let { appResponse ->
+                    networkService.requestToGetFollowingList(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             followingView.onSuccess(appResponse.data!!)
@@ -48,12 +48,12 @@ class FollowingViewModel constructor(
 
     }
 
-    fun getFollowersList() {
+    fun getFollowersList(userId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (followingView.isInternetAvailable()) {
-                    networkService.requestToGetFollowersList().let { appResponse ->
+                    networkService.requestToGetFollowersList(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             followingView.onSuccess(appResponse.data!!)

@@ -1,8 +1,6 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +9,15 @@ import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 
 class FeedAdapter(
     var feedList: ArrayList<DashboardBean>,
     val activity: Activity,
-    var onFeedItemClick: OnFeedItemClick
+    var onFeedItemClick: OnFeedItemClick,
+    var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -159,7 +159,11 @@ class FeedAdapter(
                     override fun onBtnClick(id: Int) {
                         when (id) {
                             btnAlertOk.id -> {
-                                onFeedItemClick.onClickFollow(position, dashboardBean.user_id, isFollow)
+                                onFeedItemClick.onClickFollow(
+                                    position,
+                                    dashboardBean.user_id,
+                                    isFollow
+                                )
                             }
                         }
                     }
@@ -172,7 +176,7 @@ class FeedAdapter(
             }
 
             tvCommentFeed.setOnClickListener {
-                if (dashboardBean.is_comment == 0)
+                if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser())
                     onFeedItemClick.onCommentClick(dashboardBean.id)
             }
 

@@ -12,7 +12,9 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowingBinding
 import com.namastey.listeners.OnFollowItemClick
 import com.namastey.model.DashboardBean
+import com.namastey.model.EducationBean
 import com.namastey.uiView.FollowingView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
 import javax.inject.Inject
@@ -29,6 +31,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var followingList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var followingAdapter: FollowingAdapter
     private var position = -1
+    private var userId: Long = -1
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         followingList = list
@@ -51,6 +54,15 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         rvFollowing.adapter = followingAdapter
     }
 
+    companion object {
+        fun getInstance(userId: Long) =
+            FollowingFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(Constants.USER_ID, userId)
+                }
+            }
+    }
+
     override fun getViewModel() = followingViewModel
 
     override fun getLayoutId() = R.layout.fragment_following
@@ -70,7 +82,8 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     }
 
     private fun initUI() {
-        followingViewModel.getFollowingList()
+        userId = arguments!!.getLong(Constants.USER_ID)
+        followingViewModel.getFollowingList(userId)
     }
 
     private fun setupViewModel() {

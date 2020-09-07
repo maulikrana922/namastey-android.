@@ -61,6 +61,7 @@ object Constants {
     const val DEVICE_TYPE = "device_type"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
+    const val PROFILE_BEAN = "profileBean"
 
     //    api response error code
     const val OK = 200

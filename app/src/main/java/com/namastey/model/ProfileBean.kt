@@ -33,7 +33,7 @@ class ProfileBean() : Parcelable {
     var albums: ArrayList<AlbumBean> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
-        parcel.readLong()
+        user_id = parcel.readLong()
         email = parcel.readString() ?: ""
         name = parcel.readString() ?: ""
         username = parcel.readString() ?: ""

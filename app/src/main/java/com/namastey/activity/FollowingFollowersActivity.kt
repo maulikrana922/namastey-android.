@@ -16,6 +16,7 @@ import com.namastey.databinding.ActivityFollowingFollowersBinding
 import com.namastey.fragment.FindFriendFragment
 import com.namastey.fragment.FollowersFragment
 import com.namastey.fragment.FollowingFragment
+import com.namastey.model.ProfileBean
 import com.namastey.uiView.FolloFollowersView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -31,12 +32,12 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var sessionManager: SessionManager
     private lateinit var activityFollowingFollowersBinding: ActivityFollowingFollowersBinding
     private lateinit var followFollowersViewModel: FollowFollowersViewModel
     private lateinit var tabOne: TextView
     private lateinit var tabTwo: TextView
+    private var profileBean = ProfileBean()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -51,21 +52,18 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
     private fun initData() {
 
-        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+        profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+
+        if (profileBean.profileUrl.isNotEmpty()) {
             GlideLib.loadImage(
-                this@FollowingFollowersActivity, ivFollowUser, sessionManager.getStringValue(
-                    Constants.KEY_PROFILE_URL
-                )
+                this@FollowingFollowersActivity, ivFollowUser, profileBean.profileUrl
             )
         }
-        tvFollowUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-
-        if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)){
-            if (sessionManager.getUserGender() == Constants.Gender.male.name)
-                llFollowBackground.background = getDrawable(R.drawable.blue_bar)
-            else
-                llFollowBackground.background = getDrawable(R.drawable.pink_bar)
-        }
+        tvFollowUsername.text = profileBean.username
+        if (profileBean.gender == Constants.Gender.male.name)
+            llFollowBackground.background = getDrawable(R.drawable.blue_bar)
+        else
+            llFollowBackground.background = getDrawable(R.drawable.pink_bar)
         searchFollow.queryHint = resources.getString(R.string.search)
         setupViewPager()
         tabFollow.setupWithViewPager(viewpagerFollow)
@@ -76,8 +74,14 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     private fun setupViewPager() {
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFrag(FollowingFragment(), resources.getString(R.string.following))
-        adapter.addFrag(FollowersFragment(), resources.getString(R.string.followers))
+        adapter.addFrag(
+            FollowingFragment.getInstance(profileBean.user_id),
+            resources.getString(R.string.following)
+        )
+        adapter.addFrag(
+            FollowersFragment.getInstance(profileBean.user_id),
+            resources.getString(R.string.followers)
+        )
         viewpagerFollow.adapter = adapter
 
     }

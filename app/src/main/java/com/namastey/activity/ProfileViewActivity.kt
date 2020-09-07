@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -63,6 +64,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     }
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
+        this.profileBean = profileBean
         if (profileBean.user_id == sessionManager.getUserId()){
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.GONE
@@ -225,7 +227,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     fun onClickProfileImage(view: View) {}
 
     fun onClickFollow(view: View) {
-//        openActivity(this@ProfileViewActivity, FollowingFollowersActivity())
+        val intent = Intent(this@ProfileViewActivity,FollowingFollowersActivity::class.java)
+        intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+        openActivity(intent)
     }
 
     fun onClickEditProfile(view: View) {

@@ -156,8 +156,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on followers and following
      */
     fun onClickFollow(view: View) {
-        if (!sessionManager.isGuestUser())
-            openActivity(this, FollowingFollowersActivity())
+        if (!sessionManager.isGuestUser()){
+            val intent = Intent(this@ProfileActivity,FollowingFollowersActivity::class.java)
+            intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+            openActivity(intent)
+        }
     }
 
     private fun selectImage() {

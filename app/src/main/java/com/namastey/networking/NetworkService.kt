@@ -181,14 +181,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToDeletePost(jsonObject: JsonObject): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestToDeletePostAsync(jsonObject).await() }
 
-    suspend fun requestToGetFollowersList(): AppResponse<ArrayList<DashboardBean>> =
+    suspend fun requestToGetFollowersList(userId: Long): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetFollowerListAsync().await()
+            networkRequest.requestToGetFollowerListAsync(userId).await()
         }
 
-    suspend fun requestToGetFollowingList(): AppResponse<ArrayList<DashboardBean>> =
+    suspend fun requestToGetFollowingList(userId: Long): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetFollowingListAsync().await()
+            networkRequest.requestToGetFollowingListAsync(userId).await()
         }
 
     suspend fun requestToAddComment(

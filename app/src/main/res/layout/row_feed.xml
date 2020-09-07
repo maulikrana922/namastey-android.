@@ -116,6 +116,7 @@
         android:drawablePadding="@dimen/_3sdp"
         android:gravity="center"
         android:text="0"
+        android:layout_marginBottom="@dimen/_8sdp"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
