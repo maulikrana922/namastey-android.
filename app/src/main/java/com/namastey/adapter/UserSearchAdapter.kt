@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.roomDB.entity.User
+import com.namastey.listeners.OnItemClick
+import com.namastey.model.DashboardBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_user_suggested.view.*
 
 
-class AddFriendUserAdapter(
-    var userList: ArrayList<User>,
+class UserSearchAdapter(
+    var userList: ArrayList<DashboardBean>,
     var activity: Context,
-    var isDisplayCkb: Boolean
-) : androidx.recyclerview.widget.RecyclerView.Adapter<AddFriendUserAdapter.ViewHolder>() {
+    var isDisplayCkb: Boolean,
+    var onItemClick: OnItemClick
+) : androidx.recyclerview.widget.RecyclerView.Adapter<UserSearchAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -32,14 +34,20 @@ class AddFriendUserAdapter(
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvFindUser.text = userList.get(position).name
+            val dashboardBean = userList[position]
+            tvFindUser.text = dashboardBean.username
+            tvUserJob.text = dashboardBean.job
 
-            GlideLib.loadImageUrlRoundCorner(activity, ivFindUser, "")
+            GlideLib.loadImageUrlRoundCorner(activity, ivFindUser, dashboardBean.profile_url)
 
             if (isDisplayCkb) {
                 ckbFindUser.visibility = View.VISIBLE
             } else {
                 ckbFindUser.visibility = View.GONE
+            }
+
+            viewSearchUser.setOnClickListener{
+                onItemClick.onItemClick(dashboardBean.user_id,position)
             }
         }
 

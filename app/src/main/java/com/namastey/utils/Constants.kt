@@ -53,6 +53,7 @@ object Constants {
     const val USER_LIKE = "like"
     const val FOLLOW_REQUEST = "follow"
     const val REMOVE_FOLLOWERS = "remove-follow"
+    const val SEARCH_USER = "search-user"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -168,6 +169,7 @@ object Constants {
     const val FOLLOWING_USER_ID = "following_user_id"
     const val IS_FOLLOWING = "is_following"
     const val FOLLOWERS_USER_ID = "follower_user_id"
+    const val SEARCH = "search"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

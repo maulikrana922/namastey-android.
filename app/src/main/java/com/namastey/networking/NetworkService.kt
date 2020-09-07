@@ -232,4 +232,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToRemoveFollowUserAsync(followersUserId,isFollow).await()
         }
+
+    suspend fun requestToSearchUser(search: String): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToSearchUserAsync(search).await()
+        }
 }

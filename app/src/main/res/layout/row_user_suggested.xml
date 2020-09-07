@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/_8sdp"
-    android:paddingBottom="@dimen/_8sdp">
+    android:paddingBottom="@dimen/_8sdp"
+    android:id="@+id/viewSearchUser">
 
     <CheckBox
         android:visibility="gone"
@@ -60,7 +61,7 @@
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
         android:paddingEnd="@dimen/_3sdp"
-        android:text="Many desktop "
+        android:text="@string/jobs"
         android:textColor="@color/colorDarkGray"
         app:layout_constraintBottom_toBottomOf="@id/ivFindUser"
         app:layout_constraintEnd_toEndOf="@+id/tvFindUser"

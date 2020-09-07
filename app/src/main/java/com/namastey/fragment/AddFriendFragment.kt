@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.adapter.AddFriendUserAdapter
+import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddFriendBinding
+import com.namastey.listeners.OnItemClick
+import com.namastey.model.DashboardBean
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.FindFriendView
 import com.namastey.utils.Utils
@@ -18,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_add_friend.*
 import javax.inject.Inject
 
 class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendView,
-    View.OnClickListener {
+    View.OnClickListener, OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -26,8 +28,8 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     private lateinit var fragmentAddFriendBinding: FragmentAddFriendBinding
     private lateinit var findFriendViewModel: FindFriendViewModel
     private lateinit var layoutView: View
-    private lateinit var addFriendUserAdapter: AddFriendUserAdapter
-    private var userList = ArrayList<User>()
+    private lateinit var userSearchAdapter: UserSearchAdapter
+    private var userList = ArrayList<DashboardBean>()
 
     override fun getViewModel() = findFriendViewModel
 
@@ -77,9 +79,9 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
 
         userList.clear()
         for (number in 0..10) {
-            var user = User()
-            user.name = "Ankit Dev"
-            userList.add(user)
+            val dashboardBean = DashboardBean()
+            dashboardBean.username = "Ankit Dev"
+            userList.add(dashboardBean)
         }
         rvAddFriendSuggested.addItemDecoration(
             DividerItemDecoration(
@@ -87,8 +89,8 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
                 LinearLayoutManager.VERTICAL
             )
         )
-        addFriendUserAdapter = AddFriendUserAdapter(userList, requireActivity(),isDisplayCkb)
-        rvAddFriendSuggested.adapter = addFriendUserAdapter
+        userSearchAdapter = UserSearchAdapter(userList, requireActivity(),isDisplayCkb,this)
+        rvAddFriendSuggested.adapter = userSearchAdapter
 
     }
 
@@ -108,5 +110,9 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
                 }
             }
         }
+    }
+
+    override fun onItemClick(value: Long, position: Int) {
+        TODO("Not yet implemented")
     }
 }

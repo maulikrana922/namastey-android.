@@ -1,33 +1,37 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.adapter.UserSearchAdapter
 import com.namastey.adapter.ViewPagerAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFollowingFollowersBinding
 import com.namastey.fragment.FindFriendFragment
 import com.namastey.fragment.FollowersFragment
 import com.namastey.fragment.FollowingFragment
+import com.namastey.listeners.OnItemClick
+import com.namastey.model.DashboardBean
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.FolloFollowersView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowFollowersViewModel
 import kotlinx.android.synthetic.main.activity_following_followers.*
 import javax.inject.Inject
 
 
 class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBinding>(),
-    FolloFollowersView {
+    FolloFollowersView, OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -37,6 +41,8 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     private lateinit var tabOne: TextView
     private lateinit var tabTwo: TextView
     private var profileBean = ProfileBean()
+    private lateinit var userSearchAdapter: UserSearchAdapter
+    private var userList = ArrayList<DashboardBean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +74,21 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         setupViewPager()
         tabFollow.setupWithViewPager(viewpagerFollow)
         setupTabIcons()
+
+        searchFollow.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                    rvSearchUser.visibility = View.VISIBLE
+                    followFollowersViewModel.getSearchUser(newText.trim())
+                } else
+                    rvSearchUser.visibility = View.GONE
+                return true
+            }
+        })
 
     }
 
@@ -147,6 +168,14 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
     override fun getBindingVariable() = BR.viewModel
 
+    override fun onSuccessSearchList(userList: ArrayList<DashboardBean>) {
+        this.userList = userList
+        userSearchAdapter =
+            UserSearchAdapter(this.userList, this@FollowingFollowersActivity, false, this)
+        rvSearchUser.adapter = userSearchAdapter
+
+    }
+
     override fun onBackPressed() {
         val findFriendFragment =
             supportFragmentManager.findFragmentByTag(Constants.FIND_FRIEND_FRAGMENT)
@@ -170,5 +199,16 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
             ),
             Constants.FIND_FRIEND_FRAGMENT
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        followFollowersViewModel.onDestroy()
+    }
+
+    override fun onItemClick(userId: Long, position: Int) {
+        val intent = Intent(this@FollowingFollowersActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
     }
 }

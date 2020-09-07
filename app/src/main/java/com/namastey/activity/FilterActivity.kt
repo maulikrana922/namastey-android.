@@ -6,7 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.adapter.AddFriendUserAdapter
+import com.namastey.adapter.UserSearchAdapter
 import com.namastey.adapter.FilterCategoryAdapter
 import com.namastey.adapter.InterestAdapter
 import com.namastey.adapter.TrandingsUserAdapter
@@ -14,8 +14,10 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnImageItemClick
+import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnUserItemClick
 import com.namastey.model.CategoryBean
+import com.namastey.model.DashboardBean
 import com.namastey.model.InterestBean
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.FilterView
@@ -27,7 +29,7 @@ import javax.inject.Inject
 
 
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick,
-    OnUserItemClick, OnCategoryItemClick {
+    OnUserItemClick, OnCategoryItemClick, OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -37,8 +39,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
     private lateinit var trandingsUserAdapter: TrandingsUserAdapter
     private var trandingList: ArrayList<User> = ArrayList()
     private lateinit var interestAdapter: InterestAdapter
-    private lateinit var addFriendUserAdapter: AddFriendUserAdapter
-    private var userList = ArrayList<User>()
+    private lateinit var userSearchAdapter: UserSearchAdapter
+    private var userList = ArrayList<DashboardBean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,17 +157,17 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
 
         userList.clear()
         for (number in 0..1) {
-            var user = User()
-            user.name = "Sanya"
-            userList.add(user)
+            var dashboardBean = DashboardBean()
+            dashboardBean.username = "Sanya"
+            userList.add(dashboardBean)
 
-            user = User()
-            user.name = "Ankit"
-            userList.add(user)
+            dashboardBean = DashboardBean()
+            dashboardBean.username = "Ankit"
+            userList.add(dashboardBean)
         }
 
-        addFriendUserAdapter = AddFriendUserAdapter(userList, this@FilterActivity, false)
-        rvFilterSearch.adapter = addFriendUserAdapter
+        userSearchAdapter = UserSearchAdapter(userList, this@FilterActivity, false,this)
+        rvFilterSearch.adapter = userSearchAdapter
 
         searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -180,5 +182,9 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
                 return true
             }
         })
+    }
+
+    override fun onItemClick(value: Long, position: Int) {
+        TODO("Not yet implemented")
     }
 }

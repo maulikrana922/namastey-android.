@@ -1,5 +1,8 @@
 package com.namastey.uiView
 
-interface FolloFollowersView: BaseView {
+import com.namastey.model.DashboardBean
+
+interface FolloFollowersView : BaseView {
+    fun onSuccessSearchList(userList: ArrayList<DashboardBean>)
 
 }

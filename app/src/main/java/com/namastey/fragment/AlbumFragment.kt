@@ -86,7 +86,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     override fun onClick(v: View?) {
         when (v) {
             btnAddAlbum -> {
-                var intent = Intent(requireActivity(), CreateAlbumActivity::class.java)
+                val intent = Intent(requireActivity(), CreateAlbumActivity::class.java)
                 intent.putExtra("fromAlbumList", true)
                 openActivity(intent)
             }
@@ -94,7 +94,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     }
 
     override fun onItemClick(value: Long,position: Int) {
-        var intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
+        val intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
         intent.putExtra("albumId", value)
         openActivity(intent)
     }

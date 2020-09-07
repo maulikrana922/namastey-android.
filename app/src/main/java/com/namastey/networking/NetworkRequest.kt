@@ -9,6 +9,7 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkRequest {
@@ -190,5 +191,11 @@ interface NetworkRequest {
         @Field(Constants.FOLLOWERS_USER_ID) followersUserId: Long,
         @Field(Constants.IS_FOLLOWING) isFollow: Int
     ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.SEARCH_USER)
+    fun requestToSearchUserAsync(
+        @Field(Constants.SEARCH) search : String
+    ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
 }
