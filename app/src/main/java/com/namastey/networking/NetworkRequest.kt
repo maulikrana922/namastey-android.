@@ -198,4 +198,7 @@ interface NetworkRequest {
         @Field(Constants.SEARCH) search : String
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
+    @GET(Constants.GET_SUGGEST_LIST)
+    fun requestToGetSuggestListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
 }

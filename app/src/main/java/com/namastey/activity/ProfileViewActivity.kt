@@ -26,16 +26,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
-import kotlinx.android.synthetic.main.activity_profile_view.groupButtons
-import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
-import kotlinx.android.synthetic.main.activity_profile_view.tvAbouteDesc
-import kotlinx.android.synthetic.main.activity_profile_view.tvFollowersCount
-import kotlinx.android.synthetic.main.activity_profile_view.tvFollowingCount
-import kotlinx.android.synthetic.main.activity_profile_view.tvProfileUsername
-import kotlinx.android.synthetic.main.activity_profile_view.tvViewsCount
-import java.io.File
 import javax.inject.Inject
 
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileView,
@@ -65,10 +56,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
         this.profileBean = profileBean
-        if (profileBean.user_id == sessionManager.getUserId()){
+        if (profileBean.user_id == sessionManager.getUserId()) {
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.GONE
-        }else{
+        } else {
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
         }
@@ -202,15 +193,15 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                 tvJob.text = sessionManager.getJobBean().title
             }
             profileViewModel.getUserFullProfile(sessionManager.getUserId())
-        }else{
-            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID,0))
+        } else {
+            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
         }
 
     }
 
     override fun onResume() {
         super.onResume()
-        if (profileBean.user_id == sessionManager.getUserId()){
+        if (profileBean.user_id == sessionManager.getUserId()) {
             if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
                 tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
                 tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
@@ -227,7 +218,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     fun onClickProfileImage(view: View) {}
 
     fun onClickFollow(view: View) {
-        val intent = Intent(this@ProfileViewActivity,FollowingFollowersActivity::class.java)
+        val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
         openActivity(intent)
     }

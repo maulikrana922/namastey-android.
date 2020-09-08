@@ -225,16 +225,22 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestToFollowUser(followingUserId: Long, isFollow: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToFollowUserAsync(followingUserId,isFollow).await()
+            networkRequest.requestToFollowUserAsync(followingUserId, isFollow).await()
         }
 
     suspend fun requestToRemoveFollowUser(followersUserId: Long, isFollow: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToRemoveFollowUserAsync(followersUserId,isFollow).await()
+            networkRequest.requestToRemoveFollowUserAsync(followersUserId, isFollow).await()
         }
 
     suspend fun requestToSearchUser(search: String): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToSearchUserAsync(search).await()
         }
+
+    suspend fun requestToGetSuggestList(): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetSuggestListAsync().await()
+        }
+
 }

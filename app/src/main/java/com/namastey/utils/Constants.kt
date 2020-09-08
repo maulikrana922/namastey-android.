@@ -54,6 +54,7 @@ object Constants {
     const val FOLLOW_REQUEST = "follow"
     const val REMOVE_FOLLOWERS = "remove-follow"
     const val SEARCH_USER = "search-user"
+    const val GET_SUGGEST_LIST = "get-suggest-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

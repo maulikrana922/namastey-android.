@@ -1,22 +1,27 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddFriendBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.roomDB.entity.User
 import com.namastey.uiView.FindFriendView
+import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FindFriendViewModel
+import kotlinx.android.synthetic.main.activity_following_followers.*
 import kotlinx.android.synthetic.main.fragment_add_friend.*
+import kotlinx.android.synthetic.main.fragment_add_friend.rvSearchUser
 import javax.inject.Inject
 
 class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendView,
@@ -28,8 +33,26 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     private lateinit var fragmentAddFriendBinding: FragmentAddFriendBinding
     private lateinit var findFriendViewModel: FindFriendViewModel
     private lateinit var layoutView: View
+    private lateinit var suggestedAdapter: UserSearchAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private var userList = ArrayList<DashboardBean>()
+
+    override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
+        rvSuggestedUser.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                LinearLayoutManager.VERTICAL
+            )
+        )
+        suggestedAdapter = UserSearchAdapter(suggestedList, requireActivity(),false,this)
+        rvSuggestedUser.adapter = suggestedAdapter
+    }
+
+    override fun onSuccessSearchList(suggestedList: ArrayList<DashboardBean>) {
+        userSearchAdapter =
+            UserSearchAdapter(suggestedList, requireActivity(), false, this)
+        rvSearchUser.adapter = userSearchAdapter
+    }
 
     override fun getViewModel() = findFriendViewModel
 
@@ -71,7 +94,22 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
         ivAddFriendClose.setOnClickListener(this)
         tvFindMultiple.setOnClickListener(this)
 
-        setUserList(false)
+        searchAddFriend.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                    rvSearchUser.visibility = View.VISIBLE
+                    findFriendViewModel.getSearchUser(newText.trim())
+                } else
+                    rvSearchUser.visibility = View.GONE
+                return true
+            }
+        })
+
+        findFriendViewModel.getSuggestedUser()
     }
 
     // Temp for ui
@@ -83,14 +121,14 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
             dashboardBean.username = "Ankit Dev"
             userList.add(dashboardBean)
         }
-        rvAddFriendSuggested.addItemDecoration(
+        rvSuggestedUser.addItemDecoration(
             DividerItemDecoration(
                 context,
                 LinearLayoutManager.VERTICAL
             )
         )
-        userSearchAdapter = UserSearchAdapter(userList, requireActivity(),isDisplayCkb,this)
-        rvAddFriendSuggested.adapter = userSearchAdapter
+        suggestedAdapter = UserSearchAdapter(userList, requireActivity(),isDisplayCkb,this)
+        rvSuggestedUser.adapter = suggestedAdapter
 
     }
 
@@ -113,6 +151,13 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     }
 
     override fun onItemClick(value: Long, position: Int) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, value)
+        openActivity(intent)
+    }
+
+    override fun onDestroy() {
+        findFriendViewModel.onDestroy()
+        super.onDestroy()
     }
 }

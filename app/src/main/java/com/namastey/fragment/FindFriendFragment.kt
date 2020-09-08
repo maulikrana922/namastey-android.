@@ -8,6 +8,7 @@ import com.namastey.R
 import com.namastey.activity.FollowingFollowersActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFindFriendBinding
+import com.namastey.model.DashboardBean
 import com.namastey.uiView.FindFriendView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.FindFriendViewModel
@@ -22,6 +23,13 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
     private lateinit var fragmentFindFriendBinding: FragmentFindFriendBinding
     private lateinit var findFriendViewModel: FindFriendViewModel
     private lateinit var layoutView: View
+    override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessSearchList(suggestedList: ArrayList<DashboardBean>) {
+        TODO("Not yet implemented")
+    }
 
 
     override fun getViewModel() = findFriendViewModel
