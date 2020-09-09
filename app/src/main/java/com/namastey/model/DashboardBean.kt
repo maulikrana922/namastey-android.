@@ -23,6 +23,7 @@ class DashboardBean() : Parcelable {
     var is_follow: Int = 0
     var is_like: Int = 0
     var profile_pic: ArrayList<String> = ArrayList()
+    var isChecked: Int  = 0
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
@@ -42,6 +43,7 @@ class DashboardBean() : Parcelable {
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.createStringArrayList() ?: ArrayList()
+        parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -62,6 +64,7 @@ class DashboardBean() : Parcelable {
         parcel.writeInt(is_follow)
         parcel.writeInt(is_like)
         parcel.writeStringList(profile_pic)
+        parcel.writeInt(isChecked)
     }
 
     override fun describeContents(): Int {

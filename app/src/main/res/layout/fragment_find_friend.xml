@@ -43,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:padding="@dimen/_10sdp"
+            android:onClick="onClickInviteFriend"
+            android:contentDescription="@string/app_name"
             android:paddingStart="@dimen/_15sdp"
             android:src="@drawable/ic_close"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_20sdp"
+            android:onClick="onClickInviteFriend"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_invite_friend"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivFindClose" />
@@ -76,6 +80,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_15sdp"
             android:text="@string/invite_friend"
+            android:onClick="onClickInviteFriend"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="@id/ivInviteFriend"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,45 +89,75 @@
             app:typeface="MULI_SEMIBOLD" />
 
         <ImageView
-            android:id="@+id/ivFindContact"
+            android:id="@+id/ivInviteSMS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:onClick="onClickInviteFriend"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_find_contacts"
             app:layout_constraintStart_toStartOf="@id/ivInviteFriend"
             app:layout_constraintTop_toBottomOf="@id/ivInviteFriend" />
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFindContacts"
+            android:id="@+id/tvInviteSMS"
             style="@style/tvWrapWhiteStyle"
-            android:text="@string/find_contacts"
+            android:text="@string/invite_sms"
             android:layout_width="0dp"
+            android:onClick="onClickInviteFriend"
             android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toBottomOf="@id/ivFindContact"
+            app:layout_constraintBottom_toBottomOf="@id/ivInviteSMS"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
-            app:layout_constraintTop_toTopOf="@id/ivFindContact"
+            app:layout_constraintTop_toTopOf="@id/ivInviteSMS"
             app:typeface="MULI_SEMIBOLD" />
 
         <ImageView
-            android:id="@+id/ivFindFacebook"
+            android:id="@+id/ivInviteWhatsapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:onClick="onClickInviteFriend"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_find_facebook"
             app:layout_constraintStart_toStartOf="@id/ivInviteFriend"
-            app:layout_constraintTop_toBottomOf="@id/ivFindContact" />
+            app:layout_constraintTop_toBottomOf="@id/ivInviteSMS" />
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFindFacebook"
+            android:id="@+id/tvInviteWhatsapp"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
-            android:text="@string/find_facebook_friends"
+            android:text="@string/invite_whatsapp"
+            android:onClick="onClickInviteFriend"
             android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toBottomOf="@id/ivFindFacebook"
+            app:layout_constraintBottom_toBottomOf="@id/ivInviteWhatsapp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
-            app:layout_constraintTop_toTopOf="@id/ivFindFacebook"
+            app:layout_constraintTop_toTopOf="@id/ivInviteWhatsapp"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <ImageView
+            android:id="@+id/ivInviteOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:onClick="onClickInviteFriend"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_find_facebook"
+            app:layout_constraintStart_toStartOf="@id/ivInviteFriend"
+            app:layout_constraintTop_toBottomOf="@id/ivInviteWhatsapp" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvInviteOther"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:text="@string/invite_other"
+            android:onClick="onClickInviteFriend"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@id/ivInviteOther"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvInviteFriend"
+            app:layout_constraintTop_toTopOf="@id/ivInviteOther"
             app:typeface="MULI_SEMIBOLD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

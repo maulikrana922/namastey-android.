@@ -201,4 +201,10 @@ interface NetworkRequest {
     @GET(Constants.GET_SUGGEST_LIST)
     fun requestToGetSuggestListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.MULTIPLE_FOLLOW_REQUEST)
+    fun requestToFollowMultipleUserAsync(
+        @Field(Constants.FOLLOWING_USER_ID) followingUserId: String,
+        @Field(Constants.IS_FOLLOWING) isFollow: Int
+    ): Deferred<AppResponse<Any>>
 }

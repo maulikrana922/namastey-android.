@@ -39,7 +39,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private var selectedCategoryList: ArrayList<CategoryBean> = ArrayList()
 
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
-        var selectCategoryAdapter =
+        val selectCategoryAdapter =
             SelectCategoryAdapter(categoryBeanList, requireActivity(), this, sessionManager)
         rvSelectCategory.adapter = selectCategoryAdapter
     }

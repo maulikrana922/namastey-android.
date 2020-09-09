@@ -113,7 +113,12 @@
     <string name="find_friend">Find Friend</string>
     <string name="invite_friend">Invite Friends</string>
     <string name="find_contacts">Find Contacts</string>
+    <string name="invite_sms">Invite Friends by SMS</string>
+    <string name="invite_whatsapp">Invite Friends by WhatsApp</string>
+    <string name="invite_other">Invite Friends by Other</string>
     <string name="find_facebook_friends">Find Facebook Friends</string>
+    <string name="invite_message">I\'m on NamasteyApp as %1$s. Install the app to follow my profile. </string>
+    <string name="whatsapp_not_install_message">Whatsapp app not installed in your phone</string>
 
     <!--    Add friend fragment-->
     <string name="add_friend">Add Friend</string>

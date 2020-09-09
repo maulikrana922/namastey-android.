@@ -12,10 +12,7 @@ import com.namastey.adapter.InterestAdapter
 import com.namastey.adapter.TrandingsUserAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
-import com.namastey.listeners.OnCategoryItemClick
-import com.namastey.listeners.OnImageItemClick
-import com.namastey.listeners.OnItemClick
-import com.namastey.listeners.OnUserItemClick
+import com.namastey.listeners.*
 import com.namastey.model.CategoryBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.InterestBean
@@ -29,7 +26,7 @@ import javax.inject.Inject
 
 
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick,
-    OnUserItemClick, OnCategoryItemClick, OnItemClick {
+    OnUserItemClick, OnCategoryItemClick, OnItemClick,OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -152,6 +149,10 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
 
     }
 
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        TODO("Not yet implemented")
+    }
+
     // Temp for ui
     private fun setUserList() {
 
@@ -166,7 +167,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
             userList.add(dashboardBean)
         }
 
-        userSearchAdapter = UserSearchAdapter(userList, this@FilterActivity, false,this)
+        userSearchAdapter = UserSearchAdapter(userList, this@FilterActivity, false,this,this)
         rvFilterSearch.adapter = userSearchAdapter
 
         searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

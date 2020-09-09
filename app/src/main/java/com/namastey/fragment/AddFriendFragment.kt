@@ -2,6 +2,7 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
@@ -14,18 +15,18 @@ import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddFriendBinding
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.FindFriendView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FindFriendViewModel
-import kotlinx.android.synthetic.main.activity_following_followers.*
 import kotlinx.android.synthetic.main.fragment_add_friend.*
-import kotlinx.android.synthetic.main.fragment_add_friend.rvSearchUser
 import javax.inject.Inject
 
 class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendView,
-    View.OnClickListener, OnItemClick {
+    View.OnClickListener, OnItemClick, OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -35,7 +36,7 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     private lateinit var layoutView: View
     private lateinit var suggestedAdapter: UserSearchAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
-    private var userList = ArrayList<DashboardBean>()
+    private var selectUserIdList: ArrayList<Long> = ArrayList()
 
     override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
         rvSuggestedUser.addItemDecoration(
@@ -44,14 +45,27 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
                 LinearLayoutManager.VERTICAL
             )
         )
-        suggestedAdapter = UserSearchAdapter(suggestedList, requireActivity(),false,this)
+        tvFindMultiple.visibility = View.VISIBLE
+        suggestedAdapter = UserSearchAdapter(suggestedList, requireActivity(), false, this, this)
         rvSuggestedUser.adapter = suggestedAdapter
     }
 
     override fun onSuccessSearchList(suggestedList: ArrayList<DashboardBean>) {
         userSearchAdapter =
-            UserSearchAdapter(suggestedList, requireActivity(), false, this)
+            UserSearchAdapter(suggestedList, requireActivity(), false, this, this)
         rvSearchUser.adapter = userSearchAdapter
+    }
+
+    override fun onSuccess(msg: String) {
+        object : CustomAlertDialog(
+            requireActivity(),
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+                fragmentManager!!.popBackStack()
+            }
+        }.show()
     }
 
     override fun getViewModel() = findFriendViewModel
@@ -112,26 +126,6 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
         findFriendViewModel.getSuggestedUser()
     }
 
-    // Temp for ui
-    private fun setUserList(isDisplayCkb: Boolean) {
-
-        userList.clear()
-        for (number in 0..10) {
-            val dashboardBean = DashboardBean()
-            dashboardBean.username = "Ankit Dev"
-            userList.add(dashboardBean)
-        }
-        rvSuggestedUser.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            )
-        )
-        suggestedAdapter = UserSearchAdapter(userList, requireActivity(),isDisplayCkb,this)
-        rvSuggestedUser.adapter = suggestedAdapter
-
-    }
-
     override fun onClick(v: View?) {
         when (v) {
             ivAddFriendClose -> {
@@ -139,12 +133,16 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
                 fragmentManager!!.popBackStack()
             }
             tvFindMultiple -> {
-                if (tvFindMultiple.text.equals(resources.getString(R.string.multiple))) {
+                Utils.hideKeyboard(requireActivity())
+                if (tvFindMultiple.text == resources.getString(R.string.multiple)) {
                     tvFindMultiple.text = resources.getString(R.string.done)
-                    setUserList(true)   // For UI display entire list update
+                    if (::suggestedAdapter.isInitialized)
+                        suggestedAdapter.displayRadioButton()
                 } else {
-                    Utils.hideKeyboard(requireActivity())
-                    fragmentManager!!.popBackStack()
+                    if (selectUserIdList.size > 0)
+                        findFriendViewModel.sendMultipleFollow(selectUserIdList.joinToString())
+                    else
+                        fragmentManager!!.popBackStack()
                 }
             }
         }
@@ -159,5 +157,14 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     override fun onDestroy() {
         findFriendViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        if (selectUserIdList.contains(userId))
+            selectUserIdList.remove(userId)
+        else
+            selectUserIdList.add(userId)
+
+        Log.d("User ID : ", selectUserIdList.joinToString())
     }
 }

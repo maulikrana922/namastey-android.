@@ -243,4 +243,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetSuggestListAsync().await()
         }
 
+    suspend fun requestToFollowMultipleUser(selectUserIdList: String, isFollow: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToFollowMultipleUserAsync(selectUserIdList, isFollow).await()
+        }
 }

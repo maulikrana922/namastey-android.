@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -58,8 +59,34 @@ class FindFriendViewModel constructor(
         }
 
     }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()
+    }
+
+    fun sendMultipleFollow(selectUserIdList: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (findFriendView.isInternetAvailable()) {
+                    setIsLoading(false)
+                    networkService.requestToFollowMultipleUser(selectUserIdList, 1)
+                        .let { appResponse ->
+                            if (appResponse.status == Constants.OK)
+                                findFriendView.onSuccess(appResponse.message)
+                            else
+                                findFriendView.onFailed(appResponse.message, appResponse.error)
+                        }
+                } else {
+                    setIsLoading(false)
+                    findFriendView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                findFriendView.onHandleException(t)
+            }
+        }
+
     }
 }

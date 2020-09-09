@@ -20,18 +20,20 @@ import com.namastey.fragment.FindFriendFragment
 import com.namastey.fragment.FollowersFragment
 import com.namastey.fragment.FollowingFragment
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.FolloFollowersView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.Utils
 import com.namastey.viewModel.FollowFollowersViewModel
 import kotlinx.android.synthetic.main.activity_following_followers.*
 import javax.inject.Inject
 
 
 class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBinding>(),
-    FolloFollowersView, OnItemClick {
+    FolloFollowersView, OnItemClick,OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -171,7 +173,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     override fun onSuccessSearchList(userList: ArrayList<DashboardBean>) {
         this.userList = userList
         userSearchAdapter =
-            UserSearchAdapter(this.userList, this@FollowingFollowersActivity, false, this)
+            UserSearchAdapter(this.userList, this@FollowingFollowersActivity, false, this,this)
         rvSearchUser.adapter = userSearchAdapter
 
     }
@@ -194,6 +196,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     }
 
     fun onClickFindFriend(view: View) {
+        Utils.hideKeyboard(this@FollowingFollowersActivity)
         addFragment(
             FindFriendFragment.getInstance(
             ),
@@ -210,5 +213,15 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         val intent = Intent(this@FollowingFollowersActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
         openActivity(intent)
+    }
+
+    fun onClickInviteFriend(view: View) {
+        if (getOnInteractionWithFragment() != null) {
+            getOnInteractionWithFragment()!!.onClickOfFragmentView(view)
+        }
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        TODO("Not yet implemented")
     }
 }
