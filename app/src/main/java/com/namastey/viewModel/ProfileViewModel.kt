@@ -108,6 +108,29 @@ class ProfileViewModel constructor(
         }
     }
 
+    fun followUser(userId: Long, isFollow: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToFollowUser(userId,isFollow).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccess(appResponse.message)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized) {

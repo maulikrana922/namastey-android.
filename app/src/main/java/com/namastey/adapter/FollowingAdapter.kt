@@ -60,7 +60,8 @@ class FollowingAdapter(
                     dashboardBean.username,
                     msg,
                     dashboardBean.profile_url,
-                    activity.resources.getString(R.string.yes)
+                    activity.resources.getString(R.string.yes),
+                    resources.getString(R.string.cancel)
                 ) {
                     override fun onBtnClick(id: Int) {
                         when (id) {

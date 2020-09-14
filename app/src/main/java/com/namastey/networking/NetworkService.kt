@@ -247,4 +247,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowMultipleUserAsync(selectUserIdList, isFollow).await()
         }
+
+    suspend fun requestToReportUser(reportUserId: Long, reason: String): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToreportUserAsync(reportUserId,reason).await()
+        }
+
+    suspend fun requestToBlockUser(userId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToBlockUserAsync(userId).await()
+        }
 }

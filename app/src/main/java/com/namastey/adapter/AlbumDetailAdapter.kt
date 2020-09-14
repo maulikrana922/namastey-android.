@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.row_album_detail.view.*
 class AlbumDetailAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
-    var onItemClick: OnItemClick
+    var onItemClick: OnItemClick,
+    var fromEdit: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -36,12 +37,12 @@ class AlbumDetailAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            if (position == 0) {
+            if (position == 0 && fromEdit) {
                 viewAlbumDetails.visibility = View.GONE
                 llAddAlbum.visibility = View.VISIBLE
 
-                llAddAlbum.setOnClickListener{
-                    onItemClick.onItemClick(0,0)
+                llAddAlbum.setOnClickListener {
+                    onItemClick.onItemClick(0, 0)
                 }
             } else {
                 viewAlbumDetails.visibility = View.VISIBLE
@@ -55,24 +56,59 @@ class AlbumDetailAdapter(
                 if (videoBean.cover_image_url != null)
                     GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
-                ivRemoveVideo.setOnClickListener {
-                    object : CustomAlertDialog(
-                        activity as Activity,
-                        resources.getString(R.string.msg_remove_post),
-                        activity.getString(R.string.yes),
-                        activity.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnPos.id -> {
-                                    onItemClick.onItemClick(videoBean.id, position)
-                                }
-                                btnNeg.id -> {
-                                    dismiss()
+                if (fromEdit) {
+                    ivRemoveVideo.visibility = View.VISIBLE
+                    ivRemoveVideo.setOnClickListener {
+                        object : CustomAlertDialog(
+                            activity as Activity,
+                            resources.getString(R.string.msg_remove_post),
+                            activity.getString(R.string.yes),
+                            activity.getString(R.string.cancel)
+                        ) {
+                            override fun onBtnClick(id: Int) {
+                                when (id) {
+                                    btnPos.id -> {
+                                        onItemClick.onItemClick(videoBean.id, position)
+                                    }
+                                    btnNeg.id -> {
+                                        dismiss()
+                                    }
                                 }
                             }
-                        }
-                    }.show()
+                        }.show()
+                    }
+                }
+
+                when {
+                    videoBean.profile_pic.size >= 3 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.VISIBLE
+                        ivCommentThird.visibility = View.VISIBLE
+
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                        GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
+                    }
+                    videoBean.profile_pic.size == 2 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.VISIBLE
+                        ivCommentThird.visibility = View.GONE
+
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                    }
+                    videoBean.profile_pic.size == 1 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.GONE
+                        ivCommentThird.visibility = View.GONE
+
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                    }
+                    else -> {
+                        ivCommentFirst.visibility = View.GONE
+                        ivCommentSecond.visibility = View.GONE
+                        ivCommentThird.visibility = View.GONE
+                    }
                 }
             }
 

@@ -207,4 +207,17 @@ interface NetworkRequest {
         @Field(Constants.FOLLOWING_USER_ID) followingUserId: String,
         @Field(Constants.IS_FOLLOWING) isFollow: Int
     ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.REPORT_USER)
+    fun requestToreportUserAsync(
+        @Field(Constants.REPORT_USER_ID) reportUserId: Long,
+        @Field(Constants.REASON) reason: String
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.BLOCK_USER)
+    fun requestToBlockUserAsync(
+        @Field(Constants.BLOCK_USER_ID) userId: Long
+    ): Deferred<AppResponse<Any>>
 }

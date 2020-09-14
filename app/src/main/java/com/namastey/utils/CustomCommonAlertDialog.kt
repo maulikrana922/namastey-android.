@@ -12,7 +12,8 @@ abstract class CustomCommonAlertDialog(
     private val username: String,
     private val msg: String,
     private val profilePic: String,
-    private val posBtnName: String
+    private val posBtnName: String,
+    private val cancelBtnName: String
 ) : Dialog(activity, R.style.MyDialogTheme) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +24,7 @@ abstract class CustomCommonAlertDialog(
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         tvAlertMsg.text = msg
         btnAlertOk.text = posBtnName
+        btnCancel.text =  cancelBtnName
         tvAlertUsername.text = username
         GlideLib.loadImage(activity, ivProfileImage, profilePic)
 

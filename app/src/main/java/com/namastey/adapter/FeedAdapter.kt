@@ -133,7 +133,6 @@ class FeedAdapter(
                 ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)
             }
             // Need to change as per api response
-//            ivFeedFollow.tag = R.drawable.ic_add_follow_from_profile
             ivFeedFollow.setOnClickListener {
                 var isFollow = 0
                 val msg: String
@@ -142,19 +141,18 @@ class FeedAdapter(
                     isFollow = 0
                     msg = resources.getString(R.string.msg_remove_post)
                     btnText = resources.getString(R.string.remove)
-//                    ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)
                 } else {
                     isFollow = 1
                     msg = resources.getString(R.string.msg_send_follow_request)
                     btnText = resources.getString(R.string.send)
-//                    ivFeedFollow.setImageResource(R.drawable.ic_add_right)
                 }
                 object : CustomCommonAlertDialog(
                     activity,
                     dashboardBean.username,
                     msg,
                     dashboardBean.profile_url,
-                    btnText
+                    btnText,
+                    resources.getString(R.string.cancel)
                 ) {
                     override fun onBtnClick(id: Int) {
                         when (id) {

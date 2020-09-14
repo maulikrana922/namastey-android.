@@ -63,6 +63,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private val REQUEST_VIDEO_SELECT = 101
     private var albumBean = AlbumBean()
+    private var fromEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,10 +79,14 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     private fun initData() {
+        rvAlbumDetail.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+
+        fromEdit = intent.getBooleanExtra(Constants.FROM_EDIT, false)
         if (intent.hasExtra("albumId")) {
             albumId = intent.getLongExtra("albumId", 0)
-            albumViewModel.getAlbumDetail(albumId)
 
+            albumViewModel.getAlbumDetail(albumId)
+            edtAlbumName.visibility = View.VISIBLE
             edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -127,6 +132,24 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 }
             })
 
+        } else {
+            edtAlbumName.visibility = View.GONE
+            val gender = intent.getStringExtra(Constants.GENDER)
+            if (gender == Constants.Gender.female.name)
+                imgTop.setImageResource(R.drawable.pink_bar)
+            else
+                imgTop.setImageResource(R.drawable.blue_bar)
+
+            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
+            tvAlbumTitle.text = albumBean.name
+            albumDetailAdapter =
+                AlbumDetailAdapter(
+                    albumBean.post_video_list,
+                    this@AlbumDetailActivity,
+                    this,
+                    fromEdit
+                )
+            rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
 
@@ -147,8 +170,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
     override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
         if (arrayList.size > 0) {
-            edtAlbumName.setText(arrayList[0].name)
             albumBean = arrayList[0]
+            postList = arrayList[0].post_video_list
+            edtAlbumName.setText(arrayList[0].name)
             if (arrayList[0].name == getString(R.string.uploads)) {
                 edtAlbumName.isEnabled = false
                 edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
@@ -158,10 +182,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     0
                 )
             }
-            postList = arrayList[0].post_video_list
-            rvAlbumDetail.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
             postList.add(0, VideoBean())
-            albumDetailAdapter = AlbumDetailAdapter(postList, this@AlbumDetailActivity, this)
+
+            albumDetailAdapter =
+                AlbumDetailAdapter(postList, this@AlbumDetailActivity, this, fromEdit)
             rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
@@ -381,6 +405,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 if (selectedVideo != null) {
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
+                    Log.d("Uri Path", Uri.parse(videoPath).toString())
 
                     val retriever = MediaMetadataRetriever()
 //use one of overloaded setDataSource() functions to set your data source
@@ -391,6 +416,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
                     val path = File(videoPath)
                     val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
+                    Log.d("Uri Path", Uri.fromFile(path).toString())
 
                     val second = timeInMillisec / 1000
                     Log.d("Video time : ", "Video $time")
@@ -425,6 +451,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 if (selectedVideo != null) {
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
+                    Log.d("Uri Path", Uri.parse(videoPath).toString())
 
 //                    videoFile = File(videoPath)
 

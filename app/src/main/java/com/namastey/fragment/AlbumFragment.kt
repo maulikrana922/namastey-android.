@@ -15,6 +15,7 @@ import com.namastey.databinding.FragmentAlbumBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.uiView.AlbumView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.AlbumViewModel
 import kotlinx.android.synthetic.main.fragment_album.*
 import java.util.*
@@ -96,6 +97,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     override fun onItemClick(value: Long,position: Int) {
         val intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
         intent.putExtra("albumId", value)
+        intent.putExtra(Constants.FROM_EDIT, true)
         openActivity(intent)
     }
 

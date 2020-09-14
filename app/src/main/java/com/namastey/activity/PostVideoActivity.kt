@@ -14,6 +14,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
@@ -128,6 +129,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     override fun onSuccessPostCoverImage(videoBean: VideoBean) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         Log.d("PostVideoActivity", videoBean.toString())
         val intent = Intent()
         intent.putExtra("videoBean", videoBean)
@@ -144,10 +146,12 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     override fun onBackPressed() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         finishActivity()
     }
 
     fun onClickPostVideoBack(view: View) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         onBackPressed()
     }
 
@@ -155,12 +159,18 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         when {
             TextUtils.isEmpty(edtVideoDesc.text.toString()) -> showMsg(getString(R.string.msg_empty_video_desc))
             pictureFile == null -> showMsg(getString(R.string.msg_empty_cover_image))
-            else -> postVideoViewModel.postVideoDesc(
-                edtVideoDesc.text.toString().trim(),
-                albumBean.id,
-                shareWith,
-                commentOff
-            )
+            else -> {
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                postVideoViewModel.postVideoDesc(
+                    edtVideoDesc.text.toString().trim(),
+                    albumBean.id,
+                    shareWith,
+                    commentOff
+                )
+            }
         }
     }
 
@@ -352,7 +362,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
         bottomSheetDialog.tvFromVideo.setOnClickListener {
             bottomSheetDialog.dismiss()
-            var videoUri = Uri.fromFile(videoFile)
+            val videoUri = Uri.fromFile(videoFile)
             startActivityForResult(
                 ThumbyActivity.getStartIntent(this, videoUri),
                 RESULT_CODE_PICK_THUMBNAIL

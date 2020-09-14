@@ -97,10 +97,18 @@
     <string name="dislike">Dislike</string>
     <string name="comments">Comments</string>
     <string name="privacy">Privacy</string>
+    <string name="block">Block</string>
     <string name="report">Report</string>
     <string name="send">Send</string>
     <string name="hint_add_comments">Add Comments</string>
     <string name="msg_send_follow_request">Send follow request?</string>
+    <string name="msg_report_user">Do you wish to report following user?</string>
+    <string name="report_user">Report User</string>
+    <string name="no_thanks">No thanks</string>
+    <string name="its_spam">It\'s Spam</string>
+    <string name="its_inappropriate">It\'s inappropriate</string>
+    <string name="msg_block_user">Do you wish to block the following user?</string>
+    <string name="block_user">Block User</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>
@@ -119,6 +127,7 @@
     <string name="find_facebook_friends">Find Facebook Friends</string>
     <string name="invite_message">I\'m on NamasteyApp as %1$s. Install the app to follow my profile. </string>
     <string name="whatsapp_not_install_message">Whatsapp app not installed in your phone</string>
+    <string name="instagram_not_install_message">Instagram app not installed in your phone</string>
 
     <!--    Add friend fragment-->
     <string name="add_friend">Add Friend</string>

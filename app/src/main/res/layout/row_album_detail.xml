@@ -66,6 +66,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:padding="@dimen/_12sdp"
+            android:visibility="gone"
             android:src="@drawable/ic_del_photo"
             app:layout_constraintEnd_toEndOf="@+id/ivVideoImage"
             app:layout_constraintTop_toTopOf="@id/ivVideoImage" />
@@ -75,15 +76,14 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvVideoComment"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivVideoImage" />
+            app:layout_constraintTop_toTopOf="@id/tvVideoComment" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivCommentSecond"
@@ -93,6 +93,7 @@
             android:src="@drawable/default_placeholder"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
             app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
             app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
@@ -105,6 +106,7 @@
             android:src="@drawable/default_placeholder"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
             app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
             app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
@@ -117,12 +119,13 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="left"
+            android:layout_marginTop="@dimen/_12sdp"
             android:text="@string/comments"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
+            app:layout_constraintTop_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toEndOf="@id/ivCommentThird"
-            app:layout_constraintTop_toTopOf="@id/ivCommentFirst"
+
             app:typeface="MULI_SEMIBOLD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,4 +12,6 @@ interface DashboardView : BaseView {
     fun onSuccessGetComment(data: ArrayList<CommentBean>)
     fun onSuccessProfileLike(data: Any)
     fun onSuccessFollow(msg: String)
+    fun onSuccessReport(msg: String)
+    fun onSuccessBlockUser(msg: String)
 }

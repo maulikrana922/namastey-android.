@@ -56,6 +56,8 @@ object Constants {
     const val SEARCH_USER = "search-user"
     const val GET_SUGGEST_LIST = "get-suggest-list"
     const val MULTIPLE_FOLLOW_REQUEST = "multiple-follow "
+    const val REPORT_USER = "report-user"
+    const val BLOCK_USER = "block-user"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -65,6 +67,8 @@ object Constants {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val PROFILE_BEAN = "profileBean"
+    const val FROM_EDIT = "fromEdit"
+    const val ALBUM_BEAN = "albumBean"
 
     //    api response error code
     const val OK = 200
@@ -172,6 +176,9 @@ object Constants {
     const val IS_FOLLOWING = "is_following"
     const val FOLLOWERS_USER_ID = "follower_user_id"
     const val SEARCH = "search"
+    const val REPORT_USER_ID = "report_user_id"
+    const val REASON = "reason"
+    const val BLOCK_USER_ID = "block_user_id"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

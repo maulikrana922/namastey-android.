@@ -2,6 +2,7 @@ package com.namastey.dagger.module
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -93,6 +94,7 @@ class NetworkModule {
                 .header("Cache-Control", String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME))
                 .build()
             val response = chain.proceed(request)
+//            Log.d("Response --> " , response.body().toString())
             //json response --> response.body().string();
             // Customize or return the response
             response

@@ -1,8 +1,12 @@
 package com.namastey.activity
 
 import android.Manifest
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,10 +14,14 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -33,12 +41,19 @@ import com.namastey.model.CommentBean
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
+import java.io.File
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick {
@@ -140,7 +155,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     /**
      * Display share option if user login
      */
-    private fun openShareOptionDialog() {
+    private fun openShareOptionDialog(dashboardBean: DashboardBean) {
         bottomSheetDialogShare = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
@@ -155,9 +170,210 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
         }
+
+        // Share on Twitter app if install otherwise web link
+        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+            val tweetUrl =
+                StringBuilder("https://twitter.com/intent/tweet?text=")
+            tweetUrl.append(dashboardBean.video_url)
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(tweetUrl.toString())
+            )
+            val matches: List<ResolveInfo> =
+                packageManager.queryIntentActivities(intent, 0)
+            for (info in matches) {
+                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                        .startsWith("com.twitter")
+                ) {
+                    intent.setPackage(info.activityInfo.packageName)
+                }
+            }
+            startActivity(intent)
+        }
+
+        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+            var facebookAppFound = false
+            var shareIntent =
+                Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, dashboardBean.video_url)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(dashboardBean.video_url))
+
+            val pm: PackageManager = packageManager
+            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+            for (app in activityList) {
+                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                    val activityInfo: ActivityInfo = app.activityInfo
+                    val name =
+                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
+                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    shareIntent.component = name
+                    facebookAppFound = true
+                    break
+                }
+            }
+            if (!facebookAppFound) {
+                val sharerUrl =
+                    "https://www.facebook.com/sharer/sharer.php?u=${dashboardBean.video_url}"
+                shareIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(sharerUrl)
+                )
+            }
+            startActivity(shareIntent)
+        }
+
+        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+            var intent =
+                packageManager.getLaunchIntentForPackage("com.instagram.android")
+            if (intent != null) {
+                val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.setPackage("com.instagram.android")
+                try {
+
+                    val imagePath = File(applicationContext.filesDir, "videos")
+
+                    val newFile = File(imagePath, dashboardBean.video_url)
+
+                    val contentUri = getUriForFile(applicationContext, "com.namastey.provider", newFile);
+
+                    shareIntent.putExtra(
+                        Intent.EXTRA_STREAM,
+                        contentUri
+                    )
+                } catch (e: Exception) {
+                    Log.e("ERROR", e.printStackTrace().toString())
+                }
+                shareIntent.type = "video/*"
+                startActivity(shareIntent)
+            } else {
+                intent = Intent(Intent.ACTION_VIEW)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
+                startActivity(intent)
+            }
+        }
+        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+            try {
+                val pm: PackageManager = packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                val sendIntent = Intent(Intent.ACTION_VIEW)
+                sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    String.format(
+                        dashboardBean.video_url,
+                        sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                    )
+                )
+                startActivity(sendIntent)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(
+                    this@DashboardActivity,
+                    getString(R.string.whatsapp_not_install_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                e.printStackTrace()
+            }
+        }
+
+        bottomSheetDialogShare.ivShareReport.setOnClickListener{
+            displayReportUserDialog(dashboardBean)
+        }
+        bottomSheetDialogShare.tvShareReport.setOnClickListener{
+            displayReportUserDialog(dashboardBean)
+        }
+
+        bottomSheetDialogShare.tvShareBlock.setOnClickListener{
+            displayBlockUserDialog(dashboardBean)
+        }
+        bottomSheetDialogShare.ivShareBlock.setOnClickListener{
+            displayBlockUserDialog(dashboardBean)
+        }
+
         bottomSheetDialogShare.show()
     }
 
+    /**
+     * Display dialog of report user
+     */
+    private fun displayReportUserDialog(dashboardBean: DashboardBean){
+        object : CustomCommonAlertDialog(
+            this@DashboardActivity,
+            dashboardBean.username,
+            getString(R.string.msg_report_user),
+            dashboardBean.profile_url,
+            getString(R.string.report_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        showReportTypeDialog(dashboardBean.user_id)
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    /**
+     * Display dialog with option (Reason)
+     */
+    private fun showReportTypeDialog(reportUserId: Long){
+        val bottomSheetReport: BottomSheetDialog = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
+        bottomSheetReport.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetReport.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetReport.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetReport.setCancelable(false)
+
+        bottomSheetReport.tvPhotoTake.text = getString(R.string.its_spam)
+        bottomSheetReport.tvPhotoTake.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoChoose.text = getString(R.string.its_inappropriate)
+        bottomSheetReport.tvPhotoChoose.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoCancel.setTextColor(Color.BLUE)
+
+        bottomSheetReport.tvPhotoTake.setOnClickListener {
+            bottomSheetReport.dismiss()
+            dashboardViewModel.reportUser(reportUserId,getString(R.string.its_spam))
+        }
+        bottomSheetReport.tvPhotoChoose.setOnClickListener {
+            bottomSheetReport.dismiss()
+            dashboardViewModel.reportUser(reportUserId,getString(R.string.its_inappropriate))
+        }
+        bottomSheetReport.tvPhotoCancel.setOnClickListener {
+            bottomSheetReport.dismiss()
+        }
+        bottomSheetReport.show()
+    }
+
+    private fun displayBlockUserDialog(dashboardBean: DashboardBean){
+        object : CustomCommonAlertDialog(
+            this@DashboardActivity,
+            dashboardBean.username,
+            getString(R.string.msg_block_user),
+            dashboardBean.profile_url,
+            getString(R.string.block_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        dashboardViewModel.blockUser(dashboardBean.user_id)
+                    }
+                }
+            }
+        }.show()
+
+    }
 
     /**
      * Success of get category list
@@ -178,7 +394,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
         feedList = dashboardList
-        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this,sessionManager )
+        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
         viewpagerFeed.adapter = feedAdapter
     }
 
@@ -275,14 +491,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onClickFollow(position: Int, userId: Long, isFollow: Int) {
         this.position = position
-        dashboardViewModel.followUser(userId,isFollow)
+        dashboardViewModel.followUser(userId, isFollow)
     }
 
     override fun onItemClick(dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser()) {
             // Need to add data
         } else {
-            openShareOptionDialog()
+            openShareOptionDialog(dashboardBean)
         }
     }
 
@@ -328,6 +544,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         intent.putExtra(Constants.USER_ID, userId)
         openActivity(intent)
     }
+
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
@@ -355,7 +572,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDirection: Int) {
 
-                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id){
+                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id) {
                         dashboardViewModel.deleteComment(data[viewHolder.adapterPosition].id)
                         data.removeAt(viewHolder.adapterPosition)
                         commentAdapter.notifyItemRemoved(viewHolder.adapterPosition)
@@ -477,5 +694,30 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         feedList[position] = dashboardBean
         feedAdapter.notifyItemChanged(position)
+    }
+
+    override fun onSuccessReport(msg: String) {
+        object : CustomAlertDialog(
+            this@DashboardActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
+
+    override fun onSuccessBlockUser(msg: String) {
+        object : CustomAlertDialog(
+            this@DashboardActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+                feedList.clear()
+                dashboardViewModel.getFeedList()
+            }
+        }.show()
+
     }
 }

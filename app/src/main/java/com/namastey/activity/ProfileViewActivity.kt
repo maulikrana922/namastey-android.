@@ -62,6 +62,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
         } else {
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
+
+            if (profileBean.is_follow == 1)
+                btnProfileFollow.text = getString(R.string.following)
+            else
+                btnProfileFollow.text = getString(R.string.follow)
+
         }
 
         // Need to change
@@ -71,6 +77,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
             ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
         }
         fillValue(profileBean)
+    }
+
+    override fun onSuccess(msg: String) {
+        super.onSuccess(msg)
+        if (profileBean.is_follow == 1) {
+            profileBean.is_follow = 0
+            profileBean.followers -= 1
+            btnProfileFollow.text = resources.getString(R.string.follow)
+        } else {
+            profileBean.is_follow = 1
+            profileBean.followers += 1
+            btnProfileFollow.text = resources.getString(R.string.following)
+        }
+        tvFollowersCount.text = profileBean.followers.toString()
     }
 
     private fun fillValue(profileBean: ProfileBean) {
@@ -92,7 +112,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
         socialAccountUI(profileBean.social_accounts)
 
         albumListProfileAdapter =
-            AlbumListProfileAdapter(profileBean.albums, this@ProfileViewActivity, this, this)
+            AlbumListProfileAdapter(
+                profileBean.albums,
+                this@ProfileViewActivity,
+                this,
+                this,
+                profileBean.gender
+            )
         rvAlbumList.adapter = albumListProfileAdapter
     }
 
@@ -160,8 +186,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
 
     private fun initData() {
 
-//        If profile image not set then display default image
-
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
 
@@ -217,10 +241,21 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
 
     fun onClickProfileImage(view: View) {}
 
+    /**
+     * Open following/followers screen click on counter
+     */
     fun onClickFollow(view: View) {
         val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
         openActivity(intent)
+    }
+
+    fun onClickFollowRequest(view: View) {
+        if (profileBean.is_follow == 1) {
+            profileViewModel.followUser(profileBean.user_id, 0)
+        } else {
+            profileViewModel.followUser(profileBean.user_id, 1)
+        }
     }
 
     fun onClickEditProfile(view: View) {

@@ -79,7 +79,7 @@
                 android:padding="@dimen/_5sdp"
                 android:text="@android:string/cancel"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/_16sdp"
+                android:textSize="@dimen/_14sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

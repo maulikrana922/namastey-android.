@@ -45,6 +45,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvAlbumTitle"
             style="@style/tvTitleStyle"
             android:text="@string/edit_profile"
             app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"

@@ -1,21 +1,26 @@
 package com.namastey.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.activity.AlbumDetailActivity
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.AlbumBean
+import com.namastey.utils.Constants
 import kotlinx.android.synthetic.main.row_parent_album_profile.view.*
 
 class AlbumListProfileAdapter(
     var albumList: ArrayList<AlbumBean>,
     var activity: Context,
     var onViewAlbumClick: OnViewAlbumClick,
-    var onItemClick: OnItemClick
+    var onItemClick: OnItemClick,
+    var gender: String
 ) : RecyclerView.Adapter<AlbumListProfileAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -49,6 +54,14 @@ class AlbumListProfileAdapter(
                 }
             }else{
                 rvChildAlbumPost.visibility = View.GONE
+            }
+
+            tvAlbumViewall.setOnClickListener{
+                val intent = Intent(activity, AlbumDetailActivity::class.java)
+                intent.putExtra(Constants.ALBUM_BEAN, albumBean)
+                intent.putExtra(Constants.FROM_EDIT, false)
+                intent.putExtra(Constants.GENDER, gender)
+                (activity as ProfileViewActivity).openActivity(intent)
             }
 
         }

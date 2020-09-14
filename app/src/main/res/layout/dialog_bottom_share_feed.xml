@@ -99,7 +99,7 @@
             app:layout_constraintTop_toBottomOf="@id/svShareOption" />
 
         <ImageView
-            android:id="@+id/ivSharePrivacy"
+            android:id="@+id/ivShareBlock"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginStart="@dimen/_8sdp"
@@ -111,15 +111,15 @@
             app:layout_constraintTop_toBottomOf="@+id/viewShare" />
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSharePrivacy"
+            android:id="@+id/tvShareBlock"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/privacy"
+            android:text="@string/block"
             android:textColor="@color/colorDarkGray"
-            app:layout_constraintEnd_toEndOf="@id/ivSharePrivacy"
-            app:layout_constraintStart_toStartOf="@id/ivSharePrivacy"
-            app:layout_constraintTop_toBottomOf="@id/ivSharePrivacy"
+            app:layout_constraintEnd_toEndOf="@id/ivShareBlock"
+            app:layout_constraintStart_toStartOf="@id/ivShareBlock"
+            app:layout_constraintTop_toBottomOf="@id/ivShareBlock"
             app:typeface="MULI_SEMIBOLD" />
 
         <ImageView
@@ -130,8 +130,8 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_share_save"
-            app:layout_constraintStart_toEndOf="@id/ivSharePrivacy"
-            app:layout_constraintTop_toTopOf="@id/ivSharePrivacy" />
+            app:layout_constraintStart_toEndOf="@id/ivShareBlock"
+            app:layout_constraintTop_toTopOf="@id/ivShareBlock" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvShareSave"
@@ -154,7 +154,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_share_report"
             app:layout_constraintStart_toEndOf="@id/ivShareSave"
-            app:layout_constraintTop_toTopOf="@id/ivSharePrivacy" />
+            app:layout_constraintTop_toTopOf="@id/ivShareBlock" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvShareReport"

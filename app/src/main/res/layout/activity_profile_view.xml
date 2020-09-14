@@ -310,6 +310,7 @@
                     android:background="@drawable/rounded_white_solid_red_border"
                     android:minHeight="@dimen/_32sdp"
                     android:text="@string/follow"
+                    android:onClick="onClickFollowRequest"
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"

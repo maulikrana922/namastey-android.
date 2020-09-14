@@ -135,12 +135,13 @@ class DashboardViewModel constructor(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToLikeUserProfile(likedUserId,isLike).let { appResponse ->
-                        if (appResponse.status == Constants.OK)
-                            appResponse.data?.let { dashboardView.onSuccessProfileLike(it) }
-                        else
-                            dashboardView.onFailed(appResponse.message, appResponse.error)
-                    }
+                    networkService.requestToLikeUserProfile(likedUserId, isLike)
+                        .let { appResponse ->
+                            if (appResponse.status == Constants.OK)
+                                appResponse.data?.let { dashboardView.onSuccessProfileLike(it) }
+                            else
+                                dashboardView.onFailed(appResponse.message, appResponse.error)
+                        }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)
                 }
@@ -154,7 +155,7 @@ class DashboardViewModel constructor(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToFollowUser(userId,isFollow).let { appResponse ->
+                    networkService.requestToFollowUser(userId, isFollow).let { appResponse ->
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessFollow(appResponse.message)
                         else
@@ -164,6 +165,52 @@ class DashboardViewModel constructor(
                     dashboardView.showMsg(R.string.no_internet)
                 }
             } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+    fun reportUser(reportUserId: Long, reason: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToReportUser(reportUserId, reason).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessReport(appResponse.message)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+    fun blockUser(userId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToBlockUser(userId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessBlockUser(appResponse.message)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
                 dashboardView.onHandleException(t)
             }
         }
