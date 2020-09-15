@@ -240,5 +240,7 @@
     <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
 
+<!--    album video listing -->
+    <string name="up_next">Up next</string>
     <string name="posts">Posts</string>
 </resources>

@@ -122,11 +122,6 @@ class FeedAdapter(
             tvFeedDesc.text = dashboardBean.description
             tvFeedView.text = dashboardBean.viewers.toString()
 
-            GlideLib.loadImageUrlRound(activity, ivCommentFirst, "")
-            GlideLib.loadImageUrlRound(activity, ivCommentSecond, "")
-            GlideLib.loadImageUrlRound(activity, ivCommentThird, "")
-            GlideLib.loadImageUrlRound(activity, ivCommentFourth, "")
-
             if (dashboardBean.is_follow == 1) {
                 ivFeedFollow.setImageResource(R.drawable.ic_add_right)
             } else {

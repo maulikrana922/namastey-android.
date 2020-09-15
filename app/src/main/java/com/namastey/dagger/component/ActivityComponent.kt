@@ -44,4 +44,5 @@ interface ActivityComponent {
     fun inject(activity: JobListingActivity)
     fun inject(activity: AlbumDetailActivity)
     fun inject(activity: ProfileViewActivity)
+    fun inject(activity: AlbumVideoActivity)
 }

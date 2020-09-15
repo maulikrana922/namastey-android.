@@ -8,8 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.activity.AlbumDetailActivity
+import com.namastey.activity.AlbumVideoActivity
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.VideoBean
+import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
@@ -62,6 +66,15 @@ class VideoListAdapter(
                         }
                     }
                 }.show()
+            }
+
+            if (!fromCreate){
+                ivVideoImage.setOnClickListener{
+                    val intent = Intent(activity, AlbumVideoActivity::class.java)
+                    intent.putExtra(Constants.VIDEO_LIST, videoList)
+                    intent.putExtra("position", position)
+                    (activity as ProfileViewActivity).openActivity(intent)
+                }
             }
         }
 

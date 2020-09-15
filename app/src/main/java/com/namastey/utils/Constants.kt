@@ -69,6 +69,7 @@ object Constants {
     const val PROFILE_BEAN = "profileBean"
     const val FROM_EDIT = "fromEdit"
     const val ALBUM_BEAN = "albumBean"
+    const val VIDEO_LIST = "videoList"
 
     //    api response error code
     const val OK = 200

@@ -22,9 +22,10 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpagerFeed"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/viewDivider"
+            android:paddingBottom="@dimen/_38sdp"
+            app:layout_constraintBottom_toTopOf="@id/rvCategory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
