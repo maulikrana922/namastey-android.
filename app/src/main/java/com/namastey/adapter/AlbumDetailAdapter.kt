@@ -115,13 +115,6 @@ class AlbumDetailAdapter(
                         ivCommentThird.visibility = View.GONE
                     }
                 }
-
-                ivVideoImage.setOnClickListener{
-                    val intent = Intent(activity, AlbumVideoActivity::class.java)
-                    intent.putExtra(Constants.VIDEO_LIST, videoList)
-                    intent.putExtra("position", position)
-                    (activity as AlbumDetailActivity).openActivity(intent)
-                }
             }
 
         }

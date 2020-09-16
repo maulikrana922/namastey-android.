@@ -58,6 +58,7 @@ object Constants {
     const val MULTIPLE_FOLLOW_REQUEST = "multiple-follow "
     const val REPORT_USER = "report-user"
     const val BLOCK_USER = "block-user"
+    const val SAVE_POST = "save-post"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

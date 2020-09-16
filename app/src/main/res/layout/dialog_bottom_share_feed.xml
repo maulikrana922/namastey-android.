@@ -37,7 +37,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_link_facebook"
+                    android:src="@drawable/ic_share_whatsapp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_link_facebook"
+                    android:src="@drawable/ic_share_send"
                     app:layout_constraintStart_toEndOf="@id/ivShareWhatssapp"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
@@ -59,7 +59,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_link_facebook"
+                    android:src="@drawable/ic_share_facebook"
                     app:layout_constraintStart_toEndOf="@id/ivShareApp"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
@@ -70,7 +70,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_link_instagram"
+                    android:src="@drawable/ic_share_instagram"
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
@@ -81,8 +81,19 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_link_instagram"
+                    android:src="@drawable/ic_share_twitter"
                     app:layout_constraintStart_toEndOf="@id/ivShareInstagram"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+
+                <ImageView
+                    android:id="@+id/ivShareOther"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_share_twitter"
+                    app:layout_constraintStart_toEndOf="@id/ivShareTwitter"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

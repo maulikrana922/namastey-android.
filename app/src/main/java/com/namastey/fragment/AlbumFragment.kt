@@ -14,6 +14,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAlbumBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.CommentBean
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.AlbumViewModel
@@ -36,6 +37,14 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
             adapter = AlbumListAdapter(arrayList, requireActivity(), this@AlbumFragment)
         }
 
+    }
+
+    override fun onSuccessAddComment(commentBean: CommentBean) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
+        TODO("Not yet implemented")
     }
 
 

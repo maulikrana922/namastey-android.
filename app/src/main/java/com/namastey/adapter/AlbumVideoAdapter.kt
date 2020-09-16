@@ -9,13 +9,15 @@ import com.namastey.R
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_album_video.view.*
 
 
 class AlbumVideoAdapter(
     var videoList: ArrayList<VideoBean>,
     val activity: Activity,
-    var onVideoClick: OnVideoClick
+    var onVideoClick: OnVideoClick,
+    var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumVideoAdapter.ViewHolder>() {
     private val viewPool = RecyclerView.RecycledViewPool()
 
@@ -109,10 +111,10 @@ class AlbumVideoAdapter(
                 viewDetailsVideo.visibility = View.GONE
                 onVideoClick.onUpnextClick(position)
             }
-//            tvCommentFeed.setOnClickListener {
-//                if (videoBean.is_comment == 0 && !sessionManager.isGuestUser())
-//                    onFeedItemClick.onCommentClick(videoBean.id)
-//            }
+            tvCommentFeed.setOnClickListener {
+                if (!sessionManager.isGuestUser())
+                    onVideoClick.onCommentClick(videoBean.id)
+            }
 
 
         }

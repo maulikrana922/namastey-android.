@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.AlbumView
@@ -37,6 +38,64 @@ class AlbumViewModel constructor(
             }
         }
 
+    }
+    fun getCommentList(postId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToGetCommentList(postId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessGetComment(appResponse.data!!)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(t)
+            }
+        }
+    }
+    fun addComment(postId: Long, edtComment: String) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToAddComment(postId, edtComment).let { appResponse ->
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessAddComment(appResponse.data!!)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                albumView.onHandleException(t)
+            }
+        }
+    }
+    fun deleteComment(commentId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToDeleteComment(commentId).let { appResponse ->
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccess(appResponse.message)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                albumView.onHandleException(t)
+            }
+        }
     }
 
     fun onDestroy() {

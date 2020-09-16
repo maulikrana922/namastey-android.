@@ -215,4 +215,28 @@ class DashboardViewModel constructor(
             }
         }
     }
+
+    fun savePost(postId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToSavePost(postId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessSavePost(appResponse.message)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+
+    }
 }

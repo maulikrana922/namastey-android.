@@ -2,7 +2,6 @@ package com.namastey.activity
 
 import android.Manifest
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -20,7 +19,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -174,7 +172,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         // Share on Twitter app if install otherwise web link
         bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
             val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=")
+                StringBuilder("https://ic_twitter_share.com/intent/tweet?text=")
             tweetUrl.append(dashboardBean.video_url)
             val intent = Intent(
                 Intent.ACTION_VIEW,
@@ -184,7 +182,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 packageManager.queryIntentActivities(intent, 0)
             for (info in matches) {
                 if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
-                        .startsWith("com.twitter")
+                        .startsWith("com.ic_twitter_share")
                 ) {
                     intent.setPackage(info.activityInfo.packageName)
                 }
@@ -237,7 +235,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
                     val newFile = File(imagePath, dashboardBean.video_url)
 
-                    val contentUri = getUriForFile(applicationContext, "com.namastey.provider", newFile);
+                    val contentUri =
+                        getUriForFile(applicationContext, "com.namastey.provider", newFile);
 
                     shareIntent.putExtra(
                         Intent.EXTRA_STREAM,
@@ -258,7 +257,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
             try {
                 val pm: PackageManager = packageManager
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                pm.getPackageInfo("com.ic_whatsapp", PackageManager.GET_ACTIVITIES)
                 val sendIntent = Intent(Intent.ACTION_VIEW)
                 sendIntent.putExtra(
                     Intent.EXTRA_TEXT,
@@ -278,17 +277,31 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
         }
 
-        bottomSheetDialogShare.ivShareReport.setOnClickListener{
+        bottomSheetDialogShare.ivShareOther.setOnClickListener {
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT, dashboardBean.video_url
+            )
+            sendIntent.type = "text/plain"
+            startActivity(sendIntent)
+        }
+        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+            dashboardViewModel.savePost(dashboardBean.id)
+        }
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
             displayReportUserDialog(dashboardBean)
         }
-        bottomSheetDialogShare.tvShareReport.setOnClickListener{
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
             displayReportUserDialog(dashboardBean)
         }
 
-        bottomSheetDialogShare.tvShareBlock.setOnClickListener{
+        bottomSheetDialogShare.tvShareBlock.setOnClickListener {
             displayBlockUserDialog(dashboardBean)
         }
-        bottomSheetDialogShare.ivShareBlock.setOnClickListener{
+        bottomSheetDialogShare.ivShareBlock.setOnClickListener {
             displayBlockUserDialog(dashboardBean)
         }
 
@@ -298,7 +311,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     /**
      * Display dialog of report user
      */
-    private fun displayReportUserDialog(dashboardBean: DashboardBean){
+    private fun displayReportUserDialog(dashboardBean: DashboardBean) {
         object : CustomCommonAlertDialog(
             this@DashboardActivity,
             dashboardBean.username,
@@ -322,8 +335,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     /**
      * Display dialog with option (Reason)
      */
-    private fun showReportTypeDialog(reportUserId: Long){
-        val bottomSheetReport: BottomSheetDialog = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
+    private fun showReportTypeDialog(reportUserId: Long) {
+        val bottomSheetReport: BottomSheetDialog =
+            BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetReport.setContentView(
             layoutInflater.inflate(
                 R.layout.dialog_bottom_pick,
@@ -342,11 +356,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         bottomSheetReport.tvPhotoTake.setOnClickListener {
             bottomSheetReport.dismiss()
-            dashboardViewModel.reportUser(reportUserId,getString(R.string.its_spam))
+            dashboardViewModel.reportUser(reportUserId, getString(R.string.its_spam))
         }
         bottomSheetReport.tvPhotoChoose.setOnClickListener {
             bottomSheetReport.dismiss()
-            dashboardViewModel.reportUser(reportUserId,getString(R.string.its_inappropriate))
+            dashboardViewModel.reportUser(reportUserId, getString(R.string.its_inappropriate))
         }
         bottomSheetReport.tvPhotoCancel.setOnClickListener {
             bottomSheetReport.dismiss()
@@ -354,7 +368,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetReport.show()
     }
 
-    private fun displayBlockUserDialog(dashboardBean: DashboardBean){
+    private fun displayBlockUserDialog(dashboardBean: DashboardBean) {
         object : CustomCommonAlertDialog(
             this@DashboardActivity,
             dashboardBean.username,
@@ -570,6 +584,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                     return false
                 }
 
+                override fun getSwipeDirs(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
+                    return super.getSwipeDirs(recyclerView, viewHolder)
+                }
+
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDirection: Int) {
 
                     if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id) {
@@ -697,6 +719,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSuccessReport(msg: String) {
+        object : CustomAlertDialog(
+            this@DashboardActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
+
+    override fun onSuccessSavePost(msg: String) {
         object : CustomAlertDialog(
             this@DashboardActivity,
             msg, getString(R.string.ok), ""

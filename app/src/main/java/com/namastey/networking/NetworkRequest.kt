@@ -220,4 +220,10 @@ interface NetworkRequest {
     fun requestToBlockUserAsync(
         @Field(Constants.BLOCK_USER_ID) userId: Long
     ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.SAVE_POST)
+    fun requestToSavePostAsync(
+        @Field(Constants.POST_ID) postId: Long
+    ): Deferred<AppResponse<Any>>
 }

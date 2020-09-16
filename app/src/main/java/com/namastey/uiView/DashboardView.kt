@@ -14,4 +14,5 @@ interface DashboardView : BaseView {
     fun onSuccessFollow(msg: String)
     fun onSuccessReport(msg: String)
     fun onSuccessBlockUser(msg: String)
+    fun onSuccessSavePost(msg: String)
 }

@@ -125,7 +125,7 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
             ivInviteWhatsapp, tvInviteWhatsapp -> {
                 try {
                     val pm: PackageManager = context!!.packageManager
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                    pm.getPackageInfo("com.ic_whatsapp", PackageManager.GET_ACTIVITIES)
                     val sendIntent = Intent(Intent.ACTION_VIEW)
                     sendIntent.putExtra(
                         Intent.EXTRA_TEXT,

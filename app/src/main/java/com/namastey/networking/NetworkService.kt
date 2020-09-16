@@ -257,4 +257,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToBlockUserAsync(userId).await()
         }
+
+    suspend fun requestToSavePost(postId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToSavePostAsync(postId).await()
+        }
 }
