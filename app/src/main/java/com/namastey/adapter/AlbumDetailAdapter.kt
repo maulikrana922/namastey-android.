@@ -2,17 +2,12 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.activity.AlbumDetailActivity
-import com.namastey.activity.AlbumVideoActivity
-import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.VideoBean
-import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
@@ -22,7 +17,8 @@ class AlbumDetailAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
     var onItemClick: OnItemClick,
-    var fromEdit: Boolean
+    var fromEdit: Boolean,
+    var fromFilter: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -50,6 +46,14 @@ class AlbumDetailAdapter(
                     onItemClick.onItemClick(0, 0)
                 }
             } else {
+
+                if (fromFilter) {
+                    tvUsername.visibility = View.VISIBLE
+                    tvVideoViewers.visibility = View.GONE
+                } else {
+                    tvUsername.visibility = View.GONE
+                    tvVideoViewers.visibility = View.VISIBLE
+                }
                 viewAlbumDetails.visibility = View.VISIBLE
                 llAddAlbum.visibility = View.GONE
                 val videoBean = videoList[position]

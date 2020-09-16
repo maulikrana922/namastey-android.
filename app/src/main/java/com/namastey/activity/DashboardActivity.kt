@@ -87,6 +87,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun initData() {
         sessionManager.setLoginUser(true)
+
+        if (sessionManager.getUserGender() == Constants.Gender.female.name)
+            ivUser.setImageResource(R.drawable.ic_female_user)
+        else
+            ivUser.setImageResource(R.drawable.ic_top_profile)
+
         dashboardViewModel.getCategoryList()
 //        setDashboardList()
 
@@ -230,11 +236,24 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.setPackage("com.instagram.android")
                 try {
+//                    val resolver: ContentResolver = contentResolver
+//                    val contentValues = ContentValues()
+//                    contentValues.put(
+//                        MediaStore.MediaColumns.RELATIVE_PATH,
+//                        Environment.DIRECTORY_DOWNLOADS.toString()
+//                    )
+//                    val path: String = java.lang.String.valueOf(
+//                        resolver.insert(
+//                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+//                            contentValues
+//                        )
+//                    )
 
-                    val imagePath = File(applicationContext.filesDir, "videos")
 
-                    val newFile = File(imagePath, dashboardBean.video_url)
+                    val videoPath = File(applicationContext.filesDir, "")
 
+                    val newFile = File(videoPath, Uri.parse(dashboardBean.video_url).path)
+                    shareIntent.type = "video/*"
                     val contentUri =
                         getUriForFile(applicationContext, "com.namastey.provider", newFile);
 
@@ -245,7 +264,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 } catch (e: Exception) {
                     Log.e("ERROR", e.printStackTrace().toString())
                 }
-                shareIntent.type = "video/*"
                 startActivity(shareIntent)
             } else {
                 intent = Intent(Intent.ACTION_VIEW)

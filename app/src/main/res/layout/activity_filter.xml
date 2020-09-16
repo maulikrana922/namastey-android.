@@ -91,15 +91,33 @@
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvTranding"
             style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/trandings"
             android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="@id/llSearchView"
-            app:layout_constraintTop_toBottomOf="@id/llSearchView"
+            app:layout_constraintTop_toBottomOf="@id/rvChooseInterestFilter"
             app:typeface="MULI_SEMIBOLD" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFilterTranding"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:outlineSpotShadowColor="@color/colorGray"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTranding"
+            app:spanCount="2"
+            tools:listitem="@layout/row_album_detail" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/rvFilterTranding1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -119,7 +137,7 @@
             android:text="@string/filters"
             android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="@id/llSearchView"
-            app:layout_constraintTop_toBottomOf="@id/rvFilterTranding"
+            app:layout_constraintTop_toBottomOf="@id/llSearchView"
             app:typeface="MULI_SEMIBOLD" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -140,24 +158,25 @@
             android:id="@+id/rvChooseInterestFilter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_15sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_12sdp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvFilterCategory"
-            app:spanCount="3"
-            tools:listitem="@layout/row_choose_interest" />
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/llFilterTransparent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black_overlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:listitem="@layout/row_filter_subcategory" />
+<!--        <LinearLayout-->
+<!--            android:orientation="vertical"-->
+<!--            android:id="@+id/llFilterTransparent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/black_overlay"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

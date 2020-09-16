@@ -1,6 +1,5 @@
 package com.namastey.model
 
-import android.R.attr.name
 import android.os.Parcel
 import android.os.Parcelable
 

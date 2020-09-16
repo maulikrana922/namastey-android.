@@ -60,6 +60,15 @@
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <com.namastey.customViews.CustomTextView
+            android:visibility="gone"
+            android:id="@+id/tvUsername"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <ImageView
             android:id="@+id/ivRemoveVideo"
             android:layout_width="wrap_content"

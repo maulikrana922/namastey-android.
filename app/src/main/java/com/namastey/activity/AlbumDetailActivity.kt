@@ -147,8 +147,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     albumBean.post_video_list,
                     this@AlbumDetailActivity,
                     this,
-                    fromEdit
-                )
+                    fromEdit,
+                false)
             rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
@@ -185,7 +185,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             postList.add(0, VideoBean())
 
             albumDetailAdapter =
-                AlbumDetailAdapter(postList, this@AlbumDetailActivity, this, fromEdit)
+                AlbumDetailAdapter(postList, this@AlbumDetailActivity, this, fromEdit,false)
             rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
