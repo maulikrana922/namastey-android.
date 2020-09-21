@@ -49,7 +49,7 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_120sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/rounded_pink_solid"
+        android:background="@drawable/rounded_pink_solid_all"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@id/edtAlbumName"

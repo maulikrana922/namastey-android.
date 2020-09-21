@@ -1,6 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.namastey.activity.DashboardActivity
 import com.namastey.fragment.SelectFilterFragment
 import com.namastey.model.CategoryBean
 import com.namastey.utils.Constants
+import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_category.view.*
 
 
@@ -18,9 +20,6 @@ class CategoryAdapter(
     var context: Activity
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     var clickPosition = -1
-    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
-    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
-
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_category, parent, false
@@ -37,19 +36,15 @@ class CategoryAdapter(
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvCategory.text = categoryList.get(position).name
+            tvCategory.text = categoryList[position].name
 
-            val gd = GradientDrawable(
-                GradientDrawable.Orientation.TR_BL,
-                intArrayOf(
-                    gradient_color_start[position % 6],
-                    gradient_color_end[position % 6]
+            Utils.rectangleShapeGradient(
+                mainCategoryView, intArrayOf(
+                    Color.parseColor(categoryList[position].startColor),
+                    Color.parseColor(categoryList[position].endColor)
                 )
             )
-
-            gd.shape = GradientDrawable.RECTANGLE
-            gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
-            mainCategoryView.background = gd
+            mainCategoryView.alpha = 0.6f
 
             mainCategoryView.setOnClickListener {
                 val selectFilterFragment =
@@ -57,14 +52,16 @@ class CategoryAdapter(
                         Constants.SELECT_FILTER_FRAGMENT
                     )
 
+                notifyItemChanged(clickPosition)
                 if (clickPosition != position) {
+                    mainCategoryView.alpha = 1f
                     clickPosition = position
                     (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
                     (context as DashboardActivity).addFragment(
                         SelectFilterFragment.getInstance(
                             categoryList[position].sub_category,
-                            gradient_color_start[position % 6],
-                            gradient_color_end[position % 6]
+                            categoryList[position].startColor,
+                            categoryList[position].endColor
                         ),
                         Constants.SELECT_FILTER_FRAGMENT
                     )
@@ -74,8 +71,8 @@ class CategoryAdapter(
                         (context as DashboardActivity).addFragment(
                             SelectFilterFragment.getInstance(
                                 categoryList[position].sub_category,
-                                gradient_color_start[position % 6],
-                                gradient_color_end[position % 6]
+                                categoryList[position].startColor,
+                                categoryList[position].endColor
                             ),
                             Constants.SELECT_FILTER_FRAGMENT
                         )

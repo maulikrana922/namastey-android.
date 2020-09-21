@@ -66,6 +66,17 @@ object Utils {
         v.background = gd
     }
 
+    fun rectangleShapeGradient(v: View, intArrayOf: IntArray) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+            intArrayOf
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
+        v.background = gd
+    }
+
     fun saveBitmapToFile(file: File): File? {
         return try {
             // BitmapFactory options to downsize the image

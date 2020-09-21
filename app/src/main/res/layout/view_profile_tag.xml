@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_arrow_down_gray"
-        android:textColor="@color/color_chip_gray" />
+        android:textColor="@color/colorWhite" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipProfileTag"

@@ -54,7 +54,7 @@
         android:id="@+id/tvFollowingLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_white_solid_red_border"
+        android:background="@drawable/rectangle_white_solid_all_corner_small"
         android:gravity="center"
         app:typeface="MULI_SEMIBOLD"
         android:ellipsize="end"

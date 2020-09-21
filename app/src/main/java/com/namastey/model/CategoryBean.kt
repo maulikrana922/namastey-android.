@@ -11,12 +11,18 @@ class CategoryBean() : Parcelable {
     var name: String = ""
     var sub_category: ArrayList<CategoryBean> = ArrayList()
     var is_selected: Int  = 0
+    @SerializedName("start_color")
+    var startColor: String = ""
+    @SerializedName("end_color")
+    var endColor: String = ""
 
     constructor(parcel: Parcel) : this() {
         parcel.readInt()
         parcel.readString() ?: ""
         parcel.createTypedArrayList(CREATOR) ?: ArrayList()
         is_selected = parcel.readInt()
+        parcel.readString() ?: ""
+        parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -24,6 +30,8 @@ class CategoryBean() : Parcelable {
         parcel.writeString(name)
         parcel.writeTypedList(sub_category)
         parcel.writeInt(is_selected)
+        parcel.writeString(startColor)
+        parcel.writeString(endColor)
     }
 
     override fun describeContents(): Int {

@@ -109,6 +109,7 @@
     <string name="its_inappropriate">It\'s inappropriate</string>
     <string name="msg_block_user">Do you wish to block the following user?</string>
     <string name="block_user">Block User</string>
+    <string name="discover">Discover</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>

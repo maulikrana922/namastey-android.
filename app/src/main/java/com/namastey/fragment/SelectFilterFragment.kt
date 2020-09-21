@@ -1,9 +1,9 @@
 package com.namastey.fragment
 
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -34,14 +34,14 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     companion object {
         fun getInstance(
             subCategoryList: ArrayList<CategoryBean>,
-            startColor: Int,
-            endColor: Int
+            startColor: String,
+            endColor: String
         ) =
             SelectFilterFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("subCategoryList", subCategoryList)
-                    putInt("startColor", startColor)
-                    putInt("endColor", endColor)
+                    putString("startColor", startColor)
+                    putString("endColor", endColor)
                 }
             }
     }
@@ -74,14 +74,14 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
                 arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
 
             rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-            var subCategoryAdapter = SubCategoryAdapter(subCategoryList, activity!!)
+            val subCategoryAdapter = SubCategoryAdapter(subCategoryList, activity!!)
             rvSelectFilter.adapter = subCategoryAdapter
 
             val gd = GradientDrawable(
                 GradientDrawable.Orientation.TR_BL,
                 intArrayOf(
-                    arguments!!.getInt("startColor"),
-                    arguments!!.getInt("endColor")
+                    Color.parseColor(arguments!!.getString("startColor")),
+                    Color.parseColor(arguments!!.getString("endColor"))
                 )
             )
 
@@ -108,7 +108,7 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
             ivSelectFilter -> {
                 openActivityWithResultCode(requireActivity(), FilterActivity(), Constants.FILTER_OK)
             }
-            mainSelectFilterView ->{
+            mainSelectFilterView -> {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }

@@ -5,11 +5,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.utils.SessionManager
-import kotlinx.android.synthetic.main.row_category.view.*
 import kotlinx.android.synthetic.main.row_select_category.view.*
 
 
@@ -19,6 +19,8 @@ class SelectCategoryAdapter(
     var onCategoryItemClick: OnCategoryItemClick,
     var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<SelectCategoryAdapter.ViewHolder>() {
+    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
+    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -38,18 +40,104 @@ class SelectCategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvSelectCategory.text = categoryList[position].name
 
-            if (sessionManager.getCategoryList().any{ it.id == categoryList[position].id}){
+            if (sessionManager.getCategoryList().any { it.id == categoryList[position].id }) {
                 tvSelectCategory.setTextColor(Color.RED)
-            }else{
+            } else {
                 tvSelectCategory.setTextColor(Color.BLACK)
             }
 
-            llMainSelectCategory.setOnClickListener{
-               if (tvSelectCategory.currentTextColor == Color.BLACK){
-                   tvSelectCategory.setTextColor(Color.RED)
-               } else{
-                   tvSelectCategory.setTextColor(Color.BLACK)
-               }
+            llMainSelectCategory.setOnClickListener {
+                if (tvSelectCategory.currentTextColor == Color.BLACK) {
+                    tvSelectCategory.setTextColor(Color.RED)
+                } else {
+                    tvSelectCategory.setTextColor(Color.BLACK)
+                }
+                when {
+                    position % 6 == 0 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_one_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_one_end
+                            )
+                        )
+                    }
+                    position % 6 == 1 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_two_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_two_end
+                            )
+                        )
+                    }
+                    position % 6 == 2 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_three_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_three_end
+                            )
+                        )
+                    }
+                    position % 6 == 3 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_four_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_four_end
+                            )
+                        )
+                    }
+                    position % 6 == 4 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_five_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_five_end
+                            )
+                        )
+                    }
+                    position % 6 == 5 -> {
+                        categoryList[position].startColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_six_start
+                            )
+                        )
+                        categoryList[position].endColor = "#" + Integer.toHexString(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.gradient_six_end
+                            )
+                        )
+                    }
+                }
                 onCategoryItemClick.onCategoryItemClick(categoryList[position])
             }
         }

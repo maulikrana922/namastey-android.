@@ -16,7 +16,7 @@
         android:visibility="gone"
         android:id="@+id/llAddAlbum"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_170sdp"
+        android:layout_height="@dimen/_180sdp"
         android:background="@drawable/rounded_pink_solid_all"
         android:gravity="center"
         android:layout_marginBottom="@dimen/_8sdp"
@@ -39,7 +39,7 @@
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivVideoImage"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_170sdp"
+            android:layout_height="@dimen/_180sdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"

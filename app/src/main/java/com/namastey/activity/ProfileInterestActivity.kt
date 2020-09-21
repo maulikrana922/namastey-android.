@@ -81,6 +81,19 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                 val view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
                 view.tvCategory.text = categoryBean.name.toString()
 
+                when {
+                    categoryBean.startColor.isEmpty() -> {
+                        categoryBean.startColor = "#B2BAF2"     // Default set if colours not found
+                        categoryBean.endColor = "#28BAD3"
+                    }
+                }
+
+                Utils.rectangleShapeGradient(
+                    view, intArrayOf(
+                        Color.parseColor(categoryBean.startColor),
+                        Color.parseColor(categoryBean.endColor)
+                    )
+                )
                 for (subCategoryBean in categoryBean.sub_category) {
                     val tvCategory = TextView(this)
                     tvCategory.layoutParams = LinearLayout.LayoutParams(
@@ -90,8 +103,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
                     tvCategory.text = subCategoryBean.name.toString()
                     tvCategory.setPadding(40, 20, 40, 20)
-                    tvCategory.setTextColor(Color.WHITE)
-                    tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
+                    tvCategory.setTextColor(Color.BLACK)
+                    tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
 
                     view.chipProfileTag.addView(tvCategory)
 
@@ -104,14 +117,14 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                         ) {
                             categoryIdList.add(subCategoryBean.id)
                             ++profileTagCount
-                            Utils.rectangleShapeGradient(
-                                tvCategory, resources.getColor(R.color.gradient_six_start),
-                                resources.getColor(R.color.gradient_six_end)
-                            )
+                            tvCategory.setTextColor(Color.WHITE)
+                            tvCategory.setBackgroundResource(R.drawable.rounded_green_solid_all_corner)
+
                         } else {
                             categoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
-                            tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
+                            tvCategory.setTextColor(Color.BLACK)
+                            tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
                         }
                         tvCountProfileTag.text = profileTagCount.toString()
                     }

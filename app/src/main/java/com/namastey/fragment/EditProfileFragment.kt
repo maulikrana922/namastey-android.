@@ -32,7 +32,6 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.view_profile_basic_info.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
-import kotlinx.android.synthetic.main.view_profile_tag.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import javax.inject.Inject
 
@@ -232,48 +231,61 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 val view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
                 view.tvCategory.text = categoryBean.name.toString()
 
+                //                    if (categoryBean.sub_category.size > 0) {
+                when {
+                    categoryBean.startColor.isEmpty() -> {
+                        categoryBean.startColor = "#B2BAF2"     // Default set if colours not found
+                        categoryBean.endColor = "#28BAD3"
+                    }
+                }
+
+                Utils.rectangleShapeGradient(
+                    view, intArrayOf(
+                        Color.parseColor(categoryBean.startColor),
+                        Color.parseColor(categoryBean.endColor)
+                    )
+                )
+
                 for (subCategoryBean in categoryBean.sub_category) {
-                    val tvCategory = TextView(requireActivity())
-                    tvCategory.layoutParams = LinearLayout.LayoutParams(
+                    val tvSubCategory = TextView(requireActivity())
+                    tvSubCategory.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
 
-                    tvCategory.text = subCategoryBean.name.toString()
-                    tvCategory.setPadding(40, 20, 40, 20)
-                    tvCategory.setTextColor(Color.WHITE)
-                    tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
+                    tvSubCategory.text = subCategoryBean.name.toString()
+                    tvSubCategory.setPadding(40, 20, 40, 20)
+                    tvSubCategory.setTextColor(Color.BLACK)
+                    tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
 
-                    view.chipProfileTag.addView(tvCategory)
+                    view.chipProfileTag.addView(tvSubCategory)
 
                     if (subCategoryBean.is_selected == 1) {
                         subCategoryIdList.add(subCategoryBean.id)
                         ++profileTagCount
-                        Utils.rectangleShapeGradient(
-                            tvCategory, resources.getColor(R.color.gradient_six_start),
-                            resources.getColor(R.color.gradient_six_end)
-                        )
-                    }
-                    tvCategory.setOnClickListener {
+                        tvSubCategory.setTextColor(Color.WHITE)
+                        tvSubCategory.setBackgroundResource(R.drawable.rounded_green_solid_all_corner)
 
-                        if (tvCategory.background.constantState == ContextCompat.getDrawable(
+                    }
+                    tvSubCategory.setOnClickListener {
+
+                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
                                 requireActivity(),
-                                R.drawable.rounded_gray_solid
+                                R.drawable.rounded_white_solid_all_corner
                             )?.constantState
                         ) {
                             subCategoryIdList.add(subCategoryBean.id)
                             ++profileTagCount
-                            Utils.rectangleShapeGradient(
-                                tvCategory, resources.getColor(R.color.gradient_six_start),
-                                resources.getColor(R.color.gradient_six_end)
-                            )
+                            tvSubCategory.setTextColor(Color.WHITE)
+                            tvSubCategory.setBackgroundResource(R.drawable.rounded_green_solid_all_corner)
 
                             editProfileApiCall()
 
                         } else {
                             subCategoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
-                            tvCategory.setBackgroundResource(R.drawable.rounded_gray_solid)
+                            tvSubCategory.setTextColor(Color.BLACK)
+                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
 
                             editProfileApiCall()
                         }

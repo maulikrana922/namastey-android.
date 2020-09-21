@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.model.CategoryBean
-import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_sub_category.view.*
 
 class SubCategoryAdapter(

@@ -2,48 +2,51 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.MaterialComponents"
-    style="@style/CustomCardViewStyle"
+    style="@style/CustomCardViewAllCornerStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardPreventCornerOverlap="false"
     app:strokeWidth="0dp"
-    app:rippleColor="@color/colorBlackTransparent"
-    >
+    app:cardBackgroundColor="@android:color/transparent">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        android:background="@drawable/rounded_white_solid_all_corner">-->
 
-        <com.namastey.customViews.RoundImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:src="@drawable/default_placeholder"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            app:cornerRadius="@dimen/_20sdp"
-            app:roundedCorners="topRight|bottomLeft"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+<!--        <com.namastey.customViews.RoundImageView-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:src="@drawable/default_placeholder"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            app:cornerRadius="@dimen/_20sdp"-->
+<!--            app:roundedCorners="topRight|bottomLeft"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
-        <com.namastey.customViews.RoundImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:cornerRadius="@dimen/_20sdp"
-            android:src="@color/black_overlay"
-            app:roundedCorners="topRight|bottomLeft"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+<!--        <com.namastey.customViews.RoundImageView-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:cornerRadius="@dimen/_20sdp"-->
+<!--            android:src="@color/black_overlay"-->
+<!--            app:roundedCorners="topRight|bottomLeft"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvSubCategory"
         style="@style/tvWrapWhiteStyle"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
         android:paddingStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_3sdp"
@@ -51,11 +54,14 @@
         android:paddingBottom="@dimen/_8sdp"
         android:textSize="14sp"
         android:gravity="center"
+        android:background="@drawable/rounded_white_solid_all_corner"
+        android:text="sdfsd"
+        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_SEMIBOLD" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </com.google.android.material.card.MaterialCardView>

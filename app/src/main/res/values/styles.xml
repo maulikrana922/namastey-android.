@@ -38,6 +38,18 @@
         <item name="cardForegroundColor">@color/colorWhite</item>
     </style>
 
+    <style name="CustomCardViewAllCornerStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_all_corners</item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_custom_all_corners" parent="">
+        <item name="cardBackgroundColor">@color/colorWhite</item>
+        <item name="cornerSizeTopRight">@dimen/_20sdp</item>
+        <item name="cornerSizeTopLeft">@dimen/_20sdp</item>
+        <item name="cornerSizeBottomRight">@dimen/_20sdp</item>
+        <item name="cornerSizeBottomLeft">@dimen/_20sdp</item>
+        <item name="cardForegroundColor">@color/colorWhite</item>
+    </style>
+
     <style name="dialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

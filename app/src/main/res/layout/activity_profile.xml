@@ -187,7 +187,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:background="@color/colorGray"
-                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                 app:layout_constraintEnd_toStartOf="@id/tvFollowers"
                 app:layout_constraintStart_toEndOf="@id/tvViews"
@@ -345,6 +345,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ivProfileBoosts" />
 
             <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvGetMore"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:text="@string/get_more"
@@ -354,6 +355,15 @@
                 app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"
                 app:layout_constraintStart_toStartOf="@id/ivProfileBoosts"
                 app:layout_constraintTop_toBottomOf="@id/tvProfileBoots" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpagerMembership"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_margin="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/tvGetMore"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -365,6 +375,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                app:tabBackground="@drawable/indicator_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:layout_constraintTop_toBottomOf="@id/viewpagerMembership"
+                app:layout_constraintStart_toStartOf="@id/viewpagerMembership"
+                app:layout_constraintEnd_toEndOf="@id/viewpagerMembership"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="@dimen/_38sdp"
-            app:layout_constraintBottom_toTopOf="@id/rvCategory"
+            app:layout_constraintBottom_toTopOf="@id/svCategory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorBlackTransparent"
-            app:layout_constraintBottom_toTopOf="@id/rvCategory"
+            app:layout_constraintBottom_toTopOf="@id/svCategory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -67,23 +67,56 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/_15sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rvCategory"
+            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCategory"
+        <HorizontalScrollView
+            android:id="@+id/svCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:clipToPadding="false"
-            android:paddingStart="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:fillViewport="true"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/row_category" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDiscover"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="@dimen/_3sdp"
+                    android:drawableTint="@color/colorWhite"
+                    android:onClick="onClickDiscover"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_6sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_6sdp"
+                    android:text="@string/discover"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/tvDiscover"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_3sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/row_category" />
+            </RelativeLayout>
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -38,10 +38,7 @@ import com.namastey.model.CategoryBean
 import com.namastey.model.CommentBean
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.DashboardView
-import com.namastey.utils.Constants
-import com.namastey.utils.CustomAlertDialog
-import com.namastey.utils.CustomCommonAlertDialog
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
@@ -88,6 +85,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun initData() {
         sessionManager.setLoginUser(true)
 
+        Utils.rectangleShapeGradient(
+            tvDiscover, intArrayOf(
+                ContextCompat.getColor(this, R.color.color_spotify),
+                ContextCompat.getColor(this, R.color.color_instagram)
+            )
+        )
         if (sessionManager.getUserGender() == Constants.Gender.female.name)
             ivUser.setImageResource(R.drawable.ic_female_user)
         else
@@ -411,6 +414,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
      * Success of get category list
      */
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        tvDiscover.visibility = View.VISIBLE
         val categoryAdapter = CategoryAdapter(categoryBeanList, this)
         val horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
             this@DashboardActivity,
@@ -770,5 +774,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
         }.show()
 
+    }
+
+    fun onClickDiscover(view: View) {
+        val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+        openActivityForResult(intent, Constants.FILTER_OK)
     }
 }

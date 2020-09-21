@@ -50,8 +50,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivFollowUser"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/default_placeholder"
                 app:civ_border_color="@color/colorWhite"

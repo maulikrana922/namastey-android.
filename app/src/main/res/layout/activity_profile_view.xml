@@ -208,7 +208,7 @@
                     android:id="@+id/viewFirst"
                     android:layout_width="@dimen/_1sdp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="@id/tvViews"
@@ -227,17 +227,25 @@
                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipProfileInterest"
+                <HorizontalScrollView
+                    android:id="@+id/svInterestChip"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    app:chipSpacingVertical="@dimen/_5sdp"
-                    app:chipSpacingHorizontal="@dimen/_5sdp"
+                    android:scrollbars="none"
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintStart_toStartOf="@id/tvViews"
-                    app:layout_constraintTop_toBottomOf="@id/tvViews" />
+                    app:layout_constraintTop_toBottomOf="@id/tvViews">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipProfileInterest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingVertical="@dimen/_5sdp"
+                        app:chipSpacingHorizontal="@dimen/_5sdp"
+                        />
+                </HorizontalScrollView>
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAboutLable"
@@ -246,7 +254,7 @@
                     android:text="@string/about_me"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/chipProfileInterest" />
+                    app:layout_constraintTop_toBottomOf="@id/svInterestChip" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAbouteDesc"

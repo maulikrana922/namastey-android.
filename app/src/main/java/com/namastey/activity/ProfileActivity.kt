@@ -20,10 +20,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.adapter.SliderAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
 import com.namastey.fragment.SignUpFragment
+import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
@@ -33,7 +35,9 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.File
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
@@ -49,6 +53,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var profileFile: File? = null
     private var profileBean = ProfileBean()
     private var isCompletlySignup = 0
+    private var membershipList = ArrayList<MembershipBean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +85,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                 .fitCenter().into(ivProfileUser)
         }
+
+        // Temp set UI
+        setMembershipList()
     }
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
@@ -485,4 +493,34 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+    /**
+     * Temp set for display purpose
+     */
+    private fun setMembershipList(){
+        for (number in 0..5) {
+            val membershipBean = MembershipBean()
+            membershipBean.name = "Unlimited matches"
+            membershipBean.description = "Premium members get unlimited matches ".plus(number + 1)
+
+            membershipList.add(membershipBean)
+        }
+
+        viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity,membershipList)
+        indicator.setupWithViewPager(viewpagerMembership, true)
+
+        val timer = Timer()
+        timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
+
+    }
+    inner class SliderTimer : TimerTask() {
+        override fun run() {
+            this@ProfileActivity.runOnUiThread(Runnable {
+                if (viewpagerMembership.currentItem < membershipList.size - 1) {
+                    viewpagerMembership.currentItem = viewpagerMembership.currentItem + 1
+                } else {
+                    viewpagerMembership.currentItem = 0
+                }
+            })
+        }
+    }
 }
