@@ -40,7 +40,7 @@ class AlbumListAdapter(
 //            if (videoBean.cover_image_url != null)
 //                GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
-            if (albumBean.name == context.getString(R.string.uploads)) {
+            if (albumBean.name == context.getString(R.string.saved)) {
                 viewUpload.visibility = View.VISIBLE
                 ivSaveAlbum.visibility = View.VISIBLE
                 ivAlbumNormal.visibility = View.GONE

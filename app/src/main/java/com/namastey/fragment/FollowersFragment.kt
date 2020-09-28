@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.FollowingAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowingBinding
@@ -14,6 +16,7 @@ import com.namastey.listeners.OnFollowItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.FollowingView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
 import javax.inject.Inject
@@ -22,7 +25,8 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentFollowersBinding: FragmentFollowingBinding
     private lateinit var followersViewModel: FollowingViewModel
     private lateinit var layoutView: View
@@ -30,6 +34,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private lateinit var followingAdapter: FollowingAdapter
     private var position = -1
     private var userId: Long = -1
+    private var isMyProfile = false
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         followersList = list
@@ -48,15 +53,16 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
                 )
             )
         }
-        followingAdapter = FollowingAdapter(followersList, requireActivity(),false,this)
+        followingAdapter = FollowingAdapter(followersList, requireActivity(),false,this,sessionManager.getUserId(),isMyProfile)
         rvFollowing.adapter = followingAdapter
     }
 
     companion object {
-        fun getInstance(userId: Long) =
+        fun getInstance(userId: Long, isMyProfile: Boolean) =
             FollowersFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
+                    putBoolean("isMyProfile", isMyProfile)
                 }
             }
     }
@@ -80,6 +86,8 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     private fun initUI() {
         userId = arguments!!.getLong(Constants.USER_ID)
+        isMyProfile = arguments!!.getBoolean("isMyProfile")
+
         followersViewModel.getFollowersList(userId)
     }
 
@@ -104,14 +112,31 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         position: Int
     ) {
         this.position = position
-        followersViewModel.removeFollowUser(userId,isFollow)
+        if (isMyProfile)
+            followersViewModel.removeFollowUser(userId,isFollow)
+        else
+            followersViewModel.followUser(userId,isFollow)
     }
 
+    override fun onUserItemClick(userId: Long) {
+        val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
+    }
     override fun onSuccess(msg: String) {
-//        super.onSuccess(msg)
-        followersList.removeAt(position)
-        followingAdapter.notifyItemRemoved(position)
-        followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
+
+        if (isMyProfile){
+            followersList.removeAt(position)
+            followingAdapter.notifyItemRemoved(position)
+            followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
+        }else{
+            if (followersList[position].is_follow == 1)
+                followersList[position].is_follow = 0
+            else
+                followersList[position].is_follow = 1
+
+            followingAdapter.notifyItemChanged(position)
+        }
 
         if (followersList.size == 0) {
             tvEmptyFollow.text = getString(R.string.followers)

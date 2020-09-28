@@ -9,4 +9,6 @@ interface AlbumView: BaseView {
     fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>)
     fun onSuccessAddComment(commentBean: CommentBean)
     fun onSuccessGetComment(data: ArrayList<CommentBean>)
+    fun onSuccessSavePost(msg: String)
+    fun onSuccessBlockUser(msg: String)
 }

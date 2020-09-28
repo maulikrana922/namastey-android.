@@ -25,6 +25,7 @@
             android:paddingBottom="@dimen/_5sdp"
             android:drawablePadding="@dimen/_3sdp"
             android:paddingEnd="@dimen/_3sdp"
+            android:gravity="center_vertical"
             android:textSize="14sp"
             app:typeface="MULI_EXTRA_BOLD"
             android:drawableEnd="@drawable/ic_drop_up"

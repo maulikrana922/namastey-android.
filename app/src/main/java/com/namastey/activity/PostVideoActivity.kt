@@ -51,10 +51,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var pictureFile: File? = null
     private var albumBean = AlbumBean()
     private var albumList: ArrayList<AlbumBean> = ArrayList()
-    private var items: Array<CharSequence> = arrayOf()
-    private val REQUEST_CODE_IMAGE = 101
-
-    //    private val REQUEST_CODE_CAMERA = 102
     private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
@@ -85,9 +81,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
 //            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
             tvAlbumName.text = albumBean.name
-            if (intent.hasExtra("fromAlbumDetail")){
+            if (intent.hasExtra("fromAlbumDetail")) {
                 tvAlbumName.isEnabled = false
-            }else{
+            } else {
                 postVideoViewModel.getAlbumList()
             }
         }
@@ -162,7 +158,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             else -> {
                 window.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
 
                 postVideoViewModel.postVideoDesc(
                     edtVideoDesc.text.toString().trim(),
@@ -215,7 +212,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE_IMAGE)
+        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
     }
 
     private fun capturePhoto() {
@@ -257,7 +254,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_IMAGE) {
+            if (requestCode == Constants.REQUEST_CODE_IMAGE) {
                 try {
                     val selectedImage = data!!.data
                     val filePathColumn =
@@ -362,6 +359,13 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
         bottomSheetDialog.tvFromVideo.setOnClickListener {
             bottomSheetDialog.dismiss()
+//            val contentUri =
+//                FileProvider.getUriForFile(
+//                    applicationContext,
+//                    "com.namastey.provider",
+//                    videoFile!!
+//                )
+
             val videoUri = Uri.fromFile(videoFile)
             startActivityForResult(
                 ThumbyActivity.getStartIntent(this, videoUri),

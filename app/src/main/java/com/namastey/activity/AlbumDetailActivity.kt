@@ -61,7 +61,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var position = -1
     private var videoFile: File? = null
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    private val REQUEST_VIDEO_SELECT = 101
     private var albumBean = AlbumBean()
     private var fromEdit = false
 
@@ -148,7 +147,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this@AlbumDetailActivity,
                     this,
                     fromEdit,
-                false)
+                    false, false
+                )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
@@ -173,7 +173,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             albumBean = arrayList[0]
             postList = arrayList[0].post_video_list
             edtAlbumName.setText(arrayList[0].name)
-            if (arrayList[0].name == getString(R.string.uploads)) {
+            var isSavedAlbum = false
+            if (arrayList[0].name == getString(R.string.saved)) {
+                isSavedAlbum = true
                 edtAlbumName.isEnabled = false
                 edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
                     0,
@@ -181,11 +183,20 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     0,
                     0
                 )
+            } else {
+                isSavedAlbum = false
+                postList.add(0, VideoBean())
             }
-            postList.add(0, VideoBean())
 
             albumDetailAdapter =
-                AlbumDetailAdapter(postList, this@AlbumDetailActivity, this, fromEdit,false)
+                AlbumDetailAdapter(
+                    postList,
+                    this@AlbumDetailActivity,
+                    this,
+                    fromEdit,
+                    false,
+                    isSavedAlbum
+                )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
     }
@@ -323,7 +334,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "video/*"
         intent.action = Intent.ACTION_GET_CONTENT;
-        startActivityForResult(intent, REQUEST_VIDEO_SELECT)
+        startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
     }
 
 
@@ -397,7 +408,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             if (data != null) {      // Temp need to change
                 albumViewModel.getAlbumDetail(albumId)
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_VIDEO_SELECT) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
 
             if (data != null) {
                 val selectedVideo = data.data
@@ -518,7 +529,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         intent.putExtra("albumId", albumBean.id)
 //                intent.putExtra("thumbnailImage", pictureFile)
         intent.putExtra("albumBean", albumBean)
-        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+        openActivity(intent)
 
     }
 

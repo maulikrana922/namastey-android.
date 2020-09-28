@@ -1,5 +1,7 @@
 package com.namastey.viewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
@@ -19,7 +21,11 @@ class AlbumViewModel constructor(
 
     private var albumView = baseView as AlbumView
     private lateinit var job: Job
+    private val _downloading: MutableLiveData<Boolean> = MutableLiveData()
 
+    fun setDownloading(downloading: Boolean) {
+        _downloading.value = downloading
+    }
     fun getAlbumList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -97,7 +103,74 @@ class AlbumViewModel constructor(
             }
         }
     }
+    fun savePost(postId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToSavePost(postId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessSavePost(appResponse.message)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(t)
+            }
+        }
 
+    }
+    fun reportUser(reportUserId: Long, reason: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToReportUser(reportUserId, reason).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessSavePost(appResponse.message)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(t)
+            }
+        }
+    }
+
+    fun blockUser(userId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToBlockUser(userId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessBlockUser(appResponse.message)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(t)
+            }
+        }
+    }
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

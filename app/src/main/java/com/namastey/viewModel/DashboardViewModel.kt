@@ -1,5 +1,7 @@
 package com.namastey.viewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
@@ -20,6 +22,12 @@ class DashboardViewModel constructor(
     private var dashboardView: DashboardView = baseView as DashboardView
     private lateinit var job: Job
 
+    private val _downloading: MutableLiveData<Boolean> = MutableLiveData()
+    val downloading: LiveData<Boolean> = _downloading
+
+    fun setDownloading(downloading: Boolean) {
+        _downloading.value = downloading
+    }
     fun getCategoryList() {
 //        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {

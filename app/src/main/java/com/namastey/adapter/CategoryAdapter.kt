@@ -2,7 +2,6 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,7 +65,7 @@ class CategoryAdapter(
                         Constants.SELECT_FILTER_FRAGMENT
                     )
                 } else {
-                    if (selectFilterFragment == null){
+                    if (selectFilterFragment == null) {
                         (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
                         (context as DashboardActivity).addFragment(
                             SelectFilterFragment.getInstance(
@@ -76,7 +75,7 @@ class CategoryAdapter(
                             ),
                             Constants.SELECT_FILTER_FRAGMENT
                         )
-                    }else{
+                    } else {
                         clickPosition = -1
                         (context as DashboardActivity).supportFragmentManager.popBackStack()
                     }

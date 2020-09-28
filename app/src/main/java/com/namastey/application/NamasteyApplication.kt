@@ -2,6 +2,8 @@ package com.namastey.application
 
 import android.app.Activity
 import android.app.Application
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.namastey.dagger.component.AppComponent
 import com.namastey.dagger.component.DaggerAppComponent
 import com.namastey.dagger.module.AppDBModule
@@ -30,6 +32,7 @@ class NamasteyApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+//        AppEventsLogger.activateApp(this);
         buildAppComponent()
         InternetConnectionMonitor(this).enable()
     }

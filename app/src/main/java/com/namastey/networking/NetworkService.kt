@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
+import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -261,5 +262,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToSavePost(postId: Long): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToSavePostAsync(postId).await()
+        }
+
+    suspend fun requestToGetSpotifyLink(token: String): AppResponseSpotify<SpotifyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetSpotifyLinkAsync(Constants.SPOTIFY_PROFILE_URL, token).await()
         }
 }

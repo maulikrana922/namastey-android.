@@ -1,9 +1,11 @@
 package com.namastey.viewModel
 
+import android.util.Log
 import com.google.gson.JsonObject
-import com.namastey.R
 import com.namastey.model.AppResponse
+import com.namastey.model.AppResponseSpotify
 import com.namastey.model.SocialAccountBean
+import com.namastey.model.SpotifyBean
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -70,5 +72,23 @@ class ProfileInterestViewModel constructor(
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()
+    }
+
+    fun getSpotifyLink(token: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+
+                networkService.requestToGetSpotifyLink("Bearer ".plus(token)).let { appResponseSpotify: AppResponseSpotify<SpotifyBean> ->
+                    Log.d("spotify Response : ", appResponseSpotify.toString())
+                    setIsLoading(false)
+                    profileInterestView.onSuccessSpotify(appResponseSpotify.external_urls!!.spotify)
+                }
+
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                profileInterestView.onHandleException(exception)
+            }
+        }
     }
 }

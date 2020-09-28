@@ -16,7 +16,9 @@ import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileInterestBinding
 import com.namastey.fragment.AddLinksFragment
+import com.namastey.model.AppResponseSpotify
 import com.namastey.model.SocialAccountBean
+import com.namastey.model.SpotifyBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -112,7 +114,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
                         if (tvCategory.background.constantState == ContextCompat.getDrawable(
                                 this@ProfileInterestActivity,
-                                R.drawable.rounded_gray_solid
+                                R.drawable.rounded_white_solid_all_corner
                             )?.constantState
                         ) {
                             categoryIdList.add(subCategoryBean.id)
@@ -186,21 +188,21 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
             mainInstagram.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }){
-            mainSnapchat.visibility = View.VISIBLE
-            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
-                .link
-        }else{
-            mainSnapchat.visibility = View.GONE
-        }
-
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }){
-            mainTikTok.visibility = View.VISIBLE
-            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
-                .link
-        }else{
-            mainTikTok.visibility = View.GONE
-        }
+//        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }){
+//            mainSnapchat.visibility = View.VISIBLE
+//            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
+//                .link
+//        }else{
+//            mainSnapchat.visibility = View.GONE
+//        }
+//
+//        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }){
+//            mainTikTok.visibility = View.VISIBLE
+//            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
+//                .link
+//        }else{
+//            mainTikTok.visibility = View.GONE
+//        }
         if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }){
             mainSpotify.visibility = View.VISIBLE
             tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
@@ -208,13 +210,21 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         }else{
             mainSpotify.visibility = View.GONE
         }
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
-            mainLinkedin.visibility = View.VISIBLE
-            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
+
+        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }){
+            mainTwitter.visibility = View.VISIBLE
+            tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.twitter) }
                 .link
         }else{
-            mainLinkedin.visibility = View.GONE
+            mainTwitter.visibility = View.GONE
         }
+//        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
+//            mainLinkedin.visibility = View.VISIBLE
+//            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
+//                .link
+//        }else{
+//            mainLinkedin.visibility = View.GONE
+//        }
     }
 
     override fun getViewModel() = profileInterestViewModel
@@ -257,6 +267,9 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 
+    override fun onSuccessSpotify(sporifyUrl: String) {
+        TODO("Not yet implemented")
+    }
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()

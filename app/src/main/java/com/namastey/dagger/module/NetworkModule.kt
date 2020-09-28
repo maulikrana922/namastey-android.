@@ -24,7 +24,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Module(includes = [AppDBModule::class,SessionManagerModule::class])
+@Module(includes = [AppDBModule::class, SessionManagerModule::class])
 class NetworkModule {
 
     @Provides
@@ -37,13 +37,14 @@ class NetworkModule {
 
     @Provides
     @PerApplication
-    fun providesOkHttpClient(interceptor: Interceptor, cache: Cache): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
-        .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
-        .writeTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
-        .addInterceptor(interceptor)
-        .cache(cache)
-        .build()
+    fun providesOkHttpClient(interceptor: Interceptor, cache: Cache): OkHttpClient =
+        OkHttpClient.Builder()
+            .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
+            .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
+            .addInterceptor(interceptor)
+            .cache(cache)
+            .build()
 
     @Provides
     @PerApplication
@@ -59,7 +60,8 @@ class NetworkModule {
 
     @Provides
     @PerApplication
-    fun providesNetworkRequest(retrofit: Retrofit): NetworkRequest = retrofit.create(NetworkRequest::class.java)
+    fun providesNetworkRequest(retrofit: Retrofit): NetworkRequest =
+        retrofit.create(NetworkRequest::class.java)
 
     @Provides
     @PerApplication
@@ -80,18 +82,23 @@ class NetworkModule {
 
     @Provides
     @PerApplication
-    fun providesInterceptor(dbHelper: DBHelper,sessionManager: SessionManager): Interceptor {
+    fun providesInterceptor(dbHelper: DBHelper, sessionManager: SessionManager): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
 
             // Customize the request
             val request = original.newBuilder()
-                .addHeader(Constants.API_KEY, if (original.url().url().path.contains(Constants.REGISTER) ||
-                    TextUtils.isEmpty(sessionManager.getAccessToken())
-                ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken())
+                .addHeader(
+                    Constants.API_KEY, if (original.url().url().path.contains(Constants.REGISTER) ||
+                        TextUtils.isEmpty(sessionManager.getAccessToken())
+                    ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken()
+                )
                 .header("Content-Type", "application/json")
                 .removeHeader("Pragma")
-                .header("Cache-Control", String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME))
+                .header(
+                    "Cache-Control",
+                    String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME)
+                )
                 .build()
             val response = chain.proceed(request)
 //            Log.d("Response --> " , response.body().toString())

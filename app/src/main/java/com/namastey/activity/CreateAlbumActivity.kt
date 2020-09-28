@@ -82,9 +82,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
             createAlbumViewModel.getAlbumList()
         }else {
-//        Default one album create uploads
+//        Default one album create Saved/ uploads
             val albumBean = AlbumBean()
-            albumBean.name = getString(R.string.uploads)
+            albumBean.name = getString(R.string.saved)
             createAlbumApi(albumBean, true)
         }
     }
@@ -96,7 +96,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         albumBean.is_created = 0    // 0 = display edit icons and disable edittext
         // 1 = display done icons and enable edittext
 
-        if (albumBean.name.equals(getString(R.string.uploads))) {
+        if (albumBean.name.equals(getString(R.string.saved))) {
             createAlbumViewModel.getAlbumList()
         } else {
             this.albumBean.name = albumBean.name
@@ -118,8 +118,8 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onSuccessAlbumDetails(albumBeanList: ArrayList<AlbumBean>) {
         albumList.clear()
         albumList = albumBeanList
-        if (albumList.any { albumBean -> albumBean.name == getString(R.string.uploads) }) {
-            albumList.remove(albumList.single { s -> s.name == getString(R.string.uploads) })
+        if (albumList.any { albumBean -> albumBean.name == getString(R.string.saved) }) {
+            albumList.remove(albumList.single { s -> s.name == getString(R.string.saved) })
         }
         albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this, this)
         rvAlbumList.adapter = albumAdapter

@@ -1,12 +1,23 @@
 package com.namastey.activity
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
+import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.AlbumVideoAdapter
 import com.namastey.adapter.CommentAdapter
@@ -24,14 +36,27 @@ import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
+import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.AlbumView
-import com.namastey.utils.Constants
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import com.namastey.viewModel.AlbumViewModel
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_album_video.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
     OnItemClick {
@@ -49,6 +74,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var videoList = ArrayList<VideoBean>()
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
+    private lateinit var bottomSheetDialogShare: BottomSheetDialog
+    private var fileUrl = ""
     private lateinit var deleteIcon: Drawable
     private var colorDrawableBackground = ColorDrawable(Color.RED)
 
@@ -68,6 +95,30 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
+    }
+    override fun onSuccessSavePost(msg: String) {
+        object : CustomAlertDialog(
+            this@AlbumVideoActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
+    override fun onSuccessBlockUser(msg: String) {
+        object : CustomAlertDialog(
+            this@AlbumVideoActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+                val intent = Intent(this@AlbumVideoActivity,DashboardActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                openActivity(intent)
+            }
+        }.show()
+
     }
 
     override fun onSuccessGetComment(data: java.util.ArrayList<CommentBean>) {
@@ -94,7 +145,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 ): Boolean {
                     return false
                 }
-                override fun getSwipeDirs (recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+
+                override fun getSwipeDirs(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
                     if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
                     return super.getSwipeDirs(recyclerView, viewHolder)
                 }
@@ -272,11 +327,338 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogComment.show()
     }
 
+    override fun onShareClick(videoBean: VideoBean) {
+        if (sessionManager.isGuestUser()) {
+            // Need to add data
+        } else {
+            openShareOptionDialog(videoBean)
+        }
+    }
+
+    /**
+     * Share option with video
+     * Need to reduce this code
+     */
+    private fun openShareOptionDialog(videoBean: VideoBean) {
+        bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
+        bottomSheetDialogShare.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_feed,
+                null
+            )
+        )
+        bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShare.setCancelable(true)
+
+        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+        }
+
+        // Share on Twitter app if install otherwise web link
+        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+            val tweetUrl =
+                StringBuilder("https://twitter.com/intent/tweet?text=")
+            tweetUrl.append(videoBean.video_url)
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(tweetUrl.toString())
+            )
+            val matches: List<ResolveInfo> =
+                packageManager.queryIntentActivities(intent, 0)
+            for (info in matches) {
+                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                        .startsWith("com.twitter")
+                ) {
+                    intent.setPackage(info.activityInfo.packageName)
+                }
+            }
+            startActivity(intent)
+        }
+
+        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+            var facebookAppFound = false
+            var shareIntent =
+                Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, videoBean.video_url)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoBean.video_url))
+
+            val pm: PackageManager = packageManager
+            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+            for (app in activityList) {
+                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                    val activityInfo: ActivityInfo = app.activityInfo
+                    val name =
+                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
+                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    shareIntent.component = name
+                    facebookAppFound = true
+                    break
+                }
+            }
+            if (!facebookAppFound) {
+                val sharerUrl =
+                    "https://www.facebook.com/sharer/sharer.php?u=${videoBean.video_url}"
+                shareIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(sharerUrl)
+                )
+            }
+            startActivity(shareIntent)
+        }
+
+        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+            var intent =
+                packageManager.getLaunchIntentForPackage("com.instagram.android")
+            if (intent != null) {
+                val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.setPackage("com.instagram.android")
+                try {
+
+                    val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                    val fileName = "share_video.mp4"
+                    val file = File(folder, fileName)
+                    val uri = let {
+                        FileProvider.getUriForFile(
+                            it,
+                            "${BuildConfig.APPLICATION_ID}.provider",
+                            file
+                        )
+                    }
+                    fileUrl = videoBean.video_url
+                    downloadFile(this@AlbumVideoActivity, fileUrl, uri)
+
+//                    val videoPath = File(applicationContext.filesDir, "")
+//
+//                    val newFile = File(videoPath, Uri.parse(videoBean.video_url).path)
+//                    shareIntent.type = "video/*"
+//                    val contentUri =
+//                        FileProvider.getUriForFile(
+//                            applicationContext,
+//                            "com.namastey.provider",
+//                            newFile
+//                        );
+//
+//                    shareIntent.putExtra(
+//                        Intent.EXTRA_STREAM,
+//                        contentUri
+//                    )
+                } catch (e: Exception) {
+                    Log.e("ERROR", e.printStackTrace().toString())
+                }
+//                startActivity(shareIntent)
+            } else {
+                intent = Intent(Intent.ACTION_VIEW)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
+                startActivity(intent)
+            }
+        }
+        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+            try {
+                val pm: PackageManager = packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                val sendIntent = Intent(Intent.ACTION_SEND)
+                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                sendIntent.type = "text/plain"
+                sendIntent.setPackage("com.whatsapp")
+
+                sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    Uri.parse(videoBean.video_url)
+                )
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_STREAM,
+//                    Uri.parse(videoBean.video_url)
+//                )
+                startActivity(sendIntent)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(
+                    this@AlbumVideoActivity,
+                    getString(R.string.whatsapp_not_install_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                e.printStackTrace()
+            }
+        }
+
+        bottomSheetDialogShare.ivShareOther.setOnClickListener {
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT, videoBean.video_url
+            )
+            sendIntent.type = "text/plain"
+            startActivity(sendIntent)
+        }
+        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+            albumViewModel.savePost(videoBean.id)
+        }
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
+            displayReportUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
+            displayReportUserDialog(videoBean)
+        }
+
+        bottomSheetDialogShare.tvShareBlock.setOnClickListener {
+            displayBlockUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.ivShareBlock.setOnClickListener {
+            displayBlockUserDialog(videoBean)
+        }
+
+        bottomSheetDialogShare.show()
+    }
+
+    /**
+     * Download video from url
+     */
+    private fun downloadFile(context: Context, url: String, file: Uri) {
+        val ktor = HttpClient(Android)
+        albumViewModel.setDownloading(true)
+        bottomSheetDialogShare.progress_bar.visibility = View.VISIBLE
+        bottomSheetDialogShare.ivShareInstagram.visibility = View.INVISIBLE
+        context.contentResolver.openOutputStream(file)?.let { outputStream ->
+            CoroutineScope(Dispatchers.IO).launch {
+                ktor.downloadFile(outputStream, url).collect {
+                    withContext(Dispatchers.Main) {
+                        when (it) {
+                            is DownloadResult.Success -> {
+                                albumViewModel.setDownloading(false)
+                                bottomSheetDialogShare.progress_bar.visibility = View.GONE
+                                bottomSheetDialogShare.ivShareInstagram.visibility = View.VISIBLE
+                                if (::bottomSheetDialogShare.isInitialized)
+                                    bottomSheetDialogShare.dismiss()
+                                bottomSheetDialogShare.progress_bar.progress = 0
+                                openInstagram(file)
+                            }
+                            is DownloadResult.Error -> {
+                                bottomSheetDialogShare.progress_bar.visibility = View.GONE
+                                bottomSheetDialogShare.ivShareInstagram.visibility = View.VISIBLE
+                                albumViewModel.setDownloading(false)
+                                Toast.makeText(
+                                    context,
+                                    "Error while downloading file",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                            is DownloadResult.Progress -> {
+                                bottomSheetDialogShare.progress_bar.progress = it.progress
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun openInstagram(uri: Uri) {
+        let { context ->
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.setPackage("com.instagram.android")
+            shareIntent.type = "video/*"
+
+            shareIntent.putExtra(
+                Intent.EXTRA_STREAM,
+                uri
+            )
+            startActivity(shareIntent)
+        }
+    }
+
+    private fun displayBlockUserDialog(videoBean: VideoBean) {
+        object : CustomCommonAlertDialog(
+            this@AlbumVideoActivity,
+            videoBean.username,
+            getString(R.string.msg_block_user),
+            videoBean.profile_url,
+            getString(R.string.block_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        albumViewModel.blockUser(videoBean.user_id)
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    /**
+     * Display dialog of report user
+     */
+    private fun displayReportUserDialog(videoBean: VideoBean) {
+        object : CustomCommonAlertDialog(
+            this@AlbumVideoActivity,
+            videoBean.username,
+            getString(R.string.msg_report_user),
+            videoBean.profile_url,
+            getString(R.string.report_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        showReportTypeDialog(videoBean.user_id)
+                    }
+                }
+            }
+        }.show()
+    }
+    /**
+     * Display dialog with option (Reason)
+     */
+    private fun showReportTypeDialog(reportUserId: Long) {
+        val bottomSheetReport: BottomSheetDialog =
+            BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
+        bottomSheetReport.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetReport.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetReport.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetReport.setCancelable(false)
+
+        bottomSheetReport.tvPhotoTake.text = getString(R.string.its_spam)
+        bottomSheetReport.tvPhotoTake.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoChoose.text = getString(R.string.its_inappropriate)
+        bottomSheetReport.tvPhotoChoose.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoCancel.setTextColor(Color.BLUE)
+
+        bottomSheetReport.tvPhotoTake.setOnClickListener {
+            bottomSheetReport.dismiss()
+            albumViewModel.reportUser(reportUserId, getString(R.string.its_spam))
+        }
+        bottomSheetReport.tvPhotoChoose.setOnClickListener {
+            bottomSheetReport.dismiss()
+            albumViewModel.reportUser(reportUserId, getString(R.string.its_inappropriate))
+        }
+        bottomSheetReport.tvPhotoCancel.setOnClickListener {
+            bottomSheetReport.dismiss()
+        }
+        bottomSheetReport.show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (::bottomSheetDialogComment.isInitialized)
             bottomSheetDialogComment.dismiss()
 
+        if (::bottomSheetDialogShare.isInitialized)
+            bottomSheetDialogShare.dismiss()
         albumViewModel.onDestroy()
     }
 }

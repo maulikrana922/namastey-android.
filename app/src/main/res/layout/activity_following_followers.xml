@@ -50,12 +50,13 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivFollowUser"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_7sdp"
                 android:src="@drawable/default_placeholder"
                 app:civ_border_color="@color/colorWhite"
                 app:civ_border_width="1dp"
+                android:onClick="onClickFollowBack"
                 app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
                 app:layout_constraintStart_toEndOf="@id/ivFollowBack"
                 app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
@@ -67,6 +68,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_3sdp"
                 android:singleLine="true"
+                android:onClick="onClickFollowBack"
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@id/ivFollowUser"

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/_5sdp"
+    android:id="@+id/viewFollowMain"
     android:paddingBottom="@dimen/_5sdp">
 
     <com.namastey.customViews.RoundImageView

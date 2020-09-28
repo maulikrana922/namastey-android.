@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "949976136000",
+    "firebase_url": "https://namastey-6d119.firebaseio.com",
+    "project_id": "namastey-6d119",
+    "storage_bucket": "namastey-6d119.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949976136000:android:02f74fb8ba16c4f2f7e2a5",
+        "android_client_info": {
+          "package_name": "com.namastey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949976136000-ddq2cdt6do3d2vguu093l7t5j8570rd9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj4_1sbJh-ETKXz6owFeRf0x86j2J9Uac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949976136000-ddq2cdt6do3d2vguu093l7t5j8570rd9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

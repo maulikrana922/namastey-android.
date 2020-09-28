@@ -1,6 +1,5 @@
 package com.namastey.networking
 
-
 import com.google.gson.JsonObject
 import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
@@ -9,7 +8,6 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkRequest {
@@ -195,7 +193,7 @@ interface NetworkRequest {
     @FormUrlEncoded
     @POST(Constants.SEARCH_USER)
     fun requestToSearchUserAsync(
-        @Field(Constants.SEARCH) search : String
+        @Field(Constants.SEARCH) search: String
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @GET(Constants.GET_SUGGEST_LIST)
@@ -226,4 +224,11 @@ interface NetworkRequest {
     fun requestToSavePostAsync(
         @Field(Constants.POST_ID) postId: Long
     ): Deferred<AppResponse<Any>>
+
+    @GET     // Call Spotify base url
+    fun requestToGetSpotifyLinkAsync(
+        @Url baseUrl: String,
+        @Header("Authorization") authHeader: String
+    ): Deferred<AppResponseSpotify<SpotifyBean>>
+
 }

@@ -16,6 +16,9 @@ class VideoBean() : Parcelable {
     var viewers = 0
     var comments = 0
     var profile_pic: ArrayList<String> = ArrayList()
+    var user_id: Long = 0
+    var username: String = ""
+    var profile_url: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -28,7 +31,9 @@ class VideoBean() : Parcelable {
         viewers = parcel.readInt()
         comments = parcel.readInt()
         profile_pic = parcel.createStringArrayList() ?: ArrayList()
-
+        user_id = parcel.readLong()
+        username = parcel.readString() ?: ""
+        profile_url = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -42,6 +47,9 @@ class VideoBean() : Parcelable {
         parcel.writeInt(viewers)
         parcel.writeInt(comments)
         parcel.writeStringList(profile_pic)
+        parcel.writeLong(user_id)
+        parcel.writeString(username)
+        parcel.writeString(profile_url)
     }
 
     override fun describeContents(): Int {

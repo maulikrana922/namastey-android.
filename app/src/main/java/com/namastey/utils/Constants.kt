@@ -8,11 +8,18 @@ object Constants {
         male, female, other
     }
 
+    object TwitterConstants{
+        var CONSUMER_KEY = "66lJfE8259OsFIkRtSdZhXRid"
+        var CONSUMER_SECRET = "fY7rgML5bVkY8X9ZNdnZtNIr6CpRfjmn2QTiRdsBeSAhUOZyau"
+        var CALLBACK_URL = "twittersdk://"
+    }
+
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
     //    Live url
     const val BASE = "http://testyourapp.online/namasteyapp/api/"
+    const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
 
     //    api end-point
     const val REGISTER = "register"
@@ -192,8 +199,10 @@ object Constants {
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val RC_SIGN_IN = 100
+    const val REQUEST_VIDEO_SELECT = 101
     const val PERMISSION_CAMERA = 102
     const val REQUEST_POST_VIDEO = 103
+    const val REQUEST_CODE_IMAGE = 104
     const val PERMISSION_STORAGE = 106
     const val FILTER_OK = 107
     const val ADD_LINK = 108
@@ -201,6 +210,7 @@ object Constants {
     const val REQUEST_CODE_EDUCATION = 110
     const val REQUEST_CODE_JOB = 111
     const val REQUEST_CODE_VIDEO_TRIM = 112
+    const val REQUEST_SPOTIFY = 1337
     const val REQUEST_CODE_PROFILE = 113
     const val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
     const val RESULT_CODE_PICK_THUMBNAIL = 104

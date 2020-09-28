@@ -115,7 +115,9 @@ class AlbumVideoAdapter(
                 if (!sessionManager.isGuestUser())
                     onVideoClick.onCommentClick(videoBean.id)
             }
-
+            tvFeedShare.setOnClickListener{
+                onVideoClick.onShareClick(videoBean)
+            }
 
         }
 

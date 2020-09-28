@@ -170,7 +170,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
                 postList,
                 this@FilterActivity,
                 this,
-                false, true
+                false, true, false
             )
 
         rvFilterTranding.adapter = albumDetailAdapter

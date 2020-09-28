@@ -16,7 +16,9 @@ class FollowingAdapter(
     var followingList: ArrayList<DashboardBean>,
     var activity: Activity,
     var isFollowing: Boolean,
-    var onFollowItemClick: OnFollowItemClick
+    var onFollowItemClick: OnFollowItemClick,
+    var userId: Long,
+    var isMyProfile: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -42,17 +44,52 @@ class FollowingAdapter(
 
             GlideLib.loadImageUrlRoundCorner(activity, ivFollowingUser, dashboardBean.profile_url)
 
-            if (isFollowing)
-                tvFollowingLabel.text = activity.getString(R.string.following)
-            else
-                tvFollowingLabel.text = activity.getString(R.string.remove)
+            if (userId == dashboardBean.id){
+                tvFollowingLabel.visibility = View.GONE
+            }else{
+                tvFollowingLabel.visibility = View.VISIBLE
+                if (isMyProfile){
+                    if (isFollowing)
+                        tvFollowingLabel.text = activity.getString(R.string.following)
+                    else
+                        tvFollowingLabel.text = activity.getString(R.string.remove)
+                }else{
+                    if (dashboardBean.is_follow == 0)
+                        tvFollowingLabel.text = activity.getString(R.string.follow)
+                    else
+                        tvFollowingLabel.text = activity.getString(R.string.following)
+                }
 
+            }
+
+            viewFollowMain.setOnClickListener {
+                onFollowItemClick.onUserItemClick(dashboardBean.id)
+            }
             tvFollowingLabel.setOnClickListener {
 
-                val msg: String = if (isFollowing) {
-                    resources.getString(R.string.msg_unfollow_user)
-                } else {
-                    resources.getString(R.string.msg_remove_followers)
+//                val msg1: String = if (isFollowing) {
+//                    resources.getString(R.string.msg_unfollow_user)
+//                } else {
+//                    resources.getString(R.string.msg_remove_followers)
+//                }
+
+                var msg = ""
+                var isFollow = 0
+                if (isMyProfile){
+                    isFollow = 0
+                     msg = if (isFollowing) {
+                        resources.getString(R.string.msg_unfollow_user)
+                    } else {
+                        resources.getString(R.string.msg_remove_followers)
+                    }
+                }else{
+                    if (dashboardBean.is_follow == 1){
+                        isFollow = 0
+                        msg = resources.getString(R.string.msg_unfollow_user)
+                    }else{
+                        isFollow = 1
+                        msg = resources.getString(R.string.msg_send_follow_request)
+                    }
                 }
 
                 object : CustomCommonAlertDialog(
@@ -68,7 +105,7 @@ class FollowingAdapter(
                             btnAlertOk.id -> {
                                 onFollowItemClick.onItemRemoveFollowersClick(
                                     dashboardBean.id,
-                                    0,
+                                    isFollow,
                                     position
                                 )
                             }

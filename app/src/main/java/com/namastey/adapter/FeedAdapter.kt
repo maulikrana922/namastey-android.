@@ -109,8 +109,8 @@ class FeedAdapter(
             if (dashboardBean.username.isNotEmpty())
                 tvFeedName.text = dashboardBean.username
 
-            if (dashboardBean.profile_url.isNotEmpty())
-                GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
+//            if (dashboardBean.profile_url.isNotEmpty())
+            GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
 
 //            if (dashboardBean.is_like == 1)
 //                tvFeedLike.text = activity.getString(R.string.dislike)
@@ -168,12 +168,29 @@ class FeedAdapter(
                 onFeedItemClick.onItemClick(dashboardBean)
             }
 
-            tvCommentFeed.setOnClickListener {
-                if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser())
-                    onFeedItemClick.onCommentClick(dashboardBean.id)
+            if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
+                tvCommentFeed.setOnClickListener {
+                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                }
+                ivCommentFirst.setOnClickListener {
+                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                }
+                ivCommentSecond.setOnClickListener {
+                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                }
+                ivCommentThird.setOnClickListener {
+                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                }
+
             }
 
             ivFeedProfile.setOnClickListener {
+                onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
+            }
+            tvFeedName.setOnClickListener {
+                onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
+            }
+            tvFeedJob.setOnClickListener {
                 onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
             }
 //            tvFeedLike.setOnClickListener {

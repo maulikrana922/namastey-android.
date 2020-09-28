@@ -47,7 +47,13 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
         TODO("Not yet implemented")
     }
 
+    override fun onSuccessSavePost(msg: String) {
+        TODO("Not yet implemented")
+    }
 
+    override fun onSuccessBlockUser(msg: String) {
+        TODO("Not yet implemented")
+    }
     override fun getViewModel() = albumViewModel
 
     override fun getLayoutId() = R.layout.fragment_album

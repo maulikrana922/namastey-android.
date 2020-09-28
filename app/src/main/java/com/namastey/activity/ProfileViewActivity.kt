@@ -41,6 +41,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
+    private var isMyProfile = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +58,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     override fun onSuccessResponse(profileBean: ProfileBean) {
         this.profileBean = profileBean
         if (profileBean.user_id == sessionManager.getUserId()) {
+            isMyProfile = true
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.GONE
         } else {
+            isMyProfile = false
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
 
@@ -80,7 +83,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     }
 
     override fun onSuccess(msg: String) {
-        super.onSuccess(msg)
+//        super.onSuccess(msg)
         if (profileBean.is_follow == 1) {
             profileBean.is_follow = 0
             profileBean.followers -= 1
@@ -126,19 +129,47 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
      * Generate dynamic choose interest view
      */
     private fun generateChooseInterestUI(interestList: ArrayList<InterestBean>) {
-        for (interestBean in interestList) {
-            val tvInterest = TextView(this@ProfileViewActivity)
-            tvInterest.layoutParams = LinearLayout.LayoutParams(
+//        for (interestBean in interestList) {
+//            val tvInterest = TextView(this@ProfileViewActivity)
+//            tvInterest.layoutParams = LinearLayout.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//            )
+//            tvInterest.text = interestBean.interest_name
+//            tvInterest.setPadding(40, 18, 40, 18)
+//            tvInterest.setTextColor(Color.WHITE)
+//            tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+//
+//            chipProfileInterest.addView(tvInterest)
+//        }
+
+
+        val tvInterest = TextView(this@ProfileViewActivity)
+        tvInterest.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        tvInterest.text = interestList[0].interest_name
+        tvInterest.setPadding(40, 18, 40, 18)
+        tvInterest.setTextColor(Color.WHITE)
+        tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+
+        chipProfileInterest.addView(tvInterest)
+
+        if (interestList.size >= 2) {
+            val tvInterestSecond = TextView(this@ProfileViewActivity)
+            tvInterestSecond.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            tvInterest.text = interestBean.interest_name
-            tvInterest.setPadding(40, 18, 40, 18)
-            tvInterest.setTextColor(Color.WHITE)
-            tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+            tvInterestSecond.text = interestList[1].interest_name
+            tvInterestSecond.setPadding(40, 18, 40, 18)
+            tvInterestSecond.setTextColor(Color.WHITE)
+            tvInterestSecond.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
 
-            chipProfileInterest.addView(tvInterest)
+            chipProfileInterest.addView(tvInterestSecond)
         }
+
     }
 
     /**
@@ -172,6 +203,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                 }
                 getString(R.string.linkedin) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_linkedin)
+                }
+                getString(R.string.twitter) -> {
+                    ivSocialIcon.setImageResource(R.drawable.ic_share_twitter)
                 }
             }
             chipProfileSocial.addView(ivSocialIcon)
@@ -247,6 +281,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
     fun onClickFollow(view: View) {
         val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+        intent.putExtra("isMyProfile", isMyProfile)
         openActivity(intent)
     }
 

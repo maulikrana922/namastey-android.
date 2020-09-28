@@ -45,6 +45,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     private var profileBean = ProfileBean()
     private lateinit var userSearchAdapter: UserSearchAdapter
     private var userList = ArrayList<DashboardBean>()
+    private var isMyProfile = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,9 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     private fun initData() {
 
         profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+
+        if (intent.hasExtra("isMyProfile"))
+            isMyProfile = intent.getBooleanExtra("isMyProfile",false)
 
         if (profileBean.profileUrl.isNotEmpty()) {
             GlideLib.loadImage(
@@ -98,11 +102,11 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFrag(
-            FollowingFragment.getInstance(profileBean.user_id),
+            FollowingFragment.getInstance(profileBean.user_id,isMyProfile),
             resources.getString(R.string.following)
         )
         adapter.addFrag(
-            FollowersFragment.getInstance(profileBean.user_id),
+            FollowersFragment.getInstance(profileBean.user_id, isMyProfile),
             resources.getString(R.string.followers)
         )
         viewpagerFollow.adapter = adapter

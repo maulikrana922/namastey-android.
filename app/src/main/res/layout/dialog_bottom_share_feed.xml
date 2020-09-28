@@ -74,6 +74,21 @@
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
+                <ProgressBar
+                    android:visibility="gone"
+                    android:id="@+id/progress_bar"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_gravity="center"
+                    android:indeterminate="false"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:max="100"
+                    android:progress="0"
+                    app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp"  />
+
                 <ImageView
                     android:id="@+id/ivShareTwitter"
                     android:layout_width="@dimen/_45sdp"

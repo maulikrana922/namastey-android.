@@ -1,11 +1,15 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
@@ -18,9 +22,11 @@ import com.namastey.fragment.EditProfileFragment
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import javax.inject.Inject
+
 
 class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileBasicView {
 
@@ -155,6 +161,28 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
             supportFragmentManager.popBackStack()
         } else {
             finishActivity()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Social Login", "response.accessToken")
+
+        if (requestCode == Constants.REQUEST_SPOTIFY){
+            try {
+                val fm: FragmentManager = supportFragmentManager
+                if (fm.fragments.size > 0) {
+                    for (i in 0 until fm.fragments.size) {
+                        val fragment: Fragment? = fm.fragments[i]
+                        if (fragment != null && fragment.javaClass.simpleName.equals(Constants.ADD_LINKS_FRAGMENT,true)) {
+                            fragment.onActivityResult(requestCode, resultCode, data)
+                        }
+                    }
+                }
+            }catch (exception: Exception){
+                Log.d("Error: ", "error")
+            }
+
         }
     }
 }

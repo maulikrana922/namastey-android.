@@ -351,20 +351,27 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             mainInstagram.visibility = View.GONE
         }
 
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }) {
-            mainSnapchat.visibility = View.VISIBLE
-            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
+//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }) {
+//            mainSnapchat.visibility = View.VISIBLE
+//            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
+//                .link
+//        } else {
+//            mainSnapchat.visibility = View.GONE
+//        }
+//
+//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }) {
+//            mainTikTok.visibility = View.VISIBLE
+//            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
+//                .link
+//        } else {
+//            mainTikTok.visibility = View.GONE
+//        }
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }) {
+            mainTwitter.visibility = View.VISIBLE
+            tvTwitterLink.text = data.single { s -> s.name == getString(R.string.twitter) }
                 .link
         } else {
-            mainSnapchat.visibility = View.GONE
-        }
-
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }) {
-            mainTikTok.visibility = View.VISIBLE
-            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
-                .link
-        } else {
-            mainTikTok.visibility = View.GONE
+            mainTwitter.visibility = View.GONE
         }
         if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }) {
             mainSpotify.visibility = View.VISIBLE
@@ -373,13 +380,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         } else {
             mainSpotify.visibility = View.GONE
         }
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }) {
-            mainLinkedin.visibility = View.VISIBLE
-            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
-                .link
-        } else {
-            mainLinkedin.visibility = View.GONE
-        }
+//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }) {
+//            mainLinkedin.visibility = View.VISIBLE
+//            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
+//                .link
+//        } else {
+//            mainLinkedin.visibility = View.GONE
+//        }
     }
 
 
@@ -540,22 +547,28 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             tvProfileEducation.text = sessionManager.getEducationBean().course
             editProfileApiCall()
         }else if (data != null) {
-            if (data.hasExtra("fromInterestIn")) {
-                when (sessionManager.getInterestIn()) {
-                    1 -> tvProfileInterestIn.text = getString(R.string.men)
-                    2 -> tvProfileInterestIn.text = getString(R.string.women)
-                    3 -> tvProfileInterestIn.text = getString(R.string.everyone)
+            when {
+                data.hasExtra("fromInterestIn") -> {
+                    when (sessionManager.getInterestIn()) {
+                        1 -> tvProfileInterestIn.text = getString(R.string.men)
+                        2 -> tvProfileInterestIn.text = getString(R.string.women)
+                        3 -> tvProfileInterestIn.text = getString(R.string.everyone)
+                    }
+                    editProfileApiCall()
                 }
-                editProfileApiCall()
-            } else if (data.hasExtra("fromSelectCategory")) {
-                tvProfileSelectCategory.text = sessionManager.getCategoryList()[0].name
-                llProfileTag.removeAllViews()
-                subCategoryIdList.clear()
-                generateProfileTagUI()
+                data.hasExtra("fromSelectCategory") -> {
+                    tvProfileSelectCategory.text = sessionManager.getCategoryList()[0].name
+                    llProfileTag.removeAllViews()
+                    subCategoryIdList.clear()
+                    generateProfileTagUI()
 
-                editProfileApiCall()
-            } else if (data.hasExtra("fromAddLink")) {
-                profileBasicViewModel.getSocialLink()
+                    editProfileApiCall()
+                }
+                data.hasExtra("fromAddLink") -> {
+                    profileBasicViewModel.getSocialLink()
+                }
+
+                //        Log.d("onActivityResult","onActivityResult")
             }
 
 //        Log.d("onActivityResult","onActivityResult")

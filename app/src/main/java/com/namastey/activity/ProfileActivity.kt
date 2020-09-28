@@ -167,6 +167,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         if (!sessionManager.isGuestUser()){
             val intent = Intent(this@ProfileActivity,FollowingFollowersActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+            intent.putExtra("isMyProfile",true)
             openActivity(intent)
         }
     }

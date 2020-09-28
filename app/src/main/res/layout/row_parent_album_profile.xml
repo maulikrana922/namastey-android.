@@ -13,11 +13,12 @@
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:text="@string/albums"
+        android:textSize="18sp"
         android:textColor="@color/colorBlack"
         app:layout_constraintEnd_toStartOf="@id/tvAlbumViewall"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:typeface="MULI_SEMIBOLD" />
+        app:typeface="MULI_EXTRA_BOLD" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvAlbumViewall"
@@ -26,6 +27,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:text="@string/view_all"
+        android:textSize="18sp"
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvAlbumName"
@@ -37,7 +39,7 @@
         android:id="@+id/rvChildAlbumPost"
         android:layout_width="0dp"
         android:layout_height="@dimen/_120sdp"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:paddingStart="@dimen/_5sdp"

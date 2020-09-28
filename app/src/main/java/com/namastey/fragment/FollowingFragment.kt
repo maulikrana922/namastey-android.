@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -7,14 +8,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.FollowingAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowingBinding
 import com.namastey.listeners.OnFollowItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.model.EducationBean
 import com.namastey.uiView.FollowingView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
 import javax.inject.Inject
@@ -24,7 +26,8 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentFollowingBinding: FragmentFollowingBinding
     private lateinit var followingViewModel: FollowingViewModel
     private lateinit var layoutView: View
@@ -32,6 +35,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private lateinit var followingAdapter: FollowingAdapter
     private var position = -1
     private var userId: Long = -1
+    private var isMyProfile = false
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         followingList = list
@@ -50,15 +54,16 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
                 )
             )
         }
-        followingAdapter = FollowingAdapter(followingList, requireActivity(), true, this)
+        followingAdapter = FollowingAdapter(followingList, requireActivity(), true, this,sessionManager.getUserId(),isMyProfile)
         rvFollowing.adapter = followingAdapter
     }
 
     companion object {
-        fun getInstance(userId: Long) =
+        fun getInstance(userId: Long, isMyProfile: Boolean) =
             FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
+                    putBoolean("isMyProfile", isMyProfile)
                 }
             }
     }
@@ -83,6 +88,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     private fun initUI() {
         userId = arguments!!.getLong(Constants.USER_ID)
+        isMyProfile = arguments!!.getBoolean("isMyProfile")
         followingViewModel.getFollowingList(userId)
     }
 
@@ -102,10 +108,20 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     }
 
     override fun onSuccess(msg: String) {
-//        super.onSuccess(msg)
-        followingList.removeAt(position)
-        followingAdapter.notifyItemRemoved(position)
-        followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
+
+        if (isMyProfile){
+            followingList.removeAt(position)
+            followingAdapter.notifyItemRemoved(position)
+            followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
+        }else{
+            // If other user profile view and follow/unfollow then update position
+            if (followingList[position].is_follow == 1)
+                followingList[position].is_follow = 0
+            else
+                followingList[position].is_follow = 1
+
+            followingAdapter.notifyItemChanged(position)
+        }
 
         if (followingList.size == 0) {
             tvEmptyFollow.text = getString(R.string.following)
@@ -113,6 +129,11 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         }
+    }
+    override fun onUserItemClick(userId: Long) {
+        val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
     }
 
     override fun onItemRemoveFollowersClick(

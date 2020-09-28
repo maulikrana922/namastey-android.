@@ -2,12 +2,16 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.activity.AlbumDetailActivity
+import com.namastey.activity.AlbumVideoActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.VideoBean
+import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
@@ -18,7 +22,8 @@ class AlbumDetailAdapter(
     var activity: Context,
     var onItemClick: OnItemClick,
     var fromEdit: Boolean,
-    var fromFilter: Boolean
+    var fromFilter: Boolean,
+    var isSavedAlbum: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -38,7 +43,7 @@ class AlbumDetailAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
-            if (position == 0 && fromEdit) {
+            if (position == 0 && fromEdit && !isSavedAlbum) {
                 viewAlbumDetails.visibility = View.GONE
                 llAddAlbum.visibility = View.VISIBLE
 
@@ -118,6 +123,14 @@ class AlbumDetailAdapter(
                         ivCommentSecond.visibility = View.GONE
                         ivCommentThird.visibility = View.GONE
                     }
+                }
+            }
+            ivVideoImage.setOnClickListener {
+                if (!fromEdit && !fromFilter) {
+                    val intent = Intent(activity, AlbumVideoActivity::class.java)
+                    intent.putExtra(Constants.VIDEO_LIST, videoList)
+                    intent.putExtra("position", position)
+                    (activity as AlbumDetailActivity).openActivity(intent)
                 }
             }
 
