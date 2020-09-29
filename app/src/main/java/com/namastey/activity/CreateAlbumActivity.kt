@@ -541,7 +541,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                                 builder.setPositiveButton(
                                     getString(R.string.go_to_settings)
                                 ) { dialog, id ->
-                                    var intent = Intent(
+                                    val intent = Intent(
                                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                         Uri.fromParts("package", packageName, null)
                                     )
@@ -590,7 +590,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                             builder.setPositiveButton(
                                 getString(R.string.go_to_settings)
                             ) { dialog, id ->
-                                var intent = Intent(
+                                val intent = Intent(
                                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                     Uri.fromParts("package", packageName, null)
                                 )
@@ -630,7 +630,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
     override fun getResult(uri: Uri) {
         trimmerView.visibility = View.GONE
-        Log.d("TrimVideo: ", "getResult : " + uri.toString())
+        Log.d("TrimVideo: ", "getResult : $uri")
 
         val retriever = MediaMetadataRetriever()
         retriever.setDataSource(this@CreateAlbumActivity, uri)

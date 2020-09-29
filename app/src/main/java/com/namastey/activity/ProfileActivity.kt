@@ -49,11 +49,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private lateinit var activityProfileBinding: ActivityProfileBinding
     private lateinit var profileViewModel: ProfileViewModel
     private val REQUEST_CODE = 101
-    private val REQUEST_CODE_CAMERA = 102
     private var profileFile: File? = null
     private var profileBean = ProfileBean()
     private var isCompletlySignup = 0
     private var membershipList = ArrayList<MembershipBean>()
+    private var isCameraOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -239,7 +239,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                startActivityForResult(takePictureIntent, REQUEST_CODE_CAMERA)
+                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
             } catch (ex: Exception) {
                 showMsg(ex.localizedMessage)
             }
@@ -392,7 +392,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
             tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
         }
-        profileViewModel.getUserDetails()
+        if (!isCameraOpen)
+            profileViewModel.getUserDetails()
+        else
+            isCameraOpen = false
 
     }
 
@@ -425,6 +428,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                         profileFile = Utils.saveBitmapToFile(File(picturePath))
 
                         if (profileFile != null && profileFile!!.exists()) {
+                            isCameraOpen = true
                             profileViewModel.updateProfilePic(profileFile!!)
                         }
                     } catch (e: Exception) {
@@ -432,9 +436,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     }
                 }
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {
-            if (data != null) {
-                var imageFile = Utils.getCameraFile(this@ProfileActivity)
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
+//            if (data != null) {
+                val imageFile = Utils.getCameraFile(this@ProfileActivity)
                 val photoUri = FileProvider.getUriForFile(
                     this,
                     applicationContext.packageName + ".provider",
@@ -444,17 +448,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                     1200
                 )!!
-//                GlideLib.loadImageBitmap(this, ivProfileUser, data.extras.get("data") as Bitmap)
-                GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
-//                val photo = data.extras["data"] as Bitmap
 
-//                val tempUri = Utils.getImageUri(applicationContext, photo)
-//                profileFile = File(Utils.getRealPathFromURI(this@ProfileActivity, photoUri))
+                GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
 
                 if (imageFile.exists()) {
+                    isCameraOpen = true
                     profileViewModel.updateProfilePic(imageFile)
                 }
-            }
+//            }
         }
     }
 

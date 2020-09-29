@@ -63,6 +63,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var albumBean = AlbumBean()
     private var fromEdit = false
+    private var isSavedAlbum = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,7 +174,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             albumBean = arrayList[0]
             postList = arrayList[0].post_video_list
             edtAlbumName.setText(arrayList[0].name)
-            var isSavedAlbum = false
             if (arrayList[0].name == getString(R.string.saved)) {
                 isSavedAlbum = true
                 edtAlbumName.isEnabled = false
@@ -506,7 +506,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     override fun onItemClick(postId: Long, position: Int) {
-        if (position == 0) {
+        if (position == 0 && !isSavedAlbum) {
             this.position = 0
             selectVideo()
         } else {

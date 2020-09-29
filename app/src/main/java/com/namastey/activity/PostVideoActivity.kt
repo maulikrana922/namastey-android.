@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -51,7 +52,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var pictureFile: File? = null
     private var albumBean = AlbumBean()
     private var albumList: ArrayList<AlbumBean> = ArrayList()
-    private val RESULT_CODE_PICK_THUMBNAIL = 104
+//    private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
     private var commentOff = 0
@@ -228,7 +229,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(takePictureIntent, Constants.PERMISSION_CAMERA)
+                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
 
                 // Continue only if the File was successfully created
 //                if (pictureFile != null) {
@@ -276,13 +277,28 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            } else if (requestCode == Constants.PERMISSION_CAMERA) {
-                if (data != null) {
+            } else if (requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
+//                if (data != null) {
                     val photoUri = FileProvider.getUriForFile(
                         this,
                         applicationContext.packageName + ".provider",
                         Utils.getCameraFile(this@PostVideoActivity)
                     )
+
+//                val bitmap = if(Build.VERSION.SDK_INT < 28) {
+////                    MediaStore.Images.Media.getBitmap(
+////                        this.contentResolver,
+////                        photoUri
+////                    )
+//                    Utils.scaleBitmapDown(
+//                        MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+//                        1200
+//                    )!!
+//                } else {
+//                    val source = ImageDecoder.createSource(this.contentResolver, photoUri)
+//                    ImageDecoder.decodeBitmap(source)
+//                }
+
                     val bitmap: Bitmap = Utils.scaleBitmapDown(
                         MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                         1200
@@ -295,8 +311,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     pictureFile = Utils.getCameraFile(this@PostVideoActivity)
 
 //                    pictureFile = Utils.saveBitmapToFile(pictureFile!!)
-                }
-            } else if (requestCode == RESULT_CODE_PICK_THUMBNAIL) {
+//                }
+            } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
                 if (data != null) {
                     val imageUri = data?.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
                     val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
@@ -369,7 +385,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             val videoUri = Uri.fromFile(videoFile)
             startActivityForResult(
                 ThumbyActivity.getStartIntent(this, videoUri),
-                RESULT_CODE_PICK_THUMBNAIL
+                Constants.RESULT_CODE_PICK_THUMBNAIL
             )
         }
         bottomSheetDialog.tvPhotoCancel.setOnClickListener {
@@ -416,7 +432,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         ) { dialog, which ->
             val strName = arrayAdapter.getItem(which)
             tvAlbumName.text = strName
-            var position = arrayAdapter.getPosition(strName)
+            val position = arrayAdapter.getPosition(strName)
             albumBean = albumList[position]
             Log.d("albumBean", albumBean.name + " " + albumBean.id)
 

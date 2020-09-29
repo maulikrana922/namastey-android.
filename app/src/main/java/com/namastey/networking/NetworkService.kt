@@ -78,7 +78,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestUpdateProfilePicAsync(
         profile_image: MultipartBody.Part,
         deviceType: RequestBody
-    ): AppResponse<User> = withContext(Dispatchers.IO) {
+    ): AppResponse<Any> = withContext(Dispatchers.IO) {
         networkRequest.requestUpdateProfilePicAsync(
             profile_image,
             deviceType

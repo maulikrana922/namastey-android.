@@ -32,7 +32,7 @@ class NamasteyApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-//        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(this);
         buildAppComponent()
         InternetConnectionMonitor(this).enable()
     }

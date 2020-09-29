@@ -58,7 +58,7 @@ interface NetworkRequest {
     fun requestUpdateProfilePicAsync(
         @Part file: MultipartBody.Part,
         @Part(Constants.DEVICE_TYPE) deviceType: RequestBody
-    ): Deferred<AppResponse<User>>
+    ): Deferred<AppResponse<Any>>
 
     @GET(Constants.GET_PROFILE_PIC)
     fun requestToGetProfilePicAsync(): Deferred<AppResponse<Any>>

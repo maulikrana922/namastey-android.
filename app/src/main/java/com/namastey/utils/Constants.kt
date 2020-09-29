@@ -213,7 +213,8 @@ object Constants {
     const val REQUEST_SPOTIFY = 1337
     const val REQUEST_CODE_PROFILE = 113
     const val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
-    const val RESULT_CODE_PICK_THUMBNAIL = 104
+    const val RESULT_CODE_PICK_THUMBNAIL = 114
+    const val REQUEST_CODE_CAMERA_IMAGE = 115
 
     private val ROOT = File.separator + "NAMASTEY"
     private val SD_CARD_PATH = Environment.getExternalStorageDirectory().path

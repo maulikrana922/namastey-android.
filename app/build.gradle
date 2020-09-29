@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+// Apply the Crashlytics Gradle plugin
+apply plugin: 'com.google.firebase.crashlytics'
 kapt {
     generateStubs = true
 }
@@ -164,6 +166,9 @@ dependencies {
 //    implementation 'com.henryblue.mxvideoplayer:xvideoplayer:1.2.1'
 
 //    Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+//    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
 }
