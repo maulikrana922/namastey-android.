@@ -37,6 +37,7 @@ import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.listeners.OnFeedItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.CommentBean
 import com.namastey.model.DashboardBean
@@ -61,7 +62,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick {
+class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -697,6 +698,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         openActivity(intent)
     }
 
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
+    }
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
@@ -708,7 +714,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         )
 
-        commentAdapter = CommentAdapter(data, this@DashboardActivity)
+        commentAdapter = CommentAdapter(data, this@DashboardActivity,this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
 

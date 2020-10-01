@@ -54,12 +54,12 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     private var albumList: ArrayList<AlbumBean> = ArrayList()
     private lateinit var albumAdapter: AlbumCreateListAdapter
     private var adapterPosition: Int = 0
-    private val REQUEST_VIDEO_SELECT = 101
     private val REQUEST_CODE_CAMERA = 102
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var videoFile: File? = null
     private var albumBean = AlbumBean()
     private var fromAlbumList = false
+    private var createBlankAlbum = false
 //    private var selectedVideo: Uri = TODO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +80,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
         if (intent.hasExtra("fromAlbumList")) {
             fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
+            createBlankAlbum = fromAlbumList
             createAlbumViewModel.getAlbumList()
         }else {
 //        Default one album create Saved/ uploads
@@ -101,6 +102,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         } else {
             this.albumBean.name = albumBean.name
             this.albumBean.is_created = 0
+            this.albumBean.id = albumBean.id
             albumList[adapterPosition] = this.albumBean
             albumAdapter.notifyItemChanged(adapterPosition)
         }
@@ -124,7 +126,10 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         albumAdapter = AlbumCreateListAdapter(albumList, this@CreateAlbumActivity, this, this)
         rvAlbumList.adapter = albumAdapter
 //        if (fromAlbumList) {
+        if (albumList.size == 0 || createBlankAlbum) {
+            createBlankAlbum = false
             onClickAddAlbum(btnAddAlbum)
+        }
 //        }
     }
 
@@ -362,7 +367,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "video/*"
         intent.action = Intent.ACTION_GET_CONTENT;
-        startActivityForResult(intent, REQUEST_VIDEO_SELECT)
+        startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
     }
 
     private fun captureVideo() {
@@ -422,7 +427,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             if (data != null) {      // Temp need to change
                 createAlbumViewModel.getAlbumList()
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_VIDEO_SELECT) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
 
             if (data != null) {
                 val selectedVideo = data.data
@@ -454,7 +459,8 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                         .setVideoInformationVisibility(true)
                         .setMaxDuration(60)
                         .setMinDuration(6)
-                        .setDestinationPath(Environment.getExternalStorageDirectory().toString() + File.separator + "temp" + File.separator + "Videos" + File.separator)
+                        .setDestinationPath(Environment.getExternalStorageDirectory()
+                            .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator)
 
 //                    val intent =
 //                        Intent(this, TrimmerActivity::class.java)
@@ -631,20 +637,6 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun getResult(uri: Uri) {
         trimmerView.visibility = View.GONE
         Log.d("TrimVideo: ", "getResult : $uri")
-
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(this@CreateAlbumActivity, uri)
-        val time =
-            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val timeInMillisec: Long = time?.toLong() ?: 0
-
-        val path = File(uri.path)
-        val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
-
-        val second = timeInMillisec / 1000
-        Log.d("Video time : ", "Video $time")
-        Log.d("Video time : ", "Video $second")
-        Log.d("Video time : ", "file_size  $file_size ")
 
         videoFile = File(uri.path)
         val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)

@@ -416,7 +416,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 if (selectedVideo != null) {
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
-                    Log.d("Uri Path", Uri.parse(videoPath).toString())
+//                    Log.d("Uri Path", Uri.parse(videoPath).toString())
 
                     val retriever = MediaMetadataRetriever()
 //use one of overloaded setDataSource() functions to set your data source
@@ -529,7 +529,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         intent.putExtra("albumId", albumBean.id)
 //                intent.putExtra("thumbnailImage", pictureFile)
         intent.putExtra("albumBean", albumBean)
-        openActivity(intent)
+        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
 
     }
 

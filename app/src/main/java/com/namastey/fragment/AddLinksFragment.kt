@@ -1,19 +1,12 @@
 package com.namastey.fragment
 
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.facebook.*
@@ -21,7 +14,6 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
@@ -35,19 +27,13 @@ import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
-import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterAuthClient
+import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.fragment_add_links.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import twitter4j.Twitter
-import twitter4j.TwitterFactory
-import twitter4j.auth.AccessToken
-import twitter4j.conf.ConfigurationBuilder
 import javax.inject.Inject
 
 class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInterestView,
@@ -60,14 +46,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var loginManager: LoginManager
     private lateinit var callbackManager: CallbackManager
-    private var spotifyAppRemote: SpotifyAppRemote? = null
     private lateinit var auth: FirebaseAuth
+    lateinit var mTwitterAuthClient: TwitterAuthClient
 
-    //    private val REQUEST_CODE = 1337
-    private lateinit var twitter: Twitter
-    lateinit var twitterDialog: Dialog
-    var accToken: AccessToken? = null
-    var provider: OAuthProvider.Builder = OAuthProvider.newBuilder("twitter.com")
     override fun getLayoutId() = R.layout.fragment_add_links
 
     override fun getBindingVariable() = BR.viewModel
@@ -98,33 +79,27 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         ivCloseAddLink.setOnClickListener(this)
         tvAddLinkSave.setOnClickListener(this)
         tvFacebook.setOnClickListener(this)
-//        tvSpotify.setOnClickListener(this)
         edtSpotify.setOnClickListener(this)
         edtTwitter.setOnClickListener(this)
     }
 
     private fun initData() {
 
-        // Set the connection parameters
-//        val connectionParams = ConnectionParams.Builder(getString(R.string.spotify_client_id))
-//            .setRedirectUri(getString(R.string.spotify_redirect_uri))
-//            .showAuthView(true)
-//            .build()
-//
-//        SpotifyAppRemote.connect(requireActivity(), connectionParams, object : Connector.ConnectionListener {
-//            override fun onConnected(appRemote: SpotifyAppRemote) {
-//                spotifyAppRemote = appRemote
-//                Log.d("Social Login", "Connected! Yay!")
-//                // Now you can start interacting with App Remote
-//
-//            }
-//
-//            override fun onFailure(throwable: Throwable) {
-//                Log.e("Social Login", throwable.message, throwable)
-//                // Something went wrong when attempting to connect! Handle errors here
-//            }
-//        })
+        val config = TwitterConfig.Builder(requireActivity())
+            .logger(DefaultLogger(Log.DEBUG))//enable logging when app is in debug mode
+            .twitterAuthConfig(
+                TwitterAuthConfig(
+                    Constants.TwitterConstants.CONSUMER_KEY,
+                    Constants.TwitterConstants.CONSUMER_SECRET
+                )
+            )
+            //pass the created app Consumer KEY and Secret also called API Key and Secret
+            .debug(true)//enable debug mode
+            .build()
 
+        Twitter.initialize(config)
+
+        mTwitterAuthClient = TwitterAuthClient()
         //For facebook used initializer
         callbackManager =
             CallbackManager.Factory.create()
@@ -172,14 +147,6 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         }
     }
 
-
-    override fun onStop() {
-        super.onStop()
-//        spotifyAppRemote?.let {
-//            SpotifyAppRemote.disconnect(it)
-//        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -224,9 +191,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             }
 
             edtTwitter -> {
-//                twitterLogin()
-//                getRequestToken()
+                twitterLogin()
             }
+
             edtSpotify -> {
                 val builder: AuthenticationRequest.Builder =
                     AuthenticationRequest.Builder(
@@ -395,6 +362,10 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (mTwitterAuthClient != null) {
+            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+        }
+
         if (requestCode == Constants.REQUEST_SPOTIFY) {
             val response =
                 AuthenticationClient.getResponse(resultCode, data)
@@ -415,148 +386,57 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
-//    private fun twitterLogin(){
-//        val pendingResultTask: Task<AuthResult> = firebaseAuth.getPendingAuthResult()
-//        if (pendingResultTask != null) {
-//            // There's something already here! Finish the sign-in for your user.
-//            pendingResultTask
-//                .addOnSuccessListener(
-//                    object : OnSuccessListener<AuthResult?>() {
-//                        fun onSuccess(authResult: AuthResult?) {
-//                            // User is signed in.
-//                            // IdP data available in
-//                            // authResult.getAdditionalUserInfo().getProfile().
-//                            // The OAuth access token can also be retrieved:
-//                            // authResult.getCredential().getAccessToken().
-//                            // The OAuth secret can be retrieved by calling:
-//                            // authResult.getCredential().getSecret().
-//                        }
-//                    })
-//                .addOnFailureListener(
-//                    object : OnFailureListener() {
-//                        fun onFailure(@NonNull e: Exception?) {
-//                            // Handle failure.
-//                        }
-//                    })
-//        } else {
-//            // There's no pending result so you need to start the sign-in flow.
-//            // See below.
-//        }
-//    }
+    private fun twitterLogin() {
 
-    private fun getRequestToken() {
-        GlobalScope.launch(Dispatchers.Default) {
-            val builder = ConfigurationBuilder()
-                .setDebugEnabled(true)
-                .setOAuthConsumerKey(Constants.TwitterConstants.CONSUMER_KEY)
-                .setOAuthConsumerSecret(Constants.TwitterConstants.CONSUMER_SECRET)
-                .setIncludeEmailEnabled(true)
-            val config = builder.build()
-            val factory = TwitterFactory(config)
-            twitter = factory.instance
-            try {
-                val requestToken = twitter.oAuthRequestToken
-                withContext(Dispatchers.Main) {
-                    setupTwitterWebviewDialog(requestToken.authorizationURL)
+        if (getTwitterSession() == null) {
+            mTwitterAuthClient!!.authorize(requireActivity(), object : Callback<TwitterSession>() {
+                override fun success(twitterSessionResult: Result<TwitterSession>) {
+                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
+                    val twitterSession = twitterSessionResult.data
+                    fetchUserProfile(twitterSession)
                 }
-            } catch (e: IllegalStateException) {
-                Log.e("ERROR: ", e.toString())
-            }
+
+                override fun failure(e: TwitterException) {
+                    Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    fun setupTwitterWebviewDialog(url: String) {
-        twitterDialog = Dialog(requireActivity())
-        val webView = WebView(requireActivity())
-        webView.isVerticalScrollBarEnabled = false
-        webView.isHorizontalScrollBarEnabled = false
-        webView.webViewClient = TwitterWebViewClient()
-        webView.settings.javaScriptEnabled = true
-        webView.loadUrl(url)
-        twitterDialog.setContentView(webView)
-        twitterDialog.show()
+    fun fetchUserProfile(twitterSession: TwitterSession?) {
+        val twitterApiClient = TwitterApiClient(twitterSession)
+        val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
+        getUserCall.enqueue(object : Callback<User?>() {
+
+            override fun failure(exception: TwitterException) {
+                Log.e("Twitter", "Failed to get user data " + exception.message)
+            }
+
+            override fun success(result: Result<User?>?) {
+                val user: User = result!!.data!!
+                Log.d(
+                    "Twitter url : ",
+                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
+                )
+                edtTwitter.setText(
+                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
+                )
+
+            }
+        })
     }
 
-    // A client to know about WebView navigations
-    // For API 21 and above
-    @Suppress("OverridingDeprecatedMember")
-    inner class TwitterWebViewClient : WebViewClient() {
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        override fun shouldOverrideUrlLoading(
-            view: WebView?,
-            request: WebResourceRequest?
-        ): Boolean {
-            if (request?.url.toString().startsWith(Constants.TwitterConstants.CALLBACK_URL)) {
-                Log.d("Authorization URL: ", request?.url.toString())
-                handleUrl(request?.url.toString())
+    private fun getTwitterSession(): TwitterSession? {
 
-                // Close the dialog after getting the oauth_verifier
-                if (request?.url.toString().contains(Constants.TwitterConstants.CALLBACK_URL)) {
-                    twitterDialog.dismiss()
-                }
-                return true
-            }
-            return false
-        }
+        //NOTE : if you want to get token and secret too use uncomment the below code
+        /*TwitterAuthToken authToken = session.getAuthToken();
+        String token = authToken.token;
+        String secret = authToken.secret;*/
 
-        // For API 19 and below
-        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-            if (url.startsWith(Constants.TwitterConstants.CALLBACK_URL)) {
-                Log.d("Authorization URL: ", url)
-                handleUrl(url)
+        if (TwitterCore.getInstance().sessionManager.activeSession != null)
+            TwitterCore.getInstance().sessionManager.clearActiveSession()
 
-                // Close the dialog after getting the oauth_verifier
-                if (url.contains(Constants.TwitterConstants.CALLBACK_URL)) {
-                    twitterDialog.dismiss()
-                }
-                return true
-            }
-            return false
-        }
-
-        // Get the oauth_verifier
-        private fun handleUrl(url: String) {
-            val uri = Uri.parse(url)
-            val oauthVerifier = uri.getQueryParameter("oauth_verifier") ?: ""
-            GlobalScope.launch(Dispatchers.Main) {
-                accToken =
-                    withContext(Dispatchers.IO) { twitter.getOAuthAccessToken(oauthVerifier) }
-                getUserProfile()
-            }
-        }
-    }
-
-    suspend fun getUserProfile() {
-        val usr = withContext(Dispatchers.IO) { twitter.verifyCredentials() }
-
-        //Twitter Id
-        val twitterId = usr.id.toString()
-        Log.d("Twitter Id: ", twitterId)
-
-        //Twitter Handle
-        val twitterHandle = usr.screenName
-        Log.d("Twitter Handle: ", twitterHandle)
-
-        //Twitter Name
-        val twitterName = usr.name
-        Log.d("Twitter Name: ", twitterName)
-
-        //Twitter Email
-        val twitterEmail = usr.email
-        Log.d(
-            "Twitter Email: ",
-            twitterEmail
-                ?: "'Request email address from users' on the Twitter dashboard is disabled"
-        )
-
-        // Twitter Profile Pic URL
-        val twitterProfilePic = usr.profileImageURLHttps.replace("_normal", "")
-        Log.d("Twitter Profile URL: ", twitterProfilePic)
-
-        // Twitter Access Token
-        Log.d("Twitter Access Token", accToken?.token ?: "")
-
+        return TwitterCore.getInstance().sessionManager.activeSession
     }
 
     override fun onDestroy() {

@@ -33,6 +33,7 @@ import com.namastey.adapter.UpnextVideoAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
@@ -59,7 +60,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
-    OnItemClick {
+    OnItemClick,OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -132,7 +133,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             )
         )
 
-        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity)
+        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity,this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
 
@@ -289,6 +290,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onVideoClick() {
         groupUpnext.visibility = View.GONE
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
     }
 
     override fun onUpnextClick(position: Int) {

@@ -140,6 +140,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      */
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
         albumList = arrayList
+        if (albumList.any { albumBean -> albumBean.name == getString(R.string.saved) }) {
+            albumList.remove(albumList.single { s -> s.name == getString(R.string.saved) })
+        }
     }
 
     override fun onBackPressed() {

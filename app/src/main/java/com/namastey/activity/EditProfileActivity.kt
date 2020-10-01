@@ -168,7 +168,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
         super.onActivityResult(requestCode, resultCode, data)
         Log.e("Social Login", "response.accessToken")
 
-        if (requestCode == Constants.REQUEST_SPOTIFY){
+//        if (requestCode == Constants.REQUEST_SPOTIFY){
             try {
                 val fm: FragmentManager = supportFragmentManager
                 if (fm.fragments.size > 0) {
@@ -183,6 +183,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
                 Log.d("Error: ", "error")
             }
 
-        }
+//        }
     }
 }

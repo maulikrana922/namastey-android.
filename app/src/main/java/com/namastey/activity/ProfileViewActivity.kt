@@ -2,6 +2,7 @@ package com.namastey.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -200,12 +201,49 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                 }
                 getString(R.string.spotify) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_spotify)
+                    ivSocialIcon.setOnClickListener{
+
+                        var intent =
+                            packageManager.getLaunchIntentForPackage("com.spotify.music")
+                        if (intent != null) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(socialBean.link)
+                                )
+                            )
+                        }else{
+                            intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse("market://details?id=com.spotify.music")
+                            startActivity(intent)
+                        }
+                    }
                 }
                 getString(R.string.linkedin) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_linkedin)
                 }
                 getString(R.string.twitter) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_share_twitter)
+                    ivSocialIcon.setOnClickListener {
+                        try {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(socialBean.link)
+                                )
+                            )
+                        } catch (e: java.lang.Exception) {
+                            val index = socialBean.link.indexOf('=')
+                            val name: String? = if (index == -1) "" else socialBean.link
+                                .substring(index + 1)
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://twitter.com/".plus(name))
+                                )
+                            )
+                        }
+                    }
                 }
             }
             chipProfileSocial.addView(ivSocialIcon)
