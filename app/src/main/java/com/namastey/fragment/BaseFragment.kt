@@ -174,6 +174,16 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
+
+    fun openActivityForResult(
+        activity: Activity,
+        intent: Intent,
+        resultCode: Int
+    ) {
+        startActivityForResult(intent,resultCode)
+        activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
     /**
      * Remove all fragment from stack
      */

@@ -17,6 +17,7 @@ import dagger.Provides
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -42,6 +43,7 @@ class NetworkModule {
             .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor(interceptor)
             .cache(cache)
             .build()
@@ -101,7 +103,8 @@ class NetworkModule {
                 )
                 .build()
             val response = chain.proceed(request)
-//            Log.d("Response --> " , response.body().toString())
+//            Log.e("Request URL--> " , request.url().toString())
+//            Log.e("Response " , "-->".plus(response.body())
             //json response --> response.body().string();
             // Customize or return the response
             response

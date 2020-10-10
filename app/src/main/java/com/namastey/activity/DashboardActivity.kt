@@ -62,7 +62,8 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,OnSelectUserItemClick {
+class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
+    OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -72,6 +73,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
     private lateinit var dashboardViewModel: DashboardViewModel
     private var feedList: ArrayList<DashboardBean> = ArrayList()
+    private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
     private lateinit var commentAdapter: CommentAdapter
     private val PERMISSION_REQUEST_CODE = 101
@@ -465,11 +467,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
      * Success of get category list
      */
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        this.categoryBeanList = categoryBeanList
         tvDiscover.visibility = View.VISIBLE
-        val categoryAdapter = CategoryAdapter(categoryBeanList, this)
-        val horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
+        val categoryAdapter = CategoryAdapter(this.categoryBeanList, this)
+        val horizontalLayout = LinearLayoutManager(
             this@DashboardActivity,
-            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.HORIZONTAL,
             false
         )
         rvCategory.layoutManager = horizontalLayout
@@ -703,6 +706,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         intent.putExtra(Constants.USER_ID, userId)
         openActivity(intent)
     }
+
+    override fun onPostViewer(postId: Long) {
+        dashboardViewModel.postView(postId)
+    }
+
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
@@ -714,7 +722,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         )
 
-        commentAdapter = CommentAdapter(data, this@DashboardActivity,this)
+        commentAdapter = CommentAdapter(data, this@DashboardActivity, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
 
@@ -904,6 +912,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     fun onClickDiscover(view: View) {
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+        intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
     }
 }

@@ -60,7 +60,8 @@ class CategoryAdapter(
                         SelectFilterFragment.getInstance(
                             categoryList[position].sub_category,
                             categoryList[position].startColor,
-                            categoryList[position].endColor
+                            categoryList[position].endColor,
+                            categoryList
                         ),
                         Constants.SELECT_FILTER_FRAGMENT
                     )
@@ -71,7 +72,8 @@ class CategoryAdapter(
                             SelectFilterFragment.getInstance(
                                 categoryList[position].sub_category,
                                 categoryList[position].startColor,
-                                categoryList[position].endColor
+                                categoryList[position].endColor,
+                                categoryList
                             ),
                             Constants.SELECT_FILTER_FRAGMENT
                         )

@@ -66,6 +66,8 @@ object Constants {
     const val REPORT_USER = "report-user"
     const val BLOCK_USER = "block-user"
     const val SAVE_POST = "save-post"
+    const val GET_TREDING_VIDEOS = "treding-videos"
+    const val POST_VIEWERS = "post-viewers"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

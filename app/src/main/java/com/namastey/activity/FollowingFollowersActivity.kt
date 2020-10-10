@@ -213,9 +213,9 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         followFollowersViewModel.onDestroy()
     }
 
-    override fun onItemClick(userId: Long, position: Int) {
+    override fun onItemClick(value: Long, position: Int) {
         val intent = Intent(this@FollowingFollowersActivity, ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USER_ID, userId)
+        intent.putExtra(Constants.USER_ID, value)
         openActivity(intent)
     }
 

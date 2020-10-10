@@ -17,12 +17,12 @@ class CategoryBean() : Parcelable {
     var endColor: String = ""
 
     constructor(parcel: Parcel) : this() {
-        parcel.readInt()
-        parcel.readString() ?: ""
-        parcel.createTypedArrayList(CREATOR) ?: ArrayList()
+        id = parcel.readInt()
+        name = parcel.readString() ?: ""
+        sub_category = parcel.createTypedArrayList(CREATOR) ?: ArrayList()
         is_selected = parcel.readInt()
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
+        startColor = parcel.readString() ?: ""
+        endColor = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

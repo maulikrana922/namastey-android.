@@ -1,6 +1,7 @@
 package com.namastey.viewModel
 
 import android.os.Handler
+import com.namastey.activity.SplashActivity
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -14,8 +15,8 @@ class SplashViewModel constructor(
 
     private var splashNavigatorView: SplashNavigatorView = baseView as SplashNavigatorView
 
-    fun nextScreen(isLogin: Boolean) {
-        Handler().postDelayed({
+    fun nextScreen(splashActivity: SplashActivity, isLogin: Boolean) {
+        Handler(splashActivity.mainLooper).postDelayed({
             if (isLogin) {
                 splashNavigatorView.openMainActivity()
             } else {

@@ -19,8 +19,6 @@ class SelectCategoryAdapter(
     var onCategoryItemClick: OnCategoryItemClick,
     var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<SelectCategoryAdapter.ViewHolder>() {
-    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
-    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(

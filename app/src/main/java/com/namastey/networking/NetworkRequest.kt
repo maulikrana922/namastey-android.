@@ -231,4 +231,12 @@ interface NetworkRequest {
         @Header("Authorization") authHeader: String
     ): Deferred<AppResponseSpotify<SpotifyBean>>
 
+    @GET(Constants.GET_TREDING_VIDEOS)
+    fun requestToGetTredingListAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.POST_VIEWERS)
+    fun requestToPostViewAsync(
+        @Field(Constants.POST_ID) postId: Long
+    ): Deferred<AppResponse<Any>>
 }

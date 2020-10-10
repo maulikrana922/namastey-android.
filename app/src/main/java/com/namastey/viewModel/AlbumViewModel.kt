@@ -1,6 +1,5 @@
 package com.namastey.viewModel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.namastey.R
 import com.namastey.networking.NetworkService
@@ -26,6 +25,7 @@ class AlbumViewModel constructor(
     fun setDownloading(downloading: Boolean) {
         _downloading.value = downloading
     }
+
     fun getAlbumList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -45,6 +45,7 @@ class AlbumViewModel constructor(
         }
 
     }
+
     fun getCommentList(postId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -67,6 +68,7 @@ class AlbumViewModel constructor(
             }
         }
     }
+
     fun addComment(postId: Long, edtComment: String) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -85,6 +87,7 @@ class AlbumViewModel constructor(
             }
         }
     }
+
     fun deleteComment(commentId: Long) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -103,6 +106,7 @@ class AlbumViewModel constructor(
             }
         }
     }
+
     fun savePost(postId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -126,6 +130,7 @@ class AlbumViewModel constructor(
         }
 
     }
+
     fun reportUser(reportUserId: Long, reason: String) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -171,6 +176,25 @@ class AlbumViewModel constructor(
             }
         }
     }
+
+    fun postView(postId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToPostView(postId).let { appResponse ->
+
+                    }
+                } else {
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                albumView.onHandleException(t)
+            }
+        }
+
+    }
+
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

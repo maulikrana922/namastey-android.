@@ -244,14 +244,17 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetSuggestListAsync().await()
         }
 
-    suspend fun requestToFollowMultipleUser(selectUserIdList: String, isFollow: Int): AppResponse<Any> =
+    suspend fun requestToFollowMultipleUser(
+        selectUserIdList: String,
+        isFollow: Int
+    ): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowMultipleUserAsync(selectUserIdList, isFollow).await()
         }
 
     suspend fun requestToReportUser(reportUserId: Long, reason: String): AppResponse<Any> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToreportUserAsync(reportUserId,reason).await()
+            networkRequest.requestToreportUserAsync(reportUserId, reason).await()
         }
 
     suspend fun requestToBlockUser(userId: Long): AppResponse<Any> =
@@ -266,6 +269,17 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestToGetSpotifyLink(token: String): AppResponseSpotify<SpotifyBean> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetSpotifyLinkAsync(Constants.SPOTIFY_PROFILE_URL, token).await()
+            networkRequest.requestToGetSpotifyLinkAsync(Constants.SPOTIFY_PROFILE_URL, token)
+                .await()
+        }
+
+    suspend fun requestToGetTredingVideo(): AppResponse<ArrayList<VideoBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetTredingListAsync().await()
+        }
+
+    suspend fun requestToPostView(postId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToPostViewAsync(postId).await()
         }
 }

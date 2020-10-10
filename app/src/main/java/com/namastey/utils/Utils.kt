@@ -52,20 +52,6 @@ object Utils {
         v.background = shape
     }
 
-    fun rectangleShapeGradient(v: View, startColor: Int, endColor: Int) {
-        val gd = GradientDrawable(
-            GradientDrawable.Orientation.TR_BL,
-            intArrayOf(
-                startColor,
-                endColor
-            )
-        )
-
-        gd.shape = GradientDrawable.RECTANGLE
-        gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
-        v.background = gd
-    }
-
     fun rectangleShapeGradient(v: View, intArrayOf: IntArray) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,

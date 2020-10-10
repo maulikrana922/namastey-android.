@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
+import com.namastey.listeners.OnItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_filter_category.view.*
@@ -18,8 +19,8 @@ class FilterCategoryAdapter(
     var onCategoryItemClick: OnCategoryItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder>() {
 
-    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
-    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
+//    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
+//    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
     var lastSelectedPos = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -44,12 +45,14 @@ class FilterCategoryAdapter(
                 tvFilterCategory.setTextColor(Color.WHITE)
 
                 Utils.rectangleShapeGradient(
-                    tvFilterCategory, gradient_color_start[position % 6],
-                    gradient_color_end[position % 6]
+                    tvFilterCategory, intArrayOf(
+                        Color.parseColor(categoryList[position].startColor),
+                        Color.parseColor(categoryList[position].endColor)
+                    )
                 )
             } else {
                 tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[position % 6])
+                Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[position].endColor))
 
             }
 
@@ -59,15 +62,18 @@ class FilterCategoryAdapter(
                     tvFilterCategory.setTextColor(Color.WHITE)
 
                     Utils.rectangleShapeGradient(
-                        tvFilterCategory, gradient_color_start[position % 6],
-                        gradient_color_end[position % 6]
+                        tvFilterCategory, intArrayOf(
+                            Color.parseColor(categoryList[position].startColor),
+                            Color.parseColor(categoryList[position].endColor)
+                        )
                     )
+                    onCategoryItemClick.onSubCategoryItemClick(position)
                     // Added this condition because of no need to reload entire adapter
                     notifyItemChanged(position)
                     if (lastSelectedPos != -1){
                         categoryList[lastSelectedPos].is_selected = 0
                         tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                        Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[lastSelectedPos % 6])
+                        Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[lastSelectedPos].endColor))
                         notifyItemChanged(lastSelectedPos)
                     }
                     lastSelectedPos = position
@@ -75,9 +81,9 @@ class FilterCategoryAdapter(
                     lastSelectedPos = -1
                     categoryList[position].is_selected = 0
                     tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                    Utils.rectangleShapeBorder(tvFilterCategory, gradient_color_end[position % 6])
+                    Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[position].endColor))
                 }
-                onCategoryItemClick.onCategoryItemClick(categoryList.get(position))
+                onCategoryItemClick.onCategoryItemClick(categoryList[position])
             }
         }
 

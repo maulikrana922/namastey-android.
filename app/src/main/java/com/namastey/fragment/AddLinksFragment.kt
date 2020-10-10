@@ -34,6 +34,7 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.fragment_add_links.*
+import org.json.JSONException
 import javax.inject.Inject
 
 class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInterestView,
@@ -274,61 +275,64 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d("TAG", "signInWithCredential:success")
                                 val user = auth.currentUser
-//                                updateUI(user)
-                                val graphRequest = GraphRequest(
-                                    loginResult.accessToken,
-                                    "/{user-link}/",
-                                    null,
-                                    HttpMethod.GET,
-                                    GraphRequest.Callback { /* handle the result */ response: GraphResponse? ->
-                                        Log.d("Facebook Response ", response.toString())
-
-                                    }
-                                )
-                                val parameters = Bundle()
-                                parameters.putString("fields", "id,link")
-                                graphRequest.parameters = parameters
-                                graphRequest.executeAsync()
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w("TAG", "signInWithCredential:failure", task.exception)
-                                Toast.makeText(
-                                    requireActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-//                                updateUI(null)
+                                Log.d("TAG", "signInWithCredential:success")
+//                                val graphRequest = GraphRequest(
+//                                    loginResult.accessToken,
+//                                    "/user",
+//                                    null,
+//                                    HttpMethod.GET,
+//                                    GraphRequest.Callback { /* handle the result */ response: GraphResponse? ->
+//                                        Log.d("Facebook Response ", response.toString())
+//
+//                                    }
+//                                )
+//                                val parameters = Bundle()
+//                                parameters.putString("fields", "id,user_link")
+//                                graphRequest.parameters = parameters
+//                                graphRequest.executeAsync()
+//                            } else {
+//                                // If sign in fails, display a message to the user.
+//                                Log.w("TAG", "signInWithCredential:failure", task.exception)
+//                                Toast.makeText(
+//                                    requireActivity(), "Authentication failed.",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
                             }
 
                             // ...
                         }
 
 
-//                    val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
-//                    { jsonObj, _ ->
-//                        if (jsonObj != null) {
-//                            try {
-////                               var providerId = jsonObj.getString("id")
-//
-//                                if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
-//                                    val userLink = jsonObj.getString("link")
-//                                    edtFacebook.setText(userLink)
+                    val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
+                    { jsonObj, _ ->
+                        if (jsonObj != null) {
+                            try {
+//                               var providerId = jsonObj.getString("id")
+
+                                Log.d("Facebook resposne : ", jsonObj.toString())
+//                                if (jsonObj.has("id")){
+//                                    edtFacebook.setText("fb://profile/".plus(jsonObj.getInt("id")))
+////                                    edtFacebook.setText("https://www.facebook.com/".plus(jsonObj.getInt("id")))
 //                                }
-//                            } catch (e: JSONException) {
-//                                e.printStackTrace()
-//                                Toast.makeText(
-//                                    activity,
-//                                    "" + e.printStackTrace(),
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//                        }
-//                    }
-//                    val parameters = Bundle()
-//                    parameters.putString("fields", "id,link")
-//                    graphRequest.parameters = parameters
-//                    graphRequest.executeAsync()
+                                if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
+                                    val userLink = jsonObj.getString("link")
+                                    edtFacebook.setText(userLink)
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                                Toast.makeText(
+                                    activity,
+                                    "" + e.printStackTrace(),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                    val parameters = Bundle()
+                    parameters.putString("fields", "id,link")
+                    graphRequest.parameters = parameters
+                    graphRequest.executeAsync()
                 }
 
                 override fun onCancel() {
@@ -360,6 +364,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
         if (mTwitterAuthClient != null) {
@@ -383,7 +388,6 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             }
         }
 
-        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun twitterLogin() {

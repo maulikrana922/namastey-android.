@@ -188,6 +188,24 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
             when (socialBean.name) {
                 getString(R.string.facebook) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_facebook)
+                    ivSocialIcon.setOnClickListener{
+                        val intent =
+                            packageManager.getLaunchIntentForPackage("com.facebook.katana")
+                        if (intent != null) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("fb://profile/".plus(socialBean.link))
+//                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+                                )
+                            )
+                        }
+//                        else{
+//                            intent = Intent(Intent.ACTION_VIEW)
+//                            intent.data = Uri.parse("market://details?id=com.spotify.music")
+//                            startActivity(intent)
+//                        }
+                    }
                 }
                 getString(R.string.instagram) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_instagram)

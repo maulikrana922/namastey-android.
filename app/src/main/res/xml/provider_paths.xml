@@ -8,6 +8,9 @@
 <!--        name="my_video"-->
 <!--        path="."/>-->
 
+<!--    <external-path-->
+<!--        name="storage/emulated/0"-->
+<!--        path="." />-->
     <external-path
         name="external"
         path="." />

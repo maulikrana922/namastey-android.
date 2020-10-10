@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
+import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityPostVideoBinding
@@ -386,6 +387,13 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //                )
 
             val videoUri = Uri.fromFile(videoFile)
+//            val uri = let {
+//                FileProvider.getUriForFile(
+//                    it,
+//                    "${BuildConfig.APPLICATION_ID}.provider",
+//                    videoFile!!
+//                )
+//            }
             startActivityForResult(
                 ThumbyActivity.getStartIntent(this, videoUri),
                 Constants.RESULT_CODE_PICK_THUMBNAIL

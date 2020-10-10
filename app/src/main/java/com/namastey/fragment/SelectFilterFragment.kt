@@ -1,8 +1,10 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -21,7 +23,7 @@ import javax.inject.Inject
 
 
 class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), SelectFilterView,
-    View.OnClickListener {
+    View.OnClickListener, SubCategoryAdapter.OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -35,13 +37,15 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         fun getInstance(
             subCategoryList: ArrayList<CategoryBean>,
             startColor: String,
-            endColor: String
+            endColor: String,
+            mainCategoryList: ArrayList<CategoryBean>
         ) =
             SelectFilterFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("subCategoryList", subCategoryList)
                     putString("startColor", startColor)
                     putString("endColor", endColor)
+                    putSerializable("categoryList", mainCategoryList)
                 }
             }
     }
@@ -74,7 +78,7 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
                 arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
 
             rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-            val subCategoryAdapter = SubCategoryAdapter(subCategoryList, activity!!)
+            val subCategoryAdapter = SubCategoryAdapter(subCategoryList, requireActivity(), this)
             rvSelectFilter.adapter = subCategoryAdapter
 
             val gd = GradientDrawable(
@@ -92,7 +96,6 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     }
 
-
     private fun setupViewModel() {
         selectFilterViewModel = ViewModelProviders.of(this, viewModelFactory).get(
             SelectFilterViewModel::class.java
@@ -106,7 +109,14 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     override fun onClick(v: View?) {
         when (v) {
             ivSelectFilter -> {
-                openActivityWithResultCode(requireActivity(), FilterActivity(), Constants.FILTER_OK)
+                val intent = Intent(requireActivity(), FilterActivity::class.java)
+                if (arguments!!.containsKey("categoryList")) {
+                    intent.putExtra(
+                        "categoryList",
+                        arguments!!.getSerializable("categoryList") as ArrayList<*>
+                    )
+                }
+                openActivityForResult(requireActivity(), intent, Constants.FILTER_OK)
             }
             mainSelectFilterView -> {
                 requireActivity().supportFragmentManager.popBackStack()
@@ -114,5 +124,7 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         }
     }
 
-
+    override fun onItemClick(subCategoryId: Int) {
+        Log.d("Subcategory : ", subCategoryId.toString())
+    }
 }

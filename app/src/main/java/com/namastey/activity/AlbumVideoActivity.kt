@@ -292,6 +292,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         groupUpnext.visibility = View.GONE
     }
 
+    override fun onPostViewer(postId: Long) {
+        albumViewModel.postView(postId)
+    }
+
     override fun onSelectItemClick(userId: Long, position: Int) {
         val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)

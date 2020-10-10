@@ -1,6 +1,5 @@
 package com.namastey.listeners
 
-import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 
 interface OnVideoClick {
@@ -9,4 +8,6 @@ interface OnVideoClick {
     fun onVideoClick()
     fun onCommentClick(postId: Long)
     fun onShareClick(videoBean: VideoBean)
+    fun onPostViewer(postId: Long)
+
 }

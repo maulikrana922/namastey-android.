@@ -22,6 +22,7 @@ class ThumbyActivity : AppCompatActivity() {
             val intent = Intent(context, ThumbyActivity::class.java)
             intent.putExtra(EXTRA_URI, uri)
             intent.putExtra(EXTRA_THUMBNAIL_POSITION, thumbnailPosition)
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return intent
         }
     }

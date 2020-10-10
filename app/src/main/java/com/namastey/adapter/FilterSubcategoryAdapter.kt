@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
-import com.namastey.model.InterestBean
-import com.namastey.utils.GlideLib
-import kotlinx.android.synthetic.main.row_choose_interest.view.*
+import com.namastey.model.CategoryBean
+import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
 
 class FilterSubcategoryAdapter(
-    var interestList: ArrayList<InterestBean>,
+    var subCategoryList: ArrayList<CategoryBean>,
     var activity: Context,
     var onImageItemClick: OnImageItemClick,
     var isDisplayCkb: Boolean
@@ -24,33 +22,23 @@ class FilterSubcategoryAdapter(
         )
     )
 
-    override fun getItemCount() = interestList.size
+    override fun getItemCount() = subCategoryList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvInterstTitle.text = interestList.get(position).interest_name
+            tvSubCategory.text = subCategoryList[position].name
 
-            GlideLib.loadImage(activity,ivInterest,interestList.get(position).image)
+//            GlideLib.loadImage(activity,ivInterest,subCategoryList.get(position).image)
 
             view.alpha = 0.3f
             videoSelectMain.setOnClickListener {
-                if (isDisplayCkb){
-                    if (ivVideoCheck.visibility == View.VISIBLE){
-                        view.alpha = 0.3f
-                        ivVideoCheck.visibility = View.GONE
-                        --ChooseInterestFragment.noOfSelectedImage
-                    }else{
-                        view.alpha = 0.5f
-                        ivVideoCheck.visibility = View.VISIBLE
-                        ++ChooseInterestFragment.noOfSelectedImage
-                    }
-                }
-                onImageItemClick.onImageItemClick(interestList.get(position))
+//                onImageItemClick.onImageItemClick(subCategoryList.get(position))
             }
 
         }

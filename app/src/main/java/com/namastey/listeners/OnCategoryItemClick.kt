@@ -5,5 +5,5 @@ import com.namastey.model.CategoryBean
 interface OnCategoryItemClick {
 
     fun onCategoryItemClick(categoryBean: CategoryBean)
-
+    fun onSubCategoryItemClick(position: Int)
 }

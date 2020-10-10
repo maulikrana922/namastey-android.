@@ -10,4 +10,5 @@ interface OnFeedItemClick {
     fun onProfileLikeClick(position: Int,likedUserId: Long, isLike: Int)
     fun onUserProfileClick(userId: Long)
     fun onClickFollow(position: Int, userId: Long, isFollow: Int)
+    fun onPostViewer(postId: Long)
 }

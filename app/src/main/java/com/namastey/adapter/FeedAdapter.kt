@@ -1,6 +1,9 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.media.MediaPlayer
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +22,7 @@ class FeedAdapter(
     var onFeedItemClick: OnFeedItemClick,
     var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+    val handlerVideo =  Handler(activity.mainLooper)
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -37,6 +41,8 @@ class FeedAdapter(
 
         fun bind(position: Int) = with(itemView) {
             val dashboardBean = feedList[position]
+
+            handlerVideo.removeCallbacksAndMessages(null)
 
             if (!dashboardBean.video_url.isNullOrEmpty()) {
 //                postVideo.setVideoPath(dashboardBean.video_url)
@@ -58,8 +64,13 @@ class FeedAdapter(
                 postVideo.setOnPreparedListener { mp ->
                     //Start Playback
                     postVideo.start()
+
+                    handlerVideo.postDelayed({
+                        onFeedItemClick.onPostViewer(dashboardBean.id)
+                    }, 5000)
+
                     //Loop Video
-                    mp!!.isLooping = true;
+                    mp!!.isLooping = true
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class AlbumVideoAdapter(
     var sessionManager: SessionManager
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumVideoAdapter.ViewHolder>() {
     private val viewPool = RecyclerView.RecycledViewPool()
+    val handlerVideo = Handler(activity.mainLooper)
 
     var isDisplayDetails = true
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -39,8 +41,8 @@ class AlbumVideoAdapter(
 
         fun bind(position: Int) = with(itemView) {
             val videoBean = videoList[position]
+            handlerVideo.removeCallbacksAndMessages(null)
 
-//            GlideLib.loadImage(activity,ivVideoThumb,videoBean.cover_image_url)
             if (!videoBean.video_url.isNullOrEmpty()) {
 
                 postVideo.setVideoPath(videoBean.video_url)
@@ -54,6 +56,10 @@ class AlbumVideoAdapter(
 //                    ivVideoThumb.visibility = View.GONE
 
                     postVideo.start()
+                    handlerVideo.postDelayed({
+                        onVideoClick.onPostViewer(videoBean.id)
+                    }, 5000)
+
                     //Loop Video
                     mp!!.isLooping = true
                 }
@@ -115,7 +121,7 @@ class AlbumVideoAdapter(
                 if (!sessionManager.isGuestUser())
                     onVideoClick.onCommentClick(videoBean.id)
             }
-            tvFeedShare.setOnClickListener{
+            tvFeedShare.setOnClickListener {
                 onVideoClick.onShareClick(videoBean)
             }
 

@@ -1,10 +1,7 @@
 package com.namastey.activity
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -12,7 +9,6 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySplashBinding
 import com.namastey.uiView.SplashNavigatorView
 import com.namastey.utils.SessionManager
-import com.namastey.utils.SplashView
 import com.namastey.utils.SplashView.ISplashListener
 import com.namastey.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -89,7 +85,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         activitySplashBinding = bindViewData()
         activitySplashBinding.viewModel = splashViewModel
 
-        splashViewModel.nextScreen(sessionManager.isLoginUser())
+        splashViewModel.nextScreen(this@SplashActivity,sessionManager.isLoginUser())
 
     }
 }

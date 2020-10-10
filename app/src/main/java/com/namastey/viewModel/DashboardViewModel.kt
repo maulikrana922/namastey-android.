@@ -247,4 +247,21 @@ class DashboardViewModel constructor(
         }
 
     }
+
+    fun postView(postId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToPostView(postId).let { appResponse ->
+
+                    }
+                } else {
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+
+    }
 }

@@ -1,12 +1,16 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.adapter.*
+import com.namastey.adapter.AlbumDetailAdapter
+import com.namastey.adapter.FilterCategoryAdapter
+import com.namastey.adapter.FilterSubcategoryAdapter
+import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
 import com.namastey.listeners.*
@@ -31,8 +35,9 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
     private lateinit var activityFilterBinding: ActivityFilterBinding
     private lateinit var filterViewModel: FilterViewModel
 
-    private lateinit var trandingsUserAdapter: TrandingsUserAdapter
+    //    private lateinit var trandingsUserAdapter: TrandingsUserAdapter
     private var trandingList: ArrayList<User> = ArrayList()
+    private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var filterSubcategoryAdapter: FilterSubcategoryAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private var userList = ArrayList<DashboardBean>()
@@ -53,12 +58,45 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
 
     private fun initData() {
 
-        // Temp for UI
-        setTrandingList()
-        setCategoryList()
-        setInterestList()
-        setUserList()
+        searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                    rvFilterSearch.visibility = View.VISIBLE
+                    filterViewModel.getSearchUser(newText.trim())
+                } else
+                    rvFilterSearch.visibility = View.GONE
+                return true
+            }
+        })
+
+        filterViewModel.getTredingVideoList()
+        setCategoryList()
+
+    }
+
+    override fun onSuccessSearchList(arrayList: java.util.ArrayList<DashboardBean>) {
+        this.userList = arrayList
+        userSearchAdapter =
+            UserSearchAdapter(this.userList, this@FilterActivity, false, this, this)
+        rvFilterSearch.adapter = userSearchAdapter
+    }
+
+    override fun onSuccessTreding(data: java.util.ArrayList<VideoBean>) {
+        rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+        postList = data
+        albumDetailAdapter =
+            AlbumDetailAdapter(
+                postList,
+                this@FilterActivity,
+                this,
+                false, true, false
+            )
+
+        rvFilterTranding.adapter = albumDetailAdapter
     }
 
     override fun getViewModel() = filterViewModel
@@ -68,34 +106,28 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
     override fun getBindingVariable() = BR.viewModel
 
 
-    private fun setTrandingList() {
-        for (number in 0..10) {
-            val trandingBean = User()
-            trandingBean.name = "User"
-            trandingList.add(trandingBean)
-        }
-
-        trandingsUserAdapter = TrandingsUserAdapter(trandingList, this@FilterActivity, this)
-        rvFilterTranding.adapter = trandingsUserAdapter
-    }
+//    private fun setTrandingList() {
+//        for (number in 0..10) {
+//            val trandingBean = User()
+//            trandingBean.name = "User"
+//            trandingList.add(trandingBean)
+//        }
+//
+//        trandingsUserAdapter = TrandingsUserAdapter(trandingList, this@FilterActivity, this)
+//        rvFilterTranding.adapter = trandingsUserAdapter
+//    }
 
     /**
-     * Temp set categoryBean list
+     * set category list
      */
     private fun setCategoryList() {
-        val categoryBeanList: ArrayList<CategoryBean> = ArrayList()
-
-        for (number in 0..10) {
-            var categoryBean = CategoryBean()
-            categoryBean.name = "Community"
-            categoryBeanList.add(categoryBean)
-
-            categoryBean = CategoryBean()
-            categoryBean.name = "Profession"
-            categoryBeanList.add(categoryBean)
+        if (intent.hasExtra("categoryList")) {
+            categoryBeanList =
+                intent.getParcelableArrayListExtra<CategoryBean>("categoryList") as ArrayList<CategoryBean>
         }
 
-        val categoryAdapter = FilterCategoryAdapter(categoryBeanList, this@FilterActivity, this)
+        val categoryAdapter =
+            FilterCategoryAdapter(categoryBeanList, this@FilterActivity, this)
         val horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
             this@FilterActivity,
             androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
@@ -103,20 +135,15 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
         )
         rvFilterCategory.layoutManager = horizontalLayout
         rvFilterCategory.adapter = categoryAdapter
+
+        // Default display first category items
+//        setSubcategoryList(categoryBeanList[0].sub_category)
     }
 
-    private fun setInterestList() {
-        val interestList: ArrayList<InterestBean> = ArrayList()
-        for (number in 0..10) {
-            val interestBean = InterestBean()
-            interestBean.interest_name = "Dance"
-            interestList.add(interestBean)
-        }
-
-        rvChooseInterestFilter.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
+    private fun setSubcategoryList(subCategory: ArrayList<CategoryBean>) {
         filterSubcategoryAdapter =
-            FilterSubcategoryAdapter(interestList, this@FilterActivity, this, false)
-        rvChooseInterestFilter.adapter = filterSubcategoryAdapter
+            FilterSubcategoryAdapter(subCategory, this@FilterActivity, this, false)
+        rvSubcategory.adapter = filterSubcategoryAdapter
     }
 
     override fun onBackPressed() {
@@ -176,22 +203,20 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
         rvFilterTranding.adapter = albumDetailAdapter
 
 
-        searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty())
-                    rvFilterSearch.visibility = View.VISIBLE
-                else
-                    rvFilterSearch.visibility = View.GONE
-                return true
-            }
-        })
+    override fun onSubCategoryItemClick(position: Int) {
+        setSubcategoryList(categoryBeanList[position].sub_category)
     }
 
     override fun onItemClick(value: Long, position: Int) {
-        TODO("Not yet implemented")
+        val intent = Intent(this@FilterActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, value)
+        openActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        filterViewModel.onDestroy()
     }
 }

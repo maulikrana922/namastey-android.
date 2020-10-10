@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.activity.AlbumDetailActivity
 import com.namastey.activity.AlbumVideoActivity
+import com.namastey.activity.FilterActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.Constants
@@ -51,17 +52,17 @@ class AlbumDetailAdapter(
                     onItemClick.onItemClick(0, 0)
                 }
             } else {
-
+                val videoBean = videoList[position]
                 if (fromFilter) {
                     tvUsername.visibility = View.VISIBLE
                     tvVideoViewers.visibility = View.GONE
+                    tvUsername.text = videoBean.username
                 } else {
                     tvUsername.visibility = View.GONE
                     tvVideoViewers.visibility = View.VISIBLE
                 }
                 viewAlbumDetails.visibility = View.VISIBLE
                 llAddAlbum.visibility = View.GONE
-                val videoBean = videoList[position]
                 tvVideoViewers.text = videoBean.viewers.toString()
                 tvVideoComment.text =
                     videoBean.comments.toString().plus(" ")
@@ -126,11 +127,15 @@ class AlbumDetailAdapter(
                 }
             }
             ivVideoImage.setOnClickListener {
-                if (!fromEdit && !fromFilter) {
+                if (!fromEdit) {
                     val intent = Intent(activity, AlbumVideoActivity::class.java)
                     intent.putExtra(Constants.VIDEO_LIST, videoList)
                     intent.putExtra("position", position)
-                    (activity as AlbumDetailActivity).openActivity(intent)
+
+                    if (fromFilter)
+                        (activity as FilterActivity).openActivity(intent)
+                    else
+                        (activity as AlbumDetailActivity).openActivity(intent)
                 }
             }
 

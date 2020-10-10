@@ -153,6 +153,7 @@ dependencies {
 //    For video trimmer
     implementation project(path: ':videotrim')
     implementation 'com.github.tizisdeepan:videoeditor:1.0.8'
+    implementation 'com.github.a914-gowtham:Android-video-trimmer:1.4.0'
 
 //    Used for range display
     implementation 'com.crystal:crystalrangeseekbar:1.1.3'

@@ -139,4 +139,8 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
             selectedCategoryList.add(categoryBean)
         }
     }
+
+    override fun onSubCategoryItemClick(position: Int) {
+        TODO("Not yet implemented")
+    }
 }

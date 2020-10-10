@@ -18,9 +18,12 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
+import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumDetailAdapter
@@ -363,6 +366,19 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode === TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null) {
+            val uri = Uri.parse(TrimVideo.getTrimmedVideoPath(data))
+            Log.d("Trimmed video ", "Trimmed path:: $uri")
+
+            videoFile = File(uri.path)
+            val intent = Intent(this@AlbumDetailActivity, PostVideoActivity::class.java)
+            intent.putExtra("videoFile", videoFile)
+            intent.putExtra("albumId", albumBean.id)
+//                intent.putExtra("thumbnailImage", pictureFile)
+            intent.putExtra("albumBean", albumBean)
+            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+        }
+
         if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM) {
             if (data != null) {
                 val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
@@ -414,45 +430,63 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 val selectedVideo = data.data
 
                 if (selectedVideo != null) {
-                    val videoPath = Utils.getPath(this, selectedVideo)
-                    Log.d("Path", videoPath.toString())
+//                    val videoPath = Utils.getPath(this, selectedVideo)
+//                    Log.d("Path", videoPath.toString())
+                    Log.d("Path", selectedVideo.toString())
+//                    val photoUri = FileProvider.getUriForFile(
+//                        this,
+//                        applicationContext.packageName + ".provider",
+//                        File(videoPath)
+//                    )
+//                    Log.d("Path", photoUri.toString())
 //                    Log.d("Uri Path", Uri.parse(videoPath).toString())
 
-                    val retriever = MediaMetadataRetriever()
+
+
+//                    val retriever = MediaMetadataRetriever()
 //use one of overloaded setDataSource() functions to set your data source
-                    retriever.setDataSource(this@AlbumDetailActivity, Uri.fromFile(File(videoPath)))
-                    val time =
-                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                    val timeInMillisec: Long = time?.toLong() ?: 0
-
-                    val path = File(videoPath)
-                    val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
-                    Log.d("Uri Path", Uri.fromFile(path).toString())
-
-                    val second = timeInMillisec / 1000
-                    Log.d("Video time : ", "Video $time")
-                    Log.d("Video time : ", "Video $second")
-                    Log.d("Video time : ", "file_size  $file_size ")
+//                    retriever.setDataSource(this@AlbumDetailActivity, Uri.fromFile(File(videoPath)))
+//                    val time =
+//                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+//                    val timeInMillisec: Long = time?.toLong() ?: 0
+//
+//                    val path = File(videoPath)
+//                    val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
+//                    Log.d("Uri Path", Uri.fromFile(path).toString())
+//
+//                    val second = timeInMillisec / 1000
+//                    Log.d("Video time : ", "Video $time")
+//                    Log.d("Video time : ", "Video $second")
+//                    Log.d("Video time : ", "file_size  $file_size ")
 //                    videoFile = File(videoPath)
 
-                    trimmerView.visibility = View.VISIBLE
-                    videoTrimmer.setOnTrimVideoListener(this)
-                        .setVideoURI(Uri.parse(videoPath))
-                        .setVideoInformationVisibility(true)
-                        .setMaxDuration(60)
-                        .setMinDuration(6)
-                        .setDestinationPath(
-                            Environment.getExternalStorageDirectory()
-                                .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
-                        )
 
-//                    val intent =
-//                        Intent(this, TrimmerActivity::class.java)
-//                    intent.putExtra(
-//                        Constants.EXTRA_VIDEO_PATH,
-//                        videoPath
-//                    )
-//                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
+
+
+                    TrimVideo.activity(selectedVideo.toString())
+//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+                        .start(this)
+
+
+
+
+
+
+
+
+
+//                    trimmerView.visibility = View.VISIBLE
+//                    videoTrimmer.setOnTrimVideoListener(this)
+//                        .setVideoURI(Uri.parse(videoPath))
+//                        .setVideoInformationVisibility(true)
+//                        .setMaxDuration(60)
+//                        .setMinDuration(6)
+//                        .setDestinationPath(
+//                            Environment.getExternalStorageDirectory()
+//                                .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+//                        )
+
+
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.PERMISSION_CAMERA) {
