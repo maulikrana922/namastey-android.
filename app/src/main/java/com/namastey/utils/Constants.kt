@@ -190,6 +190,7 @@ object Constants {
     const val REPORT_USER_ID = "report_user_id"
     const val REASON = "reason"
     const val BLOCK_USER_ID = "block_user_id"
+    const val SUB_CAT_ID = "sub_cat_id"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.CategoryBean
 import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
 class FilterSubcategoryAdapter(
     var subCategoryList: ArrayList<CategoryBean>,
     var activity: Context,
-    var onImageItemClick: OnImageItemClick,
+    var onCategoryItemClick: OnCategoryItemClick,
     var isDisplayCkb: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterSubcategoryAdapter.ViewHolder>() {
 
@@ -37,8 +38,8 @@ class FilterSubcategoryAdapter(
 //            GlideLib.loadImage(activity,ivInterest,subCategoryList.get(position).image)
 
             view.alpha = 0.3f
-            videoSelectMain.setOnClickListener {
-//                onImageItemClick.onImageItemClick(subCategoryList.get(position))
+            holderSubcategory.setOnClickListener {
+                onCategoryItemClick.onSubCategoryItemClick(subCategoryList[position].id)
             }
 
         }

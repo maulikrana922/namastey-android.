@@ -11,6 +11,7 @@
     app:cardCornerRadius="@dimen/_5sdp"
     app:cardUseCompatPadding="true"
     card_view:cardElevation="5dp"
+    android:id="@+id/holderSubcategory"
     card_view:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout

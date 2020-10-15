@@ -147,8 +147,9 @@ interface NetworkRequest {
     @POST(Constants.GET_FOLLOWING_LIST)
     fun requestToGetFollowingListAsync(@Field(Constants.USER_ID) userId: Long): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
-    @GET(Constants.GET_FEED_LIST)
-    fun requestToGetFeedListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
+    @FormUrlEncoded
+    @POST(Constants.GET_FEED_LIST)
+    fun requestToGetFeedListAsync(@Field(Constants.SUB_CAT_ID) subCatId: Int): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @FormUrlEncoded
     @POST(Constants.ADD_COMMENT)

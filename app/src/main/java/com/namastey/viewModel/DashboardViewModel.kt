@@ -56,12 +56,12 @@ class DashboardViewModel constructor(
         }
     }
 
-    fun getFeedList() {
+    fun getFeedList(subCatId: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToGetFeed().let { appResponse ->
+                    networkService.requestToGetFeed(subCatId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessFeed(appResponse.data!!)

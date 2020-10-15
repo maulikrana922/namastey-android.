@@ -13,12 +13,12 @@ import com.namastey.adapter.FilterSubcategoryAdapter
 import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
-import com.namastey.listeners.*
+import com.namastey.listeners.OnCategoryItemClick
+import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.DashboardBean
-import com.namastey.model.InterestBean
 import com.namastey.model.VideoBean
-import com.namastey.roomDB.entity.User
 import com.namastey.uiView.FilterView
 import com.namastey.utils.Constants
 import com.namastey.utils.GridSpacingItemDecoration
@@ -27,16 +27,14 @@ import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
 
 
-class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImageItemClick,
-    OnUserItemClick, OnCategoryItemClick, OnItemClick, OnSelectUserItemClick {
+class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
+    OnCategoryItemClick, OnItemClick, OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityFilterBinding: ActivityFilterBinding
     private lateinit var filterViewModel: FilterViewModel
 
-    //    private lateinit var trandingsUserAdapter: TrandingsUserAdapter
-    private var trandingList: ArrayList<User> = ArrayList()
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var filterSubcategoryAdapter: FilterSubcategoryAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
@@ -152,22 +150,6 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView, OnImag
 
     fun onClickFilterBack(view: View) {
         onBackPressed()
-    }
-
-    /**
-     * Click on choose interest row
-     */
-    override fun onImageItemClick(interestBean: InterestBean) {
-        setResult(Constants.FILTER_OK)
-        finishActivity()
-    }
-
-    /**
-     *  when user click on tranding user list
-     */
-    override fun onUserItemClick(user: User) {
-        setResult(Constants.FILTER_OK)
-        finishActivity()
     }
 
     /**

@@ -116,7 +116,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         setupPermissions()
 
-        dashboardViewModel.getFeedList()
+        dashboardViewModel.getFeedList(0)
     }
 
     private fun setupPermissions() {
@@ -159,20 +159,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             PERMISSION_REQUEST_CODE
         )
     }
-
-    /**
-     * Temp set feed list
-     */
-//    private fun setDashboardList() {
-//        for (number in 0..10) {
-//            val dashboardBean = DashboardBean()
-//            dashboardBean.username = "NamasteyApp"
-//            feedList.add(dashboardBean)
-//        }
-//        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this)
-//        viewpagerFeed.adapter = feedAdapter
-//
-//    }
 
     /**
      * Display share option if user login
@@ -904,7 +890,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             override fun onBtnClick(id: Int) {
                 dismiss()
                 feedList.clear()
-                dashboardViewModel.getFeedList()
+                dashboardViewModel.getFeedList(0)
             }
         }.show()
 
