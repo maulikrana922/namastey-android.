@@ -32,7 +32,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.CreateAlbumViewModel
 import com.video.trimmer.interfaces.OnTrimVideoListener
-import com.video_trim.activity.TrimmerActivity
 import kotlinx.android.synthetic.main.activity_create_album.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_THUMBNAIL_POSITION
@@ -462,14 +461,6 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                         .setDestinationPath(Environment.getExternalStorageDirectory()
                             .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator)
 
-//                    val intent =
-//                        Intent(this, TrimmerActivity::class.java)
-//                    intent.putExtra(
-//                        Constants.EXTRA_VIDEO_PATH,
-//                        videoPath
-//                    )
-//
-//                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CAMERA) {

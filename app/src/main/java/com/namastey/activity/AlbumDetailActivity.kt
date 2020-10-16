@@ -18,8 +18,6 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
@@ -442,7 +440,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //                    Log.d("Uri Path", Uri.parse(videoPath).toString())
 
 
-
 //                    val retriever = MediaMetadataRetriever()
 //use one of overloaded setDataSource() functions to set your data source
 //                    retriever.setDataSource(this@AlbumDetailActivity, Uri.fromFile(File(videoPath)))
@@ -461,18 +458,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //                    videoFile = File(videoPath)
 
 
-
-
                     TrimVideo.activity(selectedVideo.toString())
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
                         .start(this)
-
-
-
-
-
-
-
 
 
 //                    trimmerView.visibility = View.VISIBLE
@@ -511,13 +499,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                                 .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
                         )
 
-//                    val intent =
-//                        Intent(this, TrimmerActivity::class.java)
-//                    intent.putExtra(
-//                        Constants.EXTRA_VIDEO_PATH,
-//                        videoPath
-//                    )
-//                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
         } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
