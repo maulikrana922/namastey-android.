@@ -18,7 +18,7 @@ object Constants {
     const val HVALUE = "L@titude2018"
 
     //    Live url
-    const val BASE = "http://testyourapp.online/namasteyapp/api/"
+    const val BASE = "https://testyourapp.online/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
 
     //    api end-point
