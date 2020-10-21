@@ -1,7 +1,9 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
@@ -156,7 +158,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
      * when user click on filter category item
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
-
+        setSubcategoryList(categoryBean.sub_category)
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -188,7 +190,14 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     override fun onSubCategoryItemClick(position: Int) {
-        setSubcategoryList(categoryBeanList[position].sub_category)
+        Log.d("Subcategory : ", position.toString())
+
+        val intent = Intent()
+        intent.putExtra("fromSubCategory", true)
+        intent.putExtra("subCategoryId", position)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+
     }
 
     override fun onItemClick(value: Long, position: Int) {

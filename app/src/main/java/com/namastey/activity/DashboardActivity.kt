@@ -497,11 +497,26 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         super.onDestroy()
     }
 
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        if (resultCode == Constants.REQUEST_CODE && data != null){
+            when{
+                data.hasExtra("fromSubCategory") -> {
+                    with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId",0)) }
+                }
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Constants.FILTER_OK) {
-            supportFragmentManager.popBackStack()
+        if (requestCode == Constants.FILTER_OK) {
+            if (data != null && data.hasExtra("fromSubCategory")){
+                supportFragmentManager.popBackStack()
+                with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId",0)) }
+            }else{
+                supportFragmentManager.popBackStack()
+            }
         }
 
     }
@@ -897,6 +912,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     fun onClickDiscover(view: View) {
+        dashboardViewModel.getFeedList(0)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)

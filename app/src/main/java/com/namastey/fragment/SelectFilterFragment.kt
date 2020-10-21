@@ -126,5 +126,20 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     override fun onItemClick(subCategoryId: Int) {
         Log.d("Subcategory : ", subCategoryId.toString())
+
+        activity!!.onActivityReenter(
+            Constants.REQUEST_CODE,
+            Intent().putExtra("fromSubCategory", true)
+                .putExtra("subCategoryId", subCategoryId)
+        )
+        requireActivity().supportFragmentManager.popBackStack()
+
+//        targetFragment!!.onActivityResult(
+//            Constants.REQUEST_CODE,
+//            Activity.RESULT_OK,
+//            Intent().putExtra("fromSubCategory", true)
+//                .putExtra("subCategoryId",subCategoryId)
+//        )
+//        requireActivity().supportFragmentManager.popBackStack()
     }
 }

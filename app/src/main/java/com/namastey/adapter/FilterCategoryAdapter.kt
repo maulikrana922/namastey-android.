@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
-import com.namastey.listeners.OnItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_filter_category.view.*
@@ -19,7 +18,7 @@ class FilterCategoryAdapter(
     var onCategoryItemClick: OnCategoryItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder>() {
 
-//    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
+    //    var gradient_color_start = context.resources.getIntArray(R.array.gradient_color_start)
 //    var gradient_color_end = context.resources.getIntArray(R.array.gradient_color_end)
     var lastSelectedPos = -1
 
@@ -52,7 +51,10 @@ class FilterCategoryAdapter(
                 )
             } else {
                 tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[position].endColor))
+                Utils.rectangleShapeBorder(
+                    tvFilterCategory,
+                    Color.parseColor(categoryList[position].endColor)
+                )
 
             }
 
@@ -67,13 +69,16 @@ class FilterCategoryAdapter(
                             Color.parseColor(categoryList[position].endColor)
                         )
                     )
-                    onCategoryItemClick.onSubCategoryItemClick(position)
+//                    onCategoryItemClick.onSubCategoryItemClick(position)
                     // Added this condition because of no need to reload entire adapter
                     notifyItemChanged(position)
-                    if (lastSelectedPos != -1){
+                    if (lastSelectedPos != -1) {
                         categoryList[lastSelectedPos].is_selected = 0
                         tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                        Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[lastSelectedPos].endColor))
+                        Utils.rectangleShapeBorder(
+                            tvFilterCategory,
+                            Color.parseColor(categoryList[lastSelectedPos].endColor)
+                        )
                         notifyItemChanged(lastSelectedPos)
                     }
                     lastSelectedPos = position
@@ -81,7 +86,10 @@ class FilterCategoryAdapter(
                     lastSelectedPos = -1
                     categoryList[position].is_selected = 0
                     tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                    Utils.rectangleShapeBorder(tvFilterCategory, Color.parseColor(categoryList[position].endColor))
+                    Utils.rectangleShapeBorder(
+                        tvFilterCategory,
+                        Color.parseColor(categoryList[position].endColor)
+                    )
                 }
                 onCategoryItemClick.onCategoryItemClick(categoryList[position])
             }
