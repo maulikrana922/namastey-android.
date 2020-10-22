@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.NotificationFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.NotificationViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/colorWhite">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_light_green_solid_notification"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_6sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/viewFollowRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivFollowRequestFirst"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/default_placeholder"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivFollowRequestSecond"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/default_placeholder"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/ivFollowRequestFirst"
+                        app:layout_constraintEnd_toEndOf="@id/ivFollowRequestFirst"
+                        app:layout_constraintStart_toEndOf="@id/ivFollowRequestFirst"
+                        app:layout_constraintTop_toTopOf="@id/ivFollowRequestFirst" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivFollowRequestThird"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/default_placeholder"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/ivFollowRequestFirst"
+                        app:layout_constraintEnd_toEndOf="@id/ivFollowRequestSecond"
+                        app:layout_constraintStart_toEndOf="@id/ivFollowRequestSecond"
+                        app:layout_constraintTop_toTopOf="@id/ivFollowRequestFirst" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:text="@string/all_activity"
+                    android:textColor="@color/color_chip_gray"
+                    android:textSize="12sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+            </LinearLayout>
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvAllActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:drawableEnd="@drawable/ic_dropdown_black"
+                android:drawablePadding="@dimen/_8sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:text="@string/all_activity"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                app:typeface="MULI_SEMIBOLD" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -1,11 +1,13 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.MatchesScreenActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
@@ -68,7 +70,13 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
         messagesAdapter = MessagesAdapter( requireActivity())
         rvMessagesList.adapter = messagesAdapter
+
+        tvMatches.setOnClickListener {
+            val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
+            openActivity(intent)
+        }
     }
+
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
         Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
