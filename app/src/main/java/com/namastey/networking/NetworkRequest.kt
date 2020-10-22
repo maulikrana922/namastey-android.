@@ -240,4 +240,7 @@ interface NetworkRequest {
     fun requestToPostViewAsync(
         @Field(Constants.POST_ID) postId: Long
     ): Deferred<AppResponse<Any>>
+
+    @GET(Constants.MATCHES_LIST)
+    fun requestToGetMatchesListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
 }

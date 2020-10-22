@@ -282,4 +282,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToPostViewAsync(postId).await()
         }
+
+    suspend fun requestToGetMatchesList(): AppResponse<ArrayList<MatchesListBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetMatchesListAsync().await()
+        }
 }

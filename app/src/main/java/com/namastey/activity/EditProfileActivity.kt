@@ -82,15 +82,13 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     private fun setupTabIcons() {
-        tabOne =
-            LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
+        tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabOne.background =
             ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
         tabOne.text = resources.getString(R.string.basic_info)
         tabOne.setTextColor(Color.WHITE)
         tabEditProfile.getTabAt(0)?.customView = tabOne
-        tabTwo =
-            LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
+        tabTwo = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabTwo.text = resources.getString(R.string.albums)
         tabTwo.setTextColor(Color.GRAY)
         tabTwo.background = ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
@@ -169,19 +167,23 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
         Log.e("Social Login", "response.accessToken")
 
 //        if (requestCode == Constants.REQUEST_SPOTIFY){
-            try {
-                val fm: FragmentManager = supportFragmentManager
-                if (fm.fragments.size > 0) {
-                    for (i in 0 until fm.fragments.size) {
-                        val fragment: Fragment? = fm.fragments[i]
-                        if (fragment != null && fragment.javaClass.simpleName.equals(Constants.ADD_LINKS_FRAGMENT,true)) {
-                            fragment.onActivityResult(requestCode, resultCode, data)
-                        }
+        try {
+            val fm: FragmentManager = supportFragmentManager
+            if (fm.fragments.size > 0) {
+                for (i in 0 until fm.fragments.size) {
+                    val fragment: Fragment? = fm.fragments[i]
+                    if (fragment != null && fragment.javaClass.simpleName.equals(
+                            Constants.ADD_LINKS_FRAGMENT,
+                            true
+                        )
+                    ) {
+                        fragment.onActivityResult(requestCode, resultCode, data)
                     }
                 }
-            }catch (exception: Exception){
-                Log.d("Error: ", "error")
             }
+        } catch (exception: Exception) {
+            Log.d("Error: ", "error")
+        }
 
 //        }
     }

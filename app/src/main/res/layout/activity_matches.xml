@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.EditProfileActivity">
+    tools:context=".activity.MatchesActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.namastey.viewModel.ProfileBasicViewModel" />
+            type="com.namastey.viewModel.MatchesBasicViewModel" />
     </data>
 
     <FrameLayout
@@ -33,44 +33,44 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/green_bar"
+                    android:src="@drawable/yellow_bar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/ivEditProfileBack"
+                    android:id="@+id/ivMatchesProfileBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
-                    android:onClick="onClickEditAlbumBack"
+                    android:onClick="onClickMatchesBack"
                     android:src="@drawable/ic_back"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
                     style="@style/tvTitleStyle"
-                    android:text="@string/edit_profile"
-                    app:layout_constraintBottom_toBottomOf="@id/ivEditProfileBack"
-                    app:layout_constraintEnd_toStartOf="@id/ivEditProfileMore"
-                    app:layout_constraintStart_toEndOf="@id/ivEditProfileBack"
-                    app:layout_constraintTop_toTopOf="@id/ivEditProfileBack" />
+                    android:text="@string/inbox"
+                    app:layout_constraintBottom_toBottomOf="@id/ivMatchesProfileBack"
+                    app:layout_constraintEnd_toStartOf="@id/ivMatchesProfileMore"
+                    app:layout_constraintStart_toEndOf="@id/ivMatchesProfileBack"
+                    app:layout_constraintTop_toTopOf="@id/ivMatchesProfileBack" />
 
                 <ImageView
-                    android:id="@+id/ivEditProfileMore"
+                    android:id="@+id/ivMatchesProfileMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_more"
-                    app:layout_constraintBottom_toBottomOf="@id/ivEditProfileBack"
+                    app:layout_constraintBottom_toBottomOf="@id/ivMatchesProfileBack"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/ivEditProfileBack" />
+                    app:layout_constraintTop_toTopOf="@id/ivMatchesProfileBack" />
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabEditProfile"
+                    android:id="@+id/tabMatchesProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
@@ -86,7 +86,7 @@
                     app:tabTextColor="@color/colorGray" />
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewpagerEditProfile"
+                    android:id="@+id/viewPagerMatchesProfile"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -94,7 +94,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tabEditProfile" />
+                    app:layout_constraintTop_toBottomOf="@id/tabMatchesProfile" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

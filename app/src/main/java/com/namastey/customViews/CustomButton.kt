@@ -2,10 +2,10 @@ package com.namastey.customViews
 
 import android.content.Context
 import android.graphics.Typeface
-import androidx.appcompat.widget.AppCompatButton
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
+import androidx.appcompat.widget.AppCompatButton
 import com.namastey.R
 import com.namastey.utils.Constants
 
@@ -50,9 +50,15 @@ class CustomButton(context: Context, attrs: AttributeSet) : AppCompatButton(cont
 
             Constants.MULI_BLACK -> Typeface.createFromAsset(context.assets, "Muli-Black.ttf")
 
-            Constants.MULI_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "Muli-SemiBold.ttf")
+            Constants.MULI_SEMI_BOLD -> Typeface.createFromAsset(
+                context.assets,
+                "Muli-SemiBold.ttf"
+            )
 
-            Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(context.assets, "Muli-ExtraBold.ttf")
+            Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(
+                context.assets,
+                "Muli-ExtraBold.ttf"
+            )
 
             else -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
         }

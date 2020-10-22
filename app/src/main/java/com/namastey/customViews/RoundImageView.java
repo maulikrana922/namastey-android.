@@ -19,10 +19,11 @@ public class RoundImageView extends ImageView {
     public static final int CORNER_BOTTOM_LEFT = 8;
     public static final int CORNER_ALL = 15;
 
-    private static final int[] CORNERS = {CORNER_TOP_LEFT,
-                                          CORNER_TOP_RIGHT,
-                                          CORNER_BOTTOM_RIGHT,
-                                          CORNER_BOTTOM_LEFT};
+    private static final int[] CORNERS = {
+            CORNER_TOP_LEFT,
+            CORNER_TOP_RIGHT,
+            CORNER_BOTTOM_RIGHT,
+            CORNER_BOTTOM_LEFT};
 
     private final Path path = new Path();
     private int cornerRadius;
@@ -98,7 +99,7 @@ public class RoundImageView extends ImageView {
             }
 
             path.addRoundRect(new RectF(0, 0, getWidth(), getHeight()),
-                              radii, Path.Direction.CW);
+                    radii, Path.Direction.CW);
         }
     }
 }

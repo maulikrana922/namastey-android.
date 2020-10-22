@@ -19,6 +19,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -85,7 +86,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         activitySplashBinding = bindViewData()
         activitySplashBinding.viewModel = splashViewModel
 
-        splashViewModel.nextScreen(this@SplashActivity,sessionManager.isLoginUser())
-
+        splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
     }
 }

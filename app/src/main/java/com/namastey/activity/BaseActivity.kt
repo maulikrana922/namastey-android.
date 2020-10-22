@@ -1,23 +1,23 @@
 package com.namastey.activity
 
 import android.app.Activity
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.namastey.R
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -121,7 +121,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
             .commitAllowingStateLoss()
     }
 
-    fun addFragmentChild(childFragmentManager: FragmentManager,fragment: Fragment, tag: String) {
+    fun addFragmentChild(childFragmentManager: FragmentManager, fragment: Fragment, tag: String) {
         childFragmentManager.beginTransaction().addToBackStack(tag)
             .add(R.id.flContainer, fragment, tag)
             .commitAllowingStateLoss()
@@ -178,6 +178,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         }
         return false
     }
+
     private fun isNetworkConnected(): Boolean {
 //        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 //        return cm.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
@@ -211,31 +212,24 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         return result
     }
 
-    fun openActivity(
-        activity: Activity,
-        destinationActivity: Activity
-    ) {
+    fun openActivity(activity: Activity, destinationActivity: Activity) {
         startActivity(Intent(activity, destinationActivity::class.java))
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
-    fun openActivity(
-        intent: Intent
-    ) {
+
+    fun openActivity(intent: Intent) {
         startActivity(intent)
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    fun openActivityForResult(
-        intent: Intent,
-        resultCode: Int
-    ) {
-        startActivityForResult(intent,resultCode)
+    fun openActivityForResult(intent: Intent, resultCode: Int) {
+        startActivityForResult(intent, resultCode)
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    fun finishActivity(){
+    fun finishActivity() {
         finish()
-        overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left)
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
     }
 
     fun setListenerOfInteractionWithFragment(onInteractionWithFragment: OnInteractionWithFragment) {

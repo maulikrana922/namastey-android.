@@ -227,30 +227,30 @@
                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
 
-<!--                <HorizontalScrollView-->
-<!--                    android:id="@+id/svInterestChip"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="@dimen/_12sdp"-->
-<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
-<!--                    android:scrollbars="none"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/tvViews"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvViews">-->
+                <!--                <HorizontalScrollView-->
+                <!--                    android:id="@+id/svInterestChip"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/_12sdp"-->
+                <!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+                <!--                    android:scrollbars="none"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"-->
+                <!--                    app:layout_constraintStart_toStartOf="@id/tvViews"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/tvViews">-->
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipProfileInterest"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:chipSpacingVertical="@dimen/_5sdp"
-                        app:chipSpacingHorizontal="@dimen/_5sdp"
-                        app:singleLine="true"
-                        android:layout_marginTop="@dimen/_12sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                        app:layout_constraintStart_toStartOf="@id/tvViews"
-                        app:layout_constraintTop_toBottomOf="@id/tvViews"/>
-<!--                </HorizontalScrollView>-->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipProfileInterest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    app:chipSpacingHorizontal="@dimen/_5sdp"
+                    app:chipSpacingVertical="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toStartOf="@id/tvViews"
+                    app:layout_constraintTop_toBottomOf="@id/tvViews"
+                    app:singleLine="true" />
+                <!--                </HorizontalScrollView>-->
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAboutLable"
@@ -296,6 +296,7 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/rounded_white_solid_red_border"
                     android:minHeight="@dimen/_32sdp"
+                    android:onClick="onClickMatches"
                     android:text="@string/matches"
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
@@ -322,8 +323,8 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/rounded_white_solid_red_border"
                     android:minHeight="@dimen/_32sdp"
-                    android:text="@string/follow"
                     android:onClick="onClickFollowRequest"
+                    android:text="@string/follow"
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"

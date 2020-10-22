@@ -30,8 +30,10 @@ import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import javax.inject.Inject
 
-class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileView,
-    OnViewAlbumClick, OnItemClick {
+class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
+    ProfileView,
+    OnViewAlbumClick,
+    OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -188,7 +190,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
             when (socialBean.name) {
                 getString(R.string.facebook) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_facebook)
-                    ivSocialIcon.setOnClickListener{
+                    ivSocialIcon.setOnClickListener {
                         val intent =
                             packageManager.getLaunchIntentForPackage("com.facebook.katana")
                         if (intent != null) {
@@ -219,7 +221,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                 }
                 getString(R.string.spotify) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_spotify)
-                    ivSocialIcon.setOnClickListener{
+                    ivSocialIcon.setOnClickListener {
 
                         var intent =
                             packageManager.getLaunchIntentForPackage("com.spotify.music")
@@ -230,7 +232,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
                                     Uri.parse(socialBean.link)
                                 )
                             )
-                        }else{
+                        } else {
                             intent = Intent(Intent.ACTION_VIEW)
                             intent.data = Uri.parse("market://details?id=com.spotify.music")
                             startActivity(intent)
@@ -368,5 +370,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(), ProfileV
 
     override fun onViewAlbumItemClick(value: Long, position: Int) {
         TODO("Not yet implemented")
+    }
+
+    fun onClickMatches(view: View) {
+        val intent = Intent(this@ProfileViewActivity, MatchesActivity::class.java)
+        intent.putExtra("onClickMatches", true)
+        openActivity(intent)
     }
 }

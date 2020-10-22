@@ -91,8 +91,10 @@ class NetworkModule {
             // Customize the request
             val request = original.newBuilder()
                 .addHeader(
-                    Constants.API_KEY, if (original.url().url().path.contains(Constants.REGISTER) ||
-                        TextUtils.isEmpty(sessionManager.getAccessToken())
+                    Constants.API_KEY,
+                    if (original.url().url().path.contains(Constants.REGISTER) || TextUtils.isEmpty(
+                            sessionManager.getAccessToken()
+                        )
                     ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken()
                 )
                 .header("Content-Type", "application/json")
@@ -102,6 +104,22 @@ class NetworkModule {
                     String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME)
                 )
                 .build()
+
+            Log.e(
+                "NetworkModule",
+                "Cache-Control: \t ${String.format(
+                    Locale.getDefault(),
+                    "max-age=%d",
+                    Constants.CACHE_TIME
+                )}"
+            )
+            Log.e(
+                "NetworkModule",
+                "Authorization: \t ${if (original.url()
+                        .url().path.contains(Constants.REGISTER) || TextUtils.isEmpty(sessionManager.getAccessToken())
+                ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken()}"
+            )
+
             val response = chain.proceed(request)
 //            Log.e("Request URL--> " , request.url().toString())
 //            Log.e("Response " , "-->".plus(response.body())

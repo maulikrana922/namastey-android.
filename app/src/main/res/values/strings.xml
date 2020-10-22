@@ -4,8 +4,8 @@
     <string name="facebook_app_id">242557967197480</string>
     <string name="fb_login_protocol_scheme">fb242557967197480</string>
 
-<!--        <string name="facebook_app_id">2945790898848622</string>-->
-<!--        <string name="fb_login_protocol_scheme">fb2945790898848622</string>-->
+    <!--        <string name="facebook_app_id">2945790898848622</string>-->
+    <!--        <string name="fb_login_protocol_scheme">fb2945790898848622</string>-->
     <string name="snapchat_client_id">c079e951-7fab-47a2-9b4b-ee3e0c4925cc</string>
 
     <string name="spotify_client_id">6133e980fbe149ed804371dfc1a4d3d1</string>
@@ -249,7 +249,14 @@
     <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
 
-<!--    album video listing -->
+    <!--    album video listing -->
     <string name="up_next">Up next</string>
     <string name="posts">Posts</string>
+
+    <!-- matches screen  -->
+    <string name="inbox">Inbox</string>
+    <string name="notification">Notification</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="messages">Messages</string>
+    <string name="likes">Likes</string>
 </resources>

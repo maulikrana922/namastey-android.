@@ -80,6 +80,7 @@ object Constants {
     const val FROM_EDIT = "fromEdit"
     const val ALBUM_BEAN = "albumBean"
     const val VIDEO_LIST = "videoList"
+    const val MATCHES_LIST = "matches-list"
 
     //    api response error code
     const val OK = 200
