@@ -280,4 +280,6 @@
     <string name="congratulations">Congratulations!</string>
     <string name="share_with_friends">Share with Friends</string>
     <string name="all_activity">All Activity</string>
+    <string name="follow_requests">Follow Requests</string>
+    <string name="plus">+</string>
 </resources>
