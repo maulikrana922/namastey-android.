@@ -127,6 +127,11 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(SettingsViewModel::class.java) -> SettingsViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             modelClass.isAssignableFrom(AlbumViewModel::class.java) -> AlbumViewModel(
                 networkService,
                 dbHelper,

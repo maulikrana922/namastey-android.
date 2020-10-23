@@ -169,6 +169,7 @@
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
     <string name="age_message">Your age between</string>
+    <string name="age_message_value">Your age between %1$s and %2$s</string>
     <string name="albums">Albums</string>
     <string name="edit_info">Edit Info</string>
 
@@ -231,6 +232,20 @@
     <string name="from_video">From Video</string>
     <string name="msg_save_album">Please save album</string>
     <string name="msg_remove_post">Are you sure you want to remove?</string>
+
+    <!--    Settings screen -->
+    <string name="Settings">Settings</string>
+    <string name="hide_profile">Hide Profile</string>
+    <string name="hide_profile_msg">Turning this on will hide you from all your namastey\'s modes for as long as you choose. Your existing matches will remain accessible.</string>
+    <string name="discovery_settings">Discovery Settings</string>
+    <string name="swiping_in">Swiping in</string>
+    <string name="my_current_location">My Current Location</string>
+    <string name="discovery_location_msg">Change your swipe location to see namastey members in other cities.</string>
+    <string name="distance">Distance</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="setting_interest_in">I\'m Interested In…</string>
+    <string name="distance_msg">Up to %1$s kilometers away</string>
+
 
     <!--    Post video screen-->
     <string name="post">Post</string>

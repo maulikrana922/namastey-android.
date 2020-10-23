@@ -377,4 +377,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         intent.putExtra("onClickMatches", true)
         openActivity(intent)
     }
+
+    fun onClickProfileMore(view: View) {
+        if (sessionManager.getUserId() == profileBean.user_id)
+            openActivity(this@ProfileViewActivity,SettingsActivity())
+    }
 }
