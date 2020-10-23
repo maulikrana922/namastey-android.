@@ -4,11 +4,9 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -18,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
+import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumCreateListAdapter
@@ -31,17 +30,14 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.CreateAlbumViewModel
-import com.video.trimmer.interfaces.OnTrimVideoListener
+//import com.video.trimmer.interfaces.OnTrimVideoListener
 import kotlinx.android.synthetic.main.activity_create_album.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_THUMBNAIL_POSITION
-import org.buffer.android.thumby.ThumbyActivity.Companion.EXTRA_URI
-import org.buffer.android.thumby.util.ThumbyUtils
 import java.io.File
 import javax.inject.Inject
 
 class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAlbumView,
-    OnCreateAlbumItemClick, OnItemClick, OnTrimVideoListener {
+    OnCreateAlbumItemClick, OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -81,7 +77,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
             createBlankAlbum = fromAlbumList
             createAlbumViewModel.getAlbumList()
-        }else {
+        } else {
 //        Default one album create Saved/ uploads
             val albumBean = AlbumBean()
             albumBean.name = getString(R.string.saved)
@@ -139,10 +135,10 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun getBindingVariable() = BR.viewModel
 
     override fun onBackPressed() {
-        if (trimmerView.visibility == View.VISIBLE)
-            trimmerView.visibility = View.GONE
-        else
-            finishActivity()
+//        if (trimmerView.visibility == View.VISIBLE)
+//            trimmerView.visibility = View.GONE
+//        else
+        finishActivity()
     }
 
     fun onClickCreateAlbumBack(view: View) {
@@ -382,46 +378,32 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM) {
-            if (data != null) {
-                val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
-
+//        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_VIDEO_TRIM) {
+//            if (data != null) {
+//                val selectedVideo = data.getParcelableExtra<Uri>("videoPath") as Uri
+//
 //                videoFile = File(selectedVideo.toString())
-                videoFile = File(selectedVideo.toString())
+//
+//                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+//                intent.putExtra("videoFile", videoFile)
+//                intent.putExtra("albumId", albumBean.id)
+////                intent.putExtra("thumbnailImage", pictureFile)
+//                intent.putExtra("albumBean", albumBean)
+//                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+//
+//            }
+//        } else
+        if (requestCode === TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null) {
+            val uri = Uri.parse(TrimVideo.getTrimmedVideoPath(data))
+            Log.d("Trimmed video ", "Trimmed path:: $uri")
 
-//                startActivityForResult(ThumbyActivity.getStartIntent(this,Uri.fromFile(videoFile)
-//                ), RESULT_CODE_PICK_THUMBNAIL)
-
-//                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity,bitmap)
-
-                val retriever = MediaMetadataRetriever()
-//use one of overloaded setDataSource() functions to set your data source
-                retriever.setDataSource(this@CreateAlbumActivity, Uri.fromFile(videoFile));
-                val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                val timeInMillisec: Long = time?.toLong() ?: 0
-
-                val second = timeInMillisec / 1000
-
-                val file_size: Int = java.lang.String.valueOf(videoFile!!.length() / 1024).toInt()
-
-                Log.d("Video time : ", "Video $time")
-                Log.d("Video time : ", "Video $second")
-                Log.d("Video time : ", "file_size  $file_size ")
-
-                retriever.release()
-
-//                        val intent = Intent(Intent.ACTION_VIEW, selectedVideo);
-//        intent.setDataAndType(selectedVideo, "video/mp4");
-//        startActivity(intent);
-
-                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
-                intent.putExtra("videoFile", videoFile)
-                intent.putExtra("albumId", albumBean.id)
+            videoFile = File(uri.path)
+            val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+            intent.putExtra("videoFile", videoFile)
+            intent.putExtra("albumId", albumBean.id)
 //                intent.putExtra("thumbnailImage", pictureFile)
-                intent.putExtra("albumBean", albumBean)
-                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
-
-            }
+            intent.putExtra("albumBean", albumBean)
+            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
             if (data != null) {      // Temp need to change
                 createAlbumViewModel.getAlbumList()
@@ -435,31 +417,20 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
 
-                    val retriever = MediaMetadataRetriever()
-//use one of overloaded setDataSource() functions to set your data source
-                    retriever.setDataSource(this@CreateAlbumActivity, Uri.fromFile(File(videoPath)))
-                    val time =
-                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                    val timeInMillisec: Long = time?.toLong() ?: 0
+                    TrimVideo.activity(selectedVideo.toString())
+//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+                        .start(this)
 
-                    val path = File(videoPath)
-                    val file_size: Int = java.lang.String.valueOf(path.length() / 1024).toInt()
-
-                    val second = timeInMillisec / 1000
-                    Log.d("Video time : ", "Video $time")
-                    Log.d("Video time : ", "Video $second")
-                    Log.d("Video time : ", "file_size  $file_size ")
-//                    videoFile = File(videoPath)
-
-
-                    trimmerView.visibility = View.VISIBLE
-                    videoTrimmer.setOnTrimVideoListener(this)
-                        .setVideoURI(Uri.parse(videoPath))
-                        .setVideoInformationVisibility(true)
-                        .setMaxDuration(60)
-                        .setMinDuration(6)
-                        .setDestinationPath(Environment.getExternalStorageDirectory()
-                            .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator)
+//                    trimmerView.visibility = View.VISIBLE
+//                    videoTrimmer.setOnTrimVideoListener(this)
+//                        .setVideoURI(Uri.parse(videoPath))
+//                        .setVideoInformationVisibility(true)
+//                        .setMaxDuration(60)
+//                        .setMinDuration(6)
+//                        .setDestinationPath(
+//                            Environment.getExternalStorageDirectory()
+//                                .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+//                        )
 
                 }
             }
@@ -471,14 +442,21 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
 
+                    TrimVideo.activity(selectedVideo.toString())
+//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+                        .start(this)
+
 //                    videoFile = File(videoPath)
-                    trimmerView.visibility = View.VISIBLE
-                    videoTrimmer.setOnTrimVideoListener(this)
-                        .setVideoURI(Uri.parse(videoPath))
-                        .setVideoInformationVisibility(true)
-                        .setMaxDuration(60)
-                        .setMinDuration(6)
-                        .setDestinationPath(Environment.getExternalStorageDirectory().toString() + File.separator + "temp" + File.separator + "Videos" + File.separator)
+//                    trimmerView.visibility = View.VISIBLE
+//                    videoTrimmer.setOnTrimVideoListener(this)
+//                        .setVideoURI(Uri.parse(videoPath))
+//                        .setVideoInformationVisibility(true)
+//                        .setMaxDuration(60)
+//                        .setMinDuration(6)
+//                        .setDestinationPath(
+//                            Environment.getExternalStorageDirectory()
+//                                .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+//                        )
 
 //                    val intent =
 //                        Intent(this, TrimmerActivity::class.java)
@@ -489,23 +467,24 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 //                    openActivityForResult(intent, Constants.REQUEST_CODE_VIDEO_TRIM)
                 }
             }
-        } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
-            if (data != null) {
-                val imageUri = data.getParcelableExtra<Uri>(EXTRA_URI) as Uri
-                val location = data.getLongExtra(EXTRA_THUMBNAIL_POSITION, 0)
-                val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
-                Log.d("Image ", "done")
-
-                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity, bitmap)
-
-                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
-                intent.putExtra("videoFile", videoFile)
-                intent.putExtra("albumId", albumBean.id)
-                intent.putExtra("thumbnailImage", pictureFile)
-                intent.putExtra("albumBean", albumBean)
-                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
-            }
         }
+//        else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
+//            if (data != null) {
+//                val imageUri = data.getParcelableExtra<Uri>(EXTRA_URI) as Uri
+//                val location = data.getLongExtra(EXTRA_THUMBNAIL_POSITION, 0)
+//                val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
+//                Log.d("Image ", "done")
+//
+//                val pictureFile = Utils.bitmapToFile(this@CreateAlbumActivity, bitmap)
+//
+//                val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+//                intent.putExtra("videoFile", videoFile)
+//                intent.putExtra("albumId", albumBean.id)
+//                intent.putExtra("thumbnailImage", pictureFile)
+//                intent.putExtra("albumBean", albumBean)
+//                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+//            }
+//        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -621,38 +600,38 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         createAlbumViewModel.getAlbumList()
     }
 
-    override fun cancelAction() {
-        Log.d("TrimVideo: ", "cancelAction")
-    }
+//    override fun cancelAction() {
+//        Log.d("TrimVideo: ", "cancelAction")
+//    }
+//
+//    override fun getResult(uri: Uri) {
+//        trimmerView.visibility = View.GONE
+//        Log.d("TrimVideo: ", "getResult : $uri")
+//
+//        videoFile = File(uri.path)
+//        val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
+//        intent.putExtra("videoFile", videoFile)
+//        intent.putExtra("albumId", albumBean.id)
+////                intent.putExtra("thumbnailImage", pictureFile)
+//        intent.putExtra("albumBean", albumBean)
+//        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+//
+//    }
+//
+//    override fun onError(message: String) {
+//        trimmerView.visibility = View.GONE
+//        Log.d("TrimVideo: ", "onError" + message)
+//    }
+//
+//    override fun onTrimStarted() {
+//        Log.d("TrimVideo: ", "onTrimStarted")
+//    }
 
-    override fun getResult(uri: Uri) {
-        trimmerView.visibility = View.GONE
-        Log.d("TrimVideo: ", "getResult : $uri")
+//    fun onClickSave(view: View) {
+//        videoTrimmer.onSaveClicked()
+//    }
 
-        videoFile = File(uri.path)
-        val intent = Intent(this@CreateAlbumActivity, PostVideoActivity::class.java)
-        intent.putExtra("videoFile", videoFile)
-        intent.putExtra("albumId", albumBean.id)
-//                intent.putExtra("thumbnailImage", pictureFile)
-        intent.putExtra("albumBean", albumBean)
-        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
-
-    }
-
-    override fun onError(message: String) {
-        trimmerView.visibility = View.GONE
-        Log.d("TrimVideo: ", "onError"  + message)
-    }
-
-    override fun onTrimStarted() {
-        Log.d("TrimVideo: ", "onTrimStarted")
-    }
-
-    fun onClickSave(view: View) {
-        videoTrimmer.onSaveClicked()
-    }
-
-    fun onClickCancel(view: View) {
-        trimmerView.visibility = View.GONE
-    }
+//    fun onClickCancel(view: View) {
+//        trimmerView.visibility = View.GONE
+//    }
 }
