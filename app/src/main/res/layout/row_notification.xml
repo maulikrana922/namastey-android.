@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:padding="@dimen/_8sdp">
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivUserProfile"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+            app:roundedCorners="topRight|bottomLeft" />
+
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvNotification"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:maxLines="6"
+            android:text="Luke Doyle, kizzplitzz and 3 others Commented on your posts. 3d"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainCategoryView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_red_solid">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFollowBack"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/plus"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".75dp"
+        android:background="@color/colorGray" />
+</LinearLayout>
