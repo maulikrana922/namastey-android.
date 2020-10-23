@@ -152,6 +152,16 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(MatchesScreenViewModel::class.java) -> MatchesScreenViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(NotificationViewModel::class.java) -> NotificationViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }

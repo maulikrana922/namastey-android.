@@ -101,7 +101,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
     }
 
     /**
-     * change backgrond and text color according to select tab
+     * change background and text color according to select tab
      */
     private fun changeSelectedTab(position: Int) {
 

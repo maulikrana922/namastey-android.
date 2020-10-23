@@ -35,6 +35,8 @@
             android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".activity.MatchesActivity" />
         <activity android:name=".activity.MatchesProfileActivity" />
+        <activity android:name=".activity.MatchesScreenActivity"/>
+        <activity android:name=".activity.MatchesActivity" />
         <activity android:name=".activity.AlbumVideoActivity" />
         <activity
             android:name=".activity.ProfileViewActivity"

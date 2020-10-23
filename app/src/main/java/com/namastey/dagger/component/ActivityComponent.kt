@@ -47,5 +47,7 @@ interface ActivityComponent {
     fun inject(activity: AlbumVideoActivity)
     fun inject(activity: MatchesActivity)
     fun inject(fragment: MatchesProfileFragment)
+    fun inject(fragment: NotificationFragment)
+    fun inject(activity: MatchesScreenActivity)
     fun inject(activity: SettingsActivity)
 }
