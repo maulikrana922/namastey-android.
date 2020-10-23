@@ -241,6 +241,12 @@ interface NetworkRequest {
         @Field(Constants.POST_ID) postId: Long
     ): Deferred<AppResponse<Any>>
 
+    @FormUrlEncoded
+    @POST(Constants.HIDE_PROFILE)
+    fun requestToPostHideProfileAsync(
+        @Field(Constants.IS_HIDE) isHide: Int
+    ): Deferred<AppResponse<Any>>
+
     @GET(Constants.MATCHES_LIST)
     fun requestToGetMatchesListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
 }

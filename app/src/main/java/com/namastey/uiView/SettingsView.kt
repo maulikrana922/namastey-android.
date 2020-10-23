@@ -1,6 +1,6 @@
 package com.namastey.uiView
 
 interface SettingsView : BaseView {
-//    fun onSuccessSearchList(userList: ArrayList<DashboardBean>)
+    fun onSuccessHideProfile(message: String)
 
 }

@@ -47,6 +47,31 @@ class SettingsViewModel constructor(
         }
     }
 
+    fun hideProfile(isHide: Int){
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (settingsView.isInternetAvailable()) {
+                    networkService.requestToHideProfile(isHide)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                settingsView.onSuccessHideProfile(appResponse.message)
+                            } else {
+                                settingsView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    settingsView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                settingsView.onHandleException(exception)
+            }
+        }
+    }
+
 
     fun getSearchUser(searchStr: String) {
         setIsLoading(true)

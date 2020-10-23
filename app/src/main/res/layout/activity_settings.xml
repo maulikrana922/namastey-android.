@@ -22,8 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_15sdp"
-            >
+            android:paddingBottom="@dimen/_15sdp">
 
             <ImageView
                 android:id="@+id/llSettingBackground"
@@ -118,12 +117,12 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
                     android:layout_marginStart="@dimen/_8sdp"
-                    android:text="@string/men"
                     android:onClick="onClickSettingInterestIn"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/men"
                     android:textColor="@color/colorDarkGray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:typeface="MULI_SEMIBOLD" />
@@ -153,12 +152,12 @@
                     android:id="@+id/tvInterestWomen"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
+                    android:onClick="onClickSettingInterestIn"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/women"
-                    android:onClick="onClickSettingInterestIn"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:textColor="@color/colorDarkGray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tvInterestMen"
                     app:layout_constraintTop_toBottomOf="@id/viewFirst"
                     app:typeface="MULI_SEMIBOLD" />
@@ -188,12 +187,12 @@
                     android:id="@+id/tvInterestEveryone"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
+                    android:onClick="onClickSettingInterestIn"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_12sdp"
-                    android:onClick="onClickSettingInterestIn"
                     android:text="@string/everyone"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:textColor="@color/colorDarkGray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tvInterestMen"
                     app:layout_constraintTop_toBottomOf="@id/viewSecond"
                     app:typeface="MULI_SEMIBOLD" />
@@ -291,13 +290,13 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSettingAge" />
 
             <com.namastey.customViews.CustomTextView
-                android:visibility="gone"
                 android:id="@+id/tvSettingAgeValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_5sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tvSettingAgeMessage"
                 app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
                 app:layout_constraintStart_toEndOf="@id/tvSettingAgeMessage"
@@ -357,21 +356,21 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSettingDistanceMessage"
                 app:left_thumb_color="@color/colorButtonRed"
                 app:left_thumb_color_pressed="@color/colorButtonRed"
-                app:max_value="100"
+                app:max_value="161"
                 app:min_value="0" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvAccountSettings"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_width="0dp"
-                android:background="@drawable/rounded_white_solid"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:padding="@dimen/_12sdp"
+                android:background="@drawable/rounded_white_solid"
                 android:drawableEnd="@drawable/ic_arrow_right"
+                android:padding="@dimen/_12sdp"
                 android:text="@string/account_settings"
                 android:textColor="@color/colorDarkGray"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
                 app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
                 app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
                 app:typeface="MULI_SEMIBOLD" />
 

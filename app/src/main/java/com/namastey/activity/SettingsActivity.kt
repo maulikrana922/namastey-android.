@@ -29,6 +29,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     private lateinit var activitySettingsBinding: ActivitySettingsBinding
     private lateinit var settingsViewModel: SettingsViewModel
     private var interestIn = 0
+    private var isTouched = false
+    private var minAge = ""
+    private var maxAge = ""
+    private var distance = ""
 
     override fun getViewModel() = settingsViewModel
 
@@ -59,6 +63,12 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         }
 
+        switchHideProfile.isChecked = sessionManager.getIntegerValue(Constants.IS_HIDE) == 1
+
+        minAge = sessionManager.getStringValue(Constants.KEY_AGE_MIN)
+        maxAge = sessionManager.getStringValue(Constants.KEY_AGE_MAX)
+        distance = sessionManager.getStringValue(Constants.DISTANCE)
+
         rangeSettingAge.setMaxStartValue(
             sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
         )
@@ -67,14 +77,57 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         )
         rangeSettingAge.apply()
 
+        if (distance.isNotEmpty()){
+            seekbarSettingDistance.minStartValue = distance.toFloat()
+            seekbarSettingDistance.apply()
+        }
+
         seekbarSettingDistance.setOnSeekbarChangeListener { value ->
             tvSettingDistanceMessage.text = String.format(getString(R.string.distance_msg), value)
+        }
+
+        seekbarSettingDistance.setOnSeekbarFinalValueListener { value ->
+            val jsonObject = JsonObject()
+            distance = value.toString()
+            jsonObject.addProperty(Constants.DISTANCE, distance)
+            settingsViewModel.editProfile(jsonObject)
         }
 
         rangeSettingAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
             tvSettingAgeMessage.text =
                 String.format(getString(R.string.age_message_value), minValue, maxValue)
         }
+
+        rangeSettingAge.setOnRangeSeekbarFinalValueListener { minValue, maxValue ->
+            Log.d("min max:", "$minValue $maxValue")
+            minAge = minValue.toString()
+            maxAge = maxValue.toString()
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.MIN_AGE, minAge)
+            jsonObject.addProperty(Constants.MAX_AGE, maxAge)
+            settingsViewModel.editProfile(jsonObject)
+        }
+
+        switchHideProfile.setOnTouchListener { view, motionEvent ->
+            isTouched = true
+            false
+        }
+
+        switchHideProfile.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isTouched) {
+                isTouched = false
+                when {
+                    isChecked -> {
+                        settingsViewModel.hideProfile(1)
+                    }
+                    else -> {
+                        settingsViewModel.hideProfile(0)
+                    }
+                }
+
+            }
+        }
+
     }
 
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
@@ -102,10 +155,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
 
     fun onClickSettingInterestIn(view: View) {
         val jsonObject = JsonObject()
-        when(view){
+        when (view) {
             tvInterestMen -> {
                 interestIn = 1
-                setSelectedTextColor(tvInterestMen,ivMenSelect)
+                setSelectedTextColor(tvInterestMen, ivMenSelect)
             }
             tvInterestWomen -> {
                 interestIn = 2
@@ -115,7 +168,6 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
                 interestIn = 3
                 setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
             }
-
 //            1 = Men
 //            2 = Women
 //            3 = Everyone
@@ -128,5 +180,16 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
 
     override fun onSuccess(msg: String) {
         sessionManager.setInterestIn(interestIn)
+        sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
+        sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)
+        sessionManager.setStringValue(distance, Constants.DISTANCE)
+
+    }
+
+    override fun onSuccessHideProfile(message: String) {
+        if (switchHideProfile.isChecked)
+            sessionManager.setIntegerValue(1, Constants.IS_HIDE)
+        else
+            sessionManager.setIntegerValue(0, Constants.IS_HIDE)
     }
 }
