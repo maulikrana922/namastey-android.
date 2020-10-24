@@ -146,7 +146,7 @@ class DashboardViewModel constructor(
                     networkService.requestToLikeUserProfile(likedUserId, isLike)
                         .let { appResponse ->
                             if (appResponse.status == Constants.OK)
-                                appResponse.data?.let { dashboardView.onSuccessProfileLike(it) }
+                                appResponse.data?.let { dashboardView.onSuccessProfileLike(appResponse.data!!) }
                             else
                                 dashboardView.onFailed(appResponse.message, appResponse.error)
                         }

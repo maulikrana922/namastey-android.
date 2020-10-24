@@ -16,7 +16,7 @@ class MatchesListBean() : Parcelable {
     var interest: String = ""
     var language: String = ""
     var age: String = ""
-    var image: String = ""
+    var profile_pic: String = ""
 
     val viewType = 0
 
@@ -45,7 +45,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeString(interest)
         parcel.writeString(language)
         parcel.writeString(age)
-        parcel.writeString(image)
+        parcel.writeString(profile_pic)
     }
 
     override fun describeContents(): Int {

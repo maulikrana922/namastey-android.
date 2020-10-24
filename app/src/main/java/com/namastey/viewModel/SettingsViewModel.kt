@@ -22,7 +22,7 @@ class SettingsViewModel constructor(
     private var settingsView: SettingsView = baseView as SettingsView
     private lateinit var job: Job
 
-    fun editProfile(jsonObject: JsonObject){
+    fun editProfile(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -47,7 +47,7 @@ class SettingsViewModel constructor(
         }
     }
 
-    fun hideProfile(isHide: Int){
+    fun hideProfile(isHide: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -72,25 +72,29 @@ class SettingsViewModel constructor(
         }
     }
 
-
-    fun getSearchUser(searchStr: String) {
+    fun privateProfile(isPrivate: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToSearchUser(searchStr).let { appResponse ->
+                if (settingsView.isInternetAvailable()) {
+                    networkService.requestToProfileType(isPrivate)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                settingsView.onSuccessProfileType(appResponse.message)
+                            } else {
+                                settingsView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
                     setIsLoading(false)
-//                    if (appResponse.status == Constants.OK)
-//                        filterView.onSuccessSearchList(appResponse.data!!)
-//                    else
-//                        filterView.onFailed(appResponse.message, appResponse.error)
+                    settingsView.showMsg(R.string.no_internet)
                 }
-
-            } catch (t: Throwable) {
+            } catch (exception: Throwable) {
                 setIsLoading(false)
-                settingsView.onHandleException(t)
+                settingsView.onHandleException(exception)
             }
         }
-
     }
 
     fun onDestroy() {

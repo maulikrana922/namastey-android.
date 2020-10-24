@@ -9,6 +9,8 @@ import com.namastey.R
 import com.namastey.adapter.FollowRequestAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowRequestBinding
+import com.namastey.listeners.OnFollowRequestClick
+import com.namastey.model.DashboardBean
 import com.namastey.model.FollowRequestBean
 import com.namastey.uiView.FollowRequestView
 import com.namastey.viewModel.FollowRequestViewModel
@@ -16,7 +18,8 @@ import kotlinx.android.synthetic.main.fragment_follow_request.*
 import javax.inject.Inject
 
 
-class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), FollowRequestView {
+class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), FollowRequestView,
+OnFollowRequestClick{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -25,6 +28,8 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
     private lateinit var layoutView: View
     private lateinit var followRequestAdapter: FollowRequestAdapter
     private var followRequestLength = 0
+    private var position = -1
+    private var followRequestList: ArrayList<FollowRequestBean> = ArrayList()
 
     companion object {
         fun getInstance() =
@@ -79,17 +84,40 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
         Log.e("FollowRequestFragment", "onSuccessFollowRequest: \t $data")
 
-        followRequestLength = data.size
+        followRequestList = data
 
-        if (followRequestLength == 0) {
+        if (followRequestList.size == 0) {
             tvNoFollowRequest.visibility = View.VISIBLE
             rvFollowRequest.visibility = View.GONE
             tvNoFollowRequest.text = resources.getString(R.string.no_follow_request)
         } else {
             tvNoFollowRequest.visibility = View.GONE
             rvFollowRequest.visibility = View.VISIBLE
-            followRequestAdapter = FollowRequestAdapter(data, requireActivity())
+            followRequestAdapter = FollowRequestAdapter(followRequestList, requireActivity(),this)
             rvFollowRequest.adapter = followRequestAdapter
         }
+    }
+
+    override fun onSuccess(msg: String) {
+        followRequestList.removeAt(position)
+        followRequestAdapter.notifyItemRemoved(position)
+        followRequestAdapter.notifyItemRangeChanged(position,followRequestAdapter.itemCount)
+
+        if (followRequestList.size == 0){
+            tvNoFollowRequest.visibility = View.VISIBLE
+            rvFollowRequest.visibility = View.GONE
+            tvNoFollowRequest.text = resources.getString(R.string.no_follow_request)
+        }
+
+    }
+
+    override fun onItemAllowDenyClick(userId: Long, isAllow: Int, position: Int) {
+        this.position = position
+        followRequestViewModel.followRequest(userId,isAllow)
+    }
+
+    override fun onDestroy() {
+        followRequestViewModel.onDestroy()
+        super.onDestroy()
     }
 }

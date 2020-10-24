@@ -219,7 +219,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             ).await()
         }
 
-    suspend fun requestToLikeUserProfile(likedUserId: Long, isLike: Int): AppResponse<Any> =
+    suspend fun requestToLikeUserProfile(likedUserId: Long, isLike: Int): AppResponse<DashboardBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToLikeUserAsync(likedUserId, isLike).await()
         }
@@ -288,6 +288,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToPostHideProfileAsync(isHide).await()
         }
 
+    suspend fun requestToProfileType(isPrivate: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToPostProfileTypeAsync(isPrivate).await()
+        }
+
     suspend fun requestToGetMatchesList(): AppResponse<ArrayList<MatchesListBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetMatchesListAsync().await()
@@ -298,7 +303,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetFollowRequestAsync().await()
         }
 
-    suspend fun requestToFollowRequest(followId: Long, isFollow: Int): AppResponse<Any> =
+    suspend fun requestToFollowAllowDenyRequest(followId: Long, isFollow: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowRequestAsync(followId, isFollow).await()
         }

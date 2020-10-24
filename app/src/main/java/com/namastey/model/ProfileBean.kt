@@ -26,6 +26,7 @@ class ProfileBean() : Parcelable {
     var interest_in_gender: Int = 0
     var is_follow: Int = 0
     var is_hide: Int = 0
+    var user_profile_type: Int = 0
     var distance: String = ""
     var gender: String = ""
     var category: ArrayList<CategoryBean> = ArrayList()
@@ -51,6 +52,7 @@ class ProfileBean() : Parcelable {
         interest_in_gender = parcel.readInt() ?: 0
         is_follow = parcel.readInt() ?: 0
         is_hide = parcel.readInt() ?: 0
+        user_profile_type = parcel.readInt() ?: 0
         distance = parcel.readString() ?: ""
         gender = parcel.readString() ?: ""
         category = parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
@@ -77,6 +79,7 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(interest_in_gender)
         parcel.writeInt(is_follow)
         parcel.writeInt(is_hide)
+        parcel.writeInt(user_profile_type)
         parcel.writeString(distance)
         parcel.writeString(gender)
         parcel.writeTypedList(category)

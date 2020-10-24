@@ -58,6 +58,27 @@
                 app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileType"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/private_account"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llSettingBackground"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchPrivateAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="@id/tvProfileType"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvProfileType" />
+
+
+            <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvHideProfile"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_marginStart="@dimen/_15sdp"
@@ -65,7 +86,7 @@
                 android:text="@string/hide_profile"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSettingBackground"
+                app:layout_constraintTop_toBottomOf="@id/tvProfileType"
                 app:typeface="MULI_EXTRA_BOLD" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -76,6 +97,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/tvHideProfile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvHideProfile" />
+
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvHideProfileMsg"
@@ -372,6 +394,21 @@
                 app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
                 app:layout_constraintStart_toStartOf="@id/tvHideProfile"
                 app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvLogout"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rounded_white_solid"
+                android:padding="@dimen/_12sdp"
+                android:text="@string/logout"
+                android:onClick="onClickLogout"
+                android:textColor="@color/colorButtonRed"
+                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                app:layout_constraintTop_toBottomOf="@id/tvAccountSettings"
                 app:typeface="MULI_SEMIBOLD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

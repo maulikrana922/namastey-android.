@@ -338,6 +338,7 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:minHeight="@dimen/_32sdp"
                     android:text="@string/like"
+                    android:onClick="onClickProfileLike"
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />

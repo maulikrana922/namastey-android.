@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +15,11 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySettingsBinding
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
@@ -53,6 +56,12 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     }
 
     private fun initData() {
+
+        if (sessionManager.getUserGender() == Constants.Gender.male.name)
+            llSettingBackground.background = getDrawable(R.drawable.blue_bar)
+        else
+            llSettingBackground.background = getDrawable(R.drawable.pink_bar)
+
         if (sessionManager.getInterestIn() != 0) {
             interestIn = sessionManager.getInterestIn()
 
@@ -64,6 +73,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         }
 
         switchHideProfile.isChecked = sessionManager.getIntegerValue(Constants.IS_HIDE) == 1
+        switchPrivateAccount.isChecked = sessionManager.getIntegerValue(Constants.PROFILE_TYPE) == 1
 
         minAge = sessionManager.getStringValue(Constants.KEY_AGE_MIN)
         maxAge = sessionManager.getStringValue(Constants.KEY_AGE_MAX)
@@ -77,7 +87,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         )
         rangeSettingAge.apply()
 
-        if (distance.isNotEmpty()){
+        if (distance.isNotEmpty()) {
             seekbarSettingDistance.minStartValue = distance.toFloat()
             seekbarSettingDistance.apply()
         }
@@ -113,6 +123,11 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             false
         }
 
+        switchPrivateAccount.setOnTouchListener { view, motionEvent ->
+            isTouched = true
+            false
+        }
+
         switchHideProfile.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isTouched) {
                 isTouched = false
@@ -122,6 +137,21 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
                     }
                     else -> {
                         settingsViewModel.hideProfile(0)
+                    }
+                }
+
+            }
+        }
+
+        switchPrivateAccount.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isTouched) {
+                isTouched = false
+                when {
+                    isChecked -> {
+                        settingsViewModel.privateProfile(1)
+                    }
+                    else -> {
+                        settingsViewModel.privateProfile(0)
                     }
                 }
 
@@ -191,5 +221,37 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             sessionManager.setIntegerValue(1, Constants.IS_HIDE)
         else
             sessionManager.setIntegerValue(0, Constants.IS_HIDE)
+    }
+
+    override fun onSuccessProfileType(message: String) {
+        if (switchPrivateAccount.isChecked)
+            sessionManager.setIntegerValue(1, Constants.PROFILE_TYPE)
+        else
+            sessionManager.setIntegerValue(0, Constants.PROFILE_TYPE)
+    }
+
+    fun onClickLogout(view: View) {
+
+        object : CustomAlertDialog(
+            this@SettingsActivity,
+            resources.getString(R.string.msg_logout),
+            getString(R.string.logout),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        sessionManager.logout()
+                        val intent = Intent(this@SettingsActivity, SignUpActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        openActivity(intent)
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 }

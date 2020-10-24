@@ -1,6 +1,5 @@
 package com.namastey.viewModel
 
-import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.FollowRequestBean
 import com.namastey.networking.NetworkService
@@ -26,15 +25,15 @@ class FollowRequestViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToFollowRequest().let {
-                        appResponse: AppResponse<ArrayList<FollowRequestBean>> ->
-                    setIsLoading(false)
-                    if (appResponse.status == Constants.OK) {
-                        followRequestView.onSuccessFollowRequest(appResponse.data!!)
-                    } else {
-                        followRequestView.onFailed(appResponse.message, appResponse.error)
+                networkService.requestToFollowRequest()
+                    .let { appResponse: AppResponse<ArrayList<FollowRequestBean>> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            followRequestView.onSuccessFollowRequest(appResponse.data!!)
+                        } else {
+                            followRequestView.onFailed(appResponse.message, appResponse.error)
+                        }
                     }
-                }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 followRequestView.onHandleException(exception)
@@ -43,20 +42,20 @@ class FollowRequestViewModel constructor(
     }
 
 
-    fun followRequest(userId: Long, isFollow: Int) {
+    fun followRequest(userId: Long, isAllow: Int) {
+        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (followRequestView.isInternetAvailable()) {
-                    networkService.requestToFollowUser(userId, isFollow).let { appResponse ->
-                        if (appResponse.status == Constants.OK)
-                            followRequestView.onSuccess(appResponse.message)
-                        else
-                            followRequestView.onFailed(appResponse.message, appResponse.error)
-                    }
-                } else {
-                    followRequestView.showMsg(R.string.no_internet)
+
+                networkService.requestToFollowAllowDenyRequest(userId, isAllow).let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        followRequestView.onSuccess(appResponse.message)
+                    else
+                        followRequestView.onFailed(appResponse.message, appResponse.error)
                 }
             } catch (t: Throwable) {
+                setIsLoading(false)
                 followRequestView.onHandleException(t)
             }
         }

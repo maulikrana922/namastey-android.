@@ -69,6 +69,7 @@ object Constants {
     const val GET_TREDING_VIDEOS = "treding-videos"
     const val POST_VIEWERS = "post-viewers"
     const val HIDE_PROFILE = "hide-profile"
+    const val USER_TYPE_CHANGE = "user-type-change"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -200,6 +201,7 @@ object Constants {
     const val SUB_CAT_ID = "sub_cat_id"
     const val IS_HIDE = "is_hide"
     const val FOLLOW_ID = "follow_id"
+    const val PROFILE_TYPE = "profile_type"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

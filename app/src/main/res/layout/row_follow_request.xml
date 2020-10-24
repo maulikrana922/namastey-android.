@@ -43,7 +43,7 @@
                 android:gravity="center|start"
                 android:paddingTop="@dimen/_2sdp"
                 android:paddingBottom="@dimen/_2sdp"
-                android:text="Luke Doyle"
+                android:text="@string/user"
                 android:textColor="@color/colorBlack"
                 android:textSize="12sp"
                 app:typeface="MULI_SEMIBOLD" />
@@ -57,7 +57,7 @@
                 android:gravity="center|start"
                 android:paddingTop="@dimen/_2sdp"
                 android:paddingBottom="@dimen/_2sdp"
-                android:text="Doctor"
+                android:text="@string/jobs"
                 android:textColor="@color/colorLightGrayText"
                 android:textSize="12sp"
                 app:typeface="MULI_SEMIBOLD" />
@@ -100,7 +100,7 @@
             android:visibility="visible">
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvDenyBack"
+                android:id="@+id/tvDeny"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"

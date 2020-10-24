@@ -854,8 +854,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         isUpdateComment = true
     }
 
-    override fun onSuccessProfileLike(data: Any) {
-        val dashboardBean = feedList[position]
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         if (dashboardBean.is_like == 1)
             dashboardBean.is_like = 0
         else

@@ -76,9 +76,11 @@
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/colorBlack"
             android:textSize="20sp"
-            android:visibility="gone"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivFollowRequestClose"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:typeface="MULI_SEMIBOLD" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -93,6 +95,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivFollowRequestClose" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

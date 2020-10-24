@@ -175,7 +175,7 @@ interface NetworkRequest {
     fun requestToLikeUserAsync(
         @Field(Constants.LIKED_USER_ID) likedUserId: Long,
         @Field(Constants.IS_LIKE) isLike: Int
-    ): Deferred<AppResponse<Any>>
+    ): Deferred<AppResponse<DashboardBean>>
 
     @FormUrlEncoded
     @POST(Constants.FOLLOW)
@@ -245,6 +245,12 @@ interface NetworkRequest {
     @POST(Constants.HIDE_PROFILE)
     fun requestToPostHideProfileAsync(
         @Field(Constants.IS_HIDE) isHide: Int
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.USER_TYPE_CHANGE)
+    fun requestToPostProfileTypeAsync(
+        @Field(Constants.PROFILE_TYPE) isPrivate: Int
     ): Deferred<AppResponse<Any>>
 
     @GET(Constants.MATCHES_LIST)

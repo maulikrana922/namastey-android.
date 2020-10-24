@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.listeners.OnFollowRequestClick
 import com.namastey.model.FollowRequestBean
 import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
@@ -13,7 +14,8 @@ import kotlinx.android.synthetic.main.row_follow_request.view.*
 
 class FollowRequestAdapter(
     var followRequestList: ArrayList<FollowRequestBean>,
-    var activity: Activity
+    var activity: Activity,
+    var onFollowRequestClick: OnFollowRequestClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FollowRequestAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -32,14 +34,15 @@ class FollowRequestAdapter(
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            var  followRequest = followRequestList.get(position)
+            val followRequest = followRequestList[position]
 
             GlideLib
                 .loadImage(
-                activity, ivUserProfile, followRequest.following_user_profile_pic
-            )
+                    activity, ivUserProfile, followRequest.profile_url
+                )
 
             tvUsername.text = followRequest.username
+            tvUserProfession.text = followRequest.job
 
             Utils.rectangleShapeGradient(
                 mainCategoryView, intArrayOf(
@@ -50,6 +53,12 @@ class FollowRequestAdapter(
             mainCategoryView.alpha = 0.6f
 
 
+            tvAllow.setOnClickListener {
+                onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 1,position)
+            }
+            tvDeny.setOnClickListener {
+                onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 0, position)
+            }
         }
 
     }

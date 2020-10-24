@@ -55,7 +55,7 @@ class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var act
                 likeProfileViewHolder.tvProfileName.text = matches.username
                 GlideApp
                     .with(activity)
-                    .load(matches.image)
+                    .load(matches.profile_pic)
                     .into(likeProfileViewHolder.ivProfileImage)
 
             }
