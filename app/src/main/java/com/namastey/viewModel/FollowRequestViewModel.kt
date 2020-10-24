@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.FollowRequestBean
 import com.namastey.networking.NetworkService
@@ -41,6 +42,25 @@ class FollowRequestViewModel constructor(
         }
     }
 
+
+    fun followRequest(userId: Long, isFollow: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (followRequestView.isInternetAvailable()) {
+                    networkService.requestToFollowUser(userId, isFollow).let { appResponse ->
+                        if (appResponse.status == Constants.OK)
+                            followRequestView.onSuccess(appResponse.message)
+                        else
+                            followRequestView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    followRequestView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                followRequestView.onHandleException(t)
+            }
+        }
+    }
 
 
     fun onDestroy() {

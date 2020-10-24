@@ -10,12 +10,23 @@
     android:paddingEnd="@dimen/_3sdp"
     android:paddingBottom="@dimen/_3sdp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.namastey.customViews.RoundImageView
         android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/_72sdp"
+        android:layout_height="@dimen/_72sdp"
+        android:background="@drawable/dashed_circle_pink_hollow"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_placeholder"
+        app:cornerRadius="@dimen/_45sdp"
+        app:roundedCorners="all" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="@dimen/_72sdp"
         android:layout_height="@dimen/_72sdp"
         app:civ_border_color="@color/colorWhite"
         app:civ_border_width="1dp"
+        android:visibility="gone"
         app:civ_circle_background_color="@color/white" />
 
     <com.namastey.customViews.CustomTextView

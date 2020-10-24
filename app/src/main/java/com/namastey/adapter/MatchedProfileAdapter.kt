@@ -47,7 +47,8 @@ class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var act
         when (position) {
             0 -> {
                 val likeViewHolder = holder as LikesViewHolder
-                likeViewHolder.tvLikesCount.text = matchesList.size.toString()
+                val likeCount = matchesList.size - 1
+                likeViewHolder.tvLikesCount.text = likeCount.toString()
             }
             1 -> {
                 val likeProfileViewHolder = holder as LikesProfileViewHolder

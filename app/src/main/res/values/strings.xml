@@ -284,4 +284,6 @@
     <string name="plus">+</string>
     <string name="deny">Deny</string>
     <string name="allow">Allow</string>
+    <string name="no_follow_request">No follow request</string>
+    <string name="liked">Liked</string>
 </resources>

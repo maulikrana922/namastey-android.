@@ -124,6 +124,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+
     override fun getViewModel() = profileViewModel
 
     override fun getLayoutId() = R.layout.activity_profile
@@ -164,10 +165,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on followers and following
      */
     fun onClickFollow(view: View) {
-        if (!sessionManager.isGuestUser()){
-            val intent = Intent(this@ProfileActivity,FollowingFollowersActivity::class.java)
+        if (!sessionManager.isGuestUser()) {
+            val intent = Intent(this@ProfileActivity, FollowingFollowersActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-            intent.putExtra("isMyProfile",true)
+            intent.putExtra("isMyProfile", true)
             openActivity(intent)
         }
     }
@@ -438,23 +439,23 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
 //            if (data != null) {
-                val imageFile = Utils.getCameraFile(this@ProfileActivity)
-                val photoUri = FileProvider.getUriForFile(
-                    this,
-                    applicationContext.packageName + ".provider",
-                    imageFile
-                )
-                val bitmap: Bitmap = Utils.scaleBitmapDown(
-                    MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
-                    1200
-                )!!
+            val imageFile = Utils.getCameraFile(this@ProfileActivity)
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                applicationContext.packageName + ".provider",
+                imageFile
+            )
+            val bitmap: Bitmap = Utils.scaleBitmapDown(
+                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                1200
+            )!!
 
-                GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
 
-                if (imageFile.exists()) {
-                    isCameraOpen = true
-                    profileViewModel.updateProfilePic(imageFile)
-                }
+            if (imageFile.exists()) {
+                isCameraOpen = true
+                profileViewModel.updateProfilePic(imageFile)
+            }
 //            }
         }
     }
@@ -498,7 +499,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     /**
      * Temp set for display purpose
      */
-    private fun setMembershipList(){
+    private fun setMembershipList() {
         for (number in 0..5) {
             val membershipBean = MembershipBean()
             membershipBean.name = "Unlimited matches"
@@ -507,13 +508,19 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             membershipList.add(membershipBean)
         }
 
-        viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity,membershipList)
+        viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
         indicator.setupWithViewPager(viewpagerMembership, true)
 
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
     }
+
+
+    override fun onSuccessProfileLike(data: Any) {
+        TODO("Not yet implemented")
+    }
+
     inner class SliderTimer : TimerTask() {
         override fun run() {
             this@ProfileActivity.runOnUiThread(Runnable {

@@ -85,6 +85,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         fillValue(profileBean)
     }
 
+    override fun onSuccessProfileLike(data: Any) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSuccess(msg: String) {
 //        super.onSuccess(msg)
         if (profileBean.is_follow == 1) {
@@ -107,8 +111,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         tvViewsCount.text = profileBean.viewers.toString()
         GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
-        sessionManager.setStringValue(profileBean.distance,Constants.DISTANCE)
-        sessionManager.setIntegerValue(profileBean.is_hide,Constants.IS_HIDE)
+        sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+        sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
 
         if (profileBean.education.size > 0) {
             tvEducation.text = profileBean.education[0].course
@@ -312,6 +316,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 tvJob.text = sessionManager.getJobBean().title
             }
             profileViewModel.getUserFullProfile(sessionManager.getUserId())
+
+            /*btnProfileLike.setOnClickListener {
+                if (profileBean.is_like == 1)
+                    profileViewModel.likeUserProfile(likedUserId, isLike)
+                else
+                profileViewModel.likeUserProfile(likedUserId, isLike)
+
+            }*/
         } else {
             profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
         }
@@ -383,6 +395,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickProfileMore(view: View) {
         if (sessionManager.getUserId() == profileBean.user_id)
-            openActivity(this@ProfileViewActivity,SettingsActivity())
+            openActivity(this@ProfileViewActivity, SettingsActivity())
     }
 }

@@ -178,7 +178,7 @@ interface NetworkRequest {
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
-    @POST(Constants.FOLLOW_REQUEST)
+    @POST(Constants.FOLLOW)
     fun requestToFollowUserAsync(
         @Field(Constants.FOLLOWING_USER_ID) followingUserId: Long,
         @Field(Constants.IS_FOLLOWING) isFollow: Int
@@ -252,4 +252,12 @@ interface NetworkRequest {
 
     @GET(Constants.FOLLOW_REQUEST_LIST)
     fun requestToGetFollowRequestAsync(): Deferred<AppResponse<ArrayList<FollowRequestBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.FOLLOW_REQUEST)
+    fun requestToFollowRequestAsync(
+        @Field(Constants.FOLLOW_ID) followId: Long,
+        @Field(Constants.IS_FOLLOWING) isFollow: Int
+    ): Deferred<AppResponse<Any>>
+
 }

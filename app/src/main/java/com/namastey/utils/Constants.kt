@@ -58,7 +58,7 @@ object Constants {
     const val GET_COMMENT = "comment-list"
     const val DELETE_COMMENT = "comment-delete"
     const val USER_LIKE = "like"
-    const val FOLLOW_REQUEST = "follow"
+    const val FOLLOW = "follow"
     const val REMOVE_FOLLOWERS = "remove-follow"
     const val SEARCH_USER = "search-user"
     const val GET_SUGGEST_LIST = "get-suggest-list"
@@ -84,6 +84,7 @@ object Constants {
     const val DISTANCE = "distance"
     const val MATCHES_LIST = "matches-list"
     const val FOLLOW_REQUEST_LIST = "follow-request-list"
+    const val FOLLOW_REQUEST = "follow-request"
 
     //    api response error code
     const val OK = 200
@@ -198,6 +199,7 @@ object Constants {
     const val BLOCK_USER_ID = "block_user_id"
     const val SUB_CAT_ID = "sub_cat_id"
     const val IS_HIDE = "is_hide"
+    const val FOLLOW_ID = "follow_id"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

@@ -1,9 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.media.MediaPlayer
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,10 +121,10 @@ class FeedAdapter(
 //            if (dashboardBean.profile_url.isNotEmpty())
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
 
-//            if (dashboardBean.is_like == 1)
-//                tvFeedLike.text = activity.getString(R.string.dislike)
-//            else
-//                tvFeedLike.text = activity.getString(R.string.like)
+            if (dashboardBean.is_like == 1)
+                tvFeedLike.text = activity.getString(R.string.liked)
+            else
+                tvFeedLike.text = activity.getString(R.string.like)
 
             tvFeedJob.text = dashboardBean.job
 
@@ -204,12 +202,13 @@ class FeedAdapter(
             tvFeedJob.setOnClickListener {
                 onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
             }
-//            tvFeedLike.setOnClickListener {
-//                if (dashboardBean.is_like == 1)
-//                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 0)
-//                else
-//                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 1)
-//            }
+
+            tvFeedLike.setOnClickListener {
+                if (dashboardBean.is_like == 1)
+                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 0)
+                else
+                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 1)
+            }
         }
 
     }

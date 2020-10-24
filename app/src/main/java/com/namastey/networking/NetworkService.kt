@@ -297,4 +297,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetFollowRequestAsync().await()
         }
+
+    suspend fun requestToFollowRequest(followId: Long, isFollow: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToFollowRequestAsync(followId, isFollow).await()
+        }
+
+
 }

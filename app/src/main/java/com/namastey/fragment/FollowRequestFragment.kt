@@ -24,6 +24,7 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
     private lateinit var followRequestViewModel: FollowRequestViewModel
     private lateinit var layoutView: View
     private lateinit var followRequestAdapter: FollowRequestAdapter
+    private var followRequestLength = 0
 
     companion object {
         fun getInstance() =
@@ -69,8 +70,8 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
             fragmentManager!!.popBackStack()
         }
 
-      /*  followRequestAdapter = FollowRequestAdapter(requireActivity())
-        rvFollowRequest.adapter = followRequestAdapter*/
+        /*  followRequestAdapter = FollowRequestAdapter(requireActivity())
+          rvFollowRequest.adapter = followRequestAdapter*/
 
     }
 
@@ -78,9 +79,17 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
         Log.e("FollowRequestFragment", "onSuccessFollowRequest: \t $data")
 
-        followRequestAdapter = FollowRequestAdapter(data, requireActivity())
-        rvFollowRequest.adapter = followRequestAdapter
+        followRequestLength = data.size
+
+        if (followRequestLength == 0) {
+            tvNoFollowRequest.visibility = View.VISIBLE
+            rvFollowRequest.visibility = View.GONE
+            tvNoFollowRequest.text = resources.getString(R.string.no_follow_request)
+        } else {
+            tvNoFollowRequest.visibility = View.GONE
+            rvFollowRequest.visibility = View.VISIBLE
+            followRequestAdapter = FollowRequestAdapter(data, requireActivity())
+            rvFollowRequest.adapter = followRequestAdapter
+        }
     }
-
-
 }

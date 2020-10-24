@@ -131,7 +131,25 @@ class ProfileViewModel constructor(
         }
     }
 
-
+    fun likeUserProfile(likedUserId: Long, isLike: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToLikeUserProfile(likedUserId, isLike)
+                        .let { appResponse ->
+                            if (appResponse.status == Constants.OK)
+                                appResponse.data?.let { profileView.onSuccessProfileLike(it) }
+                            else
+                                profileView.onFailed(appResponse.message, appResponse.error)
+                        }
+                } else {
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                profileView.onHandleException(t)
+            }
+        }
+    }
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()
