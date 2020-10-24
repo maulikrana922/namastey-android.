@@ -81,6 +81,7 @@ object Constants {
     const val ALBUM_BEAN = "albumBean"
     const val VIDEO_LIST = "videoList"
     const val MATCHES_LIST = "matches-list"
+    const val FOLLOW_REQUEST_LIST = "follow-request-list"
 
     //    api response error code
     const val OK = 200
@@ -112,6 +113,8 @@ object Constants {
     const val EDUCATION_FRAGMENT = "EducationFragment"
     const val JOB_FRAGMENT = "JobFragment"
     const val ADD_LINKS_FRAGMENT = "AddLinksFragment"
+    const val NOTIFICATION_FRAGMENT = "NotificationFragment"
+    const val FOLLOW_REQUEST_FRAGMENT = "FollowRequestFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

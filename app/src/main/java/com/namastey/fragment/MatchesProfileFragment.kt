@@ -68,7 +68,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private fun initUI() {
         matchesProfileViewModel.getMatchesList()
 
-        messagesAdapter = MessagesAdapter( requireActivity())
+        messagesAdapter = MessagesAdapter(requireActivity())
         rvMessagesList.adapter = messagesAdapter
 
         tvMatches.setOnClickListener {
@@ -83,10 +83,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity())
         rvMatchesList.adapter = matchedProfileAdapter
-
-        /* rvMatchesList.apply {
-             adapter = MatchedProfileAdapter(data, requireActivity())
-         }*/
 
     }
 

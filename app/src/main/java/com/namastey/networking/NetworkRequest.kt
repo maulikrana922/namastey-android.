@@ -243,4 +243,7 @@ interface NetworkRequest {
 
     @GET(Constants.MATCHES_LIST)
     fun requestToGetMatchesListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
+
+    @GET(Constants.FOLLOW_REQUEST_LIST)
+    fun requestToGetFollowRequestAsync(): Deferred<AppResponse<ArrayList<FollowRequestBean>>>
 }

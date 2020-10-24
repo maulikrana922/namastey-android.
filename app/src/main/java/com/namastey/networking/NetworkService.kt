@@ -287,4 +287,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetMatchesListAsync().await()
         }
+
+    suspend fun requestToFollowRequest(): AppResponse<ArrayList<FollowRequestBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetFollowRequestAsync().await()
+        }
 }

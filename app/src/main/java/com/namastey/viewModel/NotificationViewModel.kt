@@ -20,7 +20,7 @@ class NotificationViewModel constructor(
     private var notificationView: NotificationView = baseView as NotificationView
     private lateinit var job: Job
 
-    fun getMatchScreen() {
+    fun getNotificationList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {

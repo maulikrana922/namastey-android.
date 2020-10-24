@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -37,14 +38,15 @@
             android:gravity="center|start"
             android:maxLines="6"
             android:text="Luke Doyle, kizzplitzz and 3 others Commented on your posts. 3d"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorLightGrayText"
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mainCategoryView"
+            android:id="@+id/mainFollowBackView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_gravity="center"
             android:background="@drawable/rounded_red_solid">
 
@@ -59,7 +61,6 @@
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="@string/plus"
                 android:textSize="20sp"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,10 +70,49 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainSendView"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_red_solid"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/tvSend"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:src="@drawable/ic_send_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/iv"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_20sdp"
+            app:roundedCorners="all" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height=".75dp"
-        android:background="@color/colorGray" />
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:background="@color/colorLightGreenNotification" />
 </LinearLayout>

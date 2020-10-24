@@ -10,6 +10,7 @@
     <color name="colorGreenLight">#4BAF50</color>
     <color name="colorLightGreen">#C6F9E0</color>
     <color name="colorLightestGreen">#F2FCF7</color>
+    <color name="colorLightGrayText">#C5C5C5</color>
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>

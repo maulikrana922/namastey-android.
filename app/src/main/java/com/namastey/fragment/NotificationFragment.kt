@@ -5,10 +5,14 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.MatchesActivity
+import com.namastey.adapter.NotificationAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
 import com.namastey.uiView.NotificationView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.NotificationViewModel
+import kotlinx.android.synthetic.main.fragment_notification.*
 import javax.inject.Inject
 
 
@@ -19,6 +23,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var fragmentAddFriendBinding: FragmentNotificationBinding
     private lateinit var notificationViewModel: NotificationViewModel
     private lateinit var layoutView: View
+    private lateinit var notificationAdapter: NotificationAdapter
 
     override fun getViewModel() = notificationViewModel
 
@@ -35,6 +40,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         super.onViewCreated(view, savedInstanceState)
         layoutView = view
         setupViewModel()
+
+        initUI()
     }
 
     private fun setupViewModel() {
@@ -44,6 +51,22 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         fragmentAddFriendBinding = getViewBinding()
         fragmentAddFriendBinding.viewModel = notificationViewModel
+    }
+
+    private fun initUI() {
+
+        notificationAdapter = NotificationAdapter( requireActivity())
+        rvNotification.adapter = notificationAdapter
+
+        tvFollowRequest.setOnClickListener {
+            val followRequestFragment = FollowRequestFragment.getInstance()
+            followRequestFragment.setTargetFragment(this, Constants.REQUEST_CODE)
+            (activity as MatchesActivity).addFragment(
+                followRequestFragment,
+                Constants.FOLLOW_REQUEST_FRAGMENT
+            )
+        }
+
     }
 
 

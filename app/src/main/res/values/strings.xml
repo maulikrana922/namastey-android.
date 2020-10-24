@@ -267,4 +267,6 @@
     <string name="all_activity">All Activity</string>
     <string name="follow_requests">Follow Requests</string>
     <string name="plus">+</string>
+    <string name="deny">Deny</string>
+    <string name="allow">Allow</string>
 </resources>
