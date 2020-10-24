@@ -499,22 +499,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
         super.onActivityReenter(resultCode, data)
-        if (resultCode == Constants.REQUEST_CODE && data != null){
-            when{
+        if (resultCode == Constants.REQUEST_CODE && data != null) {
+            when {
                 data.hasExtra("fromSubCategory") -> {
-                    with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId",0)) }
+                    with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId", 0)) }
                 }
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == Constants.FILTER_OK) {
-            if (data != null && data.hasExtra("fromSubCategory")){
+            if (data != null && data.hasExtra("fromSubCategory")) {
                 supportFragmentManager.popBackStack()
-                with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId",0)) }
-            }else{
+                with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId", 0)) }
+            } else {
                 supportFragmentManager.popBackStack()
             }
         }
@@ -859,6 +860,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             dashboardBean.is_like = 0
         else
             dashboardBean.is_like = 1
+
+        if (dashboardBean.is_match == 1) {
+            Log.e("DashboardActivity", "userName: \t ${dashboardBean.username}")
+            Log.e("DashboardActivity", "userName: \t ${dashboardBean.profile_url}")
+            Log.e(
+                "DashboardActivity",
+                "userName: \t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
+            )
+            Log.e(
+                "DashboardActivity",
+                "userName: \t ${sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)}"
+            )
+            val intent = Intent(this@DashboardActivity, MatchesScreenActivity::class.java)
+            intent.putExtra("username", dashboardBean.username);
+            intent.putExtra("profile_url", dashboardBean.profile_url);
+            openActivity(intent)
+        }
 
         feedList[position] = dashboardBean
         feedAdapter.notifyItemChanged(position)

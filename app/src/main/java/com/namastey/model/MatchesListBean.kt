@@ -9,6 +9,7 @@ class MatchesListBean() : Parcelable {
     var id: Long = 0
     var first_name: String = ""
     var last_name: String = ""
+    var username: String = ""
     var email: String = ""
     var mobile: String = ""
     var gender: String = ""
@@ -30,12 +31,14 @@ class MatchesListBean() : Parcelable {
         parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
+        parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(first_name)
         parcel.writeString(last_name)
+        parcel.writeString(username)
         parcel.writeString(email)
         parcel.writeString(mobile)
         parcel.writeString(gender)

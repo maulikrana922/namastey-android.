@@ -52,7 +52,7 @@ class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var act
             }
             1 -> {
                 val likeProfileViewHolder = holder as LikesProfileViewHolder
-                likeProfileViewHolder.tvProfileName.text = matches.first_name
+                likeProfileViewHolder.tvProfileName.text = matches.username
                 GlideApp
                     .with(activity)
                     .load(matches.image)
