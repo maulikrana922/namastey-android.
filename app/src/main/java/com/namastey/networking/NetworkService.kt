@@ -283,6 +283,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToPostViewAsync(postId).await()
         }
 
+    suspend fun requestToHideProfile(isHide: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToPostHideProfileAsync(isHide).await()
+        }
+
     suspend fun requestToGetMatchesList(): AppResponse<ArrayList<MatchesListBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetMatchesListAsync().await()

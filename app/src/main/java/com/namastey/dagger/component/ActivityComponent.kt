@@ -50,4 +50,5 @@ interface ActivityComponent {
     fun inject(fragment: NotificationFragment)
     fun inject(activity: MatchesScreenActivity)
     fun inject(fragment: FollowRequestFragment)
+    fun inject(activity: SettingsActivity)
 }

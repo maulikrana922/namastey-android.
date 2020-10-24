@@ -68,6 +68,7 @@ object Constants {
     const val SAVE_POST = "save-post"
     const val GET_TREDING_VIDEOS = "treding-videos"
     const val POST_VIEWERS = "post-viewers"
+    const val HIDE_PROFILE = "hide-profile"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -80,6 +81,7 @@ object Constants {
     const val FROM_EDIT = "fromEdit"
     const val ALBUM_BEAN = "albumBean"
     const val VIDEO_LIST = "videoList"
+    const val DISTANCE = "distance"
     const val MATCHES_LIST = "matches-list"
     const val FOLLOW_REQUEST_LIST = "follow-request-list"
 
@@ -195,6 +197,7 @@ object Constants {
     const val REASON = "reason"
     const val BLOCK_USER_ID = "block_user_id"
     const val SUB_CAT_ID = "sub_cat_id"
+    const val IS_HIDE = "is_hide"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
