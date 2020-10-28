@@ -49,6 +49,7 @@ class BlockListFragment : BaseFragment<FragmentBlockListBinding>(), BlockListVie
     private fun setupViewModel() {
         blockListViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(BlockListViewModel::class.java)
+        blockListViewModel.setViewInterface(this)
         fragmentBlockListBinding = getViewBinding()
         fragmentBlockListBinding.viewModel = blockListViewModel
     }

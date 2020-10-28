@@ -53,6 +53,7 @@ class AccountSettingsNotificationFragment :
         accountSettingsNotificationViewModel =
             ViewModelProviders.of(this, viewModelFactory)
                 .get(AccountSettingsNotificationViewModel::class.java)
+        accountSettingsNotificationViewModel.setViewInterface(this)
         fragmentAccountSettingsBinding = getViewBinding()
         fragmentAccountSettingsBinding.viewModel = accountSettingsNotificationViewModel
     }

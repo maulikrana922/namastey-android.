@@ -328,4 +328,11 @@
     <string name="you_can_login_back_anytime">You can login back anytime</string>
     <string name="delete_account"><u>Delete Account</u></string>
     <string name="all_your_profile_data_will_be_deleted_permanently_within_30_days">All your profile data will be deleted permanently within 30 Days</string>
+    <string name="suggest_your_account_to_others">Suggest your account to others</string>
+    <string name="suggest_your_account_text">Choose whetever your profile can be suggested to users interested in accounts like you.</string>
+    <string name="allow_your_video_to_download">Allow your videos to be download</string>
+    <string name="who_can_send_you_direct_msg">Who can send you direct messages</string>
+    <string name="allow_your_to_share_your_profile">Allow users to share your profile</string>
+    <string name="who_can_see_your_followers">Who can view you followers</string>
+    <string name="who_can_comments_on_your_video">Who can comment on your videos</string>
 </resources>

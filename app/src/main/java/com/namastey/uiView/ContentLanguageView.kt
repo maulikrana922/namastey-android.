@@ -1,5 +1,7 @@
 package com.namastey.uiView
 
-interface ContentLanguageView : BaseView {
+import com.namastey.model.VideoLanguageBean
 
+interface ContentLanguageView : BaseView {
+    fun onSuccess(languageList: ArrayList<VideoLanguageBean>)
 }

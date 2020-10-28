@@ -36,8 +36,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
     companion object {
         fun getInstance() =
-            AddFriendFragment().apply {
-
+            MatchesProfileFragment().apply {
             }
     }
 
