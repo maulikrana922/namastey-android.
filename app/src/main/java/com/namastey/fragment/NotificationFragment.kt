@@ -69,5 +69,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     }
 
+    override fun onDestroy() {
+        notificationViewModel.onDestroy()
+        super.onDestroy()
+    }
 
 }

@@ -167,6 +167,31 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(AccountSettingsViewModel::class.java) -> AccountSettingsViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(AccountSettingsNotificationViewModel::class.java) -> AccountSettingsNotificationViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(BlockListViewModel::class.java) -> BlockListViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(ManageAccountViewModel::class.java) -> ManageAccountViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+           modelClass.isAssignableFrom(ContentLanguageViewModel::class.java) -> ContentLanguageViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }

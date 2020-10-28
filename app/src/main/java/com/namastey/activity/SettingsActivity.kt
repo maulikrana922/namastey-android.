@@ -254,4 +254,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         }.show()
     }
+
+    fun onClickAccountSettings(view: View) {
+        openActivity(this@SettingsActivity, AccountSettingsActivity())
+    }
 }

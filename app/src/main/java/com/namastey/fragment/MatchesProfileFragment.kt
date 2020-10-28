@@ -81,7 +81,12 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity())
         rvMatchesList.adapter = matchedProfileAdapter
-
     }
+
+    override fun onDestroy() {
+        matchesProfileViewModel.onDestroy()
+        super.onDestroy()
+    }
+
 
 }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.BlockListViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBlockList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/llNoUserInList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_110sdp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:src="@drawable/ic_female"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:src="@drawable/ic_male"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_35sdp"
+                        android:src="@drawable/block"
+                        tools:ignore="ContentDescription" />
+
+
+                </FrameLayout>
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBlockUsers"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:text="@string/block_users"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvNoBlockUsersYet"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:gravity="center"
+                    android:text="@string/no_block_users_yet"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_REGULAR" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

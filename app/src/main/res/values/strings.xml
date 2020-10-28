@@ -289,4 +289,43 @@
     <string name="allow">Allow</string>
     <string name="no_follow_request">No follow request</string>
     <string name="liked">Liked</string>
+
+
+    <!--Account Settings screen-->
+    <string name="general">General</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="get_full_access">Get full access</string>
+    <string name="notifications">Notifications</string>
+    <string name="blocked_list">Blocked list</string>
+    <string name="manage_account">Manage Account</string>
+    <string name="language">Language</string>
+    <string name="content_languages">Content Languages</string>
+    <string name="auto_translate">Auto translate</string>
+    <string name="personalize_data">Personalize and Data</string>
+    <string name="safety">Safety</string>
+    <string name="more_options">More options</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="leave_feedback">Leave feedback</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="legal">Legal</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="billing_terms">Billing terms</string>
+    <string name="new_followers">New Followers</string>
+    <string name="mentions">Mentions</string>
+    <string name="direct_messages">Direct messages</string>
+    <string name="video_updates">Video updates</string>
+    <string name="videos_from_accounts_you_follow">Videos from accounts you follow</string>
+    <string name="videos_suggestions">Videos Suggestions</string>
+    <string name="block_list">Block List</string>
+    <string name="block_users">Block Users</string>
+    <string name="no_block_users_yet">No blocked users yet!</string>
+    <string name="account_details">Account details</string>
+    <string name="user_name">Username</string>
+    <string name="namastey_id">Namastey ID</string>
+    <string name="restore_purchases">Restore Purchases</string>
+    <string name="restore_your_namastey_id_subscriptions_to_this_device">Restore your Namastey ID subscriptions to this device</string>
+    <string name="you_can_login_back_anytime">You can login back anytime</string>
+    <string name="delete_account"><u>Delete Account</u></string>
+    <string name="all_your_profile_data_will_be_deleted_permanently_within_30_days">All your profile data will be deleted permanently within 30 Days</string>
 </resources>

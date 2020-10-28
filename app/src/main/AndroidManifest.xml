@@ -29,14 +29,22 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.SettingsActivity"
+        <activity android:name=".activity.AccountSettingsActivity"></activity>
+        <activity
+            android:name=".activity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".activity.MatchesActivity" />
-        <activity android:name=".activity.MatchesProfileActivity" />
-        <activity android:name=".activity.MatchesScreenActivity"/>
-        <activity android:name=".activity.MatchesActivity" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activity.MatchesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activity.MatchesScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.AlbumVideoActivity" />
         <activity
             android:name=".activity.ProfileViewActivity"

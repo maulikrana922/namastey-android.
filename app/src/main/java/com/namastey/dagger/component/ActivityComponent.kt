@@ -51,4 +51,10 @@ interface ActivityComponent {
     fun inject(activity: MatchesScreenActivity)
     fun inject(fragment: FollowRequestFragment)
     fun inject(activity: SettingsActivity)
+    fun inject(activity: AccountSettingsActivity)
+    fun inject(fragment: AccountSettingsFragment)
+    fun inject(fragment: AccountSettingsNotificationFragment)
+    fun inject(fragment: BlockListFragment)
+    fun inject(fragment: ManageAccountFragment)
+    fun inject(fragment: ContentLanguageFragment)
 }

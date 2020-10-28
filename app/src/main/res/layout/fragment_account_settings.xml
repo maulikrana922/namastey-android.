@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.AccountSettingsViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llSettingBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGeneral"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/general"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSubscriptions"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/subscriptions"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvGetFullAccess"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/rounded_solid_red_all_corner"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_12sdp"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingEnd="@dimen/_12sdp"
+                        android:paddingBottom="@dimen/_3sdp"
+                        android:text="@string/get_full_access"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:typeface="MULI_SEMIBOLD" />
+                </LinearLayout>
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvNotifications"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/notifications"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBlockedList"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/blocked_list"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvManageAccount"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/manage_account"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/colorLightGrayView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvLanguage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/language"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvContentLanguages"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/content_languages"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvAutoTranslate"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/auto_translate"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchAutoTranslate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/colorLightGrayView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvPrivacy"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/privacy"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvPersonalizeData"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/personalize_data"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSafety"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/safety"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/colorLightGrayView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMoreOptions"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/more_options"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvInviteFriends"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/invite_friends"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvLeaveFeedback"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/leave_feedback"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvContactUs"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/contact_us"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/colorLightGrayView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvLegal"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/legal"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvTermsConditions"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/terms_conditions"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvPrivacyPolicy"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBillingTerms"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:gravity="start|center"
+                    android:text="@string/billing_terms"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

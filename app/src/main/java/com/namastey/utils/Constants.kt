@@ -119,6 +119,11 @@ object Constants {
     const val ADD_LINKS_FRAGMENT = "AddLinksFragment"
     const val NOTIFICATION_FRAGMENT = "NotificationFragment"
     const val FOLLOW_REQUEST_FRAGMENT = "FollowRequestFragment"
+    const val ACCOUNT_SETTINGS_FRAGMENT = "AccountSettingsFragment"
+    const val ACCOUNT_SETTINGS_NOTIFICATIONS_FRAGMENT = "AccountSettingsNotificationFragment"
+    const val BLOCK_LIST_FRAGMENT = "BlockListFragment"
+    const val MANAGE_ACCOUNT_FRAGMENT = "ManageAccountFragment"
+    const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
