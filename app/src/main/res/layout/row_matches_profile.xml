@@ -10,16 +10,23 @@
     android:paddingEnd="@dimen/_3sdp"
     android:paddingBottom="@dimen/_3sdp">
 
-    <com.namastey.customViews.RoundImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="@dimen/_72sdp"
-        android:layout_height="@dimen/_72sdp"
+    <LinearLayout
+        android:id="@+id/llProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
         android:background="@drawable/dashed_circle_pink_hollow"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_placeholder"
-        app:cornerRadius="@dimen/_45sdp"
-        app:roundedCorners="all" />
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/_72sdp"
+            android:layout_height="@dimen/_72sdp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            />
+    </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="@dimen/_72sdp"
@@ -35,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_6sdp"
         android:gravity="center"
-        android:text="@string/likes"
+        android:text="@string/user"
         android:textColor="@color/colorDarkGray"
         android:textSize="12sp"
         app:typeface="MULI_SEMIBOLD"/>

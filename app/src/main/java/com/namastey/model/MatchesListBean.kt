@@ -7,8 +7,6 @@ import android.os.Parcelable
 class MatchesListBean() : Parcelable {
 
     var id: Long = 0
-    var first_name: String = ""
-    var last_name: String = ""
     var username: String = ""
     var email: String = ""
     var mobile: String = ""
@@ -17,8 +15,7 @@ class MatchesListBean() : Parcelable {
     var language: String = ""
     var age: String = ""
     var profile_pic: String = ""
-
-    val viewType = 0
+    var is_read: Int = 0
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
@@ -30,14 +27,11 @@ class MatchesListBean() : Parcelable {
         parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
+        parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
-        parcel.writeString(first_name)
-        parcel.writeString(last_name)
         parcel.writeString(username)
         parcel.writeString(email)
         parcel.writeString(mobile)
@@ -46,6 +40,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeString(language)
         parcel.writeString(age)
         parcel.writeString(profile_pic)
+        parcel.writeInt(is_read)
     }
 
     override fun describeContents(): Int {
@@ -53,9 +48,6 @@ class MatchesListBean() : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<MatchesListBean> {
-        const val firstImage = 1
-        const val allImages = 2
-
         override fun createFromParcel(parcel: Parcel): MatchesListBean {
             return MatchesListBean(parcel)
         }

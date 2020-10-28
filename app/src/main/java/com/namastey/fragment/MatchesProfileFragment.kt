@@ -1,7 +1,6 @@
 package com.namastey.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -13,6 +12,7 @@ import com.namastey.databinding.FragmentMatchesProfileBinding
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
 import com.namastey.viewModel.MatchesProfileViewModel
+import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
 import kotlinx.android.synthetic.main.view_matches_messages_list.*
 import javax.inject.Inject
@@ -69,16 +69,17 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         messagesAdapter = MessagesAdapter(requireActivity())
         rvMessagesList.adapter = messagesAdapter
 
-       /* tvMatches.setOnClickListener {
-            val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
-            openActivity(intent)
-        }*/
+        /* tvMatches.setOnClickListener {
+             val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
+             openActivity(intent)
+         }*/
     }
 
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
-        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
+//        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
 
+        tvLikesCount.text = data.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity())
         rvMatchesList.adapter = matchedProfileAdapter
     }

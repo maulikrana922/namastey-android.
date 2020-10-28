@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.namastey.customViews.CustomTextView
@@ -20,13 +21,14 @@
         app:layout_constraintEnd_toStartOf="@id/rvMessagesList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:typeface="MULI_SEMIBOLD" />
+        app:typeface="MULI_EXTRA_BOLD" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessagesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        tools:listitem="@layout/row_message"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@id/rvMessagesList"
         app:layout_constraintStart_toStartOf="@id/tvMessages"
