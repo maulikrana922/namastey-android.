@@ -124,6 +124,7 @@ object Constants {
     const val BLOCK_LIST_FRAGMENT = "BlockListFragment"
     const val MANAGE_ACCOUNT_FRAGMENT = "ManageAccountFragment"
     const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
+    const val SAFETY_FRAGMENT = "SafetyFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

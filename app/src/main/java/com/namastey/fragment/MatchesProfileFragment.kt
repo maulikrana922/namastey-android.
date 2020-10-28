@@ -36,8 +36,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
     companion object {
         fun getInstance() =
-            AddFriendFragment().apply {
-
+            MatchesProfileFragment().apply {
             }
     }
 
@@ -69,10 +68,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         messagesAdapter = MessagesAdapter(requireActivity())
         rvMessagesList.adapter = messagesAdapter
 
-       /* tvMatches.setOnClickListener {
-            val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
-            openActivity(intent)
-        }*/
+        /* tvMatches.setOnClickListener {
+             val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
+             openActivity(intent)
+         }*/
     }
 
 

@@ -54,6 +54,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
     private fun setupViewModel() {
         accountSettingsViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(AccountSettingsViewModel::class.java)
+        accountSettingsViewModel.setViewInterface(this)
         fragmentAccountBinding = getViewBinding()
         fragmentAccountBinding.viewModel = accountSettingsViewModel
     }
@@ -90,6 +91,14 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
             (activity as AccountSettingsActivity).addFragment(
                 ContentLanguageFragment.getInstance(),
                 Constants.CONTENT_LANGUAGE_FRAGMENT
+            )
+        }
+
+        tvSafety.setOnClickListener {
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.safety))
+            (activity as AccountSettingsActivity).addFragment(
+                SafetyFragment.getInstance(),
+                Constants.SAFETY_FRAGMENT
             )
         }
     }

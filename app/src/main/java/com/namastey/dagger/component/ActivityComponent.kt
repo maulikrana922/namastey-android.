@@ -57,4 +57,5 @@ interface ActivityComponent {
     fun inject(fragment: BlockListFragment)
     fun inject(fragment: ManageAccountFragment)
     fun inject(fragment: ContentLanguageFragment)
+    fun inject(fragment: SafetyFragment)
 }

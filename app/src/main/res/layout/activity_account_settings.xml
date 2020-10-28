@@ -28,7 +28,7 @@
                 android:id="@+id/llSettingBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/blue_bar"
+                android:background="@drawable/pink_bar"
                 android:contentDescription="@string/app_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
