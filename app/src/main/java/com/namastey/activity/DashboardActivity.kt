@@ -854,15 +854,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         isUpdateComment = true
     }
 
-    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
-        if (dashboardBean.is_like == 1)
-            dashboardBean.is_like = 0
-        else
-            dashboardBean.is_like = 1
+    override fun onSuccessProfileLike(data: DashboardBean) {
+        val dashboardBean = feedList[position]
+        dashboardBean.is_match = data.is_match
+        dashboardBean.is_like = data.is_like
 
         if (dashboardBean.is_match == 1) {
             Log.e("DashboardActivity", "userName: \t ${dashboardBean.username}")
-            Log.e("DashboardActivity", "userName: \t ${dashboardBean.profile_url}")
+            Log.e("DashboardActivity", "userName:   \t ${dashboardBean.profile_url}")
             Log.e(
                 "DashboardActivity",
                 "userName: \t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
