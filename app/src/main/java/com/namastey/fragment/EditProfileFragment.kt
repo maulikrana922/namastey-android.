@@ -446,6 +446,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
         sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
         sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
+        sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
         edtProfileCasualName.setText(profileBean.username)
         edtProfileTagline.setText(profileBean.about_me)

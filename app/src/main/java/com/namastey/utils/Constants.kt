@@ -87,6 +87,7 @@ object Constants {
     const val FOLLOW_REQUEST_LIST = "follow-request-list"
     const val FOLLOW_REQUEST = "follow-request"
     const val BLOCK_USER_LIST = "block-user-list"
+    const val NOTIFICATION_ON_OFF = "notification-on-of"
 
     //    api response error code
     const val OK = 200
@@ -126,6 +127,7 @@ object Constants {
     const val MANAGE_ACCOUNT_FRAGMENT = "ManageAccountFragment"
     const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
     const val SAFETY_FRAGMENT = "SafetyFragment"
+    const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
@@ -146,6 +148,7 @@ object Constants {
     const val KEY_PROFILE_URL = "KEY_PROFILE_URL"
     const val KEY_AGE_MAX = "KEY_AGE_MAX"
     const val KEY_IS_COMPLETE_PROFILE = "KEY_IS_COMPLETE_PROFILE"
+    const val KEY_AGE = "KEY_AGE"
 
 
     //    field key
@@ -214,6 +217,11 @@ object Constants {
     const val IMAGE_TYPE = "image/*"
     const val VIDEO_TYPE = "video/*"
     const val TEXT_PLAIN = "text/plain"
+    const val IS_MENTIONS = "is_mentions"
+    const val IS_MATCHES = "is_matches"
+    const val IS_FOLLOW = "is_follow"
+    const val IS_SUGGEST = "is_suggest"
+
 
     //    Other constants
     const val MIN_CHOOSE_INTEREST = 3

@@ -269,4 +269,18 @@ interface NetworkRequest {
     @GET(Constants.BLOCK_USER_LIST)
     fun requestToGetBlockListAsync(): Deferred<AppResponse<ArrayList<BlockUserListBean>>>
 
+    @POST(Constants.NOTIFICATION_ON_OFF)
+    fun requestToNotificationOnOffAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<NotificationOnOffBean>>
+
+    /* @FormUrlEncoded
+     @POST(Constants.NOTIFICATION_ON_OFF)
+     fun requestToNotificationOnOff(
+         @Field(Constants.IS_MENTIONS) isMentions: Int,
+         @Field(Constants.IS_MATCHES) isMatches: Int,
+         @Field(Constants.IS_FOLLOW) isFollow: Int,
+         @Field(Constants.IS_COMMENT) isComment: Int,
+         @Field(Constants.IS_SUGGEST) isSuggest: Int
+     ): Deferred<AppResponse<NotificationOnOffBean>>*/
+
+
 }

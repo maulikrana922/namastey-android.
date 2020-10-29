@@ -159,7 +159,6 @@
                         android:textColor="@color/colorBlack"
                         app:typeface="MULI_EXTRA_BOLD" />
 
-
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchAllowYourToShareYourProfile"
                         android:layout_width="wrap_content"

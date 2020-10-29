@@ -15,9 +15,9 @@
         android:scaleType="centerCrop"
         android:src="@drawable/default_placeholder"
         app:cornerRadius="@dimen/_8sdp"
-        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
+        app:layout_constraintBottom_toBottomOf="@id/guidlineBlockUser"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+        app:layout_constraintTop_toTopOf="@id/guidlineBlockUser"
         app:roundedCorners="topRight|bottomLeft" />
 
     <com.namastey.customViews.CustomTextView
@@ -27,21 +27,21 @@
         android:layout_marginStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_3sdp"
         android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toTopOf="@id/guidlineFollowing"
+        app:layout_constraintBottom_toTopOf="@id/guidlineBlockUser"
         app:layout_constraintEnd_toStartOf="@id/tvUnblockLabel"
         app:layout_constraintStart_toEndOf="@id/ivBlockUser"
         app:layout_constraintTop_toTopOf="@id/ivBlockUser"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidlineFollowing"
+        android:id="@+id/guidlineBlockUser"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
     <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFollowingJob"
+        android:id="@+id/tvBlockedUseJob"
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
         android:paddingEnd="@dimen/_3sdp"
@@ -49,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="@id/ivBlockUser"
         app:layout_constraintEnd_toEndOf="@+id/tvBlockedUserName"
         app:layout_constraintStart_toStartOf="@id/tvBlockedUserName"
-        app:layout_constraintTop_toBottomOf="@id/guidlineFollowing"
+        app:layout_constraintTop_toBottomOf="@id/guidlineBlockUser"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.namastey.customViews.CustomTextView
@@ -67,8 +67,8 @@
         android:paddingBottom="@dimen/_3sdp"
         android:text="@string/unblock"
         android:textColor="@color/colorRed"
-        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
+        app:layout_constraintBottom_toBottomOf="@id/guidlineBlockUser"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+        app:layout_constraintTop_toTopOf="@id/guidlineBlockUser"
         app:typeface="MULI_SEMIBOLD" />
 </androidx.constraintlayout.widget.ConstraintLayout>

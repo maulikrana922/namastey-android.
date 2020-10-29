@@ -316,5 +316,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetBlockListAsync().await()
         }
 
-
+    suspend fun requestToNotificationOnOff(jsonObject: JsonObject): AppResponse<NotificationOnOffBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToNotificationOnOffAsync(jsonObject).await()
+        }
 }

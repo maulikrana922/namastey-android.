@@ -38,7 +38,7 @@ class BlockUserAdapter(
 
             val blockUserListBean = blockList[position]
             tvBlockedUserName.text = blockUserListBean.username
-            //  tvFollowingJob.text = dashboardBean.job
+            tvBlockedUseJob.text = blockUserListBean.job
 
             GlideLib.loadImageUrlRoundCorner(activity, ivBlockUser, blockUserListBean.user_image)
 
@@ -52,6 +52,7 @@ class BlockUserAdapter(
             viewBlockUserMain.setOnClickListener {
                 onBlockUserClick.onUserItemClick(blockUserListBean.user_id)
             }
+
             tvUnblockLabel.setOnClickListener {
 
                 val isBlock = 0

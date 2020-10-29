@@ -187,12 +187,17 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
-           modelClass.isAssignableFrom(ContentLanguageViewModel::class.java) -> ContentLanguageViewModel(
+            modelClass.isAssignableFrom(ContentLanguageViewModel::class.java) -> ContentLanguageViewModel(
                 networkService,
                 dbHelper,
                 baseView
             ) as T
             modelClass.isAssignableFrom(SafetyViewModel::class.java) -> SafetyViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(SafetySubViewModel::class.java) -> SafetySubViewModel(
                 networkService,
                 dbHelper,
                 baseView

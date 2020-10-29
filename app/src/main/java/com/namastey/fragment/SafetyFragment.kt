@@ -9,14 +9,16 @@ import com.namastey.activity.AccountSettingsActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSafetyBinding
 import com.namastey.uiView.SafetyView
+import com.namastey.utils.Constants
 import com.namastey.viewModel.SafetyViewModel
+import kotlinx.android.synthetic.main.fragment_safety.*
 import javax.inject.Inject
 
 class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var fragmentContentLanguageBinding: FragmentSafetyBinding
+    private lateinit var fragmentSafetyBinding: FragmentSafetyBinding
     private lateinit var safetyViewModel: SafetyViewModel
     private lateinit var layoutView: View
 
@@ -45,14 +47,47 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         layoutView = view
         setupViewModel()
 
+        initData()
     }
 
     private fun setupViewModel() {
         safetyViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(SafetyViewModel::class.java)
         safetyViewModel.setViewInterface(this)
-        fragmentContentLanguageBinding = getViewBinding()
-        fragmentContentLanguageBinding.viewModel = safetyViewModel
+        fragmentSafetyBinding = getViewBinding()
+        fragmentSafetyBinding.viewModel = safetyViewModel
+    }
+
+    private fun initData() {
+
+        tvWhoCanSendYouDirectMsgEveryone.setOnClickListener {
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).addFragment(
+                SafetySubFragment.getInstance(
+                    1
+                ), Constants.SAFETY_SUB_FRAGMENT
+            )
+        }
+
+        tvWhoCanSeeYourFollowersEveryone.setOnClickListener {
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).addFragment(
+                SafetySubFragment.getInstance(
+                    2
+                ), Constants.SAFETY_SUB_FRAGMENT
+            )
+        }
+
+        tvWhoCanCommentsOnYourVideosEveryone.setOnClickListener {
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).addFragment(
+                SafetySubFragment.getInstance(
+                    3
+                ), Constants.SAFETY_SUB_FRAGMENT
+            )
+        }
+
+
     }
 
     override fun onResume() {

@@ -9,17 +9,20 @@ class BlockUserListBean() : Parcelable {
     var user_id: Long = 0
     var username: String = ""
     var user_image: String = ""
+    var job: String = ""
 
     constructor(parcel: Parcel) : this() {
-        parcel.readLong()
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
+        user_id = parcel.readLong()
+        username = parcel.readString() ?: ""
+        user_image = parcel.readString() ?: ""
+        job = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(user_id)
         parcel.writeString(username)
         parcel.writeString(user_image)
+        parcel.writeString(job)
     }
 
     override fun describeContents(): Int {

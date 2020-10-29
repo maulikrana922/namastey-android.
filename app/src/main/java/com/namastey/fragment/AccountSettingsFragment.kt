@@ -101,6 +101,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
                 Constants.SAFETY_FRAGMENT
             )
         }
+
     }
 
     override fun onResume() {
