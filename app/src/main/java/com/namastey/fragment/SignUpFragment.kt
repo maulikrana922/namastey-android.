@@ -46,6 +46,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var fragmentSignUpBinding: FragmentSignUpBinding
@@ -148,7 +149,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
             llSignupWithSnapchat -> {
                 loginWithSnapchat()
             }
-            llSignupWithPhone ->{
+            llSignupWithPhone -> {
                 loginWithPhoneEmail()
             }
         }
@@ -158,7 +159,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
      * Click on sign up with phone/email
      */
     private fun loginWithPhoneEmail() {
-        (requireActivity() as ProfileActivity).addFragment(
+        addFragment(
             SignupWithPhoneFragment.getInstance(
                 true
             ),
@@ -177,7 +178,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
      * Click on continue with Google
      */
     private fun googleLogin() {
-        var signInIntent = googleSignInClient.getSignInIntent();
+        val signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
     }
 
@@ -188,7 +189,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.RC_SIGN_IN) {
-                var task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
                 handleSignInResult(task)
             }
@@ -266,7 +267,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
      */
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
-            var account = task.getResult(ApiException::class.java)
+            val account = task.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
             providerId = account?.id!!
@@ -339,6 +340,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         val query = "{me{bitmoji{avatar},displayName,externalId}}"
         SnapLogin.fetchUserData(requireActivity(), query, null, this)
     }
+
     override fun onDestroy() {
         signUpViewModel.onDestroy()
         super.onDestroy()

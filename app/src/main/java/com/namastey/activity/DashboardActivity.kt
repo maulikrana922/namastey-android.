@@ -36,6 +36,7 @@ import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
+import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CategoryBean
@@ -486,6 +487,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         openActivity(this, ProfileActivity())
     }
 
+    fun onClickInbox(view: View){
+        val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
+        intent.putExtra("onClickMatches", true)
+        openActivity(intent)
+    }
+
     override fun onDestroy() {
         dashboardViewModel.onDestroy()
         if (::bottomSheetDialogShare.isInitialized)
@@ -638,21 +645,41 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onClickFollow(position: Int, userId: Long, isFollow: Int) {
-        this.position = position
-        dashboardViewModel.followUser(userId, isFollow)
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            this.position = position
+            dashboardViewModel.followUser(userId, isFollow)
+        }
     }
 
     override fun onItemClick(dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser()) {
-            // Need to add data
+            addFragment(
+                SignUpFragment.getInstance(
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
         } else {
             openShareOptionDialog(dashboardBean)
         }
     }
 
     override fun onProfileLikeClick(position: Int, likedUserId: Long, isLike: Int) {
-        this.position = position
-        dashboardViewModel.likeUserProfile(likedUserId, isLike)
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            this.position = position
+            dashboardViewModel.likeUserProfile(likedUserId, isLike)
+        }
     }
 
     /**
@@ -698,9 +725,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onUserProfileClick(userId: Long) {
-        val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USER_ID, userId)
-        openActivity(intent)
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+            intent.putExtra(Constants.USER_ID, userId)
+            openActivity(intent)
+        }
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {

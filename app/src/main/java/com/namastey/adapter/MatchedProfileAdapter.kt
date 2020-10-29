@@ -54,10 +54,10 @@ class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var act
 
             val matchesListBean = matchesList[position]
             if (matchesListBean.is_read == 1)
+                llProfileImage.setBackgroundResource(0)
+            else
                 llProfileImage.background =
                     activity.getDrawable(R.drawable.dashed_circle_pink_hollow)
-            else
-                llProfileImage.setBackgroundResource(0)
 
             tvProfileName.text = matchesListBean.username
 

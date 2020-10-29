@@ -195,6 +195,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    fun addFragment(fragment: Fragment, tag: String) {
+        activity!!.supportFragmentManager.beginTransaction().addToBackStack(tag)
+            .replace(R.id.flContainer, fragment, tag)
+            .commitAllowingStateLoss()
+    }
+
     /**
      * Remove all fragment from stack
      */

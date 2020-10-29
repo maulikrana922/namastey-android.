@@ -532,4 +532,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             })
         }
     }
+
+    fun onClickProfileMore(view: View) {
+        if (sessionManager.getUserId() == profileBean.user_id)
+            openActivity(this@ProfileActivity, SettingsActivity())
+    }
 }
