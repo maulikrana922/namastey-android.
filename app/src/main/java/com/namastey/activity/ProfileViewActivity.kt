@@ -111,14 +111,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         tvViewsCount.text = profileBean.viewers.toString()
         GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
-        sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
-        sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
-        sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
-        sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
-        sessionManager.setInterestIn(profileBean.interest_in_gender)
-        sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
-        sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
-
         if (profileBean.education.size > 0) {
             tvEducation.text = profileBean.education[0].course
         }

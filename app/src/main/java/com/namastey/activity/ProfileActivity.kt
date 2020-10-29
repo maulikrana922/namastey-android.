@@ -103,6 +103,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
             sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+            sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+            sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
+            sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+            sessionManager.setInterestIn(profileBean.interest_in_gender)
+            sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+            sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
+
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE
             ivProfileCamera.visibility = View.VISIBLE
