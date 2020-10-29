@@ -35,7 +35,6 @@ class ContentLanguageAdapter(
             Log.e("ContentLanguage", "video_lang: ${languageList[position].video_lang}")
             Log.e("ContentLanguage", "video_lang_name: ${languageList[position].video_lang_name}")
 
-
             tvContentLanguage.text = languageList[position].video_lang_name
 
         }

@@ -69,7 +69,6 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
         }
 
         contentLanguageViewModel.getContentLanguage(locale)
-        Log.e("ContentLanguage", "contentLanguageViewModel: In")
     }
 
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {

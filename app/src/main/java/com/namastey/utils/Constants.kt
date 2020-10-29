@@ -86,6 +86,7 @@ object Constants {
     const val MATCHES_LIST = "matches-list"
     const val FOLLOW_REQUEST_LIST = "follow-request-list"
     const val FOLLOW_REQUEST = "follow-request"
+    const val BLOCK_USER_LIST = "block-user-list"
 
     //    api response error code
     const val OK = 200

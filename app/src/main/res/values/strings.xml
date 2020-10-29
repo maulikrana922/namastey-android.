@@ -335,4 +335,7 @@
     <string name="allow_your_to_share_your_profile">Allow users to share your profile</string>
     <string name="who_can_see_your_followers">Who can view you followers</string>
     <string name="who_can_comments_on_your_video">Who can comment on your videos</string>
+    <string name="unblock">Unblock</string>
+    <string name="msg_unblock_user">Are you sure you want to Unblock?</string>
+
 </resources>

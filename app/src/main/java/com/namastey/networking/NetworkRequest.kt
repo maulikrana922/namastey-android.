@@ -266,4 +266,7 @@ interface NetworkRequest {
         @Field(Constants.IS_FOLLOWING) isFollow: Int
     ): Deferred<AppResponse<Any>>
 
+    @GET(Constants.BLOCK_USER_LIST)
+    fun requestToGetBlockListAsync(): Deferred<AppResponse<ArrayList<BlockUserListBean>>>
+
 }

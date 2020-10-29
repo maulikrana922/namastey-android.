@@ -2,7 +2,6 @@ package com.namastey.dagger.module
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -104,21 +103,6 @@ class NetworkModule {
                     String.format(Locale.getDefault(), "max-age=%d", Constants.CACHE_TIME)
                 )
                 .build()
-
-            Log.e(
-                "NetworkModule",
-                "Cache-Control: \t ${String.format(
-                    Locale.getDefault(),
-                    "max-age=%d",
-                    Constants.CACHE_TIME
-                )}"
-            )
-            Log.e(
-                "NetworkModule",
-                "Authorization: \t ${if (original.url()
-                        .url().path.contains(Constants.REGISTER) || TextUtils.isEmpty(sessionManager.getAccessToken())
-                ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken()}"
-            )
 
             val response = chain.proceed(request)
 //            Log.e("Request URL--> " , request.url().toString())
