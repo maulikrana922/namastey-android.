@@ -55,6 +55,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as EducationListActivity).showMsg(msgId)
         else if (activity != null && activity!! is FollowingFollowersActivity)
             (activity!! as FollowingFollowersActivity).showMsg(msgId)
+        else if (activity != null && activity!! is AccountSettingsActivity)
+            (activity!! as AccountSettingsActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -74,6 +76,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as EducationListActivity).showMsg(msg)
         else if (activity != null && activity!! is FollowingFollowersActivity)
             (activity!! as FollowingFollowersActivity).showMsg(msg)
+        else if (activity != null && activity!! is AccountSettingsActivity)
+            (activity!! as AccountSettingsActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -93,6 +97,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as EducationListActivity).hideKeyboard()
         else if (activity != null && activity!! is FollowingFollowersActivity)
             (activity!! as FollowingFollowersActivity).hideKeyboard()
+        else if (activity != null && activity!! is AccountSettingsActivity)
+            (activity!! as AccountSettingsActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -116,6 +122,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as EducationListActivity).onFailed(msg,error)
         else if (activity != null && activity!! is FollowingFollowersActivity)
             (activity!! as FollowingFollowersActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is AccountSettingsActivity)
+            (activity!! as AccountSettingsActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -135,6 +143,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as EducationListActivity).onHandleException(e)
         else if (activity != null && activity!! is FollowingFollowersActivity)
             (activity!! as FollowingFollowersActivity).onHandleException(e)
+        else if (activity != null && activity!! is AccountSettingsActivity)
+            (activity!! as AccountSettingsActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -148,6 +158,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is JobListingActivity -> (activity!! as JobListingActivity).isInternetAvailable()
                 activity!! is EducationListActivity -> (activity!! as EducationListActivity).isInternetAvailable()
                 activity!! is FollowingFollowersActivity -> (activity!! as FollowingFollowersActivity).isInternetAvailable()
+                activity!! is AccountSettingsActivity -> (activity!! as AccountSettingsActivity).isInternetAvailable()
                 else -> false
             }
         } else false
