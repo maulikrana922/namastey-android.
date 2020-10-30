@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
@@ -15,6 +16,8 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import com.namastey.R
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -61,6 +64,20 @@ object Utils {
         gd.shape = GradientDrawable.RECTANGLE
         gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
         v.background = gd
+    }
+
+    fun imageOverlayGradient(v: View, startColor:String, endColor: String) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+
+            intArrayOf(
+                Color.parseColor("#40".plus(startColor.substring(1))),
+                Color.parseColor("#40".plus(endColor.substring(1)))
+            )
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        v.foreground = gd
     }
 
     fun saveBitmapToFile(file: File): File? {

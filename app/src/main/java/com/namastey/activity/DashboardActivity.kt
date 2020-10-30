@@ -647,7 +647,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onClickFollow(position: Int, userId: Long, isFollow: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
+                SignUpFragment.getInstance(true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -660,7 +660,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onItemClick(dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
+                SignUpFragment.getInstance(true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -672,7 +672,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onProfileLikeClick(position: Int, likedUserId: Long, isLike: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
+                SignUpFragment.getInstance(true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -727,7 +727,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onUserProfileClick(userId: Long) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
+                SignUpFragment.getInstance(true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -738,6 +738,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
+    override fun onFeedBoost(userId: Long) {
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }
+    }
     override fun onSelectItemClick(userId: Long, position: Int) {
         val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
@@ -894,7 +903,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardBean.is_match = data.is_match
         dashboardBean.is_like = data.is_like
 
-        if (dashboardBean.is_match == 1) {
+        if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
             Log.e("DashboardActivity", "userName: \t ${dashboardBean.username}")
             Log.e("DashboardActivity", "userName:   \t ${dashboardBean.profile_url}")
             Log.e(

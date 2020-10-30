@@ -1,11 +1,11 @@
 package com.namastey.fragment
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -19,15 +19,14 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.OTPViewModel
-import kotlinx.android.synthetic.main.fragment_choose_interest.*
 import kotlinx.android.synthetic.main.fragment_otp.*
-import kotlinx.android.synthetic.main.fragment_otp.ivSplashBackground
 import javax.inject.Inject
 
 class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -41,7 +40,11 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
     override fun onConfirm() {
 
-        otpViewModel.verifyOTP(sessionManager.getUserPhone(),sessionManager.getUserEmail(),etOtp.text.toString())
+        otpViewModel.verifyOTP(
+            sessionManager.getUserPhone(),
+            sessionManager.getUserEmail(),
+            etOtp.text.toString()
+        )
 
     }
 
@@ -52,22 +55,29 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         sessionManager.setGuestUser(false)
         var isFromProfile = false
         var isRegister = 0
-        if (arguments != null && arguments!!.containsKey("isFromProfile")){
-            isFromProfile = arguments!!.getBoolean("isFromProfile",false)
+        if (arguments != null && arguments!!.containsKey("isFromProfile")) {
+            isFromProfile = arguments!!.getBoolean("isFromProfile", false)
             isRegister = arguments!!.getInt("isRegister")
         }
-        if (isFromProfile){
+        if (isFromProfile) {
             sessionManager.setGuestUser(false)
             removeAllFragment(fragmentManager!!)
-            openActivity(requireActivity(), ProfileBasicInfoActivity())
-        }else{
-            if (isRegister == 1){
+            var isFromDashboard = false
+            if (arguments != null && arguments!!.containsKey("isFromDashboard")) {
+                isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
+            }
+            if (isFromDashboard)   // Open dashboard activity
+                openActivity(requireActivity(), DashboardActivity())
+            else
+                openActivity(requireActivity(), ProfileBasicInfoActivity())
+        } else {
+            if (isRegister == 1) {
                 ivSplashBackground.visibility = View.VISIBLE
                 Handler(Looper.getMainLooper()).postDelayed({
                     startActivity(Intent(activity, DashboardActivity::class.java))
                     activity!!.finish()
                 }, 1000)
-            }else{
+            } else {
                 (activity as SignUpActivity).addFragment(
                     SelectGenderFragment.getInstance(
                         "user"
@@ -85,12 +95,19 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(mobile: String, email: String, isFromProfile: Boolean, isRegister: Int) =
+        fun getInstance(
+            mobile: String,
+            email: String,
+            isFromProfile: Boolean,
+            isFromDashboard: Boolean,
+            isRegister: Int
+        ) =
             OTPFragment().apply {
                 arguments = Bundle().apply {
                     putString("mobile", mobile)
                     putString("email", email)
                     putBoolean("isFromProfile", isFromProfile)
+                    putBoolean("isFromDashboard", isFromDashboard)
                     putInt("isRegister", isRegister)
                 }
             }

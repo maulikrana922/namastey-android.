@@ -14,8 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.ProfileActivity
-import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSignupWithPhoneBinding
 import com.namastey.roomDB.entity.Country
@@ -53,10 +51,11 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(isFromProfile: Boolean) =
+        fun getInstance(isFromProfile: Boolean,isFromDashboard: Boolean) =
             SignupWithPhoneFragment().apply {
                 arguments = Bundle().apply {
                     putBoolean("isFromProfile", isFromProfile)
+                    putBoolean("isFromDashboard", isFromDashboard)
                 }
             }
     }
@@ -140,23 +139,23 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onClickCountry() {
         Utils.hideKeyboard(activity!!)
-        if (isFromProfile) {
-            (activity as ProfileActivity).addFragmentChild(
+//        if (isFromProfile) {
+            addFragmentChild(
                 childFragmentManager,
                 CountryFragment.getInstance(
                     countryList
                 ),
                 Constants.COUNTRY_FRAGMENT
             )
-        } else {
-            (activity as SignUpActivity).addFragmentChild(
-                childFragmentManager,
-                CountryFragment.getInstance(
-                    countryList
-                ),
-                Constants.COUNTRY_FRAGMENT
-            )
-        }
+//        } else {
+//            addFragmentChild(
+//                childFragmentManager,
+//                CountryFragment.getInstance(
+//                    countryList
+//                ),
+//                Constants.COUNTRY_FRAGMENT
+//            )
+//        }
     }
 
     override fun onSuccessResponse(user: User) {
@@ -166,27 +165,32 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         edtEmailPhone.text!!.clear()
         Utils.hideKeyboard(requireActivity())
 
-        if (isFromProfile) {
-            (activity as ProfileActivity).addFragment(
-                OTPFragment.getInstance(
-                    sessionManager.getUserPhone(),
-                    sessionManager.getUserEmail(),
-                    isFromProfile,
-                    user.is_register
-                ),
-                Constants.OTP_FRAGMENT
-            )
-        } else {
-            (activity as SignUpActivity).addFragment(
-                OTPFragment.getInstance(
-                    sessionManager.getUserPhone(),
-                    sessionManager.getUserEmail(),
-                    isFromProfile,
-                    user.is_register
-                ),
-                Constants.OTP_FRAGMENT
-            )
+        var isFromDashboard = false
+        if (arguments != null && arguments!!.containsKey("isFromDashboard")) {
+            isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
         }
+//        if (isFromProfile) {
+            addFragment(
+                OTPFragment.getInstance(
+                    sessionManager.getUserPhone(),
+                    sessionManager.getUserEmail(),
+                    isFromProfile,
+                    isFromDashboard,
+                    user.is_register
+                ),
+                Constants.OTP_FRAGMENT
+            )
+//        } else {
+//            addFragment(
+//                OTPFragment.getInstance(
+//                    sessionManager.getUserPhone(),
+//                    sessionManager.getUserEmail(),
+//                    isFromProfile,
+//                    user.is_register
+//                ),
+//                Constants.OTP_FRAGMENT
+//            )
+//        }
     }
 
     override fun onGetCountry(countryList: ArrayList<Country>) {

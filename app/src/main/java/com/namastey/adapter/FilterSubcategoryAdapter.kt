@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
-import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.CategoryBean
+import com.namastey.utils.GlideLib
+import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
 
 class FilterSubcategoryAdapter(
     var subCategoryList: ArrayList<CategoryBean>,
     var activity: Context,
     var onCategoryItemClick: OnCategoryItemClick,
-    var isDisplayCkb: Boolean
+    var isDisplayCkb: Boolean,
+    var startColor: String,
+    var endColor: String
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterSubcategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -35,7 +38,9 @@ class FilterSubcategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvSubCategory.text = subCategoryList[position].name
 
-//            GlideLib.loadImage(activity,ivInterest,subCategoryList.get(position).image)
+            GlideLib.loadImage(activity, ivSubcategory, subCategoryList[position].sub_cat_img)
+
+            Utils.imageOverlayGradient(ivSubcategory, startColor, endColor)
 
             view.alpha = 0.3f
             holderSubcategory.setOnClickListener {

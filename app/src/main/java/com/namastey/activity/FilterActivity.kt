@@ -15,6 +15,7 @@ import com.namastey.adapter.FilterSubcategoryAdapter
 import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
+import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
@@ -24,6 +25,8 @@ import com.namastey.model.VideoBean
 import com.namastey.uiView.FilterView
 import com.namastey.utils.Constants
 import com.namastey.utils.GridSpacingItemDecoration
+import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.FilterViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
 import javax.inject.Inject
@@ -32,6 +35,8 @@ import javax.inject.Inject
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     OnCategoryItemClick, OnItemClick, OnSelectUserItemClick {
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityFilterBinding: ActivityFilterBinding
@@ -64,11 +69,20 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
-                    rvFilterSearch.visibility = View.VISIBLE
-                    filterViewModel.getSearchUser(newText.trim())
-                } else
-                    rvFilterSearch.visibility = View.GONE
+                if (sessionManager.isGuestUser()) {
+                    Utils.hideKeyboard(this@FilterActivity)
+                    addFragment(
+                        SignUpFragment.getInstance(true
+                        ),
+                        Constants.SIGNUP_FRAGMENT
+                    )
+                }else{
+                    if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                        rvFilterSearch.visibility = View.VISIBLE
+                        filterViewModel.getSearchUser(newText.trim())
+                    } else
+                        rvFilterSearch.visibility = View.GONE
+                }
                 return true
             }
         })
@@ -140,14 +154,35 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 //        setSubcategoryList(categoryBeanList[0].sub_category)
     }
 
-    private fun setSubcategoryList(subCategory: ArrayList<CategoryBean>) {
+    private fun setSubcategoryList(
+        subCategory: ArrayList<CategoryBean>,
+        startColor: String,
+        endColor: String
+    ) {
         filterSubcategoryAdapter =
-            FilterSubcategoryAdapter(subCategory, this@FilterActivity, this, false)
+            FilterSubcategoryAdapter(subCategory, this@FilterActivity, this, false,startColor,endColor)
         rvSubcategory.adapter = filterSubcategoryAdapter
     }
 
     override fun onBackPressed() {
-        finishActivity()
+        val signUpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_FRAGMENT)
+        val signupWithPhoneFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
+        val otpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
+
+        if (signupWithPhoneFragment != null) {
+            val childFm = signupWithPhoneFragment.childFragmentManager
+            if (childFm.backStackEntryCount > 0) {
+                childFm.popBackStack();
+            } else {
+                supportFragmentManager.popBackStack()
+            }
+        } else if (signUpFragment != null || otpFragment != null)
+            supportFragmentManager.popBackStack()
+        else
+            finishActivity()
     }
 
     fun onClickFilterBack(view: View) {
@@ -158,7 +193,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
      * when user click on filter category item
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
-        setSubcategoryList(categoryBean.sub_category)
+        setSubcategoryList(categoryBean.sub_category,categoryBean.startColor,categoryBean.endColor)
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -191,12 +226,19 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
     override fun onSubCategoryItemClick(position: Int) {
         Log.d("Subcategory : ", position.toString())
-
-        val intent = Intent()
-        intent.putExtra("fromSubCategory", true)
-        intent.putExtra("subCategoryId", position)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            val intent = Intent()
+            intent.putExtra("fromSubCategory", true)
+            intent.putExtra("subCategoryId", position)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
 
     }
 

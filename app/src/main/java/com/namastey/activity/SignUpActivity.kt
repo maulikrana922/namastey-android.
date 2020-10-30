@@ -411,7 +411,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         tvSkipSignUp.visibility = View.INVISIBLE
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                false
+                false,false
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )

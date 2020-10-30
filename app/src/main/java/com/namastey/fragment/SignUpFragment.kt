@@ -23,7 +23,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.ProfileActivity
+import com.namastey.activity.DashboardActivity
 import com.namastey.activity.ProfileBasicInfoActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSignUpBinding
@@ -60,6 +60,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     private var lastName = ""
     private var email = ""
     private var providerId = ""
+    private var isFromDashboard = false
 
     override fun skipLogin() {
     }
@@ -72,7 +73,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
         fragmentManager!!.popBackStack()
-        openActivity(requireActivity(), ProfileBasicInfoActivity())
+        if (isFromDashboard)
+            openActivity(requireActivity(), ProfileBasicInfoActivity())
+        else
+            openActivity(requireActivity(), DashboardActivity())
     }
 
     override fun getViewModel() = signUpViewModel
@@ -82,9 +86,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance() =
+        fun getInstance(isFromDashboard: Boolean) =
             SignUpFragment().apply {
-
+                arguments = Bundle().apply {
+                    putBoolean("isFromDashboard", isFromDashboard)
+                }
             }
     }
 
@@ -106,6 +112,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         llSignupWithSnapchat.setOnClickListener(this)
         llSignupWithPhone.setOnClickListener(this)
 
+        if (arguments != null && arguments!!.containsKey("isFromDashboard")) {
+            isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
+        }
         initializeGoogleApi()
     }
 
@@ -161,7 +170,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     private fun loginWithPhoneEmail() {
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                true
+                true,isFromDashboard
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )

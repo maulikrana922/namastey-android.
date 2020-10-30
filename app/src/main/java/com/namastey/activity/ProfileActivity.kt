@@ -173,7 +173,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * click on followers and following
      */
     fun onClickFollow(view: View) {
-        if (!sessionManager.isGuestUser()) {
+        if (!sessionManager.isGuestUser() && profileBean.is_completly_signup == 1) {
             val intent = Intent(this@ProfileActivity, FollowingFollowersActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
             intent.putExtra("isMyProfile", true)
@@ -471,7 +471,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     fun onClickSign(view: View) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
+                SignUpFragment.getInstance(false
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -542,7 +542,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickProfileMore(view: View) {
-        if (sessionManager.getUserId() == profileBean.user_id)
+        if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
             openActivity(this@ProfileActivity, SettingsActivity())
     }
 }

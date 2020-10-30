@@ -209,6 +209,10 @@ class FeedAdapter(
                 else
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 1)
             }
+
+            tvFeedBoost.setOnClickListener {
+                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
+            }
         }
 
     }

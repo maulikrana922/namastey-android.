@@ -57,6 +57,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as FollowingFollowersActivity).showMsg(msgId)
         else if (activity != null && activity!! is AccountSettingsActivity)
             (activity!! as AccountSettingsActivity).showMsg(msgId)
+        else if (activity != null && activity!! is DashboardActivity)
+            (activity!! as DashboardActivity).showMsg(msgId)
+        else if (activity != null && activity!! is FilterActivity)
+            (activity!! as FilterActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -78,6 +82,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as FollowingFollowersActivity).showMsg(msg)
         else if (activity != null && activity!! is AccountSettingsActivity)
             (activity!! as AccountSettingsActivity).showMsg(msg)
+        else if (activity != null && activity!! is DashboardActivity)
+            (activity!! as DashboardActivity).showMsg(msg)
+        else if (activity != null && activity!! is FilterActivity)
+            (activity!! as FilterActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -99,6 +107,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as FollowingFollowersActivity).hideKeyboard()
         else if (activity != null && activity!! is AccountSettingsActivity)
             (activity!! as AccountSettingsActivity).hideKeyboard()
+        else if (activity != null && activity!! is DashboardActivity)
+            (activity!! as DashboardActivity).hideKeyboard()
+        else if (activity != null && activity!! is FilterActivity)
+            (activity!! as FilterActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -124,6 +136,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as FollowingFollowersActivity).onFailed(msg,error)
         else if (activity != null && activity!! is AccountSettingsActivity)
             (activity!! as AccountSettingsActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is DashboardActivity)
+            (activity!! as DashboardActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is FilterActivity)
+            (activity!! as FilterActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -145,6 +161,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as FollowingFollowersActivity).onHandleException(e)
         else if (activity != null && activity!! is AccountSettingsActivity)
             (activity!! as AccountSettingsActivity).onHandleException(e)
+        else if (activity != null && activity!! is DashboardActivity)
+            (activity!! as DashboardActivity).onHandleException(e)
+        else if (activity != null && activity!! is FilterActivity)
+            (activity!! as FilterActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -159,6 +179,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is EducationListActivity -> (activity!! as EducationListActivity).isInternetAvailable()
                 activity!! is FollowingFollowersActivity -> (activity!! as FollowingFollowersActivity).isInternetAvailable()
                 activity!! is AccountSettingsActivity -> (activity!! as AccountSettingsActivity).isInternetAvailable()
+                activity!! is DashboardActivity -> (activity!! as DashboardActivity).isInternetAvailable()
+                activity!! is FilterActivity -> (activity!! as FilterActivity).isInternetAvailable()
                 else -> false
             }
         } else false
@@ -198,6 +220,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
     fun addFragment(fragment: Fragment, tag: String) {
         activity!!.supportFragmentManager.beginTransaction().addToBackStack(tag)
             .replace(R.id.flContainer, fragment, tag)
+            .commitAllowingStateLoss()
+    }
+
+    fun addFragmentChild(childFragmentManager: FragmentManager, fragment: Fragment, tag: String) {
+        childFragmentManager.beginTransaction().addToBackStack(tag)
+            .add(R.id.flContainer, fragment, tag)
             .commitAllowingStateLoss()
     }
 

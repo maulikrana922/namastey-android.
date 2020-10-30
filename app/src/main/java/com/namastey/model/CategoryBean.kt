@@ -15,6 +15,7 @@ class CategoryBean() : Parcelable {
     var startColor: String = ""
     @SerializedName("end_color")
     var endColor: String = ""
+    var sub_cat_img: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt()
@@ -23,6 +24,7 @@ class CategoryBean() : Parcelable {
         is_selected = parcel.readInt()
         startColor = parcel.readString() ?: ""
         endColor = parcel.readString() ?: ""
+        sub_cat_img = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -32,6 +34,7 @@ class CategoryBean() : Parcelable {
         parcel.writeInt(is_selected)
         parcel.writeString(startColor)
         parcel.writeString(endColor)
+        parcel.writeString(sub_cat_img)
     }
 
     override fun describeContents(): Int {
