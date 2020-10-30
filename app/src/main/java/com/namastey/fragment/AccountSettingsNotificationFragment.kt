@@ -1,7 +1,6 @@
 package com.namastey.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
@@ -13,6 +12,7 @@ import com.namastey.databinding.FragmentAccountSettingsNotificationBinding
 import com.namastey.model.NotificationOnOffBean
 import com.namastey.uiView.AccountSettingsNotificationView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.AccountSettingsNotificationViewModel
 import kotlinx.android.synthetic.main.fragment_account_settings_notification.*
 import javax.inject.Inject
@@ -24,6 +24,9 @@ class AccountSettingsNotificationFragment :
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentAccountSettingsBinding: FragmentAccountSettingsNotificationBinding
     private lateinit var accountSettingsNotificationViewModel: AccountSettingsNotificationViewModel
     private lateinit var layoutView: View
@@ -53,6 +56,7 @@ class AccountSettingsNotificationFragment :
         layoutView = view
         setupViewModel()
 
+        setSelected()
         initData()
     }
 
@@ -66,37 +70,43 @@ class AccountSettingsNotificationFragment :
     }
 
     private fun initData() {
+        val jsonObject = JsonObject()
+
         switchMatches.setOnCheckedChangeListener { buttonView, isChecked ->
             when {
                 isChecked -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_MATCHES, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
                 else -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_MATCHES, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
-
             }
         }
 
         switchComments.setOnCheckedChangeListener { buttonView, isChecked ->
             when {
                 isChecked -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_COMMENT, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
                 else -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_COMMENT, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
-
             }
         }
 
         switchNewFollowers.setOnCheckedChangeListener { buttonView, isChecked ->
             when {
                 isChecked -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_FOLLOW, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
                 else -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_FOLLOW, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
 
             }
@@ -105,26 +115,62 @@ class AccountSettingsNotificationFragment :
         switchMentions.setOnCheckedChangeListener { buttonView, isChecked ->
             when {
                 isChecked -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_MENTIONS, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
                 else -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_MENTIONS, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
-
             }
         }
 
         switchVideosSuggestions.setOnCheckedChangeListener { buttonView, isChecked ->
             when {
                 isChecked -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_SUGGEST, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
                 else -> {
-                    accountSettingsNotificationViewModel.onNotificationOnOff(onNotificationOnOff())
+                    jsonObject.addProperty(Constants.IS_SUGGEST, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
 
             }
         }
+    }
+
+    private fun setSelected() {
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_MENTIONS) == 1) {
+            switchMentions.isChecked = true
+        } else {
+            switchMentions.isChecked = false
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_MATCHES) == 1) {
+            switchMatches.isChecked = true
+        } else {
+            switchMatches.isChecked = false
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_COMMENTS) == 1) {
+            switchComments.isChecked = true
+        } else {
+            switchComments.isChecked = false
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_NEW_FOLLOWERS) == 1) {
+            switchNewFollowers.isChecked = true
+        } else {
+            switchNewFollowers.isChecked = false
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_VIDEO_SUGGESTIONS) == 1) {
+            switchVideosSuggestions.isChecked = true
+        } else {
+            switchVideosSuggestions.isChecked = false
+        }
+
     }
 
     private fun onNotificationOnOff(): JsonObject {
@@ -155,10 +201,8 @@ class AccountSettingsNotificationFragment :
         }
 
         if (switchVideosSuggestions.isChecked) {
-
             jsonObject.addProperty(Constants.IS_SUGGEST, 1)
         } else {
-
             jsonObject.addProperty(Constants.IS_SUGGEST, 0)
         }
 
@@ -176,8 +220,65 @@ class AccountSettingsNotificationFragment :
     }
 
     override fun onSuccessResponse(notificationOnOffBean: NotificationOnOffBean) {
-        Log.e("SettingNotification", "onSuccessResponse: \t ${notificationOnOffBean.id}")
-        Log.e("SettingNotification", "onSuccessResponse: \t ${notificationOnOffBean.is_matches}")
+
+        if (notificationOnOffBean.is_mentions == 1) {
+            sessionManager.setIntegerValue(
+                1,
+                Constants.KEY_IS_MENTIONS
+            )
+        } else {
+            sessionManager.setIntegerValue(
+                0,
+                Constants.KEY_IS_MENTIONS
+            )
+        }
+
+        if (notificationOnOffBean.is_matches == 1) {
+            sessionManager.setIntegerValue(
+                1, Constants.KEY_IS_MATCHES
+            )
+        } else {
+            sessionManager.setIntegerValue(
+                0,
+                Constants.KEY_IS_MATCHES
+            )
+        }
+
+        if (notificationOnOffBean.is_follow == 1) {
+            sessionManager.setIntegerValue(
+                1,
+                Constants.KEY_IS_NEW_FOLLOWERS
+            )
+        } else {
+            sessionManager.setIntegerValue(
+                0,
+                Constants.KEY_IS_NEW_FOLLOWERS
+            )
+        }
+
+        if (notificationOnOffBean.is_comment == 1) {
+            sessionManager.setIntegerValue(
+                1,
+                Constants.KEY_IS_COMMENTS
+            )
+        } else {
+            sessionManager.setIntegerValue(
+                0,
+                Constants.KEY_IS_COMMENTS
+            )
+        }
+
+        if (notificationOnOffBean.is_suggest == 1) {
+            sessionManager.setIntegerValue(
+                1,
+                Constants.KEY_IS_VIDEO_SUGGESTIONS
+            )
+        } else {
+            sessionManager.setIntegerValue(
+                0,
+                Constants.KEY_IS_VIDEO_SUGGESTIONS
+            )
+        }
     }
 
 }

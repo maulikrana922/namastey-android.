@@ -146,7 +146,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
             android:gravity="center"
-            android:text="@string/its_a_match_you_and_ankita_liked_each_other"
             android:textColor="@color/colorWhite"
             android:textSize="17sp"
             app:typeface="MULI_EXTRA_BOLD" />

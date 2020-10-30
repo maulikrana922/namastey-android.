@@ -149,6 +149,11 @@ object Constants {
     const val KEY_AGE_MAX = "KEY_AGE_MAX"
     const val KEY_IS_COMPLETE_PROFILE = "KEY_IS_COMPLETE_PROFILE"
     const val KEY_AGE = "KEY_AGE"
+    const val KEY_IS_MATCHES = "KEY_IS_MATCHES"
+    const val KEY_IS_COMMENTS = "KEY_IS_COMMENTS"
+    const val KEY_IS_NEW_FOLLOWERS = "KEY_IS_NEW_FOLLOWERS"
+    const val KEY_IS_MENTIONS = "KEY_IS_MENTIONS"
+    const val KEY_IS_VIDEO_SUGGESTIONS = "KEY_IS_VIDEO_SUGGESTIONS"
 
 
     //    field key

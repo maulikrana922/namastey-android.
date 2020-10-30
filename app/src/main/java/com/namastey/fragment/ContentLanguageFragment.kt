@@ -18,13 +18,15 @@ import kotlinx.android.synthetic.main.fragment_content_language.*
 import javax.inject.Inject
 
 
-class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), ContentLanguageView {
+class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), ContentLanguageView,
+    ContentLanguageAdapter.OnItemClick {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var fragmentContentLanguageBinding: FragmentContentLanguageBinding
     private lateinit var contentLanguageViewModel: ContentLanguageViewModel
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: ContentLanguageAdapter
+    private var selectVideoIdList: ArrayList<Int> = ArrayList()
 
 
     override fun getViewModel() = contentLanguageViewModel
@@ -73,7 +75,8 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
 
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
         Log.e("ContentLanguage", "onSuccess: \t languageList: $languageList")
-        notificationAdapter = ContentLanguageAdapter(requireActivity(), languageList)
+        selectVideoIdList = ArrayList()
+        notificationAdapter = ContentLanguageAdapter(requireActivity(), languageList, this)
         rvContentLanguages.adapter = notificationAdapter
     }
 
@@ -85,5 +88,15 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
     override fun onDestroy() {
         contentLanguageViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    override fun onLanguageItemClick(videoLanguageBean: VideoLanguageBean) {
+        if (selectVideoIdList.contains(videoLanguageBean.id)) {
+            Log.e("ContentLanguage", "onLanguageItemClick: \t Remove")
+            selectVideoIdList.remove(videoLanguageBean.id)
+        } else {
+            Log.e("ContentLanguage", "onLanguageItemClick: \t Add")
+            selectVideoIdList.add(videoLanguageBean.id)
+        }
     }
 }
