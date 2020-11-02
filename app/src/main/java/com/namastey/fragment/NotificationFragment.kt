@@ -3,6 +3,10 @@ package com.namastey.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -28,7 +32,27 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var notificationViewModel: NotificationViewModel
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: NotificationAdapter
-
+    private var interestIn = 0
+    private lateinit var llAllActivity: LinearLayout
+    private lateinit var llLikes: LinearLayout
+    private lateinit var llComments: LinearLayout
+    private lateinit var llMentions: LinearLayout
+    private lateinit var llFollowers: LinearLayout
+    private lateinit var ivAllActivitySelected: ImageView
+    private lateinit var ivLikesSelected: ImageView
+    private lateinit var ivCommentsSelected: ImageView
+    private lateinit var ivMentionsSelected: ImageView
+    private lateinit var ivFollowersSelected: ImageView
+    private lateinit var tvAllActivity: TextView
+    private lateinit var tvLikes: TextView
+    private lateinit var tvComments: TextView
+    private lateinit var tvMentions: TextView
+    private lateinit var tvFollowers: TextView
+    private lateinit var ivAllActivity: ImageView
+    private lateinit var ivLikes: ImageView
+    private lateinit var ivComments: ImageView
+    private lateinit var ivMentions: ImageView
+    private lateinit var ivFollowers: ImageView
 
     override fun getViewModel() = notificationViewModel
 
@@ -74,6 +98,122 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
         }
 
+        tvAllActivityMain.setOnClickListener {
+            populateAllActivityDialog()
+        }
+    }
+
+    private fun populateAllActivityDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val customLayout: View =
+            layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
+        builder.setView(customLayout)
+
+        initDialogViews(customLayout)
+        setDialogClickListeners()
+
+        val dialog: AlertDialog = builder.create()
+        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+
+    }
+
+    private fun initDialogViews(customLayout: View) {
+        llAllActivity = customLayout.findViewById(R.id.llAllActivity)
+        llLikes = customLayout.findViewById(R.id.llLikes)
+        llComments = customLayout.findViewById(R.id.llComments)
+        llMentions = customLayout.findViewById(R.id.llMentions)
+        llFollowers = customLayout.findViewById(R.id.llFollowers)
+
+        ivAllActivitySelected = customLayout.findViewById(R.id.ivAllActivitySelected)
+        ivLikesSelected = customLayout.findViewById(R.id.ivLikesSelected)
+        ivCommentsSelected = customLayout.findViewById(R.id.ivCommentsSelected)
+        ivMentionsSelected = customLayout.findViewById(R.id.ivMentionsSelected)
+        ivFollowersSelected = customLayout.findViewById(R.id.ivFollowersSelected)
+
+        tvAllActivity = customLayout.findViewById(R.id.tvAllActivity)
+        tvLikes = customLayout.findViewById(R.id.tvLikes)
+        tvComments = customLayout.findViewById(R.id.tvComments)
+        tvMentions = customLayout.findViewById(R.id.tvMentions)
+        tvFollowers = customLayout.findViewById(R.id.tvFollowers)
+
+        ivAllActivity = customLayout.findViewById(R.id.ivAllActivity)
+        ivLikes = customLayout.findViewById(R.id.ivLikes)
+        ivComments = customLayout.findViewById(R.id.ivComments)
+        ivMentions = customLayout.findViewById(R.id.ivMentions)
+        ivFollowers = customLayout.findViewById(R.id.ivFollowers)
+    }
+
+    private fun setDialogClickListeners() {
+        llAllActivity.setOnClickListener {
+            hideDoneImageView(ivAllActivitySelected)
+            setSelectedTextColor(tvAllActivity)
+            setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
+        }
+        llLikes.setOnClickListener {
+            hideDoneImageView(ivLikesSelected)
+            setSelectedTextColor(tvLikes)
+            setImageViewColor(ivLikes, R.drawable.heart)
+        }
+        llComments.setOnClickListener {
+            hideDoneImageView(ivCommentsSelected)
+            setSelectedTextColor(tvComments)
+            setImageViewColor(ivComments, R.drawable.ic_comment)
+        }
+        llMentions.setOnClickListener {
+            hideDoneImageView(ivMentionsSelected)
+            setSelectedTextColor(tvMentions)
+            setImageViewColor(ivMentions, R.drawable.ic_mention)
+        }
+        llFollowers.setOnClickListener {
+            hideDoneImageView(ivFollowersSelected)
+            setSelectedTextColor(tvFollowers)
+            setImageViewColor(ivFollowers, R.drawable.ic_all_activity) // Todo: Change icon
+        }
+    }
+
+    private fun setSelectedTextColor(textView: TextView) {
+        tvAllActivity.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+        tvLikes.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+        tvComments.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+        tvMentions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+        tvFollowers.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
+
+        textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRed))
+    }
+
+    private fun hideDoneImageView(imageViewDone: ImageView) {
+        ivAllActivitySelected.visibility = View.GONE
+        ivLikesSelected.visibility = View.GONE
+        ivCommentsSelected.visibility = View.GONE
+        ivMentionsSelected.visibility = View.GONE
+        ivFollowersSelected.visibility = View.GONE
+
+        imageViewDone.visibility = View.VISIBLE
+    }
+
+    private fun setImageViewColor(imageView: ImageView, drawable: Int) {
+       /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+        ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+        ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+        ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+        ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+
+
+        imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
+
+        ivAllActivity.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_activity_black))
+        ivLikes.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_black))
+        ivComments.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_comment_black))
+        ivMentions.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mention_black))
+        ivFollowers.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_activity_black)) // Todo: Change icon
+
+        imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
+
+       /* val unwrappedDrawable: Drawable? =
+            AppCompatResources.getDrawable(context!!, drawable)
+        val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
+        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.colorRed))*/
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -124,5 +264,4 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.onDestroy()
         super.onDestroy()
     }
-
 }

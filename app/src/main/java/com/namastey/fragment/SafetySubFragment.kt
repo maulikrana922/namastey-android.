@@ -103,10 +103,13 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
         super.onResume()
         if (fromSafetyValue == 1) {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            tvSafetySubMessage.text = getString(R.string.safety_sub_who_can_send_you_direct_msg)
         } else if (fromSafetyValue == 2) {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
+            tvSafetySubMessage.visibility = View.GONE
         } else if (fromSafetyValue == 3) {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
+            tvSafetySubMessage.text = getString(R.string.safety_sub_who_can_comments_on_your_video_msg)
         }
     }
 

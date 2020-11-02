@@ -29,7 +29,6 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
 
     override fun getBindingVariable() = BR.viewModel
 
-
     companion object {
         fun getInstance() =
             SafetyFragment().apply {
@@ -39,7 +38,6 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,8 +84,6 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
                 ), Constants.SAFETY_SUB_FRAGMENT
             )
         }
-
-
     }
 
     override fun onResume() {

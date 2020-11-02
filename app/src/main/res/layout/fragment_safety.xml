@@ -94,6 +94,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="14sp"
                         android:gravity="start|center"
                         android:text="@string/allow_your_video_to_download"
                         android:textColor="@color/colorBlack"
@@ -121,6 +122,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="14sp"
                         android:gravity="start|center"
                         android:text="@string/who_can_send_you_direct_msg"
                         android:textColor="@color/colorBlack"
@@ -154,6 +156,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="14sp"
                         android:gravity="start|center"
                         android:text="@string/allow_your_to_share_your_profile"
                         android:textColor="@color/colorBlack"
@@ -181,6 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start|center"
+                        android:textSize="14sp"
                         android:text="@string/who_can_see_your_followers"
                         android:textColor="@color/colorBlack"
                         app:typeface="MULI_EXTRA_BOLD" />
@@ -215,6 +219,7 @@
                         android:layout_weight="1"
                         android:gravity="start|center"
                         android:text="@string/who_can_comments_on_your_video"
+                        android:textSize="14sp"
                         android:textColor="@color/colorBlack"
                         app:typeface="MULI_EXTRA_BOLD" />
 
