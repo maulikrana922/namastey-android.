@@ -18,7 +18,8 @@ object Constants {
     const val HVALUE = "L@titude2018"
 
     //    Live url
-    const val BASE = "https://testyourapp.online/namasteyapp/api/"
+   // const val BASE = "https://testyourapp.online/namasteyapp/api/"
+    const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
 
     //    api end-point
@@ -128,6 +129,7 @@ object Constants {
     const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
     const val SAFETY_FRAGMENT = "SafetyFragment"
     const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
+    const val CHAT_SETTINGS_FRAGMENT = "ChatSettingsFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

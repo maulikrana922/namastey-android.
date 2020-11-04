@@ -10,6 +10,7 @@
 
     <string name="spotify_client_id">6133e980fbe149ed804371dfc1a4d3d1</string>
     <string name="spotify_redirect_uri">http://testyourapp.online/namasteyapp/</string>
+    <string name="firebase_sender_id">949976136000</string>
 
     <string name="no_internet">Make you sure you are connected with internet</string>
     <string name="slow_internet">Your internet connection is very slow</string>
@@ -338,5 +339,18 @@
     <string name="msg_unblock_user">Are you sure you want to Unblock?</string>
     <string name="safety_sub_who_can_send_you_direct_msg">With any option, you can receive messages from users that you\'ve sent messages to. Friends are your followers that you follow back.</string>
     <string name="safety_sub_who_can_comments_on_your_video_msg">Friends are your followers that you follow back.</string>
+
+    <!--Notification-->
+    <string name="channel_id">default</string>
+    <string name="notifiy">Namastey Notify</string>
+
+    <!--Chat Screen-->
+    <string name="mute_notification">Mute Notification</string>
+    <string name="match_delete">Match Delete</string>
+    <string name="msg_delete_user">Do you wish to delete following user?</string>
+    <string name="delete_user">Delete User</string>
+    <string name="gif">Gif</string>
+    <string name="enter_message">Message…</string>
+    <string name="readable_content">Readable content</string>
 
 </resources>

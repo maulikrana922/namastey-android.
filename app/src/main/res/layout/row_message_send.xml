@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
+
+    <LinearLayout
+        android:id="@+id/llMessageSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/rounded_blue_green_top_right_solid"
+        android:minWidth="@dimen/_112sdp"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvMessageSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:gravity="start|center"
+            android:text="@string/app_name"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvMessageSendTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:drawableStart="@drawable/ic_clock_white"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start|center"
+            android:text="7:21PM"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameImageSend"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_12sdp">
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivImageSend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_8sdp"
+            app:roundedCorners="topRight|bottomLeft" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvImageSendTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:drawableStart="@drawable/ic_clock_white"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start|center"
+            android:padding="@dimen/_10sdp"
+            android:text="7:21PM"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/llRecordingSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@drawable/rounded_white_solid"
+        android:minWidth="@dimen/_180sdp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/ivRecordSend"
+                android:layout_width="@dimen/_32sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:background="@drawable/rounded_blue_chat_all_corner_solid"
+                android:padding="@dimen/_6sdp"
+                android:src="@drawable/ic_microphone_white"
+                tools:ignore="ContentDescription" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvReadableContentSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_toEndOf="@id/ivRecordSend"
+                android:gravity="start|center"
+                android:text="@string/readable_content"
+                android:textColor="@color/color_chip_gray"
+                android:textSize="14sp"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvRecordedTimeSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvReadableContentSend"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_toEndOf="@id/ivRecordSend"
+                android:gravity="start|center"
+                android:text="0:07s"
+                android:textColor="@color/color_chip_gray"
+                android:textSize="14sp"
+                app:typeface="MULI_SEMIBOLD" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/colorLightGrayView" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvRecordingTimeSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:drawableStart="@drawable/ic_clock_grey"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="start|center"
+            android:padding="@dimen/_10sdp"
+            android:text="7:21PM"
+            android:textColor="@color/color_chip_gray"
+            android:textSize="14sp"
+            app:typeface="MULI_SEMIBOLD" />
+    </LinearLayout>
+</LinearLayout>

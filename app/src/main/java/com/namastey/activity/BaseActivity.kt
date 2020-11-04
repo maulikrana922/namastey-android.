@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.R
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
@@ -28,6 +29,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.CustomAlertDialog
 import retrofit2.HttpException
+import java.io.IOException
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView {
 
@@ -51,6 +53,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         hideKeyboard()
         showAlert(getString(msgId))
     }
+
 
     override fun showMsg(msg: String) {
         hideKeyboard()
@@ -264,6 +267,21 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         } else {
             return true
         }
+    }
+
+
+    /*Change firebase token*/
+    fun getToken() {
+        val senderID = resources.getString(R.string.firebase_sender_id)
+        Thread(Runnable {
+            try {
+                val newToken = FirebaseInstanceId.getInstance().getToken(senderID, "FCM")
+                println("Token --> $newToken")
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }).start()
     }
 
 }

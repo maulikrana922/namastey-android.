@@ -133,4 +133,10 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
             finishActivity()
         }
     }
+
+    override fun onDestroy() {
+        matchesBasicViewModel.onDestroy()
+        super.onDestroy()
+    }
+
 }

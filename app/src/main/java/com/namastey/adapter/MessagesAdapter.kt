@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.listeners.OnItemClick
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message.view.*
 
 class MessagesAdapter(
-    var activity: Activity
+    var activity: Activity,
+    var onItemClick: OnItemClick
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -31,6 +33,10 @@ class MessagesAdapter(
 
 
         fun bind(position: Int) = with(itemView) {
+
+            llMessageView.setOnClickListener {
+                onItemClick.onItemClick(0, position)
+            }
 
             Utils.rectangleShapeGradient(
                 mainCategoryView, intArrayOf(

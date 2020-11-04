@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ChatViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMuteNotification"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="start|center"
+                    android:text="@string/mute_notification"
+                    android:textColor="@color/colorBlack"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchMuteNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvMatchDelete"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="start|center"
+                android:text="@string/match_delete"
+                android:textColor="@color/colorBlack"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvReport"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="start|center"
+                android:text="@string/report"
+                android:textColor="@color/colorBlack"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvBlock"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="start|center"
+                android:text="@string/block"
+                android:textColor="@color/colorBlack"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

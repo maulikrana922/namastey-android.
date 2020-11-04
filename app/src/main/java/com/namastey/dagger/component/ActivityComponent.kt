@@ -59,4 +59,6 @@ interface ActivityComponent {
     fun inject(fragment: ContentLanguageFragment)
     fun inject(fragment: SafetyFragment)
     fun inject(fragment: SafetySubFragment)
+    fun inject(fragment: ChatSettingsFragment)
+    fun inject(activity: ChatActivity)
 }

@@ -8,6 +8,7 @@
     android:padding="@dimen/_4sdp">
 
     <LinearLayout
+        android:id="@+id/llMessageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
