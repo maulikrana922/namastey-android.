@@ -40,7 +40,8 @@ class BlockUserAdapter(
             tvBlockedUserName.text = blockUserListBean.username
             tvBlockedUseJob.text = blockUserListBean.job
 
-            GlideLib.loadImageUrlRoundCorner(activity, ivBlockUser, blockUserListBean.user_image)
+//            GlideLib.loadImageUrlRoundCorner(activity, ivBlockUser, blockUserListBean.user_image)
+            GlideLib.loadImage(activity, ivBlockUser, blockUserListBean.user_image)
 
             if (userId == blockUserListBean.user_id) {
                 tvUnblockLabel.visibility = View.GONE
@@ -54,9 +55,6 @@ class BlockUserAdapter(
             }
 
             tvUnblockLabel.setOnClickListener {
-
-                val isBlock = 0
-
                 object : CustomCommonAlertDialog(
                     activity,
                     blockUserListBean.username,
@@ -70,7 +68,6 @@ class BlockUserAdapter(
                             btnAlertOk.id -> {
                                 onBlockUserClick.onUnblockUserClick(
                                     blockUserListBean.user_id,
-                                    isBlock,
                                     position
                                 )
                             }

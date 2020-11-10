@@ -204,6 +204,7 @@
                         android:textColor="@color/color_blue_facebook"
                         android:textSize="14sp"
                         android:singleLine="true"
+                        android:focusable="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                         app:layout_constraintStart_toStartOf="@id/tvFacebook"

@@ -79,7 +79,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private fun initListener() {
         ivCloseAddLink.setOnClickListener(this)
         tvAddLinkSave.setOnClickListener(this)
-        tvFacebook.setOnClickListener(this)
+//        tvFacebook.setOnClickListener(this)
+        edtFacebook.setOnClickListener(this)
         edtSpotify.setOnClickListener(this)
         edtTwitter.setOnClickListener(this)
     }
@@ -187,7 +188,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             tvAddLinkSave -> {
                 createRequest()
             }
-            tvFacebook -> {
+            edtFacebook -> {
                 connectFacebook()
             }
 
