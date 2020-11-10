@@ -13,9 +13,12 @@
             type="com.namastey.viewModel.MatchesScreenViewModel" />
     </data>
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_matches_screen"
         android:orientation="vertical">
 
@@ -38,14 +41,6 @@
                 android:layout_marginBottom="@dimen/_78sdp"
                 android:src="@drawable/balloon_green"
                 tools:ignore="ContentDescription" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animationStar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/_78sdp"
-                app:lottie_rawRes="@raw/star" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -156,6 +151,7 @@
             android:textColor="@color/colorWhite"
             android:textSize="17sp"
             app:typeface="MULI_EXTRA_BOLD" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainGoToChat"
