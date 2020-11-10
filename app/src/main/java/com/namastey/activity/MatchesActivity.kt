@@ -51,7 +51,6 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
             tabMatchesProfile.getTabAt(0)?.select()
     }
 
-
     override fun getViewModel() = matchesBasicViewModel
 
     override fun getLayoutId() = R.layout.activity_matches

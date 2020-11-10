@@ -20,6 +20,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+       // SessionManager(context).setAccessToken(token)
         println("$tag token --> $token")
     }
 

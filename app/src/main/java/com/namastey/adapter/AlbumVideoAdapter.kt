@@ -19,7 +19,7 @@ class AlbumVideoAdapter(
     val activity: Activity,
     var onVideoClick: OnVideoClick,
     var sessionManager: SessionManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumVideoAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<AlbumVideoAdapter.ViewHolder>() {
     private val viewPool = RecyclerView.RecycledViewPool()
     val handlerVideo = Handler(activity.mainLooper)
 
@@ -37,7 +37,7 @@ class AlbumVideoAdapter(
     }
 
     inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             val videoBean = videoList[position]

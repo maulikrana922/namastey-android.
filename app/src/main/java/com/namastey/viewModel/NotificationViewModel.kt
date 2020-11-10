@@ -2,6 +2,7 @@ package com.namastey.viewModel
 
 import android.util.Log
 import com.namastey.R
+import com.namastey.model.ActivityListBean
 import com.namastey.model.AppResponse
 import com.namastey.model.FollowRequestBean
 import com.namastey.networking.NetworkService
@@ -40,7 +41,6 @@ class NotificationViewModel constructor(
         }
     }
 
-
     fun getFollowRequestList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -56,6 +56,26 @@ class NotificationViewModel constructor(
                     }
             } catch (exception: Throwable) {
                 setIsLoading(false)
+                notificationView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getActivityList(isFilter: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToPostActivityList(isFilter)
+                    .let { appResponse: AppResponse<ArrayList<ActivityListBean>> ->
+                        //setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            notificationView.onSuccessActivityList(appResponse.data!!)
+                        } else {
+                            notificationView.onFailed(appResponse.message, appResponse.error)
+                        }
+                    }
+            } catch (exception: Throwable) {
+               // setIsLoading(false)
                 notificationView.onHandleException(exception)
             }
         }

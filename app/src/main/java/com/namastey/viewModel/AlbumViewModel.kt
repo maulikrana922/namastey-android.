@@ -154,12 +154,12 @@ class AlbumViewModel constructor(
         }
     }
 
-    fun blockUser(userId: Long) {
+    fun blockUser(userId: Long, isBlock:Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (albumView.isInternetAvailable()) {
-                    networkService.requestToBlockUser(userId).let { appResponse ->
+                    networkService.requestToBlockUser(userId, isBlock).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessBlockUser(appResponse.message)

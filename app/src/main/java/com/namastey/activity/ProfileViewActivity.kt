@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -19,6 +20,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
+import com.namastey.model.DashboardBean
 import com.namastey.model.InterestBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
@@ -45,6 +47,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
     private var isMyProfile = false
+    private var isLike = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +88,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         fillValue(profileBean)
     }
 
-    override fun onSuccessProfileLike(data: Any) {
-        TODO("Not yet implemented")
-    }
 
     override fun onSuccess(msg: String) {
 //        super.onSuccess(msg)
@@ -399,5 +399,19 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //        if (sessionManager.getUserId() == profileBean.user_id){
 //            profileViewModel.likeUserProfile()
 //        }
+
+        profileViewModel.likeUserProfile(profileBean.user_id, isLike)
     }
+
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
+        Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
+        isLike = dashboardBean.is_like
+
+        if (isLike == 1) {
+            btnProfileLike.text = resources.getString(R.string.liked)
+        } else {
+            btnProfileLike.text = resources.getString(R.string.like)
+        }
+    }
+
 }

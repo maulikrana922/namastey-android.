@@ -217,7 +217,8 @@ interface NetworkRequest {
     @FormUrlEncoded
     @POST(Constants.BLOCK_USER)
     fun requestToBlockUserAsync(
-        @Field(Constants.BLOCK_USER_ID) userId: Long
+        @Field(Constants.BLOCK_USER_ID) userId: Long,
+        @Field(Constants.IS_BLOCK) isBlock: Int
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
@@ -272,15 +273,35 @@ interface NetworkRequest {
     @POST(Constants.NOTIFICATION_ON_OFF)
     fun requestToNotificationOnOffAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<NotificationOnOffBean>>
 
-    /* @FormUrlEncoded
-     @POST(Constants.NOTIFICATION_ON_OFF)
-     fun requestToNotificationOnOff(
-         @Field(Constants.IS_MENTIONS) isMentions: Int,
-         @Field(Constants.IS_MATCHES) isMatches: Int,
-         @Field(Constants.IS_FOLLOW) isFollow: Int,
-         @Field(Constants.IS_COMMENT) isComment: Int,
-         @Field(Constants.IS_SUGGEST) isSuggest: Int
-     ): Deferred<AppResponse<NotificationOnOffBean>>*/
+    @FormUrlEncoded
+    @POST(Constants.MENTION_LIST)
+    fun requestToPostMentionListAsync(
+        @Field(Constants.SEARCH) search: String
+    ): Deferred<AppResponse<ArrayList<MentionListBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.MATCHES_DELETE)
+    fun requestToDeleteMatchesAsync(
+        @Field(Constants.USER_ID) userId: Long
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.IS_VIDEO_DOWNLOAD)
+    fun requestToDownloadVideoAsync(
+        @Field(Constants.IS_DOWNLOAD) isDownload: Int
+    ): Deferred<AppResponse<SafetyBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.WHO_CAN_SEE_YOUR_FOLLOWERS)
+    fun requestToSeeYourFollowersAsync(
+        @Field(Constants.IS_FOLLOWERS) isFollowers: Int
+    ): Deferred<AppResponse<SafetyBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.ACTIVITY_LIST)
+    fun requestToPostActivityListAsync(
+        @Field(Constants.IS_FILTER) isFilter: Int
+    ): Deferred<AppResponse<ArrayList<ActivityListBean>>>
 
 
 }

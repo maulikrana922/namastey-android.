@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/holderMention"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center|start"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp">
+
+    <com.namastey.customViews.RoundImageView
+        android:id="@+id/ivMentionUser"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_placeholder"
+        app:cornerRadius="@dimen/_8sdp"
+        app:roundedCorners="all" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUsername"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_weight="1"
+        android:gravity="start|center"
+        android:paddingStart="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:textColor="@color/colorBlack" />
+
+</LinearLayout>

@@ -2,6 +2,8 @@ package com.namastey.activity
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
@@ -34,6 +36,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
         activityMatchesScreenBinding.viewModel = matchesScreenViewModel
 
         initUi()
+        setupAnimation()
     }
 
     override fun getViewModel() = matchesScreenViewModel
@@ -48,6 +51,18 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
         }
 
         getIntentData()
+    }
+
+    private fun setupAnimation() {
+        val animation = findViewById<LottieAnimationView>(R.id.animationStar)
+        animation.speed = 2.0F // How fast does the animation play
+        animation.progress = 0.50F // Starts the animation from 50% of the beginning
+        animation.addAnimatorUpdateListener {
+            // Called everytime the frame of the animation changes
+        }
+        animation.repeatMode =
+            LottieDrawable.RESTART // Restarts the animation (you can choose to reverse it as well)
+        animation.cancelAnimation() // Cancels the animation
     }
 
     private fun getIntentData() {

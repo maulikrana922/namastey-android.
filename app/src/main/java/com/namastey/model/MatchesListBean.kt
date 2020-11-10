@@ -18,16 +18,16 @@ class MatchesListBean() : Parcelable {
     var is_read: Int = 0
 
     constructor(parcel: Parcel) : this() {
-        parcel.readLong()
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readString() ?: ""
-        parcel.readInt() ?: 0
+        id = parcel.readLong()
+        username = parcel.readString() ?: ""
+        email = parcel.readString() ?: ""
+        mobile = parcel.readString() ?: ""
+        gender = parcel.readString() ?: ""
+        interest = parcel.readString() ?: ""
+        language = parcel.readString() ?: ""
+        age = parcel.readString() ?: ""
+        profile_pic = parcel.readString() ?: ""
+        is_read = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

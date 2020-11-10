@@ -18,240 +18,256 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imgTop"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:src="@drawable/green_bar_three"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite">
 
-            <ImageView
-                android:id="@+id/ivPostVideo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickPostVideoBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/imgTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/green_bar_three"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/ivPostVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickPostVideoBack"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.namastey.customViews.CustomTextView
-                style="@style/tvTitleStyle"
-                android:text="@string/post"
-                app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"
-                app:layout_constraintStart_toEndOf="@id/ivPostVideo"
-                app:layout_constraintTop_toTopOf="@id/ivPostVideo" />
+                <com.namastey.customViews.CustomTextView
+                    style="@style/tvTitleStyle"
+                    android:text="@string/post"
+                    app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"
+                    app:layout_constraintStart_toEndOf="@id/ivPostVideo"
+                    app:layout_constraintTop_toTopOf="@id/ivPostVideo" />
 
-            <com.namastey.customViews.CustomEditText
-                android:id="@+id/edtVideoDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:hint="@string/hint_video_desc"
-                android:maxLines="4"
-                android:minLines="4"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgTop"
-                app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomEditText
+                    android:id="@+id/edtVideoDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="@string/hint_video_desc"
+                    android:maxLines="4"
+                    android:minLines="4"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgTop"
+                    app:typeface="MULI_SEMIBOLD" />
 
-            <com.namastey.customViews.CustomTextView
-                android:visibility="gone"
-                android:id="@+id/tvHashtag"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/rounded_white_solid_all_corner"
-                android:gravity="center"
-                android:text="#"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
-                app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
-                app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvHashtag"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/rounded_white_solid_all_corner"
+                    android:gravity="center"
+                    android:text="#"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
+                    app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                    app:typeface="MULI_SEMIBOLD" />
 
-            <com.namastey.customViews.CustomTextView
-                android:visibility="gone"
-                android:id="@+id/tvAnotation"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:background="@drawable/rounded_white_solid_all_corner"
-                android:gravity="center"
-                android:text="\@"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
-                app:layout_constraintStart_toEndOf="@id/tvHashtag"
-                app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAnotation"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:background="@drawable/rounded_white_solid_all_corner"
+                    android:gravity="center"
+                    android:text="\@"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
+                    app:layout_constraintStart_toEndOf="@id/tvHashtag"
+                    app:typeface="MULI_SEMIBOLD" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAddto"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:paddingEnd="@dimen/_3sdp"
-                android:text="@string/add_to"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
-                app:layout_constraintTop_toBottomOf="@id/ivSelectCover" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAddto"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:paddingEnd="@dimen/_3sdp"
+                    android:text="@string/add_to"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                    app:layout_constraintTop_toBottomOf="@id/ivSelectCover" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAlbumName"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="wrap_content"
-                android:text="@string/add_to"
-                android:onClick="onClickSelectAlbum"
-                app:layout_constraintTop_toTopOf="@id/tvAddto"
-                android:drawableTint="@color/colorWhite"
-                android:drawablePadding="@dimen/_3sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_7sdp"
-                android:paddingTop="@dimen/_3sdp"
-                android:paddingBottom="@dimen/_3sdp"
-                android:background="@drawable/rounded_gray_solid_all_corner"
-                android:drawableRight="@drawable/ic_arrow_down_gray"
-                app:layout_constraintBottom_toBottomOf="@id/tvAddto"
-                app:layout_constraintEnd_toEndOf="@id/ivSelectCover"/>
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAlbumName"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/rounded_gray_solid_all_corner"
+                    android:drawableRight="@drawable/ic_arrow_down_gray"
+                    android:drawablePadding="@dimen/_3sdp"
+                    android:drawableTint="@color/colorWhite"
+                    android:onClick="onClickSelectAlbum"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_7sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:text="@string/add_to"
+                    app:layout_constraintBottom_toBottomOf="@id/tvAddto"
+                    app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                    app:layout_constraintTop_toTopOf="@id/tvAddto" />
 
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareWith"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/shared_with"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddto" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvShareWith"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/shared_with"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
-                app:layout_constraintTop_toBottomOf="@id/tvAddto" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShare"
+                    style="@style/tvWrapWhiteStyle"
+                    android:drawableRight="@drawable/ic_arrow_right"
+                    android:gravity="center"
+                    android:onClick="onClickShareWith"
+                    android:text="@string/everyone"
+                    android:textColor="@color/colorDarkGray"
+                    app:layout_constraintBottom_toBottomOf="@id/tvShareWith"
+                    app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                    app:layout_constraintTop_toTopOf="@id/tvShareWith" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvShare"
-                style="@style/tvWrapWhiteStyle"
-                android:drawableRight="@drawable/ic_arrow_right"
-                android:gravity="center"
-                android:onClick="onClickShareWith"
-                android:text="@string/everyone"
-                android:textColor="@color/colorDarkGray"
-                app:layout_constraintBottom_toBottomOf="@id/tvShareWith"
-                app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
-                app:layout_constraintTop_toTopOf="@id/tvShareWith" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvCommentOff"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/comments_off"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                    app:layout_constraintTop_toBottomOf="@id/tvShareWith" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvCommentOff"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/comments_off"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
-                app:layout_constraintTop_toBottomOf="@id/tvShareWith" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchCommentOff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tvCommentOff"
+                    app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                    app:layout_constraintTop_toTopOf="@id/tvCommentOff" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchCommentOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/tvCommentOff"
-                app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
-                app:layout_constraintTop_toTopOf="@id/tvCommentOff" />
+                <com.namastey.customViews.RoundImageView
+                    android:id="@+id/ivSelectCover"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_placeholder"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/edtVideoDesc"
+                    app:roundedCorners="all" />
 
+                <com.namastey.customViews.RoundImageView
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:adjustViewBounds="true"
+                    android:onClick="onClickSelectImage"
+                    android:scaleType="centerCrop"
+                    android:src="@color/black_overlay"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/edtVideoDesc"
+                    app:roundedCorners="all" />
 
-            <com.namastey.customViews.RoundImageView
-                android:id="@+id/ivSelectCover"
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/default_placeholder"
-                app:cornerRadius="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/edtVideoDesc"
-                app:roundedCorners="all" />
+                <com.namastey.customViews.CustomTextView
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:text="@string/select_cover"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
+                    app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                    app:layout_constraintStart_toStartOf="@id/ivSelectCover" />
 
-            <com.namastey.customViews.RoundImageView
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:onClick="onClickSelectImage"
-                android:src="@color/black_overlay"
-                app:cornerRadius="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/edtVideoDesc"
-                app:roundedCorners="all" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAutoshareMsg"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/automatically_share"
+                    android:textColor="@color/colorDarkGray"
+                    app:layout_constraintStart_toStartOf="@id/tvCommentOff"
+                    app:layout_constraintTop_toBottomOf="@id/tvCommentOff" />
 
-            <com.namastey.customViews.CustomTextView
-                style="@style/tvWrapWhiteStyle"
-                android:text="@string/select_cover"
-                android:layout_marginBottom="@dimen/_3sdp"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
-                app:layout_constraintStart_toStartOf="@id/ivSelectCover"
-                app:layout_constraintEnd_toEndOf="@id/ivSelectCover"/>
+                <com.namastey.customViews.RoundImageView
+                    android:id="@+id/ivShareFacebook"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/ic_link_facebook"
+                    app:layout_constraintStart_toStartOf="@id/tvAutoshareMsg"
+                    app:layout_constraintTop_toBottomOf="@id/tvAutoshareMsg" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAutoshareMsg"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/automatically_share"
-                android:textColor="@color/colorDarkGray"
-                app:layout_constraintStart_toStartOf="@id/tvCommentOff"
-                app:layout_constraintTop_toBottomOf="@id/tvCommentOff" />
+                <com.namastey.customViews.RoundImageView
+                    android:id="@+id/ivShareInstagram"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:src="@drawable/ic_link_instagram"
+                    app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toTopOf="@id/ivShareFacebook" />
 
-            <com.namastey.customViews.RoundImageView
-                android:id="@+id/ivShareFacebook"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:src="@drawable/ic_link_facebook"
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnPostVideo"
+                    style="@style/btnRedStyle"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:onClick="onClickPostVideo"
+                    android:text="@string/post"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                    app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareFacebook" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMentionList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/tvAutoshareMsg"
-                app:layout_constraintStart_toStartOf="@id/tvAutoshareMsg"/>
-
-            <com.namastey.customViews.RoundImageView
-                android:id="@+id/ivShareInstagram"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:src="@drawable/ic_link_instagram"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:layout_constraintTop_toTopOf="@id/ivShareFacebook"
-                app:layout_constraintStart_toEndOf="@id/ivShareFacebook"/>
-
-            <com.namastey.customViews.CustomButton
-                android:id="@+id/btnPostVideo"
-                style="@style/btnRedStyle"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:onClick="onClickPostVideo"
-                android:text="@string/post"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
-                app:layout_constraintStart_toStartOf="@id/edtVideoDesc" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                android:background="@color/colorWhite"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:listitem="@layout/row_mention" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

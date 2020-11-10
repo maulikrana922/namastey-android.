@@ -1,6 +1,5 @@
 package com.namastey.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -45,13 +44,14 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     private var isFromProfile = false
     override fun getViewModel() = signupWithPhoneModel
     private var isFirstTime = false
+    private var androidId = ""
 
     override fun getLayoutId() = R.layout.fragment_signup_with_phone
 
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(isFromProfile: Boolean,isFromDashboard: Boolean) =
+        fun getInstance(isFromProfile: Boolean, isFromDashboard: Boolean) =
             SignupWithPhoneFragment().apply {
                 arguments = Bundle().apply {
                     putBoolean("isFromProfile", isFromProfile)
@@ -87,6 +87,9 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         }
         signupWithPhoneModel.getCountry()
 
+        androidId =
+            Settings.Secure.getString(requireActivity().contentResolver, Settings.Secure.ANDROID_ID)
+
     }
 
     override fun onCloseSignup() {
@@ -107,6 +110,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
+            jsonObject.addProperty(Constants.USER_UNIQUE_ID, androidId)
 
             if (sessionManager.getLoginType().equals(Constants.EMAIL))
                 jsonObject.addProperty(Constants.EMAIL, edtEmailPhone.text.toString().trim())
@@ -140,13 +144,13 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun onClickCountry() {
         Utils.hideKeyboard(activity!!)
 //        if (isFromProfile) {
-            addFragmentChild(
-                childFragmentManager,
-                CountryFragment.getInstance(
-                    countryList
-                ),
-                Constants.COUNTRY_FRAGMENT
-            )
+        addFragmentChild(
+            childFragmentManager,
+            CountryFragment.getInstance(
+                countryList
+            ),
+            Constants.COUNTRY_FRAGMENT
+        )
 //        } else {
 //            addFragmentChild(
 //                childFragmentManager,
@@ -170,16 +174,16 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
             isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
         }
 //        if (isFromProfile) {
-            addFragment(
-                OTPFragment.getInstance(
-                    sessionManager.getUserPhone(),
-                    sessionManager.getUserEmail(),
-                    isFromProfile,
-                    isFromDashboard,
-                    user.is_register
-                ),
-                Constants.OTP_FRAGMENT
-            )
+        addFragment(
+            OTPFragment.getInstance(
+                sessionManager.getUserPhone(),
+                sessionManager.getUserEmail(),
+                isFromProfile,
+                isFromDashboard,
+                user.is_register
+            ),
+            Constants.OTP_FRAGMENT
+        )
 //        } else {
 //            addFragment(
 //                OTPFragment.getInstance(
@@ -231,16 +235,18 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
             } else {
                 object : CustomAlertDialog(
                     activity!!,
-                    resources.getString(R.string.gps_disable_message), getString(R.string.go_to_settings), getString(R.string.cancel)
+                    resources.getString(R.string.gps_disable_message),
+                    getString(R.string.go_to_settings),
+                    getString(R.string.cancel)
                 ) {
                     override fun onBtnClick(id: Int) {
-                        when(id){
-                            btnPos.id ->{
+                        when (id) {
+                            btnPos.id -> {
                                 val intent =
                                     Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                                 context.startActivity(intent)
                             }
-                            btnNeg.id ->{
+                            btnNeg.id -> {
                                 dismiss()
                             }
                         }

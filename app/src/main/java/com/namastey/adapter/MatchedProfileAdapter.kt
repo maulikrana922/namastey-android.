@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.MatchesListBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_matches_profile.view.*
 
 
-class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var activity: Activity) :
-    RecyclerView.Adapter<MatchedProfileAdapter.ViewHolder>() {
+class MatchedProfileAdapter(
+    var matchesList: ArrayList<MatchesListBean>,
+    var activity: Activity,
+    var onMatchesItemClick: OnMatchesItemClick
+) : RecyclerView.Adapter<MatchedProfileAdapter.ViewHolder>() {
 
 
     /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -62,6 +66,10 @@ class MatchedProfileAdapter(var matchesList: ArrayList<MatchesListBean>, var act
             tvProfileName.text = matchesListBean.username
 
             GlideLib.loadImage(activity, ivProfileImage, matchesListBean.profile_pic)
+
+            llMatches.setOnClickListener {
+                onMatchesItemClick.onMatchesItemClick(0, position, matchesListBean)
+            }
 
         }
 

@@ -193,9 +193,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    fun openActivity(
-        intent: Intent
-    ) {
+    fun openActivity(intent: Intent) {
         startActivity(intent)
         activity!!.overridePendingTransition(R.anim.enter, R.anim.exit);
     }

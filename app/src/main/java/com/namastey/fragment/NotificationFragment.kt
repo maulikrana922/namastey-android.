@@ -16,6 +16,7 @@ import com.namastey.adapter.NotificationAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
+import com.namastey.model.ActivityListBean
 import com.namastey.model.FollowRequestBean
 import com.namastey.uiView.NotificationView
 import com.namastey.utils.Constants
@@ -32,7 +33,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var notificationViewModel: NotificationViewModel
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: NotificationAdapter
-    private var interestIn = 0
+    private var activityList: ArrayList<ActivityListBean> = ArrayList()
+
+    private var isActivityList = 0
+    private lateinit var dialog: AlertDialog
     private lateinit var llAllActivity: LinearLayout
     private lateinit var llLikes: LinearLayout
     private lateinit var llComments: LinearLayout
@@ -85,9 +89,11 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private fun initUI() {
 
         notificationViewModel.getFollowRequestList()
+        isActivityList = 0
+        notificationViewModel.getActivityList(isActivityList)
 
-        notificationAdapter = NotificationAdapter(requireActivity())
-        rvNotification.adapter = notificationAdapter
+        /* notificationAdapter = NotificationAdapter(requireActivity())
+         rvNotification.adapter = notificationAdapter*/
 
         tvFollowRequest.setOnClickListener {
             val followRequestFragment = FollowRequestFragment.getInstance()
@@ -109,12 +115,19 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
         builder.setView(customLayout)
 
-        initDialogViews(customLayout)
-        setDialogClickListeners()
+        /* initDialogViews(customLayout)
+         setDialogClickListeners()*/
 
-        val dialog: AlertDialog = builder.create()
+        // val dialog: AlertDialog = builder.create()
+        dialog = builder.create()
+
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
+
+        initDialogViews(customLayout)
+        setDialogClickListeners()
+        setSelectedTextColor(tvAllActivity)
+        setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
 
     }
 
@@ -149,26 +162,41 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             hideDoneImageView(ivAllActivitySelected)
             setSelectedTextColor(tvAllActivity)
             setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
+            isActivityList = 0
+            notificationViewModel.getActivityList(isActivityList)
+            //dialog.dismiss()
         }
         llLikes.setOnClickListener {
             hideDoneImageView(ivLikesSelected)
             setSelectedTextColor(tvLikes)
             setImageViewColor(ivLikes, R.drawable.heart)
+            isActivityList = 1
+            notificationViewModel.getActivityList(isActivityList)
+            // dialog.dismiss()
         }
         llComments.setOnClickListener {
             hideDoneImageView(ivCommentsSelected)
             setSelectedTextColor(tvComments)
             setImageViewColor(ivComments, R.drawable.ic_comment)
+            isActivityList = 2
+            notificationViewModel.getActivityList(isActivityList)
+            // dialog.dismiss()
         }
         llMentions.setOnClickListener {
             hideDoneImageView(ivMentionsSelected)
             setSelectedTextColor(tvMentions)
             setImageViewColor(ivMentions, R.drawable.ic_mention)
+            isActivityList = 4
+            notificationViewModel.getActivityList(isActivityList)
+            // dialog.dismiss()
         }
         llFollowers.setOnClickListener {
             hideDoneImageView(ivFollowersSelected)
             setSelectedTextColor(tvFollowers)
             setImageViewColor(ivFollowers, R.drawable.ic_all_activity) // Todo: Change icon
+            isActivityList = 3
+            notificationViewModel.getActivityList(isActivityList)
+            //     dialog.dismiss()
         }
     }
 
@@ -193,27 +221,52 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun setImageViewColor(imageView: ImageView, drawable: Int) {
-       /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-        ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-        ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-        ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-        ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+        /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
 
 
-        imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
+         imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
 
-        ivAllActivity.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_activity_black))
-        ivLikes.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_heart_black))
-        ivComments.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_comment_black))
-        ivMentions.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_mention_black))
-        ivFollowers.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_activity_black)) // Todo: Change icon
+        ivAllActivity.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_all_activity_black
+            )
+        )
+        ivLikes.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_heart_black
+            )
+        )
+        ivComments.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_comment_black
+            )
+        )
+        ivMentions.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_mention_black
+            )
+        )
+        ivFollowers.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_all_activity_black
+            )
+        ) // Todo: Change icon
 
         imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
 
-       /* val unwrappedDrawable: Drawable? =
-            AppCompatResources.getDrawable(context!!, drawable)
-        val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.colorRed))*/
+        /* val unwrappedDrawable: Drawable? =
+             AppCompatResources.getDrawable(context!!, drawable)
+         val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
+         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.colorRed))*/
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -258,6 +311,16 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 .into(ivFollowRequestThird)
         }
 
+    }
+
+    override fun onSuccessActivityList(activityList: ArrayList<ActivityListBean>) {
+        this.activityList = activityList
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+        notificationAdapter = NotificationAdapter(requireActivity(), activityList, isActivityList)
+        rvNotification.adapter = notificationAdapter
+        Log.e("NotificationFragment", "onSuccessActivityList: \t data: ${activityList.size}")
     }
 
     override fun onDestroy() {

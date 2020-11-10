@@ -1,7 +1,6 @@
 package com.namastey.viewModel
 
 import com.google.gson.JsonObject
-import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.NotificationOnOffBean
 import com.namastey.networking.NetworkService
@@ -20,28 +19,27 @@ class AccountSettingsNotificationViewModel constructor(
     baseView: BaseView
 ) : BaseViewModel(networkService, dbHelper, baseView) {
 
-    private var accountSettingsNotificationView: AccountSettingsNotificationView = baseView as AccountSettingsNotificationView
+    private var accountSettingsNotificationView: AccountSettingsNotificationView =
+        baseView as AccountSettingsNotificationView
     private lateinit var job: Job
 
     fun onNotificationOnOff(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (accountSettingsNotificationView.isInternetAvailable()) {
-                    networkService.requestToNotificationOnOff(jsonObject)
-                        .let { appResponse: AppResponse<NotificationOnOffBean> ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK) {
-                                accountSettingsNotificationView.onSuccessResponse(appResponse.data!!)
-                                //accountSettingsNotificationView.onSuccess(appResponse.message)
-                            } else {
-                                accountSettingsNotificationView.onFailed(appResponse.message, appResponse.error)
-                            }
+                networkService.requestToNotificationOnOff(jsonObject)
+                    .let { appResponse: AppResponse<NotificationOnOffBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            accountSettingsNotificationView.onSuccessResponse(appResponse.data!!)
+                            //accountSettingsNotificationView.onSuccess(appResponse.message)
+                        } else {
+                            accountSettingsNotificationView.onFailed(
+                                appResponse.message,
+                                appResponse.error
+                            )
                         }
-                } else {
-                    setIsLoading(false)
-                    accountSettingsNotificationView.showMsg(R.string.no_internet)
-                }
+                    }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 accountSettingsNotificationView.onHandleException(exception)

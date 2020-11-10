@@ -15,6 +15,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -34,14 +36,17 @@ import com.namastey.R
 import com.namastey.adapter.CategoryAdapter
 import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.FeedAdapter
+import com.namastey.adapter.MentionListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
+import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.CommentBean
 import com.namastey.model.DashboardBean
+import com.namastey.model.MentionListBean
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
@@ -64,7 +69,7 @@ import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
-    OnSelectUserItemClick {
+    OnSelectUserItemClick, OnMentionUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -77,6 +82,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
     private lateinit var commentAdapter: CommentAdapter
+    private lateinit var mentionListAdapter: MentionListAdapter
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
@@ -86,6 +92,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var commentCount = -1
     private var isUpdateComment = false
     private var fileUrl = ""
+    private var postId = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -442,7 +449,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 when (id) {
                     btnAlertOk.id -> {
                         bottomSheetDialogShare.dismiss()
-                        dashboardViewModel.blockUser(dashboardBean.user_id)
+                        dashboardViewModel.blockUser(dashboardBean.user_id,1)
                     }
                 }
             }
@@ -487,7 +494,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         openActivity(this, ProfileActivity())
     }
 
-    fun onClickInbox(view: View){
+    fun onClickInbox(view: View) {
         val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
         intent.putExtra("onClickMatches", true)
         openActivity(intent)
@@ -647,11 +654,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onClickFollow(position: Int, userId: Long, isFollow: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
+        } else {
             this.position = position
             dashboardViewModel.followUser(userId, isFollow)
         }
@@ -660,7 +668,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onItemClick(dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -672,11 +681,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onProfileLikeClick(position: Int, likedUserId: Long, isLike: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
+        } else {
             this.position = position
             dashboardViewModel.likeUserProfile(likedUserId, isLike)
         }
@@ -687,6 +697,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
      */
     override fun onCommentClick(position: Int, postId: Long) {
         this.position = position
+        this.postId = postId
         bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogComment.setContentView(
             layoutInflater.inflate(
@@ -709,6 +720,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 )
             }
         }
+
+        addCommentsTextChangeListener()
+
         bottomSheetDialogComment.ivCloseComment.setOnClickListener {
             bottomSheetDialogComment.dismiss()
         }
@@ -724,14 +738,33 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogComment.show()
     }
 
+    private fun addCommentsTextChangeListener() {
+        bottomSheetDialogComment.edtComment.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.length > 2) {
+                    dashboardViewModel.getMentionList(s.toString())
+                }
+
+                if (s.length == 0) {
+                    bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
     override fun onUserProfileClick(userId: Long) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
+        } else {
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, userId)
             openActivity(intent)
@@ -741,12 +774,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onFeedBoost(userId: Long) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
         }
     }
+
     override fun onSelectItemClick(userId: Long, position: Int) {
         val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
@@ -758,6 +793,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
+        bottomSheetDialogComment.rvMentionList.visibility = View.GONE
+        bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
 
@@ -770,7 +807,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         commentAdapter = CommentAdapter(data, this@DashboardActivity, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
-
 
         val itemTouchHelperCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -957,6 +993,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }.show()
     }
 
+    override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
+        if (mentionList.size > 0) {
+            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
+
+            bottomSheetDialogComment.rvMentionList.addItemDecoration(
+                DividerItemDecoration(
+                    this@DashboardActivity,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+
+            bottomSheetDialogComment.rvMentionList.visibility = View.VISIBLE
+
+            mentionListAdapter = MentionListAdapter(mentionList, this@DashboardActivity, this)
+            bottomSheetDialogComment.rvMentionList.adapter = mentionListAdapter
+        } else {
+            bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+            bottomSheetDialogComment.rvMentionList.visibility = View.GONE
+        }
+
+    }
+
     override fun onSuccessBlockUser(msg: String) {
         object : CustomAlertDialog(
             this@DashboardActivity,
@@ -976,5 +1034,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
+    }
+
+    override fun onMentionItemClick(userId: Long, position: Int, username: String) {
+        bottomSheetDialogComment.edtComment.setText(username)
+        bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+        bottomSheetDialogComment.rvMentionList.visibility = View.GONE
     }
 }

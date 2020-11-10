@@ -28,6 +28,7 @@ class DashboardViewModel constructor(
     fun setDownloading(downloading: Boolean) {
         _downloading.value = downloading
     }
+
     fun getCategoryList() {
 //        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -47,12 +48,6 @@ class DashboardViewModel constructor(
             } catch (t: Throwable) {
                 dashboardView.onHandleException(t)
             }
-        }
-    }
-
-    fun onDestroy() {
-        if (::job.isInitialized) {
-            job.cancel()
         }
     }
 
@@ -100,6 +95,7 @@ class DashboardViewModel constructor(
             }
         }
     }
+
 
     fun addComment(postId: Long, edtComment: String) {
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -201,12 +197,12 @@ class DashboardViewModel constructor(
         }
     }
 
-    fun blockUser(userId: Long) {
+    fun blockUser(userId: Long, isBlock: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToBlockUser(userId).let { appResponse ->
+                    networkService.requestToBlockUser(userId, isBlock).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessBlockUser(appResponse.message)
@@ -264,4 +260,35 @@ class DashboardViewModel constructor(
         }
 
     }
+
+    fun getMentionList(search: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToPostMentionList(search).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessMention(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+
+    fun onDestroy() {
+        if (::job.isInitialized) {
+            job.cancel()
+        }
+    }
+
 }

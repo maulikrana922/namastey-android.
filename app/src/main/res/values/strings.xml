@@ -339,6 +339,8 @@
     <string name="msg_unblock_user">Are you sure you want to Unblock?</string>
     <string name="safety_sub_who_can_send_you_direct_msg">With any option, you can receive messages from users that you\'ve sent messages to. Friends are your followers that you follow back.</string>
     <string name="safety_sub_who_can_comments_on_your_video_msg">Friends are your followers that you follow back.</string>
+    <string name="gender">Gender</string>
+    <string name="mobile">Mobile</string>
 
     <!--Notification-->
     <string name="channel_id">default</string>
@@ -352,5 +354,6 @@
     <string name="gif">Gif</string>
     <string name="enter_message">Message…</string>
     <string name="readable_content">Readable content</string>
+    <string name="msg_delete_matches">Do you wish to delete match?</string>
 
 </resources>
