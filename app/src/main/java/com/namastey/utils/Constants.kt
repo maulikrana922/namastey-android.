@@ -163,6 +163,7 @@ object Constants {
     const val KEY_IS_NEW_FOLLOWERS = "KEY_IS_NEW_FOLLOWERS"
     const val KEY_IS_MENTIONS = "KEY_IS_MENTIONS"
     const val KEY_IS_VIDEO_SUGGESTIONS = "KEY_IS_VIDEO_SUGGESTIONS"
+    const val KEY_ALL_ACTIVITY = "KEY_ALL_ACTIVITY"
 
 
     //    field key
