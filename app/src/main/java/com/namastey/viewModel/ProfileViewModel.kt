@@ -138,7 +138,7 @@ class ProfileViewModel constructor(
                     networkService.requestToLikeUserProfile(likedUserId, isLike)
                         .let { appResponse ->
                             if (appResponse.status == Constants.OK)
-                                appResponse.data?.let { profileView.onSuccessProfileLike(it) }
+                                appResponse.data?.let { profileView.onSuccessProfileLike(appResponse.data!!) }
                             else
                                 profileView.onFailed(appResponse.message, appResponse.error)
                         }
@@ -150,6 +150,7 @@ class ProfileViewModel constructor(
             }
         }
     }
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

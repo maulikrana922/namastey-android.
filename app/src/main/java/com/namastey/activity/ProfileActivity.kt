@@ -25,6 +25,7 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
 import com.namastey.fragment.SignUpFragment
+import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.ProfileView
@@ -131,6 +132,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             tvAbouteDesc.text = profileBean.about_me
         }
     }
+
 
 
     override fun getViewModel() = profileViewModel
@@ -525,7 +527,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
 
-    override fun onSuccessProfileLike(data: Any) {
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         TODO("Not yet implemented")
     }
 

@@ -18,6 +18,7 @@
     <color name="colorWhiteBorder">#FDFDFD</color>
     <color name="colorBlue">#3B5998</color>
     <color name="colorBlueLight">#03A9F3</color>
+    <color name="colorBlueChat">#007AFF</color>
     <!--    <color name="colorRed">#EA4335</color>-->
     <color name="colorRed">#F30C45</color>
     <color name="colorButtonRed">#F30C45</color>
@@ -34,6 +35,8 @@
     <color name="colorAddComment">#ECECEC</color>
     <color name="colorOrange">#F88B4E</color>
     <color name="colorLightGreenNotification">#E2FFE3</color>
+    <color name="colorTextHint">#ACACAC</color>
+    <color name="colorCardShadow">#00000029</color>
 
     <color name="color_blue_facebook">#4E598F</color>
     <color name="color_tiktok">#0BF3EB</color>

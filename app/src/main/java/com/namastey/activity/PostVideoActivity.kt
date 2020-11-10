@@ -5,13 +5,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.View.OnTouchListener
@@ -24,11 +25,13 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
-import com.namastey.BuildConfig
 import com.namastey.R
+import com.namastey.adapter.MentionListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityPostVideoBinding
+import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.MentionListBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.Constants
@@ -43,21 +46,30 @@ import java.io.File
 import javax.inject.Inject
 
 
-class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoView {
+class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoView,
+    OnMentionUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityPostVideoBinding: ActivityPostVideoBinding
     private lateinit var postVideoViewModel: PostVideoViewModel
+    private lateinit var mentionListAdapter: MentionListAdapter
     private var videoFile: File? = null
     private var pictureFile: File? = null
     private var albumBean = AlbumBean()
     private var albumList: ArrayList<AlbumBean> = ArrayList()
-//    private val RESULT_CODE_PICK_THUMBNAIL = 104
+
+    //    private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
     private var commentOff = 0
     private var isTouched = false
+
+    override fun getViewModel() = postVideoViewModel
+
+    override fun getLayoutId() = R.layout.activity_post_video
+
+    override fun getBindingVariable() = BR.viewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,13 +117,24 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             }
         })
+
+        addCommentsTextChangeListener()
     }
 
-    override fun getViewModel() = postVideoViewModel
 
-    override fun getLayoutId() = R.layout.activity_post_video
+    private fun addCommentsTextChangeListener() {
+        edtVideoDesc.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-    override fun getBindingVariable() = BR.viewModel
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.length > 2) {
+                    postVideoViewModel.getMentionList(s.toString())
+                }
+            }
+        })
+    }
 
     /**
      * success of post video description using this post_video_id call add media api
@@ -135,7 +158,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         super.onBackPressed()
     }
 
-
     /**
      * successfully got album list
      */
@@ -144,6 +166,16 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         if (albumList.any { albumBean -> albumBean.name == getString(R.string.saved) }) {
             albumList.remove(albumList.single { s -> s.name == getString(R.string.saved) })
         }
+    }
+
+    override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
+        if (mentionList.size > 0) {
+            rvMentionList.visibility = View.VISIBLE
+            mentionListAdapter = MentionListAdapter(mentionList, this@PostVideoActivity, this)
+            rvMentionList.adapter = mentionListAdapter
+        }
+
+       // mentionList.clear()
     }
 
     override fun onBackPressed() {
@@ -283,11 +315,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 }
             } else if (requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
 //                if (data != null) {
-                    val photoUri = FileProvider.getUriForFile(
-                        this,
-                        applicationContext.packageName + ".provider",
-                        Utils.getCameraFile(this@PostVideoActivity)
-                    )
+                val photoUri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    Utils.getCameraFile(this@PostVideoActivity)
+                )
 
 //                val bitmap = if(Build.VERSION.SDK_INT < 28) {
 ////                    MediaStore.Images.Media.getBitmap(
@@ -303,16 +335,16 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //                    ImageDecoder.decodeBitmap(source)
 //                }
 
-                    val bitmap: Bitmap = Utils.scaleBitmapDown(
-                        MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
-                        1200
-                    )!!
-                    GlideLib.loadImageBitmap(this, ivSelectCover, bitmap)
+                val bitmap: Bitmap = Utils.scaleBitmapDown(
+                    MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                    1200
+                )!!
+                GlideLib.loadImageBitmap(this, ivSelectCover, bitmap)
 //                    GlideLib.loadImageBitmap(this, ivSelectCover, data.extras.get("data") as Bitmap)
 //                    val photo = data.extras["data"] as Bitmap
 //                    val tempUri = Utils.getImageUri(applicationContext, photo)
 //                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
-                    pictureFile = Utils.getCameraFile(this@PostVideoActivity)
+                pictureFile = Utils.getCameraFile(this@PostVideoActivity)
 
 //                    pictureFile = Utils.saveBitmapToFile(pictureFile!!)
 //                }
@@ -331,27 +363,27 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
     }
 
-//    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
-//        val bytes = ByteArrayOutputStream()
-//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-//        val path =
-//            Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-//        return Uri.parse(path)
-//    }
-//    private fun getRealPathFromURI(uri: Uri?): String? {
-//        var path = ""
-//        if (contentResolver != null) {
-//            val cursor =
-//                contentResolver.query(uri, null, null, null, null)
-//            if (cursor != null) {
-//                cursor.moveToFirst()
-//                val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
-//                path = cursor.getString(idx)
-//                cursor.close()
-//            }
-//        }
-//        return path
-//    }
+    /* private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+         val bytes = ByteArrayOutputStream()
+         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+         val path =
+             Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+         return Uri.parse(path)
+     }
+     private fun getRealPathFromURI(uri: Uri?): String? {
+         var path = ""
+         if (contentResolver != null) {
+             val cursor =
+                 contentResolver.query(uri, null, null, null, null)
+             if (cursor != null) {
+                 cursor.moveToFirst()
+                 val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
+                 path = cursor.getString(idx)
+                 cursor.close()
+             }
+         }
+         return path
+     }*/
 
     private fun selectImage() {
         bottomSheetDialog = BottomSheetDialog(this@PostVideoActivity, R.style.dialogStyle)
@@ -404,7 +436,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
         bottomSheetDialog.show()
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -509,6 +540,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 }
             }
         }
+    }
+
+    override fun onMentionItemClick(userId: Long, position: Int, username: String) {
+        edtVideoDesc.setText(username)
+        rvMentionList.visibility = View.GONE
     }
 }
 

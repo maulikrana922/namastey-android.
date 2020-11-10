@@ -1,6 +1,7 @@
 package com.namastey.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -8,6 +9,7 @@ import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSafetyBinding
+import com.namastey.model.SafetyBean
 import com.namastey.uiView.SafetyView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.SafetyViewModel
@@ -22,13 +24,11 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
     private lateinit var safetyViewModel: SafetyViewModel
     private lateinit var layoutView: View
 
-
     override fun getViewModel() = safetyViewModel
 
     override fun getLayoutId() = R.layout.fragment_safety
 
     override fun getBindingVariable() = BR.viewModel
-
 
     companion object {
         fun getInstance() =
@@ -39,7 +39,6 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +69,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         }
 
         tvWhoCanSeeYourFollowersEveryone.setOnClickListener {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
             (activity as AccountSettingsActivity).addFragment(
                 SafetySubFragment.getInstance(
                     2
@@ -79,7 +78,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         }
 
         tvWhoCanCommentsOnYourVideosEveryone.setOnClickListener {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
             (activity as AccountSettingsActivity).addFragment(
                 SafetySubFragment.getInstance(
                     3
@@ -87,12 +86,25 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
             )
         }
 
-
+        switchAllowYourVideoToDownload.setOnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                isChecked -> {
+                    safetyViewModel.idDownloadVideo(1)
+                }
+                else -> {
+                    safetyViewModel.idDownloadVideo(0)
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.safety))
+    }
+
+    override fun onSuccessResponse(safetyBean: SafetyBean) {
+        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t $safetyBean")
     }
 
     override fun onDestroy() {

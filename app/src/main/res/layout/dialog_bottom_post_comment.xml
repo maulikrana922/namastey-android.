@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
@@ -13,9 +13,9 @@
         android:theme="@style/Theme.MaterialComponents"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@id/llAddComment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/llAddComment">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -53,10 +53,22 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:listitem="@layout/row_comment"
-
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTotalComment" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTotalComment"
+                tools:listitem="@layout/row_comment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMentionList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTotalComment"
+                tools:listitem="@layout/row_mention" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -80,9 +92,9 @@
             style="@style/edtRoundCornerStyle"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorBlack"
             android:background="@android:color/transparent"
             android:hint="@string/hint_add_comments"
+            android:textColor="@color/colorBlack"
             android:textSize="16sp" />
 
         <ImageView

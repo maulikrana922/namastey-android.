@@ -13,27 +13,27 @@
     card_view:cardPreventCornerOverlap="false">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llAddAlbum"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
         android:background="@drawable/rounded_pink_solid_all"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/_8sdp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/edtAlbumName"
         app:layout_constraintTop_toBottomOf="@id/viewDivider">
 
         <ImageView
-            android:contentDescription="@string/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_add_album" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/viewAlbumDetails"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.namastey.customViews.RoundImageView
@@ -61,11 +61,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.namastey.customViews.CustomTextView
-            android:visibility="gone"
             android:id="@+id/tvUsername"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_15sdp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -75,8 +75,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:padding="@dimen/_12sdp"
-            android:visibility="gone"
             android:src="@drawable/ic_del_photo"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/ivVideoImage"
             app:layout_constraintTop_toTopOf="@id/ivVideoImage" />
 
@@ -87,9 +87,9 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
+            android:visibility="gone"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tvVideoComment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvVideoComment" />
@@ -100,9 +100,9 @@
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
+            android:visibility="gone"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
             app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
             app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
@@ -113,9 +113,9 @@
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
+            android:visibility="gone"
             app:civ_border_color="@color/colorWhiteBorder"
             app:civ_border_width="1dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
             app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
             app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
@@ -126,14 +126,14 @@
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="left"
-            android:layout_marginTop="@dimen/_12sdp"
             android:text="@string/comments"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toEndOf="@id/ivCommentThird"
+            app:layout_constraintTop_toBottomOf="@id/ivVideoImage"
 
             app:typeface="MULI_SEMIBOLD" />
 

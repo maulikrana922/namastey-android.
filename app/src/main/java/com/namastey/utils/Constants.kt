@@ -8,7 +8,7 @@ object Constants {
         male, female, other
     }
 
-    object TwitterConstants{
+    object TwitterConstants {
         var CONSUMER_KEY = "66lJfE8259OsFIkRtSdZhXRid"
         var CONSUMER_SECRET = "fY7rgML5bVkY8X9ZNdnZtNIr6CpRfjmn2QTiRdsBeSAhUOZyau"
         var CALLBACK_URL = "twittersdk://"
@@ -19,6 +19,8 @@ object Constants {
 
     //    Live url
     const val BASE = "https://testyourapp.online/namasteyapp/api/"
+
+    //  const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
 
     //    api end-point
@@ -70,6 +72,11 @@ object Constants {
     const val POST_VIEWERS = "post-viewers"
     const val HIDE_PROFILE = "hide-profile"
     const val USER_TYPE_CHANGE = "user-type-change"
+    const val MENTION_LIST = "mentions-list"
+    const val MATCHES_DELETE = "matches-delete"
+    const val IS_VIDEO_DOWNLOAD = "is-video-download"
+    const val WHO_CAN_SEE_YOUR_FOLLOWERS = "who-can-see-your-followers"
+    const val ACTIVITY_LIST = "activity-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -88,6 +95,7 @@ object Constants {
     const val FOLLOW_REQUEST = "follow-request"
     const val BLOCK_USER_LIST = "block-user-list"
     const val NOTIFICATION_ON_OFF = "notification-on-of"
+    const val MATCHES_LIST_BEAN = "matchesListBean"
 
     //    api response error code
     const val OK = 200
@@ -128,6 +136,7 @@ object Constants {
     const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
     const val SAFETY_FRAGMENT = "SafetyFragment"
     const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
+    const val CHAT_SETTINGS_FRAGMENT = "ChatSettingsFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
@@ -162,6 +171,7 @@ object Constants {
     const val EMAIL = "email"
     const val IS_GUEST = "isGuest"
     const val USERNAME = "username"
+    const val USER_UNIQUE_ID = "user_uniqueId"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"
     const val SNAPCHAT = "snapchat"
@@ -227,6 +237,10 @@ object Constants {
     const val IS_MATCHES = "is_matches"
     const val IS_FOLLOW = "is_follow"
     const val IS_SUGGEST = "is_suggest"
+    const val IS_BLOCK = "is_block"
+    const val IS_DOWNLOAD = "is_download"
+    const val IS_FOLLOWERS = "is_followers"
+    const val IS_FILTER = "is_filter"
 
 
     //    Other constants

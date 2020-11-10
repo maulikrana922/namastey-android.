@@ -172,4 +172,11 @@ dependencies {
     // Add the Firebase Crashlytics SDK.
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
+    //Firebase message service:
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+
+    //Lottie:- For animation
+    implementation 'com.airbnb.android:lottie:3.5.0'
+
+
 }

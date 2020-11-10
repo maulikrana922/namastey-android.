@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    style="@style/CustomCardViewTopCornerStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardElevation="0dp">-->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_8sdp">
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvAllActivityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_white"
+            android:drawablePadding="@dimen/_8sdp"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_4sdp"
+            android:text="@string/all_activity"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            app:typeface="MULI_EXTRA_BOLD"/>
+
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CustomCardViewTopCornerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_15sdp">
+
+                <LinearLayout
+                    android:id="@+id/llAllActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivAllActivity"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_all_activity_black"
+                        tools:ignore="ContentDescription" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvAllActivity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="@string/all_activity"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <ImageView
+                        android:id="@+id/ivAllActivitySelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_done"
+                        android:tint="@color/colorRed"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLikes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_2sdp">
+
+                    <ImageView
+                        android:id="@+id/ivLikes"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_heart_black"
+                        tools:ignore="ContentDescription" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvLikes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="@string/likes"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <ImageView
+                        android:id="@+id/ivLikesSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_done"
+                        android:tint="@color/colorRed"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_2sdp">
+
+                    <ImageView
+                        android:id="@+id/ivComments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_comment_black"
+                        tools:ignore="ContentDescription" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvComments"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="@string/comments"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <ImageView
+                        android:id="@+id/ivCommentsSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_done"
+                        android:tint="@color/colorRed"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llMentions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_2sdp">
+
+                    <ImageView
+                        android:id="@+id/ivMentions"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_mention_black"
+                        tools:ignore="ContentDescription" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMentions"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="@string/mentions"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <ImageView
+                        android:id="@+id/ivMentionsSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_done"
+                        android:tint="@color/colorRed"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFollowers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_2sdp">
+
+                    <ImageView
+                        android:id="@+id/ivFollowers"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_all_activity_black"
+                        tools:ignore="ContentDescription" />
+
+                    <!--Todo: change icon-->
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvFollowers"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="@string/followers"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <ImageView
+                        android:id="@+id/ivFollowersSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_done"
+                        android:tint="@color/colorRed"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+
+<!--</com.google.android.material.card.MaterialCardView>-->

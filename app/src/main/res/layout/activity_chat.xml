@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.ChatActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ChatViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@drawable/yellow_bar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivChatBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickChatBack"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivProfileUser"
+                android:layout_width="@dimen/_56sdp"
+                android:layout_height="@dimen/_56sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_male"
+                app:civ_border_color="@color/colorWhite"
+                app:civ_border_width="@dimen/_1sdp"
+                app:civ_circle_background_color="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
+                app:layout_constraintEnd_toStartOf="@id/ivChatMore"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintStart_toStartOf="@+id/ivChatBack"
+                app:layout_constraintTop_toTopOf="@id/ivChatBack" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvUserName"
+                style="@style/tvTitleStyle"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
+                app:layout_constraintEnd_toStartOf="@id/ivChatMore"
+                app:layout_constraintStart_toEndOf="@id/ivProfileUser"
+                app:layout_constraintTop_toTopOf="@id/ivChatBack" />
+
+            <ImageView
+                android:id="@+id/ivChatMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickChatSettings"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_more"
+                app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivChatBack" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChat"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_48sdp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgTop" />
+
+            <FrameLayout
+                android:id="@+id/flContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fitsSystemWindows="true"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgTop" />
+
+            <LinearLayout
+                android:id="@+id/llChatBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAddComment"
+                android:gravity="center"
+                android:maxHeight="@dimen/_72sdp"
+                android:minHeight="@dimen/_48sdp"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivCamera"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:background="@drawable/rounded_blue_chat_all_corner_solid"
+                    android:padding="@dimen/_6sdp"
+                    android:src="@drawable/ic_photo_camera"
+                    tools:ignore="ContentDescription" />
+
+                <EditText
+                    android:id="@+id/edMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/enter_message"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/color_chip_gray"
+                    android:textColorHint="@color/colorTextHint"
+                    android:textSize="14sp"
+                    app:typeface="MULI_SEMIBOLD"
+                    tools:ignore="Autofill" />
+
+                <ImageView
+                    android:id="@+id/ivMic"
+                    android:layout_width="24dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_microphone_blue"
+                    tools:ignore="ContentDescription" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGif"
+                    style="@style/tvTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@drawable/rectangle_blue_chat_solid"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:text="@string/gif"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivAttachment"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@drawable/rounded_blue_chat_all_corner_solid"
+                    android:padding="@dimen/_6sdp"
+                    android:src="@drawable/ic_add_24"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

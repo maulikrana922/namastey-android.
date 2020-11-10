@@ -1,14 +1,18 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.ChatActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentMatchesProfileBinding
+import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
 import com.namastey.viewModel.MatchesProfileViewModel
@@ -17,7 +21,9 @@ import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
 import kotlinx.android.synthetic.main.view_matches_messages_list.*
 import javax.inject.Inject
 
-class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), MatchesProfileView {
+
+class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), MatchesProfileView,
+    OnMatchesItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -26,7 +32,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private lateinit var layoutView: View
     private lateinit var matchedProfileAdapter: MatchedProfileAdapter
     private lateinit var messagesAdapter: MessagesAdapter
-
 
     override fun getViewModel() = matchesProfileViewModel
 
@@ -65,7 +70,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private fun initUI() {
         matchesProfileViewModel.getMatchesList()
 
-        messagesAdapter = MessagesAdapter(requireActivity())
+        messagesAdapter = MessagesAdapter(requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
 
         /* tvMatches.setOnClickListener {
@@ -74,12 +79,19 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
          }*/
     }
 
+    override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
+        Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
+
+        val intent = Intent(requireActivity(), ChatActivity::class.java)
+        intent.putExtra("matchesListBean", matchesListBean)
+        openActivity(intent)
+    }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
 //        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
 
         tvLikesCount.text = data.size.toString()
-        matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity())
+        matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
     }
 
@@ -87,6 +99,4 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchesProfileViewModel.onDestroy()
         super.onDestroy()
     }
-
-
 }

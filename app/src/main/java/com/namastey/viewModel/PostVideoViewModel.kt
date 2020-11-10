@@ -150,4 +150,29 @@ class PostVideoViewModel constructor(
         }
 
     }
+
+
+    fun getMentionList(search: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (postVideoView.isInternetAvailable()) {
+                    networkService.requestToPostMentionList(search).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            postVideoView.onSuccessMention(appResponse.data!!)
+                        else
+                            postVideoView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    postVideoView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                postVideoView.onHandleException(t)
+            }
+        }
+    }
+
 }

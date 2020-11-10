@@ -101,7 +101,7 @@
             </LinearLayout>
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAllActivity"
+                android:id="@+id/tvAllActivityMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"

@@ -267,7 +267,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestToBlockUser(userId: Long, isBlock: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToBlockUserAsync(userId,isBlock).await()
+            networkRequest.requestToBlockUserAsync(userId, isBlock).await()
         }
 
     suspend fun requestToSavePost(postId: Long): AppResponse<Any> =
@@ -325,4 +325,30 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToNotificationOnOffAsync(jsonObject).await()
         }
+
+    suspend fun requestToPostMentionList(search: String): AppResponse<ArrayList<MentionListBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToPostMentionListAsync(search).await()
+        }
+
+    suspend fun requestToDeleteMatches(userId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToDeleteMatchesAsync(userId).await()
+        }
+
+    suspend fun requestToDownloadVideo(isDownload: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToDownloadVideoAsync(isDownload).await()
+        }
+
+    suspend fun requestToSeeYourFollowers(isFollowers: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToSeeYourFollowersAsync(isFollowers).await()
+        }
+
+    suspend fun requestToPostActivityList(isFilter:Int): AppResponse<ArrayList<ActivityListBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToPostActivityListAsync(isFilter).await()
+        }
+
 }

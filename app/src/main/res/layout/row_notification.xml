@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/_4sdp"
             android:gravity="center|start"
             android:maxLines="6"
-            android:text="Luke Doyle, kizzplitzz and 3 others Commented on your posts. 3d"
             android:textColor="@color/colorLightGrayText"
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />
@@ -55,12 +55,12 @@
                 style="@style/tvWrapWhiteStyle"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:paddingStart="@dimen/_8sdp"
+                android:paddingStart="@dimen/_12sdp"
                 android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:text="@string/plus"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,6 @@
                 app:typeface="MULI_EXTRA_BOLD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainSendView"
@@ -98,12 +97,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.namastey.customViews.RoundImageView
-            android:id="@+id/iv"
+            android:id="@+id/ivOtherUser"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             android:src="@drawable/default_placeholder"
             app:cornerRadius="@dimen/_20sdp"
             app:roundedCorners="all" />

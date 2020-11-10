@@ -46,6 +46,7 @@
                     app:typeface="MULI_SEMIBOLD" />
 
                 <LinearLayout
+                    android:id="@+id/llUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
@@ -71,6 +72,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
@@ -95,11 +97,87 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
-                    android:visibility="gone"
                     android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/gender"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvGender"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="match_parent"
+                        android:gravity="end|center"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/email"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvEmail"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="match_parent"
+                        android:gravity="end|center"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/mobile"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMobile"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="match_parent"
+                        android:gravity="end|center"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNamasteyID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
@@ -114,7 +192,6 @@
                         style="@style/tvWrapWhiteStyle"
                         android:layout_width="match_parent"
                         android:gravity="end|center"
-                        android:text="15112454"
                         android:textColor="@color/colorBlack"
                         app:typeface="MULI_EXTRA_BOLD" />
 

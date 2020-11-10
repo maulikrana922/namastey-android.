@@ -37,7 +37,6 @@ import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
-import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.*
@@ -60,7 +59,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
-    OnItemClick,OnSelectUserItemClick {
+    OnItemClick, OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -97,6 +96,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
     }
+
     override fun onSuccessSavePost(msg: String) {
         object : CustomAlertDialog(
             this@AlbumVideoActivity,
@@ -107,6 +107,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             }
         }.show()
     }
+
     override fun onSuccessBlockUser(msg: String) {
         object : CustomAlertDialog(
             this@AlbumVideoActivity,
@@ -114,7 +115,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         ) {
             override fun onBtnClick(id: Int) {
                 dismiss()
-                val intent = Intent(this@AlbumVideoActivity,DashboardActivity::class.java)
+                val intent = Intent(this@AlbumVideoActivity, DashboardActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 openActivity(intent)
             }
@@ -133,7 +134,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             )
         )
 
-        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity,this)
+        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
 
@@ -597,7 +598,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 when (id) {
                     btnAlertOk.id -> {
                         bottomSheetDialogShare.dismiss()
-                        albumViewModel.blockUser(videoBean.user_id)
+                        albumViewModel.blockUser(videoBean.user_id, 1)
                     }
                 }
             }
@@ -627,6 +628,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             }
         }.show()
     }
+
     /**
      * Display dialog with option (Reason)
      */

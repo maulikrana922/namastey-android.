@@ -69,6 +69,27 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
         tvUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
         tvAge.text = sessionManager.getIntegerValue(Constants.KEY_AGE).toString()
 
+        if (sessionManager.getUserGender() != "") {
+            llGender.visibility = View.VISIBLE
+            tvGender.text = sessionManager.getUserGender()
+        } else {
+            llGender.visibility = View.GONE
+        }
+
+        if (sessionManager.getUserEmail() != "") {
+            llEmail.visibility = View.VISIBLE
+            tvEmail.text = sessionManager.getUserEmail()
+        } else {
+            llEmail.visibility = View.GONE
+        }
+
+        if (sessionManager.getUserPhone() != "") {
+            llMobile.visibility = View.VISIBLE
+            tvMobile.text = sessionManager.getUserPhone()
+        } else {
+            llMobile.visibility = View.GONE
+        }
+
         tvLogout.setOnClickListener {
             onLogoutClick()
         }

@@ -83,11 +83,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:gravity="center"
                 android:text="@string/congratulations"
                 android:textColor="@color/colorRed"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 app:typeface="MULI_EXTRA_BOLD" />
 
             <com.namastey.customViews.RoundImageView
@@ -187,7 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:background="@drawable/rounded_red_solid">
 
@@ -214,16 +214,14 @@
             android:id="@+id/tvShareWithFriends"
             style="@style/tvWrapWhiteStyle"
             android:layout_gravity="bottom|center"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:drawableTop="@drawable/ic_share_with_frd"
             android:drawablePadding="@dimen/_5sdp"
             android:gravity="center"
-            android:onClick="onClickShare"
             android:text="@string/share_with_friends"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />
     </LinearLayout>
-</ScrollView>
 </layout>

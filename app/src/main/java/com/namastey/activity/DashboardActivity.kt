@@ -442,7 +442,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 when (id) {
                     btnAlertOk.id -> {
                         bottomSheetDialogShare.dismiss()
-                        dashboardViewModel.blockUser(dashboardBean.user_id)
+                        dashboardViewModel.blockUser(dashboardBean.user_id,1)
                     }
                 }
             }

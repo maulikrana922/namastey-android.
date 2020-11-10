@@ -3,6 +3,7 @@ package com.namastey.uiView
 import com.namastey.model.CategoryBean
 import com.namastey.model.CommentBean
 import com.namastey.model.DashboardBean
+import com.namastey.model.MentionListBean
 
 interface DashboardView : BaseView {
 
@@ -15,4 +16,6 @@ interface DashboardView : BaseView {
     fun onSuccessReport(msg: String)
     fun onSuccessBlockUser(msg: String)
     fun onSuccessSavePost(msg: String)
+    fun onSuccessMention(mentionList: ArrayList<MentionListBean>)
+
 }
