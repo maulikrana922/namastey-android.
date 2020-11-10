@@ -227,7 +227,6 @@ object Constants {
     const val IS_HIDE = "is_hide"
     const val FOLLOW_ID = "follow_id"
     const val PROFILE_TYPE = "profile_type"
-    const val IS_BLOCK = "is_block"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"
