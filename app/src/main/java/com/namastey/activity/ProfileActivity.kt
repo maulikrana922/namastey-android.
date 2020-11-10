@@ -133,6 +133,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+    override fun onSuccessFollow(profileBean: ProfileBean) {
+        TODO("Not yet implemented")
+    }
 
 
     override fun getViewModel() = profileViewModel

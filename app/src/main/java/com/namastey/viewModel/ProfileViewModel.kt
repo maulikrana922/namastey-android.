@@ -113,10 +113,10 @@ class ProfileViewModel constructor(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (profileView.isInternetAvailable()) {
-                    networkService.requestToFollowUser(userId,isFollow).let { appResponse ->
+                    networkService.requestToFollowUserProfile(userId,isFollow).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
-                            profileView.onSuccess(appResponse.message)
+                            profileView.onSuccessFollow(appResponse.data!!)
                         else
                             profileView.onFailed(appResponse.message, appResponse.error)
                     }

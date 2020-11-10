@@ -74,6 +74,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
             if (profileBean.is_follow == 1)
                 btnProfileFollow.text = getString(R.string.following)
+            else if (profileBean.is_follow == 2)
+                btnProfileFollow.text = getString(R.string.pending)
             else
                 btnProfileFollow.text = getString(R.string.follow)
 
@@ -358,7 +360,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickFollowRequest(view: View) {
         if (profileBean.is_follow == 1) {
             profileViewModel.followUser(profileBean.user_id, 0)
-        } else {
+        } else if (profileBean.is_follow == 0){
             profileViewModel.followUser(profileBean.user_id, 1)
         }
     }
@@ -414,4 +416,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
+    override fun onSuccessFollow(profile: ProfileBean) {
+        profileBean.is_follow = profile.is_follow
+
+        if (profileBean.is_follow == 1) {
+            profileBean.followers += 1
+            btnProfileFollow.text = resources.getString(R.string.following)
+        } else if (profileBean.is_follow == 0) {
+            profileBean.followers -= 1
+            btnProfileFollow.text = resources.getString(R.string.follow)
+        } else if (profileBean.is_follow == 2) {
+            btnProfileFollow.text = resources.getString(R.string.pending)
+        }
+        tvFollowersCount.text = profileBean.followers.toString()
+    }
 }
