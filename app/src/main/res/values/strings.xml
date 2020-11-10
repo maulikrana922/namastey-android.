@@ -78,6 +78,7 @@
     <string name="guest_user">Guest User</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="pending">Pending</string>
     <string name="remove">Remove</string>
     <string name="about_me">About me</string>
     <string name="passport">Passport</string>
@@ -288,6 +289,7 @@
     <string name="allow">Allow</string>
     <string name="no_follow_request">No follow request</string>
     <string name="liked">Liked</string>
+    <string name="msg_matches">Matched found with %1$s</string>
 
 
     <!--Account Settings screen-->

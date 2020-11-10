@@ -71,8 +71,8 @@ object Utils {
             GradientDrawable.Orientation.TR_BL,
 
             intArrayOf(
-                Color.parseColor("#40".plus(startColor.substring(1))),
-                Color.parseColor("#40".plus(endColor.substring(1)))
+                Color.parseColor("#50".plus(startColor.substring(1))),
+                Color.parseColor("#50".plus(endColor.substring(1)))
             )
         )
 

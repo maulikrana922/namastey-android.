@@ -159,7 +159,7 @@ class AlbumViewModel constructor(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (albumView.isInternetAvailable()) {
-                    networkService.requestToBlockUser(userId).let { appResponse ->
+                    networkService.requestToBlockUser(userId,1).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessBlockUser(appResponse.message)

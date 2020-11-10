@@ -1,6 +1,8 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -23,7 +25,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
     lateinit var sessionManager: SessionManager
     private lateinit var matchesScreenViewModel: MatchesScreenViewModel
     private lateinit var activityMatchesScreenBinding: ActivityMatchesScreenBinding
-
+    private var userName1 = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -52,7 +54,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
 
     private fun getIntentData() {
         if (intent.extras != null) {
-            val userName1 = intent.extras!!.getString("username", "")
+            userName1 = intent.extras!!.getString("username", "")
             val userProfile1 = intent.extras!!.getString("profile_url", "")
 
             val userName2 = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
@@ -87,5 +89,16 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
                 "Its a match! \n" + userName2 + " and " + userName1 + "liked each other."
         }
 
+    }
+
+    fun onClickShare(view: View) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT, String.format(getString(R.string.msg_matches),userName1)
+        )
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
     }
 }

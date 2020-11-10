@@ -488,9 +488,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     fun onClickInbox(view: View){
-        val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
-        intent.putExtra("onClickMatches", true)
-        openActivity(intent)
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
+            intent.putExtra("onClickMatches", true)
+            openActivity(intent)
+        }
     }
 
     override fun onDestroy() {

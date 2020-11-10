@@ -70,9 +70,10 @@ class AccountSettingsNotificationFragment :
     }
 
     private fun initData() {
-        val jsonObject = JsonObject()
+        var jsonObject = JsonObject()
 
         switchMatches.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
             when {
                 isChecked -> {
                     jsonObject.addProperty(Constants.IS_MATCHES, 1)
@@ -86,6 +87,7 @@ class AccountSettingsNotificationFragment :
         }
 
         switchComments.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
             when {
                 isChecked -> {
                     jsonObject.addProperty(Constants.IS_COMMENT, 1)
@@ -99,6 +101,7 @@ class AccountSettingsNotificationFragment :
         }
 
         switchNewFollowers.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
             when {
                 isChecked -> {
                     jsonObject.addProperty(Constants.IS_FOLLOW, 1)
@@ -113,6 +116,7 @@ class AccountSettingsNotificationFragment :
         }
 
         switchMentions.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
             when {
                 isChecked -> {
                     jsonObject.addProperty(Constants.IS_MENTIONS, 1)
@@ -126,6 +130,7 @@ class AccountSettingsNotificationFragment :
         }
 
         switchVideosSuggestions.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
             when {
                 isChecked -> {
                     jsonObject.addProperty(Constants.IS_SUGGEST, 1)
@@ -141,35 +146,15 @@ class AccountSettingsNotificationFragment :
     }
 
     private fun setSelected() {
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_MENTIONS) == 1) {
-            switchMentions.isChecked = true
-        } else {
-            switchMentions.isChecked = false
-        }
+        switchMentions.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_MENTIONS) == 1
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_MATCHES) == 1) {
-            switchMatches.isChecked = true
-        } else {
-            switchMatches.isChecked = false
-        }
+        switchMatches.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_MATCHES) == 1
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_COMMENTS) == 1) {
-            switchComments.isChecked = true
-        } else {
-            switchComments.isChecked = false
-        }
+        switchComments.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_COMMENTS) == 1
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_NEW_FOLLOWERS) == 1) {
-            switchNewFollowers.isChecked = true
-        } else {
-            switchNewFollowers.isChecked = false
-        }
+        switchNewFollowers.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_NEW_FOLLOWERS) == 1
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_VIDEO_SUGGESTIONS) == 1) {
-            switchVideosSuggestions.isChecked = true
-        } else {
-            switchVideosSuggestions.isChecked = false
-        }
+        switchVideosSuggestions.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_VIDEO_SUGGESTIONS) == 1
 
     }
 
@@ -221,64 +206,64 @@ class AccountSettingsNotificationFragment :
 
     override fun onSuccessResponse(notificationOnOffBean: NotificationOnOffBean) {
 
-        if (notificationOnOffBean.is_mentions == 1) {
+//        if (notificationOnOffBean.is_mentions == 1) {
             sessionManager.setIntegerValue(
-                1,
+                notificationOnOffBean.is_mentions,
                 Constants.KEY_IS_MENTIONS
             )
-        } else {
-            sessionManager.setIntegerValue(
-                0,
-                Constants.KEY_IS_MENTIONS
-            )
-        }
+//        } else {
+//            sessionManager.setIntegerValue(
+//                0,
+//                Constants.KEY_IS_MENTIONS
+//            )
+//        }
 
-        if (notificationOnOffBean.is_matches == 1) {
+//        if (notificationOnOffBean.is_matches == 1) {
             sessionManager.setIntegerValue(
-                1, Constants.KEY_IS_MATCHES
+                notificationOnOffBean.is_matches, Constants.KEY_IS_MATCHES
             )
-        } else {
-            sessionManager.setIntegerValue(
-                0,
-                Constants.KEY_IS_MATCHES
-            )
-        }
+//        } else {
+//            sessionManager.setIntegerValue(
+//                0,
+//                Constants.KEY_IS_MATCHES
+//            )
+//        }
 
-        if (notificationOnOffBean.is_follow == 1) {
+//        if (notificationOnOffBean.is_follow == 1) {
             sessionManager.setIntegerValue(
-                1,
+                notificationOnOffBean.is_follow,
                 Constants.KEY_IS_NEW_FOLLOWERS
             )
-        } else {
-            sessionManager.setIntegerValue(
-                0,
-                Constants.KEY_IS_NEW_FOLLOWERS
-            )
-        }
+//        } else {
+//            sessionManager.setIntegerValue(
+//                0,
+//                Constants.KEY_IS_NEW_FOLLOWERS
+//            )
+//        }
 
-        if (notificationOnOffBean.is_comment == 1) {
+//        if (notificationOnOffBean.is_comment == 1) {
             sessionManager.setIntegerValue(
-                1,
+                notificationOnOffBean.is_comment,
                 Constants.KEY_IS_COMMENTS
             )
-        } else {
-            sessionManager.setIntegerValue(
-                0,
-                Constants.KEY_IS_COMMENTS
-            )
-        }
+//        } else {
+//            sessionManager.setIntegerValue(
+//                0,
+//                Constants.KEY_IS_COMMENTS
+//            )
+//        }
 
-        if (notificationOnOffBean.is_suggest == 1) {
+//        if (notificationOnOffBean.is_suggest == 1) {
             sessionManager.setIntegerValue(
-                1,
+                notificationOnOffBean.is_suggest,
                 Constants.KEY_IS_VIDEO_SUGGESTIONS
             )
-        } else {
-            sessionManager.setIntegerValue(
-                0,
-                Constants.KEY_IS_VIDEO_SUGGESTIONS
-            )
-        }
+//        } else {
+//            sessionManager.setIntegerValue(
+//                0,
+//                Constants.KEY_IS_VIDEO_SUGGESTIONS
+//            )
+//        }
     }
 
 }

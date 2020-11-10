@@ -17,6 +17,7 @@ import com.namastey.model.CategoryBean
 import com.namastey.uiView.SelectFilterView
 import com.namastey.utils.Constants
 import com.namastey.utils.GridSpacingItemDecoration
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectFilterViewModel
 import kotlinx.android.synthetic.main.fragment_select_filter.*
 import javax.inject.Inject
@@ -27,7 +28,8 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentSelectFilterBinding: FragmentSelectFilterBinding
     private lateinit var selectFilterViewModel: SelectFilterViewModel
     private lateinit var layoutView: View
@@ -127,19 +129,19 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     override fun onItemClick(subCategoryId: Int) {
         Log.d("Subcategory : ", subCategoryId.toString())
 
-        activity!!.onActivityReenter(
-            Constants.REQUEST_CODE,
-            Intent().putExtra("fromSubCategory", true)
-                .putExtra("subCategoryId", subCategoryId)
-        )
-        requireActivity().supportFragmentManager.popBackStack()
-
-//        targetFragment!!.onActivityResult(
-//            Constants.REQUEST_CODE,
-//            Activity.RESULT_OK,
-//            Intent().putExtra("fromSubCategory", true)
-//                .putExtra("subCategoryId",subCategoryId)
-//        )
-//        requireActivity().supportFragmentManager.popBackStack()
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }else{
+            activity!!.onActivityReenter(
+                Constants.REQUEST_CODE,
+                Intent().putExtra("fromSubCategory", true)
+                    .putExtra("subCategoryId", subCategoryId)
+            )
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 }

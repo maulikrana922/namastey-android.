@@ -36,7 +36,7 @@ class BlockListFragment : BaseFragment<FragmentBlockListBinding>(), BlockListVie
     private lateinit var blockUserAdapter: BlockUserAdapter
     private var isMyProfile = false
     private var blockUserList: ArrayList<BlockUserListBean> = ArrayList()
-
+    private var position = -1
 
     override fun getViewModel() = blockListViewModel
 
@@ -87,12 +87,23 @@ class BlockListFragment : BaseFragment<FragmentBlockListBinding>(), BlockListVie
             llNoUserInList.visibility = View.GONE
 
             blockUserAdapter = BlockUserAdapter(
-                data,
+                blockUserList,
                 requireActivity(),
                 this,
                 sessionManager.getUserId()
             )
             rvBlockList.adapter = blockUserAdapter
+        }
+    }
+
+    override fun onSuccessBlockUser(msg: String) {
+        blockUserList.removeAt(position)
+        blockUserAdapter.notifyItemRemoved(position)
+        blockUserAdapter.notifyItemRangeChanged(position,blockUserAdapter.itemCount)
+
+        if (blockUserList.size == 0){
+            rvBlockList.visibility = View.GONE
+            llNoUserInList.visibility = View.VISIBLE
         }
     }
 
@@ -106,10 +117,11 @@ class BlockListFragment : BaseFragment<FragmentBlockListBinding>(), BlockListVie
         super.onDestroy()
     }
 
-    override fun onUnblockUserClick(userId: Long, idBlock: Int, position: Int) {
+    override fun onUnblockUserClick(userId: Long, position: Int) {
         Log.e("BlockListFragment", "onBlockUserClick: \t userId: $userId")
-        Log.e("BlockListFragment", "onBlockUserClick: \t idBlock: $idBlock")
         Log.e("BlockListFragment", "onBlockUserClick: \t position: $position")
+        this.position = position
+        blockListViewModel.blockUser(userId)
     }
 
     override fun onUserItemClick(userId: Long) {
