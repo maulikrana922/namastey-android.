@@ -56,7 +56,7 @@ class CategoryAdapter(
                     mainCategoryView.alpha = 1f
                     clickPosition = position
                     (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
-                    (context as DashboardActivity).addFragment(
+                    (context as DashboardActivity).addFragmentCategory(
                         SelectFilterFragment.getInstance(
                             categoryList[position].sub_category,
                             categoryList[position].startColor,
@@ -68,7 +68,7 @@ class CategoryAdapter(
                 } else {
                     if (selectFilterFragment == null) {
                         (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
-                        (context as DashboardActivity).addFragment(
+                        (context as DashboardActivity).addFragmentCategory(
                             SelectFilterFragment.getInstance(
                                 categoryList[position].sub_category,
                                 categoryList[position].startColor,

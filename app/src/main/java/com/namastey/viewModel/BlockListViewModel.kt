@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.BlockUserListBean
 import com.namastey.networking.NetworkService
@@ -41,6 +42,28 @@ class BlockListViewModel constructor(
         }
     }
 
+    fun blockUser(userId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (blockListView.isInternetAvailable()) {
+                    networkService.requestToBlockUser(userId,0).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            blockListView.onSuccessBlockUser(appResponse.message)
+                        else
+                            blockListView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    blockListView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                blockListView.onHandleException(t)
+            }
+        }
+    }
 
     fun onDestroy() {
         if (::job.isInitialized)

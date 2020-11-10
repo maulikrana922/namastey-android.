@@ -231,6 +231,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowUserAsync(followingUserId, isFollow).await()
         }
+    // Temp set
+    suspend fun requestToFollowUserProfile(followingUserId: Long, isFollow: Int): AppResponse<ProfileBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToFollowUserProfileAsync(followingUserId, isFollow).await()
+        }
 
     suspend fun requestToRemoveFollowUser(followersUserId: Long, isFollow: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {

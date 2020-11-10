@@ -223,6 +223,7 @@
             android:drawableTop="@drawable/ic_share_with_frd"
             android:drawablePadding="@dimen/_5sdp"
             android:gravity="center"
+            android:onClick="onClickShare"
             android:text="@string/share_with_friends"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"

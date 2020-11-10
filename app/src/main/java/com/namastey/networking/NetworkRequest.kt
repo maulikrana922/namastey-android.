@@ -185,6 +185,13 @@ interface NetworkRequest {
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
+    @POST(Constants.FOLLOW)
+    fun requestToFollowUserProfileAsync(
+        @Field(Constants.FOLLOWING_USER_ID) followingUserId: Long,
+        @Field(Constants.IS_FOLLOWING) isFollow: Int
+    ): Deferred<AppResponse<ProfileBean>>
+
+    @FormUrlEncoded
     @POST(Constants.REMOVE_FOLLOWERS)
     fun requestToRemoveFollowUserAsync(
         @Field(Constants.FOLLOWERS_USER_ID) followersUserId: Long,
