@@ -162,6 +162,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
 

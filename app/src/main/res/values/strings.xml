@@ -268,10 +268,12 @@
 
     <!--    Edit profile -->
     <string name="edit_profile">Edit Profile</string>
+    <string name="edit_album">Edit Album</string>
 
     <!--    album video listing -->
     <string name="up_next">Up next</string>
     <string name="posts">Posts</string>
+    <string name="edit">Edit</string>
 
     <!-- matches screen  -->
     <string name="inbox">Inbox</string>

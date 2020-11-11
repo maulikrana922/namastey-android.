@@ -44,6 +44,8 @@ class CategoryAdapter(
                 )
             )
             mainCategoryView.alpha = 0.6f
+            tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_up, 0)
+
 
             mainCategoryView.setOnClickListener {
                 val selectFilterFragment =
@@ -54,6 +56,7 @@ class CategoryAdapter(
                 notifyItemChanged(clickPosition)
                 if (clickPosition != position) {
                     mainCategoryView.alpha = 1f
+                    tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_white, 0);
                     clickPosition = position
                     (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
                     (context as DashboardActivity).addFragmentCategory(

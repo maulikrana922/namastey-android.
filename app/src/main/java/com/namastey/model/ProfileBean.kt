@@ -36,6 +36,7 @@ class ProfileBean() : Parcelable {
     var interest: ArrayList<InterestBean> = ArrayList()
     var albums: ArrayList<AlbumBean> = ArrayList()
     var age: Int = 0
+    var is_like: Int = 0
 
     constructor(parcel: Parcel) : this() {
         user_id = parcel.readLong()
@@ -63,6 +64,7 @@ class ProfileBean() : Parcelable {
         interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()
         albums = parcel.createTypedArrayList(AlbumBean) ?: ArrayList()
         age = parcel.readInt() ?: 0
+        is_like = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -91,6 +93,7 @@ class ProfileBean() : Parcelable {
         parcel.writeTypedList(interest)
         parcel.writeTypedList(albums)
         parcel.writeInt(age)
+        parcel.writeInt(is_like)
     }
 
     override fun describeContents(): Int {

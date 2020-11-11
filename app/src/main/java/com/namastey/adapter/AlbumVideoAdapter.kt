@@ -70,6 +70,11 @@ class AlbumVideoAdapter(
             else
                 viewDetailsVideo.visibility = View.GONE
 
+            if (sessionManager.getUserId() == videoBean.user_id)
+                tvFeedLike.text = activity.getString(R.string.edit)
+            else
+                tvFeedLike.text = activity.getString(R.string.like)
+
             tvFeedDesc.text = videoBean.description
             tvFeedView.text = videoBean.viewers.toString()
             tvCommentFeed.text = videoBean.comments.toString().plus(" ")

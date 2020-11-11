@@ -127,7 +127,7 @@ class AlbumDetailAdapter(
                 }
             }
             ivVideoImage.setOnClickListener {
-                if (!fromEdit) {
+//                if (!fromEdit) {
                     val intent = Intent(activity, AlbumVideoActivity::class.java)
                     intent.putExtra(Constants.VIDEO_LIST, videoList)
                     intent.putExtra("position", position)
@@ -136,7 +136,7 @@ class AlbumDetailAdapter(
                         (activity as FilterActivity).openActivity(intent)
                     else
                         (activity as AlbumDetailActivity).openActivity(intent)
-                }
+//                }
             }
 
         }

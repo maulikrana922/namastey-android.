@@ -48,7 +48,7 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvAlbumTitle"
                 style="@style/tvTitleStyle"
-                android:text="@string/edit_profile"
+                android:text="@string/edit_album"
                 app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
                 app:layout_constraintEnd_toStartOf="@id/ivMore"
                 app:layout_constraintStart_toEndOf="@id/ivAlbumDetailBack"
