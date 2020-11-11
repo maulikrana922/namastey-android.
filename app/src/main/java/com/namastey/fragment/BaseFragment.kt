@@ -61,6 +61,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as DashboardActivity).showMsg(msgId)
         else if (activity != null && activity!! is FilterActivity)
             (activity!! as FilterActivity).showMsg(msgId)
+        else if (activity != null && activity!! is MatchesActivity)
+            (activity!! as MatchesActivity).showMsg(msgId)
+        else if (activity != null && activity!! is ChatActivity)
+            (activity!! as ChatActivity).showMsg(msgId)
+        else if (activity != null && activity!! is MatchesScreenActivity)
+            (activity!! as MatchesScreenActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -86,6 +92,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as DashboardActivity).showMsg(msg)
         else if (activity != null && activity!! is FilterActivity)
             (activity!! as FilterActivity).showMsg(msg)
+        else if (activity != null && activity!! is MatchesActivity)
+            (activity!! as MatchesActivity).showMsg(msg)
+        else if (activity != null && activity!! is ChatActivity)
+            (activity!! as ChatActivity).showMsg(msg)
+        else if (activity != null && activity!! is MatchesScreenActivity)
+            (activity!! as MatchesScreenActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -111,6 +123,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as DashboardActivity).hideKeyboard()
         else if (activity != null && activity!! is FilterActivity)
             (activity!! as FilterActivity).hideKeyboard()
+        else if (activity != null && activity!! is MatchesActivity)
+            (activity!! as MatchesActivity).hideKeyboard()
+        else if (activity != null && activity!! is ChatActivity)
+            (activity!! as ChatActivity).hideKeyboard()
+        else if (activity != null && activity!! is MatchesScreenActivity)
+            (activity!! as MatchesScreenActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -140,6 +158,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as DashboardActivity).onFailed(msg,error)
         else if (activity != null && activity!! is FilterActivity)
             (activity!! as FilterActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is MatchesActivity)
+            (activity!! as MatchesActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is ChatActivity)
+            (activity!! as ChatActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is MatchesScreenActivity)
+            (activity!! as MatchesScreenActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -165,6 +189,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as DashboardActivity).onHandleException(e)
         else if (activity != null && activity!! is FilterActivity)
             (activity!! as FilterActivity).onHandleException(e)
+        else if (activity != null && activity!! is MatchesActivity)
+            (activity!! as MatchesActivity).onHandleException(e)
+        else if (activity != null && activity!! is ChatActivity)
+            (activity!! as ChatActivity).onHandleException(e)
+        else if (activity != null && activity!! is MatchesScreenActivity)
+            (activity!! as MatchesScreenActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -181,6 +211,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is AccountSettingsActivity -> (activity!! as AccountSettingsActivity).isInternetAvailable()
                 activity!! is DashboardActivity -> (activity!! as DashboardActivity).isInternetAvailable()
                 activity!! is FilterActivity -> (activity!! as FilterActivity).isInternetAvailable()
+                activity!! is MatchesActivity -> (activity!! as MatchesActivity).isInternetAvailable()
+                activity!! is ChatActivity -> (activity!! as ChatActivity).isInternetAvailable()
+                activity!! is MatchesScreenActivity -> (activity!! as MatchesScreenActivity).isInternetAvailable()
                 else -> false
             }
         } else false

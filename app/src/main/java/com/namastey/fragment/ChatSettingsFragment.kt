@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
@@ -14,6 +15,7 @@ import com.namastey.uiView.ChatBasicView
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.viewModel.ChatViewModel
+import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.fragment_chat_settings.*
 import javax.inject.Inject
@@ -26,6 +28,7 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     private lateinit var chatViewModel: ChatViewModel
     private lateinit var layoutView: View
     private var matchesListBean: MatchesListBean? = null
+    private lateinit var bottomSheetDialogReport: BottomSheetDialog
 
     override fun getViewModel() = chatViewModel
 
@@ -111,12 +114,42 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnAlertOk.id -> {
-                        chatViewModel.reportUser(matchesListBean!!.id, "")
+                        // chatViewModel.reportUser(matchesListBean!!.id, "")
                         dismiss()
+                        openReportBottomSheet()
                     }
                 }
             }
         }.show()
+    }
+
+    private fun openReportBottomSheet() {
+        bottomSheetDialogReport = BottomSheetDialog(requireContext(), R.style.dialogStyle)
+        bottomSheetDialogReport.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_report,
+                null
+            )
+        )
+        bottomSheetDialogReport.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogReport.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogReport.setCancelable(true)
+
+        bottomSheetDialogReport.tvReportCancel.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+        }
+
+        bottomSheetDialogReport.tvReportSpam.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_spam))
+        }
+
+        bottomSheetDialogReport.tvReportInappropriate.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_inappropriate))
+        }
+
+        bottomSheetDialogReport.show()
     }
 
     private fun dialogMatchDeleteUser() {
@@ -150,6 +183,7 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
                 dismiss()
             }
         }.show()
+        // bottomSheetDialogReport.dismiss()
     }
 
     override fun onSuccessBlockUser(msg: String) {
@@ -182,5 +216,4 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         chatViewModel.onDestroy()
         super.onDestroy()
     }
-
 }

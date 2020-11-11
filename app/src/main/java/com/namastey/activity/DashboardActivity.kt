@@ -335,45 +335,46 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         bottomSheetDialogShare.show()
     }
-//    fun download(link: String, path: String) {
-//        URL(link).openStream().use { input ->
-//            FileOutputStream(File(path)).use { output ->
-//                input.copyTo(output)
-//            }
-//        }
-//    }
-//
-//    fun downloadFile(uRl: String) {
-//        val direct = File(getExternalFilesDir(null), "/namastey")
-//
-//        if (!direct.exists()) {
-//            direct.mkdirs()
-//        }
-//
-//        val mgr = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-//
-//        val downloadUri = Uri.parse(uRl)
-//        val request = DownloadManager.Request(
-//            downloadUri
-//        )
-////    Environment.getExternalStorageDirectory()
-////        .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
-//        request.setAllowedNetworkTypes(
-//            DownloadManager.Request.NETWORK_WIFI or
-//                    DownloadManager.Request.NETWORK_MOBILE
-//        )
-//            .setAllowedOverRoaming(false).setTitle("namastey") //Download Manager Title
-//            .setDescription("Downloading...") //Download Manager description
-////            .setDestinationUri(Uri.parse("file://" + Environment.DIRECTORY_PICTURES + "/myfile.mp4"));
-//
-//            .setDestinationInExternalPublicDir(
-//                Constants.FILE_PATH,
-//                "temp5.mp4"
-//            )
-//
-//        mgr.enqueue(request)
-//
-//    }
+
+   /* fun download(link: String, path: String) {
+        URL(link).openStream().use { input ->
+            FileOutputStream(File(path)).use { output ->
+                input.copyTo(output)
+            }
+        }
+    }
+
+    fun downloadFile(uRl: String) {
+        val direct = File(getExternalFilesDir(null), "/namastey")
+
+        if (!direct.exists()) {
+            direct.mkdirs()
+        }
+
+        val mgr = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+        val downloadUri = Uri.parse(uRl)
+        val request = DownloadManager.Request(
+            downloadUri
+        )
+//    Environment.getExternalStorageDirectory()
+//        .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+        request.setAllowedNetworkTypes(
+            DownloadManager.Request.NETWORK_WIFI or
+                    DownloadManager.Request.NETWORK_MOBILE
+        )
+            .setAllowedOverRoaming(false).setTitle("namastey") //Download Manager Title
+            .setDescription("Downloading...") //Download Manager description
+//            .setDestinationUri(Uri.parse("file://" + Environment.DIRECTORY_PICTURES + "/myfile.mp4"));
+
+            .setDestinationInExternalPublicDir(
+                Constants.FILE_PATH,
+                "temp5.mp4"
+            )
+
+        mgr.enqueue(request)
+
+    }*/
 
 
     /**
@@ -487,7 +488,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun getLayoutId() = R.layout.activity_dashboard
 
     override fun getBindingVariable() = BR.viewModel
-
 
     //    Temp open this activity
     fun onClickUser(view: View) {

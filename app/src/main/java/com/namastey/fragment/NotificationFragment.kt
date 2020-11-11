@@ -41,6 +41,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
+    private lateinit var tvAllActivityTitle: TextView
     private lateinit var llAllActivity: LinearLayout
     private lateinit var llLikes: LinearLayout
     private lateinit var llComments: LinearLayout
@@ -93,8 +94,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private fun initUI() {
 
         notificationViewModel.getFollowRequestList()
-        isActivityList = 0
-        notificationViewModel.getActivityList(isActivityList)
+        /* isActivityList = 0
+         notificationViewModel.getActivityList(isActivityList)*/
+
+        setSelectedApi()
 
         /* notificationAdapter = NotificationAdapter(requireActivity())
          rvNotification.adapter = notificationAdapter*/
@@ -124,7 +127,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         // val dialog: AlertDialog = builder.create()
         dialog = builder.create()
-
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
 
@@ -136,6 +138,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun initDialogViews(customLayout: View) {
+        tvAllActivityTitle = customLayout.findViewById(R.id.tvAllActivityTitle)
         llAllActivity = customLayout.findViewById(R.id.llAllActivity)
         llLikes = customLayout.findViewById(R.id.llLikes)
         llComments = customLayout.findViewById(R.id.llComments)
@@ -169,6 +172,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+            sessionManager.setStringValue(resources.getString(R.string.all_activity), Constants.KEY_ALL_ACTIVITY_TITLE)
+            tvAllActivityTitle.text = resources.getString(R.string.all_activity)
+            tvAllActivityMain.text = resources.getString(R.string.all_activity)
             //dialog.dismiss()
         }
         llLikes.setOnClickListener {
@@ -178,6 +184,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 1
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+            sessionManager.setStringValue(resources.getString(R.string.likes), Constants.KEY_ALL_ACTIVITY_TITLE)
+            tvAllActivityTitle.text = resources.getString(R.string.likes)
+            tvAllActivityMain.text = resources.getString(R.string.likes)
             // dialog.dismiss()
         }
         llComments.setOnClickListener {
@@ -187,6 +196,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 2
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+            sessionManager.setStringValue(resources.getString(R.string.comments), Constants.KEY_ALL_ACTIVITY_TITLE)
+            tvAllActivityTitle.text = resources.getString(R.string.comments)
+            tvAllActivityMain.text = resources.getString(R.string.comments)
             // dialog.dismiss()
         }
         llFollowers.setOnClickListener {
@@ -196,6 +208,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 3
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+            sessionManager.setStringValue(resources.getString(R.string.followers), Constants.KEY_ALL_ACTIVITY_TITLE)
+            tvAllActivityTitle.text = resources.getString(R.string.followers)
+            tvAllActivityMain.text = resources.getString(R.string.followers)
             //     dialog.dismiss()
         }
         llMentions.setOnClickListener {
@@ -205,37 +220,23 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 4
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+            sessionManager.setStringValue(resources.getString(R.string.mentions), Constants.KEY_ALL_ACTIVITY_TITLE)
+            tvAllActivityTitle.text = resources.getString(R.string.mentions)
+            tvAllActivityMain.text = resources.getString(R.string.mentions)
             // dialog.dismiss()
         }
     }
 
     private fun setSelectedApi() {
-        when {
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 0 -> {
-                hideDoneImageView(ivAllActivitySelected)
-                setSelectedTextColor(tvAllActivity)
-                setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 1 -> {
-                hideDoneImageView(ivLikesSelected)
-                setSelectedTextColor(tvLikes)
-                setImageViewColor(ivLikes, R.drawable.heart)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 2 -> {
-                hideDoneImageView(ivCommentsSelected)
-                setSelectedTextColor(tvComments)
-                setImageViewColor(ivComments, R.drawable.ic_comment)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 3 -> {
-                hideDoneImageView(ivFollowersSelected)
-                setSelectedTextColor(tvFollowers)
-                setImageViewColor(ivFollowers, R.drawable.ic_all_activity) // Todo: Change icon
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 4 -> {
-                hideDoneImageView(ivMentionsSelected)
-                setSelectedTextColor(tvMentions)
-                setImageViewColor(ivMentions, R.drawable.ic_mention)
-            }
+        if (sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) != 0) {
+            val allActivity = sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)
+            notificationViewModel.getActivityList(allActivity)
+
+            val allActivityTitle = sessionManager.getStringValue(Constants.KEY_ALL_ACTIVITY_TITLE)
+            //tvAllActivityTitle.text = allActivityTitle
+            tvAllActivityMain.text = allActivityTitle
+        } else {
+            notificationViewModel.getActivityList(0)
         }
     }
 
@@ -386,9 +387,27 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         if (dialog.isShowing) {
             dialog.dismiss()
         }
-        notificationAdapter = NotificationAdapter(requireActivity(), activityList, isActivityList)
-        rvNotification.adapter = notificationAdapter
-        Log.e("NotificationFragment", "onSuccessActivityList: \t data: ${activityList.size}")
+        if (activityList.size != 0) {
+            rvNotification.visibility = View.VISIBLE
+            tvNoData.visibility = View.GONE
+            notificationAdapter =
+                NotificationAdapter(requireActivity(), activityList, isActivityList)
+            rvNotification.adapter = notificationAdapter
+            Log.e("NotificationFragment", "onSuccessActivityList: \t data: ${activityList.size}")
+        } else {
+            rvNotification.visibility = View.GONE
+            tvNoData.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onSuccess(msg: String) {
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+        //showMsg(msg)
+        rvNotification.visibility = View.GONE
+        tvNoData.visibility = View.VISIBLE
+        tvNoData.text = msg
     }
 
     override fun onDestroy() {

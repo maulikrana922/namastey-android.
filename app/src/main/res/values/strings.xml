@@ -347,6 +347,7 @@
     <!--Notification-->
     <string name="channel_id">default</string>
     <string name="notifiy">Namastey Notify</string>
+    <string name="no_activity">No Activity</string>
 
     <!--Chat Screen-->
     <string name="mute_notification">Mute Notification</string>
@@ -357,5 +358,7 @@
     <string name="enter_message">Message…</string>
     <string name="readable_content">Readable content</string>
     <string name="msg_delete_matches">Do you wish to delete match?</string>
+    <string name="it_s_spam">It\'s Spam</string>
+    <string name="it_s_inappropriate">It\'s inappropriate</string>
 
 </resources>
