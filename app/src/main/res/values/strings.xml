@@ -222,6 +222,7 @@
     <string name="spotify">Spotify</string>
     <string name="linkedin">Linkedin</string>
     <string name="profile_tag">Profile tag</string>
+    <string name="profile_tag_msg">Select the topics you are interested in and match with like minded people</string>
 
     <!--    create album screen-->
     <string name="create_albums">Create Albums</string>

@@ -351,6 +351,17 @@
         app:typeface="MULI_SEMIBOLD" />
 
     <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfileTagMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/profile_tag_msg"
+        app:layout_constraintEnd_toStartOf="@id/ivAddLink"
+        app:layout_constraintStart_toStartOf="@id/tvAddLinks"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileTag"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
         android:id="@+id/tvCountProfileTag"
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
@@ -365,11 +376,11 @@
         android:id="@+id/llProfileTag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="@id/llLinkLayout"
         app:layout_constraintStart_toStartOf="@id/tvProfileTag"
-        app:layout_constraintTop_toBottomOf="@id/tvProfileTag" />
+        app:layout_constraintTop_toBottomOf="@id/tvProfileTagMessage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
