@@ -130,7 +130,7 @@ class AlbumVideoAdapter(
                 onVideoClick.onUpnextClick(position)
             }
             tvCommentFeed.setOnClickListener {
-                if (!sessionManager.isGuestUser())
+               // if (!sessionManager.isGuestUser())
                     onVideoClick.onCommentClick(videoBean.id)
             }
             tvFeedShare.setOnClickListener {

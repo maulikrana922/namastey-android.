@@ -359,6 +359,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         albumViewModel.getCommentList(postId)
 
+        bottomSheetDialogComment.edtComment.setOnClickListener {
+            if (sessionManager.isGuestUser()) {
+                bottomSheetDialogComment.dismiss()
+                addFragment(
+                    SignUpFragment.getInstance(
+                        true
+                    ),
+                    Constants.SIGNUP_FRAGMENT
+                )
+            }
+        }
+
         bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
             if (sessionManager.isGuestUser()) {
                 bottomSheetDialogComment.dismiss()
