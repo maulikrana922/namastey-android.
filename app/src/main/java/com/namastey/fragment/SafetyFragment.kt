@@ -12,6 +12,7 @@ import com.namastey.databinding.FragmentSafetyBinding
 import com.namastey.model.SafetyBean
 import com.namastey.uiView.SafetyView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SafetyViewModel
 import kotlinx.android.synthetic.main.fragment_safety.*
 import javax.inject.Inject
@@ -20,6 +21,9 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentSafetyBinding: FragmentSafetyBinding
     private lateinit var safetyViewModel: SafetyViewModel
     private lateinit var layoutView: View
@@ -47,6 +51,8 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         setupViewModel()
 
         initData()
+
+        setFromSessionManager()
     }
 
     private fun setupViewModel() {
@@ -98,13 +104,23 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         }
     }
 
+
+    private fun setFromSessionManager() {
+        switchAllowYourVideoToDownload.isChecked =
+            sessionManager.getIntegerValue(Constants.KEY_IS_DOWNLOAD_VIDEO) == 1
+    }
+
+
     override fun onResume() {
         super.onResume()
         (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.safety))
     }
 
     override fun onSuccessResponse(safetyBean: SafetyBean) {
-        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t $safetyBean")
+        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t ${safetyBean.is_download}")
+        sessionManager.setIntegerValue(
+            safetyBean.is_download, Constants.KEY_IS_DOWNLOAD_VIDEO
+        )
     }
 
     override fun onDestroy() {

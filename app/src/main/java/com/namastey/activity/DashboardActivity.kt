@@ -64,6 +64,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -336,46 +338,45 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.show()
     }
 
-   /* fun download(link: String, path: String) {
-        URL(link).openStream().use { input ->
-            FileOutputStream(File(path)).use { output ->
-                input.copyTo(output)
-            }
-        }
-    }
+    /* fun download(link: String, path: String) {
+         URL(link).openStream().use { input ->
+             FileOutputStream(File(path)).use { output ->
+                 input.copyTo(output)
+             }
+         }
+     }
 
-    fun downloadFile(uRl: String) {
-        val direct = File(getExternalFilesDir(null), "/namastey")
+     fun downloadFile(uRl: String) {
+         val direct = File(getExternalFilesDir(null), "/namastey")
 
-        if (!direct.exists()) {
-            direct.mkdirs()
-        }
+         if (!direct.exists()) {
+             direct.mkdirs()
+         }
 
-        val mgr = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+         val mgr = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
-        val downloadUri = Uri.parse(uRl)
-        val request = DownloadManager.Request(
-            downloadUri
-        )
-//    Environment.getExternalStorageDirectory()
-//        .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
-        request.setAllowedNetworkTypes(
-            DownloadManager.Request.NETWORK_WIFI or
-                    DownloadManager.Request.NETWORK_MOBILE
-        )
-            .setAllowedOverRoaming(false).setTitle("namastey") //Download Manager Title
-            .setDescription("Downloading...") //Download Manager description
-//            .setDestinationUri(Uri.parse("file://" + Environment.DIRECTORY_PICTURES + "/myfile.mp4"));
+         val downloadUri = Uri.parse(uRl)
+         val request = DownloadManager.Request(
+             downloadUri
+         )
+ //    Environment.getExternalStorageDirectory()
+ //        .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+         request.setAllowedNetworkTypes(
+             DownloadManager.Request.NETWORK_WIFI or
+                     DownloadManager.Request.NETWORK_MOBILE
+         )
+             .setAllowedOverRoaming(false).setTitle("namastey") //Download Manager Title
+             .setDescription("Downloading...") //Download Manager description
+ //            .setDestinationUri(Uri.parse("file://" + Environment.DIRECTORY_PICTURES + "/myfile.mp4"));
 
-            .setDestinationInExternalPublicDir(
-                Constants.FILE_PATH,
-                "temp5.mp4"
-            )
+             .setDestinationInExternalPublicDir(
+                 Constants.FILE_PATH,
+                 "temp5.mp4"
+             )
 
-        mgr.enqueue(request)
+         mgr.enqueue(request)
 
-    }*/
-
+     }*/
 
     /**
      * Display dialog of report user
@@ -450,7 +451,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 when (id) {
                     btnAlertOk.id -> {
                         bottomSheetDialogShare.dismiss()
-                        dashboardViewModel.blockUser(dashboardBean.user_id,1)
+                        dashboardViewModel.blockUser(dashboardBean.user_id, 1)
                     }
                 }
             }
@@ -489,7 +490,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun getBindingVariable() = BR.viewModel
 
-    //    Temp open this activity
+    // Temp open this activity
     fun onClickUser(view: View) {
         openActivity(this, ProfileActivity())
     }
@@ -740,17 +741,33 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun addCommentsTextChangeListener() {
         bottomSheetDialogComment.edtComment.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length > 2) {
-                    dashboardViewModel.getMentionList(s.toString())
-                }
+                /* if (s.length > 2) {
+                     dashboardViewModel.getMentionList(s.toString())
+                 }
 
-                if (s.length == 0) {
-                    bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+                 if (s.length == 0) {
+                     bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+                 }*/
+            }
+
+            /* override fun afterTextChanged(editable: Editable?) {
+             }*/
+
+            override fun afterTextChanged(editable: Editable) {
+                val text = editable.toString()
+                val p: Pattern = Pattern.compile("[@][a-zA-Z0-9-.]+")
+                val m: Matcher = p.matcher(text)
+                val cursorPosition: Int = bottomSheetDialogComment.edtComment.selectionStart
+                while (m.find()) {
+                    if (cursorPosition >= m.start() && cursorPosition <= m.end()) {
+                        val s = m.start() + 1
+                        val e = m.end()
+                        dashboardViewModel.getMentionList(text.substring(s, e))
+                    }
                 }
             }
         })

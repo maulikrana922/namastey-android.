@@ -70,33 +70,33 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
         tvEveryone.setOnClickListener {
             showSelectedImage(ivEveryoneDone)
             if (fromSafetyValue == 1) {             //For who_can_send_you_direct_msg
-                safetyViewModel.seeYourFollowers(0)
+                safetyViewModel.whoCanSendYouDirectMessage(0)
             } else if (fromSafetyValue == 2) {      //who_can_see_your_followers
-
+                safetyViewModel.seeYourFollowers(0)
             } else if (fromSafetyValue == 3) {      //who_can_comments_on_your_video
-
+                safetyViewModel.whoCanCommentYourVideo(0)
             }
         }
 
         tvFriend.setOnClickListener {
             showSelectedImage(ivFriendDone)
             if (fromSafetyValue == 1) {             //For who_can_send_you_direct_msg
-                safetyViewModel.seeYourFollowers(1)
+                safetyViewModel.whoCanSendYouDirectMessage(1)
             } else if (fromSafetyValue == 2) {      //who_can_see_your_followers
-
+                safetyViewModel.seeYourFollowers(1)
             } else if (fromSafetyValue == 3) {      //who_can_comments_on_your_video
-
+                safetyViewModel.whoCanCommentYourVideo(1)
             }
         }
 
         tvNoOne.setOnClickListener {
             showSelectedImage(ivNoOneDone)
             if (fromSafetyValue == 1) {             //For who_can_send_you_direct_msg
-                safetyViewModel.seeYourFollowers(2)
+                safetyViewModel.whoCanSendYouDirectMessage(1)
             } else if (fromSafetyValue == 2) {      //who_can_see_your_followers
-
+                safetyViewModel.seeYourFollowers(2)
             } else if (fromSafetyValue == 3) {      //who_can_comments_on_your_video
-
+                safetyViewModel.whoCanCommentYourVideo(2)
             }
         }
     }
@@ -161,8 +161,16 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
         super.onDestroy()
     }
 
-    override fun onSuccessResponse(safetyBean: SafetyBean) {
+    override fun onSuccessYourFollowerResponse(safetyBean: SafetyBean) {
         Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.is_followers}")
+    }
+
+    override fun onSuccessWhoCanCommentYourVideoResponse(safetyBean: SafetyBean) {
+        Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_comment}")
+    }
+
+    override fun onSuccessWhoCanSendYouDirectMessageResponse(safetyBean: SafetyBean) {
+        Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_send_message}")
     }
 
 }

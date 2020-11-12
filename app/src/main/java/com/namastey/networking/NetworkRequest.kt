@@ -310,5 +310,22 @@ interface NetworkRequest {
         @Field(Constants.IS_FILTER) isFilter: Int
     ): Deferred<AppResponse<ArrayList<ActivityListBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.SUGGEST_YOUR_ACCOUNT_ON_OFF)
+    fun requestToSuggestYourAccountOnOffAsync(
+        @Field(Constants.IS_SUGGEST) isSuggest: Int
+    ): Deferred<AppResponse<SafetyBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.WHO_CAN_COMMENT_YOUR_VIDEO)
+    fun requestToWhoCanCommentYourVideoAsync(
+        @Field(Constants.WHO_CAN_COMMENT) whoCanComment: Int
+    ): Deferred<AppResponse<SafetyBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.WHO_CAN_SEND_YOU_DIRECT_MESSAGE)
+    fun requestToWhoCanSendYouDirectMessageAsync(
+        @Field(Constants.WHO_CAN_SEND_DIRECT_MESSAGE) whoCanSendDirectMessage: Int
+    ): Deferred<AppResponse<SafetyBean>>
 
 }

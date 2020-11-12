@@ -351,4 +351,24 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToPostActivityListAsync(isFilter).await()
         }
 
+
+    suspend fun requestToSuggestYourAccountOnOff(isSuggest: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToSuggestYourAccountOnOffAsync(isSuggest).await()
+        }
+
+    suspend fun requestToWhoCanCommentYourVideo(whoCanComment: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToWhoCanCommentYourVideoAsync(whoCanComment).await()
+        }
+
+
+    suspend fun requestToWhoCanSendYouDirectMessageVideo(whoCanSendDirectMessage: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToWhoCanSendYouDirectMessageAsync(whoCanSendDirectMessage).await()
+        }
+
+
+
+
 }
