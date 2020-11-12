@@ -285,6 +285,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         onBackPressed()
     }
 
+    override fun onPostEdit(position: Int, videoBean: VideoBean) {
+//        val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
+//        intent.putExtra("albumId", videoBean.album_id)
+//        intent.putExtra("editPost", true)
+//        intent.putExtra("albumBean", videoBean.album_id)
+//        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+    }
     override fun onItemClick(value: Long, position: Int) {
         viewpagerAlbum.currentItem = position
     }

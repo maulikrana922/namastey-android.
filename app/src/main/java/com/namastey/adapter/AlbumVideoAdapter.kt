@@ -114,10 +114,7 @@ class AlbumVideoAdapter(
 
             tvFeedLike.setOnClickListener {
                 if (sessionManager.getUserId() == videoBean.user_id) {
-//                    val intent = Intent(activity, PostVideoActivity::class.java)
-//                    intent.putExtra("albumId", videoBean.album_id)
-//                    intent.putExtra("albumBean", albumBean)
-//                    openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+                    onVideoClick.onPostEdit(position,videoBean)
                 } else {
 
                 }

@@ -9,5 +9,5 @@ interface OnVideoClick {
     fun onCommentClick(postId: Long)
     fun onShareClick(videoBean: VideoBean)
     fun onPostViewer(postId: Long)
-
+    fun onPostEdit(position: Int,videoBean: VideoBean)
 }

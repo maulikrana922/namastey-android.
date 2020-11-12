@@ -112,6 +112,26 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_mentions,
+                Constants.KEY_IS_MENTIONS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_matches, Constants.KEY_IS_MATCHES
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_follow,
+                Constants.KEY_IS_NEW_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_comment,
+                Constants.KEY_IS_COMMENTS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_suggest,
+                Constants.KEY_IS_VIDEO_SUGGESTIONS
+            )
+
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE
             ivProfileCamera.visibility = View.VISIBLE

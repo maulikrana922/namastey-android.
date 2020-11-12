@@ -37,6 +37,8 @@ class ProfileBean() : Parcelable {
     var albums: ArrayList<AlbumBean> = ArrayList()
     var age: Int = 0
     var is_like: Int = 0
+    @SerializedName("notification_tage")
+    var notificationBean : ArrayList<NotificationOnOffBean> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
         user_id = parcel.readLong()
@@ -65,6 +67,7 @@ class ProfileBean() : Parcelable {
         albums = parcel.createTypedArrayList(AlbumBean) ?: ArrayList()
         age = parcel.readInt() ?: 0
         is_like = parcel.readInt() ?: 0
+        notificationBean = parcel.createTypedArrayList(NotificationOnOffBean) ?: ArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -94,6 +97,7 @@ class ProfileBean() : Parcelable {
         parcel.writeTypedList(albums)
         parcel.writeInt(age)
         parcel.writeInt(is_like)
+        parcel.writeTypedList(notificationBean)
     }
 
     override fun describeContents(): Int {
