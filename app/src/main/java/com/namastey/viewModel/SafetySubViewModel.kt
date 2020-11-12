@@ -1,6 +1,5 @@
 package com.namastey.viewModel
 
-import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.SafetyBean
 import com.namastey.networking.NetworkService
@@ -26,20 +25,55 @@ class SafetySubViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (safetySubView.isInternetAvailable()) {
-                    networkService.requestToSeeYourFollowers(isFollowers)
-                        .let { appResponse: AppResponse<SafetyBean> ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK) {
-                                safetySubView.onSuccessResponse(appResponse.data!!)
-                            } else {
-                                safetySubView.onFailed(appResponse.message, appResponse.error)
-                            }
+                networkService.requestToSeeYourFollowers(isFollowers)
+                    .let { appResponse: AppResponse<SafetyBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            safetySubView.onSuccessYourFollowerResponse(appResponse.data!!)
+                        } else {
+                            safetySubView.onFailed(appResponse.message, appResponse.error)
                         }
-                } else {
-                    setIsLoading(false)
-                    safetySubView.showMsg(R.string.no_internet)
-                }
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                safetySubView.onHandleException(exception)
+            }
+        }
+    }
+
+     fun whoCanCommentYourVideo(who_can_comment: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToWhoCanCommentYourVideo(who_can_comment)
+                    .let { appResponse: AppResponse<SafetyBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            safetySubView.onSuccessWhoCanCommentYourVideoResponse(appResponse.data!!)
+                        } else {
+                            safetySubView.onFailed(appResponse.message, appResponse.error)
+                        }
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                safetySubView.onHandleException(exception)
+            }
+        }
+    }
+
+     fun whoCanSendYouDirectMessage(whoCanSendDirectMessage: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToWhoCanSendYouDirectMessageVideo(whoCanSendDirectMessage)
+                    .let { appResponse: AppResponse<SafetyBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            safetySubView.onSuccessWhoCanSendYouDirectMessageResponse(appResponse.data!!)
+                        } else {
+                            safetySubView.onFailed(appResponse.message, appResponse.error)
+                        }
+                    }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 safetySubView.onHandleException(exception)

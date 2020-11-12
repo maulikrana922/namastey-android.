@@ -222,6 +222,7 @@ class SessionManager(context: Context) {
     fun getIntegerValue(key: String): Int {
         return mPrefs.getInt(key, 0)!!
     }
+
     fun setBooleanValue(value: Boolean, key: String) {
         val e = mPrefs.edit()
         e.putBoolean(key, value)

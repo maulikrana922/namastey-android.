@@ -77,6 +77,9 @@ object Constants {
     const val IS_VIDEO_DOWNLOAD = "is-video-download"
     const val WHO_CAN_SEE_YOUR_FOLLOWERS = "who-can-see-your-followers"
     const val ACTIVITY_LIST = "activity-list"
+    const val SUGGEST_YOUR_ACCOUNT_ON_OFF = "suggest-your-account-on-of"
+    const val WHO_CAN_COMMENT_YOUR_VIDEO = "who-can-comment-your-video"
+    const val WHO_CAN_SEND_YOU_DIRECT_MESSAGE = "who-can-send-you-direct-message"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -137,6 +140,7 @@ object Constants {
     const val SAFETY_FRAGMENT = "SafetyFragment"
     const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
     const val CHAT_SETTINGS_FRAGMENT = "ChatSettingsFragment"
+    const val PERSONALIZE_DATA_FRAGMENT = "PersonalizeDataFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"
@@ -165,6 +169,8 @@ object Constants {
     const val KEY_IS_VIDEO_SUGGESTIONS = "KEY_IS_VIDEO_SUGGESTIONS"
     const val KEY_ALL_ACTIVITY = "KEY_ALL_ACTIVITY"
     const val KEY_ALL_ACTIVITY_TITLE = "KEY_ALL_ACTIVITY_TITLE"
+    const val KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS = "KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS"
+    const val KEY_IS_DOWNLOAD_VIDEO = "KEY_IS_DOWNLOAD_VIDEO"
 
 
     //    field key
@@ -242,6 +248,8 @@ object Constants {
     const val IS_DOWNLOAD = "is_download"
     const val IS_FOLLOWERS = "is_followers"
     const val IS_FILTER = "is_filter"
+    const val WHO_CAN_COMMENT = "who_can_comment"
+    const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
 
 
     //    Other constants

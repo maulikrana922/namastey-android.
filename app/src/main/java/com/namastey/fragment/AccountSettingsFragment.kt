@@ -1,7 +1,11 @@
 package com.namastey.fragment
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -102,6 +106,44 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
             )
         }
 
+        tvPersonalizeData.setOnClickListener {
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.personalize_data))
+            (activity as AccountSettingsActivity).addFragment(
+                PersonalizeDataFragment.getInstance(),
+                Constants.PERSONALIZE_DATA_FRAGMENT
+            )
+        }
+
+        tvTermsConditions.setOnClickListener {
+            openUrlInBrowser()
+        }
+
+        tvPrivacyPolicy.setOnClickListener {
+            openUrlInBrowser()
+        }
+
+        tvBillingTerms.setOnClickListener {
+            openUrlInBrowser()
+        }
+    }
+
+    private fun openUrlInBrowser() {
+        val url = "http://www.google.com"  // Todo: Change url
+        /* val i = Intent(Intent.ACTION_VIEW)
+         i.data = Uri.parse(url)
+         startActivity(i)*/
+
+        try {
+            val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(myIntent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(
+                requireContext(),
+                "No application can handle this request. Please install a web browser or check your URL.",
+                Toast.LENGTH_LONG
+            ).show()
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
