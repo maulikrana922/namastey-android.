@@ -741,6 +741,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
         }
 
+        bottomSheetDialogComment.edtComment.setOnClickListener {
+            if (sessionManager.isGuestUser()) {
+                bottomSheetDialogComment.dismiss()
+                addFragment(
+                    SignUpFragment.getInstance(
+                        true
+                    ),
+                    Constants.SIGNUP_FRAGMENT
+                )
+            }
+        }
+
         addCommentsTextChangeListener()
 
         bottomSheetDialogComment.ivCloseComment.setOnClickListener {
@@ -760,7 +772,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun addCommentsTextChangeListener() {
         bottomSheetDialogComment.edtComment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -832,8 +849,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         TODO("Not yet implemented")
     }
 
-    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
-        Log.e("DashboardActivity", "onSelectItemClick: \t userProfileType: $userProfileType")
+    override fun onSelectItemClick(
+        userId: Long,
+        position: Int,
+        userProfileType: String
+    ) {
+        Log.e(
+            "DashboardActivity",
+            "onSelectItemClick: \t userProfileType: $userProfileType"
+        )
         if (userProfileType == "1") {
             bottomSheetDialogComment.dismiss()
             addFragment(
@@ -887,7 +911,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                     return super.getSwipeDirs(recyclerView, viewHolder)
                 }
 
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDirection: Int) {
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    swipeDirection: Int
+                ) {
 
                     if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id) {
                         dashboardViewModel.deleteComment(data[viewHolder.adapterPosition].id)
