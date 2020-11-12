@@ -14,10 +14,10 @@
             type="com.namastey.viewModel.SignUpViewModel" />
     </data>
 
-   <!-- <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">-->
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4" />
+                app:layout_constraintGuide_percent="0.35" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
@@ -230,5 +230,5 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-   <!-- </ScrollView>-->
+    </androidx.core.widget.NestedScrollView>
 </layout>
