@@ -167,4 +167,8 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
 
         Log.d("User ID : ", selectUserIdList.joinToString())
     }
+
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        TODO("Not yet implemented")
+    }
 }

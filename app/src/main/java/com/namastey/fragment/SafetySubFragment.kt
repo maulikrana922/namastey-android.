@@ -12,6 +12,8 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSafetySubBinding
 import com.namastey.model.SafetyBean
 import com.namastey.uiView.SafetySubView
+import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SafetySubViewModel
 import kotlinx.android.synthetic.main.fragment_safety_sub.*
 import javax.inject.Inject
@@ -20,6 +22,9 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentSafetySubBinding: FragmentSafetySubBinding
     private lateinit var safetyViewModel: SafetySubViewModel
     private lateinit var layoutView: View
@@ -64,6 +69,8 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
     private fun initData() {
         Log.e("SafetySebFragment", "fromSafetyValue: $fromSafetyValue")
         setSelected()
+
+        setFromSessionManager()
     }
 
     private fun setSelected() {
@@ -92,12 +99,58 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
         tvNoOne.setOnClickListener {
             showSelectedImage(ivNoOneDone)
             if (fromSafetyValue == 1) {             //For who_can_send_you_direct_msg
-                safetyViewModel.whoCanSendYouDirectMessage(1)
+                safetyViewModel.whoCanSendYouDirectMessage(2)
             } else if (fromSafetyValue == 2) {      //who_can_see_your_followers
                 safetyViewModel.seeYourFollowers(2)
             } else if (fromSafetyValue == 3) {      //who_can_comments_on_your_video
                 safetyViewModel.whoCanCommentYourVideo(2)
             }
+        }
+    }
+
+    private fun setFromSessionManager() {
+        if (fromSafetyValue == 1) {             //For who_can_send_you_direct_msg
+            setCanSendYouMessage()
+        } else if (fromSafetyValue == 2) {      //who_can_see_your_followers
+            setYourFollower()
+        } else if (fromSafetyValue == 3) {      //who_can_comments_on_your_video
+            setCanCommentVideos()
+        }
+    }
+
+    private fun setYourFollower() {
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 0) {
+            showSelectedImage(ivEveryoneDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 1) {
+            showSelectedImage(ivFriendDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 2) {
+            showSelectedImage(ivNoOneDone)
+        } else {
+            showSelectedImage(ivEveryoneDone)
+        }
+    }
+
+    private fun setCanCommentVideos() {
+        if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 0) {
+            showSelectedImage(ivEveryoneDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 1) {
+            showSelectedImage(ivFriendDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 2) {
+            showSelectedImage(ivNoOneDone)
+        } else {
+            showSelectedImage(ivEveryoneDone)
+        }
+    }
+
+    private fun setCanSendYouMessage() {
+        if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 0) {
+            showSelectedImage(ivEveryoneDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 1) {
+            showSelectedImage(ivFriendDone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 2) {
+            showSelectedImage(ivNoOneDone)
+        } else {
+            showSelectedImage(ivEveryoneDone)
         }
     }
 
@@ -163,14 +216,82 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
 
     override fun onSuccessYourFollowerResponse(safetyBean: SafetyBean) {
         Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.is_followers}")
+        sessionManager.setIntegerValue(safetyBean.is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
+
+        /* if (safetyBean.is_followers == 0) {
+             sessionManager.setStringValue(
+                 getString(R.string.everyone),
+                 Constants.KEY_IS_YOUR_FOLLOWERS
+             )
+         } else if (safetyBean.is_followers == 1) {
+             sessionManager.setStringValue(
+                 getString(R.string.friends),
+                 Constants.KEY_IS_YOUR_FOLLOWERS
+             )
+         } else if (safetyBean.is_followers == 2) {
+             sessionManager.setStringValue(
+                 getString(R.string.no_one),
+                 Constants.KEY_IS_YOUR_FOLLOWERS
+             )
+         }*/
     }
 
     override fun onSuccessWhoCanCommentYourVideoResponse(safetyBean: SafetyBean) {
-        Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_comment}")
+        Log.e(
+            "SafetySubFragment",
+            "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_comment}"
+        )
+
+        sessionManager.setIntegerValue(
+            safetyBean.who_can_comment,
+            Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+        )
+
+        /*  if (safetyBean.who_can_comment == 0) {
+              sessionManager.setStringValue(
+                  getString(R.string.everyone),
+                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+              )
+          } else if (safetyBean.who_can_comment == 1) {
+              sessionManager.setStringValue(
+                  getString(R.string.friends),
+                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+              )
+          } else if (safetyBean.who_can_comment == 2) {
+              sessionManager.setStringValue(
+                  getString(R.string.no_one),
+                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+              )
+          }*/
     }
 
     override fun onSuccessWhoCanSendYouDirectMessageResponse(safetyBean: SafetyBean) {
-        Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_send_message}")
+        Log.e(
+            "SafetySubFragment",
+            "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_send_message}"
+        )
+
+        sessionManager.setIntegerValue(
+            safetyBean.who_can_send_message,
+            Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+        )
+
+        /* if (safetyBean.who_can_send_message == 0) {
+             sessionManager.setStringValue(
+                 getString(R.string.everyone),
+                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+             )
+         } else if (safetyBean.who_can_send_message == 1) {
+             sessionManager.setStringValue(
+                 getString(R.string.friends),
+                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+             )
+         } else if (safetyBean.who_can_send_message == 2) {
+             sessionManager.setStringValue(
+                 getString(R.string.no_one),
+                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+             )
+         }*/
     }
 
 }

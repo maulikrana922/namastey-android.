@@ -29,7 +29,28 @@ class SafetyViewModel constructor(
                     .let { appResponse: AppResponse<SafetyBean> ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK) {
-                            safetyView.onSuccessResponse(appResponse.data!!)
+                            safetyView.onSuccessIsSuccessResponse(appResponse.data!!)
+                        } else {
+                            safetyView.onFailed(appResponse.message, appResponse.error)
+                        }
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                safetyView.onHandleException(exception)
+            }
+        }
+    }
+
+
+    fun isShareProfileSafety(isShare: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToShareProfileSafety(isShare)
+                    .let { appResponse: AppResponse<SafetyBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            safetyView.onSuccessShareProfileSafetyResponse(appResponse.data!!)
                         } else {
                             safetyView.onFailed(appResponse.message, appResponse.error)
                         }

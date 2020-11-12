@@ -328,4 +328,11 @@ interface NetworkRequest {
         @Field(Constants.WHO_CAN_SEND_DIRECT_MESSAGE) whoCanSendDirectMessage: Int
     ): Deferred<AppResponse<SafetyBean>>
 
+    @FormUrlEncoded
+    @POST(Constants.SHARE_PROFILE_SAFETY)
+    fun requestToShareProfileSafetyAsync(
+        @Field(Constants.IS_SHARE) isShare: Int
+    ): Deferred<AppResponse<SafetyBean>>
+
+
 }

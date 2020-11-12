@@ -200,6 +200,10 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         TODO("Not yet implemented")
     }
 
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        TODO("Not yet implemented")
+    }
+
     // Temp for ui
     private fun setUserList() {
         rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
