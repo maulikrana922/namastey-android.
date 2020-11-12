@@ -116,7 +116,7 @@ class AlbumVideoAdapter(
                 if (sessionManager.getUserId() == videoBean.user_id) {
                     onVideoClick.onPostEdit(position,videoBean)
                 } else {
-
+                    onVideoClick.onClickLike(position,videoBean)
                 }
             }
             mainViewHolder.setOnClickListener {

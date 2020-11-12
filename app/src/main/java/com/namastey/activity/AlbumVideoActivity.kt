@@ -303,6 +303,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 //        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
     }
 
+    override fun onClickLike(position: Int, videoBean: VideoBean) {
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }
+    }
     override fun onItemClick(value: Long, position: Int) {
         viewpagerAlbum.currentItem = position
     }
@@ -323,7 +333,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
         Log.e("AlbumVideoActivity", "onSelectItemClick: \t userProfileType: $userProfileType")
-        if (userProfileType == "1") {
+        if (userProfileType == "1" && sessionManager.isGuestUser()) {
             bottomSheetDialogComment.dismiss()
             addFragment(
                 SignUpFragment.getInstance(

@@ -858,7 +858,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             "DashboardActivity",
             "onSelectItemClick: \t userProfileType: $userProfileType"
         )
-        if (userProfileType == "1") {
+        if (userProfileType == "1" && sessionManager.isGuestUser()) {
             bottomSheetDialogComment.dismiss()
             addFragment(
                 SignUpFragment.getInstance(
