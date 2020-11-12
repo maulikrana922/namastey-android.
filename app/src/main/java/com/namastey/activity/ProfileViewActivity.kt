@@ -47,7 +47,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
     private var isMyProfile = false
-    private var isLike = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,13 +71,16 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
 
-            if (profileBean.is_follow == 1)
-                btnProfileFollow.text = getString(R.string.following)
-            else if (profileBean.is_follow == 2)
-                btnProfileFollow.text = getString(R.string.pending)
-            else
-                btnProfileFollow.text = getString(R.string.follow)
+            when (profileBean.is_follow) {
+                1 -> btnProfileFollow.text = getString(R.string.following)
+                2 -> btnProfileFollow.text = getString(R.string.pending)
+                else -> btnProfileFollow.text = getString(R.string.follow)
+            }
 
+            when (profileBean.is_like) {
+                1 -> btnProfileLike.text = getString(R.string.liked)
+                else -> btnProfileLike.text = getString(R.string.like)
+            }
         }
 
         // Need to change
@@ -398,21 +400,28 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileLike(view: View) {
-//        if (sessionManager.getUserId() == profileBean.user_id){
-//            profileViewModel.likeUserProfile()
-//        }
-
-        profileViewModel.likeUserProfile(profileBean.user_id, isLike)
+        if (profileBean.is_like == 1)
+            profileViewModel.likeUserProfile(profileBean.user_id, 0)
+        else
+            profileViewModel.likeUserProfile(profileBean.user_id, 1)
     }
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
-        isLike = dashboardBean.is_like
+//        isLike = dashboardBean.is_like
 
-        if (isLike == 1) {
+        profileBean.is_like = dashboardBean.is_like
+        if (dashboardBean.is_like == 1) {
             btnProfileLike.text = resources.getString(R.string.liked)
         } else {
             btnProfileLike.text = resources.getString(R.string.like)
+        }
+
+        if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1){
+            val intent = Intent(this@ProfileViewActivity, MatchesScreenActivity::class.java)
+            intent.putExtra("username", profileBean.username)
+            intent.putExtra("profile_url", profileBean.profileUrl)
+            openActivity(intent)
         }
     }
 

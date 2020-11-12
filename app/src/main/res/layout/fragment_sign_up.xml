@@ -67,9 +67,10 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvVideoSignUp"
                 style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/tv_the_video_profile"
                 android:textStyle="bold"
+                android:textColor="@color/colorGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivLogoName" />
@@ -82,7 +83,7 @@
                 android:paddingTop="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_30sdp"
                 android:background="@drawable/rounded_blue_solid"
                 android:gravity="center"
