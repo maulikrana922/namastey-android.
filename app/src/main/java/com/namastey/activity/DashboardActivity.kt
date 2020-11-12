@@ -503,7 +503,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
+        } else {
             val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
             intent.putExtra("onClickMatches", true)
             openActivity(intent)
@@ -723,11 +723,21 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardViewModel.getCommentList(postId)
 
         bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-            if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                dashboardViewModel.addComment(
-                    postId,
-                    bottomSheetDialogComment.edtComment.text.toString()
+            if (sessionManager.isGuestUser()) {
+                bottomSheetDialogComment.dismiss()
+                addFragment(
+                    SignUpFragment.getInstance(
+                        true
+                    ),
+                    Constants.SIGNUP_FRAGMENT
                 )
+            } else {
+                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+                    dashboardViewModel.addComment(
+                        postId,
+                        bottomSheetDialogComment.edtComment.text.toString()
+                    )
+                }
             }
         }
 
@@ -809,9 +819,19 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USER_ID, userId)
-        openActivity(intent)
+        if (sessionManager.isGuestUser()) {
+            bottomSheetDialogComment.dismiss()
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+            intent.putExtra(Constants.USER_ID, userId)
+            openActivity(intent)
+        }
     }
 
     override fun onPostViewer(postId: Long) {

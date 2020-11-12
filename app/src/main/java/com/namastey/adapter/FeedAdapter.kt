@@ -177,7 +177,8 @@ class FeedAdapter(
                 onFeedItemClick.onItemClick(dashboardBean)
             }
 
-            if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
+           // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
+            if (dashboardBean.is_comment == 0){// && !sessionManager.isGuestUser()) {
                 tvCommentFeed.setOnClickListener {
                     onFeedItemClick.onCommentClick(position, dashboardBean.id)
                 }
