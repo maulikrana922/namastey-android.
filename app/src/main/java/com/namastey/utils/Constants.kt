@@ -80,6 +80,7 @@ object Constants {
     const val SUGGEST_YOUR_ACCOUNT_ON_OFF = "suggest-your-account-on-of"
     const val WHO_CAN_COMMENT_YOUR_VIDEO = "who-can-comment-your-video"
     const val WHO_CAN_SEND_YOU_DIRECT_MESSAGE = "who-can-send-you-direct-message"
+    const val SHARE_PROFILE_SAFETY = "share-profile-safety"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -171,6 +172,10 @@ object Constants {
     const val KEY_ALL_ACTIVITY_TITLE = "KEY_ALL_ACTIVITY_TITLE"
     const val KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS = "KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS"
     const val KEY_IS_DOWNLOAD_VIDEO = "KEY_IS_DOWNLOAD_VIDEO"
+    const val KEY_IS_SHARE_PROFILE_SAFETY = "KEY_IS_SHARE_PROFILE_SAFETY"
+    const val KEY_IS_YOUR_FOLLOWERS = "KEY_IS_YOUR_FOLLOWERS"
+    const val KEY_CAN_SEND_YOU_DIRECT_MESSAGE = "KEY_CAN_SEND_YOU_DIRECT_MESSAGE"
+    const val KEY_CAN_COMMENT_YOUR_VIDEO = "KEY_CAN_COMMENT_YOUR_VIDEO"
 
 
     //    field key
@@ -250,6 +255,7 @@ object Constants {
     const val IS_FILTER = "is_filter"
     const val WHO_CAN_COMMENT = "who_can_comment"
     const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
+    const val IS_SHARE = "is_share"
 
 
     //    Other constants

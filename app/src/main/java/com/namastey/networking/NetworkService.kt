@@ -368,7 +368,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToWhoCanSendYouDirectMessageAsync(whoCanSendDirectMessage).await()
         }
 
-
+    suspend fun requestToShareProfileSafety(isShare: Int): AppResponse<SafetyBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToShareProfileSafetyAsync(isShare).await()
+        }
 
 
 }

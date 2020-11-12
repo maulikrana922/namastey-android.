@@ -1,16 +1,12 @@
 package com.namastey.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.activity.ProfileViewActivity
-import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CommentBean
-import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_comment.view.*
 
@@ -49,8 +45,8 @@ class CommentAdapter(
 
             GlideLib.loadImageUrlRoundCorner(activity, ivCommentUser, commentBean.profile_pic)
 
-            holderComment.setOnClickListener{
-                onSelectUserItemClick.onSelectItemClick(commentBean.user_id,position)
+            holderComment.setOnClickListener {
+                onSelectUserItemClick.onSelectItemClick(commentBean.user_id, position, commentBean.user_profile_type)
             }
         }
 

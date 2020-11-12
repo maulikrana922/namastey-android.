@@ -32,6 +32,7 @@ import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.UpnextVideoAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
+import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnVideoClick
@@ -286,12 +287,22 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onPostEdit(position: Int, videoBean: VideoBean) {
+
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        }
 //        val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
 //        intent.putExtra("albumId", videoBean.album_id)
 //        intent.putExtra("editPost", true)
 //        intent.putExtra("albumBean", videoBean.album_id)
 //        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
     }
+
     override fun onItemClick(value: Long, position: Int) {
         viewpagerAlbum.currentItem = position
     }
@@ -305,10 +316,26 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
+       /* val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
-        openActivity(intent)
+        openActivity(intent)*/
     }
+
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        Log.e("AlbumVideoActivity", "onSelectItemClick: \t userProfileType: $userProfileType")
+        if (userProfileType == "1") {
+            bottomSheetDialogComment.dismiss()
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
+            intent.putExtra(Constants.USER_ID, userId)
+            openActivity(intent)
+        }    }
 
     override fun onUpnextClick(position: Int) {
         groupUpnext.visibility = View.VISIBLE
@@ -333,11 +360,21 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         albumViewModel.getCommentList(postId)
 
         bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-            if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                albumViewModel.addComment(
-                    postId,
-                    bottomSheetDialogComment.edtComment.text.toString()
+            if (sessionManager.isGuestUser()) {
+                bottomSheetDialogComment.dismiss()
+                addFragment(
+                    SignUpFragment.getInstance(
+                        true
+                    ),
+                    Constants.SIGNUP_FRAGMENT
                 )
+            } else {
+                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+                    albumViewModel.addComment(
+                        postId,
+                        bottomSheetDialogComment.edtComment.text.toString()
+                    )
+                }
             }
         }
         bottomSheetDialogComment.ivCloseComment.setOnClickListener {

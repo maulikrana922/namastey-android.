@@ -102,24 +102,74 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
                 }
             }
         }
+
+        switchAllowYourToShareYourProfile.setOnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                isChecked -> {
+                    safetyViewModel.isShareProfileSafety(1)
+                }
+                else -> {
+                    safetyViewModel.isShareProfileSafety(0)
+                }
+            }
+        }
     }
 
 
     private fun setFromSessionManager() {
         switchAllowYourVideoToDownload.isChecked =
             sessionManager.getIntegerValue(Constants.KEY_IS_DOWNLOAD_VIDEO) == 1
-    }
 
+        switchAllowYourToShareYourProfile.isChecked =
+            sessionManager.getIntegerValue(Constants.KEY_IS_SHARE_PROFILE_SAFETY) == 1
+
+        if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 0) {
+            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.everyone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 1) {
+            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.friends)
+        } else  if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 2) {
+            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.no_one)
+        } else {
+            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.everyone)
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 0) {
+            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.everyone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 1) {
+            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.friends)
+        } else  if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 2) {
+            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.no_one)
+        } else {
+            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.everyone)
+        }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 0) {
+            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.everyone)
+        } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 1) {
+            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.friends)
+        } else  if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 2) {
+            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.no_one)
+        } else {
+            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.everyone)
+        }
+    }
 
     override fun onResume() {
         super.onResume()
         (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.safety))
     }
 
-    override fun onSuccessResponse(safetyBean: SafetyBean) {
+    override fun onSuccessIsSuccessResponse(safetyBean: SafetyBean) {
         Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t ${safetyBean.is_download}")
         sessionManager.setIntegerValue(
             safetyBean.is_download, Constants.KEY_IS_DOWNLOAD_VIDEO
+        )
+    }
+
+    override fun onSuccessShareProfileSafetyResponse(safetyBean: SafetyBean) {
+        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t ${safetyBean.is_download}")
+        sessionManager.setIntegerValue(
+            safetyBean.is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY
         )
     }
 

@@ -777,15 +777,25 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
              }*/
 
             override fun afterTextChanged(editable: Editable) {
-                val text = editable.toString()
-                val p: Pattern = Pattern.compile("[@][a-zA-Z0-9-.]+")
-                val m: Matcher = p.matcher(text)
-                val cursorPosition: Int = bottomSheetDialogComment.edtComment.selectionStart
-                while (m.find()) {
-                    if (cursorPosition >= m.start() && cursorPosition <= m.end()) {
-                        val s = m.start() + 1
-                        val e = m.end()
-                        dashboardViewModel.getMentionList(text.substring(s, e))
+                if (sessionManager.isGuestUser()) {
+                    bottomSheetDialogComment.dismiss()
+                    addFragment(
+                        SignUpFragment.getInstance(
+                            true
+                        ),
+                        Constants.SIGNUP_FRAGMENT
+                    )
+                } else {
+                    val text = editable.toString()
+                    val p: Pattern = Pattern.compile("[@][a-zA-Z0-9-.]+")
+                    val m: Matcher = p.matcher(text)
+                    val cursorPosition: Int = bottomSheetDialogComment.edtComment.selectionStart
+                    while (m.find()) {
+                        if (cursorPosition >= m.start() && cursorPosition <= m.end()) {
+                            val s = m.start() + 1
+                            val e = m.end()
+                            dashboardViewModel.getMentionList(text.substring(s, e))
+                        }
                     }
                 }
             }
@@ -819,7 +829,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        if (sessionManager.isGuestUser()) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        Log.e("DashboardActivity", "onSelectItemClick: \t userProfileType: $userProfileType")
+        if (userProfileType == "1") {
             bottomSheetDialogComment.dismiss()
             addFragment(
                 SignUpFragment.getInstance(

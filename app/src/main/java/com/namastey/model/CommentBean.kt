@@ -14,6 +14,7 @@ class CommentBean() : Parcelable {
     var comment: String = ""
     var username: String = ""
     var profile_pic: String = ""
+    var user_profile_type : String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()

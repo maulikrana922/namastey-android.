@@ -13,6 +13,7 @@ class SafetyBean() : Parcelable {
     var is_suggest: Int = 0
     var who_can_comment: Int = 0
     var who_can_send_message: Int = 0
+    var is_share: Int = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt() ?: 0
@@ -22,6 +23,7 @@ class SafetyBean() : Parcelable {
         is_suggest = parcel.readInt() ?: 0
         who_can_comment = parcel.readInt() ?: 0
         who_can_send_message = parcel.readInt() ?: 0
+        is_share = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -32,6 +34,7 @@ class SafetyBean() : Parcelable {
         parcel.writeInt(is_suggest)
         parcel.writeInt(who_can_comment)
         parcel.writeInt(who_can_send_message)
+        parcel.writeInt(is_share)
     }
 
     override fun describeContents(): Int {
