@@ -80,11 +80,13 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
-        Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
+        if (matchesListBean != null) {
+            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
 
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-        intent.putExtra("matchesListBean", matchesListBean)
-        openActivity(intent)
+            val intent = Intent(requireActivity(), ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            openActivity(intent)
+        }
     }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {

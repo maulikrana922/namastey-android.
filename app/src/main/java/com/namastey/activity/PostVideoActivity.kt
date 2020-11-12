@@ -118,7 +118,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             }
         })
 
-        addCommentsTextChangeListener()
+//        addCommentsTextChangeListener()
     }
 
 

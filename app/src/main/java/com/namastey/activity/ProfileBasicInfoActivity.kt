@@ -158,23 +158,23 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         } else
             llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
 
-        if (sessionManager.getEducationBean().college.isEmpty()) {
-            llEducation.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
-            isValid = false
-        } else
-            llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
-
-        if (sessionManager.getJobBean().title.isEmpty()) {
-            llJob.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
-            isValid = false
-        } else
-            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
-
-        if (edtProfileTagline.text!!.trim().isEmpty()) {
-            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
-            isValid = false
-        } else
-            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid)
+//        if (sessionManager.getEducationBean().college.isEmpty()) {
+//            llEducation.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+//            isValid = false
+//        } else
+//            llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
+//
+//        if (sessionManager.getJobBean().title.isEmpty()) {
+//            llJob.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+//            isValid = false
+//        } else
+//            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
+//
+//        if (edtProfileTagline.text!!.trim().isEmpty()) {
+//            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+//            isValid = false
+//        } else
+//            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid)
 
 
         return isValid
