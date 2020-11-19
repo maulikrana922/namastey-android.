@@ -163,7 +163,7 @@ class FeedAdapter(
                             btnAlertOk.id -> {
                                 onFeedItemClick.onClickFollow(
                                     position,
-                                    dashboardBean.user_id,
+                                    dashboardBean,
                                     isFollow
                                 )
                             }
@@ -195,20 +195,20 @@ class FeedAdapter(
             }
 
             ivFeedProfile.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
+                onFeedItemClick.onUserProfileClick(dashboardBean)
             }
             tvFeedName.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
+                onFeedItemClick.onUserProfileClick(dashboardBean)
             }
             tvFeedJob.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean.user_id)
+                onFeedItemClick.onUserProfileClick(dashboardBean)
             }
 
             tvFeedLike.setOnClickListener {
                 if (dashboardBean.is_like == 1)
-                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 0)
+                    onFeedItemClick.onProfileLikeClick(position, dashboardBean, 0)
                 else
-                    onFeedItemClick.onProfileLikeClick(position, dashboardBean.user_id, 1)
+                    onFeedItemClick.onProfileLikeClick(position, dashboardBean, 1)
             }
 
             tvFeedBoost.setOnClickListener {

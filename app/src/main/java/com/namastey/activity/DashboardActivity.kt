@@ -661,8 +661,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     }
 
-    override fun onClickFollow(position: Int, userId: Long, isFollow: Int) {
-        if (sessionManager.isGuestUser()) {
+
+    /**
+     * user_profile_type = 1 means private
+     * and user_profile_type = 0 means public
+     */
+    override fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int) {
+        if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
             addFragment(
                 SignUpFragment.getInstance(
                     true
@@ -671,12 +676,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         } else {
             this.position = position
-            dashboardViewModel.followUser(userId, isFollow)
+            dashboardViewModel.followUser(dashboardBean.user_id, isFollow)
         }
     }
 
     override fun onItemClick(dashboardBean: DashboardBean) {
-        if (sessionManager.isGuestUser()) {
+        if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
             addFragment(
                 SignUpFragment.getInstance(
                     true
@@ -688,7 +693,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
-    override fun onProfileLikeClick(position: Int, likedUserId: Long, isLike: Int) {
+    override fun onProfileLikeClick(position: Int, dashboardBean: DashboardBean, isLike: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -698,7 +703,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         } else {
             this.position = position
-            dashboardViewModel.likeUserProfile(likedUserId, isLike)
+            dashboardViewModel.likeUserProfile(dashboardBean.user_id, isLike)
         }
     }
 
@@ -819,7 +824,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         })
     }
 
-    override fun onUserProfileClick(userId: Long) {
+    override fun onUserProfileClick(dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -829,7 +834,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         } else {
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
-            intent.putExtra(Constants.USER_ID, userId)
+            intent.putExtra(Constants.USER_ID, dashboardBean.user_id)
             openActivity(intent)
         }
     }

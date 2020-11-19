@@ -104,6 +104,12 @@ class NetworkModule {
                 )
                 .build()
 
+
+            /*Log.e("NetworkModule","Authorization:\t  ${if (original.url().url().path.contains(Constants.REGISTER) || TextUtils.isEmpty(
+                    sessionManager.getAccessToken()
+                )
+            ) Constants.HVALUE else "Bearer " + sessionManager.getAccessToken()}")*/
+
             val response = chain.proceed(request)
 //            Log.e("Request URL--> " , request.url().toString())
 //            Log.e("Response " , "-->".plus(response.body())
