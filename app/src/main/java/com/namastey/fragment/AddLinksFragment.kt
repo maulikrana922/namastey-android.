@@ -469,8 +469,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     }
 
     override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
-        Log.e("AddLinksFragment", "onSuccessResponse: \t link: ${data[0].link}")
-        Log.e("AddLinksFragment", "onSuccessResponse: \t name: ${data[0].name}")
+        //Log.e("AddLinksFragment", "onSuccessResponse: \t link: ${data[0].link}")
+        //Log.e("AddLinksFragment", "onSuccessResponse: \t name: ${data[0].name}")
         if (activity is ProfileInterestActivity) {
             (activity as ProfileInterestActivity).onActivityReenter(
                 Constants.ADD_LINK,

@@ -134,13 +134,19 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
-
-        TODO("add following, followers conditions")
-       /* if (profileBean.user_profile_type == 0) {
+        if (profileBean.is_follow == 1 || profileBean.is_follow == 2) {
+            if (profileBean.user_profile_type == 0) {
+                layoutPrivateAccount.visibility = View.GONE
+                rvAlbumList.visibility = View.VISIBLE
+            } else if (profileBean.user_profile_type == 1) {
+                layoutPrivateAccount.visibility = View.VISIBLE
+                rvAlbumList.visibility = View.GONE
+            }
+        } else {
+            rvAlbumList.visibility = View.VISIBLE
             layoutPrivateAccount.visibility = View.GONE
-        } else  if (profileBean.user_profile_type == 1){
-            layoutPrivateAccount.visibility = View.VISIBLE
-        }*/
+        }
+
     }
 
     /**
