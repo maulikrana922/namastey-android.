@@ -255,6 +255,8 @@
 
     <!--    Post video screen-->
     <string name="post">Post</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="update">Update</string>
     <string name="select_cover">Select cover</string>
     <string name="hint_video_desc">Describe your video</string>
     <string name="add_to">Add to</string>

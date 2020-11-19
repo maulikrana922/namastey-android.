@@ -50,6 +50,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvTitlePostVideo"
                     style="@style/tvTitleStyle"
                     android:text="@string/post"
                     app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"

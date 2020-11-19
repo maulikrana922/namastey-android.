@@ -113,15 +113,8 @@ interface NetworkRequest {
     @GET(Constants.GET_ALBUM_WITH_VIDEO)
     fun requestToGetAlbumWithDetailsAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
 
-    @FormUrlEncoded
     @POST(Constants.POST_VIDEO)
-    fun postVideoAsync(
-        @Field(Constants.DESCRIPTION) description: String,
-        @Field(Constants.ALBUM_ID) album_id: Long,
-        @Field(
-            Constants.SHARE_WITH
-        ) share_with: Int,
-        @Field(Constants.IS_COMMENT) is_comment: Int
+    fun postVideoAsync(@Body jsonObject: JsonObject
     ): Deferred<AppResponse<VideoBean>>
 
     @Multipart

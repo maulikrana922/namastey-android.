@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.MentionListAdapter
@@ -57,13 +58,16 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var videoFile: File? = null
     private var pictureFile: File? = null
     private var albumBean = AlbumBean()
+    private var videoBean = VideoBean()
     private var albumList: ArrayList<AlbumBean> = ArrayList()
+    private var isFromEditPost = false
 
     //    private val RESULT_CODE_PICK_THUMBNAIL = 104
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var shareWith = 1
     private var commentOff = 0
     private var isTouched = false
+    private var items = arrayOf<CharSequence>()
 
     override fun getViewModel() = postVideoViewModel
 
@@ -85,22 +89,60 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     private fun initData() {
 
-        if (intent.hasExtra("videoFile")) {
-            albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
-            videoFile = intent.getSerializableExtra("videoFile") as File?
+        items = arrayOf<CharSequence>(
+            getString(R.string.everyone),
+            getString(R.string.friends),
+            getString(R.string.no_one),
+            getString(R.string.cancel)
+        )
+        if (intent.hasExtra("editPost")){
+            isFromEditPost = true
+            videoBean = intent.getParcelableExtra<VideoBean>("videoBean") as VideoBean
+            albumBean.name = videoBean.album_name
+            albumBean.id = videoBean.album_id
+            tvTitlePostVideo.text = getString(R.string.edit_post)
+            edtVideoDesc.setText(videoBean.description)
+            btnPostVideo.text = getString(R.string.update)
+//            videoFile = File(Uri.parse(videoBean.video_url).path)
+            GlideLib.loadImage(this, ivSelectCover, videoBean.video_url)
+            tvAlbumName.isEnabled = false
+
+            switchCommentOff.isChecked = videoBean.is_comment == 1
+            val share = videoBean.share_with
+            val item = share - 1
+            when {
+                items[item] == getString(R.string.everyone) -> {
+                    tvShare.text = getString(R.string.everyone)
+                    shareWith = 1
+                }
+                items[item] == getString(R.string.friends) -> {
+                    tvShare.text = getString(R.string.friends)
+                    shareWith = 2
+                }
+                items[item] == getString(R.string.no_one) -> {
+                    tvShare.text = getString(R.string.no_one)
+                    shareWith = 3
+                }
+            }
+        }else {
+            isFromEditPost = false
+            if (intent.hasExtra("videoFile")) {
+                albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
+                videoFile = intent.getSerializableExtra("videoFile") as File?
 //            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
-            Log.d("TAG", videoFile!!.name.toString())
+                Log.d("TAG", videoFile!!.name.toString())
 
 //            val thumb: Bitmap =
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
 //            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
-            tvAlbumName.text = albumBean.name
-            if (intent.hasExtra("fromAlbumDetail")) {
-                tvAlbumName.isEnabled = false
-            } else {
-                postVideoViewModel.getAlbumList()
+                if (intent.hasExtra("fromAlbumDetail")) {
+                    tvAlbumName.isEnabled = false
+                } else {
+                    postVideoViewModel.getAlbumList()
+                }
             }
         }
+        tvAlbumName.text = albumBean.name
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->
             isTouched = true
@@ -141,7 +183,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      */
     override fun onSuccessPostVideoDesc(videoBean: VideoBean) {
         Log.d("PostVideoActivity", videoBean.toString())
-        postVideoViewModel.addMedia(videoBean.id, videoFile)
+        if (isFromEditPost)
+            postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
+        else
+            postVideoViewModel.addMedia(videoBean.id, videoFile)
     }
 
     override fun onSuccessPostVideo(videoBean: VideoBean) {
@@ -198,25 +243,21 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 )
 
-                postVideoViewModel.postVideoDesc(
-                    edtVideoDesc.text.toString().trim(),
-                    albumBean.id,
-                    shareWith,
-                    commentOff
-                )
+                val jsonObject  = JsonObject()
+                jsonObject.addProperty(Constants.DESCRIPTION, edtVideoDesc.text.toString().trim())
+                jsonObject.addProperty(Constants.ALBUM_ID, albumBean.id)
+                jsonObject.addProperty(Constants.SHARE_WITH, shareWith)
+                jsonObject.addProperty(Constants.IS_COMMENT, commentOff)
+
+                if (isFromEditPost)
+                    jsonObject.addProperty(Constants.VIDEO_POST_ID, videoBean.id)
+
+                postVideoViewModel.postVideoDesc(jsonObject)
             }
         }
     }
 
     fun onClickShareWith(view: View) {
-        val items =
-            arrayOf<CharSequence>(
-                getString(R.string.everyone),
-                getString(R.string.friends),
-                getString(R.string.no_one),
-                getString(R.string.cancel)
-            )
-
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@PostVideoActivity)
         builder.setTitle(getString(R.string.shared_with))
         builder.setItems(items) { dialog, item ->

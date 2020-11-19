@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.VideoBean
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.io.File
 
 class PostVideoViewModel constructor(
@@ -26,17 +28,12 @@ class PostVideoViewModel constructor(
     private var postVideoView = baseView as PostVideoView
     private lateinit var job: Job
 
-    fun postVideoDesc(
-        description: String,
-        albumId: Long,
-        shareWith: Int,
-        commentOff: Int
-    ) {
+    fun postVideoDesc(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (postVideoView.isInternetAvailable()) {
-                    networkService.requestPostVideo(description,albumId,shareWith,commentOff)
+                    networkService.requestPostVideo(jsonObject)
                         .let { appResponse: AppResponse<VideoBean> ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK) {

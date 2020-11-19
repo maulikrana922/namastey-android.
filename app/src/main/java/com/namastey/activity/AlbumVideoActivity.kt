@@ -294,12 +294,14 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
+        }else {
+            val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
+//            intent.putExtra("albumId", videoBean.album_id)
+            intent.putExtra("editPost", true)
+//            intent.putExtra("albumName", videoBean.album_name)
+            intent.putExtra("videoBean", videoBean)
+            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
         }
-//        val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
-//        intent.putExtra("albumId", videoBean.album_id)
-//        intent.putExtra("editPost", true)
-//        intent.putExtra("albumBean", videoBean.album_id)
-//        openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
     }
 
     override fun onClickLike(position: Int, videoBean: VideoBean) {

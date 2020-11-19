@@ -12,7 +12,9 @@ class VideoBean() : Parcelable {
     var description: String = ""
     var cover_image_url: String = ""
     var album_id: Long = 0
+    var album_name: String = ""
     var share_with = 0
+    var is_comment: Int = 0
     var viewers = 0
     var comments = 0
     var profile_pic: ArrayList<String> = ArrayList()
@@ -27,7 +29,9 @@ class VideoBean() : Parcelable {
         description = parcel.readString() ?: ""
         cover_image_url = parcel.readString() ?: ""
         album_id = parcel.readLong()
+        album_name = parcel.readString() ?: ""
         share_with = parcel.readInt()
+        is_comment = parcel.readInt()
         viewers = parcel.readInt()
         comments = parcel.readInt()
         profile_pic = parcel.createStringArrayList() ?: ArrayList()
@@ -43,7 +47,9 @@ class VideoBean() : Parcelable {
         parcel.writeString(description)
         parcel.writeString(cover_image_url)
         parcel.writeLong(album_id)
+        parcel.writeString(album_name)
         parcel.writeInt(share_with)
+        parcel.writeInt(is_comment)
         parcel.writeInt(viewers)
         parcel.writeInt(comments)
         parcel.writeStringList(profile_pic)

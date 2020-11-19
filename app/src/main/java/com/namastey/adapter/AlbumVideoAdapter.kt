@@ -77,8 +77,12 @@ class AlbumVideoAdapter(
 
             tvFeedDesc.text = videoBean.description
             tvFeedView.text = videoBean.viewers.toString()
-            tvCommentFeed.text = videoBean.comments.toString().plus(" ")
-                .plus(activity.getString(R.string.comments))
+            if (videoBean.is_comment == 1) {
+                tvCommentFeed.text = activity.getString(R.string.comments_off)
+            } else {
+                tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                    .plus(activity.getString(R.string.comments))
+            }
 
             when {
                 videoBean.profile_pic.size >= 3 -> {
@@ -114,9 +118,9 @@ class AlbumVideoAdapter(
 
             tvFeedLike.setOnClickListener {
                 if (sessionManager.getUserId() == videoBean.user_id) {
-                    onVideoClick.onPostEdit(position,videoBean)
+                    onVideoClick.onPostEdit(position, videoBean)
                 } else {
-                    onVideoClick.onClickLike(position,videoBean)
+                    onVideoClick.onClickLike(position, videoBean)
                 }
             }
             mainViewHolder.setOnClickListener {
@@ -130,8 +134,8 @@ class AlbumVideoAdapter(
                 onVideoClick.onUpnextClick(position)
             }
             tvCommentFeed.setOnClickListener {
-               // if (!sessionManager.isGuestUser())
-                    onVideoClick.onCommentClick(videoBean.id)
+                // if (!sessionManager.isGuestUser())
+                onVideoClick.onCommentClick(videoBean.id)
             }
             tvFeedShare.setOnClickListener {
                 onVideoClick.onShareClick(videoBean)

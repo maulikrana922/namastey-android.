@@ -211,6 +211,7 @@ object Constants {
     const val DESCRIPTION = "description"
     const val SHARE_WITH = "share_with"
     const val IS_COMMENT = "is_comment"
+    const val VIDEO_POST_ID = "video_post_id"
     const val COVER_IMAGE = "cover_image"
     const val TAG_POST_VIDEO = "post_video"
     const val POST_VIDEO_ID = "post_video_id"

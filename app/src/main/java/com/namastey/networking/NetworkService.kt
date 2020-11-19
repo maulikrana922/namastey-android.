@@ -147,19 +147,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetAlbumWithDetailsAsync().await()
         }
 
-    suspend fun requestPostVideo(
-        description: String,
-        album_id: Long,
-        share_with: Int,
-        is_comment: Int
+    suspend fun requestPostVideo(jsonObject: JsonObject
     ): AppResponse<VideoBean> =
         withContext(Dispatchers.IO) {
-            networkRequest.postVideoAsync(
-                description,
-                album_id,
-                share_with,
-                is_comment
-            ).await()
+            networkRequest.postVideoAsync(jsonObject).await()
         }
 
     suspend fun requestToAddMediaAsync(
