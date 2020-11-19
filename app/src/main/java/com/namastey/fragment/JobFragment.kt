@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.EducationListActivity
 import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentJobBinding
@@ -116,7 +115,6 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
         }
     }
     override fun onSuccessJobList(jobList: ArrayList<JobBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = jobViewModel

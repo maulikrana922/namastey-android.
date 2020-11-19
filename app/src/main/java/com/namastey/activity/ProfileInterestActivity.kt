@@ -16,9 +16,7 @@ import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileInterestBinding
 import com.namastey.fragment.AddLinksFragment
-import com.namastey.model.AppResponseSpotify
 import com.namastey.model.SocialAccountBean
-import com.namastey.model.SpotifyBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -268,7 +266,6 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     }
 
     override fun onSuccessSpotify(sporifyUrl: String) {
-        TODO("Not yet implemented")
     }
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()

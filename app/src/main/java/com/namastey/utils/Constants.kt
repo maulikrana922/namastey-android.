@@ -142,6 +142,7 @@ object Constants {
     const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
     const val CHAT_SETTINGS_FRAGMENT = "ChatSettingsFragment"
     const val PERSONALIZE_DATA_FRAGMENT = "PersonalizeDataFragment"
+    const val CURRENT_LOCATION_FRAGMENT = "CurrentLocationFragment"
 
     //    Session key
     const val KEY_USER_ID = "KEY_USER_ID"

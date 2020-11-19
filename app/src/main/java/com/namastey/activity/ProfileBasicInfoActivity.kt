@@ -1,10 +1,8 @@
 package com.namastey.activity
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -38,11 +36,9 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     private lateinit var profileBasicViewModel: ProfileBasicViewModel
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = profileBasicViewModel

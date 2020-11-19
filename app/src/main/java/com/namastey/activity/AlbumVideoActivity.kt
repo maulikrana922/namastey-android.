@@ -81,7 +81,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var colorDrawableBackground = ColorDrawable(Color.RED)
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccess(msg: String) {

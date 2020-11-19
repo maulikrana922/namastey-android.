@@ -154,7 +154,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     override fun onSuccessFollow(profileBean: ProfileBean) {
-        TODO("Not yet implemented")
     }
 
 
@@ -549,9 +548,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     }
 
-
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
-        TODO("Not yet implemented")
     }
 
     inner class SliderTimer : TimerTask() {
@@ -569,5 +566,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     fun onClickProfileMore(view: View) {
         if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
             openActivity(this@ProfileActivity, SettingsActivity())
+    }
+
+    fun onClickPassport(view: View) {
+        openActivity(this, LocationActivity())
     }
 }

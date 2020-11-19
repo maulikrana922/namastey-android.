@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_15sdp">
+
+        <ImageView
+            android:id="@+id/ivCurrentLocation"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickLocationBack"
+            android:src="@drawable/ic_current_location"
+            android:tint="@color/color_chip_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvMyCurrentLocation"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:gravity="start|center"
+                android:text="@string/my_current_location"
+                android:textColor="@color/color_chip_gray"
+                android:textSize="16sp"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvMyCurrentAddress"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:gravity="start|center"
+                android:text="@string/my_current_address"
+                android:textColor="@color/color_chip_gray"
+                android:textSize="12sp"
+                app:typeface="MULI_SEMIBOLD" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivAddressSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickLocationBack"
+            android:src="@drawable/ic_done"
+            android:tint="@color/color_chip_gray" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGrayView" />
+
+</LinearLayout>

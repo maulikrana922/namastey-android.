@@ -92,7 +92,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         fillValue(profileBean)
     }
 
-
     override fun onSuccess(msg: String) {
 //        super.onSuccess(msg)
         if (profileBean.is_follow == 1) {
@@ -134,6 +133,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.gender
             )
         rvAlbumList.adapter = albumListProfileAdapter
+
+
+        TODO("add following, followers conditions")
+       /* if (profileBean.user_profile_type == 0) {
+            layoutPrivateAccount.visibility = View.GONE
+        } else  if (profileBean.user_profile_type == 1){
+            layoutPrivateAccount.visibility = View.VISIBLE
+        }*/
     }
 
     /**
@@ -362,7 +369,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickFollowRequest(view: View) {
         if (profileBean.is_follow == 1) {
             profileViewModel.followUser(profileBean.user_id, 0)
-        } else if (profileBean.is_follow == 0){
+        } else if (profileBean.is_follow == 0) {
             profileViewModel.followUser(profileBean.user_id, 1)
         }
     }
@@ -381,11 +388,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onItemClick(value: Long, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onViewAlbumItemClick(value: Long, position: Int) {
-        TODO("Not yet implemented")
     }
 
     fun onClickMatches(view: View) {
@@ -417,7 +422,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             btnProfileLike.text = resources.getString(R.string.like)
         }
 
-        if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1){
+        if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
             val intent = Intent(this@ProfileViewActivity, MatchesScreenActivity::class.java)
             intent.putExtra("username", profileBean.username)
             intent.putExtra("profile_url", profileBean.profileUrl)

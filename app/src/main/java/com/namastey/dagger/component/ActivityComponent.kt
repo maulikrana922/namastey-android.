@@ -62,4 +62,6 @@ interface ActivityComponent {
     fun inject(fragment: ChatSettingsFragment)
     fun inject(activity: ChatActivity)
     fun inject(fragment: PersonalizeDataFragment)
+    fun inject(activity: LocationActivity)
+    fun inject(fragment: CurrentLocationFragment)
 }

@@ -484,7 +484,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
 //    override fun cancelAction() {
-//        TODO("Not yet implemented")
 //    }
 //
 //    override fun getResult(uri: Uri) {

@@ -40,19 +40,15 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     }
 
     override fun onSuccessAddComment(commentBean: CommentBean) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessSavePost(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessBlockUser(msg: String) {
-        TODO("Not yet implemented")
     }
     override fun getViewModel() = albumViewModel
 

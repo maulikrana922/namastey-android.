@@ -120,7 +120,6 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     }
 
     override fun onSuccessEducationList(educationList: ArrayList<EducationBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = educationViewModel

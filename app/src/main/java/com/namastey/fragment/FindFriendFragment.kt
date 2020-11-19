@@ -34,11 +34,9 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
     private lateinit var findFriendViewModel: FindFriendViewModel
     private lateinit var layoutView: View
     override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessSearchList(suggestedList: ArrayList<DashboardBean>) {
-        TODO("Not yet implemented")
     }
 
 

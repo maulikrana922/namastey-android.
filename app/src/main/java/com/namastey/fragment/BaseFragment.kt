@@ -67,6 +67,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ChatActivity).showMsg(msgId)
         else if (activity != null && activity!! is MatchesScreenActivity)
             (activity!! as MatchesScreenActivity).showMsg(msgId)
+        else if (activity != null && activity!! is LocationActivity)
+            (activity!! as LocationActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -98,6 +100,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ChatActivity).showMsg(msg)
         else if (activity != null && activity!! is MatchesScreenActivity)
             (activity!! as MatchesScreenActivity).showMsg(msg)
+        else if (activity != null && activity!! is LocationActivity)
+            (activity!! as LocationActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -129,6 +133,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ChatActivity).hideKeyboard()
         else if (activity != null && activity!! is MatchesScreenActivity)
             (activity!! as MatchesScreenActivity).hideKeyboard()
+        else if (activity != null && activity!! is LocationActivity)
+            (activity!! as LocationActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -164,6 +170,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ChatActivity).onFailed(msg,error)
         else if (activity != null && activity!! is MatchesScreenActivity)
             (activity!! as MatchesScreenActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is LocationActivity)
+            (activity!! as LocationActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -195,6 +203,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ChatActivity).onHandleException(e)
         else if (activity != null && activity!! is MatchesScreenActivity)
             (activity!! as MatchesScreenActivity).onHandleException(e)
+        else if (activity != null && activity!! is LocationActivity)
+            (activity!! as LocationActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -214,6 +224,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is MatchesActivity -> (activity!! as MatchesActivity).isInternetAvailable()
                 activity!! is ChatActivity -> (activity!! as ChatActivity).isInternetAvailable()
                 activity!! is MatchesScreenActivity -> (activity!! as MatchesScreenActivity).isInternetAvailable()
+                activity!! is LocationActivity -> (activity!! as LocationActivity).isInternetAvailable()
                 else -> false
             }
         } else false

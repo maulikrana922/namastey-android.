@@ -114,15 +114,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
 
     override fun onSuccessReport(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessBlockUser(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessDeleteMatches(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onDestroy() {

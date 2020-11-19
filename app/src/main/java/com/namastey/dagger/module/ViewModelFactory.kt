@@ -212,6 +212,11 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+             modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }

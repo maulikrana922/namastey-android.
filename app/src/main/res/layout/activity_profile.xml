@@ -13,391 +13,393 @@
             type="com.namastey.viewModel.ProfileViewModel" />
 
     </data>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <androidx.core.widget.NestedScrollView
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/llProfileBackground"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/guest_bg"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/ivProfileBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickProfileBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <LinearLayout
+                    android:id="@+id/llProfileBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/guest_bg"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/ivProfileMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/_5sdp"
-                android:onClick="onClickProfileMore"
-                android:src="@drawable/ic_more"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
+                <ImageView
+                    android:id="@+id/ivProfileBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickProfileBack"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/rlProfile"-->
-<!--                android:layout_width="@dimen/_73sdp"-->
-<!--                android:layout_height="@dimen/_73sdp"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginTop="@dimen/_20sdp"-->
-<!--                android:background="@drawable/circle_white_black_border_solid"-->
-<!--                app:layout_constraintStart_toStartOf="@id/ivProfileBack"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/ivProfileBack">-->
+                <ImageView
+                    android:id="@+id/ivProfileMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickProfileMore"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_more"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/ivProfileUser"
-                        android:layout_width="@dimen/_73sdp"
-                        android:layout_height="@dimen/_73sdp"
-                        app:civ_border_color="@color/colorBlack"
-                        app:civ_border_width="@dimen/_1sdp"
-                        app:civ_circle_background_color="@color/colorWhite"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/app_name"
-                        app:layout_constraintStart_toStartOf="@id/ivProfileBack"
-                        app:layout_constraintTop_toBottomOf="@id/ivProfileBack"
-                        android:src="@drawable/ic_male" />
+                <!--            <RelativeLayout-->
+                <!--                android:id="@+id/rlProfile"-->
+                <!--                android:layout_width="@dimen/_73sdp"-->
+                <!--                android:layout_height="@dimen/_73sdp"-->
+                <!--                android:layout_centerHorizontal="true"-->
+                <!--                android:layout_centerVertical="true"-->
+                <!--                android:layout_marginTop="@dimen/_20sdp"-->
+                <!--                android:background="@drawable/circle_white_black_border_solid"-->
+                <!--                app:layout_constraintStart_toStartOf="@id/ivProfileBack"-->
+                <!--                app:layout_constraintTop_toBottomOf="@id/ivProfileBack">-->
 
-<!--            </RelativeLayout>-->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivProfileUser"
+                    android:layout_width="@dimen/_73sdp"
+                    android:layout_height="@dimen/_73sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_male"
+                    app:civ_border_color="@color/colorBlack"
+                    app:civ_border_width="@dimen/_1sdp"
+                    app:civ_circle_background_color="@color/colorWhite"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileBack"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileBack" />
 
-            <ImageView
-                android:visibility="invisible"
-                android:id="@+id/ivProfileCamera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_cam_profile"
-                android:onClick="onClickProfile"
-                app:layout_constraintBottom_toBottomOf="@+id/ivProfileUser"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
-                app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                app:layout_constraintTop_toBottomOf="@+id/ivProfileUser" />
+                <!--            </RelativeLayout>-->
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvProfileUsername"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:singleLine="true"
-                android:text="@string/guest_user"
-                android:onClick="onClickViewProfile"
-                android:textColor="@color/colorWhite"
-                android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@id/ivProfileUser"
-                app:layout_constraintTop_toTopOf="@id/ivProfileUser"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                app:typeface="MULI_EXTRA_BOLD" />
+                <ImageView
+                    android:id="@+id/ivProfileCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickProfile"
+                    android:src="@drawable/ic_cam_profile"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivProfileUser"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@+id/ivProfileUser" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvViews"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:text="@string/views"
-                app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
-                app:layout_constraintTop_toBottomOf="@id/tvViewsCount" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvProfileUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:onClick="onClickViewProfile"
+                    android:singleLine="true"
+                    android:text="@string/guest_user"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toEndOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toTopOf="@id/ivProfileUser"
+                    app:typeface="MULI_EXTRA_BOLD" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvFollowers"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:text="@string/followers"
-                android:onClick="onClickFollow"
-                android:paddingStart="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_3sdp"
-                app:layout_constraintEnd_toStartOf="@id/viewSecond"
-                app:layout_constraintStart_toEndOf="@id/viewFirst"
-                app:layout_constraintTop_toTopOf="@id/tvViews" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvViews"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:text="@string/views"
+                    app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
+                    app:layout_constraintTop_toBottomOf="@id/tvViewsCount" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvFollowing"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:text="@string/following"
-                android:paddingStart="@dimen/_5sdp"
-                android:onClick="onClickFollow"
-                android:layout_marginStart="@dimen/_3sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/viewSecond"
-                app:layout_constraintTop_toTopOf="@id/tvViews" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowers"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:onClick="onClickFollow"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="@string/followers"
+                    app:layout_constraintEnd_toStartOf="@id/viewSecond"
+                    app:layout_constraintStart_toEndOf="@id/viewFirst"
+                    app:layout_constraintTop_toTopOf="@id/tvViews" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvViewsCount"
-                android:layout_width="0dp"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="0"
-                app:layout_constraintEnd_toEndOf="@id/tvViews"
-                app:layout_constraintStart_toStartOf="@id/tvViews"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowing"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:onClick="onClickFollow"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="@string/following"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/viewSecond"
+                    app:layout_constraintTop_toTopOf="@id/tvViews" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvFollowersCount"
-                style="@style/tvWrapWhiteStyle"
-                android:text="0"
-                android:layout_width="0dp"
-                android:paddingStart="@dimen/_5sdp"
-                android:onClick="onClickFollow"
-                app:layout_constraintEnd_toEndOf="@id/tvFollowers"
-                app:layout_constraintStart_toStartOf="@id/tvFollowers"
-                app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvViewsCount"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="0"
+                    app:layout_constraintEnd_toEndOf="@id/tvViews"
+                    app:layout_constraintStart_toStartOf="@id/tvViews"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvFollowingCount"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:text="0"
-                android:paddingStart="@dimen/_5sdp"
-                android:onClick="onClickFollow"
-                app:layout_constraintEnd_toEndOf="@id/tvFollowing"
-                app:layout_constraintStart_toStartOf="@id/tvFollowing"
-                app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowersCount"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:onClick="onClickFollow"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="0"
+                    app:layout_constraintEnd_toEndOf="@id/tvFollowers"
+                    app:layout_constraintStart_toStartOf="@id/tvFollowers"
+                    app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
-            <View
-                android:id="@+id/viewFirst"
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                android:background="@color/colorGray"
-                android:layout_marginStart="@dimen/_12sdp"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
-                app:layout_constraintEnd_toStartOf="@id/tvFollowers"
-                app:layout_constraintStart_toEndOf="@id/tvViews"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowingCount"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:onClick="onClickFollow"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="0"
+                    app:layout_constraintEnd_toEndOf="@id/tvFollowing"
+                    app:layout_constraintStart_toStartOf="@id/tvFollowing"
+                    app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
-            <View
-                android:id="@+id/viewSecond"
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                android:background="@color/colorGray"
-                app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
-                app:layout_constraintEnd_toStartOf="@id/tvFollowing"
-                app:layout_constraintStart_toEndOf="@id/tvFollowers"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />\
+                <View
+                    android:id="@+id/viewFirst"
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@color/colorGray"
+                    app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
+                    app:layout_constraintEnd_toStartOf="@id/tvFollowers"
+                    app:layout_constraintStart_toEndOf="@id/tvViews"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
 
+                <View
+                    android:id="@+id/viewSecond"
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@color/colorGray"
+                    app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
+                    app:layout_constraintEnd_toStartOf="@id/tvFollowing"
+                    app:layout_constraintStart_toEndOf="@id/tvFollowers"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileUsername" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAboutLable"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:text="@string/about_me"
-                android:textColor="@color/colorBlack"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                app:layout_constraintTop_toBottomOf="@id/ivProfileCamera" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAboutLable"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:text="@string/about_me"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileCamera" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAbouteDesc"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:maxLines="4"
-                android:text="@string/about_me_text"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAbouteDesc"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:maxLines="4"
+                    android:text="@string/about_me_text"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
 
-            <com.namastey.customViews.CustomButton
-                android:visibility="invisible"
-                android:id="@+id/btnProfileSignup"
-                style="@style/btnRedStyle"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/btn_signup"
-                android:onClick="onClickSign"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
-                app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnProfileSignup"
+                    style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:onClick="onClickSign"
+                    android:text="@string/btn_signup"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/groupButtons"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="btnProfileAlbums,btnEditProfile"/>
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="btnProfileAlbums,btnEditProfile" />
 
-            <com.namastey.customViews.CustomButton
-                android:id="@+id/btnProfileAlbums"
-                style="@style/btnRedStyle"
-                android:minHeight="@dimen/_32sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/albums"
-                android:onClick="onClickAlbums"
-                android:textColor="@color/colorButtonRed"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
-                android:background="@drawable/rounded_white_solid_red_border"
-                app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
-                app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnProfileAlbums"
+                    style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/rounded_white_solid_red_border"
+                    android:minHeight="@dimen/_32sdp"
+                    android:onClick="onClickAlbums"
+                    android:text="@string/albums"
+                    android:textColor="@color/colorButtonRed"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
 
-            <com.namastey.customViews.CustomButton
-                android:id="@+id/btnEditProfile"
-                style="@style/btnRedStyle"
-                android:minHeight="@dimen/_32sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/edit_info"
-                android:onClick="onClickEditProfile"
-                app:layout_constraintStart_toEndOf="@+id/btnProfileAlbums"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnEditProfile"
+                    style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:minHeight="@dimen/_32sdp"
+                    android:onClick="onClickEditProfile"
+                    android:text="@string/edit_info"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toEndOf="@+id/btnProfileAlbums"
+                    app:layout_constraintTop_toBottomOf="@id/llProfileBackground" />
 
-            <ImageView
-                android:id="@+id/ivProfilePassport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_profile_passport"
-                app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                app:layout_constraintTop_toBottomOf="@id/btnProfileSignup" />
+                <ImageView
+                    android:id="@+id/ivProfilePassport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickPassport"
+                    android:src="@drawable/ic_profile_passport"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileSignup" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvProfilePassport"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:text="@string/passport"
-                android:gravity="center"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toStartOf="@id/ivProfileBoosts"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivProfilePassport" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvProfilePassport"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:text="@string/passport"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintEnd_toStartOf="@id/ivProfileBoosts"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfilePassport" />
 
-            <ImageView
-                android:id="@+id/ivProfileMembership"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_profile_membership"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                app:layout_constraintTop_toBottomOf="@id/btnProfileSignup"
-                app:layout_constraintTop_toTopOf="@id/ivProfilePassport" />
+                <ImageView
+                    android:id="@+id/ivProfileMembership"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_profile_membership"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileSignup"
+                    app:layout_constraintTop_toTopOf="@id/ivProfilePassport" />
 
-            <com.namastey.customViews.CustomTextView
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_width="0dp"
-                android:text="@string/membership"
-                android:gravity="center"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivProfileBoosts"
-                app:layout_constraintTop_toBottomOf="@id/ivProfileMembership" />
+                <com.namastey.customViews.CustomTextView
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:text="@string/membership"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivProfileBoosts"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileMembership" />
 
-            <ImageView
-                android:id="@+id/ivProfileBoosts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_profile_boost"
-                app:layout_constraintBottom_toBottomOf="@+id/tvProfilePassport"
-                app:layout_constraintEnd_toStartOf="@id/ivProfileMembership"
-                app:layout_constraintStart_toEndOf="@id/ivProfilePassport"
-                app:layout_constraintTop_toBottomOf="@+id/tvProfilePassport" />
+                <ImageView
+                    android:id="@+id/ivProfileBoosts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_profile_boost"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvProfilePassport"
+                    app:layout_constraintEnd_toStartOf="@id/ivProfileMembership"
+                    app:layout_constraintStart_toEndOf="@id/ivProfilePassport"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfilePassport" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvProfileBoots"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:text="@string/boosts"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"
-                app:layout_constraintStart_toStartOf="@id/ivProfileBoosts"
-                app:layout_constraintTop_toBottomOf="@id/ivProfileBoosts" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvProfileBoots"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:text="@string/boosts"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileBoosts"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileBoosts" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvGetMore"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:text="@string/get_more"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp"
-                android:paddingBottom="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"
-                app:layout_constraintStart_toStartOf="@id/ivProfileBoosts"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileBoots" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGetMore"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:text="@string/get_more"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileBoosts"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileBoosts"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileBoots" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewpagerMembership"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_margin="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/tvGetMore"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpagerMembership"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvGetMore" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
-                app:tabBackground="@drawable/indicator_selector"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp"
-                app:layout_constraintTop_toBottomOf="@id/viewpagerMembership"
-                app:layout_constraintStart_toStartOf="@id/viewpagerMembership"
-                app:layout_constraintEnd_toEndOf="@id/viewpagerMembership"/>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    app:layout_constraintEnd_toEndOf="@id/viewpagerMembership"
+                    app:layout_constraintStart_toStartOf="@id/viewpagerMembership"
+                    app:layout_constraintTop_toBottomOf="@id/viewpagerMembership"
+                    app:tabBackground="@drawable/indicator_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    <FrameLayout
-        android:id="@+id/flContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"/>
+        <FrameLayout
+            android:id="@+id/flContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true" />
 
-</FrameLayout>
+    </FrameLayout>
 </layout>

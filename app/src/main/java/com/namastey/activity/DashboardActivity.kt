@@ -846,7 +846,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onSelectItemClick(
@@ -1040,7 +1039,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
             val intent = Intent(this@DashboardActivity, MatchesScreenActivity::class.java)
             intent.putExtra("username", dashboardBean.username);
-            intent.putExtra("profile_url", dashboardBean.profile_url);
+            intent.putExtra("profile_url", dashboardBean.profile_url)
             openActivity(intent)
         }
 

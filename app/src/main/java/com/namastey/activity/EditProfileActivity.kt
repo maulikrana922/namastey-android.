@@ -59,11 +59,9 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = profileBasicViewModel

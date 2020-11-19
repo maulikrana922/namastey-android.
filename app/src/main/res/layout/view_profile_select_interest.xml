@@ -39,63 +39,63 @@
         app:layout_constraintStart_toStartOf="@id/tvAddLinks"
         app:layout_constraintTop_toBottomOf="@id/tvAddLinks">
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:visibility="gone"-->
-<!--            android:id="@+id/mainSnapchat"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/rounded_white_solid"-->
-<!--            android:padding="@dimen/_8sdp">-->
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--            android:visibility="gone"-->
+        <!--            android:id="@+id/mainSnapchat"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@drawable/rounded_white_solid"-->
+        <!--            android:padding="@dimen/_8sdp">-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/ivSnapchat"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:src="@drawable/ic_link_snapchat"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/ivSnapchat"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="@dimen/_5sdp"-->
+        <!--                android:src="@drawable/ic_link_snapchat"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--            <com.namastey.customViews.CustomTextView-->
-<!--                android:id="@+id/tvSnapchat"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_7sdp"-->
-<!--                android:text="@string/snapchat"-->
-<!--                android:textColor="@color/color_yellow_snapchat"-->
-<!--                android:textSize="14sp"-->
-<!--                app:layout_constraintBottom_toTopOf="@id/tvSnapchatLink"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@id/ivSnapchat"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_chainStyle="packed"-->
-<!--                app:typeface="MULI_SEMIBOLD" />-->
+        <!--            <com.namastey.customViews.CustomTextView-->
+        <!--                android:id="@+id/tvSnapchat"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="@dimen/_7sdp"-->
+        <!--                android:text="@string/snapchat"-->
+        <!--                android:textColor="@color/color_yellow_snapchat"-->
+        <!--                android:textSize="14sp"-->
+        <!--                app:layout_constraintBottom_toTopOf="@id/tvSnapchatLink"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintStart_toEndOf="@id/ivSnapchat"-->
+        <!--                app:layout_constraintTop_toTopOf="parent"-->
+        <!--                app:layout_constraintVertical_chainStyle="packed"-->
+        <!--                app:typeface="MULI_SEMIBOLD" />-->
 
-<!--            <com.namastey.customViews.CustomTextView-->
-<!--                android:id="@+id/tvSnapchatLink"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingEnd="@dimen/_8sdp"-->
-<!--                android:textColor="@color/color_yellow_snapchat"-->
-<!--                android:textSize="12sp"-->
-<!--                android:singleLine="true"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/tvSnapchat"-->
-<!--                app:layout_constraintStart_toStartOf="@id/tvSnapchat"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/tvSnapchat" />-->
+        <!--            <com.namastey.customViews.CustomTextView-->
+        <!--                android:id="@+id/tvSnapchatLink"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:paddingEnd="@dimen/_8sdp"-->
+        <!--                android:textColor="@color/color_yellow_snapchat"-->
+        <!--                android:textSize="12sp"-->
+        <!--                android:singleLine="true"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintEnd_toEndOf="@id/tvSnapchat"-->
+        <!--                app:layout_constraintStart_toStartOf="@id/tvSnapchat"-->
+        <!--                app:layout_constraintTop_toBottomOf="@id/tvSnapchat" />-->
 
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/mainFacebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rounded_white_solid"
-            android:padding="@dimen/_8sdp">
+            android:padding="@dimen/_8sdp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/ivFacebook"
@@ -127,9 +127,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/_8sdp"
+                android:singleLine="true"
                 android:textColor="@color/color_blue_facebook"
                 android:textSize="12sp"
-                android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                 app:layout_constraintStart_toStartOf="@id/tvFacebook"
@@ -177,9 +177,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/_8sdp"
+                android:singleLine="true"
                 android:textColor="@color/color_tiktok"
                 android:textSize="12sp"
-                android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvTwitter"
                 app:layout_constraintStart_toStartOf="@id/tvTwitter"
@@ -227,9 +227,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/_8sdp"
+                android:singleLine="true"
                 android:textColor="@color/color_instagram"
                 android:textSize="12sp"
-                android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvInstagram"
                 app:layout_constraintStart_toStartOf="@id/tvInstagram"
@@ -276,9 +276,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingEnd="@dimen/_8sdp"
+                android:singleLine="true"
                 android:textColor="@color/color_spotify"
                 android:textSize="12sp"
-                android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvSpotify"
                 app:layout_constraintStart_toStartOf="@id/tvSpotify"
@@ -286,54 +286,54 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/mainLinkedin"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="@dimen/_10sdp"-->
-<!--            android:background="@drawable/rounded_white_solid"-->
-<!--            android:padding="@dimen/_8sdp"-->
-<!--            android:visibility="gone">-->
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--            android:id="@+id/mainLinkedin"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/_10sdp"-->
+        <!--            android:background="@drawable/rounded_white_solid"-->
+        <!--            android:padding="@dimen/_8sdp"-->
+        <!--            android:visibility="gone">-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/ivLinkedin"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_5sdp"-->
-<!--                android:src="@drawable/ic_link_linkedin"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/ivLinkedin"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="@dimen/_5sdp"-->
+        <!--                android:src="@drawable/ic_link_linkedin"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--            <com.namastey.customViews.CustomTextView-->
-<!--                android:id="@+id/tvLinkedin"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/_7sdp"-->
-<!--                android:text="@string/linkedin"-->
-<!--                android:textColor="@color/color_linkedin"-->
-<!--                android:textSize="14sp"-->
-<!--                app:layout_constraintBottom_toTopOf="@id/tvLinkedinLink"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@id/ivLinkedin"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_chainStyle="packed"-->
-<!--                app:typeface="MULI_SEMIBOLD" />-->
+        <!--            <com.namastey.customViews.CustomTextView-->
+        <!--                android:id="@+id/tvLinkedin"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="@dimen/_7sdp"-->
+        <!--                android:text="@string/linkedin"-->
+        <!--                android:textColor="@color/color_linkedin"-->
+        <!--                android:textSize="14sp"-->
+        <!--                app:layout_constraintBottom_toTopOf="@id/tvLinkedinLink"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintStart_toEndOf="@id/ivLinkedin"-->
+        <!--                app:layout_constraintTop_toTopOf="parent"-->
+        <!--                app:layout_constraintVertical_chainStyle="packed"-->
+        <!--                app:typeface="MULI_SEMIBOLD" />-->
 
-<!--            <com.namastey.customViews.CustomTextView-->
-<!--                android:id="@+id/tvLinkedinLink"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingEnd="@dimen/_8sdp"-->
-<!--                android:textColor="@color/color_linkedin"-->
-<!--                android:textSize="12sp"-->
-<!--                android:singleLine="true"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/tvLinkedin"-->
-<!--                app:layout_constraintStart_toStartOf="@id/tvLinkedin"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/tvLinkedin" />-->
+        <!--            <com.namastey.customViews.CustomTextView-->
+        <!--                android:id="@+id/tvLinkedinLink"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:paddingEnd="@dimen/_8sdp"-->
+        <!--                android:textColor="@color/color_linkedin"-->
+        <!--                android:textSize="12sp"-->
+        <!--                android:singleLine="true"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintEnd_toEndOf="@id/tvLinkedin"-->
+        <!--                app:layout_constraintStart_toStartOf="@id/tvLinkedin"-->
+        <!--                app:layout_constraintTop_toBottomOf="@id/tvLinkedin" />-->
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </LinearLayout>
 
@@ -372,6 +372,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tvProfileTag"
         app:layout_constraintEnd_toEndOf="@id/llLinkLayout"
         app:layout_constraintTop_toTopOf="@id/tvProfileTag" />
+
     <LinearLayout
         android:id="@+id/llProfileTag"
         android:layout_width="0dp"

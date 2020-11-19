@@ -49,7 +49,6 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView, O
     }
 
     override fun onSuccessResponse(jobBean: JobBean) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessJobList(jobList: ArrayList<JobBean>) {

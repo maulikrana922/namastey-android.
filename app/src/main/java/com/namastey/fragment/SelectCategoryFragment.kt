@@ -20,9 +20,7 @@ import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectCategoryViewModel
-import kotlinx.android.synthetic.main.fragment_interest_in.*
 import kotlinx.android.synthetic.main.fragment_select_category.*
-import kotlinx.android.synthetic.main.fragment_select_category.ivProfileImage
 import javax.inject.Inject
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
@@ -141,6 +139,5 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     }
 
     override fun onSubCategoryItemClick(position: Int) {
-        TODO("Not yet implemented")
     }
 }

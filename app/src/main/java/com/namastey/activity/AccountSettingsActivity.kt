@@ -73,4 +73,9 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
             finishActivity()
         }
     }
+
+    override fun onDestroy() {
+        accountSettingsViewModel.onDestroy()
+        super.onDestroy()
+    }
 }

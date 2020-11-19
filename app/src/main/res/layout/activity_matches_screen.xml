@@ -15,219 +15,222 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_matches_screen">
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_matches_screen"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_32sdp"
-                    android:src="@drawable/balloon_orange"
-                    tools:ignore="ContentDescription" />
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_78sdp"
-                    android:src="@drawable/balloon_green"
-                    tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_32sdp"
+                        android:src="@drawable/balloon_orange"
+                        tools:ignore="ContentDescription" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_2sdp"
-                    android:layout_marginBottom="@dimen/_107sdp"
-                    android:src="@drawable/rectangle_238"
-                    tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_78sdp"
+                        android:src="@drawable/balloon_green"
+                        tools:ignore="ContentDescription" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_112sdp"
-                    android:src="@drawable/rectangle_239"
-                    tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:layout_marginBottom="@dimen/_107sdp"
+                        android:src="@drawable/rectangle_238"
+                        tools:ignore="ContentDescription" />
 
-                <ImageView
-                    android:layout_width="@dimen/_32sdp"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_gravity="start|center"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginBottom="@dimen/_36sdp"
-                    android:src="@drawable/circle_orange_hollow"
-                    tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_112sdp"
+                        android:src="@drawable/rectangle_239"
+                        tools:ignore="ContentDescription" />
 
-                <ImageView
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="@dimen/_80sdp"
-                    android:layout_marginEnd="@dimen/_24sdp"
-                    android:src="@drawable/circle_white_hollow"
-                    tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="@dimen/_16sdp"
+                        android:layout_marginBottom="@dimen/_36sdp"
+                        android:src="@drawable/circle_orange_hollow"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/_80sdp"
+                        android:layout_marginEnd="@dimen/_24sdp"
+                        android:src="@drawable/circle_white_hollow"
+                        tools:ignore="ContentDescription" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvCongratulations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="@string/congratulations"
+                        android:textColor="@color/colorRed"
+                        android:textSize="40sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.RoundImageView
+                        android:id="@+id/ivProfile1"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_105sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_90sdp"
+                        android:layout_marginEnd="@dimen/_55sdp"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_placeholder"
+                        app:cornerRadius="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+                        app:roundedCorners="topLeft|bottomRight" />
+
+                    <com.namastey.customViews.RoundImageView
+                        android:id="@+id/ivProfile2"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_105sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_55sdp"
+                        android:layout_marginTop="@dimen/_90sdp"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_placeholder"
+                        app:cornerRadius="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
+                        app:roundedCorners="topRight|bottomLeft" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_gravity="center|bottom"
+                        android:layout_marginStart="@dimen/_100sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:src="@drawable/circle_pink_hollow"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_gravity="center|bottom"
+                        android:layout_marginBottom="@dimen/_32sdp"
+                        android:src="@drawable/ic_list_like"
+                        tools:ignore="ContentDescription" />
+
+                </FrameLayout>
 
                 <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvCongratulations"
+                    android:id="@+id/tvItsMatch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:gravity="center"
-                    android:text="@string/congratulations"
-                    android:textColor="@color/colorRed"
-                    android:textSize="40sp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="17sp"
                     app:typeface="MULI_EXTRA_BOLD" />
 
-                <com.namastey.customViews.RoundImageView
-                    android:id="@+id/ivProfile1"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_105sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_90sdp"
-                    android:layout_marginEnd="@dimen/_55sdp"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_placeholder"
-                    app:cornerRadius="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-                    app:roundedCorners="topLeft|bottomRight" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mainGoToChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@drawable/rounded_white_solid">
 
-                <com.namastey.customViews.RoundImageView
-                    android:id="@+id/ivProfile2"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_105sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_55sdp"
-                    android:layout_marginTop="@dimen/_90sdp"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_placeholder"
-                    app:cornerRadius="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-                    app:roundedCorners="topRight|bottomLeft" />
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvGoToChat"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_12sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_12sdp"
+                        android:text="@string/go_to_the_chat"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_SEMIBOLD" />
 
-                <ImageView
-                    android:layout_width="@dimen/_32sdp"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginStart="@dimen/_100sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:src="@drawable/circle_pink_hollow"
-                    tools:ignore="ContentDescription" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:layout_width="@dimen/_36sdp"
-                    android:layout_height="@dimen/_36sdp"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="@dimen/_32sdp"
-                    android:src="@drawable/ic_list_like"
-                    tools:ignore="ContentDescription" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mainBackToNamastey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@drawable/rounded_red_solid">
 
-            </FrameLayout>
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvBackToNamastey"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_12sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_12sdp"
+                        android:text="@string/back_to_namastey"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_SEMIBOLD" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvItsMatch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="17sp"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mainGoToChat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_white_solid">
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvGoToChat"
+                    android:id="@+id/tvShareWithFriends"
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_12sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_12sdp"
-                    android:text="@string/go_to_the_chat"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:drawableTop="@drawable/ic_share_with_frd"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:onClick="onClickShare"
+                    android:text="@string/share_with_friends"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:typeface="MULI_SEMIBOLD" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mainBackToNamastey"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_red_solid">
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvBackToNamastey"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_12sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_12sdp"
-                    android:text="@string/back_to_namastey"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:typeface="MULI_SEMIBOLD" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvShareWithFriends"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_gravity="bottom|center"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_8sdp"
-                android:drawableTop="@drawable/ic_share_with_frd"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center"
-                android:onClick="onClickShare"
-                android:text="@string/share_with_friends"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp"
-                app:typeface="MULI_SEMIBOLD" />
-
-        </LinearLayout>
-</ScrollView>
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationStar"
             android:layout_width="match_parent"

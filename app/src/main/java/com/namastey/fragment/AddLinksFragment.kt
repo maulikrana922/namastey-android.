@@ -9,7 +9,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.facebook.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
@@ -54,6 +57,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
     override fun getBindingVariable() = BR.viewModel
 
+    override fun getViewModel() = profileInterestViewModel
+
     companion object {
         fun getInstance(fromEditProfile: Boolean, socialAccountList: ArrayList<SocialAccountBean>) =
             AddLinksFragment().apply {
@@ -62,6 +67,17 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                     putSerializable("socialAccountList", socialAccountList)
                 }
             }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getActivityComponent().inject(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutView = view
+        setupViewModel()
     }
 
     private fun setupViewModel() {
@@ -74,6 +90,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
         initListener()
         initData()
+        showLinkDeleteIcons()
     }
 
     private fun initListener() {
@@ -83,6 +100,11 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         edtFacebook.setOnClickListener(this)
         edtSpotify.setOnClickListener(this)
         edtTwitter.setOnClickListener(this)
+
+        ivFacebookDelete.setOnClickListener(this)
+        ivTwitterDelete.setOnClickListener(this)
+        ivInstagramDelete.setOnClickListener(this)
+        ivSpotifyDelete.setOnClickListener(this)
     }
 
     private fun initData() {
@@ -111,19 +133,16 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 arguments!!.getSerializable("socialAccountList") as ArrayList<SocialAccountBean>
             if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }) {
                 mainFacebook.visibility = View.VISIBLE
-                edtFacebook.setText(data.single { s -> s.name == getString(R.string.facebook) }
-                    .link)
+                edtFacebook.setText(data.single { s -> s.name == getString(R.string.facebook) }.link)
             }
             if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }) {
                 mainInstagram.visibility = View.VISIBLE
-                edtInstagram.setText(data.single { s -> s.name == getString(R.string.instagram) }
-                    .link)
+                edtInstagram.setText(data.single { s -> s.name == getString(R.string.instagram) }.link)
             }
 
             if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }) {
                 mainTwitter.visibility = View.VISIBLE
-                edtTwitter.setText(data.single { s -> s.name == getString(R.string.twitter) }
-                    .link)
+                edtTwitter.setText(data.single { s -> s.name == getString(R.string.twitter) }.link)
             }
 //            if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }) {
 //                mainSnapchat.visibility = View.VISIBLE
@@ -149,71 +168,27 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        getActivityComponent().inject(this)
-    }
+    fun fetchUserProfile(twitterSession: TwitterSession?) {
+        val twitterApiClient = TwitterApiClient(twitterSession)
+        val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
+        getUserCall.enqueue(object : Callback<User?>() {
 
-    override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
-        if (activity is ProfileInterestActivity) {
-            (activity as ProfileInterestActivity).onActivityReenter(
-                Constants.ADD_LINK,
-                Intent()
-            )
-        } else if (activity is EditProfileActivity) {
-            targetFragment!!.onActivityResult(
-                Constants.REQUEST_CODE,
-                Activity.RESULT_OK,
-                Intent().putExtra("fromAddLink", true)
-            )
-        }
-        fragmentManager!!.popBackStack()
-    }
-
-    override fun getViewModel() = profileInterestViewModel
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        layoutView = view
-        setupViewModel()
-
-    }
-
-    override fun onClick(p0: View?) {
-        when (p0) {
-            ivCloseAddLink -> {
-                Utils.hideKeyboard(requireActivity())
-                fragmentManager!!.popBackStack()
-            }
-            tvAddLinkSave -> {
-                createRequest()
-            }
-            edtFacebook -> {
-                connectFacebook()
+            override fun failure(exception: TwitterException) {
+                Log.e("Twitter", "Failed to get user data " + exception.message)
             }
 
-            edtTwitter -> {
-                twitterLogin()
-            }
-
-            edtSpotify -> {
-                val builder: AuthenticationRequest.Builder =
-                    AuthenticationRequest.Builder(
-                        getString(R.string.spotify_client_id),
-                        AuthenticationResponse.Type.TOKEN,
-                        getString(R.string.spotify_redirect_uri)
-                    )
-
-                builder.setScopes(arrayOf("user-read-private", "streaming"))
-                val request: AuthenticationRequest = builder.build()
-
-                AuthenticationClient.openLoginActivity(
-                    requireActivity(),
-                    Constants.REQUEST_SPOTIFY,
-                    request
+            override fun success(result: Result<User?>?) {
+                val user: User = result!!.data!!
+                Log.d(
+                    "Twitter url : ",
+                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
                 )
+                edtTwitter.setText(
+                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
+                )
+
             }
-        }
+        })
     }
 
     private fun createRequest() {
@@ -357,11 +332,113 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         )
     }
 
-    override fun onSuccessSpotify(spotifyUrl: String) {
+    private fun twitterLogin() {
 
-        Log.d("Spotify URL : ", spotifyUrl)
-        edtSpotify.setText(spotifyUrl)
+        if (getTwitterSession() == null) {
+            mTwitterAuthClient!!.authorize(requireActivity(), object : Callback<TwitterSession>() {
+                override fun success(twitterSessionResult: Result<TwitterSession>) {
+                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
+                    val twitterSession = twitterSessionResult.data
+                    fetchUserProfile(twitterSession)
+                }
 
+                override fun failure(e: TwitterException) {
+                    Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
+    private fun showLinkDeleteIcons() {
+        if (edtFacebook.text.toString() == "") {
+            ivFacebookDelete.visibility = View.GONE
+        } else {
+            ivFacebookDelete.visibility = View.VISIBLE
+        }
+
+        Log.e("AddLinkFragment", "edtTwitter: ${edtTwitter.text.toString()}")
+
+        if (edtTwitter.text.toString() == "") {
+            ivTwitterDelete.visibility = View.GONE
+        } else {
+            ivTwitterDelete.visibility = View.VISIBLE
+        }
+
+        if (edtInstagram.text.toString() == "") {
+            ivInstagramDelete.visibility = View.GONE
+        } else {
+            ivInstagramDelete.visibility = View.VISIBLE
+        }
+
+        if (edtSpotify.text.toString() == "") {
+            ivSpotifyDelete.visibility = View.GONE
+        } else {
+            ivSpotifyDelete.visibility = View.VISIBLE
+        }
+    }
+
+    private fun getTwitterSession(): TwitterSession? {
+
+        //NOTE : if you want to get token and secret too use uncomment the below code
+        /*TwitterAuthToken authToken = session.getAuthToken();
+        String token = authToken.token;
+        String secret = authToken.secret;*/
+
+        if (TwitterCore.getInstance().sessionManager.activeSession != null)
+            TwitterCore.getInstance().sessionManager.clearActiveSession()
+
+        return TwitterCore.getInstance().sessionManager.activeSession
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0) {
+            ivCloseAddLink -> {
+                Utils.hideKeyboard(requireActivity())
+                fragmentManager!!.popBackStack()
+            }
+            tvAddLinkSave -> {
+                createRequest()
+            }
+            edtFacebook -> {
+                connectFacebook()
+            }
+            edtTwitter -> {
+                twitterLogin()
+            }
+            edtSpotify -> {
+                val builder: AuthenticationRequest.Builder =
+                    AuthenticationRequest.Builder(
+                        getString(R.string.spotify_client_id),
+                        AuthenticationResponse.Type.TOKEN,
+                        getString(R.string.spotify_redirect_uri)
+                    )
+
+                builder.setScopes(arrayOf("user-read-private", "streaming"))
+                val request: AuthenticationRequest = builder.build()
+
+                AuthenticationClient.openLoginActivity(
+                    requireActivity(),
+                    Constants.REQUEST_SPOTIFY,
+                    request
+                )
+            }
+            ivFacebookDelete -> {
+                edtFacebook.setText("")
+                ivFacebookDelete.visibility = View.GONE
+            }
+            ivTwitterDelete -> {
+                edtTwitter.setText("")
+                ivTwitterDelete.visibility = View.GONE
+            }
+            ivInstagramDelete -> {
+                edtInstagram.setText("")
+                ivInstagramDelete.visibility = View.GONE
+            }
+            ivSpotifyDelete -> {
+                edtSpotify.setText("")
+                ivSpotifyDelete.visibility = View.GONE
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -391,57 +468,27 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
     }
 
-    private fun twitterLogin() {
-
-        if (getTwitterSession() == null) {
-            mTwitterAuthClient!!.authorize(requireActivity(), object : Callback<TwitterSession>() {
-                override fun success(twitterSessionResult: Result<TwitterSession>) {
-                    Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
-                    val twitterSession = twitterSessionResult.data
-                    fetchUserProfile(twitterSession)
-                }
-
-                override fun failure(e: TwitterException) {
-                    Toast.makeText(requireActivity(), "Failure", Toast.LENGTH_SHORT).show()
-                }
-            })
+    override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
+        Log.e("AddLinksFragment", "onSuccessResponse: \t link: ${data[0].link}")
+        Log.e("AddLinksFragment", "onSuccessResponse: \t name: ${data[0].name}")
+        if (activity is ProfileInterestActivity) {
+            (activity as ProfileInterestActivity).onActivityReenter(
+                Constants.ADD_LINK,
+                Intent()
+            )
+        } else if (activity is EditProfileActivity) {
+            targetFragment!!.onActivityResult(
+                Constants.REQUEST_CODE,
+                Activity.RESULT_OK,
+                Intent().putExtra("fromAddLink", true)
+            )
         }
+        fragmentManager!!.popBackStack()
     }
 
-    fun fetchUserProfile(twitterSession: TwitterSession?) {
-        val twitterApiClient = TwitterApiClient(twitterSession)
-        val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
-        getUserCall.enqueue(object : Callback<User?>() {
-
-            override fun failure(exception: TwitterException) {
-                Log.e("Twitter", "Failed to get user data " + exception.message)
-            }
-
-            override fun success(result: Result<User?>?) {
-                val user: User = result!!.data!!
-                Log.d(
-                    "Twitter url : ",
-                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
-                )
-                edtTwitter.setText(
-                    Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
-                )
-
-            }
-        })
-    }
-
-    private fun getTwitterSession(): TwitterSession? {
-
-        //NOTE : if you want to get token and secret too use uncomment the below code
-        /*TwitterAuthToken authToken = session.getAuthToken();
-        String token = authToken.token;
-        String secret = authToken.secret;*/
-
-        if (TwitterCore.getInstance().sessionManager.activeSession != null)
-            TwitterCore.getInstance().sessionManager.clearActiveSession()
-
-        return TwitterCore.getInstance().sessionManager.activeSession
+    override fun onSuccessSpotify(spotifyUrl: String) {
+        Log.d("Spotify URL : ", spotifyUrl)
+        edtSpotify.setText(spotifyUrl)
     }
 
     override fun onDestroy() {

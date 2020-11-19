@@ -54,8 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
-                    android:padding="@dimen/_5sdp"
                     android:onClick="onClickProfileMore"
+                    android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_more"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
@@ -274,7 +274,6 @@
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
 
-
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/groupButtons"
                     android:layout_width="wrap_content"
@@ -337,8 +336,8 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:minHeight="@dimen/_32sdp"
-                    android:text="@string/like"
                     android:onClick="onClickProfileLike"
+                    android:text="@string/like"
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
@@ -354,6 +353,16 @@
                     app:layout_constraintTop_toBottomOf="@id/btnProfileMatches"
                     app:reverseLayout="true"
                     app:stackFromEnd="true" />
+
+                <include
+                    android:id="@+id/layoutPrivateAccount"
+                    layout="@layout/view_private_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileMatches" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

@@ -49,7 +49,6 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
     }
 
     override fun onSuccessResponse(educationBean: EducationBean) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessEducationList(educationList: ArrayList<EducationBean>) {
