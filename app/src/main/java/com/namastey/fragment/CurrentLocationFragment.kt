@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.PassportContentActivity
 import com.namastey.adapter.CurrentLocationAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentCurrentLocationBinding
@@ -61,6 +62,11 @@ class CurrentLocationFragment : BaseFragment<FragmentCurrentLocationBinding>(),
     private fun initUI() {
         currentLocationAdapter = CurrentLocationAdapter(requireActivity())
         rvLocation.adapter = currentLocationAdapter
+
+        btnAddNewLocation.setOnClickListener {
+            openActivity(requireActivity(), PassportContentActivity())
+
+        }
     }
 
 }

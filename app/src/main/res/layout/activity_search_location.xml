@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.SearchLocationActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.LocationViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scaleType="fitXY"
+            android:src="@drawable/map"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivSearchLocationBack"
+                android:layout_width="@dimen/_26sdp"
+                android:layout_height="@dimen/_26sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:background="@drawable/rounded_white_solid_all_corner"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickSearchLocationBack"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_close"
+                android:tint="@color/colorBlack" />
+
+            <LinearLayout
+                android:id="@+id/llSearchSearchLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/rounded_white_solid"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchDestination"
+                    style="@style/searchViewStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:defaultQueryHint="@string/search_user"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="@string/enter_destination"
+                    app:searchHintIcon="@drawable/ic_search" />
+
+                <ImageView
+                    android:id="@+id/ivLocation"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:src="@drawable/ic_current_location"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</layout>

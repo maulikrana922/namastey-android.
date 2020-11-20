@@ -31,13 +31,13 @@ class OTPViewModel constructor(
         otpView.onConfirm()
     }
 
-    fun verifyOTP(phone: String, email: String, otp: String) {
+    fun verifyOTP(phone: String, email: String, otp: String, deviceToken: String) {
         if (isValidOTP(otp)) {
             setIsLoading(true)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
                     if (otpView.isInternetAvailable()) {
-                        networkService.requestVerifyOTP(phone,email,otp).let { appResponse: AppResponse<User> ->
+                        networkService.requestVerifyOTP(phone,email,otp, deviceToken).let { appResponse: AppResponse<User> ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK) {
                                 otpView.onSuccessResponse(appResponse.data!!)

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.PassportContentActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.LocationViewModel" />
+    </data>
+
+    <!--<androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAddComment"
+        android:fillViewport="true">-->
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/llPassportContentBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".85"
+                    android:background="@drawable/rounded_bottom_blue_gradient"
+                    android:contentDescription="@string/app_name" />
+
+                <!--todo: replace with map View-->
+                <ImageView
+                    android:id="@+id/imageMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/map"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivPassportContentBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickPassportContentBack"
+                    android:src="@drawable/ic_back" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvPassport"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/passport"
+                    android:textSize="26sp"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGetContentFromAnyPlace"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/get_content_from_any_place"
+                    android:textSize="16sp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <LinearLayout
+                    android:id="@+id/llSearchDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/rounded_white_solid"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchDestination"
+                        style="@style/searchViewStyle"
+                        android:onClick="onClickSearchDestination"
+                        app:defaultQueryHint="@string/search_user"
+                        app:iconifiedByDefault="false"
+                        app:queryHint="@string/enter_destination"
+                        app:searchHintIcon="@drawable/ic_search" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+    <!--</androidx.core.widget.NestedScrollView>-->
+</layout>

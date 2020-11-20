@@ -21,14 +21,17 @@ interface NetworkRequest {
     @FormUrlEncoded
     @POST(Constants.VERIFY_OTP)
     fun verifyOTPAsync(
-        @Field(Constants.MOBILE) phone: String, @Field(Constants.EMAIL) email: String, @Field(
-            Constants.OTP
-        ) otp: String
+        @Field(Constants.MOBILE) phone: String,
+        @Field(Constants.EMAIL) email: String,
+        @Field(Constants.OTP) otp: String,
+        @Field(Constants.DEVICE_TOKEN) deviceToken: String
     ): Deferred<AppResponse<User>>
 
     @FormUrlEncoded
     @POST(Constants.GET_VIDEO_LANGUAGE)
-    fun requestToGetVideoLanguageAsync(@Field(Constants.COUNTRY_CODE) local: String): Deferred<AppResponse<ArrayList<VideoLanguageBean>>>
+    fun requestToGetVideoLanguageAsync(
+        @Field(Constants.COUNTRY_CODE) local: String
+    ): Deferred<AppResponse<ArrayList<VideoLanguageBean>>>
 
     @GET(Constants.GET_INTEREST_LIST)
     fun requestToGetChooseInterestAsync(): Deferred<AppResponse<ArrayList<InterestBean>>>
