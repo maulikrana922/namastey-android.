@@ -26,8 +26,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestSendOTP(jsonObject: JsonObject): AppResponse<User> =
         withContext(Dispatchers.IO) { networkRequest.sendOTPAsync(jsonObject).await() }
 
-    suspend fun requestVerifyOTP(phone: String, email: String, otp: String): AppResponse<User> =
-        withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp).await() }
+    suspend fun requestVerifyOTP(phone: String, email: String, otp: String,  deviceToken: String): AppResponse<User> =
+        withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp,deviceToken).await() }
 
     suspend fun requestToGetVideoLanguage(locale: String): AppResponse<ArrayList<VideoLanguageBean>> =
         withContext(Dispatchers.IO) {

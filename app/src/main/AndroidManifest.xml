@@ -29,7 +29,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.LocationActivity"></activity>
+        <activity android:name=".activity.SearchLocationActivity"></activity>
+        <activity android:name=".activity.PassportContentActivity" />
+        <activity android:name=".activity.LocationActivity" />
         <activity
             android:name=".activity.ChatActivity"
             android:screenOrientation="portrait"

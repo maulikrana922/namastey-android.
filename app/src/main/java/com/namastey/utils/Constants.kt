@@ -148,6 +148,7 @@ object Constants {
     const val KEY_USER_ID = "KEY_USER_ID"
     const val KEY_IS_LOGIN = "KEY_IS_LOGIN"
     const val KEY_SESSION_TOKEN = "KEY_SESSION_TOKEN"
+    const val KEY_FIREBASE_TOKEN = "KEY_FIREBASE_TOKEN"
     const val KEY_LOGIN_TYPE = "KEY_LOGIN_TYPE"
     const val KEY_INTERNET_AVAILABLE = "KEY_INTERNET_AVAILABLE"
     const val KEY_IS_VERIFIED_USER = "KEY_IS_VERIFIED_USER"
@@ -177,6 +178,7 @@ object Constants {
     const val KEY_IS_YOUR_FOLLOWERS = "KEY_IS_YOUR_FOLLOWERS"
     const val KEY_CAN_SEND_YOU_DIRECT_MESSAGE = "KEY_CAN_SEND_YOU_DIRECT_MESSAGE"
     const val KEY_CAN_COMMENT_YOUR_VIDEO = "KEY_CAN_COMMENT_YOUR_VIDEO"
+    const val KEY_NOTIFICATION_DATA = "notification_data"
 
 
     //    field key
@@ -258,6 +260,7 @@ object Constants {
     const val WHO_CAN_COMMENT = "who_can_comment"
     const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
     const val IS_SHARE = "is_share"
+    const val DEVICE_TOKEN = "device_token"
 
 
     //    Other constants
@@ -287,5 +290,12 @@ object Constants {
     val FILE_PATH = SD_CARD_PATH.plus(ROOT)
     val FILE_NAME = "temp.jpg"
     val FILE_NAME_VIDEO = "tempvideo.mp4"
+
+    //Push notification intent  keys
+    const val ACTION_ACTION_TYPE = "action-type"
+    const val NOTIFICATION_TYPE = "notification-type"
+    const val NOTIFICATION_BROADCAST = "notification-broadcast"
+    const val NOTIFICATION_PENDING_INTENT = "notification-pending-intent"
+    const val KEY_NOTIFICATION = "notification"
 
 }

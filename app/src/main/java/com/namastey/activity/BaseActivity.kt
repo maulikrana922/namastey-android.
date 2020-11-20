@@ -1,17 +1,24 @@
 package com.namastey.activity
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -23,10 +30,12 @@ import com.namastey.R
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
+import com.namastey.fcm.MyFirebaseMessagingService
 import com.namastey.listeners.OnInteractionWithFragment
 import com.namastey.uiView.BaseView
 import com.namastey.utils.Constants
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
+import com.namastey.utils.Constants.NOTIFICATION_BROADCAST
 import com.namastey.utils.CustomAlertDialog
 import retrofit2.HttpException
 import java.io.IOException
@@ -273,6 +282,60 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         } else {
             return true
         }
+    }
+
+    fun showNotification(title: String?, body: String?) {
+        val intent = Intent(this, MatchesActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.putExtra(Constants.ACTION_ACTION_TYPE, MyFirebaseMessagingService.KEY_NOTIFICATION)
+        intent.putExtra(Constants.NOTIFICATION_TYPE, NOTIFICATION_BROADCAST)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val channelId = getString(R.string.channel_id)
+        val channelName = getString(R.string.notifiy)
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setupNotificationChannels(channelId, channelName, notificationManager)
+        }
+
+        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setAutoCancel(true)
+            .setSound(soundUri)
+            .setContentIntent(pendingIntent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            notificationBuilder.setDefaults(NotificationManager.IMPORTANCE_HIGH)
+        } else {
+            notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+        }
+
+        notificationManager.notify(0, notificationBuilder.build())
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun setupNotificationChannels(
+        channelId: String,
+        channelName: String,
+        notificationManager: NotificationManager
+    ) {
+
+        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
+        channel.enableLights(true)
+        channel.lightColor = Color.BLACK
+        channel.enableVibration(true)
+        notificationManager.createNotificationChannel(channel)
     }
 
 

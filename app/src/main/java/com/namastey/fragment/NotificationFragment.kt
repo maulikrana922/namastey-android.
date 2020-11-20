@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.MatchesActivity
@@ -16,6 +17,7 @@ import com.namastey.adapter.NotificationAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
+import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.model.ActivityListBean
 import com.namastey.model.FollowRequestBean
 import com.namastey.uiView.NotificationView
@@ -26,7 +28,8 @@ import kotlinx.android.synthetic.main.fragment_notification.*
 import javax.inject.Inject
 
 
-class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), NotificationView {
+class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), NotificationView,
+    FragmentRefreshListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -80,6 +83,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         setupViewModel()
 
         initUI()
+        (activity as MatchesActivity).setFragmentRefreshListener(this)
     }
 
     private fun setupViewModel() {
@@ -172,7 +176,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(resources.getString(R.string.all_activity), Constants.KEY_ALL_ACTIVITY_TITLE)
+            sessionManager.setStringValue(
+                resources.getString(R.string.all_activity),
+                Constants.KEY_ALL_ACTIVITY_TITLE
+            )
             tvAllActivityTitle.text = resources.getString(R.string.all_activity)
             tvAllActivityMain.text = resources.getString(R.string.all_activity)
             //dialog.dismiss()
@@ -184,7 +191,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 1
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(resources.getString(R.string.likes), Constants.KEY_ALL_ACTIVITY_TITLE)
+            sessionManager.setStringValue(
+                resources.getString(R.string.likes),
+                Constants.KEY_ALL_ACTIVITY_TITLE
+            )
             tvAllActivityTitle.text = resources.getString(R.string.likes)
             tvAllActivityMain.text = resources.getString(R.string.likes)
             // dialog.dismiss()
@@ -196,7 +206,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 2
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(resources.getString(R.string.comments), Constants.KEY_ALL_ACTIVITY_TITLE)
+            sessionManager.setStringValue(
+                resources.getString(R.string.comments),
+                Constants.KEY_ALL_ACTIVITY_TITLE
+            )
             tvAllActivityTitle.text = resources.getString(R.string.comments)
             tvAllActivityMain.text = resources.getString(R.string.comments)
             // dialog.dismiss()
@@ -208,7 +221,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 3
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(resources.getString(R.string.followers), Constants.KEY_ALL_ACTIVITY_TITLE)
+            sessionManager.setStringValue(
+                resources.getString(R.string.followers),
+                Constants.KEY_ALL_ACTIVITY_TITLE
+            )
             tvAllActivityTitle.text = resources.getString(R.string.followers)
             tvAllActivityMain.text = resources.getString(R.string.followers)
             //     dialog.dismiss()
@@ -220,7 +236,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             isActivityList = 4
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(resources.getString(R.string.mentions), Constants.KEY_ALL_ACTIVITY_TITLE)
+            sessionManager.setStringValue(
+                resources.getString(R.string.mentions),
+                Constants.KEY_ALL_ACTIVITY_TITLE
+            )
             tvAllActivityTitle.text = resources.getString(R.string.mentions)
             tvAllActivityMain.text = resources.getString(R.string.mentions)
             // dialog.dismiss()
@@ -338,6 +357,21 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
          DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.colorRed))*/
     }
 
+    override fun onRefresh(activityListBean: ActivityListBean?) {
+        if (activityListBean != null) {
+            rvNotification.visibility = View.VISIBLE
+            if (!this::notificationAdapter.isInitialized) {
+                val notificationList = arrayListOf<ActivityListBean>()
+                notificationList.add(activityListBean)
+                notificationAdapter = NotificationAdapter(requireActivity(), notificationList, isActivityList)
+                rvNotification.layoutManager = LinearLayoutManager(context!!)
+                rvNotification.adapter = notificationAdapter
+            } else {
+              //  notificationAdapter.updateNotification(activityListBean)
+            }
+        }
+    }
+
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
         Log.e("NotificationFragment", "onSuccessFollowRequest: \t data: ${data.size}")
         if (data.get(0).profile_url != null && data.get(0).profile_url.isNotEmpty()) {
@@ -414,4 +448,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.onDestroy()
         super.onDestroy()
     }
+
+
 }

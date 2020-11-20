@@ -43,7 +43,8 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         otpViewModel.verifyOTP(
             sessionManager.getUserPhone(),
             sessionManager.getUserEmail(),
-            etOtp.text.toString()
+            etOtp.text.toString(),
+            sessionManager.getFirebaseToken()//"" // Todo: add firebase token
         )
 
     }

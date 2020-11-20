@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <!--Todo: change icon for private account-->
     <ImageView
         android:id="@+id/ivPrivateAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_follow_from_profile"
+        android:background="@drawable/circle_grey_hollow"
+        android:padding="@dimen/_12sdp"
+        android:src="@drawable/ic_lock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
         android:id="@+id/tvFollowPrivateAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:gravity="center"
         android:text="@string/message_follow_private_account"
         android:textColor="@color/colorDarkGray"

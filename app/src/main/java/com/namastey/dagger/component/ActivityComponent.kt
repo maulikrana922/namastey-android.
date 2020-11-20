@@ -64,4 +64,6 @@ interface ActivityComponent {
     fun inject(fragment: PersonalizeDataFragment)
     fun inject(activity: LocationActivity)
     fun inject(fragment: CurrentLocationFragment)
+    fun inject(activity: PassportContentActivity)
+    fun inject(activity: SearchLocationActivity)
 }

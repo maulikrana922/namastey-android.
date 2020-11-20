@@ -13,6 +13,7 @@ import com.namastey.model.JobBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
+import com.namastey.utils.Constants.KEY_FIREBASE_TOKEN
 import com.namastey.utils.Constants.KEY_GENDER
 import com.namastey.utils.Constants.KEY_INTEREST_IN
 import com.namastey.utils.Constants.KEY_INTERNET_AVAILABLE
@@ -21,6 +22,7 @@ import com.namastey.utils.Constants.KEY_IS_LOGIN
 import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
 import com.namastey.utils.Constants.KEY_JOB
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
+import com.namastey.utils.Constants.KEY_NOTIFICATION_DATA
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
 import com.namastey.utils.Constants.MOBILE
@@ -29,6 +31,13 @@ import com.namastey.utils.Constants.USER_UNIQUEID
 class SessionManager(context: Context) {
 
     private var mPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    fun getNotificationCount(): Int =
+        mPrefs.getInt(KEY_NOTIFICATION_DATA, 0)
+
+    fun setNotificationCount(notificationCount: Int) {
+        mPrefs.edit().putInt(KEY_NOTIFICATION_DATA, notificationCount).apply()
+    }
 
     fun logout(userId: Long) {
         mPrefs.edit().clear().apply()
@@ -56,6 +65,16 @@ class SessionManager(context: Context) {
     fun setAccessToken(firebaseToken: String) {
         val e = mPrefs.edit()
         e.putString(KEY_SESSION_TOKEN, firebaseToken)
+        e.apply()
+    }
+
+    fun getFirebaseToken(): String {
+        return mPrefs.getString(KEY_FIREBASE_TOKEN, "")!!
+    }
+
+    fun setFirebaseToken(token: String) {
+        val e = mPrefs.edit()
+        e.putString(KEY_FIREBASE_TOKEN, token)
         e.apply()
     }
 
