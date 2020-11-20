@@ -47,17 +47,16 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivProfileUser"
-                android:layout_width="@dimen/_48sdp"
-                android:layout_height="@dimen/_48sdp"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_male"
+                android:layout_marginStart="@dimen/_7sdp"
                 app:civ_border_color="@color/colorWhite"
                 app:civ_border_width="@dimen/_1sdp"
                 app:civ_circle_background_color="@color/colorWhite"
                 app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
-                app:layout_constraintEnd_toStartOf="@id/ivChatMore"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="@+id/ivChatBack"
+                app:layout_constraintStart_toEndOf="@+id/ivChatBack"
                 app:layout_constraintTop_toTopOf="@id/ivChatBack" />
 
             <com.namastey.customViews.CustomTextView
