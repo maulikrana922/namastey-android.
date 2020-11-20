@@ -178,5 +178,4 @@ dependencies {
     //Lottie:- For animation
     implementation 'com.airbnb.android:lottie:3.5.0'
 
-    implementation 'commons-io:commons-io:2.6'
 }
