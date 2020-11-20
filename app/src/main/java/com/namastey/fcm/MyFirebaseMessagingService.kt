@@ -28,14 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val tag = "FirebaseMessagingService"
 
-    private var nt = 0
-    private var alert = ""
-    private var title = ""
-    private var linkName = ""
-    private var linkUrl = ""
-    private var message = ""
-    private var isRead = 0
-    private var createdAt = ""
+
     private var notificationCount = 0
     private var getNotification = NotificationModel()
 
@@ -71,60 +64,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             try {
                 val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
 
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_COUNT))
-                    notificationCount = mainJsonObject.getInt(KEY_NOTIFICATION_COUNT)
-                if (!mainJsonObject.isNull(KEY_NT))
-                    nt = mainJsonObject.getInt(KEY_NT)
-                if (!mainJsonObject.isNull(KEY_ALERT))
-                    alert = mainJsonObject.getString(KEY_ALERT)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_TITLE))
-                    title = mainJsonObject.getString(KEY_NOTIFICATION_TITLE)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_LINK_NAME))
-                    linkName = mainJsonObject.getString(KEY_NOTIFICATION_LINK_NAME)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_LINK_URL))
-                    linkUrl = mainJsonObject.getString(KEY_NOTIFICATION_LINK_URL)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_MESSAGE))
-                    message = mainJsonObject.getString(KEY_NOTIFICATION_MESSAGE)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_READ))
-                    isRead = mainJsonObject.getInt(KEY_NOTIFICATION_READ)
-                if (!mainJsonObject.isNull(KEY_NOTIFICATION_CREATED_AT))
-                    createdAt = mainJsonObject.getString(KEY_NOTIFICATION_CREATED_AT)
-
                 showNotification(
                     remoteMessage.notification?.title,
                     remoteMessage.notification?.body
                 )
 
                 Log.e("MessageService", "isBackground: ${isBackground()}" )
-                Log.e("MessageService", "nt: $nt" )
-
-                /*if (!isBackground()) { // check in background or not
-                    when (nt) {
-                        1 -> if (JtechApplication.instance.gCurrentActivity() != null && JtechApplication.instance.gCurrentActivity() is DashboardActivity)
-                            sendBroadcastDashboard(
-                                remoteMessage.notification?.title,
-                                remoteMessage.notification?.body
-                            )
-                        else showNotification(
-                            remoteMessage.notification?.title,
-                            remoteMessage.notification?.body
-                        )
-                        2 -> if (JtechApplication.instance.gCurrentActivity() != null && JtechApplication.instance.gCurrentActivity() is DashboardActivity)
-                            sendBroadcastDashboard(
-                                remoteMessage.notification?.title,
-                                remoteMessage.notification?.body
-                            )
-                        else showNotification(
-                            remoteMessage.notification?.title,
-                            remoteMessage.notification?.body
-                        )
-                    }
-                } else {
-                    showNotification(
-                        remoteMessage.notification?.title,
-                        remoteMessage.notification?.body
-                    )
-                }*/
 
             } catch (e: JSONException) {
                 Log.d("error", e.message!!)
@@ -134,16 +79,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     private fun sendBroadcastDashboard(notiTitle: String?, notiMessage: String?) {
-        getNotification = NotificationModel()
         /**
          * Add data to notification Object
          * */
-        getNotification.link_name = linkName
-        getNotification.link_url = linkUrl
-        getNotification.title = title
-        getNotification.is_read = isRead
-        getNotification.message = message
-        getNotification.created_at = createdAt
+
 
         val intent = Intent(NOTIFICATION_ACTION)
         intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
@@ -238,13 +177,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         const val KEY_NOTI_TITLE = "noti_title"
         const val KEY_NOTI_MESSAGE = "noti_message"
         const val KEY_NOTIFICATION_COUNT = "notification_count"
-        const val KEY_NOTIFICATION_TITLE = "title"
-        const val KEY_NOTIFICATION_LINK_NAME = "link_name"
-        const val KEY_NOTIFICATION_LINK_URL = "link_url"
-        const val KEY_NOTIFICATION_MESSAGE = "message"
-        const val KEY_NOTIFICATION_READ = "is_read"
-        const val KEY_NOTIFICATION_CREATED_AT = "created_at"
-        const val KEY_ALERT = "alert"
         const val NOTIFICATION_ACTION = "notification-action"
     }
 }
