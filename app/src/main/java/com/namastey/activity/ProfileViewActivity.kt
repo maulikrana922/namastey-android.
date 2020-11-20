@@ -374,17 +374,21 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      * Open following/followers screen click on counter
      */
     fun onClickFollow(view: View) {
-        val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
-        intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-        intent.putExtra("isMyProfile", isMyProfile)
-        openActivity(intent)
+        if (!sessionManager.isGuestUser()) {
+            val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
+            intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+            intent.putExtra("isMyProfile", isMyProfile)
+            openActivity(intent)
+        }
     }
 
     fun onClickFollowRequest(view: View) {
-        if (profileBean.is_follow == 1) {
-            profileViewModel.followUser(profileBean.user_id, 0)
-        } else if (profileBean.is_follow == 0) {
-            profileViewModel.followUser(profileBean.user_id, 1)
+        if (!sessionManager.isGuestUser()){
+            if (profileBean.is_follow == 1) {
+                profileViewModel.followUser(profileBean.user_id, 0)
+            } else if (profileBean.is_follow == 0) {
+                profileViewModel.followUser(profileBean.user_id, 1)
+            }
         }
     }
 
@@ -419,10 +423,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileLike(view: View) {
-        if (profileBean.is_like == 1)
-            profileViewModel.likeUserProfile(profileBean.user_id, 0)
-        else
-            profileViewModel.likeUserProfile(profileBean.user_id, 1)
+        if (!sessionManager.isGuestUser()) {
+            if (profileBean.is_like == 1)
+                profileViewModel.likeUserProfile(profileBean.user_id, 0)
+            else
+                profileViewModel.likeUserProfile(profileBean.user_id, 1)
+        }
     }
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
