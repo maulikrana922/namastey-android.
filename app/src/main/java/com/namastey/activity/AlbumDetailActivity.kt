@@ -26,6 +26,7 @@ import com.namastey.adapter.AlbumDetailAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumDetailBinding
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnPostImageClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.CreateAlbumView
@@ -41,7 +42,7 @@ import java.io.File
 import javax.inject.Inject
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
-    OnItemClick {
+    OnItemClick,OnPostImageClick {
     //    OnTrimVideoListener
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -144,6 +145,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     albumBean.post_video_list,
                     this@AlbumDetailActivity,
                     this,
+                    this,
                     fromEdit,
                     false, false
                 )
@@ -189,6 +191,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 AlbumDetailAdapter(
                     postList,
                     this@AlbumDetailActivity,
+                    this,
                     this,
                     fromEdit,
                     false,
@@ -471,6 +474,14 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
 //            }
 //        }
+    }
+
+    override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {
+        this.position = position
+        val intent = Intent(this@AlbumDetailActivity, AlbumVideoActivity::class.java)
+        intent.putExtra(Constants.VIDEO_LIST, videoList)
+        intent.putExtra("position", position)
+        openActivity(intent)
     }
 
     override fun onItemClick(postId: Long, position: Int) {

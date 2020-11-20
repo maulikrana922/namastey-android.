@@ -18,6 +18,7 @@ import com.namastey.databinding.ActivityFilterBinding
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnPostImageClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.model.DashboardBean
@@ -33,7 +34,7 @@ import javax.inject.Inject
 
 
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
-    OnCategoryItemClick, OnItemClick, OnSelectUserItemClick {
+    OnCategoryItemClick, OnItemClick, OnSelectUserItemClick,OnPostImageClick {
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -106,6 +107,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             AlbumDetailAdapter(
                 postList,
                 this@FilterActivity,
+                this,
                 this,
                 false, true, false
             )
@@ -218,12 +220,20 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 postList,
                 this@FilterActivity,
                 this,
+                this,
                 false, true, false
             )
 
         rvFilterTranding.adapter = albumDetailAdapter
 
 
+    }
+
+    override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {
+        val intent = Intent(this@FilterActivity, AlbumVideoActivity::class.java)
+        intent.putExtra(Constants.VIDEO_LIST, videoList)
+        intent.putExtra("position", position)
+        openActivity(intent)
     }
 
     override fun onSubCategoryItemClick(position: Int) {

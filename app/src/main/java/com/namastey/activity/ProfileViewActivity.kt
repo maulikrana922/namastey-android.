@@ -167,7 +167,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //            chipProfileInterest.addView(tvInterest)
 //        }
 
-
+        chipProfileInterest.removeAllViews()
         val tvInterest = TextView(this@ProfileViewActivity)
         tvInterest.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -201,6 +201,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      */
     private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
 
+        chipProfileSocial.removeAllViews()
         for (socialBean in data) {
             val ivSocialIcon = ImageView(this@ProfileViewActivity)
             ivSocialIcon.layoutParams = LinearLayout.LayoutParams(
@@ -329,7 +330,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (sessionManager.getJobBean().title.isNotEmpty()) {
                 tvJob.text = sessionManager.getJobBean().title
             }
-            profileViewModel.getUserFullProfile(sessionManager.getUserId())
+//            profileViewModel.getUserFullProfile(sessionManager.getUserId())
 
             /*btnProfileLike.setOnClickListener {
                 if (profileBean.is_like == 1)
@@ -338,14 +339,21 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileViewModel.likeUserProfile(likedUserId, isLike)
 
             }*/
-        } else {
-            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
         }
+//        else {
+//            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
+//        }
 
     }
 
     override fun onResume() {
         super.onResume()
+
+        if (intent.hasExtra("profileBean")) {
+            profileViewModel.getUserFullProfile(sessionManager.getUserId())
+        }else{
+            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
+        }
         if (profileBean.user_id == sessionManager.getUserId()) {
             if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
                 tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)

@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -79,6 +80,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var fileUrl = ""
     private lateinit var deleteIcon: Drawable
     private var colorDrawableBackground = ColorDrawable(Color.RED)
+    private var position = -1
+    private var editPost = false
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
     }
@@ -295,6 +298,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 Constants.SIGNUP_FRAGMENT
             )
         }else {
+            this.position = position
             val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
 //            intent.putExtra("albumId", videoBean.album_id)
             intent.putExtra("editPost", true)
@@ -732,6 +736,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetReport.show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+            if (data != null) {      // Temp need to change
+                editPost = true
+                val videoBean = data.getParcelableExtra<VideoBean>("videoBean") as VideoBean
+                videoList[position] = videoBean
+                albumVideoAdapter.notifyItemChanged(position)
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         if (::bottomSheetDialogComment.isInitialized)

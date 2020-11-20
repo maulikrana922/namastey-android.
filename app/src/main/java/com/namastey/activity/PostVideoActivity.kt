@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -8,6 +9,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
@@ -19,6 +21,7 @@ import android.view.View.OnTouchListener
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -26,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.namastey.BR
+import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.MentionListAdapter
 import com.namastey.dagger.module.ViewModelFactory
@@ -35,12 +39,17 @@ import com.namastey.model.AlbumBean
 import com.namastey.model.MentionListBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.PostVideoViewModel
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.buffer.android.thumby.ThumbyActivity
 import org.buffer.android.thumby.util.ThumbyUtils
 import java.io.File
@@ -104,8 +113,33 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             edtVideoDesc.setText(videoBean.description)
             btnPostVideo.text = getString(R.string.update)
 //            videoFile = File(Uri.parse(videoBean.video_url).path)
-            GlideLib.loadImage(this, ivSelectCover, videoBean.video_url)
+            GlideLib.loadImage(this, ivSelectCover, videoBean.cover_image_url)
             tvAlbumName.isEnabled = false
+
+            val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+            pictureFile = File(folder, Constants.FILE_NAME)
+            videoFile = File(folder, Constants.FILE_NAME_VIDEO)
+            val uri = let {
+                FileProvider.getUriForFile(
+                    it,
+                    "${BuildConfig.APPLICATION_ID}.provider",
+                    pictureFile!!
+                )
+            }
+            val uriVideo = let {
+                FileProvider.getUriForFile(
+                    it,
+                    "${BuildConfig.APPLICATION_ID}.provider",
+                    videoFile!!
+                )
+            }
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+            postVideoViewModel.setIsLoading(true)
+            downloadFile(this@PostVideoActivity,videoBean.cover_image_url,uri,false)
+            downloadFile(this@PostVideoActivity,videoBean.video_url,uriVideo,true)
 
             switchCommentOff.isChecked = videoBean.is_comment == 1
             val share = videoBean.share_with
@@ -163,6 +197,35 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //        addCommentsTextChangeListener()
     }
 
+    private fun downloadFile(context: Context, url: String, file: Uri,videoDownload: Boolean) {
+        val ktor = HttpClient(Android)
+        context.contentResolver.openOutputStream(file)?.let { outputStream ->
+            CoroutineScope(Dispatchers.IO).launch {
+                ktor.downloadFile(outputStream, url).collect {
+                    withContext(Dispatchers.Main) {
+                        when (it) {
+                            is DownloadResult.Success -> {
+                                if (videoDownload) {
+                                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    postVideoViewModel.setIsLoading(false)
+                                }
+                            }
+                            is DownloadResult.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.slow_internet),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                            is DownloadResult.Progress -> {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private fun addCommentsTextChangeListener() {
         edtVideoDesc.addTextChangedListener(object : TextWatcher {
@@ -183,9 +246,12 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      */
     override fun onSuccessPostVideoDesc(videoBean: VideoBean) {
         Log.d("PostVideoActivity", videoBean.toString())
-        if (isFromEditPost)
+        if (isFromEditPost) {
+            this.videoBean.description = videoBean.description
+            this.videoBean.share_with = videoBean.share_with
+            this.videoBean.is_comment = videoBean.is_comment
             postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
-        else
+        }else
             postVideoViewModel.addMedia(videoBean.id, videoFile)
     }
 
@@ -198,7 +264,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         Log.d("PostVideoActivity", videoBean.toString())
         val intent = Intent()
-        intent.putExtra("videoBean", videoBean)
+        if (isFromEditPost) {
+            this.videoBean.cover_image_url = videoBean.cover_image_url
+            intent.putExtra("videoBean", this.videoBean)
+        }else
+            intent.putExtra("videoBean", videoBean)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
     }
@@ -452,25 +522,14 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
         bottomSheetDialog.tvFromVideo.setOnClickListener {
             bottomSheetDialog.dismiss()
-//            val contentUri =
-//                FileProvider.getUriForFile(
-//                    applicationContext,
-//                    "com.namastey.provider",
-//                    videoFile!!
-//                )
 
             val videoUri = Uri.fromFile(videoFile)
-//            val uri = let {
-//                FileProvider.getUriForFile(
-//                    it,
-//                    "${BuildConfig.APPLICATION_ID}.provider",
-//                    videoFile!!
-//                )
-//            }
-            startActivityForResult(
-                ThumbyActivity.getStartIntent(this, videoUri),
-                Constants.RESULT_CODE_PICK_THUMBNAIL
-            )
+            if (videoUri != null) {
+                startActivityForResult(
+                    ThumbyActivity.getStartIntent(this, videoUri),
+                    Constants.RESULT_CODE_PICK_THUMBNAIL
+                )
+            }
         }
         bottomSheetDialog.tvPhotoCancel.setOnClickListener {
             bottomSheetDialog.dismiss()

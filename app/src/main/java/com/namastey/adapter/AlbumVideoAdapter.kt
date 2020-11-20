@@ -82,39 +82,39 @@ class AlbumVideoAdapter(
             } else {
                 tvCommentFeed.text = videoBean.comments.toString().plus(" ")
                     .plus(activity.getString(R.string.comments))
+                when {
+                    videoBean.profile_pic.size >= 3 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.VISIBLE
+                        ivCommentThird.visibility = View.VISIBLE
+
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                        GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
+                    }
+                    videoBean.profile_pic.size == 2 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.VISIBLE
+                        ivCommentThird.visibility = View.GONE
+
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                    }
+                    videoBean.profile_pic.size == 1 -> {
+                        ivCommentFirst.visibility = View.VISIBLE
+                        ivCommentSecond.visibility = View.GONE
+                        ivCommentThird.visibility = View.GONE
+                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+
+                    }
+                    else -> {
+                        ivCommentFirst.visibility = View.GONE
+                        ivCommentSecond.visibility = View.GONE
+                        ivCommentThird.visibility = View.GONE
+                    }
+                }
             }
 
-            when {
-                videoBean.profile_pic.size >= 3 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.VISIBLE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                    GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
-                }
-                videoBean.profile_pic.size == 2 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.GONE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                }
-                videoBean.profile_pic.size == 1 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-
-                }
-                else -> {
-                    ivCommentFirst.visibility = View.GONE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                }
-            }
 
             tvFeedLike.setOnClickListener {
                 if (sessionManager.getUserId() == videoBean.user_id) {
@@ -133,9 +133,21 @@ class AlbumVideoAdapter(
                 viewDetailsVideo.visibility = View.GONE
                 onVideoClick.onUpnextClick(position)
             }
-            tvCommentFeed.setOnClickListener {
-                // if (!sessionManager.isGuestUser())
-                onVideoClick.onCommentClick(videoBean.id)
+
+            if (videoBean.is_comment == 0) {
+                tvCommentFeed.setOnClickListener {
+                    onVideoClick.onCommentClick(videoBean.id)
+                }
+                ivCommentFirst.setOnClickListener {
+                    onVideoClick.onCommentClick(videoBean.id)
+                }
+                ivCommentSecond.setOnClickListener {
+                    onVideoClick.onCommentClick(videoBean.id)
+                }
+                ivCommentThird.setOnClickListener {
+                    onVideoClick.onCommentClick(videoBean.id)
+                }
+
             }
             tvFeedShare.setOnClickListener {
                 onVideoClick.onShareClick(videoBean)
