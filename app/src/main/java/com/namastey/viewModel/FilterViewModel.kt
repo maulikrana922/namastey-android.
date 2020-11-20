@@ -57,6 +57,7 @@ class FilterViewModel constructor(
                     filterView.showMsg(R.string.no_internet)
                 }
             } catch (t: Throwable) {
+                setIsLoading(false)
                 filterView.onHandleException(t)
             }
         }
