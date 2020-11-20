@@ -30,6 +30,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.view_private_account.*
 import javax.inject.Inject
 
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
@@ -134,17 +135,23 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
-        if (profileBean.is_follow == 1 || profileBean.is_follow == 2) {
+        Log.e("ProfileViewActivity", "is_follow: \t ${profileBean.is_follow}")
+        Log.e("ProfileViewActivity", "user_id: \t ${profileBean.user_id}")
+        Log.e("ProfileViewActivity", "user_id: \t ${sessionManager.getUserId()}")
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
                 rvAlbumList.visibility = View.VISIBLE
+                viewPrivateAccount.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
                 layoutPrivateAccount.visibility = View.VISIBLE
                 rvAlbumList.visibility = View.GONE
+                viewPrivateAccount.visibility = View.GONE
             }
         } else {
             rvAlbumList.visibility = View.VISIBLE
             layoutPrivateAccount.visibility = View.GONE
+            viewPrivateAccount.visibility = View.GONE
         }
 
     }
@@ -351,7 +358,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         if (intent.hasExtra("profileBean")) {
             profileViewModel.getUserFullProfile(sessionManager.getUserId())
-        }else{
+        } else {
             profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
         }
         if (profileBean.user_id == sessionManager.getUserId()) {

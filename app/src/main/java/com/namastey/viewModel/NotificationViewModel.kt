@@ -67,7 +67,7 @@ class NotificationViewModel constructor(
             try {
                 networkService.requestToPostActivityList(isFilter)
                     .let { appResponse: AppResponse<ArrayList<ActivityListBean>> ->
-                        //setIsLoading(false)
+                        setIsLoading(false)
                         if (appResponse.status == Constants.OK) {
                             notificationView.onSuccessActivityList(appResponse.data!!)
                         } else {
@@ -75,7 +75,7 @@ class NotificationViewModel constructor(
                         }
                     }
             } catch (exception: Throwable) {
-               // setIsLoading(false)
+                setIsLoading(false)
                 notificationView.onHandleException(exception)
             }
         }
