@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rvCustomView"
+    android:layout_width="@dimen/_52sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_blue_custom_marker">
+
+    <!--android:background="@drawable/rounded_blue_custom_marker"-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivUserProfile"
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_blue_custom_marker"
+        android:contentDescription="@null"
+        android:padding="@dimen/_4sdp" />
+</RelativeLayout>
