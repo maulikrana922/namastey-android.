@@ -46,7 +46,7 @@
     <color name="color_linkedin">#4376B1</color>
 
     <color name="gradient_one_end">#28BAD3</color>
-    <color name="gradient_two_end">#A19FEE</color>
+        <color name="gradient_two_end">#A19FEE</color>
     <color name="gradient_three_end">#FAB26D</color>
     <color name="gradient_four_end">#DFAA70</color>
     <color name="gradient_five_end">#7EC67D</color>

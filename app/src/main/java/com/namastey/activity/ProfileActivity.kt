@@ -88,7 +88,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                 .fitCenter().into(ivProfileUser)
         }
-
         // Temp set UI
         setMembershipList()
     }
@@ -555,6 +554,21 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             openActivity(this@ProfileActivity, ProfileBasicInfoActivity())
         }
     }
+
+    fun onClickMembership(view: View) {
+      /*  if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(false
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {*/
+        openActivity(this@ProfileActivity, MembershipActivity())
+
+       // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
+       // }
+    }
+
 
     /**
      * click on Edit info open edit profile activity
