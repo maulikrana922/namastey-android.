@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -16,14 +17,13 @@ import com.namastey.adapter.MembershipSliderAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMembershipBinding
 import com.namastey.utils.SessionManager
-import com.namastey.viewModel.BaseViewModel
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import javax.inject.Inject
 
 
-class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
+class MembershipActivity : BaseActivity<ActivityMembershipBinding>()  {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -35,8 +35,9 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
     lateinit var arrayList: ArrayList<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_membership)
         getActivityComponent().inject(this)
+
+        //setContentView(R.layout.activity_membership)
 
         membershipViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MembershipViewModel::class.java)
@@ -92,72 +93,72 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
         val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
 
         conOne.setOnClickListener {
-            view.tvOnemonth.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvOnemonthText.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvOnemonthText1.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.viewBgOneColor.setBackgroundColor(resources.getColor(R.color.white))
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
             view.tvMostpopular.visibility = View.VISIBLE
             view.viewSelected.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopularSix.visibility = View.INVISIBLE
             view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopularTwel.visibility = View.INVISIBLE
             view.viewSelectedTwel.visibility = View.INVISIBLE
 
-            view.tvSixmonth.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvSixtext1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvSixText2.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwel.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwelText1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwelText2.setTextColor(resources.getColor(R.color.colorDarkGray))
+            view.tvSixmonth.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwel.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
         }
 
         conSix.setOnClickListener {
-            view.tvSixmonth.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvSixtext1.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvSixText2.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvBgSixColor.setBackgroundColor(resources.getColor(R.color.white))
+            view.tvSixmonth.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
             view.tvMostpopularSix.visibility = View.VISIBLE
             view.viewSelectedSix.visibility = View.VISIBLE
 
-            view.viewBgOneColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopular.visibility = View.INVISIBLE
             view.viewSelected.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopularTwel.visibility = View.INVISIBLE
             view.viewSelectedTwel.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvOnemonthText.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvOnemonthText1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwel.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwelText1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvTwelText2.setTextColor(resources.getColor(R.color.colorDarkGray))
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwel.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
         }
 
         conTwel.setOnClickListener {
-            view.tvTwel.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvTwelText1.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.tvTwelText2.setTextColor(resources.getColor(R.color.colorBlueLight))
-            view.viewBgTwelColor.setBackgroundColor(resources.getColor(R.color.white))
+            view.tvTwel.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this,R.color.colorBlueLight))
+            view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
             view.tvMostpopularTwel.visibility = View.VISIBLE
             view.viewSelectedTwel.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopularSix.visibility = View.INVISIBLE
             view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgOneColor.setBackgroundColor(resources.getColor(R.color.colorLightPink))
+            view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this,R.color.colorLightPink))
             view.tvMostpopular.visibility = View.INVISIBLE
             view.viewSelected.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvOnemonthText.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvOnemonthText1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvSixmonth.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvSixtext1.setTextColor(resources.getColor(R.color.colorDarkGray))
-            view.tvSixText2.setTextColor(resources.getColor(R.color.colorDarkGray))
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvSixmonth.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this,R.color.colorDarkGray))
         }
     }
 }
