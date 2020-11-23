@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MembershipActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.MembershipViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_choose_interest">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivLocationBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvHeader"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/back_to_profile"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/ivLocationBack"
+                    app:layout_constraintStart_toEndOf="@id/ivLocationBack"
+                    app:layout_constraintTop_toTopOf="@id/ivLocationBack"
+                    app:typeface="MULI_SEMIBOLD" />
+
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpSlide"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_180sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tlIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    app:tabBackground="@drawable/indicator_selector_white"
+                    app:tabGravity="center"
+                    android:elevation="@dimen/_8sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/llLikes"
+                    app:tabIndicatorHeight="0dp" />
+                <LinearLayout
+                    android:id="@+id/llLikes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/vpSlide">
+
+                    <ImageView
+                        android:id="@+id/ivLikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_18sdp"
+                        android:src="@drawable/ic_list_like"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvLikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="Unlimited Likes"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivLikes"
+                        app:layout_constraintTop_toBottomOf="@+id/rvSlide" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/llLikes">
+
+                    <ImageView
+                        android:id="@+id/ivMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_18sdp"
+                        android:src="@drawable/ic_list_supermessage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivLikes" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="@string/_5_super_message_every_day"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivMessage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llBoost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/llMessage">
+
+                    <ImageView
+                        android:id="@+id/ivBoost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_18sdp"
+                        android:src="@drawable/ic_list_boost"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivLikes" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvBoost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="@string/_1_boost_each_month"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivMessage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPassport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/llBoost">
+
+                    <ImageView
+                        android:id="@+id/ivPassport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_18sdp"
+                        android:src="@drawable/ic_list_passport"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivLikes" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvPassport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="Passport to swipe around the world"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivMessage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSuggestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/llPassport">
+
+                    <ImageView
+                        android:id="@+id/ivSuggestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_18sdp"
+                        android:src="@drawable/ic_who_like"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivLikes" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSuggestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="See who Like You "
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintStart_toEndOf="@+id/ivMessage"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
+                </LinearLayout>
+
+
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnCreateAlbumNext"
+                    style="@style/btnRedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/_32sdp"
+                    android:layout_marginTop="@dimen/_32sdp"
+                    android:layout_marginEnd="@dimen/_48sdp"
+                    android:elevation="@dimen/_4sdp"
+                    android:gravity="center"
+                    android:text="Buy now"
+                    app:layout_constraintTop_toBottomOf="@+id/llSuggestion" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
+
+</layout>

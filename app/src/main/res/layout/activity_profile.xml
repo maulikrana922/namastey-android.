@@ -309,6 +309,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
+                    android:onClick="onClickMembership"
                     android:src="@drawable/ic_profile_membership"
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintTop_toBottomOf="@id/btnProfileSignup"

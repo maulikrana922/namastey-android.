@@ -376,7 +376,15 @@
     <string name="my_current_address">Lad society Rd, Ahmedabad</string>
     <string name="recent_passport_locations">Recent Passport Locations</string>
     <string name="add_a_new_location">Add a new location</string>
+    <string name="back_to_profile">Back to Profile</string>
+    <string name="_5_super_message_every_day">5 Super message every day</string>
+    <string name="_1_boost_each_month">1 Boost each month</string>
     <string name="get_content_from_any_place">Get content from any place</string>
     <string name="enter_destination">Enter Destination</string>
+    <string name="_4_58_mo">$4.58/Mo</string>
+    <string name="months">months</string>
+    <string name="_12">12</string>
+    <string name="_6">6</string>
+    <string name="get_namastey_gold">Get Namastey Gold</string>
 
 </resources>

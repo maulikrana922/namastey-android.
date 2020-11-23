@@ -102,7 +102,7 @@
                         android:onClick="onClickSearchDestination"
                         app:defaultQueryHint="@string/search_user"
                         app:iconifiedByDefault="false"
-                        app:queryHint="@string/enter_destination"
+                        app:queryHint="Enter Destination"
                         app:searchHintIcon="@drawable/ic_search" />
 
                 </LinearLayout>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardPreventCornerOverlap="true"
+        tools:ignore="SpUsage">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpagerMembership"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tablayout"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_20sdp"
+                android:elevation="@dimen/_8sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewpagerMembership"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tabBackground="@drawable/indicator_selector_white"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp" />
+
+            <LinearLayout
+                android:id="@+id/llBuy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:background="@color/colorLightPink"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintTop_toBottomOf="@+id/viewpagerMembership">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conTwel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <View
+                        android:id="@+id/viewBgTwelColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/colorLightPink"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMostpopularTwel"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/circle_left_right"
+                        android:elevation="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:text="MOST POPULAR"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8sdp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSelectedTwel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@drawable/rectangle_all_corner"
+                        android:visibility="invisible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTwel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="@string/_12"
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTwelText1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/months"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTwel"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTwelText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/_4_58_mo"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTwelText1"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conSix"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/tvBgSixColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMostpopularSix"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/circle_left_right"
+                        android:elevation="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:text="MOST POPULAR"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8sdp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSelectedSix"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/rectangle_all_corner"
+                        android:visibility="visible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSixmonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="@string/_6"
+                        android:textColor="@color/colorBlueLight"
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSixtext1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/months"
+                        android:textColor="@color/colorBlueLight"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSixmonth"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSixText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="$5.83/Mo \n Save 42%"
+                        android:textColor="@color/colorBlueLight"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSixtext1"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/viewBgOneColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/colorLightPink"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMostpopular"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_15sdp"
+                        android:background="@drawable/circle_left_right"
+                        android:elevation="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:text="MOST POPULAR"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8sdp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSelected"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@drawable/rectangle_all_corner"
+                        android:visibility="invisible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOnemonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOnemonthText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/months"
+                        android:textSize="@dimen/_12sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvOnemonth"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOnemonthText1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/_4_58_mo"
+                        android:textSize="@dimen/_14sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvOnemonthText"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnContinue"
+                style="@style/btnRedStyle"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_32sdp"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:layout_marginEnd="@dimen/_48sdp"
+                android:elevation="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="Continue"
+                android:textAllCaps="false"
+                app:layout_constraintTop_toBottomOf="@+id/llBuy" />
+
+
+            <com.namastey.customViews.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:gravity="center"
+                android:text="No thanks"
+                android:paddingBottom="@dimen/_16sdp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintTop_toBottomOf="@+id/btnContinue"
+                app:typeface="MULI_EXTRA_BOLD" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
