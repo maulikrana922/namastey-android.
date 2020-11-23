@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -29,7 +30,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.SearchLocationActivity"></activity>
+        <activity android:name=".activity.SearchLocationActivity"/>
         <activity android:name=".activity.PassportContentActivity" />
         <activity android:name=".activity.LocationActivity" />
         <activity
@@ -231,6 +232,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorRed" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCj4_1sbJh-ETKXz6owFeRf0x86j2J9Uac" />
     </application>
 
 </manifest>

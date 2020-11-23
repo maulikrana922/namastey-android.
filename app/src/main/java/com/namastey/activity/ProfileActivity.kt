@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
@@ -55,6 +56,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var isCompletlySignup = 0
     private var membershipList = ArrayList<MembershipBean>()
     private var isCameraOpen = false
+    private val PERMISSION_REQUEST_CODE = 99
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +157,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onSuccessFollow(profileBean: ProfileBean) {
     }
-
 
     override fun getViewModel() = profileViewModel
 
@@ -305,7 +306,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-
     fun onClickProfile(view: View) {
         when (view) {
             ivProfileCamera -> {
@@ -416,6 +416,57 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     }
                 }
             }
+            PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i("LocationActivity", "Permission has been denied by user CAMERA")
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    ) {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.location_permission_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.ok)
+                        ) { dialog, id ->
+                            /*ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                PERMISSION_REQUEST_CODE
+                            )*/
+
+                            addLocationPermission()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.show()
+                    } else {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.permission_denied_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.go_to_settings)
+                        ) { dialog, id ->
+                            var intent = Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", packageName, null)
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog.show()
+                    }
+                } else {
+                    openActivity(this, LocationActivity())
+                }
+            }
         }
     }
 
@@ -495,7 +546,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     fun onClickSign(view: View) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(false
+                SignUpFragment.getInstance(
+                    false
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
@@ -569,6 +621,27 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickPassport(view: View) {
-        openActivity(this, LocationActivity())
+        addLocationPermission()
+    }
+
+    private fun addLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openActivity(this, LocationActivity())
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ), PERMISSION_REQUEST_CODE
+                )
+            }
+        } else {
+            openActivity(this, LocationActivity())
+        }
     }
 }
