@@ -5,28 +5,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.adapter.MembershipSliderAdapter
+import com.namastey.dagger.module.ViewModelFactory
+import com.namastey.databinding.ActivityMembershipBinding
+import com.namastey.utils.SessionManager
+import com.namastey.viewModel.BaseViewModel
+import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
+import javax.inject.Inject
 
 
-class MembershipActivity : AppCompatActivity() {
+class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
+    private lateinit var activityMembershipBinding: ActivityMembershipBinding
+    private lateinit var membershipViewModel: MembershipViewModel
 
     lateinit var arrayList: ArrayList<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_membership)
+        //setContentView(R.layout.activity_membership)
+        getActivityComponent().inject(this)
 
-        init()
+        membershipViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(MembershipViewModel::class.java)
+        activityMembershipBinding = bindViewData()
+        activityMembershipBinding.viewModel = membershipViewModel
+        initData()
     }
 
-    fun init() {
+
+    override fun getViewModel() = membershipViewModel
+
+    override fun getLayoutId() = R.layout.activity_membership
+
+    override fun getBindingVariable() = BR.viewModel
+
+    fun initData() {
         arrayList = ArrayList()
         arrayList.clear()
         for (i in 0 until 5)
@@ -34,7 +60,6 @@ class MembershipActivity : AppCompatActivity() {
 
         vpSlide.adapter = MembershipSliderAdapter(this@MembershipActivity, arrayList)
         tlIndicator.setupWithViewPager(vpSlide, true)
-
 
         btnCreateAlbumNext.setOnClickListener {
             showDialog()

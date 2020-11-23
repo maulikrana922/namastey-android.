@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="Unlimited Likes"
+                        android:text="@string/unlimited_likes"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@+id/ivLikes"
@@ -183,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="Passport to swipe around the world"
+                        android:text="@string/passport_to_swipe_around_the_world"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@+id/ivMessage"
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="See who Like You "
+                        android:text="@string/see_who_like_you"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@+id/ivMessage"
@@ -229,7 +229,7 @@
                     android:layout_marginEnd="@dimen/_48sdp"
                     android:elevation="@dimen/_4sdp"
                     android:gravity="center"
-                    android:text="Buy now"
+                    android:text="@string/buy_now"
                     app:layout_constraintTop_toBottomOf="@+id/llSuggestion" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
