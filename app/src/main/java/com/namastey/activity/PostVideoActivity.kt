@@ -41,8 +41,8 @@ import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.*
 import com.namastey.viewModel.PostVideoViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.coroutines.CoroutineScope
@@ -77,6 +77,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var commentOff = 0
     private var isTouched = false
     private var items = arrayOf<CharSequence>()
+    private var lengthCount = 0
 
     override fun getViewModel() = postVideoViewModel
 
@@ -104,7 +105,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             getString(R.string.no_one),
             getString(R.string.cancel)
         )
-        if (intent.hasExtra("editPost")){
+        if (intent.hasExtra("editPost")) {
             isFromEditPost = true
             videoBean = intent.getParcelableExtra<VideoBean>("videoBean") as VideoBean
             albumBean.name = videoBean.album_name
@@ -138,8 +139,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
             postVideoViewModel.setIsLoading(true)
-            downloadFile(this@PostVideoActivity,videoBean.cover_image_url,uri,false)
-            downloadFile(this@PostVideoActivity,videoBean.video_url,uriVideo,true)
+            downloadFile(this@PostVideoActivity, videoBean.cover_image_url, uri, false)
+            downloadFile(this@PostVideoActivity, videoBean.video_url, uriVideo, true)
 
             switchCommentOff.isChecked = videoBean.is_comment == 1
             val share = videoBean.share_with
@@ -158,7 +159,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     shareWith = 3
                 }
             }
-        }else {
+        } else {
             isFromEditPost = false
             if (intent.hasExtra("videoFile")) {
                 albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
@@ -194,10 +195,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             }
         })
 
-//        addCommentsTextChangeListener()
+        addCommentsTextChangeListener()
     }
 
-    private fun downloadFile(context: Context, url: String, file: Uri,videoDownload: Boolean) {
+    private fun downloadFile(context: Context, url: String, file: Uri, videoDownload: Boolean) {
         val ktor = HttpClient(Android)
         context.contentResolver.openOutputStream(file)?.let { outputStream ->
             CoroutineScope(Dispatchers.IO).launch {
@@ -229,13 +230,22 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     private fun addCommentsTextChangeListener() {
         edtVideoDesc.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun afterTextChanged(s: Editable?) {
+                Log.e("After Text", s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                Log.e("befor Text", s.toString())
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length > 2) {
-                    postVideoViewModel.getMentionList(s.toString())
+                Log.e("Text", s.toString())
+                if (s.isNotEmpty()) {
+                    val char = s[s.length - 1]
+                    if (char.toString() == "@") {
+                        lengthCount = s.length
+                    }
+                    if (lengthCount != 0) postVideoViewModel.getMentionList(s[count].toString())
                 }
             }
         })
@@ -251,7 +261,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             this.videoBean.share_with = videoBean.share_with
             this.videoBean.is_comment = videoBean.is_comment
             postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
-        }else
+        } else
             postVideoViewModel.addMedia(videoBean.id, videoFile)
     }
 
@@ -267,7 +277,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         if (isFromEditPost) {
             this.videoBean.cover_image_url = videoBean.cover_image_url
             intent.putExtra("videoBean", this.videoBean)
-        }else
+        } else
             intent.putExtra("videoBean", videoBean)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
@@ -290,7 +300,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             rvMentionList.adapter = mentionListAdapter
         }
 
-       // mentionList.clear()
+        // mentionList.clear()
     }
 
     override fun onBackPressed() {
@@ -313,7 +323,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 )
 
-                val jsonObject  = JsonObject()
+                val jsonObject = JsonObject()
                 jsonObject.addProperty(Constants.DESCRIPTION, edtVideoDesc.text.toString().trim())
                 jsonObject.addProperty(Constants.ALBUM_ID, albumBean.id)
                 jsonObject.addProperty(Constants.SHARE_WITH, shareWith)
@@ -643,7 +653,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     override fun onMentionItemClick(userId: Long, position: Int, username: String) {
-        edtVideoDesc.setText(username)
+        lengthCount = 0
+
+        val strDesc = StringBuilder().append(edtVideoDesc.text.toString() + username + " ")
+        edtVideoDesc.setText(strDesc)
+        edtVideoDesc.setSelection(edtVideoDesc.text!!.length);
         rvMentionList.visibility = View.GONE
     }
 }

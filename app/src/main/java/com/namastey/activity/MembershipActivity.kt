@@ -32,7 +32,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>()  {
     private lateinit var activityMembershipBinding: ActivityMembershipBinding
     private lateinit var membershipViewModel: MembershipViewModel
 
-    lateinit var arrayList: ArrayList<String>
+    private lateinit var arrayList: ArrayList<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -53,7 +53,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>()  {
 
     override fun getBindingVariable() = BR.viewModel
 
-    fun initData() {
+    private fun initData() {
         arrayList = ArrayList()
         arrayList.clear()
         for (i in 0 until 5)
@@ -87,7 +87,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>()  {
     }
 
     /*Select membership plan*/
-    fun manageVisiblity(view: View) {
+    private fun manageVisiblity(view: View) {
         val conTwel = view.findViewById<ConstraintLayout>(R.id.conTwel)
         val conSix = view.findViewById<ConstraintLayout>(R.id.conSix)
         val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
