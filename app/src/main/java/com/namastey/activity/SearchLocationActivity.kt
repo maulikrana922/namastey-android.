@@ -17,9 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
+import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.namastey.R
@@ -63,6 +67,36 @@ class SearchLocationActivity : FragmentActivity(),
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+
+
+         val autocompleteFragment: PlaceAutocompleteFragment =
+             fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
+
+         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+             override fun onPlaceSelected(place: Place) {
+                 Log.e("SearchLocationActivity", "place: \t ${place.address}")
+                 mMap!!.clear()
+                 mMap!!.addMarker(
+                     MarkerOptions().position(place.latLng).icon(
+                         BitmapDescriptorFactory.fromBitmap(
+                             createCustomMarker(
+                                 this@SearchLocationActivity,
+                                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+                                 sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                             )
+                         )
+                     ).title(place.name.toString())
+                 )
+                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                 mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
+             }
+
+             override fun onError(status: Status?) {
+                 Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
+                 Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
+                 Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
+             }
+         })
 
         /*getActivityComponent().inject(this)
         locationViewModel =
