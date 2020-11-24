@@ -230,8 +230,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     private fun addCommentsTextChangeListener() {
         edtVideoDesc.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+            override fun afterTextChanged(s: Editable) {
                 Log.e("After Text", s.toString())
+
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -245,7 +246,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     if (char.toString() == "@") {
                         lengthCount = s.length
                     }
-                    if (lengthCount != 0) postVideoViewModel.getMentionList(s[count].toString())
+                    if (lengthCount == s.length || lengthCount == count) postVideoViewModel.getMentionList(s[count].toString())
                 }
             }
         })

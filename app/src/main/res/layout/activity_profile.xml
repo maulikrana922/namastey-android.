@@ -297,7 +297,7 @@
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:gravity="center"
-                    android:text="@string/passport"
+                    android:text="@string/airport"
                     android:textColor="@color/colorBlack"
                     app:layout_constraintEnd_toStartOf="@id/ivProfileBoosts"
                     app:layout_constraintStart_toStartOf="parent"
