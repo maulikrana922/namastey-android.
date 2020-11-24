@@ -265,11 +265,13 @@
                     app:typeface="MULI_SEMIBOLD" />
 
                 <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMyCurrentLocation"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:onClick="onClickMyCurrentLocation"
                     android:text="@string/my_current_location"
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintStart_toStartOf="parent"
