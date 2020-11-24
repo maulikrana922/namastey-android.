@@ -244,9 +244,15 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 if (s.isNotEmpty()) {
                     val char = s[s.length - 1]
                     if (char.toString() == "@") {
-                        lengthCount = s.length
+                        lengthCount = start
                     }
-                    if (lengthCount == s.length || lengthCount == count) postVideoViewModel.getMentionList(s[count].toString())
+                    if (lengthCount != start) {
+                        lengthCount=0
+                        rvMentionList.visibility=View.GONE
+                    }
+                    if (lengthCount != 0) postVideoViewModel.getMentionList(
+                        s[count].toString()
+                    )
                 }
             }
         })
