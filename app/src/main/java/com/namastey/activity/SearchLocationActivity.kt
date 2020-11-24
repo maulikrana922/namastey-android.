@@ -27,7 +27,6 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
-import javax.inject.Inject
 
 class SearchLocationActivity : FragmentActivity(),
     OnMapReadyCallback,
@@ -35,7 +34,6 @@ class SearchLocationActivity : FragmentActivity(),
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
-    @Inject
     private lateinit var sessionManager: SessionManager
     private var mMap: GoogleMap? = null
     private var mLastLocation: Location? = null
