@@ -77,6 +77,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var commentOff = 0
     private var isTouched = false
     private var items = arrayOf<CharSequence>()
+    private var lengthCount = 0
 
     override fun getViewModel() = postVideoViewModel
 
@@ -230,17 +231,21 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private fun addCommentsTextChangeListener() {
         edtVideoDesc.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-
+                Log.e("After Text", s.toString())
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                Log.e("befor Text", s.toString())
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val char = s[before]
-                if (char.toString() == "@") {
-                    postVideoViewModel.getMentionList(char.toString())
+                Log.e("Text", s.toString())
+                if (s.isNotEmpty()) {
+                    val char = s[s.length - 1]
+                    if (char.toString() == "@") {
+                        lengthCount = s.length
+                    }
+                    if (lengthCount != 0) postVideoViewModel.getMentionList(s[count].toString())
                 }
             }
         })
@@ -648,7 +653,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     override fun onMentionItemClick(userId: Long, position: Int, username: String) {
-        edtVideoDesc.setText(username)
+        lengthCount = 0
+
+        val strDesc = StringBuilder().append(edtVideoDesc.text.toString() + username + " ")
+        edtVideoDesc.setText(strDesc)
+        edtVideoDesc.setSelection(edtVideoDesc.text!!.length);
         rvMentionList.visibility = View.GONE
     }
 }
