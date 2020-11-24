@@ -42,6 +42,11 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(MembershipViewModel::class.java) -> MembershipViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             modelClass.isAssignableFrom(VideoLanguageViewModel::class.java) -> VideoLanguageViewModel(
                 networkService,
                 dbHelper,
