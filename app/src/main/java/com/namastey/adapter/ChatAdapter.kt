@@ -4,19 +4,22 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.model.ChatMessage
+import kotlinx.android.synthetic.main.row_message_received.view.*
+import kotlinx.android.synthetic.main.row_message_send.view.*
 
 class ChatAdapter(
-    var activity: Activity
+    var activity: Activity,
+    var userId : Long,
+    var chatMsgList: ArrayList<ChatMessage>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val RIGHT_CHAT = 1
+    private val LEFT_CHAT = 2
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == 1) {
+        return if (viewType == LEFT_CHAT) {
             val layoutOne: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_message_received, parent, false)
             MessageReceiveViewHolder(layoutOne)
@@ -29,26 +32,22 @@ class ChatAdapter(
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (position) {
-            0 -> {
-                val messageReceiveViewHolder = holder as MessageReceiveViewHolder
-                messageReceiveViewHolder.bindReceived(position)
-            }
-            1 -> {
-                val messageSendProfileViewHolder = holder as MessageSendProfileViewHolder
-                messageSendProfileViewHolder.bindSend(position)
+        if(chatMsgList[position].sender == userId) {
+            val messageSendProfileViewHolder = holder as MessageSendProfileViewHolder
+            messageSendProfileViewHolder.bindSend(position)
 
-            }
-            else -> return
+        }else{
+            val messageReceiveViewHolder = holder as MessageReceiveViewHolder
+            messageReceiveViewHolder.bindReceived(position)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (position == 0) {
-            1
+        return if (chatMsgList[position].sender == userId) {
+            RIGHT_CHAT
         } else {
-            2
+            LEFT_CHAT
         }
 
     }
@@ -58,6 +57,9 @@ class ChatAdapter(
 
         fun bindReceived(position: Int) = with(itemView){
 
+            val chatMessage = chatMsgList[position]
+            llMessageReceived.visibility = View.VISIBLE
+            tvMessageReceived.text = chatMessage.message
         }
 //        val llMessageReceived: LinearLayout
 //        val tvMessageReceived: TextView
@@ -91,6 +93,9 @@ class ChatAdapter(
 
         fun bindSend(position: Int) = with(itemView){
 
+            val chatMessage = chatMsgList[position]
+            llMessageSend.visibility = View.VISIBLE
+            tvMessageSend.text = chatMessage.message
         }
 //        val llMessageSend: LinearLayout
 //        val tvMessageSend: TextView
@@ -119,5 +124,5 @@ class ChatAdapter(
 //        }
     }
 
-    override fun getItemCount() = 7
+    override fun getItemCount() = chatMsgList.size
 }
