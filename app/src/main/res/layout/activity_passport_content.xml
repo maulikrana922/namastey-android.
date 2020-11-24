@@ -62,7 +62,7 @@
             style="@style/tvWrapWhiteStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/passport"
+            android:text="@string/airport"
             android:textSize="26sp"
             app:typeface="MULI_EXTRA_BOLD" />
 

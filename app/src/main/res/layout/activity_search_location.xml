@@ -67,16 +67,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
 
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
+            <!-- <fragment
+                 android:id="@+id/place_autocomplete_fragment"
+                 android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_weight="1" />-->
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchDestination"
                 style="@style/searchViewStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -86,12 +85,29 @@
                 app:queryHint="@string/enter_destination"
                 app:searchHintIcon="@drawable/ic_search" />
 
+            <EditText
+                android:id="@+id/searchDestination"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center|start"
+                android:hint="@string/enter_destination"
+                android:inputType="text"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:visibility="visible"
+                app:searchHintIcon="@drawable/ic_search" />
+
             <ImageView
                 android:id="@+id/ivLocation"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/_12sdp"
+                android:onClick="searchLocation"
                 android:src="@drawable/ic_current_location"
                 tools:ignore="ContentDescription" />
 

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -13,17 +15,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.Place
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
-import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.namastey.R
@@ -31,6 +31,7 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 
 class SearchLocationActivity : FragmentActivity(),
     OnMapReadyCallback,
@@ -69,7 +70,7 @@ class SearchLocationActivity : FragmentActivity(),
         mapFragment!!.getMapAsync(this)
 
 
-         val autocompleteFragment: PlaceAutocompleteFragment =
+        /* val autocompleteFragment: PlaceAutocompleteFragment =
              fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
 
          autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -91,12 +92,12 @@ class SearchLocationActivity : FragmentActivity(),
                  mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
              }
 
-             override fun onError(status: Status?) {
-                 Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
-                 Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
-                 Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
-             }
-         })
+            override fun onError(status: Status?) {
+                Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
+                Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
+                Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
+            }
+        })*/
 
         /*getActivityComponent().inject(this)
         locationViewModel =
@@ -251,6 +252,65 @@ class SearchLocationActivity : FragmentActivity(),
         val canvas = Canvas(bitmap)
         marker.draw(canvas)
         return bitmap
+    }
+
+    private fun searchLocationMarker(context: Context): Bitmap? {
+        val marker: View =
+            (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
+                R.layout.view_search_location_marker,
+                null
+            )
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        marker.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+        marker.buildDrawingCache()
+        val bitmap: Bitmap = Bitmap.createBitmap(
+            marker.measuredWidth,
+            marker.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        marker.draw(canvas)
+        return bitmap
+    }
+
+    fun searchLocation(view: View?) {
+        val locationSearch: EditText = findViewById<EditText>(R.id.searchDestination)
+        val location: String = locationSearch.text.toString()
+        var addressList: List<Address>? = null
+        if (location != null || location != "") {
+            val geocoder = Geocoder(this)
+            try {
+                addressList = geocoder.getFromLocationName(location, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            val address: Address = addressList!![0]
+            val latLng = LatLng(address.latitude, address.longitude)
+            mMap!!.addMarker(
+                MarkerOptions().position(latLng).icon(
+                    BitmapDescriptorFactory.fromBitmap(
+                        searchLocationMarker(
+                            this@SearchLocationActivity
+                        )
+                    )
+                ).title(location)
+            )
+            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+            Toast.makeText(
+                applicationContext,
+                address.latitude.toString() + " " + address.longitude,
+                Toast.LENGTH_LONG
+            ).show()
+
+            Log.e(
+                "SearchLocationActivity",
+                "LatLong: \t ${address.latitude.toString() + " " + address.longitude}"
+            )
+        }
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
