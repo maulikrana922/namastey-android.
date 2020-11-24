@@ -39,14 +39,14 @@ open class PassportContentActivity : FragmentActivity(),
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
-    lateinit var sessionManager: SessionManager
+    private lateinit var sessionManager: SessionManager
     private var mMap: GoogleMap? = null
-    var mLastLocation: Location? = null
-    var mCurrLocationMarker: Marker? = null
-    var mGoogleApiClient: GoogleApiClient? = null
-    var mLocationRequest: LocationRequest? = null
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    private var mLastLocation: Location? = null
+    private var mCurrLocationMarker: Marker? = null
+    private var mGoogleApiClient: GoogleApiClient? = null
+    private var mLocationRequest: LocationRequest? = null
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     /* @Inject
     lateinit var viewModelFactory: ViewModelFactory
