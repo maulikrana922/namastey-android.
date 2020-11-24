@@ -264,4 +264,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         intent.putExtra("profile_url", "");
         openActivity(intent)*/
     }
+
+    fun onClickMyCurrentLocation(view: View) {
+        openActivity(this, LocationActivity())
+    }
 }

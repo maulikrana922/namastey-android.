@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.SearchLocationActivity">
@@ -64,15 +63,26 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/rounded_white_solid"
             android:orientation="horizontal"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchDestination"
                 style="@style/searchViewStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:defaultQueryHint="@string/search_user"
                 app:iconifiedByDefault="false"
                 app:queryHint="@string/enter_destination"
