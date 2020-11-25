@@ -191,7 +191,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     1
                 else
                     0
-
             }
         })
 
@@ -241,21 +240,17 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 Log.e("Text", s.toString())
-                if (s.isNotEmpty()) {
-                    val char = s[s.length - 1]
-                    if (char.toString() == "@") {
-                        lengthCount = start
+
+                if (!TextUtils.isEmpty(s) && start < s.length) {
+                    if (s[start] == '@') {
+                        postVideoViewModel.getMentionList(
+                            s[start].toString()
+                        )
                     }
-                    if (lengthCount != start) {
-                        lengthCount=0
-                        rvMentionList.visibility=View.GONE
-                    }
-                    if (lengthCount != 0) postVideoViewModel.getMentionList(
-                        s[count].toString()
-                    )
                 }
             }
         })
+
     }
 
     /**
@@ -270,6 +265,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
         } else
             postVideoViewModel.addMedia(videoBean.id, videoFile)
+
+
     }
 
     override fun onSuccessPostVideo(videoBean: VideoBean) {
