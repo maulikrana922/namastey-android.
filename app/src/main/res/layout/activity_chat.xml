@@ -13,15 +13,16 @@
             type="com.namastey.viewModel.ChatViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite"
-        android:fillViewport="true">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/colorWhite"-->
+<!--        android:fillViewport="true">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite">
 
             <ImageView
                 android:id="@+id/imgTop"
@@ -84,14 +85,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvChat"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/_48sdp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
+                app:stackFromEnd="true"
+                app:layout_constraintVertical_bias="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgTop" />
+                app:layout_constraintTop_toBottomOf="@id/imgTop"
+                app:layout_constraintBottom_toTopOf="@id/llChatBox"/>
 
             <FrameLayout
                 android:id="@+id/flContainer"
@@ -110,15 +113,12 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAddComment"
                 android:gravity="center"
-                android:maxHeight="@dimen/_72sdp"
-                android:minHeight="@dimen/_48sdp"
                 android:orientation="horizontal"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
+                android:padding="@dimen/_8sdp"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <ImageView
                     android:id="@+id/ivCamera"
@@ -130,16 +130,19 @@
                     tools:ignore="ContentDescription" />
 
                 <EditText
-                    android:id="@+id/edMessage"
+                    android:id="@+id/edtMessage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_marginRight="@dimen/_8sdp"
                     android:layout_weight="1"
+                    android:paddingBottom="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_12sdp"
                     android:background="@android:color/transparent"
                     android:hint="@string/enter_message"
                     android:inputType="textMultiLine"
+                    android:maxLines="10"
                     android:textColor="@color/color_chip_gray"
                     android:textColorHint="@color/colorTextHint"
                     android:textSize="14sp"
@@ -167,17 +170,17 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:id="@+id/ivAttachment"
+                    android:id="@+id/ivSend"
                     android:layout_width="@dimen/_32sdp"
                     android:layout_height="@dimen/_32sdp"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:background="@drawable/rounded_blue_chat_all_corner_solid"
-                    android:padding="@dimen/_6sdp"
-                    android:src="@drawable/ic_add_24"
+                    android:padding="@dimen/_4sdp"
+                    android:onClick="onClickSendMessage"
+                    android:src="@drawable/ic_send"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+<!--    </androidx.core.widget.NestedScrollView>-->
 </layout>
