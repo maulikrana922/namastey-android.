@@ -12,7 +12,9 @@
             name="viewModel"
             type="com.namastey.viewModel.ChatViewModel" />
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -125,6 +127,7 @@
                         android:layout_height="@dimen/_32sdp"
                         android:background="@drawable/rounded_blue_chat_all_corner_solid"
                         android:padding="@dimen/_6sdp"
+                        android:onClick="onClickCamera"
                         android:src="@drawable/ic_photo_camera"
                         tools:ignore="ContentDescription" />
 
@@ -189,4 +192,14 @@
                 android:orientation="vertical" />
             </FrameLayout>
         </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+        />
+
+</FrameLayout>
 </layout>

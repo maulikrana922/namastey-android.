@@ -14,8 +14,10 @@ object Constants {
         var CALLBACK_URL = "twittersdk://"
     }
 
-    object FirebaseTable{
+    object FirebaseConstant{
         var CHATS = "Chats"
+        var IMAGES = "images"
+        var IMAGE_UPLOAD = "Image upload"
     }
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
