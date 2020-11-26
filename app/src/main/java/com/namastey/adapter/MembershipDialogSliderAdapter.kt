@@ -4,16 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.namastey.R
-import com.namastey.customViews.CustomTextView
-import com.namastey.model.MembershipBean
+import com.namastey.model.MembershipSlide
+import kotlinx.android.synthetic.main.row_dialog_membership.view.*
 
 class MembershipDialogSliderAdapter(
     private val context: Context,
-    private val membershipList: ArrayList<String>
+    private val membershipList: ArrayList<MembershipSlide>
 ) : PagerAdapter() {
     override fun getCount(): Int {
         return membershipList.size
@@ -36,11 +35,14 @@ class MembershipDialogSliderAdapter(
         val view =
             inflater.inflate(R.layout.row_dialog_membership, null)
 
-     /*   val tvMemberTitle =
-            view.findViewById<View>(R.id.tvMemberTitle) as CustomTextView
-        val tvMemberDesc = view.findViewById<View>(R.id.tvMemberDesc) as CustomTextView
-*/
-
+        /*   val tvMemberTitle =
+               view.findViewById<View>(R.id.tvMemberTitle) as CustomTextView
+           val tvMemberDesc = view.findViewById<View>(R.id.tvMemberDesc) as CustomTextView
+   */
+        view.conBackground.setBackgroundResource(membershipList[position].background)
+        view.tvText1.text = membershipList[position].title
+        view.tvText2.text = membershipList[position].description
+        view.ivIcon.setImageResource(membershipList[position].profile_url)
         val viewPager = container as ViewPager
 
         viewPager.addView(view)

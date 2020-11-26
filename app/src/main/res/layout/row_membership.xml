@@ -2,11 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_180sdp"
     app:cardCornerRadius="@dimen/_12sdp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conBachground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/dialog_offread_gradiant"
@@ -31,7 +32,7 @@
             app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tv_description"
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
@@ -43,36 +44,41 @@
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvDescription1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:text="Skip the line to get more matches "
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            app:layout_constraintEnd_toStartOf="@+id/ivBoost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
             app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivProfile"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             android:background="@drawable/circle_white_hollow"
             android:scaleType="fitXY"
             android:src="@drawable/circle_white_solid"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription1" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvStatus"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:gravity="center_vertical"
             android:text="Not Active"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivProfile"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription1"
             app:typeface="MULI_SEMIBOLD" />
 
 

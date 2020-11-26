@@ -20,7 +20,7 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpagerMembership"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_height="@dimen/_230sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -285,6 +285,7 @@
                 android:layout_marginTop="@dimen/_14sdp"
                 android:gravity="center"
                 android:text="@string/no_thanks"
+                android:id="@+id/tvNothanks"
                 android:paddingBottom="@dimen/_16sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"

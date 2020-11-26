@@ -12,22 +12,27 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
+import com.hendraanggrian.appcompat.widget.Mention
+import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
+import com.hendraanggrian.appcompat.widget.SocialArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
@@ -64,6 +69,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private lateinit var activityPostVideoBinding: ActivityPostVideoBinding
     private lateinit var postVideoViewModel: PostVideoViewModel
     private lateinit var mentionListAdapter: MentionListAdapter
+    private lateinit var defaultMentionAdapter: ArrayAdapter<Mention>
     private var videoFile: File? = null
     private var pictureFile: File? = null
     private var albumBean = AlbumBean()
@@ -228,29 +234,24 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     private fun addCommentsTextChangeListener() {
-        edtVideoDesc.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                Log.e("After Text", s.toString())
 
-            }
+        defaultMentionAdapter = MentionArrayAdapter(this)
+        /* postVideoViewModel.getMentionList(
+             "Grishma"
+         )*/
 
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                Log.e("befor Text", s.toString())
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                Log.e("Text", s.toString())
-
-                if (!TextUtils.isEmpty(s) && start < s.length) {
-                    if (s[start] == '@') {
-                        postVideoViewModel.getMentionList(
-                            s[start].toString()
-                        )
-                    }
-                }
-            }
-        })
-
+        defaultMentionAdapter.addAll(
+            Mention("Mehul", "", "https://avatars1.githubusercontent.com/u/11507430?s=460&v=4"),
+            Mention("Mona"),
+            Mention("Chintu"),
+            Mention("Pintu"),
+            Mention("Dinesh")
+        )
+        edtVideoDesc.mentionColor = ContextCompat.getColor(this, R.color.colorBlack)
+        edtVideoDesc.mentionAdapter = defaultMentionAdapter
+        edtVideoDesc.setMentionTextChangedListener { _, text ->
+            Log.e("mention", text.toString())
+        }
     }
 
     /**
@@ -299,9 +300,20 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
         if (mentionList.size > 0) {
-            rvMentionList.visibility = View.VISIBLE
+            //rvMentionList.visibility = View.VISIBLE
             mentionListAdapter = MentionListAdapter(mentionList, this@PostVideoActivity, this)
             rvMentionList.adapter = mentionListAdapter
+            Log.e("listSize", mentionList.size.toString())
+
+            for (i in mentionList.indices) {
+                defaultMentionAdapter.addAll(
+                    Mention(
+                        mentionList[i].username
+                    )
+                )
+            }
+
+
         }
 
         // mentionList.clear()
@@ -664,5 +676,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         edtVideoDesc.setSelection(edtVideoDesc.text!!.length);
         rvMentionList.visibility = View.GONE
     }
+
 }
 

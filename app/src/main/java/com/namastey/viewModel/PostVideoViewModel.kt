@@ -150,7 +150,7 @@ class PostVideoViewModel constructor(
 
 
     fun getMentionList(search: String) {
-        setIsLoading(true)
+        //setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (postVideoView.isInternetAvailable()) {
@@ -166,7 +166,7 @@ class PostVideoViewModel constructor(
                     postVideoView.showMsg(R.string.no_internet)
                 }
             } catch (t: Throwable) {
-                setIsLoading(false)
+                //setIsLoading(false)
                 postVideoView.onHandleException(t)
             }
         }

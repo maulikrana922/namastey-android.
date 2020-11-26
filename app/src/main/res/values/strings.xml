@@ -396,5 +396,13 @@
     <string name="_1">1</string>
     <string name="most_popular">MOST POPULAR</string>
     <string name="continues">Continue</string>
+    <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
+    <string name="out_of_likes">Out of Likes!</string>
+    <string name="dont_want_to_wait">"11:59:55 \n Don`t want to wait? Go Unlimited "</string>
+    <string name="swipe_around_the_world">Swipe Around The World</string>
+    <string name="passport_to_anywher">Passport to anywhere</string>
+    <string name="_5_free_super_message">5 Free Super Message</string>
+    <string name="your_3x_more_likes">You`re 3x more likely to get a match!</string>
+    <string name="month_with_them_intantly">"Math with them instanly "</string>
 
 </resources>

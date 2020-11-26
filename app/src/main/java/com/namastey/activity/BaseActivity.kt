@@ -14,8 +14,12 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -24,9 +28,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.R
+import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
@@ -37,6 +44,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.Constants.NOTIFICATION_BROADCAST
 import com.namastey.utils.CustomAlertDialog
+import kotlinx.android.synthetic.main.dialog_membership.view.*
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -68,6 +76,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         hideKeyboard()
         showAlert(msg)
     }
+
+
+
 
     override fun hideKeyboard() {
         runOnUiThread {
@@ -331,7 +342,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         notificationManager: NotificationManager
     ) {
 
-        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
+        val channel =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
         channel.enableLights(true)
         channel.lightColor = Color.BLACK
         channel.enableVibration(true)

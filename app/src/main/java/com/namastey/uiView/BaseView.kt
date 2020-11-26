@@ -4,9 +4,11 @@ import androidx.annotation.LayoutRes
 import com.namastey.viewModel.BaseViewModel
 
 interface BaseView {
+
     fun showMsg(msgId: Int)
 
     fun showMsg(msg: String)
+
 
     fun hideKeyboard()
 
