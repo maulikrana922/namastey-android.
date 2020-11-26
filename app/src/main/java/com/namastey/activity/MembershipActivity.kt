@@ -20,7 +20,6 @@ import com.namastey.model.MembershipSlide
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import java.util.*
 import javax.inject.Inject
