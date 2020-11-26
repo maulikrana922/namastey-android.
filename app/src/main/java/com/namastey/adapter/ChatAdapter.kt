@@ -4,9 +4,13 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.model.ChatMessage
+import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_message_received.view.*
 import kotlinx.android.synthetic.main.row_message_send.view.*
 
@@ -58,8 +62,13 @@ class ChatAdapter(
         fun bindReceived(position: Int) = with(itemView){
 
             val chatMessage = chatMsgList[position]
-            llMessageReceived.visibility = View.VISIBLE
-            tvMessageReceived.text = chatMessage.message
+            if (chatMessage.message == Constants.FirebaseConstant.IMAGE_UPLOAD && chatMessage.url.isNotEmpty()){
+                visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,flImageReceived)
+                GlideLib.loadImage(activity,ivImageReceived,chatMessage.url)
+            }else {
+                visibleSendMessage(flImageReceived,llMessageReceived,llRecordingReceived,llMessageReceived)
+                tvMessageReceived.text = chatMessage.message
+            }
         }
 //        val llMessageReceived: LinearLayout
 //        val tvMessageReceived: TextView
@@ -94,8 +103,17 @@ class ChatAdapter(
         fun bindSend(position: Int) = with(itemView){
 
             val chatMessage = chatMsgList[position]
-            llMessageSend.visibility = View.VISIBLE
-            tvMessageSend.text = chatMessage.message
+            if (chatMessage.message == Constants.FirebaseConstant.IMAGE_UPLOAD && chatMessage.url.isNotEmpty()){
+//                flImageSend.visibility = View.VISIBLE
+//                llMessageSend.visibility = View.GONE
+                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,flImageSend)
+                GlideLib.loadImage(activity,ivImageSend,chatMessage.url)
+            }else {
+//                flImageSend.visibility = View.GONE
+//                llMessageSend.visibility = View.VISIBLE
+                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llMessageSend)
+                tvMessageSend.text = chatMessage.message
+            }
         }
 //        val llMessageSend: LinearLayout
 //        val tvMessageSend: TextView
@@ -124,5 +142,36 @@ class ChatAdapter(
 //        }
     }
 
+    /**
+     * Visible particular view of send message type
+     */
+    private fun visibleSendMessage(
+        flImageSend: FrameLayout,
+        llMessageSend: LinearLayout,
+        llRecordingSend: LinearLayout,
+        view: View
+    ) {
+        flImageSend.visibility = View.GONE
+        llMessageSend.visibility = View.GONE
+        llRecordingSend.visibility = View.GONE
+
+        view.visibility = View.VISIBLE
+    }
+
+    /**
+     * Visible particular view of receive message type
+     */
+    private fun visibleReceiveMessage(
+        flImageReceived: FrameLayout,
+        llMessageReceived: LinearLayout,
+        llRecordingReceived: LinearLayout,
+        view: View
+    ) {
+        flImageReceived.visibility = View.GONE
+        llMessageReceived.visibility = View.GONE
+        llRecordingReceived.visibility = View.GONE
+
+        view.visibility = View.VISIBLE
+    }
     override fun getItemCount() = chatMsgList.size
 }

@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.row_cocntent_language.view.*
 class ContentLanguageAdapter(
     var activity: Activity,
     var languageList: ArrayList<VideoLanguageBean>,
+    var selectedLanguageList: ArrayList<Int>,
     var onItemClick: OnItemClick
 ) : RecyclerView.Adapter<ContentLanguageAdapter.ViewHolder>() {
 
@@ -28,8 +29,7 @@ class ContentLanguageAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
 
@@ -37,6 +37,11 @@ class ContentLanguageAdapter(
             Log.e("ContentLanguage", "video_lang_name: ${languageList[position].video_lang_name}")
 
             tvContentLanguage.text = languageList[position].video_lang_name
+
+            if (selectedLanguageList.contains(languageList[position].id)){
+                ivSelected.visibility = View.VISIBLE
+            }
+
             viewContentLanguage.setOnClickListener { v ->
                 if (ivSelected.visibility == View.VISIBLE) {
                     ivSelected.visibility = View.GONE
@@ -46,7 +51,6 @@ class ContentLanguageAdapter(
                 onItemClick.onLanguageItemClick(languageList[position])
             }
         }
-
     }
 
     interface OnItemClick {

@@ -48,7 +48,7 @@
 
     <FrameLayout
         android:visibility="gone"
-        android:id="@+id/frameImageSend"
+        android:id="@+id/flImageSend"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_150sdp"
         android:layout_gravity="end"

@@ -564,6 +564,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             )
         } else {*/
         openActivity(this@ProfileActivity, MembershipActivity())
+
        // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
        // }
     }

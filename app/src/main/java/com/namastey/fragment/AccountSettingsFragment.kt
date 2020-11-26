@@ -133,6 +133,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
          i.data = Uri.parse(url)
          startActivity(i)*/
 
+
         try {
             val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(myIntent)

@@ -28,7 +28,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val tag = "FirebaseMessagingService"
 
-
     private var notificationCount = 0
     private var getNotification = NotificationModel()
 
@@ -69,7 +68,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     remoteMessage.notification?.body
                 )
 
-                Log.e("MessageService", "isBackground: ${isBackground()}" )
+                Log.e("MessageService", "isBackground: ${isBackground()}")
 
             } catch (e: JSONException) {
                 Log.d("error", e.message!!)
@@ -77,13 +76,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-
     private fun sendBroadcastDashboard(notiTitle: String?, notiMessage: String?) {
         /**
          * Add data to notification Object
          * */
-
-
         val intent = Intent(NOTIFICATION_ACTION)
         intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
         intent.putExtra(KEY_NOTIFICATION, getNotification)

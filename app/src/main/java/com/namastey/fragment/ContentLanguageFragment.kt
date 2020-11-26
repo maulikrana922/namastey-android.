@@ -13,6 +13,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentContentLanguageBinding
 import com.namastey.model.VideoLanguageBean
 import com.namastey.uiView.ContentLanguageView
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ContentLanguageViewModel
 import kotlinx.android.synthetic.main.fragment_content_language.*
 import javax.inject.Inject
@@ -22,11 +23,15 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
     ContentLanguageAdapter.OnItemClick {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentContentLanguageBinding: FragmentContentLanguageBinding
     private lateinit var contentLanguageViewModel: ContentLanguageViewModel
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: ContentLanguageAdapter
     private var selectVideoIdList: ArrayList<Int> = ArrayList()
+    private var selectedLanguageList: ArrayList<Int> = ArrayList()
 
 
     override fun getViewModel() = contentLanguageViewModel
@@ -70,13 +75,16 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
             resources.configuration.locale.country
         }
 
+        selectedLanguageList = sessionManager.getLanguageList()
+        Log.e("ContentLanguage", "selectedLanguageList: \t  $selectedLanguageList")
         contentLanguageViewModel.getContentLanguage(locale)
     }
 
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
         Log.e("ContentLanguage", "onSuccess: \t languageList: $languageList")
         selectVideoIdList = ArrayList()
-        notificationAdapter = ContentLanguageAdapter(requireActivity(), languageList, this)
+        notificationAdapter =
+            ContentLanguageAdapter(requireActivity(), languageList, selectedLanguageList, this)
         rvContentLanguages.adapter = notificationAdapter
     }
 
