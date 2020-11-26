@@ -15,14 +15,20 @@ import com.namastey.uiView.VideoLanguageView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GridSpacingItemDecoration
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.VideoLanguageViewModel
 import kotlinx.android.synthetic.main.fragment_video_language.*
 import javax.inject.Inject
 
-class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), VideoLanguageView,VideoLanguageAdapter.OnItemClick {
+
+class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), VideoLanguageView,
+    VideoLanguageAdapter.OnItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var fragmentVideoLanguageBinding: FragmentVideoLanguageBinding
     private lateinit var videoLanguageViewModel: VideoLanguageViewModel
@@ -39,15 +45,16 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         if (selectVideoIdList.size >= 1) {
             (activity as SignUpActivity).addFragment(
                 ChooseInterestFragment.getInstance(
-                    dob,selectVideoIdList
+                    dob, selectVideoIdList
                 ),
                 Constants.CHOOSE_INTEREST_FRAGMENT
             )
-        }else{
+            sessionManager.setLanguageList(selectVideoIdList)
+        } else {
             object : CustomAlertDialog(
                 activity!!,
                 resources.getString(R.string.msg_min_language), getString(R.string.ok), ""
-            ){
+            ) {
                 override fun onBtnClick(id: Int) {
                     dismiss()
                 }
@@ -55,11 +62,18 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         }
     }
 
+    private fun saveSelectedLanguages() {
+        /*val gson = Gson()
+        val json = gson.toJson(selectVideoIdList)*/
+       sessionManager.setLanguageList(selectVideoIdList)
+
+    }
+
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
 
         selectVideoIdList = ArrayList()
         rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 10, false))
-        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!,this)
+        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!, this)
         rvVideoLanguage.adapter = videoLanguageAdapter
     }
 
@@ -100,7 +114,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
         }
         videoLanguageViewModel.getVideoLanguage(locale)
 
-        if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)){
+        if (arguments!!.containsKey(Constants.DATE_OF_BIRTH)) {
             dob = arguments!!.getString(Constants.DATE_OF_BIRTH).toString()
         }
     }

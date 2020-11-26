@@ -119,7 +119,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 Constants.KEY_IS_MENTIONS
             )
             sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_matches, Constants.KEY_IS_MATCHES
+                profileBean.notificationBean[0].is_matches,
+                Constants.KEY_IS_MATCHES
             )
             sessionManager.setIntegerValue(
                 profileBean.notificationBean[0].is_follow,
@@ -557,17 +558,17 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickMembership(view: View) {
-      /*  if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(false
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        } else {*/
+        /*  if (sessionManager.isGuestUser()) {
+              addFragment(
+                  SignUpFragment.getInstance(false
+                  ),
+                  Constants.SIGNUP_FRAGMENT
+              )
+          } else {*/
         openActivity(this@ProfileActivity, MembershipActivity())
 
-       // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
-       // }
+        // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
+        // }
     }
 
 

@@ -293,8 +293,10 @@ class SearchLocationActivity : FragmentActivity(),
             mMap!!.addMarker(
                 MarkerOptions().position(latLng).icon(
                     BitmapDescriptorFactory.fromBitmap(
-                        searchLocationMarker(
-                            this@SearchLocationActivity
+                        createCustomMarker(
+                            this@SearchLocationActivity,
+                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
                         )
                     )
                 ).title(location)

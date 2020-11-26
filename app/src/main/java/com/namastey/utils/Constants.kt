@@ -184,6 +184,7 @@ object Constants {
     const val KEY_CAN_SEND_YOU_DIRECT_MESSAGE = "KEY_CAN_SEND_YOU_DIRECT_MESSAGE"
     const val KEY_CAN_COMMENT_YOUR_VIDEO = "KEY_CAN_COMMENT_YOUR_VIDEO"
     const val KEY_NOTIFICATION_DATA = "notification_data"
+    const val KEY_LANGUAGE_LIST = "KEY_LANGUAGE_LIST"
 
 
     //    field key
