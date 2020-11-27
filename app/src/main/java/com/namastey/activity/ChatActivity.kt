@@ -2,6 +2,7 @@ package com.namastey.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -29,6 +30,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.activity_post_video.*
 import java.io.File
 import javax.inject.Inject
 
@@ -229,6 +231,28 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //                pictureFile = Utils.getCameraFile(this@ChatActivity)
 
                 uploadFile(photoUri)
+            }else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
+                try {
+                    val selectedImage = data!!.data
+                    val filePathColumn =
+                        arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? = this@ChatActivity.contentResolver.query(
+                        selectedImage!!,
+                        filePathColumn, null, null, null
+                    )
+                    cursor!!.moveToFirst()
+
+                    val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                    val picturePath: String = cursor.getString(columnIndex)
+                    cursor.close()
+
+                    GlideLib.loadImage(this, ivSelectCover, picturePath)
+                    Log.d("Image Path", "Image Path  is $picturePath")
+                    pictureFile = Utils.saveBitmapToFile(File(picturePath))
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -243,7 +267,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 taskSnapshot.storage.downloadUrl.addOnSuccessListener {
                     val imageUrl = it.toString()
                     chatViewModel.setIsLoading(false)
-                    sendMessage(Constants.FirebaseConstant.IMAGE_UPLOAD,imageUrl)
+                    sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE,imageUrl)
                 }
             }
 
@@ -261,5 +285,16 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //            val currentprogress = progress.toInt()
 //            progressBar.progress = currentprogress
 //        }
+    }
+
+    fun onClickSelectImage(view: View) {
+        pictureFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString() + ".jpeg"
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
     }
 }

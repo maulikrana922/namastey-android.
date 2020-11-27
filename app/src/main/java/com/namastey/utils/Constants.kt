@@ -17,7 +17,8 @@ object Constants {
     object FirebaseConstant{
         var CHATS = "Chats"
         var IMAGES = "images"
-        var IMAGE_UPLOAD = "Image upload"
+        var MSG_TYPE_IMAGE = "MsgTypeImage"
+        var MSG_TYPE_VOICE = "MsgTypeVoice"
     }
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"

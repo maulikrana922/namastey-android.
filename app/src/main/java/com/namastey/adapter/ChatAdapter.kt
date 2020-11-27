@@ -62,7 +62,7 @@ class ChatAdapter(
         fun bindReceived(position: Int) = with(itemView){
 
             val chatMessage = chatMsgList[position]
-            if (chatMessage.message == Constants.FirebaseConstant.IMAGE_UPLOAD && chatMessage.url.isNotEmpty()){
+            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
                 visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,flImageReceived)
                 GlideLib.loadImage(activity,ivImageReceived,chatMessage.url)
             }else {
@@ -103,7 +103,7 @@ class ChatAdapter(
         fun bindSend(position: Int) = with(itemView){
 
             val chatMessage = chatMsgList[position]
-            if (chatMessage.message == Constants.FirebaseConstant.IMAGE_UPLOAD && chatMessage.url.isNotEmpty()){
+            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
 //                flImageSend.visibility = View.VISIBLE
 //                llMessageSend.visibility = View.GONE
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,flImageSend)

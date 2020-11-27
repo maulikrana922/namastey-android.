@@ -97,6 +97,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         isCompletlySignup = profileBean.is_completly_signup
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
+        tvViewsCount.text = profileBean.viewers.toString()
         sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
         sessionManager.setUserGender(profileBean.gender)
         sessionManager.setUserId(profileBean.user_id)
