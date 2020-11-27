@@ -16,7 +16,8 @@ object Constants {
 
     object FirebaseConstant{
         var CHATS = "Chats"
-        var IMAGES = "images"
+        var IMAGES = "Images"
+        var VOICE = "Voice"
         var MSG_TYPE_IMAGE = "MsgTypeImage"
         var MSG_TYPE_VOICE = "MsgTypeVoice"
     }
@@ -280,6 +281,7 @@ object Constants {
     const val REQUEST_POST_VIDEO = 103
     const val REQUEST_CODE_IMAGE = 104
     const val PERMISSION_STORAGE = 106
+    const val PERMISSION_AUDIO = 116
     const val FILTER_OK = 107
     const val ADD_LINK = 108
     const val REQUEST_CODE = 109

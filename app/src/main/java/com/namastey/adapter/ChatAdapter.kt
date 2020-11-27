@@ -65,6 +65,8 @@ class ChatAdapter(
             if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
                 visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,flImageReceived)
                 GlideLib.loadImage(activity,ivImageReceived,chatMessage.url)
+            }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
+                visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,llRecordingReceived)
             }else {
                 visibleSendMessage(flImageReceived,llMessageReceived,llRecordingReceived,llMessageReceived)
                 tvMessageReceived.text = chatMessage.message
@@ -104,13 +106,11 @@ class ChatAdapter(
 
             val chatMessage = chatMsgList[position]
             if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
-//                flImageSend.visibility = View.VISIBLE
-//                llMessageSend.visibility = View.GONE
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,flImageSend)
                 GlideLib.loadImage(activity,ivImageSend,chatMessage.url)
+            }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
+                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llRecordingSend)
             }else {
-//                flImageSend.visibility = View.GONE
-//                llMessageSend.visibility = View.VISIBLE
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llMessageSend)
                 tvMessageSend.text = chatMessage.message
             }

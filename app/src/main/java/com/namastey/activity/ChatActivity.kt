@@ -2,18 +2,23 @@ package com.namastey.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.database.Cursor
+import android.content.pm.PackageManager
+import android.media.MediaRecorder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.namastey.BR
 import com.namastey.R
@@ -32,6 +37,7 @@ import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -50,7 +56,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     private var myChatRef: DatabaseReference = database.reference
     private var storage = Firebase.storage
     private var storageRef = storage.reference
-    private var pictureFile: File? = null
+
+    private val TAG = "ChatActivity"
+    private var recorder: MediaRecorder? = null
+    private var voiceFileName: String? = ""
 
     override fun getViewModel() = chatViewModel
 
@@ -76,6 +85,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
+
+            voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
             myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
             myChatRef.addValueEventListener(object : ValueEventListener {
@@ -119,6 +130,24 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 tvUserName.text = matchesListBean.username
             }
 
+            ivMic.setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                    when (event?.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            isAudioPermissionGranted()
+                            ivMic.setPadding(7,7,7,7)
+                            return true
+                        }
+                        MotionEvent.ACTION_UP ->{
+                            Log.d(TAG,"Call stop record....")
+                            ivMic.setPadding(0,0,0,0)
+                            stopRecording()
+                        }
+                    }
+
+                    return v?.onTouchEvent(event) ?: true
+                }
+            })
             hideChatMoreButton(false)
         }
     }
@@ -206,7 +235,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                     Utils.getCameraFile(this@ChatActivity)
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
 
             } catch (ex: Exception) {
@@ -230,44 +259,54 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //                )!!
 //                pictureFile = Utils.getCameraFile(this@ChatActivity)
 
-                uploadFile(photoUri)
+                uploadFile(photoUri,true)
             }else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
-                try {
-                    val selectedImage = data!!.data
-                    val filePathColumn =
-                        arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? = this@ChatActivity.contentResolver.query(
-                        selectedImage!!,
-                        filePathColumn, null, null, null
-                    )
-                    cursor!!.moveToFirst()
+                if (data?.clipData != null) {
+                    val count = data.clipData?.itemCount
+                    for (i in 0 until count!!) {
+                        val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
+                        uploadFile(imageUri,true)
+                    }
 
-                    val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                    val picturePath: String = cursor.getString(columnIndex)
-                    cursor.close()
-
-                    GlideLib.loadImage(this, ivSelectCover, picturePath)
-                    Log.d("Image Path", "Image Path  is $picturePath")
-                    pictureFile = Utils.saveBitmapToFile(File(picturePath))
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                } else if (data?.data != null) {
+                    // if single image is selected
+                    val imageUri: Uri = data.data!!
+                    uploadFile(imageUri,true)
                 }
+
+//                try {
+//                    val selectedImage = data!!.data
+//                    if (selectedImage != null)
+//                        uploadFile(selectedImage)
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
             }
         }
     }
 
-    private fun uploadFile(photoUri: Uri){
+    private fun uploadFile(photoUri: Uri, isImageUpload: Boolean){
         chatViewModel.setIsLoading(true)
 
-        val imagesRef = storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
+        Log.d(TAG,"Upload file started....")
+        val fileStorage: StorageReference = if (isImageUpload) {
+            storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
+        } else{
+            storageRef.child(Constants.FirebaseConstant.VOICE.plus("/").plus(System.currentTimeMillis()))
+        }
 
-        imagesRef.putFile(photoUri)
+//        val imagesRef = storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
+
+        fileStorage.putFile(photoUri)
             .addOnSuccessListener { taskSnapshot ->
                 taskSnapshot.storage.downloadUrl.addOnSuccessListener {
                     val imageUrl = it.toString()
                     chatViewModel.setIsLoading(false)
-                    sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE,imageUrl)
+                    Log.d(TAG,"File upload success....")
+                    if (isImageUpload)
+                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE,imageUrl)
+                    else
+                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_VOICE,imageUrl)
                 }
             }
 
@@ -276,25 +315,74 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 chatViewModel.setIsLoading(false)
                 Log.d("Firebase : ", "Image uplaod issue")
             }
-
-//        uploadTask.addOnProgressListener { taskSnapshot ->
-//            val progress =
-//                100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
-//
-//            println("Upload is $progress% done")
-//            val currentprogress = progress.toInt()
-//            progressBar.progress = currentprogress
-//        }
     }
 
     fun onClickSelectImage(view: View) {
-        pictureFile = File(
-            Constants.FILE_PATH,
-            System.currentTimeMillis().toString() + ".jpeg"
-        )
-
-        val intent = Intent(Intent.ACTION_PICK)
+        // For latest versions API LEVEL 19+
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
-        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
+        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
+
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.type = "image/*"
+//        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
+    }
+
+    private fun startRecording() {
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFile(voiceFileName)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+
+            try {
+                Log.d(TAG,"Recording started....")
+                prepare()
+            } catch (e: IOException) {
+                Log.e("LOG_TAG", "prepare() failed")
+            }
+
+            start()
+        }
+    }
+
+    private fun stopRecording() {
+        recorder?.apply {
+            stop()
+            release()
+        }
+        recorder = null
+        val voiceUri = Uri.fromFile(File(voiceFileName!!))
+        Log.d(TAG,"Recording ended....")
+        uploadFile(voiceUri,false)
+    }
+
+    private fun isAudioPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Permission granted
+                startRecording()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.RECORD_AUDIO
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            startRecording()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        recorder?.release()
+        recorder = null
+//        player?.release()
+//        player = null
     }
 }
