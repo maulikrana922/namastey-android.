@@ -2,17 +2,22 @@ package com.namastey.fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.MatchesActivity
+import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.adapter.NotificationAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
@@ -20,10 +25,12 @@ import com.namastey.databinding.FragmentNotificationBinding
 import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.model.ActivityListBean
 import com.namastey.model.FollowRequestBean
+import com.namastey.model.MembershipSlide
 import com.namastey.uiView.NotificationView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.NotificationViewModel
+import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.fragment_notification.*
 import javax.inject.Inject
 
@@ -41,6 +48,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: NotificationAdapter
     private var activityList: ArrayList<ActivityListBean> = ArrayList()
+    private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
 
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
@@ -103,6 +111,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         setSelectedApi()
 
+        setSliderData()
         /* notificationAdapter = NotificationAdapter(requireActivity())
          rvNotification.adapter = notificationAdapter*/
 
@@ -168,7 +177,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         ivFollowers = customLayout.findViewById(R.id.ivFollowers)
     }
 
-    private fun setDialogClickListeners() {
+    private fun setDialogClickListeners()   {
         llAllActivity.setOnClickListener {
             isActivityList = 0
             hideDoneImageView(ivAllActivitySelected)
@@ -185,19 +194,22 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             //dialog.dismiss()
         }
         llLikes.setOnClickListener {
-            hideDoneImageView(ivLikesSelected)
-            setSelectedTextColor(tvLikes)
-            setImageViewColor(ivLikes, R.drawable.heart)
-            isActivityList = 1
-            notificationViewModel.getActivityList(isActivityList)
-            sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
-            sessionManager.setStringValue(
-                resources.getString(R.string.likes),
-                Constants.KEY_ALL_ACTIVITY_TITLE
-            )
-            tvAllActivityTitle.text = resources.getString(R.string.likes)
-            tvAllActivityMain.text = resources.getString(R.string.likes)
-            // dialog.dismiss()
+            dialog.dismiss()
+            showCustomDialog(1)
+
+            //Todo: Display dialog based on condition
+            /* hideDoneImageView(ivLikesSelected)
+             setSelectedTextColor(tvLikes)
+             setImageViewColor(ivLikes, R.drawable.heart)
+             isActivityList = 1
+             notificationViewModel.getActivityList(isActivityList)
+             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+             sessionManager.setStringValue(
+                 resources.getString(R.string.likes),
+                 Constants.KEY_ALL_ACTIVITY_TITLE
+             )
+             tvAllActivityTitle.text = resources.getString(R.string.likes)
+             tvAllActivityMain.text = resources.getString(R.string.likes)*/
         }
         llComments.setOnClickListener {
             hideDoneImageView(ivCommentsSelected)
@@ -243,6 +255,330 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             tvAllActivityTitle.text = resources.getString(R.string.mentions)
             tvAllActivityMain.text = resources.getString(R.string.mentions)
             // dialog.dismiss()
+        }
+    }
+
+    private fun showCustomDialog(position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+      //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(requireActivity())
+                .inflate(R.layout.dialog_membership, null, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        /*Show dialog slider*/
+        val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
+        val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
+        manageVisibility(dialogView)
+        viewpager.adapter =
+            MembershipDialogSliderAdapter(requireActivity(), membershipSliderArrayList)
+        tabview.setupWithViewPager(viewpager, true)
+        viewpager.currentItem = position
+        dialogView.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
+    private fun setSliderData() {
+        membershipSliderArrayList = ArrayList()
+        membershipSliderArrayList.clear()
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string._1_boost_each_month),
+                getString(R.string.skip_the_line_to_get_more_matches),
+                R.drawable.ic_cards_boots,
+                R.drawable.dialog_offread_gradiant
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.out_of_likes),
+                getString(R.string.dont_want_to_wait),
+                R.drawable.ic_cards_outoflike,
+                R.drawable.dialog_gradiant_two
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.swipe_around_the_world),
+                getString(R.string.passport_to_anywher),
+                R.drawable.ic_cards_passport,
+                R.drawable.dialog_gradiant_three
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string._5_free_super_message),
+                getString(R.string.your_3x_more_likes),
+                R.drawable.ic_cards_super_message,
+                R.drawable.dialog_gradiant_five
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.see_who_like_you),
+                getString(R.string.month_with_them_intantly),
+                R.drawable.ic_cards_super_like,
+                R.drawable.dialog_gradiant_six
+            )
+        )
+    }
+
+    private fun manageVisibility(view: View) {
+        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTwel)
+        val conSix = view.findViewById<ConstraintLayout>(R.id.conSix)
+        val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
+
+        conOne.setOnClickListener {
+            view.tvOnemonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvOnemonthText.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvOnemonthText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgOneColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            view.tvMostpopular.visibility = View.VISIBLE
+            view.viewSelected.visibility = View.VISIBLE
+
+            view.tvBgSixColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularSix.visibility = View.INVISIBLE
+            view.viewSelectedSix.visibility = View.INVISIBLE
+            view.viewBgTwelColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularTwel.visibility = View.INVISIBLE
+            view.viewSelectedTwel.visibility = View.INVISIBLE
+
+            view.tvSixmonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvSixtext1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvSixText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwel.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwelText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwelText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+        }
+
+        conSix.setOnClickListener {
+            view.tvSixmonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvSixtext1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvSixText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvBgSixColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            view.tvMostpopularSix.visibility = View.VISIBLE
+            view.viewSelectedSix.visibility = View.VISIBLE
+
+            view.viewBgOneColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopular.visibility = View.INVISIBLE
+            view.viewSelected.visibility = View.INVISIBLE
+            view.viewBgTwelColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularTwel.visibility = View.INVISIBLE
+            view.viewSelectedTwel.visibility = View.INVISIBLE
+
+            view.tvOnemonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvOnemonthText.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvOnemonthText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwel.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwelText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTwelText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+        }
+
+        conTwel.setOnClickListener {
+            view.tvTwel.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTwelText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTwelText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgTwelColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            view.tvMostpopularTwel.visibility = View.VISIBLE
+            view.viewSelectedTwel.visibility = View.VISIBLE
+
+            view.tvBgSixColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularSix.visibility = View.INVISIBLE
+            view.viewSelectedSix.visibility = View.INVISIBLE
+            view.viewBgOneColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopular.visibility = View.INVISIBLE
+            view.viewSelected.visibility = View.INVISIBLE
+
+            view.tvOnemonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvOnemonthText.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvOnemonthText1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvSixmonth.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvSixtext1.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvSixText2.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
         }
     }
 
@@ -363,11 +699,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             if (!this::notificationAdapter.isInitialized) {
                 val notificationList = arrayListOf<ActivityListBean>()
                 notificationList.add(activityListBean)
-                notificationAdapter = NotificationAdapter(requireActivity(), notificationList, isActivityList)
+                notificationAdapter =
+                    NotificationAdapter(requireActivity(), notificationList, isActivityList)
                 rvNotification.layoutManager = LinearLayoutManager(context!!)
                 rvNotification.adapter = notificationAdapter
             } else {
-              //  notificationAdapter.updateNotification(activityListBean)
+                //  notificationAdapter.updateNotification(activityListBean)
             }
         }
     }
@@ -448,6 +785,4 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.onDestroy()
         super.onDestroy()
     }
-
-
 }
