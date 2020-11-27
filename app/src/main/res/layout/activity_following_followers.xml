@@ -21,141 +21,144 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite">
 
-            <LinearLayout
-                android:id="@+id/llFollowBackground"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/green_bar"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite">
 
-            <ImageView
-                android:id="@+id/ivFollowBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickFollowBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivFollowUser"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:src="@drawable/default_placeholder"
-                app:civ_border_color="@color/colorWhite"
-                app:civ_border_width="1dp"
-                android:onClick="onClickFollowBack"
-                app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
-                app:layout_constraintStart_toEndOf="@id/ivFollowBack"
-                app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvFollowUsername"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_3sdp"
-                android:singleLine="true"
-                android:onClick="onClickFollowBack"
-                android:textColor="@color/colorWhite"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivFollowUser"
-                app:layout_constraintEnd_toStartOf="@id/ivFollowFind"
-                app:layout_constraintStart_toEndOf="@id/ivFollowUser"
-                app:layout_constraintTop_toTopOf="@id/ivFollowUser"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <ImageView
-                android:id="@+id/ivFollowFind"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickFindFriend"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_add_friend"
-                app:civ_border_width="1dp"
-                app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabFollow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llFollowBackground"
-                app:tabIndicator="@android:color/transparent"
-                app:tabPaddingEnd="0dp"
-                app:tabPaddingStart="0dp"
-                app:tabRippleColor="@android:color/transparent"
-                app:tabSelectedTextColor="@color/colorWhite"
-                app:tabTextColor="@color/colorGray" />
-
-            <LinearLayout
-                android:id="@+id/llSearchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:background="@drawable/rounded_white_solid"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tabFollow">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchFollow"
-                    style="@style/searchViewStyle"
-                    app:defaultQueryHint="@string/search"
-                    app:iconifiedByDefault="false"
-                    app:queryHint="@string/search"
-                    app:searchHintIcon="@drawable/ic_search" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvSearchUser"
+                <LinearLayout
+                    android:id="@+id/llFollowBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingStart="@dimen/_3sdp"
-                    android:paddingEnd="@dimen/_3sdp"
+                    android:background="@drawable/green_bar"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivFollowBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickFollowBack"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivFollowUser"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:onClick="onClickFollowBack"
+                    android:src="@drawable/default_placeholder"
+                    app:civ_border_color="@color/colorWhite"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
+                    app:layout_constraintStart_toEndOf="@id/ivFollowBack"
+                    app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFollowUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:onClick="onClickFollowBack"
+                    android:singleLine="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ivFollowUser"
+                    app:layout_constraintEnd_toStartOf="@id/ivFollowFind"
+                    app:layout_constraintStart_toEndOf="@id/ivFollowUser"
+                    app:layout_constraintTop_toTopOf="@id/ivFollowUser"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <ImageView
+                    android:id="@+id/ivFollowFind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickFindFriend"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_add_friend"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="@id/ivFollowBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ivFollowBack" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabFollow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llFollowBackground"
+                    app:tabIndicator="@android:color/transparent"
+                    app:tabPaddingEnd="0dp"
+                    app:tabPaddingStart="0dp"
+                    app:tabRippleColor="@android:color/transparent"
+                    app:tabSelectedTextColor="@color/colorWhite"
+                    app:tabTextColor="@color/colorGray" />
+
+                <LinearLayout
+                    android:id="@+id/llSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/rounded_white_solid"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/row_user_suggested" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tabFollow">
 
-            </LinearLayout>
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchFollow"
+                        style="@style/searchViewStyle"
+                        app:defaultQueryHint="@string/search"
+                        app:iconifiedByDefault="false"
+                        app:queryHint="@string/search"
+                        app:searchHintIcon="@drawable/ic_search" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewpagerFollow"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/llSearchView"
-                app:layout_constraintStart_toStartOf="@id/llSearchView"
-                app:layout_constraintTop_toBottomOf="@id/llSearchView" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSearchUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingStart="@dimen/_3sdp"
+                        android:paddingEnd="@dimen/_3sdp"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/row_user_suggested" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpagerFollow"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/llSearchView"
+                    app:layout_constraintStart_toStartOf="@id/llSearchView"
+                    app:layout_constraintTop_toBottomOf="@id/llSearchView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
         <FrameLayout
             android:id="@+id/flContainer"
             android:layout_width="match_parent"

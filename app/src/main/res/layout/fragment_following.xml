@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -15,61 +16,95 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
+            android:id="@+id/llSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:background="@drawable/rounded_white_solid"
+            android:orientation="vertical"
             android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchFollowFollowing"
+                style="@style/searchViewStyle"
+                app:defaultQueryHint="@string/search"
+                app:iconifiedByDefault="false"
+                app:queryHint="@string/search"
+                app:searchHintIcon="@drawable/ic_search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/_3sdp"
+                android:paddingEnd="@dimen/_3sdp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_user_suggested" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFollowing"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/row_following"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/llSearchView"
+            app:layout_constraintStart_toStartOf="@id/llSearchView"
+            app:layout_constraintTop_toBottomOf="@id/llSearchView"
+            tools:listitem="@layout/row_following" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidlineEmpty"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            app:layout_constraintGuide_percent="0.25"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/llEmpty"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guidlineEmpty"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guidlineEmpty">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/empty_male_female"
-                android:contentDescription="@string/app_name"/>
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/empty_male_female" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvEmptyFollow"
                 style="@style/tvWrapWhiteStyle"
-                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text="@string/followers"
-                app:typeface="MULI_SEMIBOLD"
-                android:layout_marginTop="@dimen/_12sdp"/>
+                android:textColor="@color/colorBlack"
+                app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvEmptyFollowMsg"
                 style="@style/tvWrapWhiteStyle"
-                android:textColor="@color/colorBlack"
-                android:maxLines="3"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
+                android:maxLines="3"
                 android:text="@string/msg_empty_following"
-                android:layout_marginTop="@dimen/_5sdp"/>
+                android:textColor="@color/colorBlack" />
         </LinearLayout>
 
 

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -24,9 +25,13 @@ import org.json.JSONException
 import org.json.JSONObject
 import com.namastey.model.Notification as NotificationModel
 
+
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    private val tag = "FirebaseMessagingService"
+    //private val TAG = "FirebaseMessagingService"
+
+    private val TAG = MyFirebaseMessagingService::class.java.simpleName
+
 
     private var notificationCount = 0
     private var getNotification = NotificationModel()
@@ -35,7 +40,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         //SessionManager(applicationContext).setFirebaseToken(token)
-        println("$tag token --> $token")
+        println("$TAG token --> $token")
 
         SessionManager(applicationContext).setFirebaseToken(token)
     }
@@ -59,14 +64,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.e("MessageService", "remoteMessage: " + remoteMessage.notification)
         if (remoteMessage.notification != null) {
-            Log.e("MessageService", "Message data payload: " + remoteMessage.data)
+            Log.e(TAG, "Data: " + remoteMessage.data)
+            Log.e(TAG, "body: " + remoteMessage.notification!!.body)
             try {
-                val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
+                // val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
+                val mainJsonObject = JSONObject(remoteMessage.data.toString())
+                Log.e(TAG, "Payload: " + mainJsonObject.getString("payload"))
 
-                showNotification(
+                handleDataMessage(mainJsonObject)
+                /*showNotification(
                     remoteMessage.notification?.title,
                     remoteMessage.notification?.body
-                )
+                )*/
 
                 Log.e("MessageService", "isBackground: ${isBackground()}")
 
@@ -74,6 +83,85 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 Log.d("error", e.message!!)
             }
         }
+    }
+
+    private fun handleDataMessage(json: JSONObject) {
+        Log.e(TAG, "push json: $json")
+        try {
+            val data = json.getJSONObject("data")
+            val title = data.getString("title")
+            val message = data.getString("message")
+            val isBackground = data.getBoolean("is_background")
+            val imageUrl = data.getString("image")
+            val timestamp = data.getString("timestamp")
+            val payload = data.getJSONObject("payload")
+            Log.e(TAG, "title: $title")
+            Log.e(TAG, "message: $message")
+            Log.e(TAG, "isBackground: $isBackground")
+            Log.e(TAG, "payload: $payload")
+            Log.e(TAG, "imageUrl: $imageUrl")
+            Log.e(TAG, "timestamp: $timestamp")
+            if (!isBackground) {
+                sendBroadcastDashboard(title, message)
+            } else {
+                // app is in background, show the notification in notification tray
+                showNotification(title, message)
+                val resultIntent = Intent(
+                    applicationContext,
+                    MatchesActivity::class.java
+                )
+                resultIntent.putExtra("message", message)
+
+                // check for image attachment
+                if (TextUtils.isEmpty(imageUrl)) {
+                    showNotificationMessage(
+                        applicationContext,
+                        title,
+                        message,
+                        timestamp,
+                        resultIntent
+                    )
+                } else {
+                    // image is present, show notification with image
+                    showNotificationMessageWithBigImage(
+                        applicationContext,
+                        title,
+                        message,
+                        timestamp,
+                        resultIntent,
+                        imageUrl
+                    )
+                }
+            }
+        } catch (e: JSONException) {
+            Log.e(TAG, "Json Exception: " + e.message)
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception: " + e.message)
+        }
+    }
+
+    private fun showNotificationMessage(
+        context: Context,
+        title: String,
+        message: String,
+        timeStamp: String,
+        intent: Intent
+    ) {
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        showNotification(title, message) //, timeStamp, intent)
+    }
+
+
+    private fun showNotificationMessageWithBigImage(
+        context: Context,
+        title: String,
+        message: String,
+        timeStamp: String,
+        intent: Intent,
+        imageUrl: String
+    ) {
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        showNotification(title, message)//, timeStamp, intent, imageUrl)
     }
 
     private fun sendBroadcastDashboard(notiTitle: String?, notiMessage: String?) {

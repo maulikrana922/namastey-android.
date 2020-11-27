@@ -2,7 +2,9 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +28,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var fragmentFollowingBinding: FragmentFollowingBinding
@@ -37,26 +40,6 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var userId: Long = -1
     private var isMyProfile = false
 
-    override fun onSuccess(list: ArrayList<DashboardBean>) {
-        followingList = list
-        if (followingList.size == 0) {
-            tvEmptyFollow.text = getString(R.string.following)
-            tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
-            llEmpty.visibility = View.VISIBLE
-            rvFollowing.visibility = View.GONE
-        } else {
-            llEmpty.visibility = View.GONE
-            rvFollowing.visibility = View.VISIBLE
-            rvFollowing.addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
-        }
-        followingAdapter = FollowingAdapter(followingList, requireActivity(), true, this,sessionManager.getUserId(),isMyProfile)
-        rvFollowing.adapter = followingAdapter
-    }
 
     companion object {
         fun getInstance(userId: Long, isMyProfile: Boolean) =
@@ -90,6 +73,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         userId = arguments!!.getLong(Constants.USER_ID)
         isMyProfile = arguments!!.getBoolean("isMyProfile")
         followingViewModel.getFollowingList(userId)
+        searchFollowers()
     }
 
     private fun setupViewModel() {
@@ -102,6 +86,51 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         fragmentFollowingBinding.viewModel = followingViewModel
     }
 
+    private fun searchFollowers() {
+        searchFollowFollowing.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.e("FollowersFragment", "onQueryTextSubmit: $query")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                    Log.e("FollowersFragment", "onQueryTextChange: $newText")
+                    rvSearchUser.visibility = View.VISIBLE
+                    filter(newText.toString().trim())
+                    // followingAdapter.filter!!.filter(newText.toString().trim())
+                } else {
+                    filter("")
+                    followingViewModel.getFollowersList(userId)
+                    //rvSearchUser.visibility = View.GONE
+                }
+                return true
+            }
+        })
+
+        searchFollowFollowing.setOnCloseListener {
+            filter("")
+            followingViewModel.getFollowersList(userId)
+
+            false
+        }
+    }
+
+    private fun filter(text: String) {
+        Log.e("FollowersFragment", "filter: text: $text")
+        //new array list that will hold the filtered data
+        val filteredName: ArrayList<DashboardBean> = ArrayList()
+
+        for (followers in followingList) {
+            if (followers.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(followers)
+            }
+        }
+
+        followingAdapter.filterList(filteredName)
+    }
+
+
     override fun onDestroy() {
         followingViewModel.onDestroy()
         super.onDestroy()
@@ -109,11 +138,11 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
     override fun onSuccess(msg: String) {
 
-        if (isMyProfile){
+        if (isMyProfile) {
             followingList.removeAt(position)
             followingAdapter.notifyItemRemoved(position)
             followingAdapter.notifyItemRangeChanged(position, followingAdapter.itemCount)
-        }else{
+        } else {
             // If other user profile view and follow/unfollow then update position
             if (followingList[position].is_follow == 1)
                 followingList[position].is_follow = 0
@@ -130,6 +159,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             rvFollowing.visibility = View.GONE
         }
     }
+
     override fun onUserItemClick(userId: Long) {
         val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
@@ -143,6 +173,34 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     ) {
         this.position = position
         followingViewModel.followUser(userId, isFollow)
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        followingList = list
+        if (followingList.size == 0) {
+            tvEmptyFollow.text = getString(R.string.following)
+            tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            llEmpty.visibility = View.VISIBLE
+            rvFollowing.visibility = View.GONE
+        } else {
+            llEmpty.visibility = View.GONE
+            rvFollowing.visibility = View.VISIBLE
+            rvFollowing.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+        }
+        followingAdapter = FollowingAdapter(
+            followingList,
+            requireActivity(),
+            true,
+            this,
+            sessionManager.getUserId(),
+            isMyProfile
+        )
+        rvFollowing.adapter = followingAdapter
     }
 
 }
