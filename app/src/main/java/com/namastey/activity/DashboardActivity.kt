@@ -946,7 +946,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             params.height = 1000
             bottomSheetDialogComment.rvPostComment.layoutParams = params
         } else {
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT
             bottomSheetDialogComment.rvPostComment.layoutParams = params
         }
 
@@ -1140,15 +1140,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
         if (mentionList.size > 0) {
-            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
-
             bottomSheetDialogComment.rvMentionList.addItemDecoration(
                 DividerItemDecoration(
                     this@DashboardActivity,
                     LinearLayoutManager.VERTICAL
                 )
             )
-
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
 
             /* mentionListAdapter = MentionListAdapter(mentionList, this@DashboardActivity, this)
@@ -1161,7 +1158,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
 
         } else {
-            bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         }
 
