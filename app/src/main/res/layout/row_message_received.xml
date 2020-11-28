@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="start"
     android:orientation="vertical"
-    android:padding="@dimen/_10sdp">
+    android:paddingStart="@dimen/_10sdp"
+    android:paddingEnd="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_10sdp">
 
     <LinearLayout
         android:visibility="gone"
@@ -60,6 +62,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"
             app:cornerRadius="@dimen/_8sdp"
             app:roundedCorners="topRight|bottomLeft" />
@@ -99,9 +102,7 @@
                 android:id="@+id/ivRecordReceived"
                 android:layout_width="@dimen/_32sdp"
                 android:layout_height="@dimen/_32sdp"
-                android:background="@drawable/rounded_blue_chat_all_corner_solid"
-                android:padding="@dimen/_6sdp"
-                android:src="@drawable/ic_microphone_white"
+                android:src="@drawable/ic_play"
                 tools:ignore="ContentDescription" />
 
             <com.namastey.customViews.CustomTextView
@@ -118,7 +119,7 @@
                 app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvRecordedTimeReceived"
+                android:id="@+id/tvRecordedDurationReceived"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvReadableContentReceived"
@@ -127,7 +128,6 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_toEndOf="@id/ivRecordReceived"
                 android:gravity="start|center"
-                android:text="0:07s"
                 android:textColor="@color/color_chip_gray"
                 android:textSize="14sp"
                 app:typeface="MULI_SEMIBOLD" />
@@ -149,7 +149,6 @@
             android:drawablePadding="@dimen/_8sdp"
             android:gravity="start|center"
             android:padding="@dimen/_10sdp"
-            android:text="7:21PM"
             android:textColor="@color/color_chip_gray"
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />

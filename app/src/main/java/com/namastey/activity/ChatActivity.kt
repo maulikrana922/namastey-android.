@@ -35,7 +35,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_post_video.*
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -88,6 +87,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
+            chatViewModel.setIsLoading(true)
             myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
             myChatRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -104,6 +104,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                             chatMsgList.add(chatMessage)
                         }
                     }
+                    chatViewModel.setIsLoading(false)
                     chatAdapter = ChatAdapter(this@ChatActivity,sessionManager.getUserId(),chatMsgList)
                     rvChat.adapter = chatAdapter
 
@@ -209,7 +210,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
     private fun sendMessage(message: String,imageUrl: String){
 
-        val chatMessage = ChatMessage(message,sessionManager.getUserId(),matchesListBean.id,imageUrl)
+        val chatMessage = ChatMessage(message,sessionManager.getUserId(),matchesListBean.id,imageUrl,System.currentTimeMillis())
         myChatRef.push().setValue(chatMessage).addOnSuccessListener {
             edtMessage.setText("")
         }

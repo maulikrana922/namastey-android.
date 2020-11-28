@@ -1,18 +1,25 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.media.MediaMetadataRetriever
+import android.media.MediaPlayer
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.FacebookSdk.getApplicationContext
 import com.namastey.R
 import com.namastey.model.ChatMessage
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message_received.view.*
 import kotlinx.android.synthetic.main.row_message_send.view.*
+import java.util.concurrent.TimeUnit
 
 class ChatAdapter(
     var activity: Activity,
@@ -22,6 +29,9 @@ class ChatAdapter(
 
     private val RIGHT_CHAT = 1
     private val LEFT_CHAT = 2
+    private var currentPlayingPosition = -1
+    private var mediaPlayer: MediaPlayer? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == LEFT_CHAT) {
             val layoutOne: View = LayoutInflater.from(parent.context)
@@ -65,38 +75,48 @@ class ChatAdapter(
             if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
                 visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,flImageReceived)
                 GlideLib.loadImage(activity,ivImageReceived,chatMessage.url)
+                tvImageReceivedTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
             }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
                 visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,llRecordingReceived)
+                tvRecordingTimeReceived.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                tvRecordedDurationReceived.text = getMediaDuration(chatMessage.url)
             }else {
                 visibleSendMessage(flImageReceived,llMessageReceived,llRecordingReceived,llMessageReceived)
                 tvMessageReceived.text = chatMessage.message
+                tvMessageReceivedTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+            }
+
+            if (currentPlayingPosition != -1) {
+                if (position == currentPlayingPosition) {
+                    updatePlayingView(ivRecordReceived)
+                } else {
+                    updateNonPlayingView(ivRecordReceived)
+                }
+            }
+
+            ivRecordReceived.setOnClickListener {
+                if (currentPlayingPosition != -1)
+                    notifyItemChanged(currentPlayingPosition)
+
+                if (adapterPosition != currentPlayingPosition) {
+                    currentPlayingPosition = adapterPosition
+                    if (mediaPlayer != null) {
+                        updateNonPlayingView(ivRecordReceived)
+                        mediaPlayer!!.release()
+                    }
+                    ivRecordReceived.setImageResource(R.drawable.ic_pause)
+                    startMediaPlayer(chatMessage.url,adapterPosition,ivRecordReceived)
+                } else {
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer!!.isPlaying) {
+                            mediaPlayer!!.pause()
+                        } else {
+                            mediaPlayer!!.start()
+                        }
+                    }
+                }
             }
         }
-//        val llMessageReceived: LinearLayout
-//        val tvMessageReceived: TextView
-//        val tvMessageReceivedTime: TextView
-//        val frameImageReceived: FrameLayout
-//        val ivImageReceived: ImageView
-//        val tvImageReceivedTime: TextView
-//        val llRecordingReceived: LinearLayout
-//        val ivRecordReceived: ImageView
-//        val tvReadableContentReceived: TextView
-//        val tvRecordedTimeReceived: TextView
-//        val tvRecordingTimeReceived: TextView
-//
-//        init {
-//            llMessageReceived = itemView.findViewById(R.id.llMessageReceived)
-//            tvMessageReceived = itemView.findViewById(R.id.tvMessageReceived)
-//            tvMessageReceivedTime = itemView.findViewById(R.id.tvMessageReceivedTime)
-//            frameImageReceived = itemView.findViewById(R.id.frameImageReceived)
-//            ivImageReceived = itemView.findViewById(R.id.ivImageReceived)
-//            tvImageReceivedTime = itemView.findViewById(R.id.tvImageReceivedTime)
-//            llRecordingReceived = itemView.findViewById(R.id.llRecordingReceived)
-//            ivRecordReceived = itemView.findViewById(R.id.ivRecordReceived)
-//            tvReadableContentReceived = itemView.findViewById(R.id.tvReadableContentReceived)
-//            tvRecordedTimeReceived = itemView.findViewById(R.id.tvRecordedTimeReceived)
-//            tvRecordingTimeReceived = itemView.findViewById(R.id.tvRecordingTimeReceived)
-//        }
     }
 
     inner class MessageSendProfileViewHolder(itemView: View) :
@@ -108,40 +128,81 @@ class ChatAdapter(
             if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,flImageSend)
                 GlideLib.loadImage(activity,ivImageSend,chatMessage.url)
+                tvImageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
             }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llRecordingSend)
+                tvRecordingTimeSend.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                tvRecordedDurationSend.text = getMediaDuration(chatMessage.url)
             }else {
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llMessageSend)
                 tvMessageSend.text = chatMessage.message
+                tvMessageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+            }
+
+            if (currentPlayingPosition != -1) {
+                if (position == currentPlayingPosition) {
+                    updatePlayingView(ivRecordSend)
+                } else {
+                    updateNonPlayingView(ivRecordSend)
+                }
+            }
+
+            ivRecordSend.setOnClickListener {
+                if (currentPlayingPosition != -1)
+                    notifyItemChanged(currentPlayingPosition)
+
+                if (adapterPosition != currentPlayingPosition) {
+                    currentPlayingPosition = adapterPosition
+                    if (mediaPlayer != null) {
+                        updateNonPlayingView(ivRecordSend)
+                        mediaPlayer!!.release()
+                    }
+                    ivRecordSend.setImageResource(R.drawable.ic_pause)
+                    startMediaPlayer(chatMessage.url,adapterPosition,ivRecordSend)
+                } else {
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer!!.isPlaying) {
+                            mediaPlayer!!.pause()
+                        } else {
+                            mediaPlayer!!.start()
+                        }
+                    }
+                }
             }
         }
-//        val llMessageSend: LinearLayout
-//        val tvMessageSend: TextView
-//        val tvMessageSendTime: TextView
-//        val frameImageSend: FrameLayout
-//        val ivImageSend: ImageView
-//        val tvImageSendTime: TextView
-//        val llRecordingSend: LinearLayout
-//        val ivRecordSend: ImageView
-//        val tvReadableContentSend: TextView
-//        val tvRecordedTimeSend: TextView
-//        val tvRecordingTimeSend: TextView
-//
-//        init {
-//            llMessageSend = itemView.findViewById(R.id.llMessageSend)
-//            tvMessageSend = itemView.findViewById(R.id.tvMessageSend)
-//            tvMessageSendTime = itemView.findViewById(R.id.tvMessageSendTime)
-//            frameImageSend = itemView.findViewById(R.id.frameImageSend)
-//            ivImageSend = itemView.findViewById(R.id.ivImageSend)
-//            tvImageSendTime = itemView.findViewById(R.id.tvImageSendTime)
-//            llRecordingSend = itemView.findViewById(R.id.llRecordingSend)
-//            ivRecordSend = itemView.findViewById(R.id.ivRecordSend)
-//            tvReadableContentSend = itemView.findViewById(R.id.tvReadableContentSend)
-//            tvRecordedTimeSend = itemView.findViewById(R.id.tvRecordedTimeSend)
-//            tvRecordingTimeSend = itemView.findViewById(R.id.tvRecordingTimeSend)
-//        }
     }
 
+    private fun startMediaPlayer(
+        audioUrl: String,
+        adapterPosition: Int,
+        ivRecordSend: ImageView
+    ) {
+        val audioUri = Uri.parse(audioUrl)
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri)
+        mediaPlayer!!.setOnCompletionListener { releaseMediaPlayer(currentPlayingPosition,ivRecordSend) }
+        mediaPlayer!!.start()
+    }
+    private fun releaseMediaPlayer(
+        adapterPosition: Int,
+        ivRecord: ImageView
+    ) {
+            updateNonPlayingView(ivRecord)
+
+        mediaPlayer!!.release()
+        mediaPlayer = null
+        currentPlayingPosition = -1
+    }
+
+    private fun updateNonPlayingView(ivRecord: ImageView) {
+        ivRecord.setImageResource(R.drawable.ic_play)
+    }
+    private fun updatePlayingView(ivRecord: ImageView) {
+        if (mediaPlayer!!.isPlaying) {
+            ivRecord.setImageResource(R.drawable.ic_pause)
+        } else {
+            ivRecord.setImageResource(R.drawable.ic_play)
+        }
+    }
     /**
      * Visible particular view of send message type
      */
@@ -174,4 +235,25 @@ class ChatAdapter(
         view.visibility = View.VISIBLE
     }
     override fun getItemCount() = chatMsgList.size
+
+    /**
+     * Get duration of audio from firebase url
+     */
+    fun getMediaDuration(voiceUrl: String): String {
+        return try {
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(voiceUrl)
+            val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            retriever.release()
+            String.format("%02d:%02d ",
+                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toMinutes(it) },
+                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toSeconds(it) }
+                    ?.minus(TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong())))
+            )
+        }catch (e: Exception){
+            e.printStackTrace()
+            "00:00"
+        }
+//        return duration?.toLongOrNull() ?: 0
+    }
 }

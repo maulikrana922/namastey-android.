@@ -59,6 +59,8 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         if (arguments != null && arguments!!.containsKey("isFromProfile")) {
             isFromProfile = arguments!!.getBoolean("isFromProfile", false)
             isRegister = arguments!!.getInt("isRegister")
+            if (isRegister == 1)
+                sessionManager.setUserId(user.user_id)
         }
         if (isFromProfile) {
             sessionManager.setGuestUser(false)

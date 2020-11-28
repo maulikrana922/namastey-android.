@@ -16,8 +16,6 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import com.namastey.R
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -44,6 +42,12 @@ object Utils {
             return parser.format(formatter.parse(date))
         else
             return date
+    }
+
+    fun convertTimestampToChatFormat(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat(Constants.DATE_FORMATE_CHAT, Locale.getDefault())
+        return format.format(date)
     }
 
     fun rectangleShapeBorder(v: View, borderColor: Int) {

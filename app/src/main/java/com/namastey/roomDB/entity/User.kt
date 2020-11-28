@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey
     var userId: Long,
+    var user_id: Long,
     var user_uniqueId : String,
     var status: String,
     var name: String,
@@ -21,5 +22,5 @@ data class User(
     @Ignore
     var is_register: Int
 ) {
-    constructor() : this(0,"","", "", "", "","",0,0,"",0)
+    constructor() : this(0,0,"","", "", "", "","",0,0,"",0)
 }
