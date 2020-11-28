@@ -14,14 +14,11 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnTouchListener
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -32,7 +29,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.hendraanggrian.appcompat.widget.Mention
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
-import com.hendraanggrian.appcompat.widget.SocialArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
@@ -236,9 +232,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private fun addCommentsTextChangeListener() {
 
         defaultMentionAdapter = MentionArrayAdapter(this)
-         postVideoViewModel.getMentionList(
-             ""
-         )
+        postVideoViewModel.getMentionList(
+            ""
+        )
 
         edtVideoDesc.mentionColor = ContextCompat.getColor(this, R.color.colorBlack)
         edtVideoDesc.mentionAdapter = defaultMentionAdapter
@@ -300,9 +296,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             for (i in mentionList.indices) {
                 defaultMentionAdapter.addAll(
-                    Mention(
-                        mentionList[i].username
-                    )
+                    if (mentionList[i].profile_url != "") Mention(mentionList[i].username, "", mentionList[i].profile_url)
+                    else Mention(mentionList[i].username)
                 )
             }
 

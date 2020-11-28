@@ -1152,10 +1152,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
              bottomSheetDialogComment.rvMentionList.adapter = mentionListAdapter*/
             for (i in mentionList.indices) {
                 mentionArrayAdapter.addAll(
-                    Mention(mentionList[i].username, "")
+                    if (mentionList[i].profile_url != "") Mention(mentionList[i].username, "", mentionList[i].profile_url)
+                    else Mention(mentionList[i].username)
                 )
             }
-
 
         } else {
             bottomSheetDialogComment.rvPostComment.visibility = View.GONE
