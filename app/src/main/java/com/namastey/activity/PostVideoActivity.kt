@@ -236,17 +236,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private fun addCommentsTextChangeListener() {
 
         defaultMentionAdapter = MentionArrayAdapter(this)
-        /* postVideoViewModel.getMentionList(
-             "Grishma"
-         )*/
+         postVideoViewModel.getMentionList(
+             ""
+         )
 
-        defaultMentionAdapter.addAll(
-            Mention("Mehul", "", "https://avatars1.githubusercontent.com/u/11507430?s=460&v=4"),
-            Mention("Mona"),
-            Mention("Chintu"),
-            Mention("Pintu"),
-            Mention("Dinesh")
-        )
         edtVideoDesc.mentionColor = ContextCompat.getColor(this, R.color.colorBlack)
         edtVideoDesc.mentionAdapter = defaultMentionAdapter
         edtVideoDesc.setMentionTextChangedListener { _, text ->

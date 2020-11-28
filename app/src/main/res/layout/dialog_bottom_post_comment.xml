@@ -45,17 +45,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTotalComment" />
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPostComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTotalComment"
-                tools:listitem="@layout/row_comment" />
+                tools:listitem="@layout/row_mention" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMentionList"
@@ -64,14 +63,26 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTotalComment"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/row_mention" />
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
+    <ListView
+        android:id="@+id/lvMentionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:elevation="@dimen/_8sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/llAddComment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/row_comment" />
 
     <LinearLayout
         android:id="@+id/llAddComment"
@@ -87,7 +98,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1">
 
-        <com.namastey.customViews.CustomEditText
+        <!--        <com.namastey.customViews.CustomEditText
+                    android:id="@+id/edtComment"
+                    style="@style/edtRoundCornerStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/hint_add_comments"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp" />-->
+
+        <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
             android:id="@+id/edtComment"
             style="@style/edtRoundCornerStyle"
             android:layout_height="wrap_content"
@@ -95,7 +116,9 @@
             android:background="@android:color/transparent"
             android:hint="@string/hint_add_comments"
             android:textColor="@color/colorBlack"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:socialFlags="mention" />
 
         <ImageView
             android:id="@+id/ivCommentAdd"

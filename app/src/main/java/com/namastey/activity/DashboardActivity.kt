@@ -15,10 +15,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -30,6 +30,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.hendraanggrian.appcompat.widget.Mention
+import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
@@ -50,8 +52,8 @@ import com.namastey.model.MentionListBean
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
@@ -64,8 +66,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -85,6 +85,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private lateinit var feedAdapter: FeedAdapter
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var mentionListAdapter: MentionListAdapter
+    private lateinit var mentionArrayAdapter: ArrayAdapter<Mention>
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
@@ -127,6 +128,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         setupPermissions()
 
         dashboardViewModel.getFeedList(0)
+
+        mentionArrayAdapter = MentionArrayAdapter(this)
+
     }
 
     private fun setupPermissions() {
@@ -772,31 +776,33 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 feedAdapter.notifyItemChanged(position)
             }
         }
+
         bottomSheetDialogComment.show()
     }
 
     private fun addCommentsTextChangeListener() {
-        bottomSheetDialogComment.edtComment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                /* if (s.length > 2) {
+        /* bottomSheetDialogComment.edtComment.addTextChangedListener(object : TextWatcher {
+             override fun beforeTextChanged(
+                 s: CharSequence?,
+                 start: Int,
+                 count: Int,
+                 after: Int
+             ) {
+             }
+
+             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                 *//* if (s.length > 2) {
                      dashboardViewModel.getMentionList(s.toString())
                  }
 
                  if (s.length == 0) {
                      bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
-                 }*/
+                 }*//*
             }
 
-            /* override fun afterTextChanged(editable: Editable?) {
-             }*/
+            *//* override fun afterTextChanged(editable: Editable?) {
+             }*//*
 
             override fun afterTextChanged(editable: Editable) {
                 if (sessionManager.isGuestUser()) {
@@ -822,6 +828,42 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 }
             }
         })
+
+*/
+        mentionArrayAdapter.clear()
+        dashboardViewModel.getMentionList("")
+        var strMention = ""
+        bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
+        bottomSheetDialogComment.edtComment.showSoftInputOnFocus
+        bottomSheetDialogComment.edtComment.mentionColor =
+            ContextCompat.getColor(this, R.color.colorBlack)
+        bottomSheetDialogComment.edtComment.mentionAdapter = mentionArrayAdapter
+        bottomSheetDialogComment.edtComment.setMentionTextChangedListener { view, text ->
+            Log.e("mention", text.toString())
+            strMention = text.toString()
+            if (text.length==1) {
+                bottomSheetDialogComment.lvMentionList.visibility = View.GONE
+            } else bottomSheetDialogComment.lvMentionList.visibility = View.VISIBLE
+
+        }
+
+        bottomSheetDialogComment.edtComment.setOnMentionClickListener { view, text ->
+            Log.e("menti", text.toString())
+        }
+        bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
+            val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
+                strMention, "${
+                    mentionArrayAdapter.getItem(
+                        i
+                    ).toString()
+                }"
+            )
+            bottomSheetDialogComment.edtComment.setText(strName)
+            bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
+            bottomSheetDialogComment.lvMentionList.visibility = View.GONE
+        }
+
+
     }
 
     override fun onUserProfileClick(dashboardBean: DashboardBean) {
@@ -896,6 +938,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         commentAdapter = CommentAdapter(data, this@DashboardActivity, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
+
+        val params: ViewGroup.LayoutParams =
+            bottomSheetDialogComment.rvPostComment.layoutParams
+
+        if (data.size > 6) {
+            params.height = 1000
+            bottomSheetDialogComment.rvPostComment.layoutParams = params
+        } else {
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT
+            bottomSheetDialogComment.rvPostComment.layoutParams = params
+        }
 
         val itemTouchHelperCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -1087,21 +1140,25 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
         if (mentionList.size > 0) {
-            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
-
             bottomSheetDialogComment.rvMentionList.addItemDecoration(
                 DividerItemDecoration(
                     this@DashboardActivity,
                     LinearLayoutManager.VERTICAL
                 )
             )
+            bottomSheetDialogComment.rvMentionList.visibility = View.GONE
 
-            bottomSheetDialogComment.rvMentionList.visibility = View.VISIBLE
+            /* mentionListAdapter = MentionListAdapter(mentionList, this@DashboardActivity, this)
+             bottomSheetDialogComment.rvMentionList.adapter = mentionListAdapter*/
+            for (i in mentionList.indices) {
+                mentionArrayAdapter.addAll(
+                    Mention(mentionList[i].username, "")
+                )
+            }
 
-            mentionListAdapter = MentionListAdapter(mentionList, this@DashboardActivity, this)
-            bottomSheetDialogComment.rvMentionList.adapter = mentionListAdapter
+
         } else {
-            bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
+            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         }
 
