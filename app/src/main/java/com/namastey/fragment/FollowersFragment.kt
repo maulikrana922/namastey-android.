@@ -96,7 +96,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                if (newText!!.isNotEmpty()) {
                     Log.e("FollowersFragment", "onQueryTextChange: $newText")
                    // rvSearchUser.visibility = View.VISIBLE
                     filter(newText.toString().trim())

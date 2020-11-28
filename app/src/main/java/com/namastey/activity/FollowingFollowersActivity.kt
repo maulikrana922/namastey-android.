@@ -76,25 +76,25 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
             llFollowBackground.background = getDrawable(R.drawable.blue_bar)
         else
             llFollowBackground.background = getDrawable(R.drawable.pink_bar)
-        searchFollow.queryHint = resources.getString(R.string.search)
+//        searchFollow.queryHint = resources.getString(R.string.search)
         setupViewPager()
         tabFollow.setupWithViewPager(viewpagerFollow)
         setupTabIcons()
 
-        searchFollow.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
-                    rvSearchUser.visibility = View.VISIBLE
-                    followFollowersViewModel.getSearchUser(newText.trim())
-                } else
-                    rvSearchUser.visibility = View.GONE
-                return true
-            }
-        })
+//        searchFollow.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+//                    rvSearchUser.visibility = View.VISIBLE
+//                    followFollowersViewModel.getSearchUser(newText.trim())
+//                } else
+//                    rvSearchUser.visibility = View.GONE
+//                return true
+//            }
+//        })
 
     }
 

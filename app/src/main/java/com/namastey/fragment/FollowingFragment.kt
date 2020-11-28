@@ -94,14 +94,14 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                if (newText!!.isNotEmpty()) {
                     Log.e("FollowersFragment", "onQueryTextChange: $newText")
                     rvSearchUser.visibility = View.VISIBLE
                     filter(newText.toString().trim())
                     // followingAdapter.filter!!.filter(newText.toString().trim())
                 } else {
                     filter("")
-                    followingViewModel.getFollowersList(userId)
+                    followingViewModel.getFollowingList(userId)
                     //rvSearchUser.visibility = View.GONE
                 }
                 return true
@@ -110,7 +110,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
         searchFollowFollowing.setOnCloseListener {
             filter("")
-            followingViewModel.getFollowersList(userId)
+            followingViewModel.getFollowingList(userId)
 
             false
         }
