@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken
 import com.namastey.model.CategoryBean
 import com.namastey.model.EducationBean
 import com.namastey.model.JobBean
+import com.namastey.model.VideoLanguageBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
@@ -253,7 +254,21 @@ class SessionManager(context: Context) {
         return mPrefs.getBoolean(key, false)
     }
 
-    fun setLanguageList(languageList: ArrayList<Int>) {
+    fun setLanguageList(languageList: ArrayList<VideoLanguageBean>) {
+        val e = mPrefs.edit()
+        e.putString(KEY_LANGUAGE_LIST, Gson().toJson(languageList))
+        e.apply()
+    }
+
+    fun getLanguageList(): ArrayList<VideoLanguageBean> {
+        val str = mPrefs.getString(KEY_LANGUAGE_LIST, "")!!
+        val listType = object : TypeToken<ArrayList<VideoLanguageBean>>() {}.type
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            listType
+        ) else ArrayList<VideoLanguageBean>()
+    }
+    /*fun setLanguageList(languageList: ArrayList<Int>) {
         val e = mPrefs.edit()
         e.putString(KEY_LANGUAGE_LIST, Gson().toJson(languageList))
         e.apply()
@@ -266,6 +281,6 @@ class SessionManager(context: Context) {
             str,
             listType
         ) else ArrayList<Int>()
-    }
+    }*/
 
 }

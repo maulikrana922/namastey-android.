@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:id="@+id/llRowNotification"
         android:orientation="horizontal"
         android:padding="@dimen/_8sdp">
 
@@ -29,7 +30,6 @@
 
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvNotification"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,9 +38,23 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:gravity="center|start"
             android:maxLines="6"
+            android:visibility="gone"
             android:textColor="@color/colorLightGrayText"
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />
+
+        <TextView
+            android:id="@+id/tvNotification"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:maxLines="6"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainFollowBackView"
@@ -97,7 +111,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.namastey.customViews.RoundImageView
-            android:id="@+id/ivOtherUser"
+            android:id="@+id/ivCommentCover"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
             android:layout_gravity="center"

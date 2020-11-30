@@ -114,25 +114,27 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_mentions,
-                Constants.KEY_IS_MENTIONS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_matches, Constants.KEY_IS_MATCHES
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_follow,
-                Constants.KEY_IS_NEW_FOLLOWERS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_comment,
-                Constants.KEY_IS_COMMENTS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_suggest,
-                Constants.KEY_IS_VIDEO_SUGGESTIONS
-            )
+            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_mentions, Constants.KEY_IS_MENTIONS)
+            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_matches, Constants.KEY_IS_MATCHES)
+            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_follow, Constants.KEY_IS_NEW_FOLLOWERS)
+            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_comment, Constants.KEY_IS_COMMENTS)
+            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_suggest, Constants.KEY_IS_VIDEO_SUGGESTIONS)
+
+            /*sessionManager.setIntegerValue(profileBean.safetyBean[0].is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_suggest, Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_comment, Constants.KEY_CAN_COMMENT_YOUR_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)*/
+
+            sessionManager.setIntegerValue(profileBean.safetyBean.is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean.is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean.is_suggest, Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean.who_can_comment, Constants.KEY_CAN_COMMENT_YOUR_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean.who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
+            sessionManager.setIntegerValue(profileBean.safetyBean.is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)
+
+            sessionManager.setLanguageList(profileBean.languageBean)
 
             btnProfileSignup.visibility = View.INVISIBLE
             groupButtons.visibility = View.VISIBLE

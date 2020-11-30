@@ -7,10 +7,12 @@ import android.os.Parcelable
 class VideoLanguageBean() : Parcelable {
 
     var id: Int = 0
+    var country_id: Int = 0
     var video_lang: String = ""
     var video_lang_name: String = ""
 
     constructor(parcel: Parcel) : this() {
+        parcel.readInt()
         parcel.readInt()
         parcel.readString() ?: ""
         parcel.readString() ?: ""
@@ -18,6 +20,7 @@ class VideoLanguageBean() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
+        parcel.writeInt(country_id)
         parcel.writeString(video_lang)
         parcel.writeString(video_lang_name)
     }

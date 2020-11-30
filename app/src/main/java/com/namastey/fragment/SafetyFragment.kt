@@ -167,7 +167,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
     }
 
     override fun onSuccessShareProfileSafetyResponse(safetyBean: SafetyBean) {
-        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t ${safetyBean.is_download}")
+        Log.e("SafetyFragment", "onSuccessResponse safetyBean:\t ${safetyBean.is_share}")
         sessionManager.setIntegerValue(
             safetyBean.is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY
         )

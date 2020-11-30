@@ -81,6 +81,29 @@ class NotificationViewModel constructor(
         }
     }
 
+    fun followUser(userId: Long, isFollow: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (notificationView.isInternetAvailable()) {
+                    networkService.requestToFollowUserProfile(userId, isFollow).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            notificationView.onSuccessFollow(appResponse.data!!)
+                        else
+                            notificationView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    notificationView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                notificationView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

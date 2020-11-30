@@ -40,6 +40,12 @@ class ProfileBean() : Parcelable {
     @SerializedName("notification_tage")
     var notificationBean : ArrayList<NotificationOnOffBean> = ArrayList()
 
+    @SerializedName("safety_tag")
+    var safetyBean : SafetyBean = SafetyBean()
+
+    @SerializedName("language")
+    var languageBean : ArrayList<VideoLanguageBean> = ArrayList()
+
     constructor(parcel: Parcel) : this() {
         user_id = parcel.readLong()
         email = parcel.readString() ?: ""
@@ -68,6 +74,9 @@ class ProfileBean() : Parcelable {
         age = parcel.readInt() ?: 0
         is_like = parcel.readInt() ?: 0
         notificationBean = parcel.createTypedArrayList(NotificationOnOffBean) ?: ArrayList()
+       // safetyBean = parcel.createTypedArrayList(SafetyBean) ?: SafetyBean()
+        safetyBean = parcel.readValue(SafetyBean::class.java.classLoader) as SafetyBean
+        languageBean = parcel.createTypedArrayList(VideoLanguageBean) ?: ArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -98,6 +107,9 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(age)
         parcel.writeInt(is_like)
         parcel.writeTypedList(notificationBean)
+        //parcel.writeTypedList(safetyBean)
+        parcel.writeValue(safetyBean)
+        parcel.writeTypedList(languageBean)
     }
 
     override fun describeContents(): Int {

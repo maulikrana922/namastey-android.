@@ -12,6 +12,7 @@ class ActivityListBean() : Parcelable {
     var following_user_profile_pic: String = ""
     var updated_at: String = ""
     var follow_message: String = ""
+    var is_follow: Int = 0
 
     var user_id: Long = 0
 

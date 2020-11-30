@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,15 +18,18 @@ import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.MatchesActivity
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.adapter.NotificationAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
 import com.namastey.listeners.FragmentRefreshListener
+import com.namastey.listeners.OnNotificationClick
 import com.namastey.model.ActivityListBean
 import com.namastey.model.FollowRequestBean
 import com.namastey.model.MembershipSlide
+import com.namastey.model.ProfileBean
 import com.namastey.uiView.NotificationView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -36,7 +40,7 @@ import javax.inject.Inject
 
 
 class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), NotificationView,
-    FragmentRefreshListener {
+    FragmentRefreshListener, OnNotificationClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -106,8 +110,15 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private fun initUI() {
 
         notificationViewModel.getFollowRequestList()
-        /* isActivityList = 0
-         notificationViewModel.getActivityList(isActivityList)*/
+        val builder = AlertDialog.Builder(requireContext())
+        val customLayout: View =
+            layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
+        builder.setView(customLayout)
+        dialog = builder.create()
+        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+
+        /*isActivityList = 0
+        notificationViewModel.getActivityList(isActivityList)*/
 
         setSelectedApi()
 
@@ -125,22 +136,17 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
 
         tvAllActivityMain.setOnClickListener {
-            populateAllActivityDialog()
+            populateAllActivityDialog(customLayout)
         }
     }
 
-    private fun populateAllActivityDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        val customLayout: View =
-            layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
-        builder.setView(customLayout)
-
-        /* initDialogViews(customLayout)
-         setDialogClickListeners()*/
-
-        // val dialog: AlertDialog = builder.create()
-        dialog = builder.create()
-        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+    private fun populateAllActivityDialog(customLayout: View) {
+//        val builder = AlertDialog.Builder(requireContext())
+//        val customLayout: View = layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
+//        builder.setView(customLayout)
+//
+//        dialog = builder.create()
+//        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
 
         initDialogViews(customLayout)
@@ -177,7 +183,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         ivFollowers = customLayout.findViewById(R.id.ivFollowers)
     }
 
-    private fun setDialogClickListeners()   {
+    private fun setDialogClickListeners() {
         llAllActivity.setOnClickListener {
             isActivityList = 0
             hideDoneImageView(ivAllActivitySelected)
@@ -260,7 +266,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     private fun showCustomDialog(position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-      //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
+        //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
         val dialogView: View =
             LayoutInflater.from(requireActivity())
                 .inflate(R.layout.dialog_membership, null, false)
@@ -583,9 +589,14 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun setSelectedApi() {
+        Log.e(
+            "NotificationFragment",
+            "KEY_ALL_ACTIVITY: \t ${sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)}"
+        )
         if (sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) != 0) {
             val allActivity = sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)
             notificationViewModel.getActivityList(allActivity)
+            Log.e("NotificationFragment", "allActivity: \t $allActivity")
 
             val allActivityTitle = sessionManager.getStringValue(Constants.KEY_ALL_ACTIVITY_TITLE)
             //tvAllActivityTitle.text = allActivityTitle
@@ -690,7 +701,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         /* val unwrappedDrawable: Drawable? =
              AppCompatResources.getDrawable(context!!, drawable)
          val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext(), R.color.colorRed))*/
+         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext'(), R.color.colorRed))*/
     }
 
     override fun onRefresh(activityListBean: ActivityListBean?) {
@@ -700,13 +711,26 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 val notificationList = arrayListOf<ActivityListBean>()
                 notificationList.add(activityListBean)
                 notificationAdapter =
-                    NotificationAdapter(requireActivity(), notificationList, isActivityList)
+                    NotificationAdapter(requireActivity(), notificationList, isActivityList, this)
                 rvNotification.layoutManager = LinearLayoutManager(context!!)
                 rvNotification.adapter = notificationAdapter
             } else {
                 //  notificationAdapter.updateNotification(activityListBean)
             }
         }
+    }
+
+    override fun onNotificationClick(userId: Long, position: Int) {
+        val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
+    }
+
+    override fun onClickFollowRequest(
+        userId: Long,
+        isFollow: Int
+    ) {
+        notificationViewModel.followUser(userId, isFollow)
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -762,7 +786,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             rvNotification.visibility = View.VISIBLE
             tvNoData.visibility = View.GONE
             notificationAdapter =
-                NotificationAdapter(requireActivity(), activityList, isActivityList)
+                NotificationAdapter(requireActivity(), activityList, isActivityList, this)
             rvNotification.adapter = notificationAdapter
             Log.e("NotificationFragment", "onSuccessActivityList: \t data: ${activityList.size}")
         } else {
@@ -771,14 +795,20 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
     }
 
+    override fun onSuccessFollow(profileBean: ProfileBean) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSuccess(msg: String) {
-        if (dialog.isShowing) {
-            dialog.dismiss()
-        }
+
         //showMsg(msg)
         rvNotification.visibility = View.GONE
         tvNoData.visibility = View.VISIBLE
         tvNoData.text = msg
+
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
     }
 
     override fun onDestroy() {

@@ -49,7 +49,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
                 ),
                 Constants.CHOOSE_INTEREST_FRAGMENT
             )
-            sessionManager.setLanguageList(selectVideoIdList)
+          //  sessionManager.setLanguageList(selectVideoIdList)
         } else {
             object : CustomAlertDialog(
                 activity!!,
@@ -60,13 +60,6 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
                 }
             }.show()
         }
-    }
-
-    private fun saveSelectedLanguages() {
-        /*val gson = Gson()
-        val json = gson.toJson(selectVideoIdList)*/
-       sessionManager.setLanguageList(selectVideoIdList)
-
     }
 
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
