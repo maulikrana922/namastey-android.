@@ -13,9 +13,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
@@ -36,6 +39,8 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.dialog_boost_success.view.*
+import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -557,19 +562,32 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickMembership(view: View) {
-      /*  if (sessionManager.isGuestUser()) {
+        if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(false
+                SignUpFragment.getInstance(
+                    false
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        } else {*/
-        openActivity(this@ProfileActivity, MembershipActivity())
+        } else {
+            openActivity(this@ProfileActivity, MembershipActivity())
 
-       // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
-       // }
+            startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
+        }
     }
 
+    fun onClickBoostMe(view: View) {
+        if (sessionManager.isGuestUser()) {
+            /*addFragment(
+                SignUpFragment.getInstance(false
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )*/
+            showBoostDialog(R.layout.dialog_boost_skipline)
+        } else {
+            showBoostDialog(R.layout.dialog_boosts)
+        }
+    }
 
     /**
      * click on Edit info open edit profile activity
@@ -659,4 +677,154 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             openActivity(this, LocationActivity())
         }
     }
+
+    /**
+     * show dialog of boost
+     */
+    private fun showBoostDialog(layout: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProfileActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View =
+            LayoutInflater.from(this).inflate(layout, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+
+        manageVisiblity(view)
+        view.btnBoost.setOnClickListener {
+            showBoostSuccessDialog()
+        }
+        view.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
+    /**
+     * manage visiblity of boost dialog*/
+    private fun manageVisiblity(view: View) {
+
+        view.conOne.setOnClickListener {
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvMostpopular.visibility = View.VISIBLE
+            view.viewSelected.visibility = View.VISIBLE
+
+            view.tvBgSixColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularSix.visibility = View.INVISIBLE
+            view.viewSelectedSix.visibility = View.INVISIBLE
+            view.viewBgTwelColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularTwel.visibility = View.INVISIBLE
+            view.viewSelectedTwel.visibility = View.INVISIBLE
+
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+        }
+
+        view.confive.setOnClickListener {
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvMostpopularSix.visibility = View.VISIBLE
+            view.viewSelectedSix.visibility = View.VISIBLE
+
+            view.viewBgOneColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopular.visibility = View.INVISIBLE
+            view.viewSelected.visibility = View.INVISIBLE
+            view.viewBgTwelColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularTwel.visibility = View.INVISIBLE
+            view.viewSelectedTwel.visibility = View.INVISIBLE
+
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+        }
+
+        view.conTen.setOnClickListener {
+            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvMostpopularTwel.visibility = View.VISIBLE
+            view.viewSelectedTwel.visibility = View.VISIBLE
+
+            view.tvBgSixColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopularSix.visibility = View.INVISIBLE
+            view.viewSelectedSix.visibility = View.INVISIBLE
+            view.viewBgOneColor.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvMostpopular.visibility = View.INVISIBLE
+            view.viewSelected.visibility = View.INVISIBLE
+
+            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+        }
+    }
+
+    /**
+     * show dialog of boost success
+     */
+    private fun showBoostSuccessDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProfileActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_success, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        view.btnAlertOk.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        view.tvNoThanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
 }

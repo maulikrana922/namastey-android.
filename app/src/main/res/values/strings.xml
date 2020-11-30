@@ -85,7 +85,6 @@
     <string name="passport">Passport</string>
     <string name="airport">Airport</string>
     <string name="membership">Membership</string>
-    <string name="boosts">Boosts</string>
     <string name="get_more">Get more</string>
     <string name="about_me_text">Write something about you &amp; complete your profile</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text.</string>
@@ -404,5 +403,19 @@
     <string name="_5_free_super_message">5 Free Super Message</string>
     <string name="your_3x_more_likes">You`re 3x more likely to get a match!</string>
     <string name="month_with_them_intantly">"Math with them instanly "</string>
+    <string name="out_of_boosts">Out of Boosts!</string>
+    <string name="_6_day_remaining">6 Day remaining</string>
+    <string name="_10_00_ea">$10.00/ea</string>
+    <string name="boosts">Boosts</string>
+    <string name="_5">5</string>
+    <string name="_10">10</string>
+    <string name="_5_00_ea">$5.00/ea</string>
+    <string name="boost_me">Boost Me</string>
+    <string name="save_20">SAVE 20%</string>
+    <string name="skip_the_line">Skip The Line</string>
+    <string name="you_got_to_85x_more_profile">You got up to 8.5X more profile views. \n Swipe to see who checked you out.</string>
+    <string name="_8_5x_n_views">8.5x \n views</string>
+    <string name="boost_again">Boost Again</string>
+    <string name="your_boost_was_a_success">Your boost was a success!</string>
 
 </resources>

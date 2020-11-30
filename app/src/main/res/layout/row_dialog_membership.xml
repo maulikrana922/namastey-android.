@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:gravity="center"
-                android:text="Get Namastey Gold"
+                android:text="@string/get_namastey_gold"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintTop_toTopOf="parent"

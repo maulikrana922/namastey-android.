@@ -41,13 +41,14 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-    <com.namastey.customViews.CustomTextView
+    <com.hendraanggrian.appcompat.widget.SocialTextView
         android:id="@+id/tvComment"
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
         android:paddingEnd="@dimen/_3sdp"
         android:paddingStart="@dimen/_3sdp"
         android:textColor="@color/colorDarkGray"
+        app:socialFlags="mention"
         app:layout_constraintBottom_toBottomOf="@id/ivCommentUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvUsername"

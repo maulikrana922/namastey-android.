@@ -130,8 +130,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
 
     /*Select membership plan*/
     fun manageVisiblity(view: View) {
-        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTwel)
-        val conSix = view.findViewById<ConstraintLayout>(R.id.conSix)
+        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTen)
+        val conSix = view.findViewById<ConstraintLayout>(R.id.confive)
         val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
 
         conOne.setOnClickListener {
@@ -159,7 +159,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
             view.tvMostpopularTwel.visibility = View.INVISIBLE
             view.viewSelectedTwel.visibility = View.INVISIBLE
 
-            view.tvSixmonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
@@ -168,7 +168,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
         }
 
         conSix.setOnClickListener {
-            view.tvSixmonth.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
@@ -228,7 +228,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
             view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvSixmonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
         }

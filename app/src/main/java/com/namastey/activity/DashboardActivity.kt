@@ -96,6 +96,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var isUpdateComment = false
     private var fileUrl = ""
     private var postId = 0L
+
+    override fun getViewModel() = dashboardViewModel
+
+    override fun getLayoutId() = R.layout.activity_dashboard
+
+    override fun getBindingVariable() = BR.viewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -488,11 +495,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         viewpagerFeed.adapter = feedAdapter
     }
 
-    override fun getViewModel() = dashboardViewModel
-
-    override fun getLayoutId() = R.layout.activity_dashboard
-
-    override fun getBindingVariable() = BR.viewModel
 
     // Temp open this activity
     fun onClickUser(view: View) {
@@ -833,13 +835,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         mentionArrayAdapter.clear()
         dashboardViewModel.getMentionList("")
         var strMention = ""
-        bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
         bottomSheetDialogComment.edtComment.showSoftInputOnFocus
         bottomSheetDialogComment.edtComment.mentionColor =
             ContextCompat.getColor(this, R.color.colorBlack)
         bottomSheetDialogComment.edtComment.mentionAdapter = mentionArrayAdapter
         bottomSheetDialogComment.edtComment.setMentionTextChangedListener { view, text ->
             Log.e("mention", text.toString())
+            mentionArrayAdapter.notifyDataSetChanged()
             strMention = text.toString()
             if (text.length==1) {
                 bottomSheetDialogComment.lvMentionList.visibility = View.GONE
@@ -847,9 +849,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         }
 
-        bottomSheetDialogComment.edtComment.setOnMentionClickListener { view, text ->
-            Log.e("menti", text.toString())
-        }
+        bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
+
+
         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
                 strMention, "${
