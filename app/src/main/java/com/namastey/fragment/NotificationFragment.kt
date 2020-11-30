@@ -328,8 +328,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun manageVisibility(view: View) {
-        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTwel)
-        val conSix = view.findViewById<ConstraintLayout>(R.id.conSix)
+        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTen)
+        val conSix = view.findViewById<ConstraintLayout>(R.id.confive)
         val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
 
         conOne.setOnClickListener {
@@ -377,7 +377,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             view.tvMostpopularTwel.visibility = View.INVISIBLE
             view.viewSelectedTwel.visibility = View.INVISIBLE
 
-            view.tvSixmonth.setTextColor(
+            view.tvFivemonth.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
@@ -416,7 +416,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
 
         conSix.setOnClickListener {
-            view.tvSixmonth.setTextColor(
+            view.tvFivemonth.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
@@ -561,7 +561,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.colorDarkGray
                 )
             )
-            view.tvSixmonth.setTextColor(
+            view.tvFivemonth.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
