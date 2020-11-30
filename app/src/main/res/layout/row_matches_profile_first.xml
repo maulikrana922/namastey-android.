@@ -21,29 +21,28 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@color/white"
                 android:background="@color/white"
+                android:src="@color/white"
                 app:civ_border_color="@color/colorRed"
                 app:civ_border_width="@dimen/_2sdp"
                 app:civ_circle_background_color="@color/white" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivProfile"
+                android:id="@+id/ivBackgroundPicture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/default_album"
                 android:layout_margin="@dimen/_4sdp"
+                android:alpha=".5"
                 android:background="@drawable/circle_white_solid"
-               />
+                android:src="@drawable/default_album" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/circle_red_solid"
-                app:civ_border_color="@color/colorRed"
-                android:layout_margin="@dimen/_16sdp"
                 android:layout_centerInParent="true"
-                 />
+                android:layout_margin="@dimen/_16sdp"
+                android:src="@drawable/circle_red_solid"
+                app:civ_border_color="@color/colorRed" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvLikesCount"

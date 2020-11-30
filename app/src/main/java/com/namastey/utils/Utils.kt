@@ -13,9 +13,11 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -295,5 +297,14 @@ object Utils {
             resizedHeight,
             false
         )
+    }
+
+
+    fun setHtmlText(textView: TextView, text: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            textView.text = Html.fromHtml(text)
+        }
     }
 }

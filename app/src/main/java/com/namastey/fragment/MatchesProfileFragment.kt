@@ -15,6 +15,7 @@ import com.namastey.databinding.FragmentMatchesProfileBinding
 import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
+import com.namastey.utils.GlideLib
 import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
@@ -32,6 +33,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private lateinit var layoutView: View
     private lateinit var matchedProfileAdapter: MatchedProfileAdapter
     private lateinit var messagesAdapter: MessagesAdapter
+    private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
 
     override fun getViewModel() = matchesProfileViewModel
 
@@ -68,10 +70,12 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     private fun initUI() {
-        matchesProfileViewModel.getMatchesList()
+       matchesProfileViewModel.getMatchesList()
 
-        messagesAdapter = MessagesAdapter(requireActivity(), this)
+        messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
+        /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
+         rvMessagesList.adapter = messagesAdapter*/
 
         /* tvMatches.setOnClickListener {
              val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
@@ -92,9 +96,24 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
 //        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
 
-        tvLikesCount.text = data.size.toString()
+        matchesListBean = data
+        if (data.size <= 10) {
+            tvLikesCount.text = data.size.toString()
+        } else {
+            tvLikesCount.text = "10+"
+        }
+
+        GlideLib.loadImage(
+            requireContext(),
+            ivBackgroundPicture,
+            data.get(data.size - 1).profile_pic
+        )
+
+        // tvLikesCount.text = data.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
+
+
     }
 
     override fun onDestroy() {

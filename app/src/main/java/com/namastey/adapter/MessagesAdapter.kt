@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnMatchesItemClick
+import com.namastey.model.MatchesListBean
+import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message.view.*
 
 class MessagesAdapter(
+    var matchesList: ArrayList<MatchesListBean>,
     var activity: Activity,
     var onMatchesItemClick: OnMatchesItemClick
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
@@ -22,7 +25,7 @@ class MessagesAdapter(
         )
     )
 
-    override fun getItemCount() = 7
+    override fun getItemCount() = matchesList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -31,12 +34,22 @@ class MessagesAdapter(
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-
         fun bind(position: Int) = with(itemView) {
+            val matchesListBean = matchesList[position]
 
             llMessageView.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(0, position,null)
+                onMatchesItemClick.onMatchesItemClick(0, position, null)
             }
+
+            if (matchesListBean.is_read == 1)
+                llMessage.visibility = View.VISIBLE
+            else
+                llMessage.visibility = View.GONE
+
+
+            tvUsername.text = matchesListBean.username
+
+            GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
             Utils.rectangleShapeGradient(
                 mainCategoryView, intArrayOf(

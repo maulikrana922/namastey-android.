@@ -25,8 +25,7 @@ class MatchesProfileViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetMatchesList().let {
-                        appResponse: AppResponse<ArrayList<MatchesListBean>> ->
+                networkService.requestToGetMatchesList().let { appResponse: AppResponse<ArrayList<MatchesListBean>> ->
                     setIsLoading(false)
                     if (appResponse.status == Constants.OK) {
                         matchesProfileView.onSuccessMatchesList(appResponse.data!!)

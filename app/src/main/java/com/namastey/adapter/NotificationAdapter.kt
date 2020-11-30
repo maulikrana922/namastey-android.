@@ -1,18 +1,16 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.os.Build
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnNotificationClick
 import com.namastey.model.ActivityListBean
 import com.namastey.utils.GlideLib
+import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_notification.view.*
 
 class NotificationAdapter(
@@ -34,8 +32,7 @@ class NotificationAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             val activityListBean = activityList[position]
@@ -51,7 +48,7 @@ class NotificationAdapter(
                             activityListBean.following_user_profile_pic
                         )
                         // tvNotification.text = activityListBean.follow_message
-                        setHtmlText(tvNotification, activityListBean.follow_message)
+                        Utils.setHtmlText(tvNotification, activityListBean.follow_message)
                     }
 
                     if (activityListBean.like_id != 0) {
@@ -61,7 +58,7 @@ class NotificationAdapter(
                             activityListBean.like_user_profile_pic
                         )
                         // tvNotification.text = activityListBean.like_message
-                        setHtmlText(tvNotification, activityListBean.like_message)
+                        Utils.setHtmlText(tvNotification, activityListBean.like_message)
                     }
 
                     if (activityListBean.comment_id != 0) {
@@ -82,7 +79,7 @@ class NotificationAdapter(
                             activityListBean.cover_image_url
                         )
                         //tvNotification.text = activityListBean.comment_message
-                        setHtmlText(tvNotification, activityListBean.comment_message)
+                        Utils.setHtmlText(tvNotification, activityListBean.comment_message)
 
                     } else {
 
@@ -95,7 +92,7 @@ class NotificationAdapter(
                             activityListBean.comment_user_profile_pic
                         )
                         // tvNotification.text = activityListBean.menstion_message
-                        setHtmlText(tvNotification, activityListBean.menstion_message)
+                        Utils.setHtmlText(tvNotification, activityListBean.menstion_message)
                     }
                 }
 
@@ -107,7 +104,7 @@ class NotificationAdapter(
                         activityListBean.like_user_profile_pic
                     )
                     // tvNotification.text = activityListBean.like_message
-                    setHtmlText(tvNotification, activityListBean.like_message)
+                    Utils.setHtmlText(tvNotification, activityListBean.like_message)
                 }
 
                 //For Comment(Post video comment)
@@ -130,7 +127,7 @@ class NotificationAdapter(
                         activityListBean.cover_image_url
                     )
                     // tvNotification.text = activityListBean.comment_message
-                    setHtmlText(tvNotification, activityListBean.comment_message)
+                    Utils.setHtmlText(tvNotification, activityListBean.comment_message)
                 }
 
                 //For Followers
@@ -147,14 +144,18 @@ class NotificationAdapter(
                     }
 
                     mainFollowBackView.setOnClickListener {
+
                         onItemClick.onClickFollowRequest(
                             activityListBean.user_id,
                             activityListBean.is_follow
                         )
+
+                        mainFollowBackView.visibility = View.GONE
+
                     }
 
                     //   tvNotification.text = activityListBean.follow_message
-                    setHtmlText(tvNotification, activityListBean.follow_message)
+                    Utils.setHtmlText(tvNotification, activityListBean.follow_message)
                 }
 
                 //For Mentions
@@ -165,7 +166,7 @@ class NotificationAdapter(
                         activityListBean.mentions_user_profile_pic
                     )
                     //tvNotification.text = activityListBean.menstion_message
-                    setHtmlText(tvNotification, activityListBean.menstion_message)
+                    Utils.setHtmlText(tvNotification, activityListBean.menstion_message)
                 }
                 else -> {
 
@@ -175,16 +176,6 @@ class NotificationAdapter(
             ivUserProfile.setOnClickListener {
                 onItemClick.onNotificationClick(activityListBean.user_id, position)
             }
-        }
-
-    }
-
-    private fun setHtmlText(textView: TextView, text: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
-        } else {
-            textView.text = Html.fromHtml(text)
-            //HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY);
         }
     }
 }

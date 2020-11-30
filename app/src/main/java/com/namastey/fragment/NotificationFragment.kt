@@ -32,6 +32,7 @@ import com.namastey.model.MembershipSlide
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.NotificationView
 import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.NotificationViewModel
 import kotlinx.android.synthetic.main.dialog_membership.view.*
@@ -730,7 +731,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         userId: Long,
         isFollow: Int
     ) {
-        notificationViewModel.followUser(userId, isFollow)
+        Log.e("NotificationFragment", "isFollow: \t $isFollow")
+        notificationViewModel.followUser(userId, 1)
+        notificationAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -738,10 +741,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         if (data.get(0).profile_url != null && data.get(0).profile_url.isNotEmpty()) {
             // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data.get(0).profile_url)
             Log.e("NotificationFragment", "profile: \t data: ${data.get(0).profile_url}")
-            GlideApp
-                .with(requireContext())
-                .load(data.get(0).profile_url)
-                .into(ivFollowRequestFirst)
+
+            GlideLib.loadImage(
+                requireContext(),
+                ivFollowRequestFirst,
+                data.get(0).profile_url
+            )
         } else {
             GlideApp
                 .with(requireContext())
@@ -751,10 +756,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         if (data.get(1).profile_url != null && data.get(1).profile_url.isNotEmpty()) {
             Log.e("NotificationFragment", "profile: \t data: ${data[2].profile_url}")
-            GlideApp
-                .with(requireContext())
-                .load(data.get(1).profile_url)
-                .into(ivFollowRequestSecond)
+            GlideLib.loadImage(
+                requireContext(),
+                ivFollowRequestSecond,
+                data.get(1).profile_url
+            )
+
         } else {
             GlideApp
                 .with(requireContext())
@@ -764,10 +771,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         if (data.get(2).profile_url != null && data.get(2).profile_url.isNotEmpty()) {
             Log.e("NotificationFragment", "profile: \t data: ${data.get(2).profile_url}")
-            GlideApp
-                .with(requireContext())
-                .load(data.get(2).profile_url)
-                .into(ivFollowRequestThird)
+            GlideLib.loadImage(
+                requireContext(),
+                ivFollowRequestThird,
+                data.get(2).profile_url
+            )
+
         } else {
             GlideApp
                 .with(requireContext())

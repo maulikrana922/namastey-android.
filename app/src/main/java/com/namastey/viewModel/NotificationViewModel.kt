@@ -1,6 +1,5 @@
 package com.namastey.viewModel
 
-import android.util.Log
 import com.namastey.R
 import com.namastey.model.ActivityListBean
 import com.namastey.model.AppResponse
@@ -23,23 +22,6 @@ class NotificationViewModel constructor(
 
     private var notificationView: NotificationView = baseView as NotificationView
     private lateinit var job: Job
-
-    fun getNotificationList() {
-        setIsLoading(true)
-        job = GlobalScope.launch(Dispatchers.Main) {
-            try {
-                if (notificationView.isInternetAvailable()) {
-                    Log.e("notificationProfileView", "isInternetAvailable: \t true")
-                } else {
-                    setIsLoading(false)
-                    notificationView.showMsg(R.string.no_internet)
-                }
-            } catch (t: Throwable) {
-                setIsLoading(false)
-                notificationView.onHandleException(t)
-            }
-        }
-    }
 
     fun getFollowRequestList() {
         setIsLoading(true)
