@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.namastey.R
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CommentBean
 import com.namastey.utils.GlideLib
+import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.row_comment.view.*
 
 class CommentAdapter(
@@ -42,7 +44,7 @@ class CommentAdapter(
             val commentBean = commentList[position]
             tvUsername.text = commentBean.username
             tvComment.text = commentBean.comment
-
+            tvComment.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
             GlideLib.loadImageUrlRoundCorner(activity, ivCommentUser, commentBean.profile_pic)
 
             holderComment.setOnClickListener {

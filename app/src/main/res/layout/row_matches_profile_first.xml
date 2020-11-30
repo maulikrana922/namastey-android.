@@ -14,18 +14,36 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_72sdp"
+            android:layout_height="@dimen/_72sdp"
             android:layout_gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="@dimen/_72sdp"
-                android:layout_height="@dimen/_72sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@color/white"
                 android:background="@color/white"
                 app:civ_border_color="@color/colorRed"
-                app:civ_border_width="1dp"
+                app:civ_border_width="@dimen/_2sdp"
                 app:civ_circle_background_color="@color/white" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/default_album"
+                android:layout_margin="@dimen/_4sdp"
+                android:background="@drawable/circle_white_solid"
+               />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle_red_solid"
+                app:civ_border_color="@color/colorRed"
+                android:layout_margin="@dimen/_16sdp"
+                android:layout_centerInParent="true"
+                 />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvLikesCount"
@@ -35,7 +53,7 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:gravity="center"
                 android:text="0"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:typeface="MULI_EXTRA_BOLD" />
 
