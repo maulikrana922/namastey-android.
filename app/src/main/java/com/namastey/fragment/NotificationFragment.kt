@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +35,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.NotificationViewModel
 import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.dialog_notification_all_activity.view.*
 import kotlinx.android.synthetic.main.fragment_notification.*
 import javax.inject.Inject
 
@@ -57,7 +57,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
-    private lateinit var tvAllActivityTitle: TextView
+
+    /*private lateinit var tvAllActivityTitle: TextView
     private lateinit var llAllActivity: LinearLayout
     private lateinit var llLikes: LinearLayout
     private lateinit var llComments: LinearLayout
@@ -77,7 +78,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var ivLikes: ImageView
     private lateinit var ivComments: ImageView
     private lateinit var ivMentions: ImageView
-    private lateinit var ivFollowers: ImageView
+    private lateinit var ivFollowers: ImageView*/
 
     override fun getViewModel() = notificationViewModel
 
@@ -150,14 +151,14 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 //        dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
 
-        initDialogViews(customLayout)
-        setDialogClickListeners()
-        setSelectedLayout()
+        //initDialogViews(customLayout)
+        setDialogClickListeners(customLayout)
+        setSelectedLayout(customLayout)
         /*setSelectedTextColor(tvAllActivity)
         setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)*/
     }
 
-    private fun initDialogViews(customLayout: View) {
+    /*private fun initDialogViews(customLayout: View) {
         tvAllActivityTitle = customLayout.findViewById(R.id.tvAllActivityTitle)
         llAllActivity = customLayout.findViewById(R.id.llAllActivity)
         llLikes = customLayout.findViewById(R.id.llLikes)
@@ -182,25 +183,25 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         ivComments = customLayout.findViewById(R.id.ivComments)
         ivMentions = customLayout.findViewById(R.id.ivMentions)
         ivFollowers = customLayout.findViewById(R.id.ivFollowers)
-    }
+    }*/
 
-    private fun setDialogClickListeners() {
-        llAllActivity.setOnClickListener {
+    private fun setDialogClickListeners(customLayout: View) {
+        customLayout.llAllActivity.setOnClickListener {
             isActivityList = 0
-            hideDoneImageView(ivAllActivitySelected)
-            setSelectedTextColor(tvAllActivity)
-            setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
+            hideDoneImageView(customLayout.ivAllActivitySelected, customLayout)
+            setSelectedTextColor(customLayout.tvAllActivity, customLayout)
+            setImageViewColor(customLayout.ivAllActivity, R.drawable.ic_all_activity, customLayout)
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
             sessionManager.setStringValue(
                 resources.getString(R.string.all_activity),
                 Constants.KEY_ALL_ACTIVITY_TITLE
             )
-            tvAllActivityTitle.text = resources.getString(R.string.all_activity)
+            customLayout.tvAllActivityTitle.text = resources.getString(R.string.all_activity)
             tvAllActivityMain.text = resources.getString(R.string.all_activity)
             //dialog.dismiss()
         }
-        llLikes.setOnClickListener {
+        customLayout.llLikes.setOnClickListener {
             dialog.dismiss()
             showCustomDialog(1)
 
@@ -218,10 +219,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
              tvAllActivityTitle.text = resources.getString(R.string.likes)
              tvAllActivityMain.text = resources.getString(R.string.likes)*/
         }
-        llComments.setOnClickListener {
-            hideDoneImageView(ivCommentsSelected)
-            setSelectedTextColor(tvComments)
-            setImageViewColor(ivComments, R.drawable.ic_comment)
+        customLayout.llComments.setOnClickListener {
+            hideDoneImageView(customLayout.ivCommentsSelected, customLayout)
+            setSelectedTextColor(customLayout.tvComments, customLayout)
+            setImageViewColor(customLayout.ivComments, R.drawable.ic_comment, customLayout)
             isActivityList = 2
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
@@ -229,14 +230,18 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.comments),
                 Constants.KEY_ALL_ACTIVITY_TITLE
             )
-            tvAllActivityTitle.text = resources.getString(R.string.comments)
+            customLayout.tvAllActivityTitle.text = resources.getString(R.string.comments)
             tvAllActivityMain.text = resources.getString(R.string.comments)
             // dialog.dismiss()
         }
-        llFollowers.setOnClickListener {
-            hideDoneImageView(ivFollowersSelected)
-            setSelectedTextColor(tvFollowers)
-            setImageViewColor(ivFollowers, R.drawable.ic_all_activity) // Todo: Change icon
+        customLayout.llFollowers.setOnClickListener {
+            hideDoneImageView(customLayout.ivFollowersSelected, customLayout)
+            setSelectedTextColor(customLayout.tvFollowers, customLayout)
+            setImageViewColor(
+                customLayout.ivFollowers,
+                R.drawable.ic_all_activity,
+                customLayout
+            ) // Todo: Change icon
             isActivityList = 3
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
@@ -244,14 +249,14 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.followers),
                 Constants.KEY_ALL_ACTIVITY_TITLE
             )
-            tvAllActivityTitle.text = resources.getString(R.string.followers)
+            customLayout.tvAllActivityTitle.text = resources.getString(R.string.followers)
             tvAllActivityMain.text = resources.getString(R.string.followers)
             //     dialog.dismiss()
         }
-        llMentions.setOnClickListener {
-            hideDoneImageView(ivMentionsSelected)
-            setSelectedTextColor(tvMentions)
-            setImageViewColor(ivMentions, R.drawable.ic_mention)
+        customLayout.llMentions.setOnClickListener {
+            hideDoneImageView(customLayout.ivMentionsSelected, customLayout)
+            setSelectedTextColor(customLayout.tvMentions, customLayout)
+            setImageViewColor(customLayout.ivMentions, R.drawable.ic_mention, customLayout)
             isActivityList = 4
             notificationViewModel.getActivityList(isActivityList)
             sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
@@ -259,9 +264,27 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.mentions),
                 Constants.KEY_ALL_ACTIVITY_TITLE
             )
-            tvAllActivityTitle.text = resources.getString(R.string.mentions)
+            customLayout.tvAllActivityTitle.text = resources.getString(R.string.mentions)
             tvAllActivityMain.text = resources.getString(R.string.mentions)
             // dialog.dismiss()
+        }
+    }
+
+    private fun setSelectedApi() {
+        Log.e(
+            "NotificationFragment",
+            "KEY_ALL_ACTIVITY: \t ${sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)}"
+        )
+        if (sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) != 0) {
+            val allActivity = sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)
+            notificationViewModel.getActivityList(allActivity)
+            Log.e("NotificationFragment", "allActivity: \t $allActivity")
+
+            val allActivityTitle = sessionManager.getStringValue(Constants.KEY_ALL_ACTIVITY_TITLE)
+            //tvAllActivityTitle.text = allActivityTitle
+            tvAllActivityMain.text = allActivityTitle
+        } else {
+            notificationViewModel.getActivityList(0)
         }
     }
 
@@ -287,6 +310,137 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         dialogView.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
         }
+    }
+
+    private fun setSelectedLayout(customLayout: View) {
+        when {
+            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 0 -> {
+                hideDoneImageView(customLayout.ivAllActivitySelected, customLayout)
+                setSelectedTextColor(customLayout.tvAllActivity, customLayout)
+                setImageViewColor(
+                    customLayout.ivAllActivity,
+                    R.drawable.ic_all_activity,
+                    customLayout
+                )
+            }
+            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 1 -> {
+                hideDoneImageView(customLayout.ivLikesSelected, customLayout)
+                setSelectedTextColor(customLayout.tvLikes, customLayout)
+                setImageViewColor(customLayout.ivLikes, R.drawable.heart, customLayout)
+            }
+            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 2 -> {
+                hideDoneImageView(customLayout.ivCommentsSelected, customLayout)
+                setSelectedTextColor(customLayout.tvComments, customLayout)
+                setImageViewColor(customLayout.ivComments, R.drawable.ic_comment, customLayout)
+            }
+            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 3 -> {
+                hideDoneImageView(customLayout.ivFollowersSelected, customLayout)
+                setSelectedTextColor(customLayout.tvFollowers, customLayout)
+                setImageViewColor(
+                    customLayout.ivFollowers,
+                    R.drawable.ic_all_activity,
+                    customLayout
+                ) // Todo: Change icon
+            }
+            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 4 -> {
+                hideDoneImageView(customLayout.ivMentionsSelected, customLayout)
+                setSelectedTextColor(customLayout.tvMentions, customLayout)
+                setImageViewColor(customLayout.ivMentions, R.drawable.ic_mention, customLayout)
+            }
+        }
+    }
+
+    private fun setSelectedTextColor(textView: TextView, customLayout: View) {
+        customLayout.tvAllActivity.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorBlack
+            )
+        )
+        customLayout.tvLikes.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorBlack
+            )
+        )
+        customLayout.tvComments.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorBlack
+            )
+        )
+        customLayout.tvMentions.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorBlack
+            )
+        )
+        customLayout.tvFollowers.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorBlack
+            )
+        )
+
+        textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRed))
+    }
+
+    private fun hideDoneImageView(imageViewDone: ImageView, customLayout: View) {
+        customLayout.ivAllActivitySelected.visibility = View.GONE
+        customLayout.ivLikesSelected.visibility = View.GONE
+        customLayout.ivCommentsSelected.visibility = View.GONE
+        customLayout.ivMentionsSelected.visibility = View.GONE
+        customLayout.ivFollowersSelected.visibility = View.GONE
+
+        imageViewDone.visibility = View.VISIBLE
+    }
+
+    private fun setImageViewColor(imageView: ImageView, drawable: Int, customLayout: View) {
+        /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+         ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
+
+         imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
+
+        customLayout.ivAllActivity.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_all_activity_black
+            )
+        )
+        customLayout.ivLikes.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_heart_black
+            )
+        )
+        customLayout.ivComments.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_comment_black
+            )
+        )
+        customLayout.ivMentions.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_mention_black
+            )
+        )
+        customLayout.ivFollowers.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_all_activity_black
+            )
+        ) // Todo: Change icon
+
+        imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
+
+        /* val unwrappedDrawable: Drawable? =
+             AppCompatResources.getDrawable(context!!, drawable)
+         val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
+         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext'(), R.color.colorRed))*/
     }
 
     private fun setSliderData() {
@@ -589,122 +743,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
     }
 
-    private fun setSelectedApi() {
-        Log.e(
-            "NotificationFragment",
-            "KEY_ALL_ACTIVITY: \t ${sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)}"
-        )
-        if (sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) != 0) {
-            val allActivity = sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY)
-            notificationViewModel.getActivityList(allActivity)
-            Log.e("NotificationFragment", "allActivity: \t $allActivity")
-
-            val allActivityTitle = sessionManager.getStringValue(Constants.KEY_ALL_ACTIVITY_TITLE)
-            //tvAllActivityTitle.text = allActivityTitle
-            tvAllActivityMain.text = allActivityTitle
-        } else {
-            notificationViewModel.getActivityList(0)
-        }
-    }
-
-    private fun setSelectedLayout() {
-        when {
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 0 -> {
-                hideDoneImageView(ivAllActivitySelected)
-                setSelectedTextColor(tvAllActivity)
-                setImageViewColor(ivAllActivity, R.drawable.ic_all_activity)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 1 -> {
-                hideDoneImageView(ivLikesSelected)
-                setSelectedTextColor(tvLikes)
-                setImageViewColor(ivLikes, R.drawable.heart)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 2 -> {
-                hideDoneImageView(ivCommentsSelected)
-                setSelectedTextColor(tvComments)
-                setImageViewColor(ivComments, R.drawable.ic_comment)
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 3 -> {
-                hideDoneImageView(ivFollowersSelected)
-                setSelectedTextColor(tvFollowers)
-                setImageViewColor(ivFollowers, R.drawable.ic_all_activity) // Todo: Change icon
-            }
-            sessionManager.getIntegerValue(Constants.KEY_ALL_ACTIVITY) == 4 -> {
-                hideDoneImageView(ivMentionsSelected)
-                setSelectedTextColor(tvMentions)
-                setImageViewColor(ivMentions, R.drawable.ic_mention)
-            }
-        }
-    }
-
-    private fun setSelectedTextColor(textView: TextView) {
-        tvAllActivity.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-        tvLikes.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-        tvComments.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-        tvMentions.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-        tvFollowers.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlack))
-
-        textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRed))
-    }
-
-    private fun hideDoneImageView(imageViewDone: ImageView) {
-        ivAllActivitySelected.visibility = View.GONE
-        ivLikesSelected.visibility = View.GONE
-        ivCommentsSelected.visibility = View.GONE
-        ivMentionsSelected.visibility = View.GONE
-        ivFollowersSelected.visibility = View.GONE
-
-        imageViewDone.visibility = View.VISIBLE
-    }
-
-    private fun setImageViewColor(imageView: ImageView, drawable: Int) {
-        /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-
-         imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
-
-        ivAllActivity.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_all_activity_black
-            )
-        )
-        ivLikes.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_heart_black
-            )
-        )
-        ivComments.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_comment_black
-            )
-        )
-        ivMentions.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_mention_black
-            )
-        )
-        ivFollowers.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_all_activity_black
-            )
-        ) // Todo: Change icon
-
-        imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
-
-        /* val unwrappedDrawable: Drawable? =
-             AppCompatResources.getDrawable(context!!, drawable)
-         val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext'(), R.color.colorRed))*/
-    }
-
     override fun onRefresh(activityListBean: ActivityListBean?) {
         if (activityListBean != null) {
             rvNotification.visibility = View.VISIBLE
@@ -733,7 +771,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     ) {
         Log.e("NotificationFragment", "isFollow: \t $isFollow")
         notificationViewModel.followUser(userId, 1)
-        notificationAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -805,7 +842,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     override fun onSuccessFollow(profileBean: ProfileBean) {
-        TODO("Not yet implemented")
+        Log.e("NotificationFragment", "profileBean: \t ${profileBean.is_follow}")
+        notificationAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccess(msg: String) {

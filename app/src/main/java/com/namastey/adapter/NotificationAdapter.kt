@@ -1,7 +1,6 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,17 +35,29 @@ class NotificationAdapter(
 
         fun bind(position: Int) = with(itemView) {
             val activityListBean = activityList[position]
-            Log.e("NotificationAdapter", "activityListBean: \t $activityListBean")
             when (isActivityList) {
                 //For All-Activity List
                 0 -> {
                     if (activityListBean.follow_id != 0) {
-                        mainFollowBackView.visibility = View.VISIBLE
                         GlideLib.loadImage(
                             activity,
                             ivUserProfile,
                             activityListBean.following_user_profile_pic
                         )
+
+                        if (activityListBean.is_follow == 0) {
+                            mainFollowBackView.visibility = View.VISIBLE
+                        } else {
+                            mainFollowBackView.visibility = View.GONE
+                        }
+
+                        mainFollowBackView.setOnClickListener {
+                            onItemClick.onClickFollowRequest(
+                                activityListBean.user_id,
+                                activityListBean.is_follow
+                            )
+                            mainFollowBackView.visibility = View.GONE
+                        }
                         // tvNotification.text = activityListBean.follow_message
                         Utils.setHtmlText(tvNotification, activityListBean.follow_message)
                     }
@@ -144,14 +155,11 @@ class NotificationAdapter(
                     }
 
                     mainFollowBackView.setOnClickListener {
-
                         onItemClick.onClickFollowRequest(
                             activityListBean.user_id,
                             activityListBean.is_follow
                         )
-
                         mainFollowBackView.visibility = View.GONE
-
                     }
 
                     //   tvNotification.text = activityListBean.follow_message

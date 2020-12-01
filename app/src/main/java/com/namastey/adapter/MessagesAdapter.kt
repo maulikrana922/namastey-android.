@@ -2,6 +2,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,20 +32,21 @@ class MessagesAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             val matchesListBean = matchesList[position]
 
+            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
+
             llMessageView.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(0, position, null)
+                onMatchesItemClick.onMatchesItemClick(0, position, matchesListBean)
             }
 
-            if (matchesListBean.is_read == 1)
+          /*  if (matchesListBean.is_read == 1)
                 llMessage.visibility = View.VISIBLE
             else
-                llMessage.visibility = View.GONE
+                llMessage.visibility = View.GONE*/
 
 
             tvUsername.text = matchesListBean.username

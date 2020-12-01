@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
@@ -19,8 +20,11 @@ class FeedAdapter(
     val activity: Activity,
     var onFeedItemClick: OnFeedItemClick,
     var sessionManager: SessionManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
-    val handlerVideo =  Handler(activity.mainLooper)
+) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+
+    private var currentPosition = 0;
+
+    val handlerVideo = Handler(activity.mainLooper)
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -35,8 +39,7 @@ class FeedAdapter(
     }
 
     inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-
+        RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) = with(itemView) {
             val dashboardBean = feedList[position]
 
@@ -177,8 +180,8 @@ class FeedAdapter(
                 onFeedItemClick.onItemClick(dashboardBean)
             }
 
-           // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
-            if (dashboardBean.is_comment == 0){// && !sessionManager.isGuestUser()) {
+            // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
+            if (dashboardBean.is_comment == 0) {// && !sessionManager.isGuestUser()) {
                 tvCommentFeed.setOnClickListener {
                     onFeedItemClick.onCommentClick(position, dashboardBean.id)
                 }
@@ -205,6 +208,27 @@ class FeedAdapter(
             }
 
             tvFeedLike.setOnClickListener {
+                currentPosition += 1
+                if (currentPosition < feedList.size) {
+                    //textView.setText(feedList.get(currentPosition).video_url);
+
+                    postVideo.setVideoPath(feedList.get(currentPosition).video_url)
+                    postVideo.requestFocus()
+                    postVideo.start()
+
+                    postVideo.setOnPreparedListener { mp ->
+                        //Start Playback
+                        postVideo.start()
+
+                        handlerVideo.postDelayed({
+                            onFeedItemClick.onPostViewer(feedList.get(currentPosition).id)
+                        }, 5000)
+
+                        //Loop Video
+                        mp!!.isLooping = true
+                    }
+                }
+
                 if (dashboardBean.is_like == 1)
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 0)
                 else
@@ -215,6 +239,5 @@ class FeedAdapter(
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
         }
-
     }
 }

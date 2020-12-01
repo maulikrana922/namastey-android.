@@ -72,15 +72,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private fun initUI() {
        matchesProfileViewModel.getMatchesList()
 
-        messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
-        rvMessagesList.adapter = messagesAdapter
+       /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
+        rvMessagesList.adapter = messagesAdapter*/
         /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
-
-        /* tvMatches.setOnClickListener {
-             val intent = Intent(requireContext(), MatchesScreenActivity::class.java)
-             openActivity(intent)
-         }*/
     }
 
     override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
@@ -113,7 +108,8 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
 
-
+        messagesAdapter = MessagesAdapter(data, requireActivity(), this)
+        rvMessagesList.adapter = messagesAdapter
     }
 
     override fun onDestroy() {

@@ -52,8 +52,8 @@ import com.namastey.model.MentionListBean
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
@@ -662,9 +662,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
                 }
             }
-
         }
-
     }
 
 
