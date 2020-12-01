@@ -330,5 +330,7 @@ interface NetworkRequest {
         @Field(Constants.IS_SHARE) isShare: Int
     ): Deferred<AppResponse<SafetyBean>>
 
+    @GET(Constants.ALL_SUBCATEGORY_LIST)
+    fun requestToGetAllSubCategoryListAsync(): Deferred<AppResponse<ArrayList<SubCategoryBean>>>
 
 }

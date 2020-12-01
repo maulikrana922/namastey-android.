@@ -26,8 +26,15 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestSendOTP(jsonObject: JsonObject): AppResponse<User> =
         withContext(Dispatchers.IO) { networkRequest.sendOTPAsync(jsonObject).await() }
 
-    suspend fun requestVerifyOTP(phone: String, email: String, otp: String,  deviceToken: String): AppResponse<User> =
-        withContext(Dispatchers.IO) { networkRequest.verifyOTPAsync(phone, email, otp,deviceToken).await() }
+    suspend fun requestVerifyOTP(
+        phone: String,
+        email: String,
+        otp: String,
+        deviceToken: String
+    ): AppResponse<User> =
+        withContext(Dispatchers.IO) {
+            networkRequest.verifyOTPAsync(phone, email, otp, deviceToken).await()
+        }
 
     suspend fun requestToGetVideoLanguage(locale: String): AppResponse<ArrayList<VideoLanguageBean>> =
         withContext(Dispatchers.IO) {
@@ -147,7 +154,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetAlbumWithDetailsAsync().await()
         }
 
-    suspend fun requestPostVideo(jsonObject: JsonObject
+    suspend fun requestPostVideo(
+        jsonObject: JsonObject
     ): AppResponse<VideoBean> =
         withContext(Dispatchers.IO) {
             networkRequest.postVideoAsync(jsonObject).await()
@@ -222,8 +230,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowUserAsync(followingUserId, isFollow).await()
         }
+
     // Temp set
-    suspend fun requestToFollowUserProfile(followingUserId: Long, isFollow: Int): AppResponse<ProfileBean> =
+    suspend fun requestToFollowUserProfile(
+        followingUserId: Long,
+        isFollow: Int
+    ): AppResponse<ProfileBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToFollowUserProfileAsync(followingUserId, isFollow).await()
         }
@@ -337,7 +349,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToSeeYourFollowersAsync(isFollowers).await()
         }
 
-    suspend fun requestToPostActivityList(isFilter:Int): AppResponse<ArrayList<ActivityListBean>> =
+    suspend fun requestToPostActivityList(isFilter: Int): AppResponse<ArrayList<ActivityListBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToPostActivityListAsync(isFilter).await()
         }
@@ -362,6 +374,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToShareProfileSafety(isShare: Int): AppResponse<SafetyBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToShareProfileSafetyAsync(isShare).await()
+        }
+
+    suspend fun requestToGetAllSubCategoryList(): AppResponse<ArrayList<SubCategoryBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetAllSubCategoryListAsync().await()
         }
 
 

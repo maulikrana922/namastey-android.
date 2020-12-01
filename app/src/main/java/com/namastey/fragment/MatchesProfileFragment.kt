@@ -42,9 +42,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance() =
-            MatchesProfileFragment().apply {
-            }
+        fun getInstance() = MatchesProfileFragment().apply {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,10 +68,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     private fun initUI() {
-       matchesProfileViewModel.getMatchesList()
+        matchesProfileViewModel.getMatchesList()
 
-       /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
-        rvMessagesList.adapter = messagesAdapter*/
+        /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
+         rvMessagesList.adapter = messagesAdapter*/
         /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
     }
@@ -103,6 +101,16 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             ivBackgroundPicture,
             data.get(data.size - 1).profile_pic
         )
+
+        if (data.size == 0) {
+            ivNoMatch.visibility = View.VISIBLE
+            tvMessages.visibility = View.GONE
+            rvMessagesList.visibility = View.GONE
+        } else {
+            ivNoMatch.visibility = View.GONE
+            tvMessages.visibility = View.VISIBLE
+            rvMessagesList.visibility = View.VISIBLE
+        }
 
         // tvLikesCount.text = data.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)

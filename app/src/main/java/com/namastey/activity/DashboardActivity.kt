@@ -1161,7 +1161,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             bottomSheetDialogComment.rvPostComment.visibility = View.GONE
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         }
-
     }
 
     override fun onSuccessBlockUser(msg: String) {
@@ -1175,7 +1174,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 dashboardViewModel.getFeedList(0)
             }
         }.show()
-
     }
 
     fun onClickDiscover(view: View) {

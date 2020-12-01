@@ -35,6 +35,7 @@ object Constants {
     const val VERIFY_OTP = "verify-otp"
     const val GET_COUNTRY = "countries-list"
     const val GET_VIDEO_LANGUAGE = "video-language-list"
+    const val ALL_SUBCATEGORY_LIST = "all-subcategory-list"
     const val GET_INTEREST_LIST = "interests-list"
     const val SOCIAL_LOGIN = "social-login"
     const val REGISTER_GUEST = "register-guest"
@@ -269,6 +270,7 @@ object Constants {
     const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
     const val IS_SHARE = "is_share"
     const val DEVICE_TOKEN = "device_token"
+    //const val TAGS = "tags"
 
 
     //    Other constants

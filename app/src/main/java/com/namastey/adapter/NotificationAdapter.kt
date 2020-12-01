@@ -1,6 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -182,7 +183,12 @@ class NotificationAdapter(
             }
 
             ivUserProfile.setOnClickListener {
-                onItemClick.onNotificationClick(activityListBean.user_id, position)
+                Log.e("NotificationAdapter", "user_id: \t ${activityListBean.user_id}")
+                if (activityListBean.following_user_id != 0L) {
+                    onItemClick.onNotificationClick(activityListBean.following_user_id, position)
+                } else {
+                    onItemClick.onNotificationClick(activityListBean.user_id, position)
+                }
             }
         }
     }

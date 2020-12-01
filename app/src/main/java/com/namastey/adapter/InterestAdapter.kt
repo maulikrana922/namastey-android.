@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
-import com.namastey.model.InterestBean
+import com.namastey.model.SubCategoryBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_choose_interest.view.*
 
 class InterestAdapter(
-    var interestList: ArrayList<InterestBean>,
+    //var interestList: ArrayList<InterestBean>,
+    var interestList: ArrayList<SubCategoryBean>,
     var activity: Context,
     var onImageItemClick: OnImageItemClick,
     var isDisplayCkb: Boolean
@@ -33,9 +34,9 @@ class InterestAdapter(
     inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
-            tvInterstTitle.text = interestList.get(position).interest_name
+            tvInterstTitle.text = interestList.get(position).name
 
-            GlideLib.loadImage(activity,ivInterest,interestList.get(position).image)
+            GlideLib.loadImage(activity,ivInterest,interestList.get(position).sub_cat_img)
 
             view.alpha = 0.3f
             videoSelectMain.setOnClickListener {

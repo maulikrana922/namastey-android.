@@ -760,15 +760,13 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     override fun onNotificationClick(userId: Long, position: Int) {
+        Log.e("NotificationFragment", "user_id: \t $userId")
         val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)
         openActivity(intent)
     }
 
-    override fun onClickFollowRequest(
-        userId: Long,
-        isFollow: Int
-    ) {
+    override fun onClickFollowRequest(userId: Long, isFollow: Int) {
         Log.e("NotificationFragment", "isFollow: \t $isFollow")
         notificationViewModel.followUser(userId, 1)
     }

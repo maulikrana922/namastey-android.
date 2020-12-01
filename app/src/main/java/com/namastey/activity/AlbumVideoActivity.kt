@@ -297,7 +297,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else {
+        } else {
             this.position = position
             val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
 //            intent.putExtra("albumId", videoBean.album_id)
@@ -309,15 +309,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onClickLike(position: Int, videoBean: VideoBean) {
+        Log.e("AlbumVideoActivity", "UserType: \t ${sessionManager.isGuestUser()}")
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
+                SignUpFragment.getInstance(true), Constants.SIGNUP_FRAGMENT
             )
+        }else{
+
+            //TODO: Call Like Api
+            Log.e("AlbumVideoActivity", "UserType: In")
         }
     }
+
     override fun onItemClick(value: Long, position: Int) {
         viewpagerAlbum.currentItem = position
     }
@@ -331,9 +334,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-       /* val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USER_ID, userId)
-        openActivity(intent)*/
+        /* val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
+         intent.putExtra(Constants.USER_ID, userId)
+         openActivity(intent)*/
     }
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
@@ -350,7 +353,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, userId)
             openActivity(intent)
-        }    }
+        }
+    }
 
     override fun onUpnextClick(position: Int) {
         groupUpnext.visibility = View.VISIBLE
@@ -748,6 +752,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             }
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         if (::bottomSheetDialogComment.isInitialized)

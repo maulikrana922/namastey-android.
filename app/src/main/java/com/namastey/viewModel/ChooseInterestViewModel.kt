@@ -29,19 +29,19 @@ class ChooseInterestViewModel constructor(
         chooseInterestView.onNext()
     }
 
-    fun getChooseInterestList(){
+    fun getChooseInterestList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (chooseInterestView.isInternetAvailable()){
+                if (chooseInterestView.isInternetAvailable()) {
                     networkService.requestToGetChooseInterest().let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             chooseInterestView.onSuccess(appResponse.data!!)
                         else
-                            chooseInterestView.onFailed(appResponse.message,appResponse.error)
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
                     }
-                }else{
+                } else {
                     setIsLoading(false)
                     chooseInterestView.showMsg(R.string.no_internet)
                 }
@@ -50,8 +50,31 @@ class ChooseInterestViewModel constructor(
             }
         }
     }
-    fun onDestroy(){
-        if (::job.isInitialized){
+
+    fun getAllSubcategoryList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (chooseInterestView.isInternetAvailable()) {
+                    networkService.requestToGetAllSubCategoryList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            chooseInterestView.onSuccessAllCategoryList(appResponse.data!!)
+                        else
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    chooseInterestView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                chooseInterestView.onHandleException(t)
+            }
+        }
+    }
+
+    fun onDestroy() {
+        if (::job.isInitialized) {
             job.cancel()
         }
     }
@@ -60,14 +83,14 @@ class ChooseInterestViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (chooseInterestView.isInternetAvailable()){
+                if (chooseInterestView.isInternetAvailable()) {
                     networkService.requestToUpdateOrCreateUser(jsonObject).let { appResponse ->
-                                                if (appResponse.status == Constants.OK)
+                        if (appResponse.status == Constants.OK)
                             chooseInterestView.onSuccessCreateOrUpdate(appResponse.data!!)
                         else
-                            chooseInterestView.onFailed(appResponse.message,appResponse.error)
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
                     }
-                }else{
+                } else {
                     setIsLoading(false)
                     chooseInterestView.showMsg(R.string.no_internet)
                 }
