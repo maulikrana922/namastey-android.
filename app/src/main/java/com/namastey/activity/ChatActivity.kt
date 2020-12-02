@@ -87,6 +87,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
+//            Call api if matches already not read
+            if (matchesListBean.is_read == 0){
+                chatViewModel.readMatches(matchesListBean.id,1)
+            }
             chatViewModel.setIsLoading(true)
             myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
             myChatRef.addValueEventListener(object : ValueEventListener {
@@ -97,7 +101,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
                     for (snapshot in dataSnapshot.children) {
                         val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
-                        Log.d("Firebase :", "Value is: ${chatMessage.message}")
+//                        Log.d("Firebase :", "Value is: ${chatMessage.message}")
 
                         if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
                                 chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()){
@@ -196,6 +200,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
 
     override fun onSuccessDeleteMatches(msg: String) {
+        finishActivity()
+    }
+
+    override fun onSuccess(msg: String) {
+
     }
 
     override fun onDestroy() {

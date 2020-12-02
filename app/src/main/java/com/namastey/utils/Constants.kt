@@ -89,6 +89,7 @@ object Constants {
     const val WHO_CAN_COMMENT_YOUR_VIDEO = "who-can-comment-your-video"
     const val WHO_CAN_SEND_YOU_DIRECT_MESSAGE = "who-can-send-you-direct-message"
     const val SHARE_PROFILE_SAFETY = "share-profile-safety"
+    const val MATCHES_READ = "matches-read"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -253,6 +254,8 @@ object Constants {
     const val IS_HIDE = "is_hide"
     const val FOLLOW_ID = "follow_id"
     const val PROFILE_TYPE = "profile_type"
+    const val MATCH_USER_ID = "match_user_id"
+    const val IS_READ = "is_read"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

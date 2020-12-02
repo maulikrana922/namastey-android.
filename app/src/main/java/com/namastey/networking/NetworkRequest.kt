@@ -333,4 +333,10 @@ interface NetworkRequest {
     @GET(Constants.ALL_SUBCATEGORY_LIST)
     fun requestToGetAllSubCategoryListAsync(): Deferred<AppResponse<ArrayList<SubCategoryBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.MATCHES_READ)
+    fun requestToReadMatchesAsync(
+        @Field(Constants.MATCH_USER_ID) matchesUserId: Long,
+        @Field(Constants.IS_READ) isRead: Int
+    ): Deferred<AppResponse<Any>>
 }

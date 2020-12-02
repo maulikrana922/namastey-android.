@@ -381,5 +381,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetAllSubCategoryListAsync().await()
         }
 
-
+    suspend fun requestToReadMatches(matchesUserId: Long, isRead: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToReadMatchesAsync(matchesUserId, isRead).await()
+        }
 }
