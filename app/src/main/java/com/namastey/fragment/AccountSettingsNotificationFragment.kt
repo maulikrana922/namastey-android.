@@ -38,7 +38,6 @@ class AccountSettingsNotificationFragment :
 
     override fun getBindingVariable() = BR.viewModel
 
-
     companion object {
         fun getInstance() =
             AccountSettingsNotificationFragment().apply {
@@ -140,7 +139,6 @@ class AccountSettingsNotificationFragment :
                     jsonObject.addProperty(Constants.IS_SUGGEST, 0)
                     accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
                 }
-
             }
         }
     }

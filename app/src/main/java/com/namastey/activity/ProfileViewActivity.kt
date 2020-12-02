@@ -20,10 +20,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
-import com.namastey.model.DashboardBean
-import com.namastey.model.InterestBean
-import com.namastey.model.ProfileBean
-import com.namastey.model.SocialAccountBean
+import com.namastey.model.*
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -122,7 +119,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvJob.text = profileBean.jobs[0].title
         }
 
-        generateChooseInterestUI(profileBean.interest)
+        //generateChooseInterestUI(profileBean.interest)
+        if (profileBean.sub_cat_tag != null && profileBean.sub_cat_tag.size > 0) {
+            generateChooseInterestUI(profileBean.sub_cat_tag)
+        }
         socialAccountUI(profileBean.social_accounts)
 
         albumListProfileAdapter =
@@ -135,9 +135,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
-        Log.e("ProfileViewActivity", "is_follow: \t ${profileBean.is_follow}")
-        Log.e("ProfileViewActivity", "user_id: \t ${profileBean.user_id}")
-        Log.e("ProfileViewActivity", "user_id: \t ${sessionManager.getUserId()}")
         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
@@ -159,7 +156,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     /**
      * Generate dynamic choose interest view
      */
-    private fun generateChooseInterestUI(interestList: ArrayList<InterestBean>) {
+    private fun generateChooseInterestUITemp(interestList: ArrayList<InterestBean>) {
 //        for (interestBean in interestList) {
 //            val tvInterest = TextView(this@ProfileViewActivity)
 //            tvInterest.layoutParams = LinearLayout.LayoutParams(
@@ -194,6 +191,36 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             tvInterestSecond.text = interestList[1].interest_name
+            tvInterestSecond.setPadding(40, 18, 40, 18)
+            tvInterestSecond.setTextColor(Color.WHITE)
+            tvInterestSecond.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+
+            chipProfileInterest.addView(tvInterestSecond)
+        }
+
+    }
+
+    private fun generateChooseInterestUI(interestSubCategoryList: ArrayList<InterestSubCategoryBean>) {
+        chipProfileInterest.removeAllViews()
+        val tvInterest = TextView(this@ProfileViewActivity)
+        tvInterest.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        tvInterest.text = interestSubCategoryList[0].name
+        tvInterest.setPadding(40, 18, 40, 18)
+        tvInterest.setTextColor(Color.WHITE)
+        tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+
+        chipProfileInterest.addView(tvInterest)
+
+        if (interestSubCategoryList.size >= 2) {
+            val tvInterestSecond = TextView(this@ProfileViewActivity)
+            tvInterestSecond.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            tvInterestSecond.text = interestSubCategoryList[1].name
             tvInterestSecond.setPadding(40, 18, 40, 18)
             tvInterestSecond.setTextColor(Color.WHITE)
             tvInterestSecond.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
@@ -390,7 +417,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickFollowRequest(view: View) {
-        if (!sessionManager.isGuestUser()){
+        if (!sessionManager.isGuestUser()) {
             if (profileBean.is_follow == 1) {
                 profileViewModel.followUser(profileBean.user_id, 0)
             } else if (profileBean.is_follow == 0) {

@@ -8,9 +8,9 @@
     android:divider="@android:color/transparent"
     android:dividerHeight="0.0px"
     android:elevation="4dp"
-    card_view:cardElevation="5dp"
     app:cardCornerRadius="@dimen/_5sdp"
     app:cardUseCompatPadding="true"
+    card_view:cardElevation="5dp"
     card_view:cardPreventCornerOverlap="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,20 +25,20 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_3sdp"
             android:padding="@dimen/_4sdp"
-            app:typeface="MULI_SEMIBOLD"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvSecondLanguage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_5sdp"
             android:paddingStart="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:textColor="@color/colorDarkGray"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

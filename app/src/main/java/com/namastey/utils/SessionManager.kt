@@ -13,6 +13,7 @@ import com.namastey.model.JobBean
 import com.namastey.model.VideoLanguageBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
+import com.namastey.utils.Constants.KEY_CHOOSE_INTEREST_LIST
 import com.namastey.utils.Constants.KEY_EDUCATION
 import com.namastey.utils.Constants.KEY_FIREBASE_TOKEN
 import com.namastey.utils.Constants.KEY_GENDER
@@ -268,19 +269,20 @@ class SessionManager(context: Context) {
             listType
         ) else ArrayList<VideoLanguageBean>()
     }
-    /*fun setLanguageList(languageList: ArrayList<Int>) {
+
+    fun setChooseInterestList(chooseInterestList: ArrayList<Int>) {
         val e = mPrefs.edit()
-        e.putString(KEY_LANGUAGE_LIST, Gson().toJson(languageList))
+        e.putString(KEY_CHOOSE_INTEREST_LIST, Gson().toJson(chooseInterestList))
         e.apply()
     }
 
-    fun getLanguageList(): ArrayList<Int> {
-        val str = mPrefs.getString(KEY_LANGUAGE_LIST, "")!!
+    fun getChooseInterestList(): ArrayList<Int> {
+        val str = mPrefs.getString(KEY_CHOOSE_INTEREST_LIST, "")!!
         val listType = object : TypeToken<ArrayList<Int>>() {}.type
         return if (!TextUtils.isEmpty(str)) Gson().fromJson(
             str,
             listType
         ) else ArrayList<Int>()
-    }*/
+    }
 
 }

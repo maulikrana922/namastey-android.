@@ -39,6 +39,7 @@ import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
+import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.*
@@ -124,6 +125,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             }
         }.show()
 
+    }
+
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
+
+        val videoBean = videoList[position]
+        videoBean.is_like = dashboardBean.is_like
+
+        Log.e("AlbumVideoActivity", "videoListDetail: ${dashboardBean.is_like}")
+        videoList[position] = videoBean
+        albumVideoAdapter.notifyItemChanged(position)
     }
 
     override fun onSuccessGetComment(data: java.util.ArrayList<CommentBean>) {
@@ -308,15 +319,14 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
-    override fun onClickLike(position: Int, videoBean: VideoBean) {
+    override fun onClickLike(position: Int, videoBean: VideoBean, isLike: Int) {
         Log.e("AlbumVideoActivity", "UserType: \t ${sessionManager.isGuestUser()}")
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(true), Constants.SIGNUP_FRAGMENT
             )
-        }else{
-
-            //TODO: Call Like Api
+        } else {
+            albumViewModel.likeUserProfile(videoBean.id, isLike)
             Log.e("AlbumVideoActivity", "UserType: In")
         }
     }

@@ -331,6 +331,6 @@ interface NetworkRequest {
     ): Deferred<AppResponse<SafetyBean>>
 
     @GET(Constants.ALL_SUBCATEGORY_LIST)
-    fun requestToGetAllSubCategoryListAsync(): Deferred<AppResponse<ArrayList<SubCategoryBean>>>
+    fun requestToGetAllSubCategoryListAsync(): Deferred<AppResponse<ArrayList<InterestSubCategoryBean>>>
 
 }

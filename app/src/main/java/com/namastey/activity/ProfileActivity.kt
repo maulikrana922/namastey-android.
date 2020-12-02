@@ -574,18 +574,18 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         } else {
             openActivity(this@ProfileActivity, MembershipActivity())
 
-            startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
+           // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
         }
     }
 
     fun onClickBoostMe(view: View) {
         if (sessionManager.isGuestUser()) {
-            /*addFragment(
+            addFragment(
                 SignUpFragment.getInstance(false
                 ),
                 Constants.SIGNUP_FRAGMENT
-            )*/
-            showBoostDialog(R.layout.dialog_boost_skipline)
+            )
+            //showBoostDialog(R.layout.dialog_boost_skipline)
         } else {
             showBoostDialog(R.layout.dialog_boosts)
         }

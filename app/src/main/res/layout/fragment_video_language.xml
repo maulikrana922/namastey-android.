@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
             type="com.namastey.viewModel.VideoLanguageViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_choose_interest">
 
@@ -21,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_18sdp"
+            android:background="@drawable/circle_white_solid"
             android:contentDescription="@string/app_name"
             android:onClick="@{() -> viewModel.closeFragment()}"
-            android:background="@drawable/circle_white_solid"
             android:padding="@dimen/_2sdp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,15 +35,15 @@
             android:id="@+id/tvSelectLanguage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:text="@string/select_video_language"
             android:textColor="@color/colorBlack"
             android:textSize="20sp"
-            app:typeface="MULI_SEMIBOLD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivLanguageBack"
-            app:layout_constraintTop_toTopOf="@id/ivLanguageBack" />
+            app:layout_constraintTop_toTopOf="@id/ivLanguageBack"
+            app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvSelectLabel"
@@ -51,8 +53,8 @@
             android:text="@string/select_language"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/tvSelectLanguage"
-            app:layout_constraintStart_toStartOf="@id/tvSelectLanguage"/>
+            app:layout_constraintStart_toStartOf="@id/tvSelectLanguage"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectLanguage" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -60,17 +62,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_15sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
             android:outlineSpotShadowColor="@color/colorGray"
-            tools:listitem="@layout/row_video_language"
-            app:layout_constraintTop_toBottomOf="@id/tvSelectLabel"
-            app:layout_constraintEnd_toStartOf="@id/rvVideoLanguage"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btnLanguageNext"
             app:layout_constraintEnd_toEndOf="@id/tvSelectLanguage"
-            app:layout_constraintBottom_toTopOf="@id/btnLanguageNext"/>
+            app:layout_constraintEnd_toStartOf="@id/rvVideoLanguage"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectLabel"
+            app:spanCount="2"
+            tools:listitem="@layout/row_video_language" />
 
         <com.namastey.customViews.CustomButton
             android:id="@+id/btnLanguageNext"
@@ -81,15 +83,15 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/rounded_red_solid"
-            android:text="@string/next"
             android:onClick="@{() -> viewModel.onNextClick()}"
+            android:text="@string/next"
             android:textAllCaps="false"
-            android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/rvVideoLanguage"
-            app:layout_constraintStart_toStartOf="@id/rvVideoLanguage"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/rvVideoLanguage" />
 
         <ProgressBar
             android:id="@+id/progressBar"

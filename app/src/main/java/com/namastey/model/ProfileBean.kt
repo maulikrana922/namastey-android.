@@ -33,18 +33,22 @@ class ProfileBean() : Parcelable {
     var education: ArrayList<EducationBean> = ArrayList()
     var jobs: ArrayList<JobBean> = ArrayList()
     var social_accounts: ArrayList<SocialAccountBean> = ArrayList()
-    var interest: ArrayList<InterestBean> = ArrayList()
+
+    //  var interest: ArrayList<InterestBean> = ArrayList()
     var albums: ArrayList<AlbumBean> = ArrayList()
     var age: Int = 0
     var is_like: Int = 0
+
     @SerializedName("notification_tage")
-    var notificationBean : ArrayList<NotificationOnOffBean> = ArrayList()
+    var notificationBean: ArrayList<NotificationOnOffBean> = ArrayList()
 
     @SerializedName("safety_tag")
-    var safetyBean : SafetyBean = SafetyBean()
+    var safetyBean: SafetyBean = SafetyBean()
 
     @SerializedName("language")
-    var languageBean : ArrayList<VideoLanguageBean> = ArrayList()
+    var languageBean: ArrayList<VideoLanguageBean> = ArrayList()
+
+    var sub_cat_tag: ArrayList<InterestSubCategoryBean> = ArrayList()
 
     constructor(parcel: Parcel) : this() {
         user_id = parcel.readLong()
@@ -69,14 +73,15 @@ class ProfileBean() : Parcelable {
         education = parcel.createTypedArrayList(EducationBean) ?: ArrayList()
         jobs = parcel.createTypedArrayList(JobBean) ?: ArrayList()
         social_accounts = parcel.createTypedArrayList(SocialAccountBean) ?: ArrayList()
-        interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()
+        //  interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()
         albums = parcel.createTypedArrayList(AlbumBean) ?: ArrayList()
         age = parcel.readInt() ?: 0
         is_like = parcel.readInt() ?: 0
         notificationBean = parcel.createTypedArrayList(NotificationOnOffBean) ?: ArrayList()
-       // safetyBean = parcel.createTypedArrayList(SafetyBean) ?: SafetyBean()
+        // safetyBean = parcel.createTypedArrayList(SafetyBean) ?: SafetyBean()
         safetyBean = parcel.readValue(SafetyBean::class.java.classLoader) as SafetyBean
         languageBean = parcel.createTypedArrayList(VideoLanguageBean) ?: ArrayList()
+        sub_cat_tag = parcel.createTypedArrayList(InterestSubCategoryBean) ?: ArrayList()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -102,7 +107,7 @@ class ProfileBean() : Parcelable {
         parcel.writeTypedList(education)
         parcel.writeTypedList(jobs)
         parcel.writeTypedList(social_accounts)
-        parcel.writeTypedList(interest)
+        //   parcel.writeTypedList(interest)
         parcel.writeTypedList(albums)
         parcel.writeInt(age)
         parcel.writeInt(is_like)
@@ -110,6 +115,7 @@ class ProfileBean() : Parcelable {
         //parcel.writeTypedList(safetyBean)
         parcel.writeValue(safetyBean)
         parcel.writeTypedList(languageBean)
+        parcel.writeTypedList(sub_cat_tag)
     }
 
     override fun describeContents(): Int {

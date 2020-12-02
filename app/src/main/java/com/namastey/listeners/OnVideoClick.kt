@@ -10,5 +10,5 @@ interface OnVideoClick {
     fun onShareClick(videoBean: VideoBean)
     fun onPostViewer(postId: Long)
     fun onPostEdit(position: Int,videoBean: VideoBean)
-    fun onClickLike(position: Int, videoBean: VideoBean)
+    fun onClickLike(position: Int, videoBean: VideoBean, isLike: Int)
 }

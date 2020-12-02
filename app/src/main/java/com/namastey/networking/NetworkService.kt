@@ -376,7 +376,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToShareProfileSafetyAsync(isShare).await()
         }
 
-    suspend fun requestToGetAllSubCategoryList(): AppResponse<ArrayList<SubCategoryBean>> =
+    suspend fun requestToGetAllSubCategoryList(): AppResponse<ArrayList<InterestSubCategoryBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetAllSubCategoryListAsync().await()
         }

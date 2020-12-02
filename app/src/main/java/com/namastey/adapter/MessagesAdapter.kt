@@ -48,18 +48,35 @@ class MessagesAdapter(
             else
                 llMessage.visibility = View.GONE*/
 
+            if (matchesListBean.sub_cat_details != null && matchesListBean.sub_cat_details.size > 0) {
+                Log.e(
+                    "MessagesAdapter",
+                    "sub_cat_details: \t ${matchesListBean.sub_cat_details[0].name}"
+                )
+                tvCategory.text = matchesListBean.sub_cat_details[0].name
+
+                Utils.rectangleShapeGradient(
+                    mainCategoryView, intArrayOf(
+                        Color.parseColor(matchesListBean.sub_cat_details[0].start_color),
+                        Color.parseColor(matchesListBean.sub_cat_details[0].end_color)
+                    )
+                )
+                mainCategoryView.alpha = 0.5f
+            } else {
+                tvCategory.visibility = View.GONE
+                mainCategoryView.visibility = View.GONE
+            }
 
             tvUsername.text = matchesListBean.username
 
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
-            Utils.rectangleShapeGradient(
+            /*Utils.rectangleShapeGradient(
                 mainCategoryView, intArrayOf(
                     Color.parseColor("#28BAD3"),
                     Color.parseColor("#A19FEE")
                 )
-            )
-            mainCategoryView.alpha = 0.6f
+            )*/
 
         }
 

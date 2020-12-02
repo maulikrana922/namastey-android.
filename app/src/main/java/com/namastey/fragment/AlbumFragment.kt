@@ -15,6 +15,7 @@ import com.namastey.databinding.FragmentAlbumBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
+import com.namastey.model.DashboardBean
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.AlbumViewModel
@@ -50,6 +51,10 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
 
     override fun onSuccessBlockUser(msg: String) {
     }
+
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
+    }
+
     override fun getViewModel() = albumViewModel
 
     override fun getLayoutId() = R.layout.fragment_album

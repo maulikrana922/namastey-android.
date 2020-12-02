@@ -49,7 +49,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
                 ),
                 Constants.CHOOSE_INTEREST_FRAGMENT
             )
-          //  sessionManager.setLanguageList(selectVideoIdList)
+            //  sessionManager.setLanguageList(selectVideoIdList)
         } else {
             object : CustomAlertDialog(
                 activity!!,
@@ -128,10 +128,11 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
     }
 
     override fun onLanguageItemClick(videoLanguageBean: VideoLanguageBean) {
-        if (selectVideoIdList.contains(videoLanguageBean.id))
+        if (selectVideoIdList.contains(videoLanguageBean.id)) {
             selectVideoIdList.remove(videoLanguageBean.id)
-        else
+        } else {
             selectVideoIdList.add(videoLanguageBean.id)
+        }
     }
 
 }

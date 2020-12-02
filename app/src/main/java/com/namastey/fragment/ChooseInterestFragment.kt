@@ -18,7 +18,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChooseInterestBinding
 import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestBean
-import com.namastey.model.SubCategoryBean
+import com.namastey.model.InterestSubCategoryBean
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.ChooseInterestView
 import com.namastey.utils.*
@@ -42,6 +42,8 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
     private lateinit var interestAdapter: InterestAdapter
     private var selectInterestIdList: ArrayList<Int> = ArrayList()
     private var androidId = ""
+    private var selectCategoryId: ArrayList<Int> = ArrayList()
+
 
     override fun getViewModel() = chooseInterestViewModel
 
@@ -103,13 +105,18 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
     /**
      * click on any item then display top select count and store id list
      */
-    override fun onImageItemClick(interestBean: SubCategoryBean) {
+    override fun onImageItemClick(interestBeanInterest: InterestSubCategoryBean) {
         tvSelectLabel.setText(resources.getString(R.string.tv_select) + " " + noOfSelectedImage)
 
-        if (selectInterestIdList.contains(interestBean.id))
-            selectInterestIdList.remove(interestBean.id)
-        else
-            selectInterestIdList.add(interestBean.id)
+        if (selectInterestIdList.contains(interestBeanInterest.id)) {
+            selectCategoryId.remove(interestBeanInterest.category_id)
+            selectInterestIdList.remove(interestBeanInterest.id)
+        } else {
+            selectCategoryId.add(interestBeanInterest.category_id)
+            selectInterestIdList.add(interestBeanInterest.id)
+        }
+
+        sessionManager.setChooseInterestList(selectCategoryId)
     }
 
     override fun onClose() {
@@ -183,7 +190,6 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
         }, 1000)
     }
 
-
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
         Log.e("ChooseInterestFragment", "interestList")
         /* rvChooseInterest.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
@@ -191,7 +197,7 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
          rvChooseInterest.adapter = interestAdapter*/
     }
 
-    override fun onSuccessAllCategoryList(interestList: ArrayList<SubCategoryBean>) {
+    override fun onSuccessAllCategoryList(interestList: ArrayList<InterestSubCategoryBean>) {
         rvChooseInterest.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
         interestAdapter = InterestAdapter(interestList, activity!!, this, true)
         rvChooseInterest.adapter = interestAdapter

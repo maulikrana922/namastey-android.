@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -28,6 +29,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
@@ -35,10 +37,23 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private lateinit var selectCategoryViewModel: SelectCategoryViewModel
     private lateinit var layoutView: View
     private var selectedCategoryList: ArrayList<CategoryBean> = ArrayList()
+    private var selectCategoryId: ArrayList<Int> = ArrayList()
+    private var categoryBean: CategoryBean = CategoryBean()
 
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        for (category in categoryBeanList) {
+            categoryBean = category
+            Log.e("SelectCategoryFragment", "categoryBean: \t $categoryBean")
+        }
+
         val selectCategoryAdapter =
-            SelectCategoryAdapter(categoryBeanList, requireActivity(), this, sessionManager)
+            SelectCategoryAdapter(
+                categoryBeanList,
+                selectCategoryId,
+                requireActivity(),
+                this,
+                sessionManager
+            )
         rvSelectCategory.adapter = selectCategoryAdapter
     }
 
@@ -51,7 +66,6 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     companion object {
         fun getInstance() =
             SelectCategoryFragment().apply {
-
             }
     }
 
@@ -69,13 +83,31 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private fun initData() {
         ivCloseCategory.setOnClickListener(this)
         btnSelectCategoryDone.setOnClickListener(this)
-        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()){
-            GlideLib.loadImage(requireActivity(),ivProfileImage,sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+            GlideLib.loadImage(
+                requireActivity(),
+                ivProfileImage,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
         }
         selectedCategoryList = sessionManager.getCategoryList()
-        selectCategoryViewModel.getCategoryList()
-    }
 
+        selectCategoryId = sessionManager.getChooseInterestList()
+        selectCategoryViewModel.getCategoryList()
+        Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")
+
+        for (category in selectCategoryId) {
+            Log.e("SelectCategoryFragment", "category: \t $category")
+            if (category == categoryBean.id) {
+
+            }
+            //selectedCategoryList.add(categoryBean)
+            Log.e(
+                "SelectCategoryFragment",
+                "selectedCategoryList Size: \t ${selectedCategoryList.size}"
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +118,6 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
         super.onViewCreated(view, savedInstanceState)
         layoutView = view
         setupViewModel()
-
     }
 
     override fun onClick(p0: View?) {
@@ -95,10 +126,10 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
                 fragmentManager!!.popBackStack()
             }
             btnSelectCategoryDone -> {
-                if (selectedCategoryList.size >= 3){
+                if (selectedCategoryList.size >= 3) {
                     sessionManager.setCategoryList(ArrayList())
                     sessionManager.setCategoryList(selectedCategoryList)
-                    if (activity is EditProfileActivity){
+                    if (activity is EditProfileActivity) {
                         targetFragment!!.onActivityResult(
                             Constants.REQUEST_CODE,
                             Activity.RESULT_OK,
@@ -109,7 +140,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
                 } else {
                     object : CustomAlertDialog(
                         activity!!,
-                        resources.getString(R.string.choose_minimum_category), getString(R.string.ok), ""
+                        resources.getString(R.string.choose_minimum_category),
+                        getString(R.string.ok),
+                        ""
                     ) {
                         override fun onBtnClick(id: Int) {
                             dismiss()
