@@ -1,9 +1,9 @@
 package com.namastey.listeners
 
-import com.namastey.model.SubCategoryBean
+import com.namastey.model.InterestSubCategoryBean
 
 interface OnImageItemClick {
 
-    fun onImageItemClick(interestBean: SubCategoryBean)
+    fun onImageItemClick(interestBeanInterest: InterestSubCategoryBean)
 
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
@@ -15,10 +16,11 @@ import kotlinx.android.synthetic.main.row_select_category.view.*
 
 class SelectCategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
+    var selectedCategoryList: ArrayList<Int>,
     var context: Activity,
     var onCategoryItemClick: OnCategoryItemClick,
     var sessionManager: SessionManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<SelectCategoryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SelectCategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -33,7 +35,7 @@ class SelectCategoryAdapter(
     }
 
     inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             tvSelectCategory.text = categoryList[position].name
@@ -43,6 +45,13 @@ class SelectCategoryAdapter(
             } else {
                 tvSelectCategory.setTextColor(Color.BLACK)
             }
+
+            if (selectedCategoryList.contains(categoryList[position].id)) {
+                tvSelectCategory.setTextColor(Color.RED)
+            } else {
+                tvSelectCategory.setTextColor(Color.BLACK)
+            }
+
 
             llMainSelectCategory.setOnClickListener {
                 if (tvSelectCategory.currentTextColor == Color.BLACK) {

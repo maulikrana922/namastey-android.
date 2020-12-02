@@ -34,10 +34,11 @@ import javax.inject.Inject
 
 
 class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
-    OnCategoryItemClick, OnItemClick, OnSelectUserItemClick,OnPostImageClick {
+    OnCategoryItemClick, OnItemClick, OnSelectUserItemClick, OnPostImageClick {
 
     @Inject
     lateinit var sessionManager: SessionManager
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityFilterBinding: ActivityFilterBinding
@@ -73,11 +74,12 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 if (sessionManager.isGuestUser()) {
                     Utils.hideKeyboard(this@FilterActivity)
                     addFragment(
-                        SignUpFragment.getInstance(true
+                        SignUpFragment.getInstance(
+                            true
                         ),
                         Constants.SIGNUP_FRAGMENT
                     )
-                }else{
+                } else {
                     if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
                         rvFilterSearch.visibility = View.VISIBLE
                         filterViewModel.getSearchUser(newText.trim())
@@ -109,10 +111,14 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 this@FilterActivity,
                 this,
                 this,
-                false, true, false
+                false,
+                true,
+                false
             )
 
         rvFilterTranding.adapter = albumDetailAdapter
+
+        Log.e("FilterActivity", "onSuccessTreding: ${data[0].is_like}")
     }
 
     override fun getViewModel() = filterViewModel
@@ -162,7 +168,14 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         endColor: String
     ) {
         filterSubcategoryAdapter =
-            FilterSubcategoryAdapter(subCategory, this@FilterActivity, this, false,startColor,endColor)
+            FilterSubcategoryAdapter(
+                subCategory,
+                this@FilterActivity,
+                this,
+                false,
+                startColor,
+                endColor
+            )
         rvSubcategory.adapter = filterSubcategoryAdapter
     }
 
@@ -195,7 +208,11 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
      * when user click on filter category item
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
-        setSubcategoryList(categoryBean.sub_category,categoryBean.startColor,categoryBean.endColor)
+        setSubcategoryList(
+            categoryBean.sub_category,
+            categoryBean.startColor,
+            categoryBean.endColor
+        )
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -240,11 +257,12 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         Log.d("Subcategory : ", position.toString())
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(true
+                SignUpFragment.getInstance(
+                    true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else{
+        } else {
             val intent = Intent()
             intent.putExtra("fromSubCategory", true)
             intent.putExtra("subCategoryId", position)

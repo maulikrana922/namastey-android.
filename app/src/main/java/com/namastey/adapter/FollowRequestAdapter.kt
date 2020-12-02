@@ -2,6 +2,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,20 +42,32 @@ class FollowRequestAdapter(
                     activity, ivUserProfile, followRequest.profile_url
                 )
 
+            if (followRequest.sub_cat_details != null && followRequest.sub_cat_details.size > 0) {
+                Log.e(
+                    "FollowRequestAdapter",
+                    "sub_cat_details: \t ${followRequest.sub_cat_details[0].name}"
+                )
+                tvCategory.text = followRequest.sub_cat_details[0].name
+
+                Utils.rectangleShapeGradient(
+                    mainCategoryView, intArrayOf(
+                        Color.parseColor(followRequest.sub_cat_details[0].start_color),
+                        Color.parseColor(followRequest.sub_cat_details[0].end_color)
+                    )
+                )
+            } else {
+                tvCategory.visibility = View.GONE
+                mainCategoryView.visibility = View.GONE
+            }
+
             tvUsername.text = followRequest.username
             tvUserProfession.text = followRequest.job
 
-            Utils.rectangleShapeGradient(
-                mainCategoryView, intArrayOf(
-                    Color.parseColor("#28BAD3"),
-                    Color.parseColor("#A19FEE")
-                )
-            )
-            mainCategoryView.alpha = 0.6f
+            mainCategoryView.alpha = 0.5f
 
 
             tvAllow.setOnClickListener {
-                onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 1,position)
+                onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 1, position)
             }
             tvDeny.setOnClickListener {
                 onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 0, position)

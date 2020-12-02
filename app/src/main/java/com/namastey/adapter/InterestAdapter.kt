@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
-import com.namastey.model.SubCategoryBean
+import com.namastey.model.InterestSubCategoryBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_choose_interest.view.*
 
 class InterestAdapter(
     //var interestList: ArrayList<InterestBean>,
-    var interestList: ArrayList<SubCategoryBean>,
+    var interestList: ArrayList<InterestSubCategoryBean>,
     var activity: Context,
     var onImageItemClick: OnImageItemClick,
     var isDisplayCkb: Boolean

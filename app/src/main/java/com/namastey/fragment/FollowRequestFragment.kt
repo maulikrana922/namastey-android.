@@ -10,7 +10,6 @@ import com.namastey.adapter.FollowRequestAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFollowRequestBinding
 import com.namastey.listeners.OnFollowRequestClick
-import com.namastey.model.DashboardBean
 import com.namastey.model.FollowRequestBean
 import com.namastey.uiView.FollowRequestView
 import com.namastey.viewModel.FollowRequestViewModel
@@ -27,7 +26,6 @@ OnFollowRequestClick{
     private lateinit var followRequestViewModel: FollowRequestViewModel
     private lateinit var layoutView: View
     private lateinit var followRequestAdapter: FollowRequestAdapter
-    private var followRequestLength = 0
     private var position = -1
     private var followRequestList: ArrayList<FollowRequestBean> = ArrayList()
 
@@ -36,7 +34,6 @@ OnFollowRequestClick{
             FollowRequestFragment().apply {
             }
     }
-
 
     override fun getViewModel() = followRequestViewModel
 
@@ -47,7 +44,6 @@ OnFollowRequestClick{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
-
     }
 
 

@@ -194,6 +194,25 @@ class AlbumViewModel constructor(
 
     }
 
+    fun likeUserProfile(likedUserId: Long, isLike: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToLikeUserProfile(likedUserId, isLike)
+                        .let { appResponse ->
+                            if (appResponse.status == Constants.OK)
+                                appResponse.data?.let { albumView.onSuccessProfileLike(appResponse.data!!) }
+                            else
+                                albumView.onFailed(appResponse.message, appResponse.error)
+                        }
+                } else {
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                albumView.onHandleException(t)
+            }
+        }
+    }
 
     fun onDestroy() {
         if (::job.isInitialized)

@@ -70,10 +70,20 @@ class AlbumVideoAdapter(
             else
                 viewDetailsVideo.visibility = View.GONE
 
-            if (sessionManager.getUserId() == videoBean.user_id)
+            if (sessionManager.getUserId() == videoBean.user_id) {
                 tvFeedLike.text = activity.getString(R.string.edit)
+            } else {
+                //tvFeedLike.text = activity.getString(R.string.like)
+                if (videoBean.is_like == 1)
+                    tvFeedLike.text = activity.getString(R.string.liked)
+                else
+                    tvFeedLike.text = activity.getString(R.string.like)
+            }
+
+            /*if (videoBean.is_like == 1)
+                tvFeedLike.text = activity.getString(R.string.liked)
             else
-                tvFeedLike.text = activity.getString(R.string.like)
+                tvFeedLike.text = activity.getString(R.string.like)*/
 
             tvFeedDesc.text = videoBean.description
             tvFeedView.text = videoBean.viewers.toString()
@@ -120,7 +130,11 @@ class AlbumVideoAdapter(
                 if (sessionManager.getUserId() == videoBean.user_id) {
                     onVideoClick.onPostEdit(position, videoBean)
                 } else {
-                    onVideoClick.onClickLike(position, videoBean)
+                  //  onVideoClick.onClickLike(position, videoBean)
+                    if (videoBean.is_like == 1)
+                        onVideoClick.onClickLike(position, videoBean, 0)
+                    else
+                        onVideoClick.onClickLike(position, videoBean, 1)
                 }
             }
             mainViewHolder.setOnClickListener {
