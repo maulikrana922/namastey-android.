@@ -96,7 +96,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var isUpdateComment = false
     private var fileUrl = ""
     private var postId = 0L
-    private var completeSignUp = 0
 
     override fun getViewModel() = dashboardViewModel
 
@@ -118,8 +117,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun initData() {
         sessionManager.setLoginUser(true)
-        completeSignUp = sessionManager.getCompleteSignUp()
-        Log.e("DashboardActivity", "completeSignUp: \t $completeSignUp")
 
         Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
@@ -513,12 +510,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
-                completeSignUpDialog()
-            } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
                 intent.putExtra("onClickMatches", true)
                 openActivity(intent)
+            } else {
+                completeSignUpDialog()
             }
         }
     }
@@ -686,11 +683,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
-                completeSignUpDialog()
-            } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 this.position = position
                 dashboardViewModel.followUser(dashboardBean.user_id, isFollow)
+            } else {
+                completeSignUpDialog()
             }
         }
     }
@@ -704,10 +701,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
-                completeSignUpDialog()
-            } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 openShareOptionDialog(dashboardBean)
+            } else {
+                completeSignUpDialog()
             }
         }
     }
@@ -721,11 +718,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
-                completeSignUpDialog()
-            } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 this.position = position
                 dashboardViewModel.likeUserProfile(dashboardBean.user_id, isLike)
+            } else {
+                completeSignUpDialog()
             }
         }
     }
@@ -760,15 +757,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                     Constants.SIGNUP_FRAGMENT
                 )
             } else {
-                if (completeSignUp == 0) {
-                    completeSignUpDialog()
-                } else {
+                if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
                         dashboardViewModel.addComment(
                             postId,
                             bottomSheetDialogComment.edtComment.text.toString()
                         )
                     }
+                } else {
+                    completeSignUpDialog()
                 }
             }
         }
