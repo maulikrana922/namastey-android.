@@ -425,7 +425,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             }
             PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Log.i("LocationActivity", "Permission has been denied by user CAMERA")
+                    Log.i("PassportContentActivity", "Permission has been denied by user CAMERA")
                     if (ActivityCompat.shouldShowRequestPermissionRationale(
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -471,7 +471,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                         dialog.show()
                     }
                 } else {
-                    openActivity(this, LocationActivity())
+                    openActivity(this, PassportContentActivity())
                 }
             }
         }
@@ -665,7 +665,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                openActivity(this, LocationActivity())
+                openActivity(this, PassportContentActivity())
             } else {
                 ActivityCompat.requestPermissions(
                     this,
@@ -676,7 +676,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             }
         } else {
-            openActivity(this, LocationActivity())
+            openActivity(this, PassportContentActivity())
         }
     }
 

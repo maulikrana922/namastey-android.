@@ -266,6 +266,6 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     }
 
     fun onClickMyCurrentLocation(view: View) {
-        openActivity(this, LocationActivity())
+        openActivity(this, PassportContentActivity())
     }
 }

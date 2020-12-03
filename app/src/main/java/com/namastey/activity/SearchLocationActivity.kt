@@ -2,11 +2,10 @@ package com.namastey.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -15,8 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
@@ -31,7 +28,6 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.IOException
 
 class SearchLocationActivity : FragmentActivity(),
     OnMapReadyCallback,
@@ -278,41 +274,44 @@ class SearchLocationActivity : FragmentActivity(),
     }
 
     fun searchLocation(view: View?) {
-        val locationSearch: EditText = findViewById<EditText>(R.id.searchDestination)
-        val location: String = locationSearch.text.toString()
-        var addressList: List<Address>? = null
-        if (location != null || location != "") {
-            val geocoder = Geocoder(this)
-            try {
-                addressList = geocoder.getFromLocationName(location, 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            val address: Address = addressList!![0]
-            val latLng = LatLng(address.latitude, address.longitude)
-            mMap!!.addMarker(
-                MarkerOptions().position(latLng).icon(
-                    BitmapDescriptorFactory.fromBitmap(
-                        createCustomMarker(
-                            this@SearchLocationActivity,
-                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                        )
-                    )
-                ).title(location)
-            )
-            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-            Toast.makeText(
-                applicationContext,
-                address.latitude.toString() + " " + address.longitude,
-                Toast.LENGTH_LONG
-            ).show()
 
-            Log.e(
-                "SearchLocationActivity",
-                "LatLong: \t ${address.latitude.toString() + " " + address.longitude}"
-            )
-        }
+        startActivity(Intent(this, LocationActivity::class.java))
+
+        /* val locationSearch: EditText = findViewById<EditText>(R.id.searchDestination)
+         val location: String = locationSearch.text.toString()
+         var addressList: List<Address>? = null
+         if (location != null || location != "") {
+             val geocoder = Geocoder(this)
+             try {
+                 addressList = geocoder.getFromLocationName(location, 1)
+             } catch (e: IOException) {
+                 e.printStackTrace()
+             }
+             val address: Address = addressList!![0]
+             val latLng = LatLng(address.latitude, address.longitude)
+             mMap!!.addMarker(
+                 MarkerOptions().position(latLng).icon(
+                     BitmapDescriptorFactory.fromBitmap(
+                         createCustomMarker(
+                             this@SearchLocationActivity,
+                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+                             sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                         )
+                     )
+                 ).title(location)
+             )
+             mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+             Toast.makeText(
+                 applicationContext,
+                 address.latitude.toString() + " " + address.longitude,
+                 Toast.LENGTH_LONG
+             ).show()
+
+             Log.e(
+                 "SearchLocationActivity",
+                 "LatLong: \t ${address.latitude.toString() + " " + address.longitude}"
+             )
+         }*/
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
