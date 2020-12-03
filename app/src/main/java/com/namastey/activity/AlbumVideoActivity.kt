@@ -339,6 +339,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onItemClick(value: Long, position: Int) {
         viewpagerAlbum.currentItem = position
+      //  tvUpnext.visibility = View.GONE
+      //  rvAlbumUpnext.visibility = View.GONE
+        groupUpnext.visibility = View.GONE
     }
 
     override fun onVideoClick() {
@@ -373,9 +376,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onUpnextClick(position: Int) {
-        groupUpnext.visibility = View.VISIBLE
-        upnextVideoAdapter =
-            UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
+      //  groupUpnext.visibility = View.VISIBLE
+        upnextVideoAdapter = UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
         rvAlbumUpnext.adapter = upnextVideoAdapter
     }
 

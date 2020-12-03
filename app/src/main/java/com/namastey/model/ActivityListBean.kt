@@ -23,11 +23,11 @@ class ActivityListBean() : Parcelable {
 
     //For Comment
     var comment_id: Int = 0
+    var post_id: Long = 0
     var post_video_url: String = ""
     var cover_image_url: String = ""
     var comment_user_profile_pic: String = ""
     var comment_message: String = ""
-
 
     //For Mentions
     var mentions_id: Int = 0
@@ -47,6 +47,7 @@ class ActivityListBean() : Parcelable {
         like_message = parcel.readString() ?: ""
 
         comment_id = parcel.readInt()
+        post_id = parcel.readLong()
         post_video_url = parcel.readString() ?: ""
         cover_image_url = parcel.readString() ?: ""
         comment_user_profile_pic = parcel.readString() ?: ""
@@ -70,6 +71,7 @@ class ActivityListBean() : Parcelable {
         parcel.writeString(like_message)
 
         parcel.writeInt(comment_id)
+        parcel.writeLong(post_id)
         parcel.writeString(post_video_url)
         parcel.writeString(cover_image_url)
         parcel.writeString(comment_user_profile_pic)

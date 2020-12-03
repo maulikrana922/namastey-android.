@@ -109,6 +109,7 @@ object Constants {
     const val BLOCK_USER_LIST = "block-user-list"
     const val NOTIFICATION_ON_OFF = "notification-on-of"
     const val MATCHES_LIST_BEAN = "matchesListBean"
+    const val GET_POST_DETAILS = "get-post-details"
 
     //    api response error code
     const val OK = 200
@@ -274,7 +275,7 @@ object Constants {
     const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
     const val IS_SHARE = "is_share"
     const val DEVICE_TOKEN = "device_token"
-    //const val TAGS = "tags"
+    //const val POST_ID = "post_id"
 
 
     //    Other constants

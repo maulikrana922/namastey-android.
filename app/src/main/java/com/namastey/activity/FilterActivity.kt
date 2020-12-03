@@ -242,8 +242,6 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             )
 
         rvFilterTranding.adapter = albumDetailAdapter
-
-
     }
 
     override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {

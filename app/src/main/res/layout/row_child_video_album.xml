@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:padding="@dimen/_10sdp"
-            android:visibility="gone"
             android:src="@drawable/ic_del_photo"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/ivVideoImage"
             app:layout_constraintEnd_toEndOf="@+id/ivVideoImage" />
 

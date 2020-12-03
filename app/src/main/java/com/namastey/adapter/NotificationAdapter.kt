@@ -17,7 +17,7 @@ class NotificationAdapter(
     var activity: Activity,
     var activityList: ArrayList<ActivityListBean>,
     var isActivityList: Int,
-    var onItemClick: OnNotificationClick
+    var onNotificationClick: OnNotificationClick
 ) : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -33,7 +33,6 @@ class NotificationAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(position: Int) = with(itemView) {
             val activityListBean = activityList[position]
             when (isActivityList) {
@@ -53,7 +52,8 @@ class NotificationAdapter(
                         }
 
                         mainFollowBackView.setOnClickListener {
-                            onItemClick.onClickFollowRequest(
+                            onNotificationClick.onClickFollowRequest(
+                                position,
                                 activityListBean.user_id,
                                 activityListBean.is_follow
                             )
@@ -93,7 +93,9 @@ class NotificationAdapter(
                         //tvNotification.text = activityListBean.comment_message
                         Utils.setHtmlText(tvNotification, activityListBean.comment_message)
 
-                    } else {
+                        ivCommentCover.setOnClickListener {
+                            onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
+                        }
 
                     }
 
@@ -140,6 +142,10 @@ class NotificationAdapter(
                     )
                     // tvNotification.text = activityListBean.comment_message
                     Utils.setHtmlText(tvNotification, activityListBean.comment_message)
+
+                    ivCommentCover.setOnClickListener {
+                        onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
+                    }
                 }
 
                 //For Followers
@@ -156,7 +162,8 @@ class NotificationAdapter(
                     }
 
                     mainFollowBackView.setOnClickListener {
-                        onItemClick.onClickFollowRequest(
+                        onNotificationClick.onClickFollowRequest(
+                            position,
                             activityListBean.user_id,
                             activityListBean.is_follow
                         )
@@ -185,9 +192,9 @@ class NotificationAdapter(
             ivUserProfile.setOnClickListener {
                 Log.e("NotificationAdapter", "user_id: \t ${activityListBean.user_id}")
                 if (activityListBean.following_user_id != 0L) {
-                    onItemClick.onNotificationClick(activityListBean.following_user_id, position)
+                    onNotificationClick.onNotificationClick(activityListBean.following_user_id, position)
                 } else {
-                    onItemClick.onNotificationClick(activityListBean.user_id, position)
+                    onNotificationClick.onNotificationClick(activityListBean.user_id, position)
                 }
             }
         }

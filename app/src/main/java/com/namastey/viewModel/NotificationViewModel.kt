@@ -4,6 +4,7 @@ import com.namastey.R
 import com.namastey.model.ActivityListBean
 import com.namastey.model.AppResponse
 import com.namastey.model.FollowRequestBean
+import com.namastey.model.VideoBean
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -85,6 +86,28 @@ class NotificationViewModel constructor(
             }
         }
     }
+
+
+    fun getPostVideoDetails(postId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToGetPostDetails(postId)
+                    .let { appResponse: AppResponse<VideoBean> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            notificationView.onSuccessPostVideoDetailResponse(appResponse.data!!)
+                        } else {
+                            notificationView.onFailed(appResponse.message, appResponse.error)
+                        }
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                notificationView.onHandleException(exception)
+            }
+        }
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized)

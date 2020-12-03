@@ -339,4 +339,11 @@ interface NetworkRequest {
         @Field(Constants.MATCH_USER_ID) matchesUserId: Long,
         @Field(Constants.IS_READ) isRead: Int
     ): Deferred<AppResponse<Any>>
+
+
+    @FormUrlEncoded
+    @POST(Constants.GET_POST_DETAILS)
+    fun requestToGetPostDetailsAsync(
+        @Field(Constants.POST_ID) postId: Long
+    ): Deferred<AppResponse<VideoBean>>
 }

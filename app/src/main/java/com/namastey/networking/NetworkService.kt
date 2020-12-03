@@ -354,7 +354,6 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToPostActivityListAsync(isFilter).await()
         }
 
-
     suspend fun requestToSuggestYourAccountOnOff(isSuggest: Int): AppResponse<SafetyBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToSuggestYourAccountOnOffAsync(isSuggest).await()
@@ -384,5 +383,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToReadMatches(matchesUserId: Long, isRead: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToReadMatchesAsync(matchesUserId, isRead).await()
+        }
+
+    suspend fun requestToGetPostDetails(postId: Long): AppResponse<VideoBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetPostDetailsAsync(postId).await()
         }
 }

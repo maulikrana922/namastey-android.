@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.AlbumVideoActivity
 import com.namastey.activity.MatchesActivity
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.MembershipDialogSliderAdapter
@@ -25,10 +26,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
 import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.listeners.OnNotificationClick
-import com.namastey.model.ActivityListBean
-import com.namastey.model.FollowRequestBean
-import com.namastey.model.MembershipSlide
-import com.namastey.model.ProfileBean
+import com.namastey.model.*
 import com.namastey.uiView.NotificationView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -54,7 +52,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var notificationAdapter: NotificationAdapter
     private var activityList: ArrayList<ActivityListBean> = ArrayList()
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
+    private var videoBeanList : ArrayList<VideoBean> = ArrayList()
 
+
+    private var position = -1
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
 
@@ -766,9 +767,19 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         openActivity(intent)
     }
 
-    override fun onClickFollowRequest(userId: Long, isFollow: Int) {
+    override fun onClickFollowRequest(
+        position: Int,
+        userId: Long,
+        isFollow: Int
+    ) {
+        this.position = position
         Log.e("NotificationFragment", "isFollow: \t $isFollow")
         notificationViewModel.followUser(userId, 1)
+    }
+
+    override fun onPostVideoClick(position: Int, postId: Long) {
+        this.position = position
+        notificationViewModel.getPostVideoDetails(postId)
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
@@ -841,7 +852,24 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     override fun onSuccessFollow(profileBean: ProfileBean) {
         Log.e("NotificationFragment", "profileBean: \t ${profileBean.is_follow}")
-        notificationAdapter.notifyDataSetChanged()
+        val activityListBean = activityList[position]
+        activityListBean.is_follow = profileBean.is_follow
+
+        Log.e("NotificationFragment", "videoListDetail: ${profileBean.is_follow}")
+        activityList[position] = activityListBean
+        notificationAdapter.notifyItemChanged(position)
+
+        //notificationAdapter.notifyDataSetChanged()
+    }
+
+    override fun onSuccessPostVideoDetailResponse(videoBean: VideoBean) {
+        Log.e("NotificationAdapter", "videoBean: ${videoBean.id}")
+        videoBeanList.add(videoBean)
+
+        val intent = Intent(requireActivity(), AlbumVideoActivity::class.java)
+        intent.putExtra(Constants.VIDEO_LIST, videoBeanList)
+        intent.putExtra("position", position)
+        openActivity(intent)
     }
 
     override fun onSuccess(msg: String) {
