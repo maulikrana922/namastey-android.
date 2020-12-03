@@ -45,6 +45,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
     private var isMyProfile = false
+    private var completeSignUp = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -333,6 +334,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+        completeSignUp = sessionManager.getCompleteSignUp()
 
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
@@ -408,6 +410,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      * Open following/followers screen click on counter
      */
     fun onClickFollow(view: View) {
+
+        if (completeSignUp == 0) {
+            completeSignUpDialog()
+        }
         if (!sessionManager.isGuestUser()) {
             val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
@@ -417,6 +423,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickFollowRequest(view: View) {
+        if (completeSignUp == 0) {
+            completeSignUpDialog()
+        }
+
         if (!sessionManager.isGuestUser()) {
             if (profileBean.is_follow == 1) {
                 profileViewModel.followUser(profileBean.user_id, 0)
@@ -458,11 +468,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickProfileLike(view: View) {
         if (!sessionManager.isGuestUser()) {
-            if (profileBean.is_like == 1)
+            if (profileBean.is_like == 1) {
                 profileViewModel.likeUserProfile(profileBean.user_id, 0)
-            else
-                profileViewModel.likeUserProfile(profileBean.user_id, 1)
+            } else {
+                if (completeSignUp == 0) {
+                    completeSignUpDialog()
+                } else {
+                    profileViewModel.likeUserProfile(profileBean.user_id, 1)
+                }
+            }
         }
+
     }
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {

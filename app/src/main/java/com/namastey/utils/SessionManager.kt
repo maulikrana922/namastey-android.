@@ -14,6 +14,7 @@ import com.namastey.model.VideoLanguageBean
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_CHOOSE_INTEREST_LIST
+import com.namastey.utils.Constants.KEY_COMPLETE_SIGNUP
 import com.namastey.utils.Constants.KEY_EDUCATION
 import com.namastey.utils.Constants.KEY_FIREBASE_TOKEN
 import com.namastey.utils.Constants.KEY_GENDER
@@ -122,6 +123,16 @@ class SessionManager(context: Context) {
     fun setGuestUser(isGuestUSer: Boolean) {
         val e = mPrefs.edit()
         e.putBoolean(KEY_IS_GUEST_USER, isGuestUSer)
+        e.apply()
+    }
+
+    fun getCompleteSignUp(): Int {
+        return mPrefs.getInt(KEY_COMPLETE_SIGNUP, 0)
+    }
+
+    fun setCompleteSignUp(isCompleteSignUp: Int) {
+        val e = mPrefs.edit()
+        e.putInt(KEY_COMPLETE_SIGNUP, isCompleteSignUp)
         e.apply()
     }
 

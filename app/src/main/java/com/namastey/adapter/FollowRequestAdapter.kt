@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnFollowRequestClick
 import com.namastey.model.FollowRequestBean
@@ -17,7 +18,7 @@ class FollowRequestAdapter(
     var followRequestList: ArrayList<FollowRequestBean>,
     var activity: Activity,
     var onFollowRequestClick: OnFollowRequestClick
-) : androidx.recyclerview.widget.RecyclerView.Adapter<FollowRequestAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FollowRequestAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -32,7 +33,7 @@ class FollowRequestAdapter(
     }
 
     inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+        RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             val followRequest = followRequestList[position]
@@ -65,6 +66,9 @@ class FollowRequestAdapter(
 
             mainCategoryView.alpha = 0.5f
 
+            llFollowRequest.setOnClickListener {
+                onFollowRequestClick.onFollowRequestItemClick(followRequest.id, position)
+            }
 
             tvAllow.setOnClickListener {
                 onFollowRequestClick.onItemAllowDenyClick(followRequest.follow_id, 1, position)
