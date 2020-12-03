@@ -395,4 +395,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //        player?.release()
 //        player = null
     }
+
+    fun onClickProfile(view: View) {
+        val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, matchesListBean.id)
+        openActivity(intent)
+    }
 }
