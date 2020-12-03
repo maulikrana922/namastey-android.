@@ -27,6 +27,15 @@ class InterestAdapter(
 
     override fun getItemCount() = interestList.size
 
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }

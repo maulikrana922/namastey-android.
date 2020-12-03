@@ -4,116 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
             type="com.namastey.viewModel.ChooseInterestViewModel" />
     </data>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_choose_interest">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_choose_interest">
+
+            <ImageView
+                android:id="@+id/ivChooseBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:background="@drawable/circle_white_solid"
+                android:contentDescription="@string/app_name"
+                android:onClick="@{() -> viewModel.closeFragment()}"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvChooseInterest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:text="@string/choose_interest"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivChooseBack"
+                app:layout_constraintTop_toTopOf="@id/ivChooseBack"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvSelectLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:text="@string/tv_select"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/tvChooseInterest"
+                app:layout_constraintTop_toBottomOf="@id/tvChooseInterest" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChooseInterest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/btnInterestNext"
+                app:layout_constraintEnd_toEndOf="@id/tvChooseInterest"
+                app:layout_constraintEnd_toStartOf="@id/rvChooseInterest"
+                app:layout_constraintTop_toBottomOf="@id/tvSelectLabel"
+                app:spanCount="3"
+                tools:listitem="@layout/row_choose_interest" />
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnInterestNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@drawable/rounded_red_solid"
+                android:onClick="@{() -> viewModel.onNextClick()}"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/rvChooseInterest"
+                app:layout_constraintStart_toStartOf="@id/rvChooseInterest" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/ivChooseBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:onClick="@{() -> viewModel.closeFragment()}"
-            android:contentDescription="@string/app_name"
-            android:background="@drawable/circle_white_solid"
-            android:padding="@dimen/_2sdp"
-            android:src="@drawable/ic_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvChooseInterest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:typeface="MULI_SEMIBOLD"
-            android:textColor="@color/colorBlack"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/choose_interest"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivChooseBack"
-            app:layout_constraintTop_toTopOf="@id/ivChooseBack" />
-
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSelectLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:text="@string/tv_select"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/tvChooseInterest"
-            app:layout_constraintStart_toStartOf="@id/tvChooseInterest"/>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChooseInterest"
+            android:id="@+id/ivSplashBackground"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
-            tools:listitem="@layout/row_choose_interest"
-            app:layout_constraintTop_toBottomOf="@id/tvSelectLabel"
-            app:layout_constraintEnd_toStartOf="@id/rvChooseInterest"
-            app:layout_constraintEnd_toEndOf="@id/tvChooseInterest"
-            app:layout_constraintBottom_toTopOf="@id/btnInterestNext"/>
-
-        <com.namastey.customViews.CustomButton
-            android:id="@+id/btnInterestNext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/rounded_red_solid"
-            android:text="@string/next"
-            android:onClick="@{() -> viewModel.onNextClick()}"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/rvChooseInterest"
-            app:layout_constraintStart_toStartOf="@id/rvChooseInterest"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/ivSplashBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center"
-        android:src="@drawable/splash"
-        android:visibility="gone"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/splash"
+            android:visibility="gone" />
 
 
-</FrameLayout>
+    </FrameLayout>
 </layout>

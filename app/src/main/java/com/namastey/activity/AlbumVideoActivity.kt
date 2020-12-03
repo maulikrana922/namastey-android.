@@ -292,7 +292,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onBackPressed() {
-        finishActivity()
+        //finishActivity()
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            finishActivity()
+        }
     }
 
     fun onClickBack(view: View) {
@@ -320,6 +325,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onClickLike(position: Int, videoBean: VideoBean, isLike: Int) {
+        this.position = position
         Log.e("AlbumVideoActivity", "UserType: \t ${sessionManager.isGuestUser()}")
         if (sessionManager.isGuestUser()) {
             addFragment(

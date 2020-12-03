@@ -24,6 +24,7 @@ class VideoLanguageAdapter(
         ContextCompat.getColor(activity, R.color.colorBlue)
     )
 
+
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_video_language, parent, false
@@ -31,6 +32,14 @@ class VideoLanguageAdapter(
     )
 
     override fun getItemCount() = videoLanguageList.size
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)

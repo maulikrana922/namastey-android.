@@ -43,7 +43,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
         for (category in categoryBeanList) {
             categoryBean = category
-            Log.e("SelectCategoryFragment", "categoryBean: \t $categoryBean")
+            Log.e("SelectCategoryFragment", "categoryBean: \t ${categoryBean.id}")
         }
 
         val selectCategoryAdapter =
@@ -99,7 +99,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
         for (category in selectCategoryId) {
             Log.e("SelectCategoryFragment", "category: \t $category")
             if (category == categoryBean.id) {
-
+                selectedCategoryList.add(categoryBean)
             }
             //selectedCategoryList.add(categoryBean)
             Log.e(
