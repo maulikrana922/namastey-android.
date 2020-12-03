@@ -62,6 +62,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var membershipList = ArrayList<MembershipBean>()
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
+    private var completeSignUp = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +83,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     private fun initData() {
+        completeSignUp = sessionManager.getCompleteSignUp()
 
 //        profileViewModel.getUserDetails()
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
@@ -107,6 +109,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         sessionManager.setUserGender(profileBean.gender)
         sessionManager.setUserId(profileBean.user_id)
 
+        sessionManager.setCompleteSignUp(profileBean.is_completly_signup)
+
         if (profileBean.is_completly_signup == 1) {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
@@ -119,11 +123,26 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
-            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_mentions, Constants.KEY_IS_MENTIONS)
-            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_matches, Constants.KEY_IS_MATCHES)
-            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_follow, Constants.KEY_IS_NEW_FOLLOWERS)
-            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_comment, Constants.KEY_IS_COMMENTS)
-            sessionManager.setIntegerValue(profileBean.notificationBean[0].is_suggest, Constants.KEY_IS_VIDEO_SUGGESTIONS)
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_mentions,
+                Constants.KEY_IS_MENTIONS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_matches,
+                Constants.KEY_IS_MATCHES
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_follow,
+                Constants.KEY_IS_NEW_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_comment,
+                Constants.KEY_IS_COMMENTS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_suggest,
+                Constants.KEY_IS_VIDEO_SUGGESTIONS
+            )
 
             /*sessionManager.setIntegerValue(profileBean.safetyBean[0].is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
             sessionManager.setIntegerValue(profileBean.safetyBean[0].is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
@@ -132,12 +151,30 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
             sessionManager.setIntegerValue(profileBean.safetyBean[0].is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)*/
 
-            sessionManager.setIntegerValue(profileBean.safetyBean.is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
-            sessionManager.setIntegerValue(profileBean.safetyBean.is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
-            sessionManager.setIntegerValue(profileBean.safetyBean.is_suggest, Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS)
-            sessionManager.setIntegerValue(profileBean.safetyBean.who_can_comment, Constants.KEY_CAN_COMMENT_YOUR_VIDEO)
-            sessionManager.setIntegerValue(profileBean.safetyBean.who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
-            sessionManager.setIntegerValue(profileBean.safetyBean.is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_download,
+                Constants.KEY_IS_DOWNLOAD_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_followers,
+                Constants.KEY_IS_YOUR_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_suggest,
+                Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_comment,
+                Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_send_message,
+                Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_share,
+                Constants.KEY_IS_SHARE_PROFILE_SAFETY
+            )
 
             sessionManager.setLanguageList(profileBean.languageBean)
 
@@ -151,6 +188,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             if (sessionManager.isGuestUser()) {
                 btnProfileSignup.text = getString(R.string.btn_signup)
             } else {
+                //sessionManager.setCompleteSignUp(profileBean.is_completly_signup)
                 btnProfileSignup.text = getString(R.string.btn_complete_profile)
             }
             btnProfileSignup.visibility = View.VISIBLE
@@ -572,22 +610,30 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            openActivity(this@ProfileActivity, MembershipActivity())
-
-           // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                openActivity(this@ProfileActivity, MembershipActivity())
+            }
+            // startActivity(Intent(this@ProfileActivity, MembershipActivity::class.java))
         }
     }
 
     fun onClickBoostMe(view: View) {
         if (sessionManager.isGuestUser()) {
             addFragment(
-                SignUpFragment.getInstance(false
+                SignUpFragment.getInstance(
+                    false
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
             //showBoostDialog(R.layout.dialog_boost_skipline)
         } else {
-            showBoostDialog(R.layout.dialog_boosts)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                showBoostDialog(R.layout.dialog_boosts)
+            }
         }
     }
 

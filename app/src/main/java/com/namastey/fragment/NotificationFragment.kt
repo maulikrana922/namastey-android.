@@ -865,7 +865,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     override fun onSuccessPostVideoDetailResponse(videoBean: VideoBean) {
         Log.e("NotificationAdapter", "videoBean: ${videoBean.id}")
         videoBeanList.add(videoBean)
-
         val intent = Intent(requireActivity(), AlbumVideoActivity::class.java)
         intent.putExtra(Constants.VIDEO_LIST, videoBeanList)
         intent.putExtra("position", position)
