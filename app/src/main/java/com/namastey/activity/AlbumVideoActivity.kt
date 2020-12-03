@@ -376,7 +376,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onUpnextClick(position: Int) {
-      //  groupUpnext.visibility = View.VISIBLE
+       groupUpnext.visibility = View.VISIBLE
+       tvUpnext.visibility = View.GONE
+        rvAlbumUpnext.visibility = View.GONE
         upnextVideoAdapter = UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
         rvAlbumUpnext.adapter = upnextVideoAdapter
     }
