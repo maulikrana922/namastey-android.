@@ -84,6 +84,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private var position = -1
     private var editPost = false
+    private var completeSignUp = 0
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
     }
@@ -291,6 +292,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     private fun initData() {
 
+        completeSignUp = sessionManager.getCompleteSignUp()
+
         videoList =
             intent.getParcelableArrayListExtra<VideoBean>(Constants.VIDEO_LIST) as ArrayList<VideoBean>
 
@@ -325,13 +328,17 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            this.position = position
-            val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                this.position = position
+                val intent = Intent(this@AlbumVideoActivity, PostVideoActivity::class.java)
 //            intent.putExtra("albumId", videoBean.album_id)
-            intent.putExtra("editPost", true)
+                intent.putExtra("editPost", true)
 //            intent.putExtra("albumName", videoBean.album_name)
-            intent.putExtra("videoBean", videoBean)
-            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+                intent.putExtra("videoBean", videoBean)
+                openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+            }
         }
     }
 
@@ -343,8 +350,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 SignUpFragment.getInstance(true), Constants.SIGNUP_FRAGMENT
             )
         } else {
-            albumViewModel.likeUserProfile(videoBean.id, isLike)
-            Log.e("AlbumVideoActivity", "UserType: In")
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                albumViewModel.likeUserProfile(videoBean.id, isLike)
+                Log.e("AlbumVideoActivity", "UserType: In")
+            }
         }
     }
 
@@ -388,8 +399,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onUpnextClick(position: Int) {
         groupUpnext.visibility = View.VISIBLE
-       /* tvUpnext.visibility = View.GONE
-        rvAlbumUpnext.visibility = View.GONE*/
         upnextVideoAdapter =
             UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
         rvAlbumUpnext.adapter = upnextVideoAdapter
@@ -432,11 +441,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     Constants.SIGNUP_FRAGMENT
                 )
             } else {
-                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                    albumViewModel.addComment(
-                        postId,
-                        bottomSheetDialogComment.edtComment.text.toString()
-                    )
+                if (completeSignUp == 0) {
+                    completeSignUpDialog()
+                } else {
+                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+                        albumViewModel.addComment(
+                            postId,
+                            bottomSheetDialogComment.edtComment.text.toString()
+                        )
+                    }
                 }
             }
         }

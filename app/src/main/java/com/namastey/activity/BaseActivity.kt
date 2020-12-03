@@ -14,12 +14,8 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -28,12 +24,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.R
-import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.component.ActivityComponent
 import com.namastey.dagger.module.ViewModule
@@ -44,7 +37,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.Constants.NOTIFICATION_BROADCAST
 import com.namastey.utils.CustomAlertDialog
-import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -71,14 +64,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         showAlert(getString(msgId))
     }
 
-
     override fun showMsg(msg: String) {
         hideKeyboard()
         showAlert(msg)
     }
-
-
-
 
     override fun hideKeyboard() {
         runOnUiThread {
@@ -350,7 +339,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         notificationManager.createNotificationChannel(channel)
     }
 
-
     /*Change firebase token*/
     fun getToken() {
         val senderID = resources.getString(R.string.firebase_sender_id)
@@ -364,5 +352,26 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
             }
         }).start()
     }
+
+    fun completeSignUpDialog() {
+        object : CustomAlertDialog(
+            this,
+            getString(R.string.complete_profile),
+            getString(R.string.ok),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        openActivity(this@BaseActivity, ProfileActivity())
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
+
 
 }

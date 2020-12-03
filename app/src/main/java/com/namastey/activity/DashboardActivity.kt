@@ -96,6 +96,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var isUpdateComment = false
     private var fileUrl = ""
     private var postId = 0L
+    private var completeSignUp = 0
 
     override fun getViewModel() = dashboardViewModel
 
@@ -117,6 +118,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     private fun initData() {
         sessionManager.setLoginUser(true)
+        completeSignUp = sessionManager.getCompleteSignUp()
+        Log.e("DashboardActivity", "completeSignUp: \t $completeSignUp")
 
         Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
@@ -510,9 +513,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
-            intent.putExtra("onClickMatches", true)
-            openActivity(intent)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", true)
+                openActivity(intent)
+            }
         }
     }
 
@@ -679,8 +686,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            this.position = position
-            dashboardViewModel.followUser(dashboardBean.user_id, isFollow)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                this.position = position
+                dashboardViewModel.followUser(dashboardBean.user_id, isFollow)
+            }
         }
     }
 
@@ -693,7 +704,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            openShareOptionDialog(dashboardBean)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                openShareOptionDialog(dashboardBean)
+            }
         }
     }
 
@@ -706,8 +721,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            this.position = position
-            dashboardViewModel.likeUserProfile(dashboardBean.user_id, isLike)
+            if (completeSignUp == 0) {
+                completeSignUpDialog()
+            } else {
+                this.position = position
+                dashboardViewModel.likeUserProfile(dashboardBean.user_id, isLike)
+            }
         }
     }
 
@@ -741,11 +760,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                     Constants.SIGNUP_FRAGMENT
                 )
             } else {
-                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                    dashboardViewModel.addComment(
-                        postId,
-                        bottomSheetDialogComment.edtComment.text.toString()
-                    )
+                if (completeSignUp == 0) {
+                    completeSignUpDialog()
+                } else {
+                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+                        dashboardViewModel.addComment(
+                            postId,
+                            bottomSheetDialogComment.edtComment.text.toString()
+                        )
+                    }
                 }
             }
         }
@@ -841,7 +864,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             Log.e("mention", text.toString())
             mentionArrayAdapter.notifyDataSetChanged()
             strMention = text.toString()
-            if (text.length==1) {
+            if (text.length == 1) {
                 bottomSheetDialogComment.lvMentionList.visibility = View.GONE
             } else bottomSheetDialogComment.lvMentionList.visibility = View.VISIBLE
 
@@ -853,9 +876,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
                 strMention, "${
-                    mentionArrayAdapter.getItem(
-                        i
-                    ).toString()
+                mentionArrayAdapter.getItem(
+                    i
+                ).toString()
                 }"
             )
             bottomSheetDialogComment.edtComment.setText(strName)
@@ -1151,7 +1174,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
              bottomSheetDialogComment.rvMentionList.adapter = mentionListAdapter*/
             for (i in mentionList.indices) {
                 mentionArrayAdapter.addAll(
-                    if (mentionList[i].profile_url != "") Mention(mentionList[i].username, "", mentionList[i].profile_url)
+                    if (mentionList[i].profile_url != "") Mention(
+                        mentionList[i].username,
+                        "",
+                        mentionList[i].profile_url
+                    )
                     else Mention(mentionList[i].username)
                 )
             }

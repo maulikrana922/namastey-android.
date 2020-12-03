@@ -417,5 +417,6 @@
     <string name="_8_5x_n_views">8.5x \n views</string>
     <string name="boost_again">Boost Again</string>
     <string name="your_boost_was_a_success">Your boost was a success!</string>
+    <string name="complete_profile">Your profile is not complete, please complete your profile.</string>
 
 </resources>

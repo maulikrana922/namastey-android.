@@ -1,17 +1,21 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.activity.ProfileActivity
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 
@@ -141,39 +145,64 @@ class FeedAdapter(
             }
             // Need to change as per api response
             ivFeedFollow.setOnClickListener {
-                var isFollow = 0
-                val msg: String
-                val btnText: String
-                if (dashboardBean.is_follow == 1) {
-                    isFollow = 0
-                    msg = resources.getString(R.string.msg_remove_post)
-                    btnText = resources.getString(R.string.remove)
-                } else {
-                    isFollow = 1
-                    msg = resources.getString(R.string.msg_send_follow_request)
-                    btnText = resources.getString(R.string.send)
-                }
-                object : CustomCommonAlertDialog(
-                    activity,
-                    dashboardBean.username,
-                    msg,
-                    dashboardBean.profile_url,
-                    btnText,
-                    resources.getString(R.string.cancel)
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        when (id) {
-                            btnAlertOk.id -> {
-                                onFeedItemClick.onClickFollow(
-                                    position,
-                                    dashboardBean,
-                                    isFollow
-                                )
+                if (sessionManager.getCompleteSignUp() == 1) {
+                    var isFollow = 0
+                    val msg: String
+                    val btnText: String
+                    if (dashboardBean.is_follow == 1) {
+                        isFollow = 0
+                        msg = resources.getString(R.string.msg_remove_post)
+                        btnText = resources.getString(R.string.remove)
+                    } else {
+                        isFollow = 1
+                        msg = resources.getString(R.string.msg_send_follow_request)
+                        btnText = resources.getString(R.string.send)
+                    }
+                    object : CustomCommonAlertDialog(
+                        activity,
+                        dashboardBean.username,
+                        msg,
+                        dashboardBean.profile_url,
+                        btnText,
+                        resources.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnAlertOk.id -> {
+                                    onFeedItemClick.onClickFollow(
+                                        position,
+                                        dashboardBean,
+                                        isFollow
+                                    )
+                                }
                             }
                         }
-                    }
-                }.show()
+                    }.show()
+                } else {
 
+                    object : CustomAlertDialog(
+                        activity,
+                        activity.getString(R.string.complete_profile),
+                        activity.getString(R.string.ok),
+                        activity.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    activity.startActivity(
+                                        Intent(
+                                            activity,
+                                            ProfileActivity::class.java
+                                        )
+                                    )
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
+                }
             }
 
             tvFeedShare.setOnClickListener {
