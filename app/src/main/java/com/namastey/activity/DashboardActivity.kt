@@ -863,7 +863,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
         }
 
-
     }
 
     override fun onUserProfileClick(dashboardBean: DashboardBean) {
@@ -925,7 +924,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
         bottomSheetDialogComment.rvMentionList.visibility = View.GONE
-        bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
 
@@ -941,6 +939,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         val params: ViewGroup.LayoutParams =
             bottomSheetDialogComment.rvPostComment.layoutParams
+
 
         if (data.size > 6) {
             params.height = 1000
@@ -1158,7 +1157,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
 
         } else {
-            bottomSheetDialogComment.rvPostComment.visibility = View.GONE
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         }
     }
@@ -1185,7 +1183,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun onMentionItemClick(userId: Long, position: Int, username: String) {
         bottomSheetDialogComment.edtComment.setText(username)
-        bottomSheetDialogComment.rvPostComment.visibility = View.VISIBLE
         bottomSheetDialogComment.rvMentionList.visibility = View.GONE
     }
 }

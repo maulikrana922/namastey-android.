@@ -58,7 +58,7 @@ import javax.inject.Inject
 
 
 class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoView,
-    OnMentionUserItemClick {
+        OnMentionUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -92,7 +92,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         getActivityComponent().inject(this)
 
         postVideoViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(PostVideoViewModel::class.java)
+                ViewModelProviders.of(this, viewModelFactory).get(PostVideoViewModel::class.java)
         activityPostVideoBinding = bindViewData()
         activityPostVideoBinding.viewModel = postVideoViewModel
 
@@ -100,7 +100,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     private fun initData() {
-
         items = arrayOf<CharSequence>(
             getString(R.string.everyone),
             getString(R.string.friends),
@@ -296,7 +295,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             for (i in mentionList.indices) {
                 defaultMentionAdapter.addAll(
-                    if (mentionList[i].profile_url != "") Mention(mentionList[i].username, "", mentionList[i].profile_url)
+                    if (mentionList[i].profile_url != "") Mention(
+                        mentionList[i].username,
+                        "",
+                        mentionList[i].profile_url
+                    )
                     else Mention(mentionList[i].username)
                 )
             }
@@ -336,7 +339,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 if (isFromEditPost)
                     jsonObject.addProperty(Constants.VIDEO_POST_ID, videoBean.id)
 
-                postVideoViewModel.postVideoDesc(jsonObject)
+                 postVideoViewModel.postVideoDesc(jsonObject)
             }
         }
     }
@@ -415,12 +418,13 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.REQUEST_CODE_IMAGE) {
                 try {
                     val selectedImage = data!!.data
                     val filePathColumn =
-                        arrayOf(MediaStore.Images.Media.DATA)
+                            arrayOf(MediaStore.Images.Media.DATA)
                     val cursor: Cursor? = this@PostVideoActivity.contentResolver.query(
                         selectedImage!!,
                         filePathColumn, null, null, null
@@ -567,7 +571,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      */
     fun onClickSelectAlbum(view: View) {
         val albumBuilder =
-            AlertDialog.Builder(this@PostVideoActivity)
+                AlertDialog.Builder(this@PostVideoActivity)
         albumBuilder.setTitle(getString(R.string.select_album))
 
         val arrayAdapter = ArrayAdapter<String>(
@@ -665,5 +669,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         rvMentionList.visibility = View.GONE
     }
 
+     fun onClickFacebook(view: View) {
+
+    }
 }
 

@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -151,6 +152,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         commentAdapter = CommentAdapter(data, this@AlbumVideoActivity, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
+        val params: ViewGroup.LayoutParams =
+            bottomSheetDialogComment.rvPostComment.layoutParams
+
+        if (data.size > 6) {
+            params.height = 1000
+            bottomSheetDialogComment.rvPostComment.layoutParams = params
+        } else {
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT
+            bottomSheetDialogComment.rvPostComment.layoutParams = params
+        }
 
         val itemTouchHelperCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

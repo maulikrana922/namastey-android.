@@ -237,6 +237,7 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:onClick="onClickFacebook"
                     android:src="@drawable/ic_link_facebook"
                     app:layout_constraintStart_toStartOf="@id/tvAutoshareMsg"
                     app:layout_constraintTop_toBottomOf="@id/tvAutoshareMsg" />

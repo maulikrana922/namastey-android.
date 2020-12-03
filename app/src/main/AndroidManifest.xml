@@ -242,6 +242,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCj4_1sbJh-ETKXz6owFeRf0x86j2J9Uac" />
+        <provider android:authorities="com.facebook.app.FacebookContentProviderYOUR_FACEBOOK_APP_ID"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>
