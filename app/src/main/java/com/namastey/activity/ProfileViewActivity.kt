@@ -45,7 +45,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
     private var isMyProfile = false
-    private var completeSignUp = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -334,7 +333,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
-        completeSignUp = sessionManager.getCompleteSignUp()
 
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
@@ -411,7 +409,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      */
     fun onClickFollow(view: View) {
 
-        if (completeSignUp == 0) {
+        if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         }
         if (!sessionManager.isGuestUser()) {
@@ -423,7 +421,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickFollowRequest(view: View) {
-        if (completeSignUp == 0) {
+        if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         }
 
@@ -471,7 +469,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (profileBean.is_like == 1) {
                 profileViewModel.likeUserProfile(profileBean.user_id, 0)
             } else {
-                if (completeSignUp == 0) {
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     completeSignUpDialog()
                 } else {
                     profileViewModel.likeUserProfile(profileBean.user_id, 1)

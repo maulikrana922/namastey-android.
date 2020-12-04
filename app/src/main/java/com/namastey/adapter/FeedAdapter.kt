@@ -11,10 +11,7 @@ import com.namastey.R
 import com.namastey.activity.ProfileActivity
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.utils.CustomAlertDialog
-import com.namastey.utils.CustomCommonAlertDialog
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
@@ -145,7 +142,7 @@ class FeedAdapter(
             }
             // Need to change as per api response
             ivFeedFollow.setOnClickListener {
-                if (sessionManager.getCompleteSignUp() == 1) {
+                if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     var isFollow = 0
                     val msg: String
                     val btnText: String
