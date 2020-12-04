@@ -19,6 +19,8 @@ class ShareAppViewModel  constructor(
 ) : BaseViewModel(networkService, dbHelper, baseView) {
 
     private var followingView: FollowingView = baseView as FollowingView
+    private var findFriendView: FindFriendView = baseView as FindFriendView
+
     private lateinit var job: Job
 
 
@@ -47,6 +49,26 @@ class ShareAppViewModel  constructor(
             }
         }
 
+
+    }
+
+    fun getSearchUser(searchStr: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToSearchUser(searchStr).let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        findFriendView.onSuccessSearchList(appResponse.data!!)
+                    else
+                        findFriendView.onFailed(appResponse.message, appResponse.error)
+                }
+
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                findFriendView.onHandleException(t)
+            }
+        }
 
     }
 

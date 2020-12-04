@@ -222,9 +222,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             startActivity(intent)
         }
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
             addFragment(
-                ShareAppFragment.getInstance(
-                ),
+                ShareAppFragment.getInstance(dashboardBean.user_id),
                 Constants.SHARE_APP_FRAGMENT
             )
         }
@@ -297,6 +297,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 startActivity(intent)
             }
         }
+
         bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
             try {
                 val pm: PackageManager = packageManager

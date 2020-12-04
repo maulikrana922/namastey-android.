@@ -70,6 +70,7 @@ class UserSearchAdapter(
 //            }
             viewSearchUser.setOnClickListener{
                 onItemClick.onItemClick(dashboardBean.user_id,position)
+                onItemClick.onItemFollowingClick(dashboardBean)
             }
         }
 

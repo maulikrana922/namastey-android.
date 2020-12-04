@@ -359,11 +359,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
-    override fun onItemClick(value: Long, position: Int) {
+    override fun onItemClick(id: Long, position: Int) {
         viewpagerAlbum.currentItem = position
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
         groupUpnext.visibility = View.GONE
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
     override fun onVideoClick() {

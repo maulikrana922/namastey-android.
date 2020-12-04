@@ -110,11 +110,15 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
         }
     }
 
-    override fun onItemClick(value: Long,position: Int) {
+    override fun onItemClick(id: Long, position: Int) {
         val intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
-        intent.putExtra("albumId", value)
+        intent.putExtra("albumId", id)
         intent.putExtra(Constants.FROM_EDIT, true)
         openActivity(intent)
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
 }

@@ -2,106 +2,127 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/rounded_white_solid_new"
+    android:background="@android:color/transparent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvSend"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_16sdp"
-        android:text="@string/send_to"
-        android:textSize="@dimen/_16sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/ivFollwing"
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_70sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:background="@drawable/squer_white_border_transparent_solid"
-        android:scaleType="fitXY"
-        android:src="@drawable/default_album"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSend" />
-
-
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFollowing"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_70sdp"
+        android:elevation="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_16sdp"
-        android:gravity="center_vertical"
-        android:text="Mehul Patel"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintStart_toEndOf="@+id/ivFollwing"
-        app:layout_constraintTop_toBottomOf="@+id/tvSend" />
-
-
-    <ImageView
-        android:id="@+id/ivPostImage"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_marginTop="@dimen/_24sdp"
-        android:background="@drawable/squer_white_border_transparent_solid"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_album"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
-
-    <com.namastey.customViews.CustomEditText
-        android:id="@+id/edtLeaveMessage"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_margin="@dimen/_16sdp"
-        android:background="@drawable/rounded_white_solid"
-        android:elevation="@dimen/_16sdp"
-        android:hint="Leave a message"
-        android:paddingStart="@dimen/_24sdp"
-        android:shadowRadius="1"
-        app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
-
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:background="@color/colorGray"
-        app:layout_constraintTop_toBottomOf="@+id/edtLeaveMessage" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@drawable/rounded_white_solid_new"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
+            android:padding="@dimen/_12sdp"
+            android:text="@string/send_to"
+            android:textSize="@dimen/_14sdp"
+            app:typeface="MULI_EXTRA_BOLD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivFollwing"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:background="@drawable/squer_white_border_transparent_solid"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_female"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSend" />
+
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFollowing"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:gravity="center_vertical"
+            android:text="Mehul Patel"
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorBlack"
-            android:text="@string/cancel" />
+            app:typeface="MULI_EXTRA_BOLD"
+            app:layout_constraintStart_toEndOf="@+id/ivFollwing"
+            app:layout_constraintTop_toBottomOf="@+id/tvSend" />
+
+
+        <ImageView
+            android:id="@+id/ivPostImage"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:background="@drawable/squer_white_border_transparent_solid"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_female"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
+
+        <com.namastey.customViews.CustomEditText
+            android:id="@+id/edtLeaveMessage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_16sdp"
+            android:background="@drawable/rounded_white_solid"
+            android:elevation="@dimen/_4sdp"
+            android:hint="Leave a message"
+            android:paddingStart="@dimen/_24sdp"
+            app:typeface="MULI_REGULAR"
+            android:shadowRadius="1"
+            app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
+
 
         <View
-            android:layout_width="1dp"
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_24sdp"
             android:background="@color/colorGray"
-            android:layout_height="match_parent"/>
-        <com.namastey.customViews.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp"
-            android:layout_weight="1"
-            android:textColor="@color/colorBlack"
-            android:gravity="center"
-            android:text="@string/save" />
+            app:layout_constraintTop_toBottomOf="@+id/edtLeaveMessage" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@+id/view">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/_14sdp"
+                android:text="@string/cancel"
+                android:textSize="@dimen/_14sdp"
+                app:typeface="MULI_SEMIBOLD"
+                android:textColor="@color/colorBlack" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGray" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/_14sdp"
+                android:text="@string/save"
+                android:textSize="@dimen/_14sdp"
+                app:typeface="MULI_SEMIBOLD"
+                android:textColor="@color/colorBlack" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,6 +28,7 @@ import com.namastey.databinding.ActivityAlbumDetailBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.CreateAlbumView
 import com.namastey.utils.Constants
@@ -484,14 +485,18 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         openActivity(intent)
     }
 
-    override fun onItemClick(postId: Long, position: Int) {
+    override fun onItemClick(userId: Long, position: Int) {
         if (position == 0 && !isSavedAlbum) {
             this.position = 0
             selectVideo()
         } else {
             this.position = position
-            albumViewModel.removePostVideo(postId)
+            albumViewModel.removePostVideo(userId)
         }
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
 //    override fun cancelAction() {

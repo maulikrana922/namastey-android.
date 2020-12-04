@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
@@ -217,6 +216,10 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         val intent = Intent(this@FollowingFollowersActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, value)
         openActivity(intent)
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
     fun onClickInviteFriend(view: View) {

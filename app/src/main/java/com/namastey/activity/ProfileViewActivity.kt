@@ -452,6 +452,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onItemClick(value: Long, position: Int) {
     }
 
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
+    }
+
     override fun onViewAlbumItemClick(value: Long, position: Int) {
     }
 

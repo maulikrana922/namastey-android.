@@ -25,6 +25,7 @@ import com.namastey.databinding.ActivityCreateAlbumBinding
 import com.namastey.listeners.OnCreateAlbumItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.DashboardBean
 import com.namastey.uiView.CreateAlbumView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -592,8 +593,12 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     /**
      * Click on post video delete button remove video from album
      */
-    override fun onItemClick(value: Long, position: Int) {
-        createAlbumViewModel.removePostVideo(value)
+    override fun onItemClick(id: Long, position: Int) {
+        createAlbumViewModel.removePostVideo(id)
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
     override fun onSuccessDeletePost() {

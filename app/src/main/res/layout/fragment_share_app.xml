@@ -54,12 +54,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/forward_to"
+            android:textSize="@dimen/_14sdp"
             android:textColor="@color/colorDarkGray"
             app:layout_constraintBottom_toBottomOf="@id/ivAddFriendClose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivAddFriendClose"
-            app:typeface="MULI_SEMIBOLD" />
+            app:typeface="MULI_EXTRA_BOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvFindMultiple"
@@ -89,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvFindMultiple">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchAddFriend"
+                android:id="@+id/searchFriend"
                 style="@style/searchViewStyle"
                 app:defaultQueryHint="@string/search"
                 app:iconifiedByDefault="false"
@@ -109,18 +110,31 @@
 
         </LinearLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/llSearchView"
+            app:layout_constraintTop_toBottomOf="@id/llSearchView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvRecent"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:text="@string/recent"
             android:textColor="@color/colorBlack"
-            app:layout_constraintStart_toStartOf="@id/llSearchView"
-            app:layout_constraintTop_toBottomOf="@id/llSearchView"
             app:typeface="MULI_EXTRA_BOLD" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRecentUser"
+                android:id="@+id/rvRecentUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
@@ -145,7 +159,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFollowingUser"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_8sdp"
@@ -155,6 +169,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSuggested" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -166,6 +184,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

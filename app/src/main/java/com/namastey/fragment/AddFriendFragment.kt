@@ -148,10 +148,14 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
         }
     }
 
-    override fun onItemClick(value: Long, position: Int) {
+    override fun onItemClick(userId: Long, position: Int) {
         val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USER_ID, value)
+        intent.putExtra(Constants.USER_ID, userId)
         openActivity(intent)
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+
     }
 
     override fun onDestroy() {

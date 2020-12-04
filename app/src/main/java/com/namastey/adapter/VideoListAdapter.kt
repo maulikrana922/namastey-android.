@@ -3,12 +3,10 @@ package com.namastey.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.activity.AlbumDetailActivity
 import com.namastey.activity.AlbumVideoActivity
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
