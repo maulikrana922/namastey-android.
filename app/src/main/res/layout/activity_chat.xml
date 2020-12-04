@@ -32,7 +32,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAddComment">
                 <ImageView
                     android:id="@+id/imgTop"
                     android:layout_width="match_parent"
@@ -92,6 +93,67 @@
                     app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/ivChatBack" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/imgTop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+
+                    <ImageView
+                        android:id="@+id/ivStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_star_yellow"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvBuyMsg"
+                        app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"/>
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/ivCloseBuy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/ic_close"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvBuyMsg"
+                        app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"/>
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvBuyMsg"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="0dp"
+                        android:text="@string/msg_buy_namastey"
+                        android:textColor="@color/color_chip_gray"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingBottom="@dimen/_12sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivStart"
+                        app:layout_constraintEnd_toStartOf="@id/tvBuyNow" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvBuyNow"
+                        style="@style/tvWrapWhiteStyle"
+                        android:text="@string/buy_now"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textColor="@color/colorButtonRed"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvBuyMsg"
+                        app:typeface="MULI_EXTRA_BOLD"
+                        app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
 
