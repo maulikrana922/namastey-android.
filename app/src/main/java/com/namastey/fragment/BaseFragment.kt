@@ -259,6 +259,11 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    fun finishActivity(activity: Activity) {
+        activity.finish()
+        activity.overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+    }
+
     fun addFragment(fragment: Fragment, tag: String) {
         activity!!.supportFragmentManager.beginTransaction().addToBackStack(tag)
             .replace(R.id.flContainer, fragment, tag)

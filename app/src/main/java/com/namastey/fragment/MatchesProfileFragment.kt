@@ -68,7 +68,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     private fun initUI() {
-        matchesProfileViewModel.getMatchesList()
+
 
         /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
@@ -76,6 +76,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
          rvMessagesList.adapter = messagesAdapter*/
     }
 
+    override fun onResume() {
+        super.onResume()
+        matchesProfileViewModel.getMatchesList()
+    }
     override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
         if (matchesListBean != null) {
             Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
@@ -96,27 +100,31 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             tvLikesCount.text = "10+"
         }
 
-        GlideLib.loadImage(
-            requireContext(),
-            ivBackgroundPicture,
-            data.get(data.size - 1).profile_pic
-        )
-
         if (data.size == 0) {
-            ivNoMatch.visibility = View.VISIBLE
-            tvMessages.visibility = View.GONE
-            rvMessagesList.visibility = View.GONE
+            ivBackgroundPicture.setImageResource(R.drawable.default_album)
         } else {
-            ivNoMatch.visibility = View.GONE
-            tvMessages.visibility = View.VISIBLE
-            rvMessagesList.visibility = View.VISIBLE
+            GlideLib.loadImage(
+                requireContext(),
+                ivBackgroundPicture,
+                data[0].profile_pic
+            )
         }
 
         // tvLikesCount.text = data.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
+        val messageList : List<MatchesListBean> = data.filter { s -> s.is_read == 1 }
 
-        messagesAdapter = MessagesAdapter(data, requireActivity(), this)
+        if (messageList.size == 0){
+            ivNoMatch.visibility = View.VISIBLE
+            tvMessages.visibility = View.GONE
+            rvMessagesList.visibility = View.GONE
+        }else{
+            ivNoMatch.visibility = View.GONE
+            tvMessages.visibility = View.VISIBLE
+            rvMessagesList.visibility = View.VISIBLE
+        }
+        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
     }
 

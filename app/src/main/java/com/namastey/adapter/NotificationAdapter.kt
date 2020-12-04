@@ -35,6 +35,17 @@ class NotificationAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) = with(itemView) {
             val activityListBean = activityList[position]
+
+            if (activityListBean.cover_image_url != "") {
+                ivCommentCover.visibility = View.VISIBLE
+                GlideLib.loadImage(
+                    activity,
+                    ivCommentCover,
+                    activityListBean.cover_image_url
+                )
+            } else {
+                ivCommentCover.visibility = View.GONE
+            }
             when (isActivityList) {
                 //For All-Activity List
                 0 -> {
@@ -74,11 +85,6 @@ class NotificationAdapter(
                     }
 
                     if (activityListBean.comment_id != 0) {
-                        if (activityListBean.cover_image_url != "") {
-                            ivCommentCover.visibility = View.VISIBLE
-                        } else {
-                            ivCommentCover.visibility = View.GONE
-                        }
 
                         GlideLib.loadImage(
                             activity,
@@ -92,14 +98,14 @@ class NotificationAdapter(
                         )
                         //tvNotification.text = activityListBean.comment_message
                         Utils.setHtmlText(tvNotification, activityListBean.comment_message)
-
-                        ivCommentCover.setOnClickListener {
-                            onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
-                        }
-
                     }
 
                     if (activityListBean.mentions_id != 0) {
+                        GlideLib.loadImage(
+                            activity,
+                            ivUserProfile,
+                            activityListBean.comment_user_profile_pic
+                        )
                         GlideLib.loadImage(
                             activity,
                             ivUserProfile,
@@ -124,28 +130,15 @@ class NotificationAdapter(
                 //For Comment(Post video comment)
                 2 -> {
                     //ivCommentCover.visibility = View.VISIBLE
-                    if (activityListBean.cover_image_url != "") {
-                        ivCommentCover.visibility = View.VISIBLE
-                    } else {
-                        ivCommentCover.visibility = View.GONE
-                    }
 
                     GlideLib.loadImage(
                         activity,
                         ivUserProfile,
                         activityListBean.comment_user_profile_pic
                     )
-                    GlideLib.loadImage(
-                        activity,
-                        ivCommentCover,
-                        activityListBean.cover_image_url
-                    )
+
                     // tvNotification.text = activityListBean.comment_message
                     Utils.setHtmlText(tvNotification, activityListBean.comment_message)
-
-                    ivCommentCover.setOnClickListener {
-                        onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
-                    }
                 }
 
                 //For Followers
@@ -187,6 +180,10 @@ class NotificationAdapter(
                 else -> {
 
                 }
+            }
+
+            ivCommentCover.setOnClickListener {
+                onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
             }
 
             ivUserProfile.setOnClickListener {

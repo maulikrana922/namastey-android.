@@ -44,12 +44,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var chatViewModel: ChatViewModel
     private lateinit var activityChatBinding: ActivityChatBinding
     private lateinit var chatAdapter: ChatAdapter
-    private var matchesListBean =  MatchesListBean()
+    private var matchesListBean = MatchesListBean()
     private var chatMsgList = ArrayList<ChatMessage>()
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var myChatRef: DatabaseReference = database.reference
@@ -80,7 +81,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     private fun initData() {
         if (intent.hasExtra("matchesListBean")) {
-            matchesListBean = intent.getParcelableExtra<MatchesListBean>("matchesListBean") as MatchesListBean
+            matchesListBean =
+                intent.getParcelableExtra<MatchesListBean>("matchesListBean") as MatchesListBean
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
@@ -88,8 +90,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
 //            Call api if matches already not read
-            if (matchesListBean.is_read == 0){
-                chatViewModel.readMatches(matchesListBean.id,1)
+            if (matchesListBean.is_read == 0) {
+                chatViewModel.readMatches(matchesListBean.id, 1)
             }
             chatViewModel.setIsLoading(true)
             myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
@@ -104,12 +106,14 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //                        Log.d("Firebase :", "Value is: ${chatMessage.message}")
 
                         if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
-                                chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()){
+                            chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
+                        ) {
                             chatMsgList.add(chatMessage)
                         }
                     }
                     chatViewModel.setIsLoading(false)
-                    chatAdapter = ChatAdapter(this@ChatActivity,sessionManager.getUserId(),chatMsgList)
+                    chatAdapter =
+                        ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)
                     rvChat.adapter = chatAdapter
 
                 }
@@ -140,12 +144,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                     when (event?.action) {
                         MotionEvent.ACTION_DOWN -> {
                             isAudioPermissionGranted()
-                            ivMic.setPadding(7,7,7,7)
+                            ivMic.setPadding(7, 7, 7, 7)
                             return true
                         }
-                        MotionEvent.ACTION_UP ->{
-                            Log.d(TAG,"Call stop record....")
-                            ivMic.setPadding(0,0,0,0)
+                        MotionEvent.ACTION_UP -> {
+                            Log.d(TAG, "Call stop record....")
+                            ivMic.setPadding(0, 0, 0, 0)
                             stopRecording()
                         }
                     }
@@ -213,13 +217,20 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
 
     fun onClickSendMessage(view: View) {
-        if (edtMessage.text.trim().isNotEmpty()){
-            sendMessage(edtMessage.text.toString(),"")
+        if (edtMessage.text.trim().isNotEmpty()) {
+            sendMessage(edtMessage.text.toString(), "")
         }
     }
-    private fun sendMessage(message: String,imageUrl: String){
 
-        val chatMessage = ChatMessage(message,sessionManager.getUserId(),matchesListBean.id,imageUrl,System.currentTimeMillis())
+    private fun sendMessage(message: String, imageUrl: String) {
+
+        val chatMessage = ChatMessage(
+            message,
+            sessionManager.getUserId(),
+            matchesListBean.id,
+            imageUrl,
+            System.currentTimeMillis()
+        )
         myChatRef.push().setValue(chatMessage).addOnSuccessListener {
             edtMessage.setText("")
         }
@@ -269,19 +280,19 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 //                )!!
 //                pictureFile = Utils.getCameraFile(this@ChatActivity)
 
-                uploadFile(photoUri,true)
-            }else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
+                uploadFile(photoUri, true)
+            } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
                 if (data?.clipData != null) {
                     val count = data.clipData?.itemCount
                     for (i in 0 until count!!) {
                         val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
-                        uploadFile(imageUri,true)
+                        uploadFile(imageUri, true)
                     }
 
                 } else if (data?.data != null) {
                     // if single image is selected
                     val imageUri: Uri = data.data!!
-                    uploadFile(imageUri,true)
+                    uploadFile(imageUri, true)
                 }
 
 //                try {
@@ -295,14 +306,18 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
         }
     }
 
-    private fun uploadFile(photoUri: Uri, isImageUpload: Boolean){
+    private fun uploadFile(photoUri: Uri, isImageUpload: Boolean) {
         chatViewModel.setIsLoading(true)
 
-        Log.d(TAG,"Upload file started....")
+        Log.d(TAG, "Upload file started....")
         val fileStorage: StorageReference = if (isImageUpload) {
-            storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
-        } else{
-            storageRef.child(Constants.FirebaseConstant.VOICE.plus("/").plus(System.currentTimeMillis()))
+            storageRef.child(
+                Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
+            )
+        } else {
+            storageRef.child(
+                Constants.FirebaseConstant.VOICE.plus("/").plus(System.currentTimeMillis())
+            )
         }
 
 //        val imagesRef = storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
@@ -312,11 +327,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 taskSnapshot.storage.downloadUrl.addOnSuccessListener {
                     val imageUrl = it.toString()
                     chatViewModel.setIsLoading(false)
-                    Log.d(TAG,"File upload success....")
+                    Log.d(TAG, "File upload success....")
                     if (isImageUpload)
-                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE,imageUrl)
+                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE, imageUrl)
                     else
-                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_VOICE,imageUrl)
+                        sendMessage(Constants.FirebaseConstant.MSG_TYPE_VOICE, imageUrl)
                 }
             }
 
@@ -348,7 +363,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
 
             try {
-                Log.d(TAG,"Recording started....")
+                Log.d(TAG, "Recording started....")
                 prepare()
             } catch (e: IOException) {
                 Log.e("LOG_TAG", "prepare() failed")
@@ -365,8 +380,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
         }
         recorder = null
         val voiceUri = Uri.fromFile(File(voiceFileName!!))
-        Log.d(TAG,"Recording ended....")
-        uploadFile(voiceUri,false)
+        Log.d(TAG, "Recording ended....")
+        uploadFile(voiceUri, false)
     }
 
     private fun isAudioPermissionGranted() {

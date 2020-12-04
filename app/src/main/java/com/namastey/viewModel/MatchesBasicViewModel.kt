@@ -21,22 +21,22 @@ class MatchesBasicViewModel constructor(
     private lateinit var job: Job
 
 
-    fun getUserDetails() {
-        setIsLoading(true)
-        job = GlobalScope.launch(Dispatchers.Main) {
-            try {
-                if (matchesBasicView.isInternetAvailable()) {
-                   Log.e("MatchesProfileBasicVM", "isInternetAvailable: \t true")
-                } else {
-                    setIsLoading(false)
-                    matchesBasicView.showMsg(R.string.no_internet)
-                }
-            } catch (t: Throwable) {
-                setIsLoading(false)
-                matchesBasicView.onHandleException(t)
-            }
-        }
-    }
+//    fun getUserDetails() {
+//        setIsLoading(true)
+//        job = GlobalScope.launch(Dispatchers.Main) {
+//            try {
+//                if (matchesBasicView.isInternetAvailable()) {
+//                   Log.e("MatchesProfileBasicVM", "isInternetAvailable: \t true")
+//                } else {
+//                    setIsLoading(false)
+//                    matchesBasicView.showMsg(R.string.no_internet)
+//                }
+//            } catch (t: Throwable) {
+//                setIsLoading(false)
+//                matchesBasicView.onHandleException(t)
+//            }
+//        }
+//    }
 
 
     fun onDestroy(){

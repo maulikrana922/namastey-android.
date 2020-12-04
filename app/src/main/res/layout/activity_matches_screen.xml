@@ -163,6 +163,7 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
+                    android:onClick="onClickOpenChat"
                     android:background="@drawable/rounded_white_solid">
 
                     <com.namastey.customViews.CustomTextView
@@ -191,6 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_16sdp"
+                    android:onClick="onClickBack"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:background="@drawable/rounded_red_solid">
 
