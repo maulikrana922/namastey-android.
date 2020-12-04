@@ -73,7 +73,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        matchesBasicViewModel.getUserDetails()
+//        matchesBasicViewModel.getUserDetails()
 
     }
 

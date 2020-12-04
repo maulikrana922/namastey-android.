@@ -208,6 +208,7 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         ) {
             override fun onBtnClick(id: Int) {
                 dismiss()
+                finishActivity(requireActivity())
             }
         }.show()
     }

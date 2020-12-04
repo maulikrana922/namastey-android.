@@ -15,7 +15,7 @@ import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message.view.*
 
 class MessagesAdapter(
-    var matchesList: ArrayList<MatchesListBean>,
+    var matchesList: List<MatchesListBean>,
     var activity: Activity,
     var onMatchesItemClick: OnMatchesItemClick
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {

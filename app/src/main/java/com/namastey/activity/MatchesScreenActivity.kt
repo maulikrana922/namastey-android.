@@ -46,10 +46,6 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
     override fun getBindingVariable() = BR.viewModel
 
     private fun initUi() {
-        mainBackToNamastey.setOnClickListener {
-            onBackPressed()
-        }
-
         getIntentData()
     }
 
@@ -101,5 +97,19 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
         )
         sendIntent.type = "text/plain"
         startActivity(sendIntent)
+    }
+
+    fun onClickOpenChat(view: View) {
+        val intent = Intent(this@MatchesScreenActivity, MatchesActivity::class.java)
+        intent.putExtra("onClickMatches", true)
+        openActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        finishActivity()
+    }
+
+    fun onClickBack(view: View) {
+        onBackPressed()
     }
 }

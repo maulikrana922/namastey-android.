@@ -84,7 +84,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private var position = -1
     private var editPost = false
-    private var completeSignUp = 0
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
     }
@@ -291,9 +290,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     private fun initData() {
-
-        completeSignUp = sessionManager.getCompleteSignUp()
-
         videoList =
             intent.getParcelableArrayListExtra<VideoBean>(Constants.VIDEO_LIST) as ArrayList<VideoBean>
 
@@ -328,7 +324,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
                 this.position = position
@@ -350,7 +346,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 SignUpFragment.getInstance(true), Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
                 albumViewModel.likeUserProfile(videoBean.id, isLike)
@@ -445,7 +441,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     Constants.SIGNUP_FRAGMENT
                 )
             } else {
-                if (completeSignUp == 0) {
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     completeSignUpDialog()
                 } else {
                     if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
