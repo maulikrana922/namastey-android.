@@ -46,7 +46,6 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             etOtp.text.toString(),
             sessionManager.getFirebaseToken()//"" // Todo: add firebase token
         )
-
     }
 
     override fun onSuccessResponse(user: User) {
@@ -54,6 +53,8 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
         sessionManager.setGuestUser(false)
+       // sessionManager.setIntegerValue(user.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
+        sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
         var isFromProfile = false
         var isRegister = 0
         if (arguments != null && arguments!!.containsKey("isFromProfile")) {

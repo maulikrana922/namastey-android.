@@ -20,7 +20,9 @@ data class User(
     var user_type : Int,
     var username: String,
     @Ignore
-    var is_register: Int
+    var is_register: Int,
+    @Ignore
+    var is_completly_signup: Int
 ) {
-    constructor() : this(0,0,"","", "", "", "","",0,0,"",0)
+    constructor() : this(0,0,"","", "", "", "","",0,0,"",0, 0)
 }

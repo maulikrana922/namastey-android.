@@ -83,7 +83,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     private fun initData() {
-        completeSignUp = sessionManager.getCompleteSignUp()
+        completeSignUp = sessionManager.getIntegerValue(Constants.KEY_IS_COMPLETE_PROFILE)
 
 //        profileViewModel.getUserDetails()
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
@@ -109,7 +109,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         sessionManager.setUserGender(profileBean.gender)
         sessionManager.setUserId(profileBean.user_id)
 
-        sessionManager.setCompleteSignUp(profileBean.is_completly_signup)
+      //  sessionManager.setIntegerValue(profileBean.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
 
         if (profileBean.is_completly_signup == 1) {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
