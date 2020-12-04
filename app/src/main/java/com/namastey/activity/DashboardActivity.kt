@@ -41,6 +41,7 @@ import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.MentionListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
+import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnMentionUserItemClick
@@ -223,6 +224,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
             startActivity(intent)
         }
+        bottomSheetDialogShare.ivShareApp.setOnClickListener {
+            addFragment(
+                ShareAppFragment.getInstance(
+                ),
+                Constants.SHARE_APP_FRAGMENT
+            )
+        }
+
 
         bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
             var facebookAppFound = false

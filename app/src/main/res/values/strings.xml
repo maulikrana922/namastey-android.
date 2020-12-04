@@ -418,5 +418,7 @@
     <string name="boost_again">Boost Again</string>
     <string name="your_boost_was_a_success">Your boost was a success!</string>
     <string name="complete_profile">Your profile is not complete, please complete your profile.</string>
+    <string name="forward_to">Forward to</string>
+    <string name="send_to">Send to</string>
 
 </resources>
