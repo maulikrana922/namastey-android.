@@ -62,7 +62,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var membershipList = ArrayList<MembershipBean>()
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
-    private var completeSignUp = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +82,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     private fun initData() {
-        completeSignUp = sessionManager.getIntegerValue(Constants.KEY_IS_COMPLETE_PROFILE)
 
 //        profileViewModel.getUserDetails()
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
@@ -610,7 +608,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (completeSignUp == 0) {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
                 openActivity(this@ProfileActivity, MembershipActivity())
@@ -629,7 +627,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             )
             //showBoostDialog(R.layout.dialog_boost_skipline)
         } else {
-            if (completeSignUp == 0) {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
                 showBoostDialog(R.layout.dialog_boosts)
