@@ -52,6 +52,7 @@ object Constants {
     const val GET_JOB = "job-list"
     const val ADD_UPDATE_JOB = "add-job"
     const val REMOVE_JOB = "job-remove"
+    const val DELETE_ACCOUNT = "delete-account"
     const val ADD_SOCIAL_LINK = "social-links-add"
     const val GET_SOCIAL_LINK = "social-links-list"
     const val ADD_ALBUM = "add-album"

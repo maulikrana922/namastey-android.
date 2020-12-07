@@ -230,6 +230,17 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             sessionManager.setIntegerValue(0, Constants.PROFILE_TYPE)
     }
 
+    override fun onLogoutSuccess(msg: String) {
+        sessionManager.logout()
+        val intent = Intent(this@SettingsActivity, SignUpActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
+    }
+
+    override fun onLogoutFailed(msg: String, error: Int) {
+    }
+
     fun onClickLogout(view: View) {
 
         object : CustomAlertDialog(
@@ -241,11 +252,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                        sessionManager.logout()
-                        val intent = Intent(this@SettingsActivity, SignUpActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        openActivity(intent)
+                      settingsViewModel.logOut()
                     }
                     btnNeg.id -> {
                         dismiss()

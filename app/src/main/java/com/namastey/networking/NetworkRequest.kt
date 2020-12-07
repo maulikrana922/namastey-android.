@@ -97,6 +97,12 @@ interface NetworkRequest {
     @HTTP(method = "DELETE", path = Constants.REMOVE_JOB, hasBody = true)
     fun requestToRemoveJobAsync(@Field(Constants.ID) id: Long): Deferred<AppResponse<Any>>
 
+    @DELETE(Constants.DELETE_ACCOUNT)
+    fun requestToRemoveAccount(): Deferred<AppResponse<Any>>
+
+    @GET(Constants.LOGOUT)
+    fun requestToLogout(): Deferred<AppResponse<Any>>
+
     @POST(Constants.ADD_SOCIAL_LINK)
     fun addSocialLinksAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<ArrayList<SocialAccountBean>>>
 
