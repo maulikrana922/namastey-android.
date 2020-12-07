@@ -32,6 +32,12 @@ class UserSearchAdapter(
         holder.bind(position)
     }
 
+    fun filterList(filteredName: ArrayList<DashboardBean>) {
+        this.userList = filteredName
+        notifyDataSetChanged()
+    }
+
+
     inner class ViewHolder(itemView: View) :
         androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 

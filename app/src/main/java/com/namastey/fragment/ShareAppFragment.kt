@@ -25,13 +25,11 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.ShareAppViewModel
 import kotlinx.android.synthetic.main.dialog_following_user.view.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
-import kotlinx.android.synthetic.main.fragment_share_app.ivAddFriendClose
-import kotlinx.android.synthetic.main.fragment_share_app.tvFindMultiple
 import javax.inject.Inject
 
 
 class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView, FollowingView,
-    OnItemClick, OnSelectUserItemClick,View.OnClickListener {
+    OnItemClick, OnSelectUserItemClick, View.OnClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -42,10 +40,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
     private lateinit var fragmentShareAppBinding: FragmentShareAppBinding
     private lateinit var shareAppViewModel: ShareAppViewModel
     private lateinit var layoutView: View
-    private var followersList: ArrayList<DashboardBean> = ArrayList()
+    private var followingList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var followingAdapter: UserSearchAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private var userId: Long = -1
+    private var coverImgUrl: String = ""
+
     private var isMyProfile = false
     private var recentList: ArrayList<DashboardBean> = ArrayList()
     private var selectUserIdList: ArrayList<Long> = ArrayList()
@@ -58,10 +58,11 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(userId: Long) =
+        fun getInstance(userId: Long, coverImage: String) =
             ShareAppFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
+                    putString(Constants.COVER_IMAGE, coverImage)
                 }
             }
     }
@@ -89,6 +90,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
         ivAddFriendClose.setOnClickListener(this)
         tvFindMultiple.setOnClickListener(this)
         userId = arguments!!.getLong(Constants.USER_ID)
+        coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE)!!
 
         searchFriend.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -98,9 +100,15 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
                     rvSearchUser.visibility = View.VISIBLE
-                    shareAppViewModel.getSearchUser(newText.trim())
-                } else
-                    rvSearchUser.visibility = View.GONE
+                    //shareAppViewModel.getSearchUser(newText.trim())
+                    filter(newText.toString().trim())
+
+                } else {
+                    filter("")
+                    shareAppViewModel.getFollowingList(userId)
+                    //rvSearchUser.visibility = View.GONE
+                }
+
                 return true
             }
         })
@@ -120,7 +128,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         tvFindMultiple.visibility = View.VISIBLE
 
-        followersList = list
+        followingList = list
         recentList.clear()
         if (list.size != 0) {
 
@@ -133,12 +141,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
                 rvRecentUser.adapter = followingAdapter
             } else {
                 followingAdapter =
-                    UserSearchAdapter(followersList, requireActivity(), false, this, this)
+                    UserSearchAdapter(followingList, requireActivity(), false, this, this)
                 rvRecentUser.adapter = followingAdapter
             }
 
             followingAdapter =
-                UserSearchAdapter(followersList, requireActivity(), false, this, this)
+                UserSearchAdapter(followingList, requireActivity(), false, this, this)
             rvFollowingUser.adapter = followingAdapter
 
         }
@@ -157,9 +165,9 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
         alertDialog.show()
 
 
-        GlideLib.loadImageUrlRoundCorner(activity!!,  dialogView.ivFollwing, value.profile_url)
-        GlideLib.loadImageUrlRoundCorner(activity!!,  dialogView.ivPostImage, value.cover_image_url)
-
+        GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivFollwing, value.profile_url)
+        GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivPostImage, coverImgUrl)
+        dialogView.tvFollowing.text = value.username
         dialogView.tv_cancel.setOnClickListener {
             alertDialog.dismiss()
         }
@@ -199,12 +207,27 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
                         followingAdapter.displayRadioButton()
                 } else {
                     if (selectUserIdList.size > 0)
-                        //shareAppViewModel.sendMultipleFollow(selectUserIdList.joinToString())
+                    //shareAppViewModel.sendMultipleFollow(selectUserIdList.joinToString())
                     else
                         fragmentManager!!.popBackStack()
                 }
             }
         }
     }
+
+    private fun filter(text: String) {
+        Log.e("FollowersFragment", "filter: text: $text")
+        //new array list that will hold the filtered data
+        val filteredName: ArrayList<DashboardBean> = ArrayList()
+
+        for (followers in followingList) {
+            if (followers.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(followers)
+            }
+        }
+
+        followingAdapter.filterList(filteredName)
+    }
+
 
 }

@@ -422,5 +422,6 @@
     <string name="complete_profile">Your profile is not complete, please complete your profile.</string>
     <string name="forward_to">Forward to</string>
     <string name="send_to">Send to</string>
+    <string name="leave_a_message">Leave a message</string>
 
 </resources>

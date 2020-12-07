@@ -130,16 +130,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/recent"
+            android:visibility="gone"
             android:textColor="@color/colorBlack"
             app:typeface="MULI_EXTRA_BOLD" />
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecentUser"
+            android:id="@+id/rvRecentUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

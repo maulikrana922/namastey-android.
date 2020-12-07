@@ -224,7 +224,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             addFragment(
-                ShareAppFragment.getInstance(dashboardBean.user_id),
+                ShareAppFragment.getInstance(sessionManager.getUserId(),dashboardBean.cover_image_url),
                 Constants.SHARE_APP_FRAGMENT
             )
         }
