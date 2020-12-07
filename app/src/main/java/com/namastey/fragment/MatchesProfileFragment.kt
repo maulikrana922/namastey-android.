@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.*
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
@@ -13,9 +14,12 @@ import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentMatchesProfileBinding
 import com.namastey.listeners.OnMatchesItemClick
+import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
+import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
@@ -28,13 +32,17 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentAddFriendBinding: FragmentMatchesProfileBinding
     private lateinit var matchesProfileViewModel: MatchesProfileViewModel
     private lateinit var layoutView: View
     private lateinit var matchedProfileAdapter: MatchedProfileAdapter
     private lateinit var messagesAdapter: MessagesAdapter
     private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
-
+    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var myChatRef: DatabaseReference = database.reference
     override fun getViewModel() = matchesProfileViewModel
 
     override fun getLayoutId() = R.layout.fragment_matches_profile
@@ -68,8 +76,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     private fun initUI() {
-
-
         /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
         /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
@@ -115,7 +121,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         rvMatchesList.adapter = matchedProfileAdapter
         val messageList : List<MatchesListBean> = data.filter { s -> s.is_read == 1 }
 
-        if (messageList.size == 0){
+        if (messageList.isEmpty()){
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
@@ -126,6 +132,41 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         }
         messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
+
+        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
+
+        messageList.forEachIndexed { index, matchedBean ->
+
+            val chatId = if (sessionManager.getUserId() < matchedBean.id)
+                sessionManager.getUserId().toString().plus(matchedBean.id)
+            else
+                matchedBean.id.toString().plus(sessionManager.getUserId())
+
+            val lastQuery: Query = myChatRef.child(chatId).orderByKey().limitToLast(1)
+
+            lastQuery.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
+                        Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
+
+                        when (chatMessage.message) {
+                            Constants.FirebaseConstant.MSG_TYPE_IMAGE -> messageList[index].message = getString(R.string.image)
+                            Constants.FirebaseConstant.MSG_TYPE_VOICE -> messageList[index].message = getString(R.string.voice_message)
+                            else -> messageList[index].message = chatMessage.message
+                        }
+
+                    }
+                    messagesAdapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w("Firebase :", "Failed to read value.", error.toException())
+                }
+            })
+
+        }
     }
 
     override fun onDestroy() {

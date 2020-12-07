@@ -95,7 +95,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
             }
             chatViewModel.setIsLoading(true)
             myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
-            myChatRef.addValueEventListener(object : ValueEventListener {
+
+            val chatId = if (sessionManager.getUserId() < matchesListBean.id)
+                sessionManager.getUserId().toString().plus(matchesListBean.id)
+            else
+                matchesListBean.id.toString().plus(sessionManager.getUserId())
+
+            myChatRef.child(chatId).addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
@@ -231,7 +237,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
             imageUrl,
             System.currentTimeMillis()
         )
-        myChatRef.push().setValue(chatMessage).addOnSuccessListener {
+        val chatId = if (sessionManager.getUserId() < matchesListBean.id)
+            sessionManager.getUserId().toString().plus(matchesListBean.id)
+        else
+            matchesListBean.id.toString().plus(sessionManager.getUserId())
+
+        myChatRef.child(chatId).push().setValue(chatMessage).addOnSuccessListener {
             edtMessage.setText("")
         }
     }
