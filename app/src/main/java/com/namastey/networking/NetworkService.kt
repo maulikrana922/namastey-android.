@@ -110,6 +110,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToRemoveJob(id: Long): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestToRemoveJobAsync(id).await() }
 
+    suspend fun requestToDeleteAccount(): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestToRemoveAccount().await() }
+
+    suspend fun requestToLogout(): AppResponse<Any> =
+        withContext(Dispatchers.IO) { networkRequest.requestToLogout().await() }
+
     suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
         withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
 
