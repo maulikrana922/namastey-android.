@@ -75,7 +75,11 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layoutView = view
+        setupViewModel()
+        initUI()
+    }
 
+    private fun setupViewModel() {
         // Inflate the layout for this fragment
         shareAppViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ShareAppViewModel::class.java)
@@ -83,7 +87,6 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
 
         fragmentShareAppBinding = getViewBinding()
         fragmentShareAppBinding.viewModel = shareAppViewModel
-        initUI()
     }
 
     private fun initUI() {
@@ -91,6 +94,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
         tvFindMultiple.setOnClickListener(this)
         userId = arguments!!.getLong(Constants.USER_ID)
         coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE)!!
+        shareAppViewModel.getFollowingList(userId)
 
         searchFriend.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -98,7 +102,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
+                if (newText!!.isNotEmpty()) {
                     rvSearchUser.visibility = View.VISIBLE
                     //shareAppViewModel.getSearchUser(newText.trim())
                     filter(newText.toString().trim())
@@ -113,7 +117,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
             }
         })
 
-        shareAppViewModel.getFollowingList(userId)
+        searchFriend.setOnCloseListener {
+            filter("")
+            shareAppViewModel.getFollowingList(userId)
+
+            false
+        }
     }
 
     override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
@@ -220,14 +229,17 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(), FindFriendView
         //new array list that will hold the filtered data
         val filteredName: ArrayList<DashboardBean> = ArrayList()
 
-        for (followers in followingList) {
-            if (followers.username.toLowerCase().contains(text.toLowerCase())) {
-                filteredName.add(followers)
+        for (following in followingList) {
+            if (following.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(following)
             }
         }
 
         followingAdapter.filterList(filteredName)
     }
 
-
+    override fun onDestroy() {
+        shareAppViewModel.onDestroy()
+        super.onDestroy()
+    }
 }

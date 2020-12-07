@@ -34,6 +34,7 @@ import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.UpnextVideoAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
+import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
@@ -540,6 +541,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             startActivity(shareIntent)
         }
 
+        bottomSheetDialogShare.ivShareApp.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+
+            addFragment(
+                ShareAppFragment.getInstance(sessionManager.getUserId(),videoBean.cover_image_url),
+                Constants.SHARE_APP_FRAGMENT
+            )
+        }
+
         bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
             var intent =
                 packageManager.getLaunchIntentForPackage("com.instagram.android")
@@ -588,6 +598,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 startActivity(intent)
             }
         }
+
         bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
             try {
                 val pm: PackageManager = packageManager

@@ -28,7 +28,7 @@ class ShareAppViewModel  constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (followingView.isInternetAvailable()) {
+               // if (followingView.isInternetAvailable()) {
                     networkService.requestToGetFollowingList(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
@@ -39,10 +39,10 @@ class ShareAppViewModel  constructor(
                                 appResponse.error
                             )
                     }
-                } else {
+               /* } else {
                     setIsLoading(false)
                     followingView.showMsg(R.string.no_internet)
-                }
+                }*/
             } catch (t: Throwable) {
                 setIsLoading(false)
                 followingView.onHandleException(t)
