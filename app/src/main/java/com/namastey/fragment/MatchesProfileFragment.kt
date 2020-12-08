@@ -93,7 +93,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         if (matchesBean != null) {
 //            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
             val intent = Intent(requireActivity(), ChatActivity::class.java)
-            intent.putExtra("matchesListBean", matchesListBean)
             intent.putExtra("isFromProfile", false)
             intent.putExtra("matchesListBean", matchesBean)
             openActivity(intent)
