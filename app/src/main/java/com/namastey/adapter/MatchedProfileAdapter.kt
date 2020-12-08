@@ -68,7 +68,7 @@ class MatchedProfileAdapter(
             GlideLib.loadImage(activity, ivProfileImage, matchesListBean.profile_pic)
 
             llMatches.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(0, position, matchesListBean)
+                onMatchesItemClick.onMatchesItemClick(position, matchesListBean)
             }
 
         }

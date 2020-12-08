@@ -42,6 +42,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private lateinit var matchedProfileAdapter: MatchedProfileAdapter
     private lateinit var messagesAdapter: MessagesAdapter
     private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
+    private var messageList: ArrayList<MatchesListBean> = ArrayList()
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var myChatRef: DatabaseReference = database.reference
     override fun getViewModel() = matchesProfileViewModel
@@ -87,41 +88,56 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         super.onResume()
         matchesProfileViewModel.getMatchesList()
     }
-    override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
-        if (matchesListBean != null) {
-            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
-
+    override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean?) {
+        if (matchesBean != null) {
+//            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
             val intent = Intent(requireActivity(), ChatActivity::class.java)
-            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("matchesListBean", matchesBean)
             openActivity(intent)
+
+//            if (matchesBean.is_read == 0){
+//                val chatId = if (sessionManager.getUserId() < matchesBean.id)
+//                    sessionManager.getUserId().toString().plus(matchesBean.id)
+//                else
+//                    matchesBean.id.toString().plus(sessionManager.getUserId())
+//
+//                matchesListBean[position].is_read = 1
+//                matchedProfileAdapter.notifyItemChanged(position)
+//
+//                messageList.add(0,matchesBean)
+//                messagesAdapter.notifyItemInserted(0)
+//
+//            }
         }
     }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
 //        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
 
+        matchesListBean.clear()
         matchesListBean = data
-        if (data.size <= 10) {
-            tvLikesCount.text = data.size.toString()
+        if (matchesListBean.size <= 10) {
+            tvLikesCount.text = matchesListBean.size.toString()
         } else {
             tvLikesCount.text = "10+"
         }
 
-        if (data.size == 0) {
+        if (matchesListBean.size == 0) {
             ivBackgroundPicture.setImageResource(R.drawable.default_album)
         } else {
             GlideLib.loadImage(
                 requireContext(),
                 ivBackgroundPicture,
-                data[0].profile_pic
+                matchesListBean[0].profile_pic
             )
         }
 
-        // tvLikesCount.text = data.size.toString()
-        matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
+        // tvLikesCount.text = matchesListBean.size.toString()
+        matchedProfileAdapter = MatchedProfileAdapter(matchesListBean, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
-        val messageList : List<MatchesListBean> = data.filter { s -> s.is_read == 1 }
+        val messageListTemp : List<MatchesListBean> = matchesListBean.filter { s -> s.is_read == 1 }
 
+        this.messageList = messageListTemp as ArrayList<MatchesListBean>
         if (messageList.isEmpty()){
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
@@ -131,7 +147,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
         }
-        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
+        messagesAdapter = MessagesAdapter(this.messageList, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
 
         myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
@@ -145,7 +161,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
             val lastQuery: Query = myChatRef.child(chatId).orderByKey().limitToLast(1)
 
-            lastQuery.addValueEventListener(object : ValueEventListener {
+            lastQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!

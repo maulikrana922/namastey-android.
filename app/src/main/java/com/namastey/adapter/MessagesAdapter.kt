@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.row_message.view.mainCategoryView
 import kotlinx.android.synthetic.main.row_message.view.tvCategory
 
 class MessagesAdapter(
-    var matchesList: List<MatchesListBean>,
+    var matchesList: ArrayList<MatchesListBean>,
     var activity: Activity,
     var onMatchesItemClick: OnMatchesItemClick
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
@@ -44,7 +44,7 @@ class MessagesAdapter(
             Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
 
             llMessageView.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(0, position, matchesListBean)
+                onMatchesItemClick.onMatchesItemClick(position, matchesListBean)
             }
 
             /*  if (matchesListBean.is_read == 1)
