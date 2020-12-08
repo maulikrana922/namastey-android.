@@ -3,44 +3,56 @@ package com.namastey.activity
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
+import com.namastey.BuildConfig
 import com.namastey.R
+import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.SliderAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
+import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
+import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
 import com.namastey.uiView.ProfileView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -682,6 +694,21 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
     }
 
+    override fun onSuccessReport(msg: String) {
+
+    }
+
+    override fun onSuccessBlockUser(msg: String) {
+
+    }
+
+    override fun onSuccessSavePost(msg: String) {
+    }
+
+    override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
+
+    }
+
     inner class SliderTimer : TimerTask() {
         override fun run() {
             this@ProfileActivity.runOnUiThread(Runnable {
@@ -697,6 +724,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     fun onClickProfileMore(view: View) {
         if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
             openActivity(this@ProfileActivity, SettingsActivity())
+
     }
 
     fun onClickPassport(view: View) {
@@ -723,6 +751,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             openActivity(this, PassportContentActivity())
         }
     }
+
+
 
     /**
      * show dialog of boost
@@ -872,5 +902,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             alertDialog.dismiss()
         }
     }
+
+
 
 }

@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 class ProfileBean() : Parcelable {
 
+    var id: Long = 0
     var user_id: Long = 0
     var email: String = ""
     var name: String = ""
@@ -20,6 +21,9 @@ class ProfileBean() : Parcelable {
     var is_completly_signup: Int = 0
     var min_age: Int = 0
     var max_age: Int = 0
+    var profile_url: String = ""
+    var cover_image_url: String = ""
+    var video_url: String = ""
     var following: Int = 0
     var followers: Int = 0
     var viewers: Int = 0
