@@ -60,6 +60,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     private val TAG = "ChatActivity"
     private var recorder: MediaRecorder? = null
     private var voiceFileName: String? = ""
+    private var isFromProfile = false
 
     override fun getViewModel() = chatViewModel
 
@@ -80,6 +81,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
 
     private fun initData() {
+        if (intent.hasExtra("isFromProfile")){
+            isFromProfile = intent.getBooleanExtra("isFromProfile", false)
+            Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
+        }
+
         if (intent.hasExtra("matchesListBean")) {
             matchesListBean =
                 intent.getParcelableExtra<MatchesListBean>("matchesListBean") as MatchesListBean
@@ -129,8 +135,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                     Log.w("Firebase :", "Failed to read value.", error.toException())
                 }
             })
-
-
 
             if (matchesListBean.profile_pic != "") {
                 GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)

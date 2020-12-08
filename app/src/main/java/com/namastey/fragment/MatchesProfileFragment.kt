@@ -93,6 +93,8 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         if (matchesBean != null) {
 //            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
             val intent = Intent(requireActivity(), ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", false)
             intent.putExtra("matchesListBean", matchesBean)
             openActivity(intent)
 
@@ -143,7 +145,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
-        } else {
+        }else{
             ivNoMatch.visibility = View.GONE
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE

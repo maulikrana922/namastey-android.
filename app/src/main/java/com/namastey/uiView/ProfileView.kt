@@ -11,7 +11,6 @@ interface ProfileView: BaseView {
     fun onSuccessReport(msg: String)
     fun onSuccessBlockUser(msg: String)
     fun onSuccessSavePost(msg: String)
-    fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>)
 
 //    fun onSuccessProfileResponse(user: User)
 }

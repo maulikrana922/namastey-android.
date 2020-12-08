@@ -174,27 +174,6 @@ class ProfileViewModel constructor(
         }
     }
 
-    fun getFeedList(subCatId: Int) {
-        setIsLoading(true)
-        job = GlobalScope.launch(Dispatchers.Main) {
-            try {
-                if (profileView.isInternetAvailable()) {
-                    networkService.requestToGetFeed(subCatId).let { appResponse ->
-                        setIsLoading(false)
-                        if (appResponse.status == Constants.OK)
-                            profileView.onSuccessFeed(appResponse.data!!)
-                        else
-                            profileView.onFailed(appResponse.message, appResponse.error)
-                    }
-                } else {
-                    setIsLoading(false)
-                    profileView.showMsg(R.string.no_internet)
-                }
-            } catch (t: Throwable) {
-                profileView.onHandleException(t)
-            }
-        }
-    }
 
     fun savePost(postId: Long) {
         setIsLoading(true)

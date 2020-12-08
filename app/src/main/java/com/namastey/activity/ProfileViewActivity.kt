@@ -21,33 +21,30 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumListProfileAdapter
-import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
 import com.namastey.fragment.ShareAppFragment
-import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.view_private_account.*
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     ProfileView,
     OnViewAlbumClick,
-    OnItemClick,
-    OnFeedItemClick {
+    OnItemClick {
+    //OnFeedItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -60,8 +57,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var profileBean = ProfileBean()
     private var isMyProfile = false
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
-    private var feedList: ArrayList<DashboardBean> = ArrayList()
-    private lateinit var feedAdapter: FeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +118,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     private fun fillValue(profileBean: ProfileBean) {
         tvProfileUsername.text = profileBean.username
-        tvAbouteDesc.text = profileBean.about_me
+        if (profileBean.about_me != "" && profileBean.about_me != null) {
+            tvAbouteDesc.visibility = View.VISIBLE
+            tvAbouteDesc.text = profileBean.about_me
+        } else {
+            tvAbouteDesc.visibility = View.GONE
+        }
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
@@ -156,7 +156,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
                 rvAlbumList.visibility = View.VISIBLE
-                viewPrivateAccount.visibility = View.VISIBLE
+                viewPrivateAccount.visibility = View.GONE
             } else if (profileBean.user_profile_type == 1) {
                 layoutPrivateAccount.visibility = View.VISIBLE
                 rvAlbumList.visibility = View.GONE
@@ -683,19 +683,71 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             displayReportUserDialog(profileBean)
         }
         bottomSheetDialogShare.tvShareSave.setOnClickListener {
-           // bottomSheetDialogShare.dismiss()
+            // bottomSheetDialogShare.dismiss()
             displayReportUserDialog(profileBean)
         }
 
         //Send Message
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
+            //bottomSheetDialogShare.dismiss()
+            clickSendMessage(profileBean)
         }
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
             bottomSheetDialogShare.dismiss()
         }
 
         bottomSheetDialogShare.show()
+    }
+
+    private fun clickSendMessage(profileBean: ProfileBean) {
+        val matchesListBean = MatchesListBean()
+        matchesListBean.id = profileBean.user_id
+        matchesListBean.username = profileBean.username
+        matchesListBean.profile_pic = profileBean.profileUrl
+        matchesListBean.is_read = 1 //Todo: Change value from profileBean
+
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+            //user_profile_type = 0 = Public
+            //user_profile_type = 1 = private
+            if (profileBean.user_profile_type == 0) {
+                val intent = Intent(this, ChatActivity::class.java)
+                intent.putExtra("matchesListBean", matchesListBean)
+                intent.putExtra("isFromProfile", true)
+                openActivity(intent)
+            } else if (profileBean.user_profile_type == 1) {
+                //set Dialog
+                dialogPrivateUser()
+            }
+        } else {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", true)
+            openActivity(intent)
+        }
+    }
+
+    private fun dialogPrivateUser() {
+        object : CustomAlertDialog(
+            this,
+            getString(R.string.private_account_message),
+            getString(R.string.ok),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                      //  openActivity(this@ProfileViewActivity, DashboardActivity())
+                        val intent = Intent(this@ProfileViewActivity, DashboardActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 
     /**
@@ -796,42 +848,15 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             msg, getString(R.string.ok), ""
         ) {
             override fun onBtnClick(id: Int) {
-                dismiss()
-                feedList.clear()
-                profileViewModel.getFeedList(0)
+                //dismiss()
+                val intent = Intent(this@ProfileViewActivity, DashboardActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
             }
         }.show()
     }
 
     override fun onSuccessSavePost(msg: String) {
     }
-
-    override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
-        feedList = dashboardList
-        feedAdapter = FeedAdapter(feedList, this@ProfileViewActivity, this, sessionManager)
-        viewpagerFeed.adapter = feedAdapter
-    }
-
-    override fun onItemClick(dashboardBean: DashboardBean) {
-    }
-
-    override fun onCommentClick(position: Int, postId: Long) {
-    }
-
-    override fun onProfileLikeClick(position: Int, dashboardBean: DashboardBean, isLike: Int) {
-    }
-
-    override fun onUserProfileClick(dashboardBean: DashboardBean) {
-    }
-
-    override fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int) {
-    }
-
-    override fun onPostViewer(postId: Long) {
-    }
-
-    override fun onFeedBoost(userId: Long) {
-    }
-
-
 }
