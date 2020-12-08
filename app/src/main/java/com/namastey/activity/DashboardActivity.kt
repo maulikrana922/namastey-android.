@@ -14,6 +14,8 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -1132,6 +1134,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         feedList[position] = dashboardBean
         feedAdapter.notifyItemChanged(position)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (position < feedList.size )
+                viewpagerFeed.currentItem = position + 1
+        }, 1000)
     }
 
     override fun onSuccessFollow(msg: String) {

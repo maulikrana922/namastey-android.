@@ -88,6 +88,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         super.onResume()
         matchesProfileViewModel.getMatchesList()
     }
+
     override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean?) {
         if (matchesBean != null) {
 //            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
@@ -135,14 +136,14 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         // tvLikesCount.text = matchesListBean.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(matchesListBean, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
-        val messageListTemp : List<MatchesListBean> = matchesListBean.filter { s -> s.is_read == 1 }
+        val messageListTemp: List<MatchesListBean> = matchesListBean.filter { s -> s.is_read == 1 }
 
         this.messageList = messageListTemp as ArrayList<MatchesListBean>
-        if (messageList.isEmpty()){
+        if (messageList.isEmpty()) {
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
-        }else{
+        } else {
             ivNoMatch.visibility = View.GONE
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
@@ -167,7 +168,8 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                         val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
                         Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
 
-                        messageList[index].timestamp = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                        messageList[index].timestamp =
+                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
                         messageList[index].message = chatMessage.message
                         messageList[index].url = chatMessage.url
                     }

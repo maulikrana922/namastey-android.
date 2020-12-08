@@ -23,8 +23,6 @@ class FeedAdapter(
     var sessionManager: SessionManager
 ) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
-    private var currentPosition = 0;
-
     val handlerVideo = Handler(activity.mainLooper)
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -234,27 +232,6 @@ class FeedAdapter(
             }
 
             tvFeedLike.setOnClickListener {
-                currentPosition += 1
-                if (currentPosition < feedList.size) {
-                    //textView.setText(feedList.get(currentPosition).video_url);
-
-                    postVideo.setVideoPath(feedList.get(currentPosition).video_url)
-                    postVideo.requestFocus()
-                    postVideo.start()
-
-                    postVideo.setOnPreparedListener { mp ->
-                        //Start Playback
-                        postVideo.start()
-
-                        handlerVideo.postDelayed({
-                            onFeedItemClick.onPostViewer(feedList.get(currentPosition).id)
-                        }, 5000)
-
-                        //Loop Video
-                        mp!!.isLooping = true
-                    }
-                }
-
                 if (dashboardBean.is_like == 1)
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 0)
                 else
