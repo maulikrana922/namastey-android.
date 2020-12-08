@@ -18,6 +18,8 @@ class MatchesListBean() : Parcelable {
     var is_read: Int = 0
     var sub_cat_details: ArrayList<FollowRequestSubCategoryBean> = ArrayList()
     var message: String = ""
+    var timestamp: String = ""
+    var url: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -32,6 +34,8 @@ class MatchesListBean() : Parcelable {
         is_read = parcel.readInt() ?: 0
         sub_cat_details = parcel.createTypedArrayList(FollowRequestSubCategoryBean) ?: ArrayList()
         message = parcel.readString() ?: ""
+        timestamp = parcel.readString() ?: ""
+        url = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -47,6 +51,8 @@ class MatchesListBean() : Parcelable {
         parcel.writeInt(is_read)
         parcel.writeTypedList(sub_cat_details)
         parcel.writeString(message)
+        parcel.writeString(timestamp)
+        parcel.writeString(url)
     }
 
     override fun describeContents(): Int {

@@ -20,6 +20,7 @@ import com.namastey.uiView.MatchesProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
@@ -150,12 +151,9 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                         val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
                         Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
 
-                        when (chatMessage.message) {
-                            Constants.FirebaseConstant.MSG_TYPE_IMAGE -> messageList[index].message = getString(R.string.image)
-                            Constants.FirebaseConstant.MSG_TYPE_VOICE -> messageList[index].message = getString(R.string.voice_message)
-                            else -> messageList[index].message = chatMessage.message
-                        }
-
+                        messageList[index].timestamp = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                        messageList[index].message = chatMessage.message
+                        messageList[index].url = chatMessage.url
                     }
                     messagesAdapter.notifyDataSetChanged()
                 }

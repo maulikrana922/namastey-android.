@@ -81,6 +81,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.namastey.customViews.CustomTextView
+                    android:visibility="gone"
                     android:id="@+id/tvUnreadMsg"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="@dimen/_18sdp"
@@ -111,6 +112,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center|start"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     app:typeface="MULI_SEMIBOLD" />
@@ -120,7 +122,6 @@
                     android:id="@+id/tvLastTime"
                     style="@style/tvWrapWhiteStyle"
                     android:gravity="center"
-                    android:text="10:55 AM"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     app:typeface="MULI_SEMIBOLD" />

@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -24,6 +25,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 object Utils {
@@ -299,6 +301,26 @@ object Utils {
         )
     }
 
+    /**
+     * Get duration of audio from firebase url
+     */
+    fun getMediaDuration(voiceUrl: String): String {
+        return try {
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(voiceUrl)
+            val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            retriever.release()
+            String.format("%02d:%02d ",
+                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toMinutes(it) },
+                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toSeconds(it) }
+                    ?.minus(TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong())))
+            )
+        }catch (e: Exception){
+            e.printStackTrace()
+            "00:00"
+        }
+//        return duration?.toLongOrNull() ?: 0
+    }
 
     fun setHtmlText(textView: TextView, text: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -79,7 +79,7 @@ class ChatAdapter(
             }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
                 visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,llRecordingReceived)
                 tvRecordingTimeReceived.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                tvRecordedDurationReceived.text = getMediaDuration(chatMessage.url)
+                tvRecordedDurationReceived.text = Utils.getMediaDuration(chatMessage.url)
             }else {
                 visibleSendMessage(flImageReceived,llMessageReceived,llRecordingReceived,llMessageReceived)
                 tvMessageReceived.text = chatMessage.message
@@ -132,7 +132,7 @@ class ChatAdapter(
             }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llRecordingSend)
                 tvRecordingTimeSend.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                tvRecordedDurationSend.text = getMediaDuration(chatMessage.url)
+                tvRecordedDurationSend.text = Utils.getMediaDuration(chatMessage.url)
             }else {
                 visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llMessageSend)
                 tvMessageSend.text = chatMessage.message
@@ -236,24 +236,5 @@ class ChatAdapter(
     }
     override fun getItemCount() = chatMsgList.size
 
-    /**
-     * Get duration of audio from firebase url
-     */
-    fun getMediaDuration(voiceUrl: String): String {
-        return try {
-            val retriever = MediaMetadataRetriever()
-            retriever.setDataSource(voiceUrl)
-            val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-            retriever.release()
-            String.format("%02d:%02d ",
-                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toMinutes(it) },
-                duration?.toLong()?.let { TimeUnit.MILLISECONDS.toSeconds(it) }
-                    ?.minus(TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong())))
-            )
-        }catch (e: Exception){
-            e.printStackTrace()
-            "00:00"
-        }
-//        return duration?.toLongOrNull() ?: 0
-    }
+
 }
