@@ -252,7 +252,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
                                 val user = auth.currentUser
-                                Log.d("TAG", "signInWithCredential:success")
+                                Log.e("TAG", "signInWithCredential:success")
+                                Log.d("AddLinksFragment", "FaceBookLogin user: \t $user")
 //                                val graphRequest = GraphRequest(
 //                                    loginResult.accessToken,
 //                                    "/user",

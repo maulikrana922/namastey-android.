@@ -41,9 +41,14 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private var categoryBean: CategoryBean = CategoryBean()
 
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
-        for (category in categoryBeanList) {
-            categoryBean = category
-        }
+         for (category in categoryBeanList) {
+             categoryBean = category
+             if(categoryBean.id  in selectCategoryId){
+                 Log.e("SelectCategoryFragment", "categoryBean.id: \t ${categoryBean.id}")
+                 selectedCategoryList.add(categoryBean)
+             }
+         }
+         Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")
 
         val selectCategoryAdapter =
             SelectCategoryAdapter(
@@ -92,17 +97,15 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
         selectedCategoryList = sessionManager.getCategoryList()
         selectCategoryId = sessionManager.getChooseInterestList()
         selectCategoryViewModel.getCategoryList()
-        Log.e("SelectCategoryFragment", "selectCategoryId: \t $selectCategoryId")
+        Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")
 
-        for (categoryId in selectCategoryId) {
-            Log.e("SelectCategoryFragment", "category: \t $categoryId")
-            selectedCategoryList.add(categoryBean)
-            if (categoryId == categoryBean.id) {
-                selectCategoryId.add(categoryId)
+        /*for (category in allCategoryList) {
+            categoryBean = category
+            if(categoryBean.id  in selectCategoryId){
+                Log.e("SelectCategoryFragment", "categoryBean.id: \t ${categoryBean.id}")
+                selectedCategoryList.add(categoryBean)
             }
-        }
-
-
+        }*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,37 +124,42 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
             ivCloseCategory -> {
                 fragmentManager!!.popBackStack()
             }
-           /* btnSelectCategoryDone -> {
+            /* btnSelectCategoryDone -> {
+                 if (selectedCategoryList.size >= 3) {
+                     sessionManager.setCategoryList(ArrayList())
+                     sessionManager.setCategoryList(selectedCategoryList)
+                     if (activity is EditProfileActivity) {
+                         targetFragment!!.onActivityResult(
+                             Constants.REQUEST_CODE,
+                             Activity.RESULT_OK,
+                             Intent().putExtra("fromSelectCategory", true)
+                         )
+                     }
+                     activity!!.onBackPressed()
+                 } else {
+                     object : CustomAlertDialog(
+                         activity!!,
+                         resources.getString(R.string.choose_minimum_category),
+                         getString(R.string.ok),
+                         ""
+                     ) {
+                         override fun onBtnClick(id: Int) {
+                             dismiss()
+                         }
+                     }.show()
+                 }
+             }*/
+
+            btnSelectCategoryDone -> {
+                Log.e(
+                    "SelectCategoryFragment",
+                    "selectedCategoryList: \t ${selectedCategoryList.size}"
+                )
                 if (selectedCategoryList.size >= 3) {
                     sessionManager.setCategoryList(ArrayList())
                     sessionManager.setCategoryList(selectedCategoryList)
-                    if (activity is EditProfileActivity) {
-                        targetFragment!!.onActivityResult(
-                            Constants.REQUEST_CODE,
-                            Activity.RESULT_OK,
-                            Intent().putExtra("fromSelectCategory", true)
-                        )
-                    }
-                    activity!!.onBackPressed()
-                } else {
-                    object : CustomAlertDialog(
-                        activity!!,
-                        resources.getString(R.string.choose_minimum_category),
-                        getString(R.string.ok),
-                        ""
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            dismiss()
-                        }
-                    }.show()
-                }
-            }*/
-            btnSelectCategoryDone -> {
-                if (selectCategoryId.size >= 3) {
-                    sessionManager.setCategoryList(ArrayList())
-                    sessionManager.setCategoryList(selectedCategoryList)
-                    sessionManager.setChooseInterestList(ArrayList())
-                    sessionManager.setChooseInterestList(selectCategoryId)
+                    //sessionManager.setChooseInterestList(ArrayList())
+                    // sessionManager.setChooseInterestList(selectCategoryId)
                     if (activity is EditProfileActivity) {
                         targetFragment!!.onActivityResult(
                             Constants.REQUEST_CODE,
@@ -174,10 +182,6 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
                 }
             }
         }
-
-        Log.e("SelectCategoryFragment", "selectedCategoryList: \t ${sessionManager.getCategoryList().size}")
-        Log.e("SelectCategoryFragment", "getChooseInterestList: \t ${sessionManager.getChooseInterestList().size}")
-
     }
 
     override fun onDestroy() {
@@ -190,16 +194,16 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
      */
     @SuppressLint("NewApi")
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
-        /*if (selectedCategoryList.any { it.id == categoryBean.id }) {
+        if (selectedCategoryList.any { it.id == categoryBean.id }) {
             selectedCategoryList.removeIf { bean -> bean.id == categoryBean.id }
         } else {
             selectedCategoryList.add(categoryBean)
-        }*/
-        if (selectCategoryId.any { it == categoryBean.id }) {
-            selectCategoryId.removeIf { bean -> bean == categoryBean.id }
-        } else {
-            selectCategoryId.add(categoryBean.id)
         }
+        /* if (selectCategoryId.any { it == categoryBean.id }) {
+             selectCategoryId.removeIf { bean -> bean == categoryBean.id }
+         } else {
+             selectCategoryId.add(categoryBean.id)
+         }*/
     }
 
     override fun onSubCategoryItemClick(position: Int) {

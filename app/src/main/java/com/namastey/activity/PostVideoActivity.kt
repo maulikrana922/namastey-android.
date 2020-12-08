@@ -42,8 +42,8 @@ import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.*
 import com.namastey.viewModel.PostVideoViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.coroutines.CoroutineScope
@@ -58,7 +58,7 @@ import javax.inject.Inject
 
 
 class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoView,
-        OnMentionUserItemClick {
+    OnMentionUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -92,7 +92,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         getActivityComponent().inject(this)
 
         postVideoViewModel =
-                ViewModelProviders.of(this, viewModelFactory).get(PostVideoViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(PostVideoViewModel::class.java)
         activityPostVideoBinding = bindViewData()
         activityPostVideoBinding.viewModel = postVideoViewModel
 
@@ -339,7 +339,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 if (isFromEditPost)
                     jsonObject.addProperty(Constants.VIDEO_POST_ID, videoBean.id)
 
-                 postVideoViewModel.postVideoDesc(jsonObject)
+                postVideoViewModel.postVideoDesc(jsonObject)
             }
         }
     }
@@ -424,7 +424,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 try {
                     val selectedImage = data!!.data
                     val filePathColumn =
-                            arrayOf(MediaStore.Images.Media.DATA)
+                        arrayOf(MediaStore.Images.Media.DATA)
                     val cursor: Cursor? = this@PostVideoActivity.contentResolver.query(
                         selectedImage!!,
                         filePathColumn, null, null, null
@@ -571,7 +571,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      */
     fun onClickSelectAlbum(view: View) {
         val albumBuilder =
-                AlertDialog.Builder(this@PostVideoActivity)
+            AlertDialog.Builder(this@PostVideoActivity)
         albumBuilder.setTitle(getString(R.string.select_album))
 
         val arrayAdapter = ArrayAdapter<String>(
@@ -669,7 +669,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         rvMentionList.visibility = View.GONE
     }
 
-     fun onClickFacebook(view: View) {
+    fun onClickFacebook(view: View) {
 
     }
 }
