@@ -46,7 +46,8 @@ import kotlin.collections.ArrayList
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     ProfileView,
     OnViewAlbumClick,
-    OnItemClick, OnFeedItemClick {
+    OnItemClick,
+    OnFeedItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -582,7 +583,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             addFragment(
-                ShareAppFragment.getInstance(sessionManager.getUserId(),profileBean.cover_image_url),
+                ShareAppFragment.getInstance(sessionManager.getUserId(),profileBean.profileUrl), //Todo:Change resposne
                 Constants.SHARE_APP_FRAGMENT
             )
         }
@@ -666,7 +667,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-            profileViewModel.savePost(profileBean.id)
+            profileViewModel.savePost(profileBean.user_id)
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
             displayReportUserDialog(profileBean)
@@ -693,7 +694,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             this@ProfileViewActivity,
             dashboardBean.username,
             getString(R.string.msg_report_user),
-            dashboardBean.profile_url,
+            dashboardBean.profileUrl,
             getString(R.string.report_user),
             resources.getString(R.string.no_thanks)
         ) {
@@ -714,7 +715,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             this@ProfileViewActivity,
             dashboardBean.username,
             getString(R.string.msg_block_user),
-            dashboardBean.profile_url,
+            dashboardBean.profileUrl,
             getString(R.string.block_user),
             resources.getString(R.string.no_thanks)
         ) {
