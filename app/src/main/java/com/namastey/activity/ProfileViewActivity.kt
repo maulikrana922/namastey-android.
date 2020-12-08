@@ -486,18 +486,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileLike(view: View) {
+        if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            completeSignUpDialog()
+        }
+
         if (!sessionManager.isGuestUser()) {
             if (profileBean.is_like == 1) {
                 profileViewModel.likeUserProfile(profileBean.user_id, 0)
             } else {
-                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    completeSignUpDialog()
-                } else {
-                    profileViewModel.likeUserProfile(profileBean.user_id, 1)
-                }
+                profileViewModel.likeUserProfile(profileBean.user_id, 1)
             }
         }
-
     }
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {

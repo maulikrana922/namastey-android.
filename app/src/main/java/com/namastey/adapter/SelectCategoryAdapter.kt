@@ -40,17 +40,18 @@ class SelectCategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvSelectCategory.text = categoryList[position].name
 
-            /*if (sessionManager.getCategoryList().any { it.id == categoryList[position].id }) {
-                tvSelectCategory.setTextColor(Color.RED)
-            } else {
-                tvSelectCategory.setTextColor(Color.BLACK)
-            }*/
 
-            if (selectedCategoryList.contains(categoryList[position].id)) {
+            if (sessionManager.getCategoryList().any { it.id == categoryList[position].id }) {
                 tvSelectCategory.setTextColor(Color.RED)
             } else {
                 tvSelectCategory.setTextColor(Color.BLACK)
             }
+
+            /*if (selectedCategoryList.contains(categoryList[position].id)) {
+                tvSelectCategory.setTextColor(Color.RED)
+            } else {
+                tvSelectCategory.setTextColor(Color.BLACK)
+            }*/
 
 
             llMainSelectCategory.setOnClickListener {
