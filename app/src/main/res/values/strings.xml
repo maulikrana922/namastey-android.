@@ -430,5 +430,6 @@
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
+    <string name="private_account_message">This user have private account.</string>
 
 </resources>

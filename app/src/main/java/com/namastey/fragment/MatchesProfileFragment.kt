@@ -86,12 +86,14 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         super.onResume()
         matchesProfileViewModel.getMatchesList()
     }
+
     override fun onMatchesItemClick(value: Long, position: Int, matchesListBean: MatchesListBean?) {
         if (matchesListBean != null) {
             Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
 
             val intent = Intent(requireActivity(), ChatActivity::class.java)
             intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", false)
             openActivity(intent)
         }
     }
@@ -119,13 +121,13 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         // tvLikesCount.text = data.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(data, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
-        val messageList : List<MatchesListBean> = data.filter { s -> s.is_read == 1 }
+        val messageList: List<MatchesListBean> = data.filter { s -> s.is_read == 1 }
 
-        if (messageList.isEmpty()){
+        if (messageList.isEmpty()) {
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
-        }else{
+        } else {
             ivNoMatch.visibility = View.GONE
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
@@ -151,8 +153,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                         Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
 
                         when (chatMessage.message) {
-                            Constants.FirebaseConstant.MSG_TYPE_IMAGE -> messageList[index].message = getString(R.string.image)
-                            Constants.FirebaseConstant.MSG_TYPE_VOICE -> messageList[index].message = getString(R.string.voice_message)
+                            Constants.FirebaseConstant.MSG_TYPE_IMAGE -> messageList[index].message =
+                                getString(R.string.image)
+                            Constants.FirebaseConstant.MSG_TYPE_VOICE -> messageList[index].message =
+                                getString(R.string.voice_message)
                             else -> messageList[index].message = chatMessage.message
                         }
 
