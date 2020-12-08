@@ -296,6 +296,8 @@
     <string name="no_follow_request">No follow request</string>
     <string name="liked">Liked</string>
     <string name="msg_matches">Matched found with %1$s</string>
+    <string name="image">Image</string>
+    <string name="voice_message">Voice message</string>
 
 
     <!--Account Settings screen-->
@@ -423,5 +425,9 @@
     <string name="forward_to">Forward to</string>
     <string name="send_to">Send to</string>
     <string name="leave_a_message">Leave a message</string>
+
+
+    <!--Manage Account-->
+    <string name="msg_delete">Are you sure you want to Delete your Account?</string>
 
 </resources>

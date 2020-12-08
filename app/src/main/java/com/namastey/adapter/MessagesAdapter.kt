@@ -68,6 +68,7 @@ class MessagesAdapter(
             }
 
             tvUsername.text = matchesListBean.username
+            tvLastMsg.text = matchesListBean.message
 
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 

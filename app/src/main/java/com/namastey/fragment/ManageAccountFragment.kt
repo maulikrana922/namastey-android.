@@ -2,14 +2,18 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
+import com.namastey.activity.JobListingActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentManageAccountBinding
+import com.namastey.model.JobBean
+import com.namastey.uiView.JobView
 import com.namastey.uiView.ManageAccountView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
@@ -19,7 +23,7 @@ import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_manage_account.*
 import javax.inject.Inject
 
-class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), ManageAccountView {
+class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), ManageAccountView{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -29,6 +33,7 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
     private lateinit var fragmentBlockListBinding: FragmentManageAccountBinding
     private lateinit var manageAccountViewModel: ManageAccountViewModel
     private lateinit var layoutView: View
+
 
     override fun getViewModel() = manageAccountViewModel
 
@@ -93,6 +98,9 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
         tvLogout.setOnClickListener {
             onLogoutClick()
         }
+        tvDeleteAccount.setOnClickListener {
+            onDeleteAccountClick()
+        }
     }
 
     private fun onLogoutClick() {
@@ -105,11 +113,7 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                        sessionManager.logout()
-                        val intent = Intent(requireActivity(), SignUpActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        openActivity(intent)
+                        manageAccountViewModel.logOut()
                     }
                     btnNeg.id -> {
                         dismiss()
@@ -117,6 +121,46 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
                 }
             }
         }.show()
+    }
+
+    private fun onDeleteAccountClick() {
+        object : CustomAlertDialog(
+            requireActivity(),
+            resources.getString(R.string.msg_delete),
+            getString(R.string.yes),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        manageAccountViewModel.removeAccount()
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
+
+    override fun onLogoutSuccess(msg: String) {
+        sessionManager.logout()
+        val intent = Intent(requireActivity(), SignUpActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
+    }
+
+    override fun onLogoutFailed(msg: String, error: Int) {
+    }
+
+    override fun onSuccess(msg: String) {
+       Log.e("msg",msg)
+        sessionManager.logout()
+        val intent = Intent(requireActivity(), SignUpActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
     }
 
     override fun onResume() {

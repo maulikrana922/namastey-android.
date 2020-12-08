@@ -17,6 +17,7 @@ class MatchesListBean() : Parcelable {
     var profile_pic: String = ""
     var is_read: Int = 0
     var sub_cat_details: ArrayList<FollowRequestSubCategoryBean> = ArrayList()
+    var message: String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -30,6 +31,7 @@ class MatchesListBean() : Parcelable {
         profile_pic = parcel.readString() ?: ""
         is_read = parcel.readInt() ?: 0
         sub_cat_details = parcel.createTypedArrayList(FollowRequestSubCategoryBean) ?: ArrayList()
+        message = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -44,6 +46,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeString(profile_pic)
         parcel.writeInt(is_read)
         parcel.writeTypedList(sub_cat_details)
+        parcel.writeString(message)
     }
 
     override fun describeContents(): Int {

@@ -97,6 +97,32 @@ class SettingsViewModel constructor(
         }
     }
 
+    fun logOut() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (settingsView.isInternetAvailable()) {
+                    networkService.requestToLogout()
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                settingsView.onLogoutSuccess(appResponse.message)
+                            } else {
+                                settingsView.onLogoutFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    settingsView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                settingsView.onHandleException(exception)
+            }
+        }
+
+    }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

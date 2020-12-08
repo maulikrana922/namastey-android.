@@ -225,6 +225,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is ChatActivity -> (activity!! as ChatActivity).isInternetAvailable()
                 activity!! is MatchesScreenActivity -> (activity!! as MatchesScreenActivity).isInternetAvailable()
                 activity!! is LocationActivity -> (activity!! as LocationActivity).isInternetAvailable()
+                activity!! is AlbumVideoActivity -> (activity!! as AlbumVideoActivity).isInternetAvailable()
                 else -> false
             }
         } else false

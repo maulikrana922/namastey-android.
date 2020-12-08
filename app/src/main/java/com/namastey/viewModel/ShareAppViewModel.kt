@@ -12,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ShareAppViewModel  constructor(
+class ShareAppViewModel constructor(
     private val networkService: NetworkService,
     private val dbHelper: DBHelper,
     baseView: BaseView
@@ -28,7 +28,7 @@ class ShareAppViewModel  constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-               // if (followingView.isInternetAvailable()) {
+                if (followingView.isInternetAvailable()) {
                     networkService.requestToGetFollowingList(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
@@ -39,36 +39,16 @@ class ShareAppViewModel  constructor(
                                 appResponse.error
                             )
                     }
-               /* } else {
+                } else {
                     setIsLoading(false)
                     followingView.showMsg(R.string.no_internet)
-                }*/
+                }
             } catch (t: Throwable) {
                 setIsLoading(false)
                 followingView.onHandleException(t)
             }
         }
 
-
-    }
-
-    fun getSearchUser(searchStr: String) {
-        setIsLoading(true)
-        job = GlobalScope.launch(Dispatchers.Main) {
-            try {
-                networkService.requestToSearchUser(searchStr).let { appResponse ->
-                    setIsLoading(false)
-                    if (appResponse.status == Constants.OK)
-                        findFriendView.onSuccessSearchList(appResponse.data!!)
-                    else
-                        findFriendView.onFailed(appResponse.message, appResponse.error)
-                }
-
-            } catch (t: Throwable) {
-                setIsLoading(false)
-                findFriendView.onHandleException(t)
-            }
-        }
 
     }
 
