@@ -151,6 +151,98 @@ class ProfileViewModel constructor(
         }
     }
 
+    fun blockUser(userId: Long, isBlock: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToBlockUser(userId, isBlock).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessBlockUser(appResponse.message)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
+    fun getFeedList(subCatId: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToGetFeed(subCatId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessFeed(appResponse.data!!)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
+    fun savePost(postId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToSavePost(postId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessSavePost(appResponse.message)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+
+    }
+
+    fun reportUser(reportUserId: Long, reason: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToReportUser(reportUserId, reason).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessReport(appResponse.message)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

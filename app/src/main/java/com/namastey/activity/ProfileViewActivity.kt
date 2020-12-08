@@ -1,6 +1,10 @@
 package com.namastey.activity
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -10,30 +14,39 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumListProfileAdapter
+import com.namastey.adapter.FeedAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
+import com.namastey.fragment.ShareAppFragment
+import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
 import com.namastey.uiView.ProfileView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.view_private_account.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     ProfileView,
     OnViewAlbumClick,
-    OnItemClick {
+    OnItemClick, OnFeedItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -45,6 +58,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private lateinit var albumListProfileAdapter: AlbumListProfileAdapter
     private var profileBean = ProfileBean()
     private var isMyProfile = false
+    private lateinit var bottomSheetDialogShare: BottomSheetDialog
+    private var feedList: ArrayList<DashboardBean> = ArrayList()
+    private lateinit var feedAdapter: FeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -466,6 +482,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickProfileMore(view: View) {
         if (sessionManager.getUserId() == profileBean.user_id)
             openActivity(this@ProfileViewActivity, SettingsActivity())
+        else openShareOptionDialog(profileBean)
     }
 
     fun onClickProfileLike(view: View) {
@@ -501,6 +518,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
+
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
 
@@ -515,4 +533,293 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
         tvFollowersCount.text = profileBean.followers.toString()
     }
+
+    /**
+     * Display share option if user login
+     */
+    private fun openShareOptionDialog(profileBean: ProfileBean) {
+        bottomSheetDialogShare = BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
+        bottomSheetDialogShare.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_feed,
+                null
+            )
+        )
+        bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShare.setCancelable(true)
+
+        bottomSheetDialogShare.ivShareSave.setImageResource(R.drawable.ic_share_report)
+        bottomSheetDialogShare.tvShareSave.text=getString(R.string.report)
+
+        bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send)
+        bottomSheetDialogShare.tvShareReport.text=getString(R.string.send_message)
+
+        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+        }
+
+        // Share on Twitter app if install otherwise web link
+        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+            val tweetUrl =
+                StringBuilder("https://twitter.com/intent/tweet?text=")
+            tweetUrl.append(profileBean.video_url)
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(tweetUrl.toString())
+            )
+            val matches: List<ResolveInfo> =
+                packageManager.queryIntentActivities(intent, 0)
+            for (info in matches) {
+                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                        .startsWith("com.twitter")
+                ) {
+                    intent.setPackage(info.activityInfo.packageName)
+                }
+            }
+            startActivity(intent)
+        }
+        bottomSheetDialogShare.ivShareApp.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+            addFragment(
+                ShareAppFragment.getInstance(sessionManager.getUserId(),profileBean.cover_image_url),
+                Constants.SHARE_APP_FRAGMENT
+            )
+        }
+
+
+        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+            var facebookAppFound = false
+            var shareIntent =
+                Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, profileBean.video_url)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(profileBean.video_url))
+
+            val pm: PackageManager = packageManager
+            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+            for (app in activityList) {
+                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                    val activityInfo: ActivityInfo = app.activityInfo
+                    val name =
+                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
+                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    shareIntent.component = name
+                    facebookAppFound = true
+                    break
+                }
+            }
+            if (!facebookAppFound) {
+                val sharerUrl =
+                    "https://www.facebook.com/sharer/sharer.php?u=${profileBean.video_url}"
+                shareIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(sharerUrl)
+                )
+            }
+            startActivity(shareIntent)
+        }
+
+        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+
+        }
+
+        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+            try {
+                val pm: PackageManager = packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                sendIntent.type = "*/*"
+                sendIntent.type = "text/plain"
+                sendIntent.setPackage("com.whatsapp")
+
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_STREAM,
+//                    Uri.parse(dashboardBean.video_url)
+
+                sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    Uri.parse(profileBean.video_url)
+                )
+                startActivity(sendIntent)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(
+                    this@ProfileViewActivity,
+                    getString(R.string.whatsapp_not_install_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                e.printStackTrace()
+            }
+        }
+
+        bottomSheetDialogShare.ivShareOther.setOnClickListener {
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT, profileBean.video_url
+            )
+            sendIntent.type = "text/plain"
+            startActivity(sendIntent)
+        }
+        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+            profileViewModel.savePost(profileBean.id)
+        }
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
+            displayReportUserDialog(profileBean)
+        }
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
+            displayReportUserDialog(profileBean)
+        }
+
+        bottomSheetDialogShare.tvShareBlock.setOnClickListener {
+            displayBlockUserDialog(profileBean)
+        }
+        bottomSheetDialogShare.ivShareBlock.setOnClickListener {
+            displayBlockUserDialog(profileBean)
+        }
+
+        bottomSheetDialogShare.show()
+    }
+
+    /**
+     * Display dialog of report user
+     */
+    private fun displayReportUserDialog(dashboardBean: ProfileBean) {
+        object : CustomCommonAlertDialog(
+            this@ProfileViewActivity,
+            dashboardBean.username,
+            getString(R.string.msg_report_user),
+            dashboardBean.profile_url,
+            getString(R.string.report_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        showReportTypeDialog(dashboardBean.user_id)
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    private fun displayBlockUserDialog(dashboardBean: ProfileBean) {
+        object : CustomCommonAlertDialog(
+            this@ProfileViewActivity,
+            dashboardBean.username,
+            getString(R.string.msg_block_user),
+            dashboardBean.profile_url,
+            getString(R.string.block_user),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        profileViewModel.blockUser(dashboardBean.user_id, 1)
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    /**
+     * Display dialog with option (Reason)
+     */
+    private fun showReportTypeDialog(reportUserId: Long) {
+        val bottomSheetReport: BottomSheetDialog =
+            BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
+        bottomSheetReport.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetReport.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetReport.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetReport.setCancelable(false)
+
+        bottomSheetReport.tvPhotoTake.text = getString(R.string.its_spam)
+        bottomSheetReport.tvPhotoTake.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoChoose.text = getString(R.string.its_inappropriate)
+        bottomSheetReport.tvPhotoChoose.setTextColor(Color.RED)
+        bottomSheetReport.tvPhotoCancel.setTextColor(Color.BLUE)
+
+        bottomSheetReport.tvPhotoTake.setOnClickListener {
+            bottomSheetReport.dismiss()
+            profileViewModel.reportUser(reportUserId, getString(R.string.its_spam))
+        }
+        bottomSheetReport.tvPhotoChoose.setOnClickListener {
+            bottomSheetReport.dismiss()
+            profileViewModel.reportUser(reportUserId, getString(R.string.its_inappropriate))
+        }
+        bottomSheetReport.tvPhotoCancel.setOnClickListener {
+            bottomSheetReport.dismiss()
+        }
+        bottomSheetReport.show()
+    }
+
+
+    override fun onSuccessReport(msg: String) {
+        object : CustomAlertDialog(
+            this@ProfileViewActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
+
+    override fun onSuccessBlockUser(msg: String) {
+        object : CustomAlertDialog(
+            this@ProfileViewActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+                feedList.clear()
+                profileViewModel.getFeedList(0)
+            }
+        }.show()
+    }
+
+    override fun onSuccessSavePost(msg: String) {
+    }
+
+    override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
+        feedList = dashboardList
+        feedAdapter = FeedAdapter(feedList, this@ProfileViewActivity, this, sessionManager)
+        viewpagerFeed.adapter = feedAdapter
+    }
+
+    override fun onItemClick(dashboardBean: DashboardBean) {
+    }
+
+    override fun onCommentClick(position: Int, postId: Long) {
+    }
+
+    override fun onProfileLikeClick(position: Int, dashboardBean: DashboardBean, isLike: Int) {
+    }
+
+    override fun onUserProfileClick(dashboardBean: DashboardBean) {
+    }
+
+    override fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int) {
+    }
+
+    override fun onPostViewer(postId: Long) {
+    }
+
+    override fun onFeedBoost(userId: Long) {
+    }
+
+
 }

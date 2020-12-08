@@ -8,6 +8,10 @@ interface ProfileView: BaseView {
     fun onSuccessResponse(profileBean: ProfileBean)
     fun onSuccessFollow(profileBean: ProfileBean)
     fun onSuccessProfileLike(dashboardBean: DashboardBean)
+    fun onSuccessReport(msg: String)
+    fun onSuccessBlockUser(msg: String)
+    fun onSuccessSavePost(msg: String)
+    fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>)
 
 //    fun onSuccessProfileResponse(user: User)
 }
