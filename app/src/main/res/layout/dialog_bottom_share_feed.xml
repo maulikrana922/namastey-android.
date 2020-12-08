@@ -75,19 +75,19 @@
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
                 <ProgressBar
-                    android:visibility="gone"
                     android:id="@+id/progress_bar"
                     android:layout_width="@dimen/_45sdp"
                     android:layout_height="@dimen/_45sdp"
                     android:layout_gravity="center"
-                    android:indeterminate="false"
-                    android:padding="@dimen/_3sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:indeterminate="false"
                     android:max="100"
+                    android:padding="@dimen/_3sdp"
                     android:progress="0"
+                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
-                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp"  />
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
                 <ImageView
                     android:id="@+id/ivShareTwitter"
@@ -142,8 +142,8 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/block"
-            android:textSize="14sp"
             android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/ivShareBlock"
             app:layout_constraintStart_toStartOf="@id/ivShareBlock"
             app:layout_constraintTop_toBottomOf="@id/ivShareBlock"
@@ -167,8 +167,8 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/save"
-            android:textSize="14sp"
             android:textColor="@color/colorDarkGray"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/ivShareSave"
             app:layout_constraintStart_toStartOf="@id/ivShareSave"
             app:layout_constraintTop_toBottomOf="@id/ivShareSave"
@@ -191,8 +191,10 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/report"
-            android:textSize="14sp"
             android:textColor="@color/colorDarkGray"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/ivShareReport"
             app:layout_constraintStart_toStartOf="@id/ivShareReport"
             app:layout_constraintTop_toBottomOf="@id/ivShareReport" />

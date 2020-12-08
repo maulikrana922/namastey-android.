@@ -46,7 +46,8 @@ import kotlin.collections.ArrayList
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     ProfileView,
     OnViewAlbumClick,
-    OnItemClick, OnFeedItemClick {
+    OnItemClick,
+    OnFeedItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -518,7 +519,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
-
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
 
@@ -549,11 +549,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
 
-        bottomSheetDialogShare.ivShareSave.setImageResource(R.drawable.ic_share_report)
-        bottomSheetDialogShare.tvShareSave.text=getString(R.string.report)
+        bottomSheetDialogShare.tvShareBlock.text = getString(R.string.privacy)
 
-        bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send)
-        bottomSheetDialogShare.tvShareReport.text=getString(R.string.send_message)
+        bottomSheetDialogShare.ivShareSave.setImageResource(R.drawable.ic_share_report)
+        bottomSheetDialogShare.tvShareSave.text = getString(R.string.report)
+
+        bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send_message)
+        bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
 
         bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -579,14 +581,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
             startActivity(intent)
         }
+
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             addFragment(
-                ShareAppFragment.getInstance(sessionManager.getUserId(),profileBean.cover_image_url),
+                ShareAppFragment.getInstance(
+                    sessionManager.getUserId(),
+                    profileBean.profileUrl
+                ), //Todo:Change resposne
                 Constants.SHARE_APP_FRAGMENT
             )
         }
-
 
         bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
             var facebookAppFound = false
@@ -664,22 +669,30 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
-        bottomSheetDialogShare.ivShareSave.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
-            profileViewModel.savePost(profileBean.id)
-        }
-        bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            displayReportUserDialog(profileBean)
-        }
-        bottomSheetDialogShare.tvShareReport.setOnClickListener {
-            displayReportUserDialog(profileBean)
-        }
 
+        //Privacy Click
         bottomSheetDialogShare.tvShareBlock.setOnClickListener {
             displayBlockUserDialog(profileBean)
         }
         bottomSheetDialogShare.ivShareBlock.setOnClickListener {
             displayBlockUserDialog(profileBean)
+        }
+
+        //Report click
+        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+            displayReportUserDialog(profileBean)
+        }
+        bottomSheetDialogShare.tvShareSave.setOnClickListener {
+           // bottomSheetDialogShare.dismiss()
+            displayReportUserDialog(profileBean)
+        }
+
+        //Send Message
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+        }
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
         }
 
         bottomSheetDialogShare.show()
@@ -693,7 +706,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             this@ProfileViewActivity,
             dashboardBean.username,
             getString(R.string.msg_report_user),
-            dashboardBean.profile_url,
+            dashboardBean.profileUrl,
             getString(R.string.report_user),
             resources.getString(R.string.no_thanks)
         ) {
@@ -714,7 +727,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             this@ProfileViewActivity,
             dashboardBean.username,
             getString(R.string.msg_block_user),
-            dashboardBean.profile_url,
+            dashboardBean.profileUrl,
             getString(R.string.block_user),
             resources.getString(R.string.no_thanks)
         ) {
@@ -765,7 +778,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
         bottomSheetReport.show()
     }
-
 
     override fun onSuccessReport(msg: String) {
         object : CustomAlertDialog(
