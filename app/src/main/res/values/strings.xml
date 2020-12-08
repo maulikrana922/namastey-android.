@@ -429,6 +429,6 @@
 
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
-    <string name="send_message">Send Message</string>
+    <string name="send_message">Send\nMessage</string>
 
 </resources>
