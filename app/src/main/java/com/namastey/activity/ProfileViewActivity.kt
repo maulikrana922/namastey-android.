@@ -156,16 +156,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
                 rvAlbumList.visibility = View.VISIBLE
-                viewPrivateAccount.visibility = View.GONE
             } else if (profileBean.user_profile_type == 1) {
                 layoutPrivateAccount.visibility = View.VISIBLE
                 rvAlbumList.visibility = View.GONE
-                viewPrivateAccount.visibility = View.GONE
             }
         } else {
             rvAlbumList.visibility = View.VISIBLE
             layoutPrivateAccount.visibility = View.GONE
-            viewPrivateAccount.visibility = View.GONE
         }
 
     }
@@ -704,51 +701,42 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         matchesListBean.id = profileBean.user_id
         matchesListBean.username = profileBean.username
         matchesListBean.profile_pic = profileBean.profileUrl
+        matchesListBean.is_match = profileBean.is_match
         matchesListBean.is_read = 1 //Todo: Change value from profileBean
 
-        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+        if (profileBean.user_id != sessionManager.getUserId()) {
             //user_profile_type = 0 = Public
             //user_profile_type = 1 = private
-            if (profileBean.user_profile_type == 0) {
+//            if (profileBean.user_profile_type == 0) {
+//            if (profileBean.safetyBean.who_can_send_message == 0) {
                 val intent = Intent(this, ChatActivity::class.java)
                 intent.putExtra("matchesListBean", matchesListBean)
                 intent.putExtra("isFromProfile", true)
+                intent.putExtra("whoCanSendMessage", profileBean.safetyBean.who_can_send_message)
                 openActivity(intent)
-            } else if (profileBean.user_profile_type == 1) {
+//            } else if (profileBean.user_profile_type == 1) {
                 //set Dialog
-                dialogPrivateUser()
-            }
-        } else {
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra("matchesListBean", matchesListBean)
-            intent.putExtra("isFromProfile", true)
-            openActivity(intent)
+//                dialogPrivateUser()
+//            }
         }
     }
 
-    private fun dialogPrivateUser() {
-        object : CustomAlertDialog(
-            this,
-            getString(R.string.private_account_message),
-            getString(R.string.ok),
-            getString(R.string.cancel)
-        ) {
-            override fun onBtnClick(id: Int) {
-                when (id) {
-                    btnPos.id -> {
-                      //  openActivity(this@ProfileViewActivity, DashboardActivity())
-                        val intent = Intent(this@ProfileViewActivity, DashboardActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                    }
-                    btnNeg.id -> {
-                        dismiss()
-                    }
-                }
-            }
-        }.show()
-    }
+//    private fun dialogPrivateUser() {
+//        object : CustomAlertDialog(
+//            this,
+//            getString(R.string.private_account_message),
+//            getString(R.string.ok),
+//            getString(R.string.cancel)
+//        ) {
+//            override fun onBtnClick(id: Int) {
+//                when (id) {
+//                    btnPos.id -> {
+//                        dismiss()
+//                    }
+//                }
+//            }
+//        }.show()
+//    }
 
     /**
      * Display dialog of report user

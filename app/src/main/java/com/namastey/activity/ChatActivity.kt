@@ -61,6 +61,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     private var recorder: MediaRecorder? = null
     private var voiceFileName: String? = ""
     private var isFromProfile = false
+    private var whoCanSendMessage: Int = -1
+    private var characterCount:  Int = 0
 
     override fun getViewModel() = chatViewModel
 
@@ -81,17 +83,25 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
     }
 
     private fun initData() {
-        if (intent.hasExtra("isFromProfile")){
-            isFromProfile = intent.getBooleanExtra("isFromProfile", false)
-            Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
-        }
-
         if (intent.hasExtra("matchesListBean")) {
             matchesListBean =
                 intent.getParcelableExtra<MatchesListBean>("matchesListBean") as MatchesListBean
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
+
+            if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")){
+                whoCanSendMessage = intent.getIntExtra("whoCanSendMessage",2)
+                isFromProfile = intent.getBooleanExtra("isFromProfile", false)
+                Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
+                if (matchesListBean.is_match == 1)
+                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+                else
+                    viewBuyNow.visibility = View.VISIBLE
+            }else{
+                chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+            }
+
 
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
@@ -153,14 +163,18 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                     when (event?.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            isAudioPermissionGranted()
-                            ivMic.setPadding(7, 7, 7, 7)
+                            if (matchesListBean.is_match == 1) {
+                                isAudioPermissionGranted()
+                                ivMic.setPadding(7, 7, 7, 7)
+                            }
                             return true
                         }
                         MotionEvent.ACTION_UP -> {
                             Log.d(TAG, "Call stop record....")
-                            ivMic.setPadding(0, 0, 0, 0)
-                            stopRecording()
+                            if (matchesListBean.is_match == 1) {
+                                ivMic.setPadding(0, 0, 0, 0)
+                                stopRecording()
+                            }
                         }
                     }
 
@@ -228,7 +242,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     fun onClickSendMessage(view: View) {
         if (edtMessage.text.trim().isNotEmpty()) {
-            sendMessage(edtMessage.text.toString(), "")
+            characterCount += edtMessage.text.length
+            if (matchesListBean.is_match == 1)
+                sendMessage(edtMessage.text.toString(), "")
+            else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER){   // your can send 280 character with public account else purchase plan
+                Log.d("ChatActivity : ", "Count  $characterCount")
+                sendMessage(edtMessage.text.toString(), "")
+            }
         }
     }
 
@@ -255,8 +275,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
      * Open camera and select image
      */
     fun onClickCamera(view: View) {
-        if (isPermissionGrantedForCamera())
-            capturePhoto()
+        if (matchesListBean.is_match == 1) {
+            if (isPermissionGrantedForCamera())
+                capturePhoto()
+        }
     }
 
     private fun capturePhoto() {
@@ -359,12 +381,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     fun onClickSelectImage(view: View) {
         // For latest versions API LEVEL 19+
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
-        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
-
+        if (matchesListBean.is_match == 1) {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
+        }
 //        val intent = Intent(Intent.ACTION_PICK)
 //        intent.type = "image/*"
 //        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
@@ -430,5 +453,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
         val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, matchesListBean.id)
         openActivity(intent)
+    }
+
+    fun onClickBuyNow(view: View) {
+        openActivity(this@ChatActivity,MembershipActivity())
     }
 }

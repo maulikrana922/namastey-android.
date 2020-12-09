@@ -39,7 +39,7 @@ class ProfileBean() : Parcelable {
     var age: Int = 0
     var is_like: Int = 0
     var video_url: String = ""
-
+    var is_match: Int  = 0
     @SerializedName("notification_tage")
     var notificationBean: ArrayList<NotificationOnOffBean> = ArrayList()
 
@@ -79,6 +79,7 @@ class ProfileBean() : Parcelable {
         age = parcel.readInt() ?: 0
         is_like = parcel.readInt() ?: 0
         video_url = parcel.readString() ?: ""
+        parcel.readInt() ?: 0
         notificationBean = parcel.createTypedArrayList(NotificationOnOffBean) ?: ArrayList()
         // safetyBean = parcel.createTypedArrayList(SafetyBean) ?: SafetyBean()
         safetyBean = parcel.readValue(SafetyBean::class.java.classLoader) as SafetyBean
@@ -114,6 +115,7 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(age)
         parcel.writeInt(is_like)
         parcel.writeString(video_url)
+        parcel.writeInt(is_match)
         parcel.writeTypedList(notificationBean)
         //parcel.writeTypedList(safetyBean)
         parcel.writeValue(safetyBean)
