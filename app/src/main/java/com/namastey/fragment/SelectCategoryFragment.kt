@@ -49,25 +49,28 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
          }
          Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")*/
 
-        for (category in categoryBeanList) {
-            categoryBean = category
-            if (categoryBean.id in selectCategoryId) {
-                selectCategoryId.add(categoryBean.id)
-                val selectCategoryIdHashSet = HashSet<Int>()
-                selectCategoryIdHashSet.addAll(selectCategoryId)
-                selectCategoryId.clear()
-                selectCategoryId.addAll(selectCategoryIdHashSet)
+        if (sessionManager.getCategoryList().size == 0) {
+            for (category in categoryBeanList) {
+                categoryBean = category
+                if (selectCategoryId.contains(categoryBean.id)) {
+                    selectedCategoryList.add(categoryBean)
+//                selectCategoryId.add(categoryBean.id)
+//                val selectCategoryIdHashSet = HashSet<Int>()
+//                selectCategoryIdHashSet.addAll(selectCategoryId)
+//                selectCategoryId.clear()
+//                selectCategoryId.addAll(selectCategoryIdHashSet)
 
-                //selectedCategoryList.add(categoryBean)
-                val categoryHashSet = HashSet<CategoryBean>()
-                categoryHashSet.addAll(selectedCategoryList)
-                selectedCategoryList.clear()
-                selectedCategoryList.addAll(categoryHashSet)
-               /* if (!selectedCategoryList.contains(categoryBean))
+                    //selectedCategoryList.add(categoryBean)
+//                val categoryHashSet = HashSet<CategoryBean>()
+//                categoryHashSet.addAll(selectedCategoryList)
+//                selectedCategoryList.clear()
+//                selectedCategoryList.addAll(categoryHashSet)
+                    /* if (!selectedCategoryList.contains(categoryBean))
                     selectedCategoryList.add(categoryBean)*/
+                }
             }
+            sessionManager.setCategoryList(selectedCategoryList)
         }
-
         val selectCategoryAdapter =
             SelectCategoryAdapter(
                 categoryBeanList,
@@ -113,7 +116,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
             )
         }
         selectedCategoryList = sessionManager.getCategoryList()
-        selectCategoryId = sessionManager.getChooseInterestList()
+        if (selectedCategoryList.size == 0)
+            selectCategoryId = sessionManager.getChooseInterestList()
+
         selectCategoryViewModel.getCategoryList()
     }
 
