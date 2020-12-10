@@ -269,7 +269,6 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:maxLines="4"
-                    android:text="@string/about_me_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
