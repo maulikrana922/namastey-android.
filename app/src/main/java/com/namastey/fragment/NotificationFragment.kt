@@ -21,7 +21,6 @@ import com.namastey.activity.MatchesActivity
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.adapter.NotificationAdapter
-import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentNotificationBinding
 import com.namastey.listeners.FragmentRefreshListener
@@ -52,9 +51,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private lateinit var notificationAdapter: NotificationAdapter
     private var activityList: ArrayList<ActivityListBean> = ArrayList()
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
-    private var videoBeanList : ArrayList<VideoBean> = ArrayList()
-
-
+    private var videoBeanList: ArrayList<VideoBean> = ArrayList()
     private var position = -1
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
@@ -98,7 +95,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         setupViewModel()
 
         initUI()
-        (activity as MatchesActivity).setFragmentRefreshListener(this)
+        // (activity as MatchesActivity).setFragmentRefreshListener(this)
     }
 
     private fun setupViewModel() {
@@ -204,7 +201,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
         customLayout.llLikes.setOnClickListener {
             dialog.dismiss()
-            showCustomDialog(1)
+            showCustomDialog(4)
 
             //Todo: Display dialog based on condition
             /* hideDoneImageView(ivLikesSelected)
@@ -779,56 +776,95 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     override fun onPostVideoClick(position: Int, postId: Long) {
         this.position = position
+        videoBeanList.clear()
         notificationViewModel.getPostVideoDetails(postId)
     }
 
     override fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>) {
-        Log.e("NotificationFragment", "onSuccessFollowRequest: \t data: ${data.size}")
-        if (data.get(0).profile_url != null && data.get(0).profile_url.isNotEmpty()) {
-            // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data.get(0).profile_url)
-            Log.e("NotificationFragment", "profile: \t data: ${data.get(0).profile_url}")
+        if (data.size >= 3) {
+            if (data[0].profile_url != null && data[0].profile_url.isNotEmpty()) {
+                // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data.get(0).profile_url)
+                Log.e("NotificationFragment", "profile: \t data: ${data[0].profile_url}")
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestFirst,
+                    data[0].profile_url
+                )
+            }
+            if (data[1].profile_url != null && data[1].profile_url.isNotEmpty()) {
+                Log.e("NotificationFragment", "profile: \t data: ${data[2].profile_url}")
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestSecond,
+                    data[1].profile_url
+                )
+            }
 
+            if (data[2].profile_url != null && data[2].profile_url.isNotEmpty()) {
+                Log.e("NotificationFragment", "profile: \t data: ${data[2].profile_url}")
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestThird,
+                    data[2].profile_url
+                )
+            }
+        } else if (data.size == 2) {
+            if (data[0].profile_url != null && data[0].profile_url.isNotEmpty()) {
+                // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data[0].profile_url)
+                Log.e("NotificationFragment", "profile: \t data: ${data[0].profile_url}")
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestFirst,
+                    data[0].profile_url
+                )
+            }
+
+            if (data[1].profile_url != null && data[1].profile_url.isNotEmpty()) {
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestSecond,
+                    data[1].profile_url
+                )
+            }
+        } else if (data.size == 1) {
+            if (data[0].profile_url != null && data[0].profile_url.isNotEmpty()) {
+                // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data[0].profile_url)
+                Log.e("NotificationFragment", "profile: \t data: ${data[0].profile_url}")
+                GlideLib.loadImage(
+                    requireContext(),
+                    ivFollowRequestFirst,
+                    data[0].profile_url
+                )
+            }
+        }
+
+        /*if (data[0].profile_url != null && data[0].profile_url.isNotEmpty()) {
+            // GlideLib.loadImage(requireContext(), ivFollowRequestFirst, data[0].profile_url)
+            Log.e("NotificationFragment", "profile: \t data: ${data[0].profile_url}")
             GlideLib.loadImage(
                 requireContext(),
                 ivFollowRequestFirst,
-                data.get(0).profile_url
+                data[0].profile_url
             )
-        } else {
-            GlideApp
-                .with(requireContext())
-                .load(ContextCompat.getDrawable(requireContext(), R.drawable.default_placeholder))
-                .into(ivFollowRequestFirst)
         }
 
-        if (data.get(1).profile_url != null && data.get(1).profile_url.isNotEmpty()) {
+        if (data[1].profile_url != null && data[1].profile_url.isNotEmpty()) {
             Log.e("NotificationFragment", "profile: \t data: ${data[2].profile_url}")
             GlideLib.loadImage(
                 requireContext(),
                 ivFollowRequestSecond,
-                data.get(1).profile_url
+                data[1].profile_url
             )
-
-        } else {
-            GlideApp
-                .with(requireContext())
-                .load(ContextCompat.getDrawable(requireContext(), R.drawable.default_placeholder))
-                .into(ivFollowRequestSecond)
         }
 
-        if (data.get(2).profile_url != null && data.get(2).profile_url.isNotEmpty()) {
-            Log.e("NotificationFragment", "profile: \t data: ${data.get(2).profile_url}")
+        if (data[2].profile_url != null && data[2].profile_url.isNotEmpty()) {
+            Log.e("NotificationFragment", "profile: \t data: ${data[2].profile_url}")
             GlideLib.loadImage(
                 requireContext(),
                 ivFollowRequestThird,
-                data.get(2).profile_url
+                data[2].profile_url
             )
-
-        } else {
-            GlideApp
-                .with(requireContext())
-                .load(ContextCompat.getDrawable(requireContext(), R.drawable.default_placeholder))
-                .into(ivFollowRequestThird)
-        }
+        }*/
 
     }
 
@@ -843,7 +879,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             notificationAdapter =
                 NotificationAdapter(requireActivity(), activityList, isActivityList, this)
             rvNotification.adapter = notificationAdapter
-            Log.e("NotificationFragment", "onSuccessActivityList: \t data: ${activityList.size}")
+            Log.e(
+                "NotificationFragment",
+                "onSuccessActivityList: \t data: ${activityList.size}"
+            )
         } else {
             rvNotification.visibility = View.GONE
             tvNoData.visibility = View.VISIBLE
@@ -869,6 +908,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         intent.putExtra(Constants.VIDEO_LIST, videoBeanList)
         intent.putExtra("position", position)
         openActivity(intent)
+
     }
 
     override fun onSuccess(msg: String) {

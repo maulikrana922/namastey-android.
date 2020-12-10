@@ -80,7 +80,6 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
             Constants.CURRENT_LOCATION_FRAGMENT
         )*/
 
-        Log.e("LocationActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
     }
 
     private fun getLocation() {
