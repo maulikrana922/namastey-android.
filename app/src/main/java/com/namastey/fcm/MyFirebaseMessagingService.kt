@@ -16,7 +16,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.activity.MatchesActivity
 import com.namastey.utils.Constants
 import com.namastey.utils.Constants.ACTION_ACTION_TYPE
 import com.namastey.utils.SessionManager
@@ -27,7 +26,6 @@ import com.namastey.model.Notification as NotificationModel
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val tag = "FirebaseMessagingService"
-
 
     private var notificationCount = 0
     private var getNotification = NotificationModel()
@@ -63,16 +61,57 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.e("MessageService", "Message data payload: " + remoteMessage.data)
             try {
                 val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
+                Log.e("MessageService", "mainJsonObject: $mainJsonObject")
+
+
+                if (mainJsonObject.has("notification_count")){
+                    val notificationCount = mainJsonObject.getString("notification_count")
+                    Log.e("MessageService", "notificationCount: $notificationCount")
+                    getNotification.notificationCount = notificationCount
+                }
+                if (mainJsonObject.has("is_notification_type")){
+                    val isNotificationType = mainJsonObject.getString("is_notification_type")
+                    getNotification.isNotificationType = isNotificationType
+                }
+                if (mainJsonObject.has("NT")){
+                    val nt = mainJsonObject.getString("NT")
+                    getNotification.nt = nt
+                }
+                if (mainJsonObject.has("alert")){
+                    val alert = mainJsonObject.getString("alert")
+                    getNotification.alert = alert
+                }
+                if (mainJsonObject.has("title")){
+                    val title = mainJsonObject.getString("title")
+                    getNotification.title = title
+                }
+                if (mainJsonObject.has("message")){
+                    val message = mainJsonObject.getString("message")
+                    getNotification.message = message
+                }
+                if (mainJsonObject.has("created_at")){
+                    val createdAt = mainJsonObject.getString("created_at")
+                    getNotification.createdAt = createdAt
+                }
+                if (mainJsonObject.has("post_image")){
+                    val postImage = mainJsonObject.getString("post_image")
+                    getNotification.postImage = postImage
+                }
+                if (mainJsonObject.has("is_read")){
+                    val isRead = mainJsonObject.getString("is_read")
+                    getNotification.isRead = isRead
+                }
 
                 showNotification(
                     remoteMessage.notification?.title,
                     remoteMessage.notification?.body
                 )
 
-                Log.e("MessageService", "isBackground: ${isBackground()}" )
+                Log.e("MessageService", "isBackground: ${isBackground()}")
+
 
             } catch (e: JSONException) {
-                Log.d("error", e.message!!)
+                Log.e("error", e.message!!)
             }
         }
     }
@@ -82,8 +121,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         /**
          * Add data to notification Object
          * */
-
-
         val intent = Intent(NOTIFICATION_ACTION)
         intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
         intent.putExtra(KEY_NOTIFICATION, getNotification)
@@ -103,7 +140,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(KEY_NOTIFICATION, getNotification)
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_PENDING_INTENT)
         } else {
-            intent = Intent(this, MatchesActivity::class.java)
+            intent = Intent(this, DashboardActivity::class.java)
             intent.putExtra(ACTION_ACTION_TYPE, "notification")
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
@@ -180,7 +217,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         const val NOTIFICATION_ACTION = "notification-action"
     }
 }
-
 
 
 /*

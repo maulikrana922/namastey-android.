@@ -241,6 +241,12 @@ class FeedAdapter(
             tvFeedBoost.setOnClickListener {
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
+
+            if (dashboardBean.is_like == 1) {
+                animationVideoLike.visibility = View.VISIBLE
+            } else {
+                animationVideoLike.visibility = View.GONE
+            }
         }
     }
 }

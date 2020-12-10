@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -44,7 +46,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             sessionManager.getUserPhone(),
             sessionManager.getUserEmail(),
             etOtp.text.toString(),
-            sessionManager.getFirebaseToken()//"" // Todo: add firebase token
+            sessionManager.getFirebaseToken()
         )
     }
 
@@ -143,7 +145,14 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     private fun initUI() {
-
+        if (sessionManager.getFirebaseToken() == "") {
+            Log.e("OTPFragment", "getFirebaseToken: Empty")
+            val token = FirebaseInstanceId.getInstance().token
+            Log.e("OTPFragment", "FCM Registration Token: $token")
+            sessionManager.setFirebaseToken(token!!)
+        } else {
+            Log.e("OTPFragment", "getFirebaseToken(): \t ${sessionManager.getFirebaseToken()}")
+        }
     }
 
     override fun onDestroy() {

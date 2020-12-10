@@ -1,9 +1,7 @@
 package com.namastey.activity
 
 import android.Manifest
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -26,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -43,15 +42,15 @@ import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.MentionListAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
+import com.namastey.fcm.MyFirebaseMessagingService
+import com.namastey.fragment.NotificationFragment
 import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
+import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
-import com.namastey.model.CategoryBean
-import com.namastey.model.CommentBean
-import com.namastey.model.DashboardBean
-import com.namastey.model.MentionListBean
+import com.namastey.model.*
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
@@ -99,6 +98,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var isUpdateComment = false
     private var fileUrl = ""
     private var postId = 0L
+    private var notification: Notification = Notification()
+    private var fragmentRefreshListener: FragmentRefreshListener? = null
 
     override fun getViewModel() = dashboardViewModel
 
@@ -116,10 +117,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         activityDashboardBinding.viewModel = dashboardViewModel
 
         initData()
+        getDataFromIntent(intent!!)
     }
 
     private fun initData() {
         sessionManager.setLoginUser(true)
+        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
 
         Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
@@ -507,7 +510,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         viewpagerFeed.adapter = feedAdapter
     }
 
-
     // Temp open this activity
     fun onClickUser(view: View) {
         openActivity(this, ProfileActivity())
@@ -541,6 +543,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             bottomSheetDialogComment.dismiss()
 
         super.onDestroy()
+        unregisterReceiver(notificationBroadcast)
     }
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
@@ -738,6 +741,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
         }
     }
+
+    /*fun animateHeart(view: ImageView) {
+        val scaleAnimation = ScaleAnimation(
+            0.0f, 1.0f, 0.0f, 1.0f,
+            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        prepareAnimation(scaleAnimation)
+        val alphaAnimation = AlphaAnimation(0.0f, 1.0f)
+        prepareAnimation(alphaAnimation)
+        val animation = AnimationSet(true)
+        animation.addAnimation(alphaAnimation)
+        animation.addAnimation(scaleAnimation)
+        animation.setDuration(700)
+        animation.setFillAfter(true)
+        view.startAnimation(animation)
+    }
+
+    private fun prepareAnimation(animation: Animation): Animation? {
+        animation.setRepeatCount(1)
+        animation.setRepeatMode(Animation.REVERSE)
+        return animation
+    }*/
 
     /**
      * Click on commnet count display list of comment and add comment dialog
@@ -950,6 +975,126 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
+    private fun getDataFromIntent(intent: Intent) {
+        if (intent.hasExtra(Constants.ACTION_ACTION_TYPE) && intent.getStringExtra(Constants.ACTION_ACTION_TYPE) == "notification") {
+            if (intent.hasExtra(Constants.NOTIFICATION_TYPE) && intent.getStringExtra(Constants.NOTIFICATION_TYPE) == Constants.NOTIFICATION_PENDING_INTENT) {
+                sessionManager.setNotificationCount(sessionManager.getNotificationCount() + 1)
+            }
+            if (intent.hasExtra(Constants.KEY_NOTIFICATION)) {
+                notification = intent.getParcelableExtra(Constants.KEY_NOTIFICATION)!!
+                Log.e("MatchesActivity", "notification: \t $notification")
+                Log.e("MatchesActivity", "notification: \t ${notification.isNotificationType}")
+
+                when (notification.isNotificationType) {
+                    "0" -> { // for Comment Notification
+                        //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onClickMatches", false)
+                        openActivity(intentMatchesActivity)
+                    }
+                    "1" -> { // for mention in comment Notification
+                        //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onClickMatches", false)
+                        openActivity(intentMatchesActivity)
+                    }
+                    "2" -> { // for follow Notification
+
+                        val profileBean : ProfileBean = ProfileBean()
+                        profileBean.user_id = sessionManager.getUserId()
+                        profileBean.username = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                        profileBean.profileUrl = sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+                        profileBean.gender = sessionManager.getStringValue(Constants.GENDER)
+
+                        val intentProfileActivity = Intent(this@DashboardActivity, ProfileActivity::class.java)
+                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intentProfileActivity.putExtra(Constants.PROFILE_BEAN, profileBean)
+                        intentProfileActivity.putExtra("isMyProfile", true)
+                        startActivity(intentProfileActivity)
+                       // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                    }
+                    "3" -> { // for new video Notification
+                        val intentDashboardActivity = Intent(this@DashboardActivity, DashboardActivity::class.java)
+                        intentDashboardActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intentDashboardActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intentDashboardActivity)
+                        //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                    }
+                    "4" -> { // for Matches Notification
+                       // addFragment(MatchesProfileFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onClickMatches", true)
+                        openActivity(intentMatchesActivity)
+                    }
+                    "5" -> { // for mention in post Notification
+                        //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onClickMatches", false)
+                        openActivity(intentMatchesActivity)
+                    }
+                    "6" -> { // for follow request Notification
+                        //addFragment(FollowRequestFragment(), Constants.FOLLOW_REQUEST_FRAGMENT)
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onFollowRequest", true)
+                        openActivity(intentMatchesActivity)
+                    }
+                    else -> { // Default
+                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("onClickMatches", false)
+                        openActivity(intentMatchesActivity)                    }
+                }
+            }
+        }
+    }
+
+    private val notificationBroadcast = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            sessionManager.setNotificationCount(sessionManager.getNotificationCount() + 1)
+            if (getCurrentFragment() is NotificationFragment && getFragmentRefreshListener() != null && intent!!.hasExtra(
+                    Constants.KEY_NOTIFICATION
+                )
+            ) {
+                getFragmentRefreshListener()!!.onRefresh(intent.getParcelableExtra(Constants.KEY_NOTIFICATION))
+            } else {
+                if (intent!!.hasExtra(MyFirebaseMessagingService.KEY_NOTI_TITLE) && intent.hasExtra(
+                        MyFirebaseMessagingService.KEY_NOTI_MESSAGE
+                    )
+                ) {
+                    showNotification(
+                        intent.getStringExtra(MyFirebaseMessagingService.KEY_NOTI_TITLE),
+                        intent.getStringExtra(MyFirebaseMessagingService.KEY_NOTI_MESSAGE)
+                    )
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(
+            notificationBroadcast,
+            IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
+        )
+    }
+
+    private fun addFragmentWithoutCurrentFrag(fragment: Fragment, tag: String) {
+        supportFragmentManager.beginTransaction().addToBackStack(tag)
+            .replace(R.id.flContainer, fragment).commitAllowingStateLoss()
+    }
+
+    fun getCurrentFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.flContainer)
+    }
+
+    fun getFragmentRefreshListener(): FragmentRefreshListener? {
+        return fragmentRefreshListener
+    }
+
+    fun setFragmentRefreshListener(fragmentRefreshListener: FragmentRefreshListener) {
+        this.fragmentRefreshListener = fragmentRefreshListener
+    }
+
     override fun onPostViewer(postId: Long) {
         dashboardViewModel.postView(postId)
     }
@@ -1115,7 +1260,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardBean.is_match = data.is_match
         dashboardBean.is_like = data.is_like
 
+        if(dashboardBean.is_like == 1){
+            animationLike.visibility = View.VISIBLE
+            Handler().postDelayed({ animationLike.visibility = View.GONE }, 2000)
+        }
+
         if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
+
             Log.e("DashboardActivity", "userName: \t ${dashboardBean.username}")
             Log.e("DashboardActivity", "userName:   \t ${dashboardBean.profile_url}")
             Log.e(
@@ -1127,7 +1278,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 "userName: \t ${sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)}"
             )
             val intent = Intent(this@DashboardActivity, MatchesScreenActivity::class.java)
-            intent.putExtra("username", dashboardBean.username);
+            intent.putExtra("username", dashboardBean.username)
             intent.putExtra("profile_url", dashboardBean.profile_url)
             openActivity(intent)
         }
