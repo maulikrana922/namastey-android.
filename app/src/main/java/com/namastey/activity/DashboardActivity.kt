@@ -229,7 +229,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             addFragment(
-                ShareAppFragment.getInstance(sessionManager.getUserId(),dashboardBean.cover_image_url),
+                ShareAppFragment.getInstance(
+                    sessionManager.getUserId(),
+                    dashboardBean.cover_image_url
+                ),
                 Constants.SHARE_APP_FRAGMENT
             )
         }
@@ -988,61 +991,72 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 when (notification.isNotificationType) {
                     "0" -> { // for Comment Notification
                         //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onClickMatches", false)
                         openActivity(intentMatchesActivity)
                     }
                     "1" -> { // for mention in comment Notification
                         //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onClickMatches", false)
                         openActivity(intentMatchesActivity)
                     }
                     "2" -> { // for follow Notification
 
-                        val profileBean : ProfileBean = ProfileBean()
+                        val profileBean: ProfileBean = ProfileBean()
                         profileBean.user_id = sessionManager.getUserId()
-                        profileBean.username = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                        profileBean.profileUrl = sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+                        profileBean.username =
+                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                        profileBean.profileUrl =
+                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
                         profileBean.gender = sessionManager.getStringValue(Constants.GENDER)
 
-                        val intentProfileActivity = Intent(this@DashboardActivity, ProfileActivity::class.java)
+                        val intentProfileActivity =
+                            Intent(this@DashboardActivity, ProfileActivity::class.java)
                         intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         intentProfileActivity.putExtra(Constants.PROFILE_BEAN, profileBean)
                         intentProfileActivity.putExtra("isMyProfile", true)
                         startActivity(intentProfileActivity)
-                       // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
                     }
                     "3" -> { // for new video Notification
-                        val intentDashboardActivity = Intent(this@DashboardActivity, DashboardActivity::class.java)
+                        val intentDashboardActivity =
+                            Intent(this@DashboardActivity, DashboardActivity::class.java)
                         intentDashboardActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         intentDashboardActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intentDashboardActivity)
                         //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
                     }
                     "4" -> { // for Matches Notification
-                       // addFragment(MatchesProfileFragment(), Constants.NOTIFICATION_FRAGMENT)
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        // addFragment(MatchesProfileFragment(), Constants.NOTIFICATION_FRAGMENT)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onClickMatches", true)
                         openActivity(intentMatchesActivity)
                     }
                     "5" -> { // for mention in post Notification
                         //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onClickMatches", false)
                         openActivity(intentMatchesActivity)
                     }
                     "6" -> { // for follow request Notification
                         //addFragment(FollowRequestFragment(), Constants.FOLLOW_REQUEST_FRAGMENT)
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onFollowRequest", true)
                         openActivity(intentMatchesActivity)
                     }
                     else -> { // Default
-                        val intentMatchesActivity = Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("onClickMatches", false)
-                        openActivity(intentMatchesActivity)                    }
+                        openActivity(intentMatchesActivity)
+                    }
                 }
             }
         }
@@ -1260,7 +1274,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardBean.is_match = data.is_match
         dashboardBean.is_like = data.is_like
 
-        if(dashboardBean.is_like == 1){
+        if (dashboardBean.is_like == 1) {
             animationLike.visibility = View.VISIBLE
             Handler().postDelayed({ animationLike.visibility = View.GONE }, 2000)
         }
@@ -1287,7 +1301,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         feedAdapter.notifyItemChanged(position)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (position < feedList.size )
+            if (position < feedList.size)
                 viewpagerFeed.currentItem = position + 1
         }, 1000)
     }

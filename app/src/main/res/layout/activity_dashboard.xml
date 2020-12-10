@@ -56,20 +56,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivUser" />
 
-        <!-- <com.airbnb.lottie.LottieAnimationView
-             android:id="@+id/animationLike"
-             android:layout_width="@dimen/_100sdp"
-             android:layout_height="@dimen/_100sdp"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toTopOf="parent"
-             android:layout_marginBottom="@dimen/_25sdp"
-             app:lottie_autoPlay="true"
-             app:lottie_loop="true"
-             app:lottie_rawRes="@raw/heart_like_centre"
-             app:lottie_repeatMode="restart" />-->
-
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationLike"
             android:layout_width="@dimen/_100sdp"
