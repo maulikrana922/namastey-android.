@@ -194,7 +194,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
         if (profileBean.username.isNotBlank()) {
             tvProfileUsername.text = profileBean.username
-            tvAbouteDesc.text = profileBean.about_me
+            if (profileBean.about_me.isNotEmpty())
+                tvAbouteDesc.text = profileBean.about_me
         }
     }
 
@@ -517,7 +518,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         super.onResume()
         if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
             tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-            tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+            if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
+                tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
         }
         if (!isCameraOpen)
             profileViewModel.getUserDetails()

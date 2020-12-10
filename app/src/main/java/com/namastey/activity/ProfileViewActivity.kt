@@ -118,12 +118,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     private fun fillValue(profileBean: ProfileBean) {
         tvProfileUsername.text = profileBean.username
-        if (profileBean.about_me != "" && profileBean.about_me != null) {
-            tvAbouteDesc.visibility = View.VISIBLE
+        if (profileBean.about_me.isNotEmpty() && profileBean.about_me != null)
             tvAbouteDesc.text = profileBean.about_me
-        } else {
-            tvAbouteDesc.visibility = View.GONE
-        }
+        else
+            tvAbouteDesc.text = getString(R.string.about_me_empty)
+
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
@@ -367,7 +366,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
             }
             tvProfileUsername.text = profileBean.username
-            tvAbouteDesc.text = profileBean.about_me
+            if (profileBean.about_me.isNotEmpty())
+                tvAbouteDesc.text = profileBean.about_me
+            else
+                tvAbouteDesc.text = getString(R.string.about_me_empty)
             tvFollowersCount.text = profileBean.followers.toString()
             tvFollowingCount.text = profileBean.following.toString()
             tvViewsCount.text = profileBean.viewers.toString()
@@ -405,7 +407,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         if (profileBean.user_id == sessionManager.getUserId()) {
             if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
                 tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+                if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
+                    tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+                else
+                    tvAbouteDesc.text = getString(R.string.about_me_empty)
                 tvJob.text = sessionManager.getJobBean().title
                 tvEducation.text = sessionManager.getEducationBean().course
             }

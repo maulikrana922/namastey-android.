@@ -86,6 +86,7 @@
     <string name="airport">Airport</string>
     <string name="membership">Membership</string>
     <string name="get_more">Get more</string>
+    <string name="about_me_empty">Description not added</string>
     <string name="about_me_text">Write something about you &amp; complete your profile</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text.</string>
 
