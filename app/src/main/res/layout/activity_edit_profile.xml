@@ -64,6 +64,7 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
                     android:padding="@dimen/_5sdp"
+                    android:onClick="onClickMore"
                     android:src="@drawable/ic_more"
                     app:layout_constraintBottom_toBottomOf="@id/ivEditProfileBack"
                     app:layout_constraintEnd_toEndOf="parent"

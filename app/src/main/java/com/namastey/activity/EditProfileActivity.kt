@@ -185,4 +185,8 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
 
 //        }
     }
+
+    fun onClickMore(view: View) {
+        openActivity(this@EditProfileActivity,AccountSettingsActivity())
+    }
 }
