@@ -40,7 +40,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 
-class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
+class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
+    ChatSettingsFragment.onDataPassToActivity {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -163,17 +164,21 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                     when (event?.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            if (matchesListBean.is_match == 1) {
-                                isAudioPermissionGranted()
-                                ivMic.setPadding(7, 7, 7, 7)
+                            if (matchesListBean.is_block == 0) {
+                                if (matchesListBean.is_match == 1) {
+                                    isAudioPermissionGranted()
+                                    ivMic.setPadding(7, 7, 7, 7)
+                                }
                             }
                             return true
                         }
                         MotionEvent.ACTION_UP -> {
                             Log.d(TAG, "Call stop record....")
-                            if (matchesListBean.is_match == 1) {
-                                ivMic.setPadding(0, 0, 0, 0)
-                                stopRecording()
+                            if (matchesListBean.is_block == 0) {
+                                if (matchesListBean.is_match == 1) {
+                                    ivMic.setPadding(0, 0, 0, 0)
+                                    stopRecording()
+                                }
                             }
                         }
                     }
@@ -266,8 +271,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
         else
             matchesListBean.id.toString().plus(sessionManager.getUserId())
 
-        myChatRef.child(chatId).push().setValue(chatMessage).addOnSuccessListener {
-            edtMessage.setText("")
+        if (matchesListBean.is_block == 1){
+            showMsg(getString(R.string.msg_block_user_chat))
+        }else {
+            myChatRef.child(chatId).push().setValue(chatMessage).addOnSuccessListener {
+                edtMessage.setText("")
+            }
         }
     }
 
@@ -275,9 +284,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
      * Open camera and select image
      */
     fun onClickCamera(view: View) {
-        if (matchesListBean.is_match == 1) {
-            if (isPermissionGrantedForCamera())
-                capturePhoto()
+        if (matchesListBean.is_block == 1){
+            showMsg(getString(R.string.msg_block_user_chat))
+        }else {
+            if (matchesListBean.is_match == 1) {
+                if (isPermissionGrantedForCamera())
+                    capturePhoto()
+            }
         }
     }
 
@@ -381,16 +394,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     fun onClickSelectImage(view: View) {
         // For latest versions API LEVEL 19+
-        if (matchesListBean.is_match == 1) {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.type = "image/*"
-            startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
+        if (matchesListBean.is_block == 1){
+            showMsg(getString(R.string.msg_block_user_chat))
+        }else {
+            if (matchesListBean.is_match == 1) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                intent.type = "image/*"
+                startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
+            }
         }
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/*"
-//        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
     }
 
     private fun startRecording() {
@@ -457,5 +471,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView {
 
     fun onClickBuyNow(view: View) {
         openActivity(this@ChatActivity,MembershipActivity())
+    }
+
+    override fun chatSettingData(isBlock: Int) {
+        Log.d("Block user:", isBlock.toString())
+        matchesListBean.is_block = isBlock
     }
 }

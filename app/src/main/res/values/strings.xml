@@ -89,6 +89,7 @@
     <string name="about_me_empty">Description not added</string>
     <string name="about_me_text">Write something about you &amp; complete your profile</string>
     <string name="dummy_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text.</string>
+    <string name="profile_link_msg">This is %1$s profile. \n About : %2$s</string>
 
     <string name="matches">Matches</string>
     <string name="view_all">View All</string>
@@ -370,6 +371,7 @@
     <string name="it_s_inappropriate">It\'s inappropriate</string>
     <string name="msg_buy_namastey">Buy namastey gold to message.</string>
     <string name="msg_super_msg_left">You have %1$s super messages left.</string>
+    <string name="msg_block_user_chat">To send a message please unblock this user</string>
 
     <!--Private account-->
     <string name="this_account_is_private">This account is private</string>

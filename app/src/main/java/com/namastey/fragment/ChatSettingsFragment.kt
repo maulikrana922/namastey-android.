@@ -27,8 +27,9 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     private lateinit var fragmentChatSettingsBinding: FragmentChatSettingsBinding
     private lateinit var chatViewModel: ChatViewModel
     private lateinit var layoutView: View
-    private var matchesListBean: MatchesListBean? = null
+    private var matchesListBean: MatchesListBean = MatchesListBean()
     private lateinit var bottomSheetDialogReport: BottomSheetDialog
+    private lateinit var onDataPassActivity: onDataPassToActivity
 
     override fun getViewModel() = chatViewModel
 
@@ -39,7 +40,9 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     companion object {
         fun getInstance(matchesListBean: MatchesListBean) =
             ChatSettingsFragment().apply {
-                this.matchesListBean = matchesListBean
+                arguments = Bundle().apply {
+                    putParcelable("matchesListBean", matchesListBean)
+                }
             }
     }
 
@@ -63,7 +66,8 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     }
 
     private fun initData() {
-        Log.e("ChatSettings", "matchesListBean: \t ${matchesListBean!!.id}")
+//        Log.e("ChatSettings", "matchesListBean: \t ${matchesListBean!!.id}")
+        matchesListBean = arguments!!.getParcelable<MatchesListBean>("matchesListBean")!!
         tvMatchDelete.setOnClickListener {
             dialogMatchDeleteUser()
         }
@@ -73,8 +77,16 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         }
 
         tvBlock.setOnClickListener {
-            dialogBlockUser()
+            if (matchesListBean.is_block == 1)
+                dialogUnblockUser()
+            else
+                dialogBlockUser()
         }
+        onDataPassActivity = activity as onDataPassToActivity
+        if (matchesListBean.is_block == 1)
+            tvBlock.text = getString(R.string.unblock)
+        else
+            tvBlock.text = getString(R.string.block)
     }
 
     override fun onResume() {
@@ -82,6 +94,24 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         (activity as ChatActivity).hideChatMoreButton(true)
     }
 
+    private fun dialogUnblockUser(){
+        object : CustomCommonAlertDialog(
+            requireActivity(),
+            matchesListBean.username,
+            resources.getString(R.string.msg_unblock_user),
+            matchesListBean.profile_pic,
+            requireActivity().resources.getString(R.string.yes),
+            resources.getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        chatViewModel.blockUser(matchesListBean.id, 0)
+                    }
+                }
+            }
+        }.show()
+    }
     private fun dialogBlockUser() {
         object : CustomCommonAlertDialog(
             requireActivity(),
@@ -189,12 +219,24 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     override fun onSuccessBlockUser(msg: String) {
         Log.e("ChatSetting", "onSuccessBlockUser: \t msg:  $msg")
 
+        if (matchesListBean.is_block == 1)
+            tvBlock.text = getString(R.string.block)
+        else
+            tvBlock.text = getString(R.string.unblock)
+
         object : CustomAlertDialog(
             requireActivity(),
             msg, getString(R.string.ok), ""
         ) {
             override fun onBtnClick(id: Int) {
                 dismiss()
+                if (matchesListBean.is_block == 1){
+                    matchesListBean.is_block == 0
+                    onDataPassActivity.chatSettingData(0)
+                }else{
+                    matchesListBean.is_block == 1
+                    onDataPassActivity.chatSettingData(1)
+                }
             }
         }.show()
     }
@@ -213,6 +255,9 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         }.show()
     }
 
+    interface onDataPassToActivity{
+        fun chatSettingData(isBlock: Int)
+    }
     override fun onDestroy() {
         chatViewModel.onDestroy()
         super.onDestroy()

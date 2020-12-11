@@ -485,7 +485,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickProfileMore(view: View) {
         if (sessionManager.getUserId() == profileBean.user_id)
             openActivity(this@ProfileViewActivity, SettingsActivity())
-        else openShareOptionDialog(profileBean)
+        else if (profileBean.username.isNotEmpty())
+            openShareOptionDialog(profileBean)
     }
 
     fun onClickProfileLike(view: View) {
@@ -563,11 +564,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             bottomSheetDialogShare.dismiss()
         }
 
+        val shareMessage = String.format(
+            getString(R.string.profile_link_msg),
+            profileBean.username,profileBean.about_me
+        )
         // Share on Twitter app if install otherwise web link
         bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
             val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=")
-            tweetUrl.append(profileBean.video_url)
+                StringBuilder("https://twitter.com/intent/tweet?text=".plus(shareMessage))
             val intent = Intent(
                 Intent.ACTION_VIEW,
                 Uri.parse(tweetUrl.toString())
@@ -600,8 +604,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             var shareIntent =
                 Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, profileBean.video_url)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(profileBean.video_url))
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
 
             val pm: PackageManager = packageManager
             val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
@@ -618,7 +621,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
             if (!facebookAppFound) {
                 val sharerUrl =
-                    "https://www.facebook.com/sharer/sharer.php?u=${profileBean.video_url}"
+                    "https://www.facebook.com/sharer/sharer.php?u=${shareMessage}"
                 shareIntent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(sharerUrl)
@@ -648,7 +651,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
                 sendIntent.putExtra(
                     Intent.EXTRA_TEXT,
-                    Uri.parse(profileBean.video_url)
+                    Uri.parse(shareMessage)
                 )
                 startActivity(sendIntent)
             } catch (e: PackageManager.NameNotFoundException) {
@@ -666,8 +669,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
             sendIntent.putExtra(
-                Intent.EXTRA_TEXT, profileBean.video_url
-            )
+                Intent.EXTRA_TEXT,shareMessage)
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
@@ -707,6 +709,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         matchesListBean.username = profileBean.username
         matchesListBean.profile_pic = profileBean.profileUrl
         matchesListBean.is_match = profileBean.is_match
+        matchesListBean.is_block = profileBean.is_block
         matchesListBean.is_read = 1 //Todo: Change value from profileBean
 
         if (profileBean.user_id != sessionManager.getUserId()) {

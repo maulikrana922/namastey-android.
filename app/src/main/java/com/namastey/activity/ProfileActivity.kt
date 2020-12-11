@@ -539,7 +539,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 if (selectedImage != null) {
 //                    val inputStream: InputStream?
                     try {
-                        val selectedImage = data.data
+//                        val selectedImage = data.data
                         val filePathColumn =
                             arrayOf(MediaStore.Images.Media.DATA)
                         val cursor: Cursor? = this@ProfileActivity.contentResolver.query(

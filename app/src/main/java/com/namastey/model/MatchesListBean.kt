@@ -21,6 +21,7 @@ class MatchesListBean() : Parcelable {
     var timestamp: String = ""
     var url: String = ""
     var is_match: Int = 0
+    var is_block: Int = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -38,6 +39,7 @@ class MatchesListBean() : Parcelable {
         timestamp = parcel.readString() ?: ""
         url = parcel.readString() ?: ""
         is_match = parcel.readInt() ?: 0
+        is_block = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -56,6 +58,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeString(timestamp)
         parcel.writeString(url)
         parcel.writeInt(is_match)
+        parcel.writeInt(is_block)
     }
 
     override fun describeContents(): Int {
