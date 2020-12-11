@@ -395,4 +395,14 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetPostDetailsAsync(postId).await()
         }
+
+    suspend fun requestToGetBoostPriceList(): AppResponse<ArrayList<BoostPriceBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetBoostPriceAsync().await()
+        }
+
+    suspend fun requestToMembershipPriceList(): AppResponse<ArrayList<MembershipPriceBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetMembershipPriceAsync().await()
+        }
 }

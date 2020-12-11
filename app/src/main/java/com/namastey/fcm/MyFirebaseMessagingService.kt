@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
@@ -17,10 +19,13 @@ import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
 import com.namastey.utils.Constants
-import com.namastey.utils.Constants.ACTION_ACTION_TYPE
 import com.namastey.utils.SessionManager
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import com.namastey.model.Notification as NotificationModel
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -29,6 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private var notificationCount = 0
     private var getNotification = NotificationModel()
+    private var postImage = ""
 
 
     override fun onNewToken(token: String) {
@@ -62,60 +68,58 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             try {
                 val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
                 Log.e("MessageService", "mainJsonObject: $mainJsonObject")
-
-
-                if (mainJsonObject.has("notification_count")){
+                if (mainJsonObject.has("notification_count")) {
                     val notificationCount = mainJsonObject.getString("notification_count")
                     Log.e("MessageService", "notificationCount: $notificationCount")
                     getNotification.notificationCount = notificationCount
                 }
-                if (mainJsonObject.has("is_notification_type")){
+                if (mainJsonObject.has("is_notification_type")) {
                     val isNotificationType = mainJsonObject.getString("is_notification_type")
                     getNotification.isNotificationType = isNotificationType
                 }
-                if (mainJsonObject.has("NT")){
+                if (mainJsonObject.has("NT")) {
                     val nt = mainJsonObject.getString("NT")
                     getNotification.nt = nt
                 }
-                if (mainJsonObject.has("alert")){
+                if (mainJsonObject.has("alert")) {
                     val alert = mainJsonObject.getString("alert")
                     getNotification.alert = alert
                 }
-                if (mainJsonObject.has("title")){
+                if (mainJsonObject.has("title")) {
                     val title = mainJsonObject.getString("title")
                     getNotification.title = title
                 }
-                if (mainJsonObject.has("message")){
+                if (mainJsonObject.has("message")) {
                     val message = mainJsonObject.getString("message")
                     getNotification.message = message
                 }
-                if (mainJsonObject.has("created_at")){
+                if (mainJsonObject.has("created_at")) {
                     val createdAt = mainJsonObject.getString("created_at")
                     getNotification.createdAt = createdAt
                 }
-                if (mainJsonObject.has("post_image")){
-                    val postImage = mainJsonObject.getString("post_image")
+                if (mainJsonObject.has("post_image")) {
+                    //val postImage = mainJsonObject.getString("post_image")
+                    postImage = mainJsonObject.getString("post_image")
                     getNotification.postImage = postImage
                 }
-                if (mainJsonObject.has("is_read")){
+                if (mainJsonObject.has("is_read")) {
                     val isRead = mainJsonObject.getString("is_read")
                     getNotification.isRead = isRead
                 }
 
                 showNotification(
                     remoteMessage.notification?.title,
-                    remoteMessage.notification?.body
+                    remoteMessage.notification?.body,
+                    postImage
                 )
 
                 Log.e("MessageService", "isBackground: ${isBackground()}")
-
 
             } catch (e: JSONException) {
                 Log.e("error", e.message!!)
             }
         }
     }
-
 
     private fun sendBroadcastDashboard(notiTitle: String?, notiMessage: String?) {
         /**
@@ -130,22 +134,79 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         sendBroadcast(intent)
     }
 
-    private fun showNotification(title: String?, body: String?) {
+    private fun showNotification(
+        title: String?,
+        body: String?,
+        postImage: String
+    ) {
         var intent = Intent()
+
+        /*when (getNotification.isNotificationType) {
+            "0" -> { // for Comment Notification
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", false)
+            }
+            "1" -> { // for mention in comment Notification
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", false)
+            }
+            "2" -> { // for follow Notification
+                val profileBean: ProfileBean = ProfileBean()
+                profileBean.user_id = SessionManager(applicationContext).getUserId()
+                profileBean.username =
+                    SessionManager(applicationContext).getStringValue(Constants.KEY_CASUAL_NAME)
+                profileBean.profileUrl =
+                    SessionManager(applicationContext).getStringValue(Constants.KEY_PROFILE_URL)
+                profileBean.gender =
+                    SessionManager(applicationContext).getStringValue(Constants.GENDER)
+
+                intent =
+                    Intent(applicationContext, ProfileActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+                intent.putExtra("isMyProfile", true)
+            }
+            "3" -> { // for new video Notification
+                intent = Intent(applicationContext, DashboardActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
+            }
+            "4" -> { // for Matches Notification
+                // addFragment(MatchesProfileFragment(), Constants.NOTIFICATION_FRAGMENT)
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", true)
+            }
+            "5" -> { // for mention in post Notification
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", false)
+            }
+            "6" -> { // for follow request Notification
+                //addFragment(FollowRequestFragment(), Constants.FOLLOW_REQUEST_FRAGMENT)
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onFollowRequest", true)
+            }
+            else -> { // Default
+                intent = Intent(applicationContext, MatchesActivity::class.java)
+                intent.putExtra("onClickMatches", false)
+            }
+        }*/
 
         if (isBackground()) {
             intent = Intent(this, DashboardActivity::class.java)
-            intent.putExtra(ACTION_ACTION_TYPE, "notification")
+            intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_PENDING_INTENT)
         } else {
             intent = Intent(this, DashboardActivity::class.java)
-            intent.putExtra(ACTION_ACTION_TYPE, "notification")
+            intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_BROADCAST)
         }
+        //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
@@ -161,7 +222,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            //.setSmallIcon(R.mipmap.ic_launcher)
             .setSmallIcon(R.mipmap.ic_launcher)
+            //.setSmallIcon(getNotificationIcon(NotificationCompat.Builder(this, channelId)))
+            .setLargeIcon(getBitmapFromURL(postImage))
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
@@ -175,6 +239,29 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0, notificationBuilder.build())
+    }
+
+    private fun getNotificationIcon(notificationBuilder: NotificationCompat.Builder): Int {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val color = 0x008000
+            notificationBuilder.color = color
+            return R.mipmap.ic_launcher
+        }
+        return R.mipmap.ic_launcher
+    }
+
+    private fun getBitmapFromURL(src: String?): Bitmap? {
+        return try {
+            val url = URL(src)
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input: InputStream = connection.inputStream
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun isBackground(): Boolean {
@@ -206,7 +293,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         channel.enableVibration(true)
         notificationManager.createNotificationChannel(channel)
     }
-
 
     companion object {
         const val KEY_NT = "NT"

@@ -111,6 +111,8 @@ object Constants {
     const val NOTIFICATION_ON_OFF = "notification-on-of"
     const val MATCHES_LIST_BEAN = "matchesListBean"
     const val GET_POST_DETAILS = "get-post-details"
+    const val BOOST_PRICE_LIST = "boost-price-list"
+    const val MEMBERSHIP_PRICE_LIST = "membership-price-list"
 
     //    api response error code
     const val OK = 200

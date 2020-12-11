@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Namastey</string>
 
-     <string name="facebook_app_id">242557967197480</string>
-     <string name="fb_login_protocol_scheme">fb242557967197480</string>
+    <string name="facebook_app_id">242557967197480</string>
+    <string name="fb_login_protocol_scheme">fb242557967197480</string>
 
     <!--<string name="facebook_app_id">2945790898848622</string>
     <string name="fb_login_protocol_scheme">fb2945790898848622</string>-->
@@ -429,10 +429,12 @@
     <string name="send_to">Send to</string>
     <string name="leave_a_message">Leave a message</string>
 
-
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
     <string name="private_account_message">This user have private account.</string>
+
+    <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>
+    <string name="recurring_billing_cancel_anytime_detail">By tapping Continue, your payment will be charged to your Google Play account, and your subscription will be automatically renew for the same package length at the same price until you cancel in setting in the Google Play Store. By tapping Continue, you agree our Terms.  </string>
 
 </resources>

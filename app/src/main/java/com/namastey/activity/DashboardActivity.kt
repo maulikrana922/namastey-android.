@@ -738,6 +738,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 this.position = position
+                if (isLike == 1) {
+                    animationLike.visibility = View.VISIBLE
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        animationLike.visibility = View.GONE
+                    }, 2000)
+                }
                 dashboardViewModel.likeUserProfile(dashboardBean.user_id, isLike)
             } else {
                 completeSignUpDialog()
@@ -746,26 +752,26 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     /*fun animateHeart(view: ImageView) {
-        val scaleAnimation = ScaleAnimation(
-            0.0f, 1.0f, 0.0f, 1.0f,
-            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
-        )
-        prepareAnimation(scaleAnimation)
-        val alphaAnimation = AlphaAnimation(0.0f, 1.0f)
-        prepareAnimation(alphaAnimation)
-        val animation = AnimationSet(true)
-        animation.addAnimation(alphaAnimation)
-        animation.addAnimation(scaleAnimation)
-        animation.setDuration(700)
-        animation.setFillAfter(true)
-        view.startAnimation(animation)
-    }
+    val scaleAnimation = ScaleAnimation(
+        0.0f, 1.0f, 0.0f, 1.0f,
+        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+    )
+    prepareAnimation(scaleAnimation)
+    val alphaAnimation = AlphaAnimation(0.0f, 1.0f)
+    prepareAnimation(alphaAnimation)
+    val animation = AnimationSet(true)
+    animation.addAnimation(alphaAnimation)
+    animation.addAnimation(scaleAnimation)
+    animation.setDuration(700)
+    animation.setFillAfter(true)
+    view.startAnimation(animation)
+}
 
-    private fun prepareAnimation(animation: Animation): Animation? {
-        animation.setRepeatCount(1)
-        animation.setRepeatMode(Animation.REVERSE)
-        return animation
-    }*/
+private fun prepareAnimation(animation: Animation): Animation? {
+    animation.setRepeatCount(1)
+    animation.setRepeatMode(Animation.REVERSE)
+    return animation
+}*/
 
     /**
      * Click on commnet count display list of comment and add comment dialog
@@ -979,15 +985,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     private fun getDataFromIntent(intent: Intent) {
+
         if (intent.hasExtra(Constants.ACTION_ACTION_TYPE) && intent.getStringExtra(Constants.ACTION_ACTION_TYPE) == "notification") {
             if (intent.hasExtra(Constants.NOTIFICATION_TYPE) && intent.getStringExtra(Constants.NOTIFICATION_TYPE) == Constants.NOTIFICATION_PENDING_INTENT) {
                 sessionManager.setNotificationCount(sessionManager.getNotificationCount() + 1)
             }
             if (intent.hasExtra(Constants.KEY_NOTIFICATION)) {
                 notification = intent.getParcelableExtra(Constants.KEY_NOTIFICATION)!!
-                Log.e("MatchesActivity", "notification: \t $notification")
-                Log.e("MatchesActivity", "notification: \t ${notification.isNotificationType}")
-
                 when (notification.isNotificationType) {
                     "0" -> { // for Comment Notification
                         //addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
@@ -1274,10 +1278,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardBean.is_match = data.is_match
         dashboardBean.is_like = data.is_like
 
-        if (dashboardBean.is_like == 1) {
+        /*if (dashboardBean.is_like == 1) {
             animationLike.visibility = View.VISIBLE
             Handler().postDelayed({ animationLike.visibility = View.GONE }, 2000)
-        }
+        }*/
 
         if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
 

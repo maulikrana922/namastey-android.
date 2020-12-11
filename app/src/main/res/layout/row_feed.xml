@@ -156,10 +156,29 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/color_instagram"
         android:indeterminateTintMode="src_atop"
-        android:progress="30"
+        android:max="30"
+        android:progress="0"
         app:layout_constraintBottom_toTopOf="@id/tvFeedView"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
         app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+    <!--<ProgressBar
+        android:id="@+id/progressBarBoost"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:background="@drawable/progress_circle_transparent"
+        android:indeterminate="false"
+        android:max="30"
+        android:progress="30"
+        android:progressDrawable="@drawable/progress_circle_brown"
+        android:rotation="-90"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />-->
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFeedBoost"
@@ -203,7 +222,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationVideoLike"
         android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_80sdp"
+        android:layout_height="@dimen/_90sdp"
         android:layout_marginBottom="@dimen/_15sdp"
         app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
         app:layout_constraintStart_toStartOf="parent"
@@ -245,7 +264,6 @@
         app:layout_constraintTop_toTopOf="@id/ivFeedProfile"
         app:layout_constraintVertical_chainStyle="packed"
         app:typeface="MULI_SEMIBOLD" />
-
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFeedJob"

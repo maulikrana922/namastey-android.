@@ -346,10 +346,16 @@ interface NetworkRequest {
         @Field(Constants.IS_READ) isRead: Int
     ): Deferred<AppResponse<Any>>
 
-
     @FormUrlEncoded
     @POST(Constants.GET_POST_DETAILS)
     fun requestToGetPostDetailsAsync(
         @Field(Constants.POST_ID) postId: Long
     ): Deferred<AppResponse<VideoBean>>
+
+    @GET(Constants.BOOST_PRICE_LIST)
+    fun requestToGetBoostPriceAsync(): Deferred<AppResponse<ArrayList<BoostPriceBean>>>
+
+    @GET(Constants.MEMBERSHIP_PRICE_LIST)
+    fun requestToGetMembershipPriceAsync(): Deferred<AppResponse<ArrayList<MembershipPriceBean>>>
+
 }

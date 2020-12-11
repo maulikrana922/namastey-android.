@@ -32,11 +32,9 @@ import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile_view.*
-import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
-import kotlinx.android.synthetic.main.view_private_account.*
 import java.util.*
 import javax.inject.Inject
 
@@ -854,5 +852,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onSuccessSavePost(msg: String) {
+    }
+
+    override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
+        TODO("Not yet implemented")
     }
 }

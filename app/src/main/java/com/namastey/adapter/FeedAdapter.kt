@@ -2,6 +2,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.os.CountDownTimer
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,17 @@ class FeedAdapter(
 ) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
     val handlerVideo = Handler(activity.mainLooper)
+
+    var mCountDownTimer: CountDownTimer? = null
+    var i = 0
+//    private var timeCountInMilliSeconds: Long = 1 * 60000.toLong()
+//
+//    private enum class TimerStatus {
+//        STARTED, STOPPED
+//    }
+//
+//    private var timerStatus = TimerStatus.STOPPED
+//    private var countDownTimer: CountDownTimer? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -230,23 +242,79 @@ class FeedAdapter(
             tvFeedJob.setOnClickListener {
                 onFeedItemClick.onUserProfileClick(dashboardBean)
             }
-
             tvFeedLike.setOnClickListener {
                 if (dashboardBean.is_like == 1)
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 0)
                 else
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 1)
             }
-
             tvFeedBoost.setOnClickListener {
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
 
-            if (dashboardBean.is_like == 1) {
+            if (dashboardBean.is_like == 0) {
                 animationVideoLike.visibility = View.VISIBLE
             } else {
                 animationVideoLike.visibility = View.GONE
             }
+
+            //startStop(itemView)
+            progressBarBoost.progress = i
+            mCountDownTimer = object : CountDownTimer(30000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                   // Log.e("FeedAdapter", "Tick of Progress$i$millisUntilFinished")
+                    i++
+                    progressBarBoost.progress = i * 100 / (30000 / 1000)
+                }
+
+                override fun onFinish() {
+                    i++
+                    progressBarBoost.progress = 1000
+                }
+            }
+            (mCountDownTimer as CountDownTimer).start()
         }
     }
+
+    /*private fun startStop(itemView: View) {
+        if (timerStatus === TimerStatus.STOPPED) {
+            setTimerValues()
+            setProgressBarValues(itemView)
+            timerStatus = TimerStatus.STARTED
+            startCountDownTimer(itemView)
+        } else {
+            timerStatus = TimerStatus.STOPPED
+            stopCountDownTimer()
+        }
+    }
+
+    private fun setTimerValues() {
+        val time = 1
+        timeCountInMilliSeconds = time * 30 * 1000.toLong()
+    }
+
+    private fun startCountDownTimer(itemView: View) {
+        countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                itemView.progressBarBoost.progress = (millisUntilFinished / 1000).toInt()
+            }
+
+            override fun onFinish() {
+                setProgressBarValues(itemView)
+                // changing the timer status to stopped
+                timerStatus = TimerStatus.STOPPED
+            }
+        }.start()
+        // countDownTimer.start()
+    }
+
+    private fun stopCountDownTimer() {
+        countDownTimer!!.cancel()
+    }
+
+    private fun setProgressBarValues(itemView: View) {
+        itemView.progressBarBoost.max = timeCountInMilliSeconds.toInt() / 1000
+        itemView.progressBarBoost.progress = timeCountInMilliSeconds.toInt() / 1000
+    }*/
+
 }

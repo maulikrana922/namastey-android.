@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,9 @@ import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.adapter.MembershipSliderAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMembershipBinding
+import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
+import com.namastey.uiView.MemberShipView
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
@@ -26,7 +29,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
+class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShipView {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -35,7 +38,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
     private lateinit var activityMembershipBinding: ActivityMembershipBinding
     private lateinit var membershipViewModel: MembershipViewModel
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
-
+    private var membershipViewList = ArrayList<MembershipPriceBean>()
 
     override fun getViewModel() = membershipViewModel
 
@@ -52,6 +55,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
         activityMembershipBinding = bindViewData()
         activityMembershipBinding.viewModel = membershipViewModel
         initData()
+
+        membershipViewModel.getMembershipPriceList()
     }
 
     private fun initData() {
@@ -118,7 +123,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
         val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
-        manageVisiblity(dialogView)
+        manageVisibility(dialogView)
         viewpager.adapter =
             MembershipDialogSliderAdapter(this@MembershipActivity, membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)
@@ -129,10 +134,33 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
     }
 
     /*Select membership plan*/
-    fun manageVisiblity(view: View) {
+    private fun manageVisibility(view: View) {
         val conTwel = view.findViewById<ConstraintLayout>(R.id.conTen)
         val conSix = view.findViewById<ConstraintLayout>(R.id.confive)
         val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
+
+        for (data in membershipViewList) {
+            val membershipType = data.membership_type
+            val price = data.price
+
+            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
+            Log.e("MembershipActivity", "price: \t $price")
+
+            if (membershipType == 0) {
+                //view.tvOnemonth.text = membershipType.toString()
+                view.tvOnemonthText1.text = price.toString()
+            }
+
+            if (membershipType == 1) {
+                // view.tvFivemonth.text = membershipType.toString()
+                view.tvSixText2.text = price.toString()
+            }
+
+            if (membershipType == 2) {
+                //  view.tvTwel.text = membershipType.toString()
+                view.tvTwelText2.text = price.toString()
+            }
+        }
 
         conOne.setOnClickListener {
             view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
@@ -261,6 +289,15 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+    }
+
+    override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
+        this.membershipViewList = membershipView
+    }
+
+    override fun onDestroy() {
+        membershipViewModel.onDestroy()
+        super.onDestroy()
     }
 
     inner class SliderTimer : TimerTask() {
