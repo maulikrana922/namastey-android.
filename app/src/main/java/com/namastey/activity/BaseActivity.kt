@@ -285,7 +285,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     }
 
     fun showNotification(title: String?, body: String?) {
-        val intent = Intent(this, MatchesActivity::class.java)
+        val intent = Intent(this, DashboardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.putExtra(Constants.ACTION_ACTION_TYPE, MyFirebaseMessagingService.KEY_NOTIFICATION)
         intent.putExtra(Constants.NOTIFICATION_TYPE, NOTIFICATION_BROADCAST)

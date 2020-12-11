@@ -29,6 +29,7 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileBinding
 import com.namastey.fragment.SignUpFragment
+import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
@@ -62,6 +63,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var membershipList = ArrayList<MembershipBean>()
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
+    private var boostProfileList = ArrayList<BoostPriceBean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +97,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
         // Temp set UI
         setMembershipList()
+        profileViewModel.getBoostPriceList()
     }
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
@@ -107,7 +110,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         sessionManager.setUserGender(profileBean.gender)
         sessionManager.setUserId(profileBean.user_id)
 
-      //  sessionManager.setIntegerValue(profileBean.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
+        //  sessionManager.setIntegerValue(profileBean.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
 
         if (profileBean.is_completly_signup == 1) {
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
@@ -695,6 +698,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun onSuccessSavePost(msg: String) {
     }
 
+    override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
+        this.boostProfileList = boostPriceBean
+    }
+
     inner class SliderTimer : TimerTask() {
         override fun run() {
             this@ProfileActivity.runOnUiThread(Runnable {
@@ -743,14 +750,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private fun showBoostDialog(layout: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProfileActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
-        val view: View =
-            LayoutInflater.from(this).inflate(layout, viewGroup, false)
+        val view: View = LayoutInflater.from(this).inflate(layout, viewGroup, false)
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.show()
 
-        manageVisiblity(view)
+        manageVisibility(view)
         view.btnBoost.setOnClickListener {
             showBoostSuccessDialog()
         }
@@ -760,8 +766,30 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     /**
-     * manage visiblity of boost dialog*/
-    private fun manageVisiblity(view: View) {
+     * manage visibility of boost dialog*/
+    private fun manageVisibility(view: View) {
+        for (data in boostProfileList) {
+            val numberOfBoost = data.number_of_boost
+            val price = data.price
+
+            Log.e("ProfileActivity", "numberOfBoost: \t $numberOfBoost")
+            Log.e("ProfileActivity", "price: \t $price")
+
+            if (numberOfBoost == 1) {
+                view.tvOnemonth.text = numberOfBoost.toString()
+                view.tvOnemonthText1.text = price.toString()
+            }
+
+            if (numberOfBoost == 5) {
+                view.tvFivemonth.text = numberOfBoost.toString()
+                view.tvSixText2.text = price.toString()
+            }
+
+            if (numberOfBoost == 10) {
+                view.tvTwel.text = numberOfBoost.toString()
+                view.tvTwelText2.text = price.toString()
+            }
+        }
 
         view.conOne.setOnClickListener {
             view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorRed))

@@ -174,7 +174,6 @@ class ProfileViewModel constructor(
         }
     }
 
-
     fun savePost(postId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -217,6 +216,28 @@ class ProfileViewModel constructor(
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+    }
+
+    fun getBoostPriceList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToGetBoostPriceList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccessBoostPriceList(appResponse.data!!)
+                        else
+                            profileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
                 profileView.onHandleException(t)
             }
         }
