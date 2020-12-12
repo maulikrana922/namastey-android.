@@ -1019,8 +1019,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
                         val intentProfileActivity =
                             Intent(this@DashboardActivity, ProfileActivity::class.java)
-                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         intentProfileActivity.putExtra(Constants.PROFILE_BEAN, profileBean)
                         intentProfileActivity.putExtra("isMyProfile", true)
                         startActivity(intentProfileActivity)

@@ -62,8 +62,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }*/
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.e("MessageService", "remoteMessage: " + remoteMessage.notification)
-        if (remoteMessage.notification != null) {
+//        Log.e("MessageService", "remoteMessage: " + remoteMessage.notification)
+//        if (remoteMessage.notification != null) {
             Log.e("MessageService", "Message data payload: " + remoteMessage.data)
             try {
                 val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
@@ -108,8 +108,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
 
                 showNotification(
-                    remoteMessage.notification?.title,
-                    remoteMessage.notification?.body,
+                    getNotification.title,
+                    getNotification.message,
                     postImage
                 )
 
@@ -118,7 +118,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             } catch (e: JSONException) {
                 Log.e("error", e.message!!)
             }
-        }
+//        }
     }
 
     private fun sendBroadcastDashboard(notiTitle: String?, notiMessage: String?) {
