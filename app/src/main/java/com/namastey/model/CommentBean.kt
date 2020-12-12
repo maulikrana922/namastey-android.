@@ -15,6 +15,8 @@ class CommentBean() : Parcelable {
     var username: String = ""
     var profile_pic: String = ""
     var user_profile_type : String = ""
+    var created_at : String = ""
+    var updated_at : String = ""
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -23,6 +25,8 @@ class CommentBean() : Parcelable {
         comment = parcel.readString() ?: ""
         username = parcel.readString() ?: ""
         profile_pic = parcel.readString() ?: ""
+        created_at = parcel.readString() ?: ""
+        updated_at = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -32,6 +36,8 @@ class CommentBean() : Parcelable {
         parcel.writeString(comment)
         parcel.writeString(username)
         parcel.writeString(profile_pic)
+        parcel.writeString(created_at)
+        parcel.writeString(updated_at)
     }
 
     override fun describeContents(): Int {

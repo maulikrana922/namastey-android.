@@ -262,7 +262,7 @@ class FeedAdapter(
             progressBarBoost.progress = i
             mCountDownTimer = object : CountDownTimer(30000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                   // Log.e("FeedAdapter", "Tick of Progress$i$millisUntilFinished")
+                   // Log.e("FeedAdapter", "Tick of Progress $i$millisUntilFinished")
                     i++
                     progressBarBoost.progress = i * 100 / (30000 / 1000)
                 }
