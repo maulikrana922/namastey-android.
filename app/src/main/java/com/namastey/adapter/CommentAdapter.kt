@@ -1,7 +1,6 @@
 package com.namastey.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,10 +47,12 @@ class CommentAdapter(
             tvComment.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
             GlideLib.loadImageUrlRoundCorner(activity, ivCommentUser, commentBean.profile_pic)
 
-            Log.e("CommentAdapter", "covertTimeToText: ${covertTimeToText(commentBean.updated_at)}")
-
-            tvDuration.text = covertTimeToText(commentBean.updated_at)
-
+            val updatedAt = covertTimeToText(commentBean.updated_at)!!
+            if (updatedAt.contains("-")) {
+                tvDuration.text = updatedAt.replace("-", "")
+            } else {
+                tvDuration.text = updatedAt
+            }
             holderComment.setOnClickListener {
                 onSelectUserItemClick.onSelectItemClick(
                     commentBean.user_id,
