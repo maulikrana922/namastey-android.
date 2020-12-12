@@ -66,60 +66,60 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 //        Log.e("MessageService", "remoteMessage: " + remoteMessage.notification)
 //        if (remoteMessage.notification != null) {
-            Log.e("MessageService", "Message data payload: " + remoteMessage.data)
-            try {
-                val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
-                Log.e("MessageService", "mainJsonObject: $mainJsonObject")
-                if (mainJsonObject.has("notification_count")) {
-                    val notificationCount = mainJsonObject.getString("notification_count")
-                    Log.e("MessageService", "notificationCount: $notificationCount")
-                    getNotification.notificationCount = notificationCount
-                }
-                if (mainJsonObject.has("is_notification_type")) {
-                    val isNotificationType = mainJsonObject.getString("is_notification_type")
-                    getNotification.isNotificationType = isNotificationType
-                }
-                if (mainJsonObject.has("NT")) {
-                    val nt = mainJsonObject.getString("NT")
-                    getNotification.nt = nt
-                }
-                if (mainJsonObject.has("alert")) {
-                    val alert = mainJsonObject.getString("alert")
-                    getNotification.alert = alert
-                }
-                if (mainJsonObject.has("title")) {
-                    val title = mainJsonObject.getString("title")
-                    getNotification.title = title
-                }
-                if (mainJsonObject.has("message")) {
-                    val message = mainJsonObject.getString("message")
-                    getNotification.message = message
-                }
-                if (mainJsonObject.has("created_at")) {
-                    val createdAt = mainJsonObject.getString("created_at")
-                    getNotification.createdAt = createdAt
-                }
-                if (mainJsonObject.has("post_image")) {
-                    //val postImage = mainJsonObject.getString("post_image")
-                    postImage = mainJsonObject.getString("post_image")
-                    getNotification.postImage = postImage
-                }
-                if (mainJsonObject.has("is_read")) {
-                    val isRead = mainJsonObject.getString("is_read")
-                    getNotification.isRead = isRead
-                }
-
-                showNotification(
-                    getNotification.title,
-                    getNotification.message,
-                    postImage
-                )
-
-                Log.e("MessageService", "isBackground: ${isBackground()}")
-
-            } catch (e: JSONException) {
-                Log.e("error", e.message!!)
+        Log.e("MessageService", "Message data payload: " + remoteMessage.data)
+        try {
+            val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)
+            Log.e("MessageService", "mainJsonObject: $mainJsonObject")
+            if (mainJsonObject.has("notification_count")) {
+                val notificationCount = mainJsonObject.getString("notification_count")
+                Log.e("MessageService", "notificationCount: $notificationCount")
+                getNotification.notificationCount = notificationCount
             }
+            if (mainJsonObject.has("is_notification_type")) {
+                val isNotificationType = mainJsonObject.getString("is_notification_type")
+                getNotification.isNotificationType = isNotificationType
+            }
+            if (mainJsonObject.has("NT")) {
+                val nt = mainJsonObject.getString("NT")
+                getNotification.nt = nt
+            }
+            if (mainJsonObject.has("alert")) {
+                val alert = mainJsonObject.getString("alert")
+                getNotification.alert = alert
+            }
+            if (mainJsonObject.has("title")) {
+                val title = mainJsonObject.getString("title")
+                getNotification.title = title
+            }
+            if (mainJsonObject.has("message")) {
+                val message = mainJsonObject.getString("message")
+                getNotification.message = message
+            }
+            if (mainJsonObject.has("created_at")) {
+                val createdAt = mainJsonObject.getString("created_at")
+                getNotification.createdAt = createdAt
+            }
+            if (mainJsonObject.has("post_image")) {
+                //val postImage = mainJsonObject.getString("post_image")
+                postImage = mainJsonObject.getString("post_image")
+                getNotification.postImage = postImage
+            }
+            if (mainJsonObject.has("is_read")) {
+                val isRead = mainJsonObject.getString("is_read")
+                getNotification.isRead = isRead
+            }
+
+            showNotification(
+                getNotification.title,
+                getNotification.message,
+                postImage
+            )
+
+            Log.e("MessageService", "isBackground: ${isBackground()}")
+
+        } catch (e: JSONException) {
+            Log.e("error", e.message!!)
+        }
 //        }
     }
 
@@ -211,7 +211,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_BROADCAST)
 
             when (getNotification.isNotificationType) {
-                "0","1","4","5" -> { // for Comment Notification
+                "0", "1", "5" -> { // for Comment Notification
                     intent =
                         Intent(this, MatchesActivity::class.java)
                     intent.putExtra("onClickMatches", false)
@@ -232,11 +232,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 }
-//                "4" -> { // for Matches Notification
-//                    intent =
-//                        Intent(this, MatchesActivity::class.java)
-//                    intent.putExtra("onClickMatches", true)
-//                }
+                "4" -> { // for Matches Notification
+                    intent =
+                        Intent(this, MatchesActivity::class.java)
+                    intent.putExtra("onClickMatches", true)
+                }
 //                "5" -> { // for mention in post Notification
 //                    intent =
 //                        Intent(this, MatchesActivity::class.java)
