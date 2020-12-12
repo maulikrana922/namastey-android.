@@ -18,6 +18,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
+import com.namastey.activity.MatchesActivity
+import com.namastey.activity.ProfileActivity
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import org.json.JSONException
@@ -199,12 +201,58 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_PENDING_INTENT)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         } else {
             intent = Intent(this, DashboardActivity::class.java)
             intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_BROADCAST)
+
+            when (getNotification.isNotificationType) {
+                "0","1","4","5" -> { // for Comment Notification
+                    intent =
+                        Intent(this, MatchesActivity::class.java)
+                    intent.putExtra("onClickMatches", false)
+                }
+//                "1" -> { // for mention in comment Notification
+//                    intent
+//                        Intent(this, MatchesActivity::class.java)
+//                    intent.putExtra("onClickMatches", false)
+//                }
+                "2" -> { // for follow Notification
+                    intent =
+                        Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("isMyProfile", true)
+                }
+                "3" -> { // for new video Notification
+                    intent =
+                        Intent(this, DashboardActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                }
+//                "4" -> { // for Matches Notification
+//                    intent =
+//                        Intent(this, MatchesActivity::class.java)
+//                    intent.putExtra("onClickMatches", true)
+//                }
+//                "5" -> { // for mention in post Notification
+//                    intent =
+//                        Intent(this, MatchesActivity::class.java)
+//                    intent.putExtra("onClickMatches", false)
+//                }
+                "6" -> { // for follow request Notification
+                    intent =
+                        Intent(this, MatchesActivity::class.java)
+                    intent.putExtra("onFollowRequest", true)
+                }
+                else -> { // Default
+                    intent =
+                        Intent(this, MatchesActivity::class.java)
+                    intent.putExtra("onClickMatches", false)
+                }
+            }
         }
         //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
