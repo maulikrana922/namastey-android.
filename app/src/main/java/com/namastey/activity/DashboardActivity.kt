@@ -1135,7 +1135,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val params: ViewGroup.LayoutParams =
             bottomSheetDialogComment.rvPostComment.layoutParams
 
-
         if (data.size > 6) {
             params.height = 1000
             bottomSheetDialogComment.rvPostComment.layoutParams = params
@@ -1266,6 +1265,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onSuccessAddComment(commentBean: CommentBean) {
         bottomSheetDialogComment.edtComment.setText("")
         commentAdapter.addCommentLastPosition(commentBean)
+        bottomSheetDialogComment.rvPostComment.scrollToPosition(commentAdapter.itemCount - 1);
 
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))

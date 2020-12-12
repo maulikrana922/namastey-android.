@@ -98,6 +98,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onSuccessAddComment(commentBean: CommentBean) {
         bottomSheetDialogComment.edtComment.setText("")
         commentAdapter.addCommentLastPosition(commentBean)
+        bottomSheetDialogComment.rvPostComment.scrollToPosition(commentAdapter.itemCount - 1);
 
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))

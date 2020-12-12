@@ -96,7 +96,6 @@ class DashboardViewModel constructor(
         }
     }
 
-
     fun addComment(postId: Long, edtComment: String) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
