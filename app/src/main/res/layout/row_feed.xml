@@ -188,6 +188,7 @@
         android:drawablePadding="@dimen/_3sdp"
         android:gravity="center"
         android:text="0"
+        android:drawableTint="@color/color_instagram"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tvFeedView"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
