@@ -95,7 +95,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         setupViewModel()
 
         initUI()
-        // (activity as MatchesActivity).setFragmentRefreshListener(this)
     }
 
     private fun setupViewModel() {

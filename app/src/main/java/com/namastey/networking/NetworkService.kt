@@ -405,4 +405,13 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetMembershipPriceAsync().await()
         }
+
+    suspend fun requestToGetLikedUserPost(): AppResponse<ArrayList<VideoBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetLikedUserPostAsync().await()
+        }
+    suspend fun requestToGetLikeUserPost(): AppResponse<ArrayList<VideoBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetLikeUserPostAsync().await()
+        }
 }

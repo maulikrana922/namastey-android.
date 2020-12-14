@@ -69,6 +69,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as MatchesScreenActivity).showMsg(msgId)
         else if (activity != null && activity!! is LocationActivity)
             (activity!! as LocationActivity).showMsg(msgId)
+        else if (activity != null && activity!! is LikeProfileActivity)
+            (activity!! as LikeProfileActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -102,6 +104,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as MatchesScreenActivity).showMsg(msg)
         else if (activity != null && activity!! is LocationActivity)
             (activity!! as LocationActivity).showMsg(msg)
+        else if (activity != null && activity!! is LikeProfileActivity)
+            (activity!! as LikeProfileActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -135,6 +139,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as MatchesScreenActivity).hideKeyboard()
         else if (activity != null && activity!! is LocationActivity)
             (activity!! as LocationActivity).hideKeyboard()
+        else if (activity != null && activity!! is LikeProfileActivity)
+            (activity!! as LikeProfileActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -172,6 +178,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as MatchesScreenActivity).onFailed(msg,error)
         else if (activity != null && activity!! is LocationActivity)
             (activity!! as LocationActivity).onFailed(msg,error)
+        else if (activity != null && activity!! is LikeProfileActivity)
+            (activity!! as LikeProfileActivity).onFailed(msg,error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -205,6 +213,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as MatchesScreenActivity).onHandleException(e)
         else if (activity != null && activity!! is LocationActivity)
             (activity!! as LocationActivity).onHandleException(e)
+        else if (activity != null && activity!! is LikeProfileActivity)
+            (activity!! as LikeProfileActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -227,6 +237,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is LocationActivity -> (activity!! as LocationActivity).isInternetAvailable()
                 activity!! is AlbumVideoActivity -> (activity!! as AlbumVideoActivity).isInternetAvailable()
                 activity!! is ProfileViewActivity -> (activity!! as ProfileViewActivity).isInternetAvailable()
+                activity!! is LikeProfileActivity -> (activity!! as LikeProfileActivity).isInternetAvailable()
                 else -> false
             }
         } else false

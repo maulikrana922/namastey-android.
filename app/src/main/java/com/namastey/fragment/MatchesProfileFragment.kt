@@ -9,6 +9,7 @@ import com.google.firebase.database.*
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
+import com.namastey.activity.LikeProfileActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
@@ -82,6 +83,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
          rvMessagesList.adapter = messagesAdapter*/
         /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
+
+        rlProfileMain.setOnClickListener {
+            openActivity(requireActivity(), LikeProfileActivity())
+        }
     }
 
     override fun onResume() {
@@ -114,8 +119,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
-//        Log.e("MatchesProfile", "onSuccessMatchesList: \t $data")
-
         matchesListBean.clear()
         matchesListBean = data
         if (matchesListBean.size <= 10) {
@@ -144,7 +147,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
-        }else{
+        } else {
             ivNoMatch.visibility = View.GONE
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE

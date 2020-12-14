@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="true"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0.0px"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true"
+    card_view:cardBackgroundColor="@android:color/transparent"
+    card_view:cardPreventCornerOverlap="false">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewLikeProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivVideoImage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundedCorners="all" />
+
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:roundedCorners="all" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvUsername"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:text="@string/add_album"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+            app:layout_constraintStart_toEndOf="@id/ivProfile"
+            app:layout_constraintTop_toTopOf="@id/ivProfile"
+            app:typeface="MULI_EXTRA_BOLD" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

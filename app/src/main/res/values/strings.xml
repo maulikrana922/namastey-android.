@@ -436,5 +436,6 @@
 
     <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>
     <string name="recurring_billing_cancel_anytime_detail">By tapping Continue, your payment will be charged to your Google Play account, and your subscription will be automatically renew for the same package length at the same price until you cancel in setting in the Google Play Store. By tapping Continue, you agree our Terms.  </string>
+    <string name="likes_sent">Likes Sent</string>
 
 </resources>

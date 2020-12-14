@@ -113,6 +113,8 @@ object Constants {
     const val GET_POST_DETAILS = "get-post-details"
     const val BOOST_PRICE_LIST = "boost-price-list"
     const val MEMBERSHIP_PRICE_LIST = "membership-price-list"
+    const val LIKED_USER_POST = "liked-user-post"
+    const val LIKE_USER_POST = "like-user-post"
 
     //    api response error code
     const val OK = 200
