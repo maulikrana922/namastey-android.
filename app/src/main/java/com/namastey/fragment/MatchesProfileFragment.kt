@@ -16,6 +16,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentMatchesProfileBinding
 import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.ChatMessage
+import com.namastey.model.LikedUserCountBean
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
 import com.namastey.utils.Constants
@@ -46,6 +47,9 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private var messageList: ArrayList<MatchesListBean> = ArrayList()
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var myChatRef: DatabaseReference = database.reference
+    private var likeUserCount = 0
+    private var lastUserProfile = ""
+
     override fun getViewModel() = matchesProfileViewModel
 
     override fun getLayoutId() = R.layout.fragment_matches_profile
@@ -83,9 +87,13 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
          rvMessagesList.adapter = messagesAdapter*/
         /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
          rvMessagesList.adapter = messagesAdapter*/
+        matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
-            openActivity(requireActivity(), LikeProfileActivity())
+            val intent = Intent(requireActivity(), LikeProfileActivity::class.java)
+            intent.putExtra("likeUserCount", likeUserCount)
+            intent.putExtra("lastUserProfile", lastUserProfile)
+            openActivity(intent)
         }
     }
 
@@ -121,21 +129,21 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
         matchesListBean.clear()
         matchesListBean = data
-        if (matchesListBean.size <= 10) {
-            tvLikesCount.text = matchesListBean.size.toString()
-        } else {
-            tvLikesCount.text = "10+"
-        }
+        /* if (matchesListBean.size <= 10) {
+             tvLikesCount.text = matchesListBean.size.toString()
+         } else {
+             tvLikesCount.text = "10+"
+         }
 
-        if (matchesListBean.size == 0) {
-            ivBackgroundPicture.setImageResource(R.drawable.default_album)
-        } else {
-            GlideLib.loadImage(
-                requireContext(),
-                ivBackgroundPicture,
-                matchesListBean[0].profile_pic
-            )
-        }
+         if (matchesListBean.size == 0) {
+             ivBackgroundPicture.setImageResource(R.drawable.default_album)
+         } else {
+             GlideLib.loadImage(
+                 requireContext(),
+                 ivBackgroundPicture,
+                 matchesListBean[0].profile_pic
+             )
+         }*/
 
         // tvLikesCount.text = matchesListBean.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(matchesListBean, requireActivity(), this)
@@ -187,6 +195,19 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             })
 
         }
+    }
+
+    override fun onSuccessLikeUserCount(likedUserCountBean: LikedUserCountBean) {
+        this.likeUserCount = likedUserCountBean.like_count
+        this.lastUserProfile = likedUserCountBean.profile_pic
+
+        tvLikesCount.text = likeUserCount.toString()
+
+        GlideLib.loadImage(
+            requireContext(),
+            ivBackgroundPicture,
+            lastUserProfile
+        )
     }
 
     override fun onDestroy() {
