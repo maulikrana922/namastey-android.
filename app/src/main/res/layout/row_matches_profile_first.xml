@@ -15,6 +15,7 @@
 
         <RelativeLayout
             android:layout_width="@dimen/_72sdp"
+            android:id="@+id/rlProfileMain"
             android:layout_height="@dimen/_72sdp"
             android:layout_gravity="center">
 

@@ -123,7 +123,8 @@ interface NetworkRequest {
     fun requestToGetAlbumWithDetailsAsync(): Deferred<AppResponse<ArrayList<AlbumBean>>>
 
     @POST(Constants.POST_VIDEO)
-    fun postVideoAsync(@Body jsonObject: JsonObject
+    fun postVideoAsync(
+        @Body jsonObject: JsonObject
     ): Deferred<AppResponse<VideoBean>>
 
     @Multipart
@@ -357,5 +358,11 @@ interface NetworkRequest {
 
     @GET(Constants.MEMBERSHIP_PRICE_LIST)
     fun requestToGetMembershipPriceAsync(): Deferred<AppResponse<ArrayList<MembershipPriceBean>>>
+
+    @GET(Constants.LIKED_USER_POST)
+    fun requestToGetLikedUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
+
+    @GET(Constants.LIKE_USER_POST)
+    fun requestToGetLikeUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
 
 }

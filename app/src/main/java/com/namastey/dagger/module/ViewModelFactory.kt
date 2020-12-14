@@ -207,7 +207,7 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
-             modelClass.isAssignableFrom(ChatViewModel::class.java) -> ChatViewModel(
+            modelClass.isAssignableFrom(ChatViewModel::class.java) -> ChatViewModel(
                 networkService,
                 dbHelper,
                 baseView
@@ -221,8 +221,13 @@ class ViewModelFactory @Inject constructor(
                 networkService,
                 dbHelper,
                 baseView
-            )as T
-             modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(
+            ) as T
+            modelClass.isAssignableFrom(LocationViewModel::class.java) -> LocationViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
+            modelClass.isAssignableFrom(LikeProfileViewModel::class.java) -> LikeProfileViewModel(
                 networkService,
                 dbHelper,
                 baseView
