@@ -414,4 +414,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetLikeUserPostAsync().await()
         }
+
+
+    suspend fun requestToGetLikedUserCount(): AppResponse<LikedUserCountBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetLikedUserCountAsync().await()
+        }
 }

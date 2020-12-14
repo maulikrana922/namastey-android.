@@ -35,6 +35,9 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
 
     private lateinit var tabOne: TextView
     private lateinit var tabTwo: TextView
+    private var likeUserCount = 0
+    private var lastUserProfile = ""
+    private var tabOneTitle = ""
 
     override fun getViewModel() = likeProfileViewModel
 
@@ -46,7 +49,8 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
 
-        likeProfileViewModel = ViewModelProviders.of(this, viewModelFactory).get(LikeProfileViewModel::class.java)
+        likeProfileViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(LikeProfileViewModel::class.java)
         activityLikeProfileBinding = bindViewData()
         activityLikeProfileBinding.viewModel = likeProfileViewModel
 
@@ -54,6 +58,11 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     }
 
     private fun initData() {
+        likeUserCount = intent.getIntExtra("likeUserCount", 0)
+        lastUserProfile = intent.getStringExtra("lastUserProfile")!!
+
+        tabOneTitle = likeUserCount.toString() + " " +resources.getString(R.string.likes)
+
         setupViewPager()
         tabLikeProfile.setupWithViewPager(viewPagerLikeProfile)
         setupTabIcons()
@@ -62,15 +71,17 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
 
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFrag(LikeUserPostFragment(), resources.getString(R.string.likes))
+        //adapter.addFrag(LikeUserPostFragment(), resources.getString(R.string.likes))
+        adapter.addFrag(LikeUserPostFragment(),tabOneTitle)
         adapter.addFrag(LikedUserPostFragment(), resources.getString(R.string.likes_sent))
         viewPagerLikeProfile.adapter = adapter
     }
 
     private fun setupTabIcons() {
         tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
-        tabOne.background = ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
-        tabOne.text = resources.getString(R.string.likes)
+        tabOne.background =
+            ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
+        tabOne.text = tabOneTitle
         tabOne.setTextColor(Color.WHITE)
         tabLikeProfile.getTabAt(0)?.customView = tabOne
         tabTwo = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
@@ -97,14 +108,18 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
      */
     private fun changeSelectedTab(position: Int) {
         if (position == 0) {
-            tabOne.background = ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
+            tabOne.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
             tabOne.setTextColor(Color.WHITE)
-            tabTwo.background = ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
+            tabTwo.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
             tabTwo.setTextColor(Color.GRAY)
         } else {
-            tabOne.background = ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_pink_solid)
+            tabOne.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_pink_solid)
             tabOne.setTextColor(Color.GRAY)
-            tabTwo.background = ContextCompat.getDrawable(this, R.drawable.rounded_top_right_red_solid)
+            tabTwo.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_top_right_red_solid)
             tabTwo.setTextColor(Color.WHITE)
         }
     }
@@ -124,6 +139,7 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     override fun onSuccess(data: ArrayList<VideoBean>) {
         TODO("Not yet implemented")
     }
+
 
     override fun onDestroy() {
         likeProfileViewModel.onDestroy()

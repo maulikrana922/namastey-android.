@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.model.MatchesListBean
 import com.namastey.networking.NetworkService
@@ -36,6 +37,28 @@ class MatchesProfileViewModel constructor(
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 matchesProfileView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getLikeUserCount() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (matchesProfileView.isInternetAvailable()) {
+                    networkService.requestToGetLikedUserCount().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            matchesProfileView.onSuccessLikeUserCount(appResponse.data!!)
+                        else
+                            matchesProfileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    matchesProfileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                matchesProfileView.onHandleException(t)
             }
         }
     }

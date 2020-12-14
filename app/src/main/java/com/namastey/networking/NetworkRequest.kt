@@ -365,4 +365,6 @@ interface NetworkRequest {
     @GET(Constants.LIKE_USER_POST)
     fun requestToGetLikeUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
 
+    @GET(Constants.LIKED_USER_COUNT)
+    fun requestToGetLikedUserCountAsync( ): Deferred<AppResponse<LikedUserCountBean>>
 }
