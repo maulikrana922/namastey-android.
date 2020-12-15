@@ -73,7 +73,7 @@
                         android:background="@drawable/circle_left_right"
                         android:elevation="@dimen/_4sdp"
                         android:gravity="center"
-                        android:text="@string/most_popular"
+                        android:text="@string/best_value"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_8sdp"
                         android:visibility="invisible"
@@ -113,7 +113,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/_4_58_mo"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvTwelText1"
                         app:typeface="MULI_EXTRA_BOLD" />
@@ -184,12 +183,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="$5.83/Mo \n Save 42%"
                         android:textColor="@color/colorBlueLight"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvSixtext1"
                         app:typeface="MULI_EXTRA_BOLD" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -256,7 +253,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/_4_58_mo"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvOnemonthText"
                         app:typeface="MULI_EXTRA_BOLD" />
@@ -283,8 +279,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_12sdp"
                 android:gravity="center"
+                android:paddingBottom="@dimen/_12sdp"
                 android:text="@string/no_thanks"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"

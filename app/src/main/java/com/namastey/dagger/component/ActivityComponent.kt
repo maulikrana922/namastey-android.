@@ -67,7 +67,7 @@ interface ActivityComponent {
     fun inject(fragment: CurrentLocationFragment)
     fun inject(fragment: ShareAppFragment)
     fun inject(activity: LikeProfileActivity)
-    fun inject(fragment: LikeUserPostFragment)
+    fun inject(fragment: LikeSentFragment)
     fun inject(fragment: LikedUserPostFragment)
     //fun inject(activity: PassportContentActivity)
     //fun inject(activity: SearchLocationActivity)

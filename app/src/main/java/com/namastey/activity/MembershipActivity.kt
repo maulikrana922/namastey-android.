@@ -20,6 +20,7 @@ import com.namastey.databinding.ActivityMembershipBinding
 import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
 import com.namastey.uiView.MemberShipView
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
@@ -67,7 +68,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 resources.getString(R.string._1_boost_each_month),
                 getString(R.string.skip_the_line_to_get_more_matches),
                 R.drawable.ic_cards_boots,
-                R.drawable.dialog_offread_gradiant
+                R.drawable.dialog_offread_gradiant,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -75,7 +77,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 resources.getString(R.string.out_of_likes),
                 getString(R.string.dont_want_to_wait),
                 R.drawable.ic_cards_outoflike,
-                R.drawable.dialog_gradiant_two
+                R.drawable.dialog_gradiant_two,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -83,7 +86,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 resources.getString(R.string.swipe_around_the_world),
                 getString(R.string.passport_to_anywher),
                 R.drawable.ic_cards_passport,
-                R.drawable.dialog_gradiant_three
+                R.drawable.dialog_gradiant_three,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -91,7 +95,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 resources.getString(R.string._5_free_super_message),
                 getString(R.string.your_3x_more_likes),
                 R.drawable.ic_cards_super_message,
-                R.drawable.dialog_gradiant_five
+                R.drawable.dialog_gradiant_five,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -99,7 +104,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 resources.getString(R.string.see_who_like_you),
                 getString(R.string.month_with_them_intantly),
                 R.drawable.ic_cards_super_like,
-                R.drawable.dialog_gradiant_six
+                R.drawable.dialog_gradiant_six,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
 
@@ -142,23 +148,34 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         for (data in membershipViewList) {
             val membershipType = data.membership_type
             val price = data.price
+            val discount = data.discount_pr
 
             Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
             Log.e("MembershipActivity", "price: \t $price")
+            Log.e("MembershipActivity", "discount: \t $discount")
 
             if (membershipType == 0) {
-                //view.tvOnemonth.text = membershipType.toString()
-                view.tvOnemonthText1.text = price.toString()
+                view.tvOnemonthText1.text =
+                    resources.getString(R.string.dollars) + " " + price +
+                            resources.getString(R.string.per_month) + "\n"
             }
 
             if (membershipType == 1) {
-                // view.tvFivemonth.text = membershipType.toString()
-                view.tvSixText2.text = price.toString()
+                view.tvSixText2.text =
+                    resources.getString(R.string.dollars) + " " + price +
+                            resources.getString(R.string.per_month) + "\n" +
+                            resources.getString(R.string.save) + " " + discount +
+                            resources.getString(R.string.percentage)
+
             }
 
             if (membershipType == 2) {
-                //  view.tvTwel.text = membershipType.toString()
-                view.tvTwelText2.text = price.toString()
+                view.tvTwelText2.text =
+                    resources.getString(R.string.dollars) + " " + price +
+                            resources.getString(R.string.per_month) + "\n" +
+                            resources.getString(R.string.save) + " " + discount +
+                            resources.getString(R.string.percentage)
+
             }
         }
 
@@ -233,7 +250,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
             view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvMostpopularTwel.visibility = View.VISIBLE
+            //view.tvMostpopularTwel.visibility = View.VISIBLE
             view.viewSelectedTwel.visibility = View.VISIBLE
 
             view.tvBgSixColor.setBackgroundColor(

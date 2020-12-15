@@ -30,22 +30,20 @@
                 android:id="@+id/ivInterest"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"
-                android:contentDescription="@string/app_name"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_placeholder"
-                />
+                android:src="@drawable/default_placeholder" />
 
             <View
                 android:id="@+id/view"
-                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black_overlay"
-                />
+                android:visibility="visible" />
         </FrameLayout>
 
-        <com.namastey.customViews.CustomTextView
+        <!--<com.namastey.customViews.CustomTextView
             android:id="@+id/tvInterstTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,26 +57,43 @@
             android:textColor="@color/colorWhite"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />-->
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvInterstTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:padding="@dimen/_4sdp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:typeface="MULI_SEMIBOLD" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/ivVideoCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/circle_white_solid"
             android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/circle_white_solid"
             android:src="@drawable/ic_done_red"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/tvInterstTitle"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:visibility="gone"
             android:id="@+id/ckbInterest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:button="@drawable/custom_checkbox"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/tvInterstTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
