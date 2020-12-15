@@ -95,14 +95,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 whoCanSendMessage = intent.getIntExtra("whoCanSendMessage",2)
                 isFromProfile = intent.getBooleanExtra("isFromProfile", false)
                 Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
-                if (matchesListBean.is_match == 1)
-                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
-                else
-                    viewBuyNow.visibility = View.VISIBLE
-            }else{
-                chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+//                if (matchesListBean.is_match == 1)
+//                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+//                else
+//                    viewBuyNow.visibility = View.VISIBLE
             }
 
+            if (matchesListBean.is_match == 1 || whoCanSendMessage == 0)
+                chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+            else{
+                viewBuyNow.visibility = View.VISIBLE
+            }
 
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
