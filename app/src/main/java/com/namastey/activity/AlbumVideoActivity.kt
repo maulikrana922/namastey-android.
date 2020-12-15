@@ -351,7 +351,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
-                albumViewModel.likeUserProfile(videoBean.id, isLike)
+                albumViewModel.likeUserProfile(videoBean.user_id, isLike)
                 Log.e("AlbumVideoActivity", "UserType: In")
             }
         }

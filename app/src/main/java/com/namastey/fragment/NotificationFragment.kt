@@ -491,86 +491,86 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun manageVisibility(view: View) {
-        val conTwel = view.findViewById<ConstraintLayout>(R.id.conTen)
-        val conSix = view.findViewById<ConstraintLayout>(R.id.confive)
-        val conOne = view.findViewById<ConstraintLayout>(R.id.conOne)
+        val conTwel = view.findViewById<ConstraintLayout>(R.id.constHigh)
+        val conSix = view.findViewById<ConstraintLayout>(R.id.constMedium)
+        val conOne = view.findViewById<ConstraintLayout>(R.id.constLow)
 
         conOne.setOnClickListener {
-            view.tvOnemonth.setTextColor(
+            view.tvTextLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvOnemonthText.setTextColor(
+            view.tvTextBoostLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvOnemonthText1.setTextColor(
+            view.tvTextLowEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.viewBgOneColor.setBackgroundColor(
+            view.viewBgLow.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.white
                 )
             )
-            view.tvMostpopular.visibility = View.VISIBLE
-            view.viewSelected.visibility = View.VISIBLE
+            view.tvOfferLow.visibility = View.VISIBLE
+            view.viewSelectedLow.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(
+            view.viewBgMedium.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularSix.visibility = View.INVISIBLE
-            view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularTwel.visibility = View.INVISIBLE
-            view.viewSelectedTwel.visibility = View.INVISIBLE
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
 
-            view.tvFivemonth.setTextColor(
+            view.tvTextMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvSixtext1.setTextColor(
+            view.tvTextBoostMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvSixText2.setTextColor(
+            view.tvTextMediumEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwel.setTextColor(
+            view.tvTextHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwelText1.setTextColor(
+            view.tvTextBoostHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwelText2.setTextColor(
+            view.tvTextHighEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
@@ -579,81 +579,81 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
 
         conSix.setOnClickListener {
-            view.tvFivemonth.setTextColor(
+            view.tvTextMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvSixtext1.setTextColor(
+            view.tvTextBoostMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvSixText2.setTextColor(
+            view.tvTextMediumEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvBgSixColor.setBackgroundColor(
+            view.viewBgMedium.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.white
                 )
             )
-            view.tvMostpopularSix.visibility = View.VISIBLE
-            view.viewSelectedSix.visibility = View.VISIBLE
+            view.tvOfferMedium.visibility = View.VISIBLE
+            view.viewSelectedMedium.visibility = View.VISIBLE
 
-            view.viewBgOneColor.setBackgroundColor(
+            view.viewBgLow.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopular.visibility = View.INVISIBLE
-            view.viewSelected.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularTwel.visibility = View.INVISIBLE
-            view.viewSelectedTwel.visibility = View.INVISIBLE
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(
+            view.tvTextLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvOnemonthText.setTextColor(
+            view.tvTextBoostLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvOnemonthText1.setTextColor(
+            view.tvTextLowEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwel.setTextColor(
+            view.tvTextHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwelText1.setTextColor(
+            view.tvTextBoostHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvTwelText2.setTextColor(
+            view.tvTextHighEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
@@ -662,81 +662,81 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
 
         conTwel.setOnClickListener {
-            view.tvTwel.setTextColor(
+            view.tvTextHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvTwelText1.setTextColor(
+            view.tvTextBoostHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.tvTwelText2.setTextColor(
+            view.tvTextHighEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorBlueLight
                 )
             )
-            view.viewBgTwelColor.setBackgroundColor(
+            view.viewBgHigh.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.white
                 )
             )
-            view.tvMostpopularTwel.visibility = View.VISIBLE
-            view.viewSelectedTwel.visibility = View.VISIBLE
+            view.tvOfferHigh.visibility = View.VISIBLE
+            view.viewSelectedHigh.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(
+            view.viewBgMedium.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularSix.visibility = View.INVISIBLE
-            view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgOneColor.setBackgroundColor(
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgLow.setBackgroundColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopular.visibility = View.INVISIBLE
-            view.viewSelected.visibility = View.INVISIBLE
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(
+            view.tvTextLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvOnemonthText.setTextColor(
+            view.tvTextBoostLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvOnemonthText1.setTextColor(
+            view.tvTextLowEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvFivemonth.setTextColor(
+            view.tvTextMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvSixtext1.setTextColor(
+            view.tvTextBoostMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
                 )
             )
-            view.tvSixText2.setTextColor(
+            view.tvTextMediumEachBoost.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.colorDarkGray
