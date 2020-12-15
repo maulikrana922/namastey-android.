@@ -252,7 +252,7 @@ class FeedAdapter(
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
 
-            if (dashboardBean.is_liked_you == 1) {
+            if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1) {
                 animationVideoLike.visibility = View.VISIBLE
             } else {
                 animationVideoLike.visibility = View.GONE
