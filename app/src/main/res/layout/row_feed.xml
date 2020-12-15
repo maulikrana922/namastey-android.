@@ -138,13 +138,12 @@
         android:id="@+id/animationBoost"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginBottom="@dimen/_15sdp"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+        app:layout_constraintBottom_toTopOf="@id/progressBarBoost"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
         app:layout_constraintStart_toStartOf="@id/tvFeedShare"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-            app:lottie_rawRes="@raw/video_like_heart1"
+        app:lottie_rawRes="@raw/video_like_heart1"
         app:lottie_repeatMode="restart" />
 
     <ProgressBar

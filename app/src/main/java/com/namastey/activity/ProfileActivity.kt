@@ -635,7 +635,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
-                showBoostDialog(R.layout.dialog_boosts)
+                if (boostProfileList.size != 0)
+                    showBoostDialog(R.layout.dialog_boosts)
             }
         }
     }
@@ -664,17 +665,48 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-    /**
-     * Temp set for display purpose
-     */
-    private fun setMembershipList() {
-        for (number in 0..5) {
-            val membershipBean = MembershipBean()
-            membershipBean.name = "Unlimited matches"
-            membershipBean.description = "Premium members get unlimited matches ".plus(number + 1)
 
-            membershipList.add(membershipBean)
-        }
+    /* private fun setMembershipList() {
+         for (number in 0..5) {
+             val membershipBean = MembershipBean()
+             membershipBean.name = "Unlimited matches"
+             membershipBean.description = "Premium members get unlimited matches ".plus(number + 1)
+
+             membershipList.add(membershipBean)
+         }
+
+         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
+         indicator.setupWithViewPager(viewpagerMembership, true)
+
+         val timer = Timer()
+         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
+
+     }*/
+    private fun setMembershipList() {
+        val membershipBean1 = MembershipBean()
+        membershipBean1.name = resources.getString(R.string._1_boost_each_month)
+        membershipBean1.description = getString(R.string.skip_the_line_to_get_more_matches)
+        membershipList.add(membershipBean1)
+
+        val membershipBean2 = MembershipBean()
+        membershipBean2.name = resources.getString(R.string.out_of_likes)
+        membershipBean2.description = getString(R.string.dont_want_to_wait_slider)
+        membershipList.add(membershipBean2)
+
+        val membershipBean3 = MembershipBean()
+        membershipBean3.name = resources.getString(R.string.swipe_around_the_world)
+        membershipBean3.description = getString(R.string.passport_to_anywher)
+        membershipList.add(membershipBean3)
+
+        val membershipBean4 = MembershipBean()
+        membershipBean4.name = resources.getString(R.string._5_free_super_message)
+        membershipBean4.description = getString(R.string.your_3x_more_likes)
+        membershipList.add(membershipBean4)
+
+        val membershipBean5 = MembershipBean()
+        membershipBean5.name = resources.getString(R.string.see_who_like_you)
+        membershipBean5.description = getString(R.string.month_with_them_intantly)
+        membershipList.add(membershipBean5)
 
         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
         indicator.setupWithViewPager(viewpagerMembership, true)
@@ -776,118 +808,121 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             Log.e("ProfileActivity", "price: \t $price")
 
             if (numberOfBoost == 1) {
-               // view.tvOnemonth.text = numberOfBoost.toString()
-                view.tvOnemonthText1.text = resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
+                // view.tvOnemonth.text = numberOfBoost.toString()
+                view.tvTextLowEachBoost.text =
+                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
             }
 
             if (numberOfBoost == 5) {
-               // view.tvFivemonth.text = numberOfBoost.toString()
-                view.tvSixText2.text = resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
+                // view.tvFivemonth.text = numberOfBoost.toString()
+                view.tvTextMediumEachBoost.text =
+                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
             }
 
             if (numberOfBoost == 10) {
-               // view.tvTwel.text = numberOfBoost.toString()
-                view.tvTwelText2.text =resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
+                // view.tvTwel.text = numberOfBoost.toString()
+                view.tvTextHighEachBoost.text =
+                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
             }
         }
 
-        view.conOne.setOnClickListener {
-            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-           // view.tvMostpopular.visibility = View.VISIBLE
-            view.viewSelected.visibility = View.VISIBLE
+        view.constLow.setOnClickListener {
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgLow.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+          //  view.tvOfferLow.visibility = View.VISIBLE
+            view.viewSelectedLow.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(
+            view.viewBgMedium.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularSix.visibility = View.INVISIBLE
-            view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularTwel.visibility = View.INVISIBLE
-            view.viewSelectedTwel.visibility = View.INVISIBLE
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
 
-            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
         }
 
-        view.confive.setOnClickListener {
-            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvBgSixColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvMostpopularSix.visibility = View.VISIBLE
-            view.viewSelectedSix.visibility = View.VISIBLE
+        view.constMedium.setOnClickListener {
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgMedium.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvOfferMedium.visibility = View.VISIBLE
+            view.viewSelectedMedium.visibility = View.VISIBLE
 
-            view.viewBgOneColor.setBackgroundColor(
+            view.viewBgLow.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopular.visibility = View.INVISIBLE
-            view.viewSelected.visibility = View.INVISIBLE
-            view.viewBgTwelColor.setBackgroundColor(
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularTwel.visibility = View.INVISIBLE
-            view.viewSelectedTwel.visibility = View.INVISIBLE
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
         }
 
-        view.conTen.setOnClickListener {
-            view.tvTwel.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTwelText1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTwelText2.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.viewBgTwelColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvMostpopularTwel.visibility = View.VISIBLE
-            view.viewSelectedTwel.visibility = View.VISIBLE
+        view.constHigh.setOnClickListener {
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgHigh.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvOfferHigh.visibility = View.VISIBLE
+            view.viewSelectedHigh.visibility = View.VISIBLE
 
-            view.tvBgSixColor.setBackgroundColor(
+            view.viewBgMedium.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopularSix.visibility = View.INVISIBLE
-            view.viewSelectedSix.visibility = View.INVISIBLE
-            view.viewBgOneColor.setBackgroundColor(
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgLow.setBackgroundColor(
                 ContextCompat.getColor(
                     this,
                     R.color.colorLightPink
                 )
             )
-            view.tvMostpopular.visibility = View.INVISIBLE
-            view.viewSelected.visibility = View.INVISIBLE
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
 
-            view.tvOnemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvFivemonth.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvSixtext1.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvSixText2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
         }
     }
 

@@ -89,7 +89,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conTen"
+                    android:id="@+id/constHigh"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -100,7 +100,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <View
-                        android:id="@+id/viewBgTwelColor"
+                        android:id="@+id/viewBgHigh"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -108,7 +108,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvMostpopularTwel"
+                        android:id="@+id/tvOfferHigh"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_15sdp"
                         android:background="@drawable/circle_left_right_red"
@@ -121,7 +121,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/viewSelectedTwel"
+                        android:id="@+id/viewSelectedHigh"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_6sdp"
@@ -129,7 +129,7 @@
                         android:visibility="invisible" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvTwel"
+                        android:id="@+id/tvTextHigh"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_32sdp"
@@ -140,35 +140,35 @@
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvTwelText1"
+                        android:id="@+id/tvTextBoostHigh"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/boosts"
                         android:textSize="@dimen/_12sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTwel"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextHigh"
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvTwelText2"
+                        android:id="@+id/tvTextHighEachBoost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="@dimen/_14sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTwelText1"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostHigh"
                         app:typeface="MULI_EXTRA_BOLD" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/confive"
+                    android:id="@+id/constMedium"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <View
-                        android:id="@+id/tvBgSixColor"
+                        android:id="@+id/viewBgMedium"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -176,7 +176,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvMostpopularSix"
+                        android:id="@+id/tvOfferMedium"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_15sdp"
                         android:background="@drawable/circle_left_right_red"
@@ -189,7 +189,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/viewSelectedSix"
+                        android:id="@+id/viewSelectedMedium"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_6sdp"
@@ -197,7 +197,7 @@
                         android:visibility="visible" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvFivemonth"
+                        android:id="@+id/tvTextMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_32sdp"
@@ -209,31 +209,31 @@
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvSixtext1"
+                        android:id="@+id/tvTextBoostMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/boosts"
                         android:textColor="@color/colorRed"
                         android:textSize="@dimen/_12sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFivemonth"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextMedium"
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvSixText2"
+                        android:id="@+id/tvTextMediumEachBoost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textColor="@color/colorRed"
                         android:textSize="@dimen/_14sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvSixtext1"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostMedium"
                         app:typeface="MULI_EXTRA_BOLD" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conOne"
+                    android:id="@+id/constLow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -241,7 +241,7 @@
                     android:orientation="vertical">
 
                     <View
-                        android:id="@+id/viewBgOneColor"
+                        android:id="@+id/viewBgLow"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -249,7 +249,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvMostpopular"
+                        android:id="@+id/tvOfferLow"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_15sdp"
                         android:background="@drawable/circle_left_right_red"
@@ -262,7 +262,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/viewSelected"
+                        android:id="@+id/viewSelectedLow"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_6sdp"
@@ -270,7 +270,7 @@
                         android:visibility="invisible" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvOnemonth"
+                        android:id="@+id/tvTextLow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_32sdp"
@@ -281,22 +281,22 @@
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvOnemonthText"
+                        android:id="@+id/tvTextBoostLow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/boosts"
                         android:textSize="@dimen/_12sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvOnemonth"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextLow"
                         app:typeface="MULI_EXTRA_BOLD" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvOnemonthText1"
+                        android:id="@+id/tvTextLowEachBoost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="@dimen/_14sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvOnemonthText"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostLow"
                         app:typeface="MULI_EXTRA_BOLD" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

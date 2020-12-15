@@ -252,7 +252,7 @@ class FeedAdapter(
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
 
-            if (dashboardBean.is_like == 0) {
+            if (dashboardBean.is_liked_you == 1) {
                 animationVideoLike.visibility = View.VISIBLE
             } else {
                 animationVideoLike.visibility = View.GONE
@@ -262,7 +262,7 @@ class FeedAdapter(
             progressBarBoost.progress = i
             mCountDownTimer = object : CountDownTimer(30000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                   // Log.e("FeedAdapter", "Tick of Progress $i$millisUntilFinished")
+                    // Log.e("FeedAdapter", "Tick of Progress $i$millisUntilFinished")
                     i++
                     progressBarBoost.progress = i * 100 / (30000 / 1000)
                 }

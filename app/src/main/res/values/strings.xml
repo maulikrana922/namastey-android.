@@ -405,6 +405,7 @@
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
     <string name="dont_want_to_wait">"11:59:55 \n Don`t want to wait? Go Unlimited "</string>
+    <string name="dont_want_to_wait_slider">"11:59:55 Don`t want to wait? Go Unlimited "</string>
     <string name="swipe_around_the_world">Swipe Around The World</string>
     <string name="passport_to_anywher">Passport to anywhere</string>
     <string name="_5_free_super_message">5 Free Super Message</string>
@@ -444,5 +445,6 @@
     <string name="save_14">Save 14%</string>
     <string name="save_32">Save 32%</string>
     <string name="each">/Each</string>
+    <string name="get_boost_gold">Get Boost Gold</string>
 
 </resources>
