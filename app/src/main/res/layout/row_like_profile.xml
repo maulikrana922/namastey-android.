@@ -49,7 +49,6 @@
             android:id="@+id/tvUsername"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginStart="@dimen/_7sdp"
-            android:text="@string/add_album"
             android:textSize="14sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/ivProfile"

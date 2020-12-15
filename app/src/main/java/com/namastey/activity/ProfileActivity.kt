@@ -776,18 +776,18 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             Log.e("ProfileActivity", "price: \t $price")
 
             if (numberOfBoost == 1) {
-                view.tvOnemonth.text = numberOfBoost.toString()
-                view.tvOnemonthText1.text = price.toString()
+               // view.tvOnemonth.text = numberOfBoost.toString()
+                view.tvOnemonthText1.text = resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
             }
 
             if (numberOfBoost == 5) {
-                view.tvFivemonth.text = numberOfBoost.toString()
-                view.tvSixText2.text = price.toString()
+               // view.tvFivemonth.text = numberOfBoost.toString()
+                view.tvSixText2.text = resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
             }
 
             if (numberOfBoost == 10) {
-                view.tvTwel.text = numberOfBoost.toString()
-                view.tvTwelText2.text = price.toString()
+               // view.tvTwel.text = numberOfBoost.toString()
+                view.tvTwelText2.text =resources.getString(R.string.dollars) + " " + price + resources.getString(R.string.each)
             }
         }
 
@@ -796,7 +796,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             view.tvOnemonthText.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
             view.tvOnemonthText1.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
             view.viewBgOneColor.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvMostpopular.visibility = View.VISIBLE
+           // view.tvMostpopular.visibility = View.VISIBLE
             view.viewSelected.visibility = View.VISIBLE
 
             view.tvBgSixColor.setBackgroundColor(

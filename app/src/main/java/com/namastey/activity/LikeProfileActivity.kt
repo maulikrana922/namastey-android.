@@ -13,7 +13,7 @@ import com.namastey.R
 import com.namastey.adapter.ViewPagerAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityLikeProfileBinding
-import com.namastey.fragment.LikeUserPostFragment
+import com.namastey.fragment.LikeSentFragment
 import com.namastey.fragment.LikedUserPostFragment
 import com.namastey.model.VideoBean
 import com.namastey.uiView.ProfileLikeView
@@ -61,7 +61,7 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
         likeUserCount = intent.getIntExtra("likeUserCount", 0)
         lastUserProfile = intent.getStringExtra("lastUserProfile")!!
 
-        tabOneTitle = likeUserCount.toString() + " " +resources.getString(R.string.likes)
+        tabOneTitle = likeUserCount.toString() + " " + resources.getString(R.string.likes)
 
         setupViewPager()
         tabLikeProfile.setupWithViewPager(viewPagerLikeProfile)
@@ -72,8 +72,8 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         //adapter.addFrag(LikeUserPostFragment(), resources.getString(R.string.likes))
-        adapter.addFrag(LikeUserPostFragment(),tabOneTitle)
-        adapter.addFrag(LikedUserPostFragment(), resources.getString(R.string.likes_sent))
+        adapter.addFrag(LikedUserPostFragment(), tabOneTitle)
+        adapter.addFrag(LikeSentFragment(), resources.getString(R.string.likes_sent))
         viewPagerLikeProfile.adapter = adapter
     }
 

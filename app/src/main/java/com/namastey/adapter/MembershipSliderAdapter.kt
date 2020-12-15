@@ -4,14 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.namastey.R
 import com.namastey.customViews.CustomTextView
-import com.namastey.model.MembershipBean
 import com.namastey.model.MembershipSlide
-import kotlinx.android.synthetic.main.row_dialog_membership.view.*
+import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_membership.view.*
 
 class MembershipSliderAdapter(
@@ -47,6 +45,9 @@ class MembershipSliderAdapter(
         tvDescription.text=membershipList[position].title
         tvDescription1.text=membershipList[position].description
         view.ivBoost.setImageResource(membershipList[position].profile_url)
+        //view.ivProfile.setImageResource(membershipList[position].profilePicture)
+
+        GlideLib.loadImage(context, view.ivProfile, membershipList[position].profilePicture)
 
         val viewPager = container as ViewPager
 

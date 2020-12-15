@@ -8,16 +8,18 @@ class MembershipPriceBean() : Parcelable {
 
     var membership_type: Int = 0
     var price: String = ""
-
+    var discount_pr: String = ""
 
     constructor(parcel: Parcel) : this() {
         membership_type = parcel.readInt()
         price = parcel.readString() ?: ""
+        discount_pr = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(membership_type)
         parcel.writeString(price)
+        parcel.writeString(discount_pr)
     }
 
     override fun describeContents(): Int {

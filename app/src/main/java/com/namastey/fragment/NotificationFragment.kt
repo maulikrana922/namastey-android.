@@ -448,7 +448,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string._1_boost_each_month),
                 getString(R.string.skip_the_line_to_get_more_matches),
                 R.drawable.ic_cards_boots,
-                R.drawable.dialog_offread_gradiant
+                R.drawable.dialog_offread_gradiant,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -456,7 +457,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.out_of_likes),
                 getString(R.string.dont_want_to_wait),
                 R.drawable.ic_cards_outoflike,
-                R.drawable.dialog_gradiant_two
+                R.drawable.dialog_gradiant_two,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -464,7 +466,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.swipe_around_the_world),
                 getString(R.string.passport_to_anywher),
                 R.drawable.ic_cards_passport,
-                R.drawable.dialog_gradiant_three
+                R.drawable.dialog_gradiant_three,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -472,7 +475,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string._5_free_super_message),
                 getString(R.string.your_3x_more_likes),
                 R.drawable.ic_cards_super_message,
-                R.drawable.dialog_gradiant_five
+                R.drawable.dialog_gradiant_five,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
         membershipSliderArrayList.add(
@@ -480,7 +484,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 resources.getString(R.string.see_who_like_you),
                 getString(R.string.month_with_them_intantly),
                 R.drawable.ic_cards_super_like,
-                R.drawable.dialog_gradiant_six
+                R.drawable.dialog_gradiant_six,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
     }

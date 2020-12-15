@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
-import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnPostImageClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_like_profile.view.*
@@ -15,7 +16,8 @@ import kotlinx.android.synthetic.main.row_like_profile.view.*
 class LikeProfileAdapter(
     var videoBeanList: ArrayList<VideoBean>,
     var activity: Activity,
-    var onItemClick: OnItemClick
+    var onSelectUserItemClick: OnSelectUserItemClick,
+    var onPostImageClick: OnPostImageClick
 ) : RecyclerView.Adapter<LikeProfileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -43,12 +45,24 @@ class LikeProfileAdapter(
                     activity, ivVideoImage, videoBean.cover_image_url
                 )
 
-           GlideLib
+            GlideLib
                 .loadImage(
                     activity, ivProfile, videoBean.profile_url
                 )
 
             tvUsername.text = videoBean.username
+
+            ivProfile.setOnClickListener {
+                onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+            }
+            tvUsername.setOnClickListener {
+                onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+            }
+
+            ivVideoImage.setOnClickListener {
+                onPostImageClick.onItemPostImageClick(position, videoBeanList)
+            }
+
         }
     }
 }
