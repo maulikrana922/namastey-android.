@@ -88,6 +88,21 @@ class ChatViewModel constructor(
         }
     }
 
+    fun startChat(messageUserId: Long, isChat: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToStartChat(messageUserId, isChat).let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        chatBasicView.onSuccess(appResponse.message)
+                    else
+                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                }
+            } catch (t: Throwable) {
+                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

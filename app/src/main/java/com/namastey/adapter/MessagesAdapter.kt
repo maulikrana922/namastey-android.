@@ -41,7 +41,7 @@ class MessagesAdapter(
         fun bind(position: Int) = with(itemView) {
             val matchesListBean = matchesList[position]
 
-            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
+//            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
 
             llMessageView.setOnClickListener {
                 onMatchesItemClick.onMatchesItemClick(position, matchesListBean)

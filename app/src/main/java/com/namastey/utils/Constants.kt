@@ -91,6 +91,8 @@ object Constants {
     const val WHO_CAN_SEND_YOU_DIRECT_MESSAGE = "who-can-send-you-direct-message"
     const val SHARE_PROFILE_SAFETY = "share-profile-safety"
     const val MATCHES_READ = "matches-read"
+    const val MESSAGE_CHAT_START = "message-chat-start"
+    const val MESSAGE_USER_LIST = "message-user-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -266,6 +268,8 @@ object Constants {
     const val PROFILE_TYPE = "profile_type"
     const val MATCH_USER_ID = "match_user_id"
     const val IS_READ = "is_read"
+    const val MESSAGE_USER_ID = "message_user_id"
+    const val IS_CHAT = "is_chat"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

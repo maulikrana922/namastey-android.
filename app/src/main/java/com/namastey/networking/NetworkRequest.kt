@@ -348,6 +348,16 @@ interface NetworkRequest {
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
+    @POST(Constants.MESSAGE_CHAT_START)
+    fun requestToStartChatAsync(
+        @Field(Constants.MESSAGE_USER_ID) messageUserId: Long,
+        @Field(Constants.IS_CHAT) isChat: Int
+    ): Deferred<AppResponse<Any>>
+
+    @GET(Constants.MESSAGE_USER_LIST)
+    fun requestToGetChatMessageListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
+
+    @FormUrlEncoded
     @POST(Constants.GET_POST_DETAILS)
     fun requestToGetPostDetailsAsync(
         @Field(Constants.POST_ID) postId: Long

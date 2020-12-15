@@ -41,6 +41,22 @@ class MatchesProfileViewModel constructor(
         }
     }
 
+    fun getChatMessageList() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToGetChatMessageList().let { appResponse: AppResponse<ArrayList<MatchesListBean>> ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK) {
+                        matchesProfileView.onSuccessMessageList(appResponse.data!!)
+                    } else {
+                        matchesProfileView.onFailed(appResponse.message, appResponse.error)
+                    }
+                }
+            } catch (t: Throwable) {
+                matchesProfileView.onHandleException(t)
+            }
+        }
+    }
     fun getLikeUserCount() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {

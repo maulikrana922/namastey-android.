@@ -137,6 +137,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             chatMsgList.add(chatMessage)
                         }
                     }
+                    if (chatMsgList.size == 1){    // Call api for start chat if any message share bw both
+                        chatViewModel.startChat(matchesListBean.id, 1)
+                    }
                     chatViewModel.setIsLoading(false)
                     chatAdapter =
                         ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)

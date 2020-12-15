@@ -391,6 +391,16 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToReadMatchesAsync(matchesUserId, isRead).await()
         }
 
+    suspend fun requestToStartChat(messageUserId: Long, isChat: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToStartChatAsync(messageUserId, isChat).await()
+        }
+
+    suspend fun requestToGetChatMessageList(): AppResponse<ArrayList<MatchesListBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetChatMessageListAsync().await()
+        }
+
     suspend fun requestToGetPostDetails(postId: Long): AppResponse<VideoBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetPostDetailsAsync(postId).await()

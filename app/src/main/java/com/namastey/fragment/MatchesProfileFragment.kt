@@ -100,6 +100,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     override fun onResume() {
         super.onResume()
         matchesProfileViewModel.getMatchesList()
+        matchesProfileViewModel.getChatMessageList()
     }
 
     override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean?) {
@@ -109,48 +110,20 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             intent.putExtra("isFromProfile", false)
             intent.putExtra("matchesListBean", matchesBean)
             openActivity(intent)
-
-//            if (matchesBean.is_read == 0){
-//                val chatId = if (sessionManager.getUserId() < matchesBean.id)
-//                    sessionManager.getUserId().toString().plus(matchesBean.id)
-//                else
-//                    matchesBean.id.toString().plus(sessionManager.getUserId())
-//
-//                matchesListBean[position].is_read = 1
-//                matchedProfileAdapter.notifyItemChanged(position)
-//
-//                messageList.add(0,matchesBean)
-//                messagesAdapter.notifyItemInserted(0)
-//
-//            }
         }
     }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
         matchesListBean.clear()
         matchesListBean = data
-        /* if (matchesListBean.size <= 10) {
-             tvLikesCount.text = matchesListBean.size.toString()
-         } else {
-             tvLikesCount.text = "10+"
-         }
-
-         if (matchesListBean.size == 0) {
-             ivBackgroundPicture.setImageResource(R.drawable.default_album)
-         } else {
-             GlideLib.loadImage(
-                 requireContext(),
-                 ivBackgroundPicture,
-                 matchesListBean[0].profile_pic
-             )
-         }*/
-
-        // tvLikesCount.text = matchesListBean.size.toString()
         matchedProfileAdapter = MatchedProfileAdapter(matchesListBean, requireActivity(), this)
         rvMatchesList.adapter = matchedProfileAdapter
-        val messageListTemp: List<MatchesListBean> = matchesListBean.filter { s -> s.is_read == 1 }
 
-        this.messageList = messageListTemp as ArrayList<MatchesListBean>
+    }
+
+    override fun onSuccessMessageList(chatMessageList: ArrayList<MatchesListBean>) {
+        messageList = chatMessageList
+
         if (messageList.isEmpty()) {
             ivNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
@@ -160,7 +133,8 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
         }
-        messagesAdapter = MessagesAdapter(this.messageList, requireActivity(), this)
+
+        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
 
         myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
@@ -174,7 +148,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
             val lastQuery: Query = myChatRef.child(chatId).orderByKey().limitToLast(1)
 
-            lastQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            lastQuery.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (snapshot in dataSnapshot.children) {
                         val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
