@@ -79,9 +79,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     //room
-    implementation 'androidx.room:room-runtime:2.0.0'
-    kapt 'androidx.room:room-compiler:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    kapt 'androidx.room:room-compiler:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    implementation "androidx.room:room-ktx:2.2.5"
 
     //Dagger
     implementation "com.google.dagger:dagger-android:$daggerVersion"
@@ -189,4 +190,8 @@ dependencies {
 
     // auto-complete hashtag and mention
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.3-rc1"
+
+    // to load data from room
+    implementation 'org.jetbrains.anko:anko-common:0.9'
+
 }

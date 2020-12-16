@@ -109,6 +109,29 @@ class NotificationViewModel constructor(
     }
 
 
+    fun getMembershipPriceList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (notificationView.isInternetAvailable()) {
+                    networkService.requestToMembershipPriceList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            notificationView.onSuccessMembershipList(appResponse.data!!)
+                        else
+                            notificationView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    notificationView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                notificationView.onHandleException(t)
+            }
+        }
+    }
+
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

@@ -52,6 +52,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private var activityList: ArrayList<ActivityListBean> = ArrayList()
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var videoBeanList: ArrayList<VideoBean> = ArrayList()
+    private var membershipViewList = ArrayList<MembershipPriceBean>()
     private var position = -1
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
@@ -109,6 +110,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private fun initUI() {
 
         notificationViewModel.getFollowRequestList()
+        notificationViewModel.getMembershipPriceList()
         val builder = AlertDialog.Builder(requireContext())
         val customLayout: View =
             layoutInflater.inflate(R.layout.dialog_notification_all_activity, null)
@@ -200,7 +202,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
         customLayout.llLikes.setOnClickListener {
             dialog.dismiss()
-            showCustomDialog(4)
+            showMembershipDialog(4)
 
             //Todo: Display dialog based on condition
             /* hideDoneImageView(ivLikesSelected)
@@ -285,7 +287,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
     }
 
-    private fun showCustomDialog(position: Int) {
+    private fun showMembershipDialog(position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
         val dialogView: View =
@@ -491,11 +493,45 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun manageVisibility(view: View) {
-        val conTwel = view.findViewById<ConstraintLayout>(R.id.constHigh)
-        val conSix = view.findViewById<ConstraintLayout>(R.id.constMedium)
-        val conOne = view.findViewById<ConstraintLayout>(R.id.constLow)
+        val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)
+        val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
+        val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
 
-        conOne.setOnClickListener {
+        for (data in membershipViewList) {
+            val membershipType = data.membership_type
+            val price = data.price
+            val discount = data.discount_pr
+
+            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
+            Log.e("MembershipActivity", "price: \t $price")
+            Log.e("MembershipActivity", "discount: \t $discount")
+
+            if (membershipType == 0) {
+                view.tvTextLowEachBoost.text =
+                    resources.getString(R.string.dollars) + price +
+                            resources.getString(R.string.per_month)
+            }
+
+            if (membershipType == 1) {
+                view.tvTextMediumEachBoost.text =
+                    resources.getString(R.string.dollars) + price +
+                            resources.getString(R.string.per_month) + "\n" +
+                            resources.getString(R.string.save) + " " + discount +
+                            resources.getString(R.string.percentage)
+
+            }
+
+            if (membershipType == 2) {
+                view.tvTextHighEachBoost.text =
+                    resources.getString(R.string.dollars) + price +
+                            resources.getString(R.string.per_month) + "\n" +
+                            resources.getString(R.string.save) + " " + discount +
+                            resources.getString(R.string.percentage)
+
+            }
+        }
+
+        constLow.setOnClickListener {
             view.tvTextLow.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
@@ -520,7 +556,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.white
                 )
             )
-            view.tvOfferLow.visibility = View.VISIBLE
+          //  view.tvOfferLow.visibility = View.VISIBLE
             view.viewSelectedLow.visibility = View.VISIBLE
 
             view.viewBgMedium.setBackgroundColor(
@@ -578,7 +614,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
         }
 
-        conSix.setOnClickListener {
+        constMedium.setOnClickListener {
             view.tvTextMedium.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
@@ -661,7 +697,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
         }
 
-        conTwel.setOnClickListener {
+        constHigh.setOnClickListener {
             view.tvTextHigh.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
@@ -913,6 +949,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         intent.putExtra("position", position)
         openActivity(intent)
 
+    }
+
+    override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
+        this.membershipViewList = membershipView
     }
 
     override fun onSuccess(msg: String) {

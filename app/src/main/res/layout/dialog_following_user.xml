@@ -2,16 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_16sdp"
         android:background="@drawable/rounded_white_solid_new"
+        android:elevation="@dimen/_8sdp"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.namastey.customViews.CustomTextView
@@ -21,10 +21,10 @@
             android:padding="@dimen/_12sdp"
             android:text="@string/send_to"
             android:textSize="@dimen/_14sdp"
-            app:typeface="MULI_EXTRA_BOLD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_EXTRA_BOLD" />
 
         <ImageView
             android:id="@+id/ivFollwing"
@@ -44,11 +44,11 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginStart="@dimen/_16sdp"
             android:gravity="center_vertical"
-            android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorBlack"
-            app:typeface="MULI_EXTRA_BOLD"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toEndOf="@+id/ivFollwing"
-            app:layout_constraintTop_toBottomOf="@+id/tvSend" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSend"
+            app:typeface="MULI_EXTRA_BOLD" />
 
 
         <ImageView
@@ -72,9 +72,9 @@
             android:elevation="@dimen/_4sdp"
             android:hint="@string/leave_a_message"
             android:paddingStart="@dimen/_24sdp"
-            app:typeface="MULI_REGULAR"
             android:shadowRadius="1"
-            app:layout_constraintTop_toBottomOf="@+id/ivPostImage" />
+            app:layout_constraintTop_toBottomOf="@+id/ivPostImage"
+            app:typeface="MULI_REGULAR" />
 
 
         <View
@@ -93,16 +93,16 @@
             app:layout_constraintTop_toBottomOf="@+id/view">
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tv_cancel"
+                android:id="@+id/tvCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
                 android:text="@string/cancel"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"
-                app:typeface="MULI_SEMIBOLD"
-                android:textColor="@color/colorBlack" />
+                app:typeface="MULI_SEMIBOLD" />
 
             <View
                 android:layout_width="1dp"
@@ -117,9 +117,9 @@
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
                 android:text="@string/save"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"
-                app:typeface="MULI_SEMIBOLD"
-                android:textColor="@color/colorBlack" />
+                app:typeface="MULI_SEMIBOLD" />
 
         </LinearLayout>
 

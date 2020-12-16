@@ -35,7 +35,7 @@
             android:id="@+id/ivProfile"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_7sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"

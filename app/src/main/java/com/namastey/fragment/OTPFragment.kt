@@ -56,10 +56,10 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         sessionManager.setuserUniqueId(user.user_uniqueId)
         sessionManager.setGuestUser(false)
         // sessionManager.setIntegerValue(user.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
-        if (user.is_completly_signup == 0) {
-            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
-        } else {
+        if (user.is_completly_signup == 1) {
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        } else {
+            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
         }
         var isFromProfile = false
         var isRegister = 0

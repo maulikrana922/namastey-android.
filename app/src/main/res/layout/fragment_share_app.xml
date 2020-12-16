@@ -54,8 +54,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/forward_to"
-            android:textSize="@dimen/_14sdp"
             android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="@id/ivAddFriendClose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +69,8 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:gravity="center"
             android:text="@string/multiple"
-            android:visibility="invisible"
             android:textColor="@color/colorDarkGray"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/ivAddFriendClose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivAddFriendClose" />
@@ -82,8 +82,8 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:elevation="@dimen/_20sdp"
             android:background="@drawable/rounded_white_solid"
+            android:elevation="@dimen/_20sdp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,62 +117,58 @@
             app:layout_constraintStart_toStartOf="@id/llSearchView"
             app:layout_constraintTop_toBottomOf="@id/llSearchView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvRecent"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/recent"
-            android:visibility="gone"
-            android:textColor="@color/colorBlack"
-            app:typeface="MULI_EXTRA_BOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvRecent"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_EXTRA_BOLD" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRecentUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRecent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecentUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvRecent" />
 
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSuggested"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/following"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/rvRecentUser"
+                    app:layout_constraintTop_toBottomOf="@id/rvRecentUser"
+                    app:typeface="MULI_EXTRA_BOLD" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSuggested"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/following"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintStart_toStartOf="@id/rvRecentUser"
-            app:layout_constraintTop_toBottomOf="@id/rvRecentUser"
-            app:typeface="MULI_EXTRA_BOLD" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFollowingUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSuggested"
+                    tools:listitem="@layout/row_user_suggested" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFollowingUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/row_user_suggested"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSuggested" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
@@ -186,7 +182,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

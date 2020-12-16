@@ -72,6 +72,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
+        if (user.is_completly_signup == 1) {
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        } else {
+            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+        }
         fragmentManager!!.popBackStack()
         if (isFromDashboard)
             openActivity(requireActivity(), ProfileBasicInfoActivity())
@@ -170,7 +175,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     private fun loginWithPhoneEmail() {
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                true,isFromDashboard
+                true, isFromDashboard
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )
@@ -187,8 +192,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
      * Click on continue with Google
      */
     private fun googleLogin() {
-        val signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, Constants.RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -198,7 +203,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.RC_SIGN_IN) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
                 handleSignInResult(task)
             }
@@ -307,7 +312,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("SignUpFragment", "signInResult:failed code=" + e.getStatusCode());
+            Log.w("SignUpFragment", "signInResult:failed code=" + e.statusCode)
         }
     }
 

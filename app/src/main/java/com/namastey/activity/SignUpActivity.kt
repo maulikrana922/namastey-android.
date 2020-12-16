@@ -93,7 +93,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     }
 
     private fun initData() {
-        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo);
+        val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo)
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()
 
@@ -101,7 +101,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
             //Start Playback
             videoViewSignup.start()
             //Loop Video
-            mp!!.isLooping = true;
+            mp!!.isLooping = true
         }
         initializeGoogleApi()
 
@@ -198,6 +198,11 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
+        if (user.is_completly_signup == 1) {
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        } else {
+            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+        }
         addFragment(
             SelectGenderFragment.getInstance(
                 "user"
@@ -249,12 +254,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.e("SignUpActivity", "resultCode: $resultCode")
         if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
             callbackManager.onActivityResult(requestCode, resultCode, data)
         }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_SIGN_IN) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
                 handleSignInResult(task)
             }
@@ -297,7 +303,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("SignUpActivity", "signInResult:failed code=" + e.getStatusCode());
+            Log.w("SignUpActivity", "signInResult:failed code=" + e.statusCode)
         }
     }
 
@@ -333,8 +339,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
      * Click on continue with Google
      */
     private fun googleLogin() {
-        var signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        var signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     /**
