@@ -3,6 +3,6 @@ package com.namastey.listeners
 import com.namastey.model.MatchesListBean
 
 interface OnMatchesItemClick {
-    fun onMatchesItemClick(position: Int, matchesListBean: MatchesListBean?)
+    fun onMatchesItemClick(position: Int, matchesListBean: MatchesListBean,fromMessage: Boolean)
 
 }

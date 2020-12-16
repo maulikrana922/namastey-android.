@@ -344,6 +344,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToDeleteMatchesAsync(userId).await()
         }
+    suspend fun requestToDeleteChat(userId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToDeleteChatAsync(userId).await()
+        }
 
     suspend fun requestToDownloadVideo(isDownload: Int): AppResponse<SafetyBean> =
         withContext(Dispatchers.IO) {

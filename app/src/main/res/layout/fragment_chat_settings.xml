@@ -48,11 +48,24 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvMatchDelete"
                 style="@style/tvWrapWhiteStyle"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:drawableEnd="@drawable/ic_arrow_right"
                 android:gravity="start|center"
                 android:text="@string/match_delete"
+                android:textColor="@color/colorBlack"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:visibility="gone"
+                android:id="@+id/tvDeleteChat"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:gravity="start|center"
+                android:text="@string/delete_chat"
                 android:textColor="@color/colorBlack"
                 app:typeface="MULI_EXTRA_BOLD" />
 

@@ -24,7 +24,8 @@ class ProfileBean() : Parcelable {
     var followers: Int = 0
     var viewers: Int = 0
     var interest_in_gender: Int = 0
-    var is_follow: Int = 0
+    var is_follow: Int = 0  // This is for login user follow particular user or not
+    var is_follow_me: Int = 0  // This is for that particular user follow login user or not
     var is_hide: Int = 0
     var user_profile_type: Int = 0
     var distance: String = ""
@@ -66,6 +67,7 @@ class ProfileBean() : Parcelable {
         viewers = parcel.readInt() ?: 0
         interest_in_gender = parcel.readInt() ?: 0
         is_follow = parcel.readInt() ?: 0
+        is_follow_me = parcel.readInt() ?: 0
         is_hide = parcel.readInt() ?: 0
         user_profile_type = parcel.readInt() ?: 0
         distance = parcel.readString() ?: ""
@@ -102,6 +104,7 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(viewers)
         parcel.writeInt(interest_in_gender)
         parcel.writeInt(is_follow)
+        parcel.writeInt(is_follow_me)
         parcel.writeInt(is_hide)
         parcel.writeInt(user_profile_type)
         parcel.writeString(distance)

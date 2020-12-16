@@ -296,6 +296,12 @@ interface NetworkRequest {
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
+    @POST(Constants.DELETE_MESSAGE_CONVERSATION)
+    fun requestToDeleteChatAsync(
+        @Field(Constants.USER_ID) userId: Long
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
     @POST(Constants.IS_VIDEO_DOWNLOAD)
     fun requestToDownloadVideoAsync(
         @Field(Constants.IS_DOWNLOAD) isDownload: Int

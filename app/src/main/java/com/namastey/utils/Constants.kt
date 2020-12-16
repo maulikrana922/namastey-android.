@@ -93,6 +93,7 @@ object Constants {
     const val MATCHES_READ = "matches-read"
     const val MESSAGE_CHAT_START = "message-chat-start"
     const val MESSAGE_USER_LIST = "message-user-list"
+    const val DELETE_MESSAGE_CONVERSATION = "delete-message-conversation"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

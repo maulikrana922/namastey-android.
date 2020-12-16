@@ -62,7 +62,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var recorder: MediaRecorder? = null
     private var voiceFileName: String? = ""
     private var isFromProfile = false
+    private var isFromMessage = false
     private var whoCanSendMessage: Int = -1
+    private var isFollowMe = false
     private var characterCount:  Int = 0
 
     override fun getViewModel() = chatViewModel
@@ -94,17 +96,23 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")){
                 whoCanSendMessage = intent.getIntExtra("whoCanSendMessage",2)
                 isFromProfile = intent.getBooleanExtra("isFromProfile", false)
+                isFollowMe = intent.getBooleanExtra("isFollowMe", false)
                 Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
 //                if (matchesListBean.is_match == 1)
 //                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
 //                else
 //                    viewBuyNow.visibility = View.VISIBLE
             }
+            if (intent.hasExtra("isFromMessage"))
+                isFromMessage = intent.getBooleanExtra("isFromMessage",false)
 
-            if (matchesListBean.is_match == 1 || whoCanSendMessage == 0)
+            if (matchesListBean.is_match == 1 || whoCanSendMessage == 0 || isFromMessage)
                 chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
             else{
-                viewBuyNow.visibility = View.VISIBLE
+                if (isFollowMe)
+                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+                else
+                    viewBuyNow.visibility = View.VISIBLE
             }
 
             voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
@@ -137,7 +145,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             chatMsgList.add(chatMessage)
                         }
                     }
-                    if (chatMsgList.size == 1){    // Call api for start chat if any message share bw both
+                    if (chatMsgList.size >= 1 && matchesListBean.is_read == 0){    // Call api for start chat if any message share bw both
                         chatViewModel.startChat(matchesListBean.id, 1)
                     }
                     chatViewModel.setIsLoading(false)

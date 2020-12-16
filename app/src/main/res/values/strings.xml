@@ -348,7 +348,7 @@
     <string name="who_can_comments_on_your_video">Who can comment on your videos</string>
     <string name="unblock">Unblock</string>
     <string name="msg_unblock_user">Are you sure you want to Unblock?</string>
-    <string name="safety_sub_who_can_send_you_direct_msg">With any option, you can receive messages from users that you\'ve sent messages to. Friends are your followers that you follow back.</string>
+    <string name="safety_sub_who_can_send_you_direct_msg">With any option, you can receive messages from users that you\'ve sent messages to.</string>
     <string name="safety_sub_who_can_comments_on_your_video_msg">Friends are your followers that you follow back.</string>
     <string name="gender">Gender</string>
     <string name="mobile">Mobile</string>
@@ -361,12 +361,14 @@
     <!--Chat Screen-->
     <string name="mute_notification">Mute Notification</string>
     <string name="match_delete">Match Delete</string>
+    <string name="delete_chat">Delete Chat</string>
     <string name="msg_delete_user">Do you wish to delete following user?</string>
     <string name="delete_user">Delete User</string>
     <string name="gif">Gif</string>
     <string name="enter_message">Message…</string>
     <string name="readable_content">Readable content</string>
     <string name="msg_delete_matches">Do you wish to delete match?</string>
+    <string name="msg_delete_chat">Are you sure you want to delete chat?</string>
     <string name="it_s_spam">It\'s Spam</string>
     <string name="it_s_inappropriate">It\'s inappropriate</string>
     <string name="msg_buy_namastey">Buy namastey gold to message.</string>
@@ -433,6 +435,7 @@
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
+    <string name="message_locked">Message\nLocked</string>
     <string name="private_account_message">This user have private account.</string>
 
     <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>

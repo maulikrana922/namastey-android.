@@ -73,6 +73,24 @@ class ChatViewModel constructor(
         }
     }
 
+    fun deleteChat(userId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToDeleteChat(userId).let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        chatBasicView.onSuccessDeleteMatches(appResponse.message)
+                    else
+                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
     fun readMatches(matchesUserId: Long, isRead: Int) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {

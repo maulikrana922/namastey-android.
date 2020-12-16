@@ -204,8 +204,9 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
             tvSafetySubMessage.visibility = View.GONE
         } else if (fromSafetyValue == 3) {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
-            tvSafetySubMessage.text =
-                getString(R.string.safety_sub_who_can_comments_on_your_video_msg)
+            tvSafetySubMessage.visibility = View.GONE
+//            tvSafetySubMessage.text =
+//                getString(R.string.safety_sub_who_can_comments_on_your_video_msg)
         }
     }
 

@@ -556,7 +556,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.tvShareSave.text = getString(R.string.report)
 
         bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send_message)
-        bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
+        if (profileBean.safetyBean.who_can_send_message == 2)
+            bottomSheetDialogShare.tvShareReport.text = getString(R.string.message_locked)
+        else
+            bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
 
         bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -564,7 +567,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         val shareMessage = String.format(
             getString(R.string.profile_link_msg),
-            profileBean.username,profileBean.about_me
+            profileBean.username, profileBean.about_me
         )
         // Share on Twitter app if install otherwise web link
         bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
@@ -667,7 +670,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
             sendIntent.putExtra(
-                Intent.EXTRA_TEXT,shareMessage)
+                Intent.EXTRA_TEXT, shareMessage
+            )
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
@@ -691,11 +695,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         //Send Message
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            //bottomSheetDialogShare.dismiss()
-            clickSendMessage(profileBean)
+            if (profileBean.safetyBean.who_can_send_message != 2)
+                clickSendMessage(profileBean)
         }
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
+            if (profileBean.safetyBean.who_can_send_message != 2)
+                clickSendMessage(profileBean)
         }
 
         bottomSheetDialogShare.show()
@@ -715,13 +720,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             //user_profile_type = 1 = private
 //            if (profileBean.user_profile_type == 0) {
 //            if (profileBean.safetyBean.who_can_send_message == 0) {
-                val intent = Intent(this, ChatActivity::class.java)
-                intent.putExtra("matchesListBean", matchesListBean)
-                intent.putExtra("isFromProfile", true)
-                intent.putExtra("whoCanSendMessage", profileBean.safetyBean.who_can_send_message)
-                openActivity(intent)
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", true)
+            when (profileBean.is_follow_me) {
+                1 -> intent.putExtra("isFollowMe", true)
+                else -> intent.putExtra("isFollowMe", false)
+            }
+            intent.putExtra("whoCanSendMessage", profileBean.safetyBean.who_can_send_message)
+            openActivity(intent)
 //            } else if (profileBean.user_profile_type == 1) {
-                //set Dialog
+            //set Dialog
 //                dialogPrivateUser()
 //            }
         }

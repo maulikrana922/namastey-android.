@@ -103,14 +103,11 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchesProfileViewModel.getChatMessageList()
     }
 
-    override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean?) {
-        if (matchesBean != null) {
-//            Log.e("MatchesProfile", "onItemClick: \t matchesListBean: \t ${matchesListBean!!.id}")
-            val intent = Intent(requireActivity(), ChatActivity::class.java)
-            intent.putExtra("isFromProfile", false)
-            intent.putExtra("matchesListBean", matchesBean)
-            openActivity(intent)
-        }
+    override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean, fromMessage: Boolean) {
+        val intent = Intent(requireActivity(), ChatActivity::class.java)
+        intent.putExtra("isFromMessage", fromMessage)
+        intent.putExtra("matchesListBean", matchesBean)
+        openActivity(intent)
     }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {

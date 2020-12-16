@@ -25,12 +25,12 @@ class NotificationViewModel constructor(
     private lateinit var job: Job
 
     fun getFollowRequestList() {
-        setIsLoading(true)
+//        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 networkService.requestToFollowRequest()
                     .let { appResponse: AppResponse<ArrayList<FollowRequestBean>> ->
-                        setIsLoading(false)
+//                        setIsLoading(false)
                         if (appResponse.status == Constants.OK) {
                             notificationView.onSuccessFollowRequest(appResponse.data!!)
                         } else {
@@ -38,7 +38,7 @@ class NotificationViewModel constructor(
                         }
                     }
             } catch (exception: Throwable) {
-                setIsLoading(false)
+//                setIsLoading(false)
                 notificationView.onHandleException(exception)
             }
         }

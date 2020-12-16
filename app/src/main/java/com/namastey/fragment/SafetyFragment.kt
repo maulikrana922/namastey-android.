@@ -126,7 +126,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 0) {
             tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.everyone)
         } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 1) {
-            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.friends)
+            tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.followers)
         } else  if (sessionManager.getIntegerValue(Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE) == 2) {
             tvWhoCanSendYouDirectMsgEveryone.text = getString(R.string.no_one)
         } else {
@@ -136,7 +136,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 0) {
             tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.everyone)
         } else if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 1) {
-            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.friends)
+            tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.followers)
         } else  if (sessionManager.getIntegerValue(Constants.KEY_IS_YOUR_FOLLOWERS) == 2) {
             tvWhoCanSeeYourFollowersEveryone.text = getString(R.string.no_one)
         } else {
@@ -146,7 +146,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 0) {
             tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.everyone)
         } else if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 1) {
-            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.friends)
+            tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.followers)
         } else  if (sessionManager.getIntegerValue(Constants.KEY_CAN_COMMENT_YOUR_VIDEO) == 2) {
             tvWhoCanCommentsOnYourVideosEveryone.text = getString(R.string.no_one)
         } else {

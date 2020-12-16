@@ -58,19 +58,19 @@ class MatchesProfileViewModel constructor(
         }
     }
     fun getLikeUserCount() {
-        setIsLoading(true)
+//        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (matchesProfileView.isInternetAvailable()) {
                     networkService.requestToGetLikedUserCount().let { appResponse ->
-                        setIsLoading(false)
+//                        setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             matchesProfileView.onSuccessLikeUserCount(appResponse.data!!)
                         else
                             matchesProfileView.onFailed(appResponse.message, appResponse.error)
                     }
                 } else {
-                    setIsLoading(false)
+//                    setIsLoading(false)
                     matchesProfileView.showMsg(R.string.no_internet)
                 }
             } catch (t: Throwable) {

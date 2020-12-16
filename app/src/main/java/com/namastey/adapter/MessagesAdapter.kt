@@ -44,7 +44,7 @@ class MessagesAdapter(
 //            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
 
             llMessageView.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(position, matchesListBean)
+                onMatchesItemClick.onMatchesItemClick(position, matchesListBean,true)
             }
 
             /*  if (matchesListBean.is_read == 1)

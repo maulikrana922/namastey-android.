@@ -68,8 +68,16 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     private fun initData() {
 //        Log.e("ChatSettings", "matchesListBean: \t ${matchesListBean!!.id}")
         matchesListBean = arguments!!.getParcelable<MatchesListBean>("matchesListBean")!!
+        if (matchesListBean.is_match == 1)
+            tvMatchDelete.visibility = View.VISIBLE
+        else
+            tvDeleteChat.visibility = View.VISIBLE
+
         tvMatchDelete.setOnClickListener {
             dialogMatchDeleteUser()
+        }
+        tvDeleteChat.setOnClickListener {
+            deleteChatDialog()
         }
 
         tvReport.setOnClickListener {
@@ -195,6 +203,27 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
                 when (id) {
                     btnAlertOk.id -> {
                         chatViewModel.deleteMatches(matchesListBean!!.id)
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    private fun deleteChatDialog() {
+        object : CustomCommonAlertDialog(
+            requireActivity(),
+            matchesListBean.username,
+            getString(R.string.msg_delete_chat),
+            matchesListBean.profile_pic,
+            getString(R.string.delete_chat),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        chatViewModel.deleteChat(matchesListBean.id)
                         dismiss()
                     }
                 }
