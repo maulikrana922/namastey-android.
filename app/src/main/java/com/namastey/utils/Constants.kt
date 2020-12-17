@@ -94,6 +94,8 @@ object Constants {
     const val MESSAGE_CHAT_START = "message-chat-start"
     const val MESSAGE_USER_LIST = "message-user-list"
     const val DELETE_MESSAGE_CONVERSATION = "delete-message-conversation"
+    const val DELETE_ALBUM = "delete-album"
+    const val HIDE_ALBUM = "hide-album"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"

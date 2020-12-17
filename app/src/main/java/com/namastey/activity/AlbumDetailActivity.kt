@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+//import com.video.trimmer.interfaces.OnTrimVideoListener
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -15,6 +16,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -31,19 +33,18 @@ import com.namastey.model.AlbumBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.CreateAlbumView
-import com.namastey.utils.Constants
-import com.namastey.utils.GridSpacingItemDecoration
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.CreateAlbumViewModel
-//import com.video.trimmer.interfaces.OnTrimVideoListener
 import kotlinx.android.synthetic.main.activity_album_detail.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import java.io.File
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 import javax.inject.Inject
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
-    OnItemClick,OnPostImageClick {
+    OnItemClick, OnPostImageClick {
     //    OnTrimVideoListener
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -74,7 +75,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         activityAlbumDetailBinding.viewModel = albumViewModel
 
         initData()
-
     }
 
     private fun initData() {
@@ -148,7 +148,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     this,
                     fromEdit,
-                    false, false
+                    false,
+                    false
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -163,7 +164,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         albumViewModel.addEditAlbum(jsonObject)
     }
-
 
     override fun onSuccessResponse(albumBean: AlbumBean) {
         isEditAlbum = false
@@ -206,6 +206,14 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         postList.removeAt(position)
         albumDetailAdapter.notifyItemRemoved(position)
         albumDetailAdapter.notifyItemRangeChanged(position, albumDetailAdapter.itemCount)
+    }
+
+    override fun onSuccessAlbumDelete(msg: String) {
+        onBackPressed()
+    }
+
+    override fun onSuccessAlbumHide(msg: String) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = albumViewModel
@@ -360,6 +368,69 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
     }
 
+    fun onClickAlbumDetailMore(view: View) {
+        createPopUpMenu()
+    }
+
+    private fun createPopUpMenu() {
+
+        val popupMenu = PopupMenu(this, ivMore)
+
+        popupMenu?.menuInflater?.inflate(R.menu.menu_album_detail, popupMenu.menu)
+        val menuShowHide = popupMenu!!.menu.findItem(R.id.action_show_hide).setVisible(true)
+        val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
+
+        try {
+            val fields: Array<Field> = PopupMenu::class.java.declaredFields
+            for (field in fields) {
+                if ("mPopup" == field.name) {
+                    field.isAccessible = true
+                    val menuPopupHelper: Any = field.get(popupMenu)
+                    val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
+                    val setForceIcons: Method = classPopupHelper.getMethod(
+                        "setForceShowIcon", Boolean::class.javaPrimitiveType
+                    )
+                    setForceIcons.invoke(menuPopupHelper, true)
+                    break
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_delete_order -> {
+                    deleteAlbum()
+                }
+                R.id.action_show_hide -> {
+                    albumViewModel.hideAlbum(albumId, 1) //Todo, change based on condition
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun deleteAlbum() {
+        object : CustomAlertDialog(
+            this,
+            resources.getString(R.string.msg_delete),
+            getString(R.string.yes),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        albumViewModel.deleteAlbum(albumId)
+
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -531,6 +602,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             bottomSheetDialog.dismiss()
         albumViewModel.onDestroy()
     }
+
 
 //    fun onClickSave(view: View) {
 //        videoTrimmer.onSaveClicked()

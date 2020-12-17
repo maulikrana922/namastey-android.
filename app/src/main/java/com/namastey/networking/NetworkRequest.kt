@@ -383,4 +383,17 @@ interface NetworkRequest {
 
     @GET(Constants.LIKED_USER_COUNT)
     fun requestToGetLikedUserCountAsync( ): Deferred<AppResponse<LikedUserCountBean>>
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = Constants.DELETE_ALBUM, hasBody = true)
+    fun requestToDeleteAlbumAsync(
+        @Field(Constants.ALBUM_ID) albumId: Long
+    ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.HIDE_ALBUM)
+    fun requestToHideAlbumAsync(
+        @Field(Constants.ALBUM_ID) albumId: Long,
+        @Field("is_hide") isHide: Int
+    ): Deferred<AppResponse<Any>>
 }

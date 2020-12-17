@@ -13,6 +13,7 @@ class AlbumBean() : Parcelable {
     var post_video_list: ArrayList<VideoBean> = ArrayList()
     var is_created: Int  = 0
     var post_count: Int  = 0
+    var is_hide: Int  = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -20,6 +21,7 @@ class AlbumBean() : Parcelable {
         post_video_list = parcel.createTypedArrayList(VideoBean) ?: ArrayList()
         is_created = parcel.readInt()
         post_count = parcel.readInt()
+        is_hide = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -28,6 +30,7 @@ class AlbumBean() : Parcelable {
         parcel.writeTypedList(post_video_list)
         parcel.writeInt(is_created)
         parcel.writeInt(post_count)
+        parcel.writeInt(is_hide)
     }
 
     override fun describeContents(): Int {

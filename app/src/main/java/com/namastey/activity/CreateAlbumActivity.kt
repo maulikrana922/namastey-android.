@@ -605,6 +605,14 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         createAlbumViewModel.getAlbumList()
     }
 
+    override fun onSuccessAlbumDelete(msg: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessAlbumHide(msg: String) {
+        TODO("Not yet implemented")
+    }
+
 //    override fun cancelAction() {
 //        Log.d("TrimVideo: ", "cancelAction")
 //    }

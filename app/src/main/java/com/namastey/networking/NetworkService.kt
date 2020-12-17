@@ -344,6 +344,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToDeleteMatchesAsync(userId).await()
         }
+
     suspend fun requestToDeleteChat(userId: Long): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToDeleteChatAsync(userId).await()
@@ -424,14 +425,24 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetLikedUserPostAsync().await()
         }
+
     suspend fun requestToGetLikeUserPost(): AppResponse<ArrayList<VideoBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetLikeUserPostAsync().await()
         }
 
-
     suspend fun requestToGetLikedUserCount(): AppResponse<LikedUserCountBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetLikedUserCountAsync().await()
+        }
+
+    suspend fun requestToDeleteAlbum(albumId: Long): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToDeleteAlbumAsync(albumId).await()
+        }
+
+    suspend fun requestToHideAlbum(albumId: Long, isHide: Int): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToHideAlbumAsync(albumId, isHide).await()
         }
 }

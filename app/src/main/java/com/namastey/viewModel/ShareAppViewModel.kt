@@ -4,7 +4,6 @@ import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
-import com.namastey.uiView.FindFriendView
 import com.namastey.uiView.FollowingView
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,6 @@ class ShareAppViewModel constructor(
 ) : BaseViewModel(networkService, dbHelper, baseView) {
 
     private var followingView: FollowingView = baseView as FollowingView
-    private var findFriendView: FindFriendView = baseView as FindFriendView
 
     private lateinit var job: Job
 

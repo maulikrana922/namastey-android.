@@ -75,7 +75,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.add(
             MembershipSlide(
                 resources.getString(R.string.out_of_likes),
-                getString(R.string.dont_want_to_wait),
+                getString(R.string.do_not_want_to_wait),
                 R.drawable.ic_cards_outoflike,
                 R.drawable.dialog_gradiant_two,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
@@ -84,7 +84,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.add(
             MembershipSlide(
                 resources.getString(R.string.swipe_around_the_world),
-                getString(R.string.passport_to_anywher),
+                getString(R.string.passport_to_anywhere),
                 R.drawable.ic_cards_passport,
                 R.drawable.dialog_gradiant_three,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
@@ -102,7 +102,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.add(
             MembershipSlide(
                 resources.getString(R.string.see_who_like_you),
-                getString(R.string.month_with_them_intantly),
+                getString(R.string.month_with_them_instantly),
                 R.drawable.ic_cards_super_like,
                 R.drawable.dialog_gradiant_six,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)

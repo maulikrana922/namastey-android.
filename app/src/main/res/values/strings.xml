@@ -49,7 +49,7 @@
     <string name="next">Next</string>
     <string name="send_otp">Send OTP</string>
     <string name="confirm">Confirm</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
@@ -406,13 +406,13 @@
     <string name="continues">Continue</string>
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
-    <string name="dont_want_to_wait">"11:59:55 \n Don`t want to wait? Go Unlimited "</string>
-    <string name="dont_want_to_wait_slider">"11:59:55 Don`t want to wait? Go Unlimited "</string>
+    <string name="do_not_want_to_wait">"11:59:55 \n Don`t want to wait? Go Unlimited "</string>
+    <string name="do_not_want_to_wait_slider">"11:59:55 Don`t want to wait? Go Unlimited "</string>
     <string name="swipe_around_the_world">Swipe Around The World</string>
-    <string name="passport_to_anywher">Passport to anywhere</string>
+    <string name="passport_to_anywhere">Passport to anywhere</string>
     <string name="_5_free_super_message">5 Free Super Message</string>
     <string name="your_3x_more_likes">You`re 3x more likely to get a match!</string>
-    <string name="month_with_them_intantly">"Math with them instanly "</string>
+    <string name="month_with_them_instantly">"Match with them instantly "</string>
     <string name="out_of_boosts">Out of Boosts!</string>
     <string name="_6_day_remaining">6 Day remaining</string>
     <string name="_10_00_ea">$10.00/ea</string>
@@ -449,5 +449,9 @@
     <string name="save_32">Save 32%</string>
     <string name="each">/Each</string>
     <string name="get_boost_gold">Get Boost Gold</string>
+    <string name="action_hide_album">Hide</string>
+    <string name="action_show_album">Show</string>
+    <string name="action_delete_album">Delete</string>
+    <string name="msg_delete_album">Are you sure you want to Delete this Album?</string>
 
 </resources>

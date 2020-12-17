@@ -20,7 +20,6 @@ import com.namastey.model.DashboardBean
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
 import com.namastey.roomDB.entity.RecentUser
-import com.namastey.uiView.FindFriendView
 import com.namastey.uiView.FollowingView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -34,7 +33,6 @@ import javax.inject.Inject
 
 
 class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
-    FindFriendView,
     FollowingView,
     OnItemClick,
     OnSelectUserItemClick,
@@ -56,17 +54,11 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     private lateinit var layoutView: View
     private var followingList: ArrayList<DashboardBean> = ArrayList()
     private lateinit var followingAdapter: UserSearchAdapter
-    private lateinit var userSearchAdapter: UserSearchAdapter
     private lateinit var recentUserAdapter: RecentUserAdapter
     private var userId: Long = -1
     private var coverImgUrl: String = ""
-
-    private var isMyProfile = false
-
-    //private var recentList: ArrayList<DashboardBean> = ArrayList()
     private var recentList: ArrayList<RecentUser> = ArrayList()
     private var selectUserIdList: ArrayList<Long> = ArrayList()
-
 
     override fun getViewModel() = shareAppViewModel
 
@@ -112,12 +104,32 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     private fun initUI() {
         ivAddFriendClose.setOnClickListener(this)
         tvFindMultiple.setOnClickListener(this)
-        getRecentUserList()
-
         userId = arguments!!.getLong(Constants.USER_ID)
         coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE)!!
         shareAppViewModel.getFollowingList(userId)
 
+        doAsync {
+            getRecentUserList()
+        }
+
+        searchFollowing()
+    }
+
+    private fun getRecentUserList() {
+        recentList = dbHelper.getAllRecentUser() as ArrayList<RecentUser>
+
+        if (recentList.size != 0) {
+            tvRecent.visibility = View.VISIBLE
+            rvRecentUser.visibility = View.VISIBLE
+            recentUserAdapter = RecentUserAdapter(recentList, requireActivity(), false, this, this)
+            rvRecentUser.adapter = recentUserAdapter
+        } else {
+            tvRecent.visibility = View.GONE
+            rvRecentUser.visibility = View.GONE
+        }
+    }
+
+    private fun searchFollowing() {
         searchFriend.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -126,13 +138,11 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText!!.isNotEmpty()) {
                     rvSearchUser.visibility = View.VISIBLE
-                    //shareAppViewModel.getSearchUser(newText.trim())
                     filter(newText.toString().trim())
 
                 } else {
                     filter("")
                     shareAppViewModel.getFollowingList(userId)
-                    //rvSearchUser.visibility = View.GONE
                 }
 
                 return true
@@ -147,25 +157,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         }
     }
 
-    private fun getRecentUserList() {
-        doAsync {
-            recentList = dbHelper.getAllRecentUser() as ArrayList<RecentUser>
-        }
-        Log.e("ShareFragment", "recentList: \t ${recentList.size}")
-        if (recentList.size != 0) {
-            tvRecent.visibility = View.VISIBLE
-            rvRecentUser.visibility = View.VISIBLE
-            recentUserAdapter = RecentUserAdapter(recentList, requireActivity(), false, this, this)
-            rvRecentUser.adapter = recentUserAdapter
-        } else {
-            tvRecent.visibility = View.GONE
-            rvRecentUser.visibility = View.GONE
-        }
-    }
-
     private fun filter(text: String) {
-        Log.e("FollowersFragment", "filter: text: $text")
-        //new array list that will hold the filtered data
+        Log.e("ShareAppFragment", "filter: text: $text")
         val filteredName: ArrayList<DashboardBean> = ArrayList()
 
         for (following in followingList) {
@@ -175,27 +168,6 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         }
 
         followingAdapter.filterList(filteredName)
-    }
-
-    override fun onSuccessSuggestedList(suggestedList: ArrayList<DashboardBean>) {
-    }
-
-    override fun onSuccessSearchList(suggestedList: ArrayList<DashboardBean>) {
-        userSearchAdapter =
-            UserSearchAdapter(suggestedList, requireActivity(), false, this, this)
-        rvSearchUser.adapter = userSearchAdapter
-    }
-
-    override fun onSuccess(list: ArrayList<DashboardBean>) {
-        tvFindMultiple.visibility = View.VISIBLE
-
-        followingList = list
-        recentList.clear()
-        if (list.size != 0) {
-            followingAdapter =
-                UserSearchAdapter(followingList, requireActivity(), false, this, this)
-            rvFollowingUser.adapter = followingAdapter
-        }
     }
 
     private fun showCustomDialog(dashboardBean: DashboardBean) {
@@ -252,6 +224,17 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
 
             getRecentUserList()
             alertDialog.dismiss()
+        }
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        tvFindMultiple.visibility = View.VISIBLE
+
+        followingList = list
+        if (followingList.size != 0) {
+            followingAdapter =
+                UserSearchAdapter(followingList, requireActivity(), false, this, this)
+            rvFollowingUser.adapter = followingAdapter
         }
     }
 

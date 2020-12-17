@@ -51,7 +51,6 @@ class CreateAlbumViewModel constructor(
         }
     }
 
-
     fun createProfile(jsonObject: JsonObject){
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -102,11 +101,6 @@ class CreateAlbumViewModel constructor(
         }
     }
 
-    fun onDestroy() {
-        if (::job.isInitialized)
-            job.cancel()
-    }
-
     fun getAlbumDetail(albumId: Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -152,4 +146,40 @@ class CreateAlbumViewModel constructor(
         }
 
     }
+
+    fun deleteAlbum(albumId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToDeleteAlbum(albumId).let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        createAlbumView.onSuccessAlbumDelete(appResponse.message)
+                    else
+                        createAlbumView.onFailed(appResponse.message, appResponse.error)
+                }
+            } catch (t: Throwable) {
+                createAlbumView.onHandleException(t)
+            }
+        }
+    }
+
+    fun hideAlbum(albumId: Long, isHide: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToHideAlbum(albumId, isHide).let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        createAlbumView.onSuccessAlbumHide(appResponse.message)
+                    else
+                        createAlbumView.onFailed(appResponse.message, appResponse.error)
+                }
+            } catch (t: Throwable) {
+                createAlbumView.onHandleException(t)
+            }
+        }
+    }
+
+    fun onDestroy() {
+        if (::job.isInitialized)
+            job.cancel()
+    }
+
 }

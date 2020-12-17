@@ -3,6 +3,9 @@ package com.namastey.activity
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -16,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +37,7 @@ import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
+import com.namastey.receivers.AlarmReceiver
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -64,6 +69,25 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
     private var boostProfileList = ArrayList<BoostPriceBean>()
+    private var timerText = ""
+
+    var alarmManager: AlarmManager? = null
+    private var pendingIntent: PendingIntent? = null
+    private var alarmTimePicker: TimePicker? = null
+    private var inst: ProfileActivity? = null
+
+    fun instance(): ProfileActivity? {
+        return inst
+    }
+
+    fun setAlarmText(alarmText: String?) {
+        timerText = alarmText!!
+    }
+
+    override fun onStart() {
+        super.onStart()
+        inst = this
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +98,50 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         activityProfileBinding = bindViewData()
         activityProfileBinding.viewModel = profileViewModel
 
+        startAlarmService()
         initData()
+        testTime()
+    }
+
+    private fun startAlarmService() {
+        // alarmTimePicker = findViewById<View>(R.id.alarmTimePicker) as TimePicker
+        alarmTimePicker = TimePicker(this)
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        startTimer()
+
+    }
+
+    private fun testTime() {
+        val c = Calendar.getInstance()
+        c.add(Calendar.DAY_OF_MONTH, 1)
+        c[Calendar.HOUR_OF_DAY] = 0
+        c[Calendar.MINUTE] = 0
+        c[Calendar.SECOND] = 0
+        c[Calendar.MILLISECOND] = 0
+        val howMany = c.timeInMillis - System.currentTimeMillis()
+
+        Log.e("ProfileActivity", "howMany: \t $howMany")
+        Log.e("ProfileActivity", "timeInMillis: \t ${c.timeInMillis}")
+        Log.e("ProfileActivity", "System: \t ${System.currentTimeMillis()}")
+    }
+
+    private fun startTimer() {
+        //if (().isChecked()) { // todo add condition to start timer
+        Log.e("ProfileActivity", "Alarm On")
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.HOUR_OF_DAY] = alarmTimePicker!!.currentHour
+        calendar[Calendar.MINUTE] = alarmTimePicker!!.currentMinute
+        calendar[Calendar.SECOND] = alarmTimePicker!!.currentMinute
+        val myIntent = Intent(this@ProfileActivity, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this@ProfileActivity, 0, myIntent, 0)
+        alarmManager!![AlarmManager.RTC, calendar.timeInMillis] = pendingIntent
+        Log.e("ProfileActivity", "Time : ${alarmTimePicker!!.currentHour}")
+        /*} else {
+            alarmManager!!.cancel(pendingIntent)
+            setAlarmText("")
+            Log.d("MyActivity", "Alarm Off")
+        }*/
+
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -665,23 +732,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-
-    /* private fun setMembershipList() {
-         for (number in 0..5) {
-             val membershipBean = MembershipBean()
-             membershipBean.name = "Unlimited matches"
-             membershipBean.description = "Premium members get unlimited matches ".plus(number + 1)
-
-             membershipList.add(membershipBean)
-         }
-
-         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
-         indicator.setupWithViewPager(viewpagerMembership, true)
-
-         val timer = Timer()
-         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
-
-     }*/
     private fun setMembershipList() {
         val membershipBean1 = MembershipBean()
         membershipBean1.name = resources.getString(R.string._1_boost_each_month)
@@ -690,12 +740,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
         val membershipBean2 = MembershipBean()
         membershipBean2.name = resources.getString(R.string.out_of_likes)
-        membershipBean2.description = getString(R.string.dont_want_to_wait_slider)
+        membershipBean2.description = getString(R.string.do_not_want_to_wait_slider)
         membershipList.add(membershipBean2)
 
         val membershipBean3 = MembershipBean()
         membershipBean3.name = resources.getString(R.string.swipe_around_the_world)
-        membershipBean3.description = getString(R.string.passport_to_anywher)
+        membershipBean3.description = getString(R.string.passport_to_anywhere)
         membershipList.add(membershipBean3)
 
         val membershipBean4 = MembershipBean()
@@ -705,7 +755,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
         val membershipBean5 = MembershipBean()
         membershipBean5.name = resources.getString(R.string.see_who_like_you)
-        membershipBean5.description = getString(R.string.month_with_them_intantly)
+        membershipBean5.description = getString(R.string.month_with_them_instantly)
         membershipList.add(membershipBean5)
 
         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
@@ -831,7 +881,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
             view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
             view.viewBgLow.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-          //  view.tvOfferLow.visibility = View.VISIBLE
+            //  view.tvOfferLow.visibility = View.VISIBLE
             view.viewSelectedLow.visibility = View.VISIBLE
 
             view.viewBgMedium.setBackgroundColor(
@@ -853,10 +903,20 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
             view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
             view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
         }
 
         view.constMedium.setOnClickListener {
@@ -886,10 +946,20 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
             view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
             view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
         }
 
         view.constHigh.setOnClickListener {
@@ -919,10 +989,20 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
             view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
             view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
             view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
         }
     }
 
