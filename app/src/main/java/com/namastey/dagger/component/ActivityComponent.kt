@@ -69,6 +69,6 @@ interface ActivityComponent {
     fun inject(activity: LikeProfileActivity)
     fun inject(fragment: LikeSentFragment)
     fun inject(fragment: LikedUserPostFragment)
-    //fun inject(activity: PassportContentActivity)
+    fun inject(activity: ImageSliderActivity)
     //fun inject(activity: SearchLocationActivity)
 }

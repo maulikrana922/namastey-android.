@@ -316,6 +316,7 @@ object Constants {
     const val EXTRA_VIDEO_PATH = "EXTRA_VIDEO_PATH"
     const val RESULT_CODE_PICK_THUMBNAIL = 114
     const val REQUEST_CODE_CAMERA_IMAGE = 115
+    const val REQUEST_CODE_SLIDE_IMAGE = 117
     const val MAX_CHARACTER = 280
 
     private val ROOT = File.separator + "NAMASTEY"
