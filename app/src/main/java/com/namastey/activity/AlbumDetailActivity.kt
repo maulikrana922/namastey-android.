@@ -64,6 +64,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var albumBean = AlbumBean()
     private var fromEdit = false
     private var isSavedAlbum = false
+    private var isHide = 0
+    private var textHideShow = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,56 +167,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         albumViewModel.addEditAlbum(jsonObject)
     }
 
-    override fun onSuccessResponse(albumBean: AlbumBean) {
-        isEditAlbum = false
-    }
-
-    override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
-        if (arrayList.size > 0) {
-            albumBean = arrayList[0]
-            postList = arrayList[0].post_video_list
-            edtAlbumName.setText(arrayList[0].name)
-            if (arrayList[0].name == getString(R.string.saved)) {
-                isSavedAlbum = true
-                edtAlbumName.isEnabled = false
-                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    0,
-                    0
-                )
-            } else {
-                isSavedAlbum = false
-                postList.add(0, VideoBean())
-            }
-
-            albumDetailAdapter =
-                AlbumDetailAdapter(
-                    postList,
-                    this@AlbumDetailActivity,
-                    this,
-                    this,
-                    fromEdit,
-                    false,
-                    isSavedAlbum
-                )
-            rvAlbumDetail.adapter = albumDetailAdapter
-        }
-    }
-
-    override fun onSuccessDeletePost() {
-        postList.removeAt(position)
-        albumDetailAdapter.notifyItemRemoved(position)
-        albumDetailAdapter.notifyItemRangeChanged(position, albumDetailAdapter.itemCount)
-    }
-
-    override fun onSuccessAlbumDelete(msg: String) {
-        onBackPressed()
-    }
-
-    override fun onSuccessAlbumHide(msg: String) {
-        TODO("Not yet implemented")
-    }
 
     override fun getViewModel() = albumViewModel
 
@@ -346,7 +298,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
     }
 
-
     private fun isReadWritePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
@@ -376,9 +327,17 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         val popupMenu = PopupMenu(this, ivMore)
 
-        popupMenu?.menuInflater?.inflate(R.menu.menu_album_detail, popupMenu.menu)
-        val menuShowHide = popupMenu!!.menu.findItem(R.id.action_show_hide).setVisible(true)
+        popupMenu.menuInflater.inflate(R.menu.menu_album_detail, popupMenu.menu)
+        val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide).setVisible(true)
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
+
+        //menuShowHide.title = textHideShow
+
+        if (isHide == 1) {
+            menuShowHide.title = resources.getString(R.string.action_show_album)
+        } else {
+            menuShowHide.title = resources.getString(R.string.action_hide_album)
+        }
 
         try {
             val fields: Array<Field> = PopupMenu::class.java.declaredFields
@@ -388,7 +347,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     val menuPopupHelper: Any = field.get(popupMenu)
                     val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
                     val setForceIcons: Method = classPopupHelper.getMethod(
-                        "setForceShowIcon", Boolean::class.javaPrimitiveType
+                        "setForceShowIcon",
+                        Boolean::class.javaPrimitiveType
                     )
                     setForceIcons.invoke(menuPopupHelper, true)
                     break
@@ -403,7 +363,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     deleteAlbum()
                 }
                 R.id.action_show_hide -> {
-                    albumViewModel.hideAlbum(albumId, 1) //Todo, change based on condition
+                    if (isHide == 1)
+                        albumViewModel.hideAlbum(albumId, 0)
+                    else if (isHide == 0)
+                        albumViewModel.hideAlbum(albumId, 1)
                 }
             }
             true
@@ -437,7 +400,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         if (requestCode === TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null) {
             val uri = Uri.parse(TrimVideo.getTrimmedVideoPath(data))
-            Log.d("Trimmed video ", "Trimmed path:: $uri")
+            Log.e("Trimmed video ", "Trimmed path:: $uri")
 
             videoFile = File(uri.path)
             val intent = Intent(this@AlbumDetailActivity, PostVideoActivity::class.java)
@@ -568,6 +531,64 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
 
+    }
+
+    override fun onSuccessDeletePost() {
+        postList.removeAt(position)
+        albumDetailAdapter.notifyItemRemoved(position)
+        albumDetailAdapter.notifyItemRangeChanged(position, albumDetailAdapter.itemCount)
+    }
+
+    override fun onSuccessAlbumDelete(msg: String) {
+        onBackPressed()
+    }
+
+    override fun onSuccessAlbumHide(msg: String) {
+        Log.e("AlbumDetailActivity ", "onSuccessAlbumHide:: $msg")
+
+        /*if (isHide == 1) {
+            textHideShow = resources.getString(R.string.action_show_album)
+        } else {
+            textHideShow = resources.getString(R.string.action_hide_album)
+        }*/
+    }
+
+    override fun onSuccessResponse(albumBean: AlbumBean) {
+        isEditAlbum = false
+    }
+
+    override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
+        if (arrayList.size > 0) {
+            albumBean = arrayList[0]
+            postList = arrayList[0].post_video_list
+            edtAlbumName.setText(arrayList[0].name)
+            this.isHide = arrayList[0].is_hide
+            if (arrayList[0].name == getString(R.string.saved)) {
+                isSavedAlbum = true
+                edtAlbumName.isEnabled = false
+                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    0,
+                    0
+                )
+            } else {
+                isSavedAlbum = false
+                postList.add(0, VideoBean())
+            }
+
+            albumDetailAdapter =
+                AlbumDetailAdapter(
+                    postList,
+                    this@AlbumDetailActivity,
+                    this,
+                    this,
+                    fromEdit,
+                    false,
+                    isSavedAlbum
+                )
+            rvAlbumDetail.adapter = albumDetailAdapter
+        }
     }
 
 //    override fun cancelAction() {

@@ -25,7 +25,7 @@ class AlarmReceiver : WakefulBroadcastReceiver() {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         }
         val ringtone: Ringtone = RingtoneManager.getRingtone(context, alarmUri)
-        ringtone.play()
+        //ringtone.play()
 
         //this will send a notification message
         val comp = ComponentName(
