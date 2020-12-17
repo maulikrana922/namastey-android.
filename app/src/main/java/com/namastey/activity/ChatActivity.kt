@@ -65,7 +65,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var isFromMessage = false
     private var whoCanSendMessage: Int = -1
     private var isFollowMe = false
-    private var characterCount:  Int = 0
+    private var characterCount: Int = 0
 
     override fun getViewModel() = chatViewModel
 
@@ -93,8 +93,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
 
-            if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")){
-                whoCanSendMessage = intent.getIntExtra("whoCanSendMessage",2)
+            if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")) {
+                whoCanSendMessage = intent.getIntExtra("whoCanSendMessage", 2)
                 isFromProfile = intent.getBooleanExtra("isFromProfile", false)
                 isFollowMe = intent.getBooleanExtra("isFollowMe", false)
                 Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
@@ -104,13 +104,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //                    viewBuyNow.visibility = View.VISIBLE
             }
             if (intent.hasExtra("isFromMessage"))
-                isFromMessage = intent.getBooleanExtra("isFromMessage",false)
+                isFromMessage = intent.getBooleanExtra("isFromMessage", false)
 
             if (matchesListBean.is_match == 1 || whoCanSendMessage == 0 || isFromMessage)
-                chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
-            else{
+                chatToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
+            else {
                 if (isFollowMe)
-                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
+                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
                 else
                     viewBuyNow.visibility = View.VISIBLE
             }
@@ -145,7 +145,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             chatMsgList.add(chatMessage)
                         }
                     }
-                    if (chatMsgList.size >= 1 && matchesListBean.is_read == 0){    // Call api for start chat if any message share bw both
+                    if (chatMsgList.size >= 1 && matchesListBean.is_read == 0) {    // Call api for start chat if any message share bw both
                         chatViewModel.startChat(matchesListBean.id, 1)
                     }
                     chatViewModel.setIsLoading(false)
@@ -262,9 +262,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     fun onClickSendMessage(view: View) {
         if (edtMessage.text.trim().isNotEmpty()) {
             characterCount += edtMessage.text.length
-            if (matchesListBean.is_match == 1)
+            if (matchesListBean.is_match == 1 || isFollowMe)
                 sendMessage(edtMessage.text.toString(), "")
-            else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER){   // your can send 280 character with public account else purchase plan
+            else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER) {   // your can send 280 character with public account else purchase plan
                 Log.d("ChatActivity : ", "Count  $characterCount")
                 sendMessage(edtMessage.text.toString(), "")
             }
@@ -285,9 +285,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         else
             matchesListBean.id.toString().plus(sessionManager.getUserId())
 
-        if (matchesListBean.is_block == 1){
+        if (matchesListBean.is_block == 1) {
             showMsg(getString(R.string.msg_block_user_chat))
-        }else {
+        } else {
             myChatRef.child(chatId).push().setValue(chatMessage).addOnSuccessListener {
                 edtMessage.setText("")
             }
@@ -298,9 +298,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
      * Open camera and select image
      */
     fun onClickCamera(view: View) {
-        if (matchesListBean.is_block == 1){
+        if (matchesListBean.is_block == 1) {
             showMsg(getString(R.string.msg_block_user_chat))
-        }else {
+        } else {
             if (matchesListBean.is_match == 1) {
                 if (isPermissionGrantedForCamera())
                     capturePhoto()
@@ -338,34 +338,30 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                     applicationContext.packageName.plus(".provider"),
                     Utils.getCameraFile(this@ChatActivity)
                 )
-//                val bitmap: Bitmap = Utils.scaleBitmapDown(
-//                    MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
-//                    1200
-//                )!!
-//                pictureFile = Utils.getCameraFile(this@ChatActivity)
-
                 uploadFile(photoUri, true)
             } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
+                val intent = Intent(this@ChatActivity, ImageSliderActivity::class.java)
                 if (data?.clipData != null) {
-                    val count = data.clipData?.itemCount
-                    for (i in 0 until count!!) {
-                        val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
-                        uploadFile(imageUri, true)
-                    }
-
+                    intent.clipData = data.clipData
                 } else if (data?.data != null) {
                     // if single image is selected
                     val imageUri: Uri = data.data!!
-                    uploadFile(imageUri, true)
+                    intent.putExtra("imageUri",imageUri)
                 }
-
-//                try {
-//                    val selectedImage = data!!.data
-//                    if (selectedImage != null)
-//                        uploadFile(selectedImage)
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
+                openActivityForResult(intent, Constants.REQUEST_CODE_SLIDE_IMAGE)
+            }else if (requestCode == Constants.REQUEST_CODE_SLIDE_IMAGE){
+                if (data != null){
+                    if (data.hasExtra("imageUri")){
+                        val imageUri: Uri = data.getParcelableExtra<Uri>("imageUri")!!
+                        uploadFile(imageUri,true)
+                    }else {
+                        val count = data.clipData?.itemCount
+                        for (i in 0 until count!!) {
+                            val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
+                            uploadFile(imageUri, true)
+                        }
+                    }
+                }
             }
         }
     }
@@ -408,9 +404,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     fun onClickSelectImage(view: View) {
         // For latest versions API LEVEL 19+
-        if (matchesListBean.is_block == 1){
+        if (matchesListBean.is_block == 1) {
             showMsg(getString(R.string.msg_block_user_chat))
-        }else {
+        } else {
             if (matchesListBean.is_match == 1) {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -484,7 +480,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     fun onClickBuyNow(view: View) {
-        openActivity(this@ChatActivity,MembershipActivity())
+        openActivity(this@ChatActivity, MembershipActivity())
     }
 
     override fun chatSettingData(isBlock: Int) {
