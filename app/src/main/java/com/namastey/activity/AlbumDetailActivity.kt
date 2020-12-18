@@ -67,7 +67,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var isShowMenu = false
     private var isHide = 0
     private var textHideShow = ""
-    //private var menuShowHide: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -336,9 +335,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide)
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
 
-       // this.menuShowHide = menuShowHide
-        //menuShowHide.title = textHideShow
-
         if (isHide == 1) {
             menuShowHide.title = resources.getString(R.string.action_show_album)
             textHideShow = getString(R.string.action_show_album)
@@ -578,14 +574,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onSuccessAlbumHide(msg: String) {
         Log.e("AlbumDetailActivity ", "onSuccessAlbumHide:: $msg")
         albumViewModel.getAlbumDetail(albumId)
-
-       /* if (isHide == 1) {
-            textHideShow = resources.getString(R.string.action_show_album)
-            menuShowHide!!.title = resources.getString(R.string.action_show_album)
-        } else {
-            textHideShow = resources.getString(R.string.action_hide_album)
-            menuShowHide!!.title = resources.getString(R.string.action_hide_album)
-        }*/
     }
 
     override fun onSuccessResponse(albumBean: AlbumBean) {
