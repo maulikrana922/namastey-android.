@@ -3,9 +3,6 @@ package com.namastey.activity
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -13,15 +10,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -39,7 +33,6 @@ import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
-import com.namastey.receivers.AlarmReceiver
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -51,7 +44,6 @@ import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import java.io.File
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -72,25 +64,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
     private var boostProfileList = ArrayList<BoostPriceBean>()
-    private var timerText = ""
-
-    var alarmManager: AlarmManager? = null
-    private var pendingIntent: PendingIntent? = null
-    private var alarmTimePicker: TimePicker? = null
-    private var inst: ProfileActivity? = null
-
-    fun instance(): ProfileActivity? {
-        return inst
-    }
-
-    fun setAlarmText(alarmText: String?) {
-        timerText = alarmText!!
-    }
-
-    override fun onStart() {
-        super.onStart()
-        inst = this
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,97 +74,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         activityProfileBinding = bindViewData()
         activityProfileBinding.viewModel = profileViewModel
 
-        startAlarmService()
         initData()
-        testTime()
-    }
-
-    private fun startAlarmService() {
-        // alarmTimePicker = findViewById<View>(R.id.alarmTimePicker) as TimePicker
-        alarmTimePicker = TimePicker(this)
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        startTimer()
-
-    }
-
-    private fun testTime() {
-        val c = Calendar.getInstance()
-        c.add(Calendar.DAY_OF_MONTH, 1)
-        c[Calendar.HOUR_OF_DAY] = 0
-        c[Calendar.MINUTE] = 0
-        c[Calendar.SECOND] = 0
-        c[Calendar.MILLISECOND] = 0
-        val howMany = c.timeInMillis - System.currentTimeMillis()
-
-        convertMilliSecondToHours(howMany)
-
-        Log.e("ProfileActivity", "howMany: \t $howMany")
-        Log.e("ProfileActivity", "timeInMillis: \t ${c.timeInMillis}")
-        Log.e("ProfileActivity", "System: \t ${System.currentTimeMillis()}")
-    }
-
-    private fun convertMilliSecondToHours(millis: Long) {
-        val timer = String.format(
-            "%02d:%02d:%02d",
-            TimeUnit.MILLISECONDS.toHours(millis),
-            TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(
-                TimeUnit.MILLISECONDS.toHours(
-                    millis
-                )
-            ), // The change is in this line
-            TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(
-                TimeUnit.MILLISECONDS.toMinutes(
-                    millis
-                )
-            )
-        )
-        Log.e("ProfileActivity", "timer: \t $timer")
-        val interval = 1000L
-        val handler = Handler()
-        val runnable =
-            Runnable {
-            }
-        handler.postAtTime(runnable, millis - interval)
-        handler.postDelayed(runnable, interval)
-    }
-
-    fun startTimer(finish: Long, tick: Long) {
-        val t: CountDownTimer
-        t = object : CountDownTimer(finish, tick) {
-            override fun onTick(millisUntilFinished: Long) {
-                val remainedSecs = millisUntilFinished / 1000
-                Log.e("ProfileActivity", "startTimer: \t ${"" + remainedSecs / 60 + ":" + remainedSecs % 60}")
-            }
-
-            override fun onFinish() {
-                Log.e("ProfileActivity", "Finish: \t 00:00:00")
-                cancel()
-            }
-        }.start()
-    }
-
-    private fun startTimer() {
-        //if (().isChecked()) { // todo add condition to start timer
-        Log.e("ProfileActivity", "Alarm On")
-        val calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY] = alarmTimePicker!!.currentHour
-        calendar[Calendar.MINUTE] = alarmTimePicker!!.currentMinute
-        calendar[Calendar.SECOND] = alarmTimePicker!!.currentMinute
-        val myIntent = Intent(this@ProfileActivity, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this@ProfileActivity, 0, myIntent, 0)
-        alarmManager!![AlarmManager.RTC, calendar.timeInMillis] = pendingIntent
-        Log.e("ProfileActivity", "Time : ${alarmTimePicker!!.currentHour}")
-        /*} else {
-            alarmManager!!.cancel(pendingIntent)
-            setAlarmText("")
-            Log.d("MyActivity", "Alarm Off")
-        }*/
-
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        profileViewModel.getUserDetails()
     }
 
     private fun initData() {
@@ -211,111 +94,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         profileViewModel.getBoostPriceList()
     }
 
-    override fun onSuccessResponse(profileBean: ProfileBean) {
-        this.profileBean = profileBean
-        isCompletlySignup = profileBean.is_completly_signup
-        tvFollowersCount.text = profileBean.followers.toString()
-        tvFollowingCount.text = profileBean.following.toString()
-        tvViewsCount.text = profileBean.viewers.toString()
-        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
-        sessionManager.setUserGender(profileBean.gender)
-        sessionManager.setUserId(profileBean.user_id)
-
-        //  sessionManager.setIntegerValue(profileBean.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
-
-        if (profileBean.is_completly_signup == 1) {
-            sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
-            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
-            sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
-            sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
-            sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
-            sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
-            sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
-            sessionManager.setInterestIn(profileBean.interest_in_gender)
-            sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
-            sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
-
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_mentions,
-                Constants.KEY_IS_MENTIONS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_matches,
-                Constants.KEY_IS_MATCHES
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_follow,
-                Constants.KEY_IS_NEW_FOLLOWERS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_comment,
-                Constants.KEY_IS_COMMENTS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.notificationBean[0].is_suggest,
-                Constants.KEY_IS_VIDEO_SUGGESTIONS
-            )
-
-            /*sessionManager.setIntegerValue(profileBean.safetyBean[0].is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
-            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
-            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_suggest, Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS)
-            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_comment, Constants.KEY_CAN_COMMENT_YOUR_VIDEO)
-            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
-            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)*/
-
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.is_download,
-                Constants.KEY_IS_DOWNLOAD_VIDEO
-            )
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.is_followers,
-                Constants.KEY_IS_YOUR_FOLLOWERS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.is_suggest,
-                Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS
-            )
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.who_can_comment,
-                Constants.KEY_CAN_COMMENT_YOUR_VIDEO
-            )
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.who_can_send_message,
-                Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
-            )
-            sessionManager.setIntegerValue(
-                profileBean.safetyBean.is_share,
-                Constants.KEY_IS_SHARE_PROFILE_SAFETY
-            )
-
-            sessionManager.setLanguageList(profileBean.languageBean)
-
-            btnProfileSignup.visibility = View.INVISIBLE
-            groupButtons.visibility = View.VISIBLE
-            ivProfileCamera.visibility = View.VISIBLE
-            if (profileBean.profileUrl.isNotBlank()) {
-                GlideLib.loadImage(this@ProfileActivity, ivProfileUser, profileBean.profileUrl)
-            }
-        } else {
-            if (sessionManager.isGuestUser()) {
-                btnProfileSignup.text = getString(R.string.btn_signup)
-            } else {
-                //sessionManager.setCompleteSignUp(profileBean.is_completly_signup)
-                btnProfileSignup.text = getString(R.string.btn_complete_profile)
-            }
-            btnProfileSignup.visibility = View.VISIBLE
-            groupButtons.visibility = View.GONE
-        }
-        if (profileBean.username.isNotBlank()) {
-            tvProfileUsername.text = profileBean.username
-            if (profileBean.about_me.isNotEmpty())
-                tvAbouteDesc.text = profileBean.about_me
-        }
-    }
-
-    override fun onSuccessFollow(profileBean: ProfileBean) {
-    }
-
     override fun getViewModel() = profileViewModel
 
     override fun getLayoutId() = R.layout.activity_profile
@@ -324,32 +102,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     fun onClickProfileBack(view: View) {
         onBackPressed()
-    }
-
-    override fun onBackPressed() {
-        val signUpFragment =
-            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_FRAGMENT)
-        val signupWithPhoneFragment =
-            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
-        val otpFragment =
-            supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
-
-        if (signupWithPhoneFragment != null) {
-            val childFm = signupWithPhoneFragment.childFragmentManager
-            if (childFm.backStackEntryCount > 0) {
-                childFm.popBackStack()
-            } else {
-                supportFragmentManager.popBackStack()
-            }
-        } else if (signUpFragment != null || otpFragment != null)
-            supportFragmentManager.popBackStack()
-        else
-            finishActivity()
-    }
-
-    override fun onDestroy() {
-        profileViewModel.onDestroy()
-        super.onDestroy()
     }
 
     /**
@@ -364,341 +116,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-    private fun selectImage() {
-
-        val options = arrayOf<CharSequence>(
-            getString(R.string.take_photo),
-            getString(R.string.select_photo)
-        )
-
-
-        val builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle(
-            getString(R.string.upload_profile_pictuare)
-        )
-        builder.setItems(options) { dialog, item ->
-            when (item) {
-                0 -> isCameraPermissionGranted()
-                1 -> isReadWritePermissionGranted()
-            }
-        }
-        builder.show()
-    }
-
-    private fun isReadWritePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                openGalleryForImage()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ), Constants.PERMISSION_STORAGE
-                )
-            }
-        } else {
-            openGalleryForImage()
-        }
-    }
-
-    private fun openGalleryForImage() {
-
-        profileFile = File(
-            Constants.FILE_PATH,
-            System.currentTimeMillis().toString() + ".jpeg"
-        )
-
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_CODE)
-    }
-
-    private fun capturePhoto() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            try {
-                val photoUri: Uri = FileProvider.getUriForFile(
-                    this,
-                    applicationContext.packageName + ".provider",
-                    Utils.getCameraFile(this@ProfileActivity)
-                )
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
-            } catch (ex: Exception) {
-                showMsg(ex.localizedMessage)
-            }
-        }
-    }
-
-    private fun isCameraPermissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                capturePhoto()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        android.Manifest.permission.CAMERA,
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ),
-                    Constants.PERMISSION_CAMERA
-                )
-            }
-        } else {
-            capturePhoto()
-        }
-    }
-
     fun onClickProfile(view: View) {
         when (view) {
             ivProfileCamera -> {
                 selectImage()
             }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        when (requestCode) {
-
-            Constants.PERMISSION_STORAGE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    openGalleryForImage()
-                } else {
-                    if (grantResults.isNotEmpty()) {
-                        if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                            // user rejected the permission
-                            val permission: String =
-                                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                                    permissions[0]
-                                } else {
-                                    permissions[1]
-                                }
-                            val showRationale = shouldShowRequestPermissionRationale(permission)
-                            if (!showRationale) {
-                                val builder = AlertDialog.Builder(this)
-                                builder.setMessage(getString(R.string.permission_denied_storage_message))
-                                    .setTitle(getString(R.string.permission_required))
-
-                                builder.setPositiveButton(
-                                    getString(R.string.go_to_settings)
-                                ) { dialog, id ->
-                                    var intent = Intent(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.fromParts("package", packageName, null)
-                                    )
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent)
-                                    finish()
-                                }
-
-                                val dialog = builder.create()
-                                dialog.setCanceledOnTouchOutside(false)
-                                dialog.show()
-                            } else {
-                                // user also UNCHECKED "never ask again"
-                                isReadWritePermissionGranted()
-                            }
-                        } else {
-                            isReadWritePermissionGranted()
-                        }
-                    }
-                }
-            }
-            Constants.PERMISSION_CAMERA -> if (grantResults.isNotEmpty() &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED
-            ) {
-                capturePhoto()
-            } else {
-                if (grantResults.isNotEmpty()) {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
-                        // user rejected the permission
-                        val permission: String =
-                            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                                permissions[0]
-                            } else {
-                                permissions[1]
-                            }
-                        val showRationale = shouldShowRequestPermissionRationale(permission)
-                        if (!showRationale) {
-                            val builder = AlertDialog.Builder(this)
-                            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
-                                builder.setMessage(getString(R.string.permission_denied_camera_message))
-
-                            if (grantResults[1] == PackageManager.PERMISSION_DENIED)
-                                builder.setMessage(getString(R.string.permission_denied_storage_message))
-                                    .setTitle(getString(R.string.permission_required))
-
-                            builder.setPositiveButton(
-                                getString(R.string.go_to_settings)
-                            ) { dialog, id ->
-                                var intent = Intent(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", packageName, null)
-                                )
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                                finish()
-                            }
-
-                            val dialog = builder.create()
-                            dialog.setCanceledOnTouchOutside(false)
-                            dialog.show()
-                        } else {
-                            // user also UNCHECKED "never ask again"
-                            isCameraPermissionGranted()
-                        }
-                    } else {
-                        isCameraPermissionGranted()
-                    }
-                }
-            }
-            PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Log.i("PassportContentActivity", "Permission has been denied by user CAMERA")
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        )
-                    ) {
-                        val builder = AlertDialog.Builder(this)
-                        builder.setMessage(getString(R.string.location_permission_message))
-                            .setTitle(getString(R.string.permission_required))
-
-                        builder.setPositiveButton(
-                            getString(R.string.ok)
-                        ) { dialog, id ->
-                            /*ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                                PERMISSION_REQUEST_CODE
-                            )*/
-
-                            addLocationPermission()
-                        }
-
-                        val dialog = builder.create()
-                        dialog.show()
-                    } else {
-                        val builder = AlertDialog.Builder(this)
-                        builder.setMessage(getString(R.string.permission_denied_message))
-                            .setTitle(getString(R.string.permission_required))
-
-                        builder.setPositiveButton(
-                            getString(R.string.go_to_settings)
-                        ) { dialog, id ->
-                            var intent = Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", packageName, null)
-                            )
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
-                        }
-
-                        val dialog = builder.create()
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.show()
-                    }
-                } else {
-                    openActivity(this, PassportContentActivity())
-                }
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
-            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-            if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
-                tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
-        }
-        if (!isCameraOpen)
-            profileViewModel.getUserDetails()
-        else
-            isCameraOpen = false
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-//            ivProfileUser.setImageURI(data?.data) // handle chosen image
-
-            if (data != null) {
-                val selectedImage = data.data
-
-                if (selectedImage != null) {
-//                    val inputStream: InputStream?
-                    try {
-//                        val selectedImage = data.data
-                        val filePathColumn =
-                            arrayOf(MediaStore.Images.Media.DATA)
-                        val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
-                            selectedImage,
-                            filePathColumn, null, null, null
-                        )
-                        cursor!!.moveToFirst()
-
-                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                        val picturePath: String = cursor.getString(columnIndex)
-                        cursor.close()
-
-                        GlideLib.loadImage(this, ivProfileUser, picturePath)
-                        Log.d("Image Path", "Image Path  is $picturePath")
-                        profileFile = Utils.saveBitmapToFile(File(picturePath))
-
-                        if (profileFile != null && profileFile!!.exists()) {
-                            isCameraOpen = true
-                            profileViewModel.updateProfilePic(profileFile!!)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
-//            if (data != null) {
-            val imageFile = Utils.getCameraFile(this@ProfileActivity)
-            val photoUri = FileProvider.getUriForFile(
-                this,
-                applicationContext.packageName + ".provider",
-                imageFile
-            )
-            val bitmap: Bitmap = Utils.scaleBitmapDown(
-                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
-                1200
-            )!!
-
-            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
-
-            if (imageFile.exists()) {
-                isCameraOpen = true
-                profileViewModel.updateProfilePic(imageFile)
-            }
-//            }
         }
     }
 
@@ -776,6 +198,15 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+    fun onClickProfileMore(view: View) {
+        if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
+            openActivity(this@ProfileActivity, SettingsActivity())
+    }
+
+    fun onClickPassport(view: View) {
+        addLocationPermission()
+    }
+
     private fun setMembershipList() {
         val membershipBean1 = MembershipBean()
         membershipBean1.name = resources.getString(R.string._1_boost_each_month)
@@ -810,24 +241,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     }
 
-    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
-    }
-
-    override fun onSuccessReport(msg: String) {
-
-    }
-
-    override fun onSuccessBlockUser(msg: String) {
-
-    }
-
-    override fun onSuccessSavePost(msg: String) {
-    }
-
-    override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
-        this.boostProfileList = boostPriceBean
-    }
-
     inner class SliderTimer : TimerTask() {
         override fun run() {
             this@ProfileActivity.runOnUiThread(Runnable {
@@ -838,15 +251,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 }
             })
         }
-    }
-
-    fun onClickProfileMore(view: View) {
-        if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
-            openActivity(this@ProfileActivity, SettingsActivity())
-    }
-
-    fun onClickPassport(view: View) {
-        addLocationPermission()
     }
 
     private fun addLocationPermission() {
@@ -1070,6 +474,490 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         view.tvNoThanks.setOnClickListener {
             alertDialog.dismiss()
         }
+    }
+
+    private fun selectImage() {
+
+        val options = arrayOf<CharSequence>(
+            getString(R.string.take_photo),
+            getString(R.string.select_photo)
+        )
+
+
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle(
+            getString(R.string.upload_profile_pictuare)
+        )
+        builder.setItems(options) { dialog, item ->
+            when (item) {
+                0 -> isCameraPermissionGranted()
+                1 -> isReadWritePermissionGranted()
+            }
+        }
+        builder.show()
+    }
+
+    private fun isReadWritePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGalleryForImage()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            openGalleryForImage()
+        }
+    }
+
+    private fun openGalleryForImage() {
+
+        profileFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString() + ".jpeg"
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+
+    private fun capturePhoto() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            try {
+                val photoUri: Uri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    Utils.getCameraFile(this@ProfileActivity)
+                )
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
+            } catch (ex: Exception) {
+                showMsg(ex.localizedMessage)
+            }
+        }
+    }
+
+    private fun isCameraPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                capturePhoto()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    Constants.PERMISSION_CAMERA
+                )
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        profileViewModel.getUserDetails()
+    }
+
+    override fun onBackPressed() {
+        val signUpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_FRAGMENT)
+        val signupWithPhoneFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
+        val otpFragment =
+            supportFragmentManager.findFragmentByTag(Constants.OTP_FRAGMENT)
+
+        if (signupWithPhoneFragment != null) {
+            val childFm = signupWithPhoneFragment.childFragmentManager
+            if (childFm.backStackEntryCount > 0) {
+                childFm.popBackStack()
+            } else {
+                supportFragmentManager.popBackStack()
+            }
+        } else if (signUpFragment != null || otpFragment != null)
+            supportFragmentManager.popBackStack()
+        else
+            finishActivity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
+            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+            if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
+                tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
+        }
+        if (!isCameraOpen)
+            profileViewModel.getUserDetails()
+        else
+            isCameraOpen = false
+
+    }
+
+    override fun onDestroy() {
+        profileViewModel.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+//            ivProfileUser.setImageURI(data?.data) // handle chosen image
+
+            if (data != null) {
+                val selectedImage = data.data
+
+                if (selectedImage != null) {
+//                    val inputStream: InputStream?
+                    try {
+//                        val selectedImage = data.data
+                        val filePathColumn =
+                            arrayOf(MediaStore.Images.Media.DATA)
+                        val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
+                            selectedImage,
+                            filePathColumn, null, null, null
+                        )
+                        cursor!!.moveToFirst()
+
+                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                        val picturePath: String = cursor.getString(columnIndex)
+                        cursor.close()
+
+                        GlideLib.loadImage(this, ivProfileUser, picturePath)
+                        Log.d("Image Path", "Image Path  is $picturePath")
+                        profileFile = Utils.saveBitmapToFile(File(picturePath))
+
+                        if (profileFile != null && profileFile!!.exists()) {
+                            isCameraOpen = true
+                            profileViewModel.updateProfilePic(profileFile!!)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
+//            if (data != null) {
+            val imageFile = Utils.getCameraFile(this@ProfileActivity)
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                applicationContext.packageName + ".provider",
+                imageFile
+            )
+            val bitmap: Bitmap = Utils.scaleBitmapDown(
+                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                1200
+            )!!
+
+            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+
+            if (imageFile.exists()) {
+                isCameraOpen = true
+                profileViewModel.updateProfilePic(imageFile)
+            }
+//            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+
+            Constants.PERMISSION_STORAGE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    openGalleryForImage()
+                } else {
+                    if (grantResults.isNotEmpty()) {
+                        if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                            // user rejected the permission
+                            val permission: String =
+                                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                                    permissions[0]
+                                } else {
+                                    permissions[1]
+                                }
+                            val showRationale = shouldShowRequestPermissionRationale(permission)
+                            if (!showRationale) {
+                                val builder = AlertDialog.Builder(this)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                                builder.setPositiveButton(
+                                    getString(R.string.go_to_settings)
+                                ) { dialog, id ->
+                                    var intent = Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package", packageName, null)
+                                    )
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                val dialog = builder.create()
+                                dialog.setCanceledOnTouchOutside(false)
+                                dialog.show()
+                            } else {
+                                // user also UNCHECKED "never ask again"
+                                isReadWritePermissionGranted()
+                            }
+                        } else {
+                            isReadWritePermissionGranted()
+                        }
+                    }
+                }
+            }
+            Constants.PERMISSION_CAMERA -> if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
+                capturePhoto()
+            } else {
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_DENIED || grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                        // user rejected the permission
+                        val permission: String =
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                                permissions[0]
+                            } else {
+                                permissions[1]
+                            }
+                        val showRationale = shouldShowRequestPermissionRationale(permission)
+                        if (!showRationale) {
+                            val builder = AlertDialog.Builder(this)
+                            if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_camera_message))
+
+                            if (grantResults[1] == PackageManager.PERMISSION_DENIED)
+                                builder.setMessage(getString(R.string.permission_denied_storage_message))
+                                    .setTitle(getString(R.string.permission_required))
+
+                            builder.setPositiveButton(
+                                getString(R.string.go_to_settings)
+                            ) { dialog, id ->
+                                var intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                )
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            val dialog = builder.create()
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
+                        } else {
+                            // user also UNCHECKED "never ask again"
+                            isCameraPermissionGranted()
+                        }
+                    } else {
+                        isCameraPermissionGranted()
+                    }
+                }
+            }
+            PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.i("PassportContentActivity", "Permission has been denied by user CAMERA")
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    ) {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.location_permission_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.ok)
+                        ) { dialog, id ->
+                            /*ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                PERMISSION_REQUEST_CODE
+                            )*/
+
+                            addLocationPermission()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.show()
+                    } else {
+                        val builder = AlertDialog.Builder(this)
+                        builder.setMessage(getString(R.string.permission_denied_message))
+                            .setTitle(getString(R.string.permission_required))
+
+                        builder.setPositiveButton(
+                            getString(R.string.go_to_settings)
+                        ) { dialog, id ->
+                            var intent = Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", packageName, null)
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        val dialog = builder.create()
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog.show()
+                    }
+                } else {
+                    openActivity(this, PassportContentActivity())
+                }
+            }
+        }
+    }
+
+    override fun onSuccessResponse(profileBean: ProfileBean) {
+        this.profileBean = profileBean
+        isCompletlySignup = profileBean.is_completly_signup
+        tvFollowersCount.text = profileBean.followers.toString()
+        tvFollowingCount.text = profileBean.following.toString()
+        tvViewsCount.text = profileBean.viewers.toString()
+        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
+        sessionManager.setUserGender(profileBean.gender)
+        sessionManager.setUserId(profileBean.user_id)
+
+        //  sessionManager.setIntegerValue(profileBean.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
+
+        if (profileBean.is_completly_signup == 1) {
+            sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+            sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+            sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+            sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
+            sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+            sessionManager.setInterestIn(profileBean.interest_in_gender)
+            sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+            sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
+
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_mentions,
+                Constants.KEY_IS_MENTIONS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_matches,
+                Constants.KEY_IS_MATCHES
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_follow,
+                Constants.KEY_IS_NEW_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_comment,
+                Constants.KEY_IS_COMMENTS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_suggest,
+                Constants.KEY_IS_VIDEO_SUGGESTIONS
+            )
+
+            /*sessionManager.setIntegerValue(profileBean.safetyBean[0].is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_suggest, Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_comment, Constants.KEY_CAN_COMMENT_YOUR_VIDEO)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].who_can_send_message, Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE)
+            sessionManager.setIntegerValue(profileBean.safetyBean[0].is_share, Constants.KEY_IS_SHARE_PROFILE_SAFETY)*/
+
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_download,
+                Constants.KEY_IS_DOWNLOAD_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_followers,
+                Constants.KEY_IS_YOUR_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_suggest,
+                Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_comment,
+                Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_send_message,
+                Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_share,
+                Constants.KEY_IS_SHARE_PROFILE_SAFETY
+            )
+
+            sessionManager.setLanguageList(profileBean.languageBean)
+
+            btnProfileSignup.visibility = View.INVISIBLE
+            groupButtons.visibility = View.VISIBLE
+            ivProfileCamera.visibility = View.VISIBLE
+            if (profileBean.profileUrl.isNotBlank()) {
+                GlideLib.loadImage(this@ProfileActivity, ivProfileUser, profileBean.profileUrl)
+            }
+        } else {
+            if (sessionManager.isGuestUser()) {
+                btnProfileSignup.text = getString(R.string.btn_signup)
+            } else {
+                //sessionManager.setCompleteSignUp(profileBean.is_completly_signup)
+                btnProfileSignup.text = getString(R.string.btn_complete_profile)
+            }
+            btnProfileSignup.visibility = View.VISIBLE
+            groupButtons.visibility = View.GONE
+        }
+        if (profileBean.username.isNotBlank()) {
+            tvProfileUsername.text = profileBean.username
+            if (profileBean.about_me.isNotEmpty())
+                tvAbouteDesc.text = profileBean.about_me
+        }
+    }
+
+    override fun onSuccessFollow(profileBean: ProfileBean) {
+    }
+
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
+    }
+
+    override fun onSuccessReport(msg: String) {
+
+    }
+
+    override fun onSuccessBlockUser(msg: String) {
+
+    }
+
+    override fun onSuccessSavePost(msg: String) {
+    }
+
+    override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
+        this.boostProfileList = boostPriceBean
     }
 
 }

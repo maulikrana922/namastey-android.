@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
+import android.os.CountDownTimer
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -76,7 +77,7 @@ object Utils {
         v.background = gd
     }
 
-    fun imageOverlayGradient(v: View, startColor:String, endColor: String) {
+    fun imageOverlayGradient(v: View, startColor: String, endColor: String) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,
 
@@ -230,11 +231,11 @@ object Utils {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage,  "Title", null)
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
 
-    fun getRealPathFromURI(context: Context,uri: Uri?): String? {
+    fun getRealPathFromURI(context: Context, uri: Uri?): String? {
         var path = ""
         if (context.contentResolver != null) {
             val cursor =
@@ -252,9 +253,9 @@ object Utils {
     /**
      * Convert bitmap image to file
      */
-    fun bitmapToFile(context: Context,bitmap: Bitmap): File{
-        val bitmapFile = File(context.cacheDir, "Title.jpg");
-        bitmapFile.createNewFile();
+    fun bitmapToFile(context: Context, bitmap: Bitmap): File {
+        val bitmapFile = File(context.cacheDir, "Title.jpg")
+        bitmapFile.createNewFile()
 
 //Convert bitmap to byte array
         val bos = ByteArrayOutputStream()
@@ -263,7 +264,7 @@ object Utils {
 
 //write the bytes in file
         val fos = FileOutputStream(bitmapFile)
-        fos.write(bitmapData);
+        fos.write(bitmapData)
         fos.flush()
         fos.close()
 
@@ -317,7 +318,7 @@ object Utils {
                 duration?.toLong()?.let { TimeUnit.MILLISECONDS.toSeconds(it) }
                     ?.minus(TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration.toLong())))
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             "00:00"
         }
@@ -374,9 +375,54 @@ object Utils {
             }
         } catch (e: ParseException) {
             e.printStackTrace()
-            Log.e("Utils","Exception: \t " + e.message!!)
+            Log.e("Utils", "Exception: \t " + e.message!!)
         }
         return convTime
     }
 
+    fun getCurrentAndDifferenceTime() {
+        val c = Calendar.getInstance()
+        c.add(Calendar.DAY_OF_MONTH, 1)
+        c[Calendar.HOUR_OF_DAY] = 0
+        c[Calendar.MINUTE] = 0
+        c[Calendar.SECOND] = 0
+        c[Calendar.MILLISECOND] = 0
+        val howMany = c.timeInMillis - System.currentTimeMillis()
+        val interval = 1000L
+
+        Log.e("Utils", "howMany: \t $howMany")
+        Log.e("Utils", "timeInMillis: \t ${c.timeInMillis}")
+        Log.e("Utils", "System: \t ${System.currentTimeMillis()}")
+
+        convertMilliSecondToHours(howMany, interval)
+    }
+
+    private fun convertMilliSecondToHours(millis: Long, interval: Long) {
+        val t: CountDownTimer
+        t = object : CountDownTimer(millis, interval) {
+            override fun onTick(millisUntilFinished: Long) {
+                val timer = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                        TimeUnit.MILLISECONDS.toHours(
+                            millisUntilFinished
+                        )
+                    ), // The change is in this line
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                        TimeUnit.MILLISECONDS.toMinutes(
+                            millisUntilFinished
+                        )
+                    )
+                )
+
+                Log.e("Utils", "timer: \t $timer")
+            }
+
+            override fun onFinish() {
+                Log.e("Utils", "Finish: \t 00:00:00")
+                cancel()
+            }
+        }.start()
+    }
 }

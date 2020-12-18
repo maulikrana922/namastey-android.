@@ -58,11 +58,11 @@ class DashboardViewModel constructor(
                 if (dashboardView.isInternetAvailable()) {
                     networkService.requestToGetFeed(subCatId).let { appResponse ->
                         setIsLoading(false)
-                        if (appResponse.status == Constants.OK)
-                            dashboardView.onSuccessFeed(appResponse.data!!)
-                        else
+                        if (appResponse.status == Constants.OK){
+                            dashboardView.onSuccessFeed(appResponse.data!!)}
+                        else{
                             dashboardView.onFailed(appResponse.message, appResponse.error)
-                    }
+                    }}
                 } else {
                     setIsLoading(false)
                     dashboardView.showMsg(R.string.no_internet)
@@ -143,7 +143,8 @@ class DashboardViewModel constructor(
                             if (appResponse.status == Constants.OK)
                                 appResponse.data?.let { dashboardView.onSuccessProfileLike(appResponse.data!!) }
                             else
-                                dashboardView.onFailed(appResponse.message, appResponse.error)
+                                dashboardView.onFailedMaxLike(appResponse.message, appResponse.error)
+                               // dashboardView.onFailed(appResponse.message, appResponse.error)
                         }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)

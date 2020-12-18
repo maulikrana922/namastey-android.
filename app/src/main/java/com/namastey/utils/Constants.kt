@@ -204,6 +204,7 @@ object Constants {
     const val KEY_NOTIFICATION_DATA = "notification_data"
     const val KEY_LANGUAGE_LIST = "KEY_LANGUAGE_LIST"
     const val KEY_CHOOSE_INTEREST_LIST = "KEY_CHOOSE_INTEREST_LIST"
+    const val KEY_MAX_USER_LIKE = "KEY_MAX_USER_LIKE"
 
 
     //    field key

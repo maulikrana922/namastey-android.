@@ -406,12 +406,13 @@
     <string name="continues">Continue</string>
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
-    <string name="do_not_want_to_wait">"11:59:55 \n Don`t want to wait? Go Unlimited "</string>
-    <string name="do_not_want_to_wait_slider">"11:59:55 Don`t want to wait? Go Unlimited "</string>
+    <string name="do_not_want_to_wait">"11:59:55 \nDon't want to wait? Go Unlimited "</string>
+    <string name="do_not_want_to_wait_slider">"Don't want to wait? Go Unlimited "</string>
+    <!--<string name="do_not_want_to_wait_slider">"11:59:55 Don't want to wait? Go Unlimited "</string>-->
     <string name="swipe_around_the_world">Swipe Around The World</string>
     <string name="passport_to_anywhere">Passport to anywhere</string>
     <string name="_5_free_super_message">5 Free Super Message</string>
-    <string name="your_3x_more_likes">You`re 3x more likely to get a match!</string>
+    <string name="your_3x_more_likes">You\'re 3x more likely to get a match!</string>
     <string name="month_with_them_instantly">"Match with them instantly "</string>
     <string name="out_of_boosts">Out of Boosts!</string>
     <string name="_6_day_remaining">6 Day remaining</string>

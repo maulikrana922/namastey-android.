@@ -17,5 +17,6 @@ interface DashboardView : BaseView {
     fun onSuccessBlockUser(msg: String)
     fun onSuccessSavePost(msg: String)
     fun onSuccessMention(mentionList: ArrayList<MentionListBean>)
+    fun onFailedMaxLike(msg: String, error: Int)
 
 }

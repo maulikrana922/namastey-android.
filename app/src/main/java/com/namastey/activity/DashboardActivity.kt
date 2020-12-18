@@ -57,6 +57,7 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
@@ -1369,6 +1370,29 @@ private fun prepareAnimation(animation: Animation): Animation? {
         } else {
             bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         }
+    }
+
+    override fun onFailedMaxLike(msg: String, error: Int) {
+        Log.e("DashboardActivity", "onFailedMaxLike: msg:\t  $msg \t error:\t  $error")
+        object : CustomAlertDialog(
+            this,
+            msg,
+            getString(R.string.ok),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
+                        dismiss()
+                    }
+                    btnNeg.id -> {
+                        sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 
     override fun onSuccessBlockUser(msg: String) {
