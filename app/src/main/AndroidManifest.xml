@@ -261,6 +261,11 @@
             android:authorities="com.facebook.app.FacebookContentProviderYOUR_FACEBOOK_APP_ID"
             android:exported="true" />
 
+        <service
+            android:name=".receivers.AlarmService"
+            android:enabled="true" />
+        <receiver android:name=".receivers.AlarmReceiver" />
+
     </application>
 
 </manifest>

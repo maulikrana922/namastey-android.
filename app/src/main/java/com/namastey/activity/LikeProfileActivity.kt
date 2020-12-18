@@ -61,7 +61,7 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
         likeUserCount = intent.getIntExtra("likeUserCount", 0)
         lastUserProfile = intent.getStringExtra("lastUserProfile")!!
 
-        tabOneTitle = likeUserCount.toString() + " " + resources.getString(R.string.likes)
+        tabOneTitle = likeUserCount.toString().plus(" ").plus(resources.getString(R.string.likes))
 
         setupViewPager()
         tabLikeProfile.setupWithViewPager(viewPagerLikeProfile)

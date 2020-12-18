@@ -508,26 +508,34 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
             if (membershipType == 0) {
                 view.tvTextLowEachBoost.text =
-                    resources.getString(R.string.dollars) + price +
-                            resources.getString(R.string.per_month)
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
             }
 
             if (membershipType == 1) {
                 view.tvTextMediumEachBoost.text =
-                    resources.getString(R.string.dollars) + price +
-                            resources.getString(R.string.per_month) + "\n" +
-                            resources.getString(R.string.save) + " " + discount +
-                            resources.getString(R.string.percentage)
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))
 
             }
 
             if (membershipType == 2) {
                 view.tvTextHighEachBoost.text =
-                    resources.getString(R.string.dollars) + price +
-                            resources.getString(R.string.per_month) + "\n" +
-                            resources.getString(R.string.save) + " " + discount +
-                            resources.getString(R.string.percentage)
-
+                    resources.getString(R.string.dollars)
+                        .plus( price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus( " ")
+                        .plus( discount )
+                        .plus(resources.getString(R.string.percentage))
             }
         }
 
@@ -556,7 +564,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.white
                 )
             )
-          //  view.tvOfferLow.visibility = View.VISIBLE
+            //  view.tvOfferLow.visibility = View.VISIBLE
             view.viewSelectedLow.visibility = View.VISIBLE
 
             view.viewBgMedium.setBackgroundColor(

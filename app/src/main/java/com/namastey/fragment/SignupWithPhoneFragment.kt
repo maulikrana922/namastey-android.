@@ -229,7 +229,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                             countryList[0]
                         }
 
-                        tvCountrySelected.text = country.sortname + " " + country.phonecode
+                        tvCountrySelected.text = country.sortname.plus(" ").plus(country.phonecode)
                     }
                 }
             } else {
@@ -256,7 +256,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 //                finder.showSettingsAlert();
             }
 
-            tvCountrySelected.text = country.sortname + " " + country.phonecode
+            tvCountrySelected.text = country.sortname.plus(" ").plus(country.phonecode)
 
         }
 //        val aa =
@@ -315,7 +315,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     override fun onCountrySelectionSet(country: Country) {
         childFragmentManager.popBackStack()
         this.country = country
-        tvCountrySelected.text = country.sortname + " " + country.phonecode
+        tvCountrySelected.text = country.sortname.plus(" ").plus(country.phonecode)
     }
 
 }

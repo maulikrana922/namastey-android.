@@ -106,7 +106,7 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
      * click on any item then display top select count and store id list
      */
     override fun onImageItemClick(interestBeanInterest: InterestSubCategoryBean) {
-        tvSelectLabel.setText(resources.getString(R.string.tv_select) + " " + noOfSelectedImage)
+        tvSelectLabel.text = resources.getString(R.string.tv_select).plus(" ").plus(noOfSelectedImage)
 
         if (selectInterestIdList.contains(interestBeanInterest.id)) {
             selectCategoryId.remove(interestBeanInterest.category_id)

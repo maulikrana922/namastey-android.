@@ -9,6 +9,8 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.namastey.R
 import com.namastey.model.MembershipSlide
+import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_dialog_membership.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -43,41 +45,44 @@ class MembershipDialogSliderAdapter(
         view.ivIcon.setImageResource(membershipList[position].profile_url)
 
         //todo: Start timer According to condition
-        if (position == 1) {
-            val c = Calendar.getInstance()
-            c.add(Calendar.DAY_OF_MONTH, 1)
-            c[Calendar.HOUR_OF_DAY] = 0
-            c[Calendar.MINUTE] = 0
-            c[Calendar.SECOND] = 0
-            c[Calendar.MILLISECOND] = 0
-            val millis = c.timeInMillis - System.currentTimeMillis()
-            val interval = 1000L
+        if (SessionManager(context).getBooleanValue(Constants.KEY_MAX_USER_LIKE)) {
+            if (position == 1) {
+                val c = Calendar.getInstance()
+                c.add(Calendar.DAY_OF_MONTH, 1)
+                c[Calendar.HOUR_OF_DAY] = 0
+                c[Calendar.MINUTE] = 0
+                c[Calendar.SECOND] = 0
+                c[Calendar.MILLISECOND] = 0
+                val millis = c.timeInMillis - System.currentTimeMillis()
+                val interval = 1000L
 
-            val t: CountDownTimer
-            t = object : CountDownTimer(millis, interval) {
-                override fun onTick(millisUntilFinished: Long) {
-                    val timer = String.format(
-                        "%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                            TimeUnit.MILLISECONDS.toHours(
-                                millisUntilFinished
-                            )
-                        ), // The change is in this line
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                            TimeUnit.MILLISECONDS.toMinutes(
-                                millisUntilFinished
+                val t: CountDownTimer
+                t = object : CountDownTimer(millis, interval) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val timer = String.format(
+                            "%02d:%02d:%02d",
+                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(
+                                    millisUntilFinished
+                                )
+                            ), // The change is in this line
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(
+                                    millisUntilFinished
+                                )
                             )
                         )
-                    )
-                    view.tvText2.text = timer //+ " " + membershipList[position].description
-                }
+                        view.tvText2.text = timer
+                    }
 
-                override fun onFinish() {
-                    cancel()
-                }
-            }.start()
-
+                    override fun onFinish() {
+                        cancel()
+                    }
+                }.start()
+            }
+        } else {
+            view.tvText2.text = membershipList[position].description
         }
 
         val viewPager = container as ViewPager

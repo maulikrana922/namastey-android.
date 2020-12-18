@@ -1,6 +1,8 @@
 package com.namastey.activity
 
 import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -51,6 +53,8 @@ import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.*
+import com.namastey.receivers.AlarmReceiver
+import com.namastey.receivers.AlarmService
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
@@ -108,6 +112,49 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun getBindingVariable() = BR.viewModel
 
+    private fun startAlarmService() {
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.HOUR_OF_DAY] = 23
+        calendar[Calendar.MINUTE] = 59
+        calendar[Calendar.SECOND] = 59
+        calendar[Calendar.MILLISECOND] = 0
+        val pendingIntent = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, AlarmService::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+    }
+
+    private fun scheduleAlarm(context: Context) {
+        val cal: Calendar = Calendar.getInstance()
+        cal[Calendar.HOUR_OF_DAY] = 0
+        cal[Calendar.MINUTE] = 0
+        cal[Calendar.SECOND] = 0
+        cal[Calendar.MILLISECOND] = 0
+        cal.add(Calendar.DAY_OF_MONTH, 1)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent(this, AlarmReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            cal.timeInMillis,
+            1000 * 60 * 60 * 24.toLong(),
+            pendingIntent
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -117,9 +164,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
 
+        startAlarmService()
+
         initData()
         getDataFromIntent(intent!!)
     }
+
 
     private fun initData() {
         sessionManager.setLoginUser(true)
@@ -1378,15 +1428,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
             this,
             msg,
             getString(R.string.ok),
-            getString(R.string.cancel)
+            ""
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                        sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
-                        dismiss()
-                    }
-                    btnNeg.id -> {
                         sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
                         dismiss()
                     }
