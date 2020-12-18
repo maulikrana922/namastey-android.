@@ -13,6 +13,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -49,6 +51,7 @@ import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -120,9 +123,51 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         c[Calendar.MILLISECOND] = 0
         val howMany = c.timeInMillis - System.currentTimeMillis()
 
+        convertMilliSecondToHours(howMany)
+
         Log.e("ProfileActivity", "howMany: \t $howMany")
         Log.e("ProfileActivity", "timeInMillis: \t ${c.timeInMillis}")
         Log.e("ProfileActivity", "System: \t ${System.currentTimeMillis()}")
+    }
+
+    private fun convertMilliSecondToHours(millis: Long) {
+        val timer = String.format(
+            "%02d:%02d:%02d",
+            TimeUnit.MILLISECONDS.toHours(millis),
+            TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(
+                TimeUnit.MILLISECONDS.toHours(
+                    millis
+                )
+            ), // The change is in this line
+            TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(
+                TimeUnit.MILLISECONDS.toMinutes(
+                    millis
+                )
+            )
+        )
+        Log.e("ProfileActivity", "timer: \t $timer")
+        val interval = 1000L
+        val handler = Handler()
+        val runnable =
+            Runnable {
+            }
+        handler.postAtTime(runnable, millis - interval)
+        handler.postDelayed(runnable, interval)
+    }
+
+    fun startTimer(finish: Long, tick: Long) {
+        val t: CountDownTimer
+        t = object : CountDownTimer(finish, tick) {
+            override fun onTick(millisUntilFinished: Long) {
+                val remainedSecs = millisUntilFinished / 1000
+                Log.e("ProfileActivity", "startTimer: \t ${"" + remainedSecs / 60 + ":" + remainedSecs % 60}")
+            }
+
+            override fun onFinish() {
+                Log.e("ProfileActivity", "Finish: \t 00:00:00")
+                cancel()
+            }
+        }.start()
     }
 
     private fun startTimer() {
@@ -147,7 +192,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         profileViewModel.getUserDetails()
-
     }
 
     private fun initData() {
@@ -293,7 +337,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         if (signupWithPhoneFragment != null) {
             val childFm = signupWithPhoneFragment.childFragmentManager
             if (childFm.backStackEntryCount > 0) {
-                childFm.popBackStack();
+                childFm.popBackStack()
             } else {
                 supportFragmentManager.popBackStack()
             }
@@ -385,7 +429,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
                 startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
             } catch (ex: Exception) {
@@ -613,7 +657,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                         val filePathColumn =
                             arrayOf(MediaStore.Images.Media.DATA)
                         val cursor: Cursor? = this@ProfileActivity.contentResolver.query(
-                            selectedImage!!,
+                            selectedImage,
                             filePathColumn, null, null, null
                         )
                         cursor!!.moveToFirst()

@@ -114,6 +114,7 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
         val intent = Intent(requireActivity(), AlbumDetailActivity::class.java)
         intent.putExtra("albumId", id)
         intent.putExtra(Constants.FROM_EDIT, true)
+        intent.putExtra("isShowMenu", true)
         openActivity(intent)
     }
 

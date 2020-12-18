@@ -64,8 +64,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var albumBean = AlbumBean()
     private var fromEdit = false
     private var isSavedAlbum = false
+    private var isShowMenu = false
     private var isHide = 0
     private var textHideShow = ""
+    //private var menuShowHide: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,12 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         rvAlbumDetail.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
 
         fromEdit = intent.getBooleanExtra(Constants.FROM_EDIT, false)
+
+        if (intent.hasExtra("isShowMenu")) {
+            isShowMenu = intent.getBooleanExtra("isShowMenu", false)
+        }
+        Log.e("AlbumDetailActivity ", "isShowMenu:: $isShowMenu")
+
         if (intent.hasExtra("albumId")) {
             albumId = intent.getLongExtra("albumId", 0)
 
@@ -166,7 +174,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         albumViewModel.addEditAlbum(jsonObject)
     }
-
 
     override fun getViewModel() = albumViewModel
 
@@ -277,7 +284,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
     }
 
-
     override fun onBackPressed() {
 //        if (trimmerView.visibility == View.VISIBLE)
 //            trimmerView.visibility = View.GONE
@@ -320,24 +326,27 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     fun onClickAlbumDetailMore(view: View) {
-        createPopUpMenu()
+        if (isShowMenu)
+            createPopUpMenu()
     }
 
     private fun createPopUpMenu() {
-
         val popupMenu = PopupMenu(this, ivMore)
-
         popupMenu.menuInflater.inflate(R.menu.menu_album_detail, popupMenu.menu)
-        val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide).setVisible(true)
+        val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide)
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
 
+       // this.menuShowHide = menuShowHide
         //menuShowHide.title = textHideShow
 
         if (isHide == 1) {
             menuShowHide.title = resources.getString(R.string.action_show_album)
+            textHideShow = getString(R.string.action_show_album)
         } else {
             menuShowHide.title = resources.getString(R.string.action_hide_album)
+            textHideShow = getString(R.string.action_hide_album)
         }
+
 
         try {
             val fields: Array<Field> = PopupMenu::class.java.declaredFields
@@ -360,13 +369,12 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_delete_order -> {
-                    deleteAlbum()
+                    dialogDeleteAlbum()
                 }
                 R.id.action_show_hide -> {
-                    if (isHide == 1)
-                        albumViewModel.hideAlbum(albumId, 0)
-                    else if (isHide == 0)
-                        albumViewModel.hideAlbum(albumId, 1)
+                    dialogHideAlbum(textHideShow)
+                    menuShowHide.title = textHideShow
+
                 }
             }
             true
@@ -374,10 +382,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         popupMenu.show()
     }
 
-    private fun deleteAlbum() {
+    private fun dialogDeleteAlbum() {
         object : CustomAlertDialog(
             this,
-            resources.getString(R.string.msg_delete),
+            resources.getString(R.string.msg_delete_album),
             getString(R.string.yes),
             getString(R.string.cancel)
         ) {
@@ -386,6 +394,30 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     btnPos.id -> {
                         albumViewModel.deleteAlbum(albumId)
 
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
+
+    private fun dialogHideAlbum(textHideShow1: String) {
+        object : CustomAlertDialog(
+            this,
+            //resources.getString(R.string.msg_hide_album),
+            String.format(getString(R.string.msg_hide_album), textHideShow1),
+            getString(R.string.yes),
+            getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        if (isHide == 1)
+                            albumViewModel.hideAlbum(albumId, 0)
+                        else if (isHide == 0)
+                            albumViewModel.hideAlbum(albumId, 1)
                     }
                     btnNeg.id -> {
                         dismiss()
@@ -545,11 +577,14 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
     override fun onSuccessAlbumHide(msg: String) {
         Log.e("AlbumDetailActivity ", "onSuccessAlbumHide:: $msg")
+        albumViewModel.getAlbumDetail(albumId)
 
-        /*if (isHide == 1) {
+       /* if (isHide == 1) {
             textHideShow = resources.getString(R.string.action_show_album)
+            menuShowHide!!.title = resources.getString(R.string.action_show_album)
         } else {
             textHideShow = resources.getString(R.string.action_hide_album)
+            menuShowHide!!.title = resources.getString(R.string.action_hide_album)
         }*/
     }
 

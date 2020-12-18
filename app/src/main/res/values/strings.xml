@@ -453,5 +453,8 @@
     <string name="action_show_album">Show</string>
     <string name="action_delete_album">Delete</string>
     <string name="msg_delete_album">Are you sure you want to Delete this Album?</string>
+    <string name="msg_hide_album">Are you sure you want to %1$s this Album?</string>
+    <string name="boost">Boost</string>
+    <string name="month">Month</string>
 
 </resources>

@@ -18,6 +18,6 @@ interface RecentUserDao {
     @Update
     fun updateRecentUser(recentUser: RecentUser)
 
-    @Query(value = "SELECT * FROM recentuser")
+    @Query(value = "SELECT * FROM recentuser  LIMIT 0,5")
     fun getAllRecentUser(): List<RecentUser>
 }

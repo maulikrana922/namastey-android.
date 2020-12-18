@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnRecentUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.roomDB.entity.RecentUser
 import com.namastey.utils.GlideLib
@@ -18,14 +19,25 @@ class RecentUserAdapter(
     var activity: Context,
     var isDisplayCkb: Boolean,
     var onItemClick: OnItemClick,
-    var onSelectUserItemClick: OnSelectUserItemClick
+    var onSelectUserItemClick: OnSelectUserItemClick,
+    var onRecentUserItemClick: OnRecentUserItemClick
 ) : RecyclerView.Adapter<RecentUserAdapter.ViewHolder>() {
+
+    var num = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_user_suggested, parent, false
         )
     )
+
+    /*override fun getCount(): Int {
+        return if (num * 10 > recentUserList.size) {
+            recentUserList.size
+        } else {
+            num * 10
+        }
+    }*/
 
     override fun getItemCount() = recentUserList.size
 
@@ -50,26 +62,26 @@ class RecentUserAdapter(
                 ckbFindUser.visibility = View.GONE
             }
 
-            ckbFindUser.setOnClickListener{
-                if (recentUserList[position].isChecked == 1){
+            ckbFindUser.setOnClickListener {
+                if (recentUserList[position].isChecked == 1) {
                     ckbFindUser.isChecked = false
                     recentUserList[position].isChecked = 0
-                }else{
+                } else {
                     ckbFindUser.isChecked = true
                     recentUserList[position].isChecked = 1
                 }
-                onSelectUserItemClick.onSelectItemClick(recentUser.user_id,position)
+                onSelectUserItemClick.onSelectItemClick(recentUser.user_id, position)
 
             }
-            viewSearchUser.setOnClickListener{
-                onItemClick.onItemClick(recentUser.user_id,position)
-               // onItemClick.onItemFollowingClick(dashboardBean)
+            viewSearchUser.setOnClickListener {
+                onItemClick.onItemClick(recentUser.user_id, position)
+                onRecentUserItemClick.onItemRecentUserClick(recentUser)
             }
         }
 
     }
 
-    fun displayRadioButton(){
+    fun displayRadioButton() {
         isDisplayCkb = true
         notifyDataSetChanged()
     }

@@ -127,6 +127,7 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:textColor="@color/colorBlack"
+                    android:text="@string/recent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:typeface="MULI_EXTRA_BOLD" />

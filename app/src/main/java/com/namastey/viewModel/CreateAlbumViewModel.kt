@@ -148,30 +148,36 @@ class CreateAlbumViewModel constructor(
     }
 
     fun deleteAlbum(albumId: Long) {
+        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 networkService.requestToDeleteAlbum(albumId).let { appResponse ->
+                    setIsLoading(false)
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumDelete(appResponse.message)
                     else
                         createAlbumView.onFailed(appResponse.message, appResponse.error)
                 }
             } catch (t: Throwable) {
+                setIsLoading(false)
                 createAlbumView.onHandleException(t)
             }
         }
     }
 
     fun hideAlbum(albumId: Long, isHide: Int) {
+        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 networkService.requestToHideAlbum(albumId, isHide).let { appResponse ->
+                    setIsLoading(false)
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumHide(appResponse.message)
                     else
                         createAlbumView.onFailed(appResponse.message, appResponse.error)
                 }
             } catch (t: Throwable) {
+                setIsLoading(false)
                 createAlbumView.onHandleException(t)
             }
         }

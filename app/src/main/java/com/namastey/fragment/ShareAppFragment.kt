@@ -15,6 +15,7 @@ import com.namastey.adapter.UserSearchAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentShareAppBinding
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnRecentUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.roomDB.AppDB
@@ -36,6 +37,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     FollowingView,
     OnItemClick,
     OnSelectUserItemClick,
+    OnRecentUserItemClick,
     View.OnClickListener {
 
     @Inject
@@ -119,9 +121,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         recentList = dbHelper.getAllRecentUser() as ArrayList<RecentUser>
 
         if (recentList.size != 0) {
+
             tvRecent.visibility = View.VISIBLE
             rvRecentUser.visibility = View.VISIBLE
-            recentUserAdapter = RecentUserAdapter(recentList, requireActivity(), false, this, this)
+
+            recentUserAdapter =
+                RecentUserAdapter(recentList, requireActivity(), false, this, this, this)
             rvRecentUser.adapter = recentUserAdapter
         } else {
             tvRecent.visibility = View.GONE
@@ -170,7 +175,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         followingAdapter.filterList(filteredName)
     }
 
-    private fun showCustomDialog(dashboardBean: DashboardBean) {
+    private fun showFollowingUserDialog(dashboardBean: DashboardBean) {
         Log.e("ShareFragment", "user_id: \t ${dashboardBean.username}")
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity!!)
         val viewGroup: ViewGroup = activity!!.findViewById(android.R.id.content)
@@ -227,6 +232,36 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         }
     }
 
+    private fun showRecentUserDialog(recentUser: RecentUser) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+        val viewGroup: ViewGroup = activity!!.findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(activity).inflate(R.layout.dialog_following_user, viewGroup, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        GlideLib.loadImageUrlRoundCorner(
+            activity!!,
+            dialogView.ivFollwing,
+            recentUser.profile_url
+        )
+        GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivPostImage, coverImgUrl)
+        dialogView.tvFollowing.text = recentUser.username
+        dialogView.tvCancel.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        dialogView.tvSave.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
+    override fun onItemRecentUserClick(recentUser: RecentUser) {
+        showRecentUserDialog(recentUser)
+    }
+
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         tvFindMultiple.visibility = View.VISIBLE
 
@@ -242,7 +277,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
-        showCustomDialog(dashboardBean)
+        showFollowingUserDialog(dashboardBean)
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -269,9 +304,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
                     tvFindMultiple.text = resources.getString(R.string.done)
                     if (::followingAdapter.isInitialized)
                         followingAdapter.displayRadioButton()
-                } else {
+                } else if (tvFindMultiple.text == resources.getString(R.string.done)) {
                     if (selectUserIdList.size > 0)
-                    //shareAppViewModel.sendMultipleFollow(selectUserIdList.joinToString())
                     else
                         fragmentManager!!.popBackStack()
                 }
@@ -283,4 +317,6 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         shareAppViewModel.onDestroy()
         super.onDestroy()
     }
+
+
 }
