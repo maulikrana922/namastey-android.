@@ -76,7 +76,7 @@ class SliderAdapter(
                                 )
                             )
                         )
-                        tvMemberDesc.text = timer /* + " " + membershipList[position].description*/
+                        tvMemberDesc.text = timer.plus(membershipList[position].description)
                     }
 
                     override fun onFinish() {

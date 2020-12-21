@@ -133,24 +133,25 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         )
     }
 
-    private fun scheduleAlarm(context: Context) {
+    private fun scheduleAlarm() {
         val cal: Calendar = Calendar.getInstance()
-        cal[Calendar.HOUR_OF_DAY] = 0
+        cal[Calendar.HOUR_OF_DAY] = 11
         cal[Calendar.MINUTE] = 0
         cal[Calendar.SECOND] = 0
         cal[Calendar.MILLISECOND] = 0
-        cal.add(Calendar.DAY_OF_MONTH, 1)
+        //cal.add(Calendar.DAY_OF_MONTH, 1)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             0,
             Intent(this, AlarmReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             cal.timeInMillis,
-            1000 * 60 * 60 * 24.toLong(),
+            AlarmManager.INTERVAL_DAY,
+            //1000 * 60 * 60 * 24.toLong(),
             pendingIntent
         )
     }
@@ -165,6 +166,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         activityDashboardBinding.viewModel = dashboardViewModel
 
         startAlarmService()
+        //scheduleAlarm()
 
         initData()
         getDataFromIntent(intent!!)
