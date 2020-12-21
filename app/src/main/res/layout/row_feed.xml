@@ -33,14 +33,14 @@
         app:lottie_repeatMode="restart" />-->
 
 
-    <!--    <ImageView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/_40sdp"-->
-    <!--        android:contentDescription="@string/app_name"-->
-    <!--        android:src="@drawable/ic_top_chat"-->
-    <!--        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_top_chat"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintTop_toTopOf="parent" />-->
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivCommentFirst"
@@ -138,7 +138,8 @@
         android:id="@+id/animationBoost"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_80sdp"
-        app:layout_constraintBottom_toTopOf="@id/progressBarBoost"
+        android:layout_marginBottom="@dimen/_minus10sdp"
+        app:layout_constraintBottom_toTopOf="@id/circularSeekBar"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
         app:layout_constraintStart_toStartOf="@id/tvFeedShare"
         app:lottie_autoPlay="true"
@@ -157,9 +158,30 @@
         android:indeterminateTintMode="src_atop"
         android:max="30"
         android:progress="0"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/tvFeedView"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
         app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+    <me.tankery.lib.circularseekbar.CircularSeekBar
+        android:id="@+id/circularSeekBar"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/_17sdp"
+        app:cs_circle_color="@color/color_chip_gray"
+        app:cs_circle_progress_color="@color/color_instagram"
+        app:cs_circle_stroke_width="@dimen/_2sdp"
+        app:cs_circle_style="round"
+        app:cs_disable_pointer="true"
+        app:cs_end_angle="180"
+        app:cs_maintain_equal_circle="true"
+        app:cs_progress="25"
+        app:cs_start_angle="-180"
+        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
 
     <!--<ProgressBar
         android:id="@+id/progressBarBoost"
@@ -187,7 +209,6 @@
         android:drawablePadding="@dimen/_3sdp"
         android:gravity="center"
         android:text="0"
-        android:drawableTint="@color/color_instagram"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tvFeedView"
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"

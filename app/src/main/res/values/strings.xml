@@ -457,5 +457,6 @@
     <string name="msg_hide_album">Are you sure you want to %1$s this Album?</string>
     <string name="boost">Boost</string>
     <string name="month">Month</string>
+    <string name="okay">Okay</string>
 
 </resources>

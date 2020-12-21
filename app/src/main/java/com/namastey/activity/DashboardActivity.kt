@@ -12,12 +12,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -53,8 +51,8 @@ import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.*
-import com.namastey.receivers.AlarmReceiver
-import com.namastey.receivers.AlarmService
+import com.namastey.receivers.MaxLikeReceiver
+import com.namastey.receivers.MaxLikeService
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
@@ -62,6 +60,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
+import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
@@ -73,6 +73,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -112,7 +113,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     override fun getBindingVariable() = BR.viewModel
 
-    private fun startAlarmService() {
+    private fun startMaxLikeService() {
         val calendar = Calendar.getInstance()
         calendar[Calendar.HOUR_OF_DAY] = 23
         calendar[Calendar.MINUTE] = 59
@@ -121,7 +122,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val pendingIntent = PendingIntent.getService(
             this,
             0,
-            Intent(this, AlarmService::class.java),
+            Intent(this, MaxLikeService::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -143,7 +144,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             0,
-            Intent(this, AlarmReceiver::class.java),
+            Intent(this, MaxLikeReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -165,13 +166,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
 
-        startAlarmService()
+        startMaxLikeService()
         //scheduleAlarm()
 
         initData()
         getDataFromIntent(intent!!)
     }
-
 
     private fun initData() {
         sessionManager.setLoginUser(true)
@@ -624,7 +624,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 supportFragmentManager.popBackStack()
             }
         }
-
     }
 
     private fun downloadFile(context: Context, url: String, file: Uri) {
@@ -968,7 +967,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
 
-
         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
                 strMention, "${
@@ -1007,8 +1005,68 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
+        } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
+                showBoostPendingDialog()
+            }
         }
     }
+
+    private fun showBoostPendingDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_time_pending, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        val c = Calendar.getInstance()
+        // c[Calendar.HOUR_OF_DAY] = System.currentTimeMillis() +
+        c[Calendar.MINUTE] = 29
+        c[Calendar.SECOND] = 59
+        c[Calendar.MILLISECOND] = 59
+        val millis =   c.timeInMillis - System.currentTimeMillis()
+        val interval = 1000L
+        Log.e("DashboardActivity", "millis: $millis")
+        Log.e("DashboardActivity", "timeInMillis: ${c.timeInMillis}")
+        Log.e("DashboardActivity", "currentTimeMillis: ${System.currentTimeMillis()}")
+
+        val t: CountDownTimer
+        t = object : CountDownTimer(millis, interval) {
+            override fun onTick(millisUntilFinished: Long) {
+                val timer = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                        TimeUnit.MILLISECONDS.toHours(
+                            millisUntilFinished
+                        )
+                    ), // The change is in this line
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                        TimeUnit.MILLISECONDS.toMinutes(
+                            millisUntilFinished
+                        )
+                    )
+                )
+                Log.e("DashboardActivity", "timer: $timer")
+
+                view.tvTimeRemaining.text = timer
+            }
+
+            override fun onFinish() {
+                cancel()
+            }
+        }.start()
+
+        //view.tvTimeRemaining.text = ""
+
+        view.btnAlertOk.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
 
     override fun onSelectItemClick(userId: Long, position: Int) {
     }

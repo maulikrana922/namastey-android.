@@ -7,10 +7,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.annotation.Nullable
 
-class AlarmService : IntentService("AlarmService") {
+class BoostService : IntentService("AlarmService") {
     override fun onHandleIntent(@Nullable intent: Intent?) {
         val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(this, AlarmReceiver::class.java)
+        val alarmIntent = Intent(this, BoostReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, pendingIntent)
     }

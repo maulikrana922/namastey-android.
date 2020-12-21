@@ -2,8 +2,8 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Intent
-import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +16,9 @@ import com.namastey.utils.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
+import me.tankery.lib.circularseekbar.CircularSeekBar
+import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
+
 
 class FeedAdapter(
     var feedList: ArrayList<DashboardBean>,
@@ -26,8 +29,6 @@ class FeedAdapter(
 
     val handlerVideo = Handler(activity.mainLooper)
 
-    var mCountDownTimer: CountDownTimer? = null
-    var i = 0
 //    private var timeCountInMilliSeconds: Long = 1 * 60000.toLong()
 //
 //    private enum class TimerStatus {
@@ -230,7 +231,6 @@ class FeedAdapter(
                 ivCommentThird.setOnClickListener {
                     onFeedItemClick.onCommentClick(position, dashboardBean.id)
                 }
-
             }
 
             ivFeedProfile.setOnClickListener {
@@ -258,22 +258,73 @@ class FeedAdapter(
                 animationVideoLike.visibility = View.GONE
             }
 
-            //startStop(itemView)
-            progressBarBoost.progress = i
-            mCountDownTimer = object : CountDownTimer(30000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // Log.e("FeedAdapter", "Tick of Progress $i$millisUntilFinished")
-                    i++
-                    progressBarBoost.progress = i * 100 / (30000 / 1000)
-                }
+            Log.e("FeedAdapter", "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}")
 
-                override fun onFinish() {
-                    i++
-                    progressBarBoost.progress = 1000
-                }
+            if (SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)) {
+                animationBoost.visibility = View.VISIBLE
+                circularSeekBar.visibility = View.VISIBLE
+                tvFeedBoost.visibility = View.VISIBLE
+               /* val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
+                drawable.setColorFilter(resources.getColor(R.color.color_instagram), PorterDuff.Mode.SRC_ATOP)
+                tvFeedBoost.setCompoundDrawables(null, drawable, null, null)*/
+            } else {
+                animationBoost.visibility = View.GONE
+                circularSeekBar.visibility = View.GONE
+               /* val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
+                drawable.setColorFilter(resources.getColor(R.color.colorLightGrayText), PorterDuff.Mode.SRC_ATOP)
+                tvFeedBoost.setCompoundDrawables(null, drawable, null, null)*/
             }
-            (mCountDownTimer as CountDownTimer).start()
+
+            boostAnimationProgress(itemView)
+
+            //startStop(itemView)
+            /* progressBarBoost.progress = i
+             mCountDownTimer = object : CountDownTimer(30000, 1000) {
+                 override fun onTick(millisUntilFinished: Long) {
+                     // Log.e("FeedAdapter", "Tick of Progress $i$millisUntilFinished")
+                     i++
+                     progressBarBoost.progress = i * 100 / (30000 / 1000)
+                 }
+
+                 override fun onFinish() {
+                     i++
+                     progressBarBoost.progress = 1000
+                 }
+             }
+             (mCountDownTimer as CountDownTimer).start()*/
         }
+    }
+
+    private fun boostAnimationProgress(itemView: View) {
+        val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
+        itemView.circularSeekBar.setOnSeekBarChangeListener(object :
+            OnCircularSeekBarChangeListener {
+            override fun onProgressChanged(
+                circularSeekBar: CircularSeekBar,
+                progress: Float,
+                fromUser: Boolean
+            ) {
+                val message = String.format(
+                    "Progress changed to %.2f, fromUser %s",
+                    progress,
+                    fromUser
+                )
+                var p = progress
+                p /= 100
+                Log.e("FeedAdapter", message)
+                Log.e("FeedAdapter", "progress: \t$progress")
+                Log.e("FeedAdapter", "p: \t$p")
+                Log.e("FeedAdapter", "fromUser: \t$fromUser")
+            }
+
+            override fun onStopTrackingTouch(seekBar: CircularSeekBar) {
+                Log.e("FeedAdapter", "onStopTrackingTouch")
+            }
+
+            override fun onStartTrackingTouch(seekBar: CircularSeekBar) {
+                Log.e("FeedAdapter", "onStartTrackingTouch")
+            }
+        })
     }
 
     /*private fun startStop(itemView: View) {

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBlackTransparent">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationBoost"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/video_like_heart1"
+        app:lottie_repeatMode="restart" />
+
+    <RelativeLayout
+        android:id="@+id/rlProgressView"
+        android:layout_width="@dimen/_72sdp"
+        android:layout_height="@dimen/_72sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_white_solid"
+        android:elevation="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animationBoost">
+
+        <me.tankery.lib.circularseekbar.CircularSeekBar
+            android:id="@+id/circularSeekBar"
+            android:layout_width="@dimen/_72sdp"
+            android:layout_height="@dimen/_72sdp"
+            android:layout_gravity="center_horizontal"
+            app:cs_circle_color="@color/color_chip_gray"
+            app:cs_circle_progress_color="@color/color_instagram"
+            app:cs_circle_stroke_width="@dimen/_2sdp"
+            app:cs_circle_style="round"
+            app:cs_disable_pointer="true"
+            app:cs_end_angle="180"
+            app:cs_maintain_equal_circle="true"
+            app:cs_progress="25"
+            app:cs_start_angle="-180" />
+
+        <ImageView
+            android:id="@+id/ivFeedBoost"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:src="@drawable/ic_boost"
+            android:tint="@color/color_instagram"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_116sdp"
+        android:paddingBottom="@dimen/_16sdp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp10">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvTimeRemaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:textColor="@color/colorRed"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvAlertMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:gravity="center"
+                android:text="@string/you_got_to_85x_more_profile"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeRemaining" />
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnAlertOk"
+                style="@style/btnRedStyle"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/okay"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertMsg" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

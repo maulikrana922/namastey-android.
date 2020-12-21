@@ -73,7 +73,7 @@ class MembershipDialogSliderAdapter(
                                 )
                             )
                         )
-                        view.tvText2.text = timer.plus(membershipList[position].description)
+                        view.tvText2.text = timer.plus(" ").plus(membershipList[position].description)
                     }
 
                     override fun onFinish() {

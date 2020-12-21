@@ -194,4 +194,6 @@ dependencies {
     // to load data from room
     implementation 'org.jetbrains.anko:anko-common:0.9'
 
+    //Circular ProgressBar
+    implementation 'me.tankery.lib:circularSeekBar:1.3.0'
 }

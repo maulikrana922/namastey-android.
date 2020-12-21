@@ -7,7 +7,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 
 
-class AlarmReceiver : BroadcastReceiver() {
+class MaxLikeReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         SessionManager(context).setBooleanValue(false, Constants.KEY_MAX_USER_LIKE)

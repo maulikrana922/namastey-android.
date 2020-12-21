@@ -3,6 +3,9 @@ package com.namastey.activity
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -33,6 +36,7 @@ import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
+import com.namastey.receivers.BoostService
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -288,11 +292,37 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
         manageVisibility(view)
         view.btnBoost.setOnClickListener {
+           /* Handler().postDelayed(Runnable {
+                sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
+            }, 1800000)*/
+            sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
             showBoostSuccessDialog()
+            startBoostService()
         }
         view.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
         }
+    }
+
+    private fun startBoostService() {
+        val calendar = Calendar.getInstance()
+        // calendar[Calendar.HOUR_OF_DAY] = 23
+        calendar[Calendar.MINUTE] = 29
+        calendar[Calendar.SECOND] = 59
+        calendar[Calendar.MILLISECOND] = 0
+        val pendingIntent = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, BoostService::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            pendingIntent
+        )
     }
 
     /**
