@@ -214,6 +214,29 @@ class AlbumViewModel constructor(
         }
     }
 
+    fun postShare(postId: Int, isShare: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    networkService.requestToSharePost(postId, isShare).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            albumView.onSuccessPostShare(appResponse.message)
+                        else
+                            albumView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

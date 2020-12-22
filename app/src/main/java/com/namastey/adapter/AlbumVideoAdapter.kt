@@ -84,7 +84,7 @@ class AlbumVideoAdapter(
                 tvFeedLike.text = activity.getString(R.string.liked)
             else
                 tvFeedLike.text = activity.getString(R.string.like)*/
-
+            tvFeedShare.text = videoBean.share.toString()
             tvFeedDesc.text = videoBean.description
             tvFeedView.text = videoBean.viewers.toString()
             if (videoBean.is_comment == 1) {

@@ -469,6 +469,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
+    private fun postShare(postId: Int) {
+        albumViewModel.postShare(postId, 1)
+    }
+
     /**
      * Share option with video
      * Need to reduce this code
@@ -490,88 +494,162 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
 
         // Share on Twitter app if install otherwise web link
-        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
-            val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=")
-            tweetUrl.append(videoBean.video_url)
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(tweetUrl.toString())
-            )
-            val matches: List<ResolveInfo> =
-                packageManager.queryIntentActivities(intent, 0)
-            for (info in matches) {
-                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
-                        .startsWith("com.twitter")
-                ) {
-                    intent.setPackage(info.activityInfo.packageName)
-                }
-            }
-            startActivity(intent)
+        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+            postShare(videoBean.id.toInt())
+            shareWhatsApp(videoBean)
         }
-
-        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
-            var facebookAppFound = false
-            var shareIntent =
-                Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, videoBean.video_url)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoBean.video_url))
-
-            val pm: PackageManager = packageManager
-            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
-            for (app in activityList) {
-                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
-                    val activityInfo: ActivityInfo = app.activityInfo
-                    val name =
-                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
-                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-                    shareIntent.component = name
-                    facebookAppFound = true
-                    break
-                }
-            }
-            if (!facebookAppFound) {
-                val sharerUrl =
-                    "https://www.facebook.com/sharer/sharer.php?u=${videoBean.video_url}"
-                shareIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(sharerUrl)
-                )
-            }
-            startActivity(shareIntent)
-        }
-
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-
-            addFragment(
-                ShareAppFragment.getInstance(sessionManager.getUserId(),videoBean.cover_image_url),
-                Constants.SHARE_APP_FRAGMENT
-            )
+            postShare(videoBean.id.toInt())
+            shareWithInApp(videoBean)
+        }
+        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+            postShare(videoBean.id.toInt())
+            shareTwitter(videoBean)
+        }
+        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+            postShare(videoBean.id.toInt())
+            shareFaceBook(videoBean)
+        }
+        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+            postShare(videoBean.id.toInt())
+            shareInstagram(videoBean)
+        }
+        bottomSheetDialogShare.ivShareOther.setOnClickListener {
+            postShare(videoBean.id.toInt())
+            shareOther(videoBean)
         }
 
-        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
-            var intent =
-                packageManager.getLaunchIntentForPackage("com.instagram.android")
-            if (intent != null) {
-                val shareIntent = Intent()
-                shareIntent.action = Intent.ACTION_SEND
-                shareIntent.setPackage("com.instagram.android")
-                try {
+        //Bottom Icon
+        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+            albumViewModel.savePost(videoBean.id)
+        }
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
+            displayReportUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
+            displayReportUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.tvShareBlock.setOnClickListener {
+            displayBlockUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.ivShareBlock.setOnClickListener {
+            displayBlockUserDialog(videoBean)
+        }
 
-                    val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                    val fileName = "share_video.mp4"
-                    val file = File(folder, fileName)
-                    val uri = let {
-                        FileProvider.getUriForFile(
-                            it,
-                            "${BuildConfig.APPLICATION_ID}.provider",
-                            file
-                        )
-                    }
-                    fileUrl = videoBean.video_url
-                    downloadFile(this@AlbumVideoActivity, fileUrl, uri)
+        bottomSheetDialogShare.show()
+    }
+
+    private fun shareWhatsApp(videoBean: VideoBean) {
+        try {
+            val pm: PackageManager = packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val sendIntent = Intent(Intent.ACTION_SEND)
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            sendIntent.type = "text/plain"
+            sendIntent.setPackage("com.whatsapp")
+
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                Uri.parse(videoBean.video_url)
+            )
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_STREAM,
+//                    Uri.parse(videoBean.video_url)
+//                )
+            startActivity(sendIntent)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(
+                this@AlbumVideoActivity,
+                getString(R.string.whatsapp_not_install_message),
+                Toast.LENGTH_SHORT
+            ).show()
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun shareWithInApp(videoBean: VideoBean) {
+        addFragment(
+            ShareAppFragment.getInstance(sessionManager.getUserId(), videoBean.cover_image_url),
+            Constants.SHARE_APP_FRAGMENT
+        )
+    }
+
+    private fun shareTwitter(videoBean: VideoBean) {
+        val tweetUrl =
+            StringBuilder("https://twitter.com/intent/tweet?text=")
+        tweetUrl.append(videoBean.video_url)
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(tweetUrl.toString())
+        )
+        val matches: List<ResolveInfo> =
+            packageManager.queryIntentActivities(intent, 0)
+        for (info in matches) {
+            if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                    .startsWith("com.twitter")
+            ) {
+                intent.setPackage(info.activityInfo.packageName)
+            }
+        }
+        startActivity(intent)
+    }
+
+    private fun shareFaceBook(videoBean: VideoBean) {
+        var facebookAppFound = false
+        var shareIntent =
+            Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, videoBean.video_url)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(videoBean.video_url))
+
+        val pm: PackageManager = packageManager
+        val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+        for (app in activityList) {
+            if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                val activityInfo: ActivityInfo = app.activityInfo
+                val name =
+                    ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
+                shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                shareIntent.component = name
+                facebookAppFound = true
+                break
+            }
+        }
+        if (!facebookAppFound) {
+            val sharerUrl =
+                "https://www.facebook.com/sharer/sharer.php?u=${videoBean.video_url}"
+            shareIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(sharerUrl)
+            )
+        }
+        startActivity(shareIntent)
+    }
+
+    private fun shareInstagram(videoBean: VideoBean) {
+        var intent =
+            packageManager.getLaunchIntentForPackage("com.instagram.android")
+        if (intent != null) {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.setPackage("com.instagram.android")
+            try {
+
+                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                val fileName = "share_video.mp4"
+                val file = File(folder, fileName)
+                val uri = let {
+                    FileProvider.getUriForFile(
+                        it,
+                        "${BuildConfig.APPLICATION_ID}.provider",
+                        file
+                    )
+                }
+                fileUrl = videoBean.video_url
+                downloadFile(this@AlbumVideoActivity, fileUrl, uri)
 
 //                    val videoPath = File(applicationContext.filesDir, "")
 //
@@ -588,75 +666,27 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 //                        Intent.EXTRA_STREAM,
 //                        contentUri
 //                    )
-                } catch (e: Exception) {
-                    Log.e("ERROR", e.printStackTrace().toString())
-                }
+            } catch (e: Exception) {
+                Log.e("ERROR", e.printStackTrace().toString())
+            }
 //                startActivity(shareIntent)
-            } else {
-                intent = Intent(Intent.ACTION_VIEW)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
-                startActivity(intent)
-            }
+        } else {
+            intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
+            startActivity(intent)
         }
+    }
 
-        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
-            try {
-                val pm: PackageManager = packageManager
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-                val sendIntent = Intent(Intent.ACTION_SEND)
-                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                sendIntent.type = "text/plain"
-                sendIntent.setPackage("com.whatsapp")
-
-                sendIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Uri.parse(videoBean.video_url)
-                )
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(videoBean.video_url)
-//                )
-                startActivity(sendIntent)
-            } catch (e: PackageManager.NameNotFoundException) {
-                Toast.makeText(
-                    this@AlbumVideoActivity,
-                    getString(R.string.whatsapp_not_install_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-                e.printStackTrace()
-            }
-        }
-
-        bottomSheetDialogShare.ivShareOther.setOnClickListener {
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT, videoBean.video_url
-            )
-            sendIntent.type = "text/plain"
-            startActivity(sendIntent)
-        }
-        bottomSheetDialogShare.ivShareSave.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
-            albumViewModel.savePost(videoBean.id)
-        }
-        bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            displayReportUserDialog(videoBean)
-        }
-        bottomSheetDialogShare.tvShareReport.setOnClickListener {
-            displayReportUserDialog(videoBean)
-        }
-
-        bottomSheetDialogShare.tvShareBlock.setOnClickListener {
-            displayBlockUserDialog(videoBean)
-        }
-        bottomSheetDialogShare.ivShareBlock.setOnClickListener {
-            displayBlockUserDialog(videoBean)
-        }
-
-        bottomSheetDialogShare.show()
+    private fun shareOther(videoBean: VideoBean) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT, videoBean.video_url
+        )
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
     }
 
     /**
@@ -808,6 +838,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 albumVideoAdapter.notifyItemChanged(position)
             }
         }
+    }
+
+    override fun onSuccessPostShare(msg: String) {
+        Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
     }
 
     override fun onDestroy() {

@@ -263,143 +263,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         // Share on Twitter app if install otherwise web link
         bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
             postShare(dashboardBean.id.toInt())
-            try {
-                val pm: PackageManager = packageManager
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                sendIntent.type = "*/*"
-                sendIntent.type = "text/plain"
-                sendIntent.setPackage("com.whatsapp")
-
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(dashboardBean.video_url)
-
-                sendIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Uri.parse(dashboardBean.video_url)
-                )
-                startActivity(sendIntent)
-            } catch (e: PackageManager.NameNotFoundException) {
-                Toast.makeText(
-                    this@DashboardActivity,
-                    getString(R.string.whatsapp_not_install_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-                e.printStackTrace()
-            }
+            shareWhatsApp(dashboardBean)
         }
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             postShare(dashboardBean.id.toInt())
-            addFragment(
-                ShareAppFragment.getInstance(
-                    sessionManager.getUserId(),
-                    dashboardBean.cover_image_url
-                ),
-                Constants.SHARE_APP_FRAGMENT
-            )
+            shareWithInApp(dashboardBean)
         }
         bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
             postShare(dashboardBean.id.toInt())
-            var facebookAppFound = false
-            var shareIntent =
-                Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, dashboardBean.video_url)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(dashboardBean.video_url))
-
-            val pm: PackageManager = packageManager
-            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
-            for (app in activityList) {
-                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
-                    val activityInfo: ActivityInfo = app.activityInfo
-                    val name =
-                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
-                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-                    shareIntent.component = name
-                    facebookAppFound = true
-                    break
-                }
-            }
-            if (!facebookAppFound) {
-                val sharerUrl =
-                    "https://www.facebook.com/sharer/sharer.php?u=${dashboardBean.video_url}"
-                shareIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(sharerUrl)
-                )
-            }
-            startActivity(shareIntent)
+            shareFaceBook(dashboardBean)
         }
         bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
             postShare(dashboardBean.id.toInt())
-            var intent =
-                packageManager.getLaunchIntentForPackage("com.instagram.android")
-            if (intent != null) {
-                val shareIntent = Intent()
-                shareIntent.action = Intent.ACTION_SEND
-                shareIntent.setPackage("com.instagram.android")
-                try {
-
-                    val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                    val fileName = "share_video.mp4"
-                    val file = File(folder, fileName)
-                    val uri = let {
-                        FileProvider.getUriForFile(
-                            it,
-                            "${BuildConfig.APPLICATION_ID}.provider",
-                            file
-                        )
-                    }
-
-                    fileUrl = dashboardBean.video_url
-
-                    downloadFile(this@DashboardActivity, fileUrl, uri)
-
-                } catch (e: Exception) {
-                    Log.e("ERROR", e.printStackTrace().toString())
-                }
-
-            } else {
-                intent = Intent(Intent.ACTION_VIEW)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
-                startActivity(intent)
-            }
+            shareInstagram(dashboardBean)
         }
         bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
             postShare(dashboardBean.id.toInt())
-            val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=")
-            tweetUrl.append(dashboardBean.video_url)
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(tweetUrl.toString())
-            )
-            val matches: List<ResolveInfo> =
-                packageManager.queryIntentActivities(intent, 0)
-            for (info in matches) {
-                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
-                        .startsWith("com.twitter")
-                ) {
-                    intent.setPackage(info.activityInfo.packageName)
-                }
-            }
-            startActivity(intent)
+            shareTwitter(dashboardBean)
         }
         bottomSheetDialogShare.ivShareOther.setOnClickListener {
             postShare(dashboardBean.id.toInt())
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT, dashboardBean.video_url
-            )
-            sendIntent.type = "text/plain"
-            startActivity(sendIntent)
+            shareOther(dashboardBean)
         }
 
         //Bottom Icons
@@ -421,6 +306,145 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
         bottomSheetDialogShare.show()
+    }
+
+    private fun shareWhatsApp(dashboardBean: DashboardBean) {
+        try {
+            val pm: PackageManager = packageManager
+            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                sendIntent.type = "*/*"
+            sendIntent.type = "text/plain"
+            sendIntent.setPackage("com.whatsapp")
+
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_STREAM,
+//                    Uri.parse(dashboardBean.video_url)
+
+            sendIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                Uri.parse(dashboardBean.video_url)
+            )
+            startActivity(sendIntent)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(
+                this@DashboardActivity,
+                getString(R.string.whatsapp_not_install_message),
+                Toast.LENGTH_SHORT
+            ).show()
+            e.printStackTrace()
+        }
+    }
+
+    private fun shareWithInApp(dashboardBean: DashboardBean) {
+        addFragment(
+            ShareAppFragment.getInstance(
+                sessionManager.getUserId(),
+                dashboardBean.cover_image_url
+            ),
+            Constants.SHARE_APP_FRAGMENT
+        )
+    }
+
+    private fun shareFaceBook(dashboardBean: DashboardBean) {
+        var facebookAppFound = false
+        var shareIntent =
+            Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, dashboardBean.video_url)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(dashboardBean.video_url))
+
+        val pm: PackageManager = packageManager
+        val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+        for (app in activityList) {
+            if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                val activityInfo: ActivityInfo = app.activityInfo
+                val name =
+                    ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
+                shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                shareIntent.component = name
+                facebookAppFound = true
+                break
+            }
+        }
+        if (!facebookAppFound) {
+            val sharerUrl =
+                "https://www.facebook.com/sharer/sharer.php?u=${dashboardBean.video_url}"
+            shareIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(sharerUrl)
+            )
+        }
+        startActivity(shareIntent)
+    }
+
+    private fun shareInstagram(dashboardBean: DashboardBean) {
+        var intent =
+            packageManager.getLaunchIntentForPackage("com.instagram.android")
+        if (intent != null) {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.setPackage("com.instagram.android")
+            try {
+
+                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                val fileName = "share_video.mp4"
+                val file = File(folder, fileName)
+                val uri = let {
+                    FileProvider.getUriForFile(
+                        it,
+                        "${BuildConfig.APPLICATION_ID}.provider",
+                        file
+                    )
+                }
+
+                fileUrl = dashboardBean.video_url
+
+                downloadFile(this@DashboardActivity, fileUrl, uri)
+
+            } catch (e: Exception) {
+                Log.e("ERROR", e.printStackTrace().toString())
+            }
+
+        } else {
+            intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
+            startActivity(intent)
+        }
+    }
+
+    private fun shareTwitter(dashboardBean: DashboardBean) {
+        val tweetUrl =
+            StringBuilder("https://twitter.com/intent/tweet?text=")
+        tweetUrl.append(dashboardBean.video_url)
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(tweetUrl.toString())
+        )
+        val matches: List<ResolveInfo> =
+            packageManager.queryIntentActivities(intent, 0)
+        for (info in matches) {
+            if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                    .startsWith("com.twitter")
+            ) {
+                intent.setPackage(info.activityInfo.packageName)
+            }
+        }
+        startActivity(intent)
+    }
+
+    private fun shareOther(dashboardBean: DashboardBean) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+        sendIntent.putExtra(
+            Intent.EXTRA_TEXT, dashboardBean.video_url
+        )
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
     }
 
     private fun postShare(postId: Int) {
@@ -1084,7 +1108,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         )
                     )
                 )
-               // Log.e("DashboardActivity", "timer: $timer")
+                // Log.e("DashboardActivity", "timer: $timer")
 
                 view.tvTimeRemaining.text =
                     timer.plus(" ").plus(resources.getString(R.string.remaining))
