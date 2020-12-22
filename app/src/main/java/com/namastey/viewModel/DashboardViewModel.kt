@@ -284,6 +284,28 @@ class DashboardViewModel constructor(
         }
     }
 
+    fun postShare(postId: Int, isShare: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToSharePost(postId, isShare).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessPostShare(appResponse.message)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
 
     fun onDestroy() {
         if (::job.isInitialized) {

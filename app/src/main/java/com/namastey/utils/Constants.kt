@@ -121,6 +121,7 @@ object Constants {
     const val LIKED_USER_POST = "liked-user-post"
     const val LIKE_USER_POST = "like-user-post"
     const val LIKED_USER_COUNT = "liked-user-count"
+    const val POST_SHARE = "post-share"
 
     //    api response error code
     const val OK = 200

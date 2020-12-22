@@ -18,6 +18,13 @@ interface RecentUserDao {
     @Update
     fun updateRecentUser(recentUser: RecentUser)
 
-    @Query(value = "SELECT * FROM recentuser  LIMIT 0,5")
+    //@Query(value = "SELECT * FROM recentuser  LIMIT 0,5")
+    @Query(value = "SELECT * FROM recentuser ORDER BY `current_time` DESC LIMIT 0,5")
     fun getAllRecentUser(): List<RecentUser>
+
+    @Query("SELECT * FROM recentuser WHERE id = :userId")
+    fun getExistingRecentUser(userId: Int) :Boolean
+
+    @Query("DELETE FROM recentuser WHERE id = :userId")
+    fun deleteExistingUser(userId: Int)
 }

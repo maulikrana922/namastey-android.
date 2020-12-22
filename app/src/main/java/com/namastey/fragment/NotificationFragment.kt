@@ -457,7 +457,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         membershipSliderArrayList.add(
             MembershipSlide(
                 resources.getString(R.string.out_of_likes),
-                getString(R.string.do_not_want_to_wait),
+                getString(R.string.do_not_want_to_wait_slider),
                 R.drawable.ic_cards_outoflike,
                 R.drawable.dialog_gradiant_two,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
