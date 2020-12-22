@@ -1084,7 +1084,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         )
                     )
                 )
-                Log.e("DashboardActivity", "timer: $timer")
+               // Log.e("DashboardActivity", "timer: $timer")
 
                 view.tvTimeRemaining.text =
                     timer.plus(" ").plus(resources.getString(R.string.remaining))

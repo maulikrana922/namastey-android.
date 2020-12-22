@@ -25,7 +25,8 @@ data class RecentUser(
     var isChecked: Int,
     var is_match: Int,
     var user_profile_type: Int,
-    var is_liked_you: Int
+    var is_liked_you: Int,
+    var current_time: Long
 
     ) {
     constructor() : this(
@@ -39,6 +40,7 @@ data class RecentUser(
         "",
         "",
         "",
+        0,
         0,
         0,
         0,

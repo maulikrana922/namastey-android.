@@ -198,7 +198,18 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         }
 
         dialogView.tvSave.setOnClickListener {
-            Log.e("ShareFragment", "user_id: \t ${dashboardBean.username}")
+            Log.e("ShareFragment", "user_id: \t ${dashboardBean.id}")
+
+            doAsync {
+                if (dbHelper.getExistingRecentUser(dashboardBean.id.toInt())) {
+                    dbHelper.deleteExistingUser(dashboardBean.id.toInt())
+                    Log.e("ShareFragment", "Exist user_id: \t ${dashboardBean.id}")
+                } else {
+                    Log.e("ShareFragment", "Not Exist user_id: \t ${dashboardBean.id}")
+                }
+            }
+
+            val currentTime = System.currentTimeMillis()
 
             val recentUser = RecentUser(
                 dashboardBean.id,
@@ -220,7 +231,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
                 dashboardBean.isChecked,
                 dashboardBean.is_match,
                 dashboardBean.user_profile_type,
-                dashboardBean.is_liked_you
+                dashboardBean.is_liked_you,
+                currentTime
             )
 
             doAsync {

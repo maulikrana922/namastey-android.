@@ -40,5 +40,12 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.recentUserDao().getAllRecentUser()
     }
 
+    fun getExistingRecentUser(userId: Int): Boolean {
+        return appDB.recentUserDao().getExistingRecentUser(userId)
+    }
+
+    fun deleteExistingUser(userId: Int){
+        return appDB.recentUserDao().deleteExistingUser(userId)
+    }
 
 }
