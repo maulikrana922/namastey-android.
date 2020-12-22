@@ -446,9 +446,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToHideAlbumAsync(albumId, isHide).await()
         }
 
-    suspend fun requestToSharePost(postId: Int,isShare: Int): AppResponse<PostShareBean> =
+    suspend fun requestToSharePost(postId: Int,isShare: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToSharePostAsync(postId, isShare).await()
         }
-
 }

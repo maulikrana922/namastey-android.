@@ -402,5 +402,5 @@ interface NetworkRequest {
     fun requestToSharePostAsync(
         @Field(Constants.POST_ID) postId: Int,
         @Field(Constants.IS_SHARE) isShare: Int
-    ): Deferred<AppResponse<PostShareBean>>
+    ): Deferred<AppResponse<Any>>
 }
