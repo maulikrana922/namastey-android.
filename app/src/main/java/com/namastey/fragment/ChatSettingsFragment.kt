@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
@@ -12,8 +14,10 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChatSettingsBinding
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.ChatBasicView
+import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.CustomCommonAlertDialog
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
@@ -24,12 +28,16 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     private lateinit var fragmentChatSettingsBinding: FragmentChatSettingsBinding
     private lateinit var chatViewModel: ChatViewModel
     private lateinit var layoutView: View
     private var matchesListBean: MatchesListBean = MatchesListBean()
     private lateinit var bottomSheetDialogReport: BottomSheetDialog
     private lateinit var onDataPassActivity: onDataPassToActivity
+    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var myChatRef: DatabaseReference = database.reference
 
     override fun getViewModel() = chatViewModel
 
@@ -273,6 +281,14 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     override fun onSuccessDeleteMatches(msg: String) {
         Log.e("ChatSetting", "onSuccessDeleteMatches: \t msg:  $msg")
 
+        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
+
+        val chatId = if (sessionManager.getUserId() < matchesListBean.id)
+            sessionManager.getUserId().toString().plus(matchesListBean.id)
+        else
+            matchesListBean.id.toString().plus(sessionManager.getUserId())
+
+        myChatRef.child(chatId).removeValue()
         object : CustomAlertDialog(
             requireActivity(),
             msg, getString(R.string.ok), ""
