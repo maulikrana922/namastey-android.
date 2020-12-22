@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.annotation.Nullable
 
 class BoostService : IntentService("AlarmService") {
+
     override fun onHandleIntent(@Nullable intent: Intent?) {
         val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(this, BoostReceiver::class.java)

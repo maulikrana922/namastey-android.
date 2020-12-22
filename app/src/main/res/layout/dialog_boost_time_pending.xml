@@ -60,10 +60,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_116sdp"
-        android:paddingBottom="@dimen/_16sdp"
         app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_6sdp"
         app:cardPreventCornerOverlap="true"
+        android:layout_marginEnd="@dimen/_6sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +74,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp10">
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_20sdp">
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvTimeRemaining"
@@ -93,8 +97,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp15"
                 android:gravity="center"
-                android:text="@string/you_got_to_85x_more_profile"
+                android:lineSpacingExtra="2dp"
                 android:textSize="@dimen/_14sdp"
+                android:text="@string/dialog_pending"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTimeRemaining" />
@@ -102,8 +107,10 @@
             <com.namastey.customViews.CustomButton
                 android:id="@+id/btnAlertOk"
                 style="@style/btnRedStyle"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_30sdp"
                 android:text="@string/okay"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

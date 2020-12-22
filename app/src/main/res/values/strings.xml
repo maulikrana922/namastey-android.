@@ -458,5 +458,7 @@
     <string name="boost">Boost</string>
     <string name="month">Month</string>
     <string name="okay">Okay</string>
+    <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best result.</string>
+    <string name="remaining">Remaining</string>
 
 </resources>

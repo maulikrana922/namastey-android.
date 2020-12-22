@@ -60,6 +60,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
@@ -260,27 +261,39 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
         // Share on Twitter app if install otherwise web link
-        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
-            val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=")
-            tweetUrl.append(dashboardBean.video_url)
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(tweetUrl.toString())
-            )
-            val matches: List<ResolveInfo> =
-                packageManager.queryIntentActivities(intent, 0)
-            for (info in matches) {
-                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
-                        .startsWith("com.twitter")
-                ) {
-                    intent.setPackage(info.activityInfo.packageName)
-                }
+        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+            postShare(dashboardBean.id.toInt())
+            try {
+                val pm: PackageManager = packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                sendIntent.type = "*/*"
+                sendIntent.type = "text/plain"
+                sendIntent.setPackage("com.whatsapp")
+
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_STREAM,
+//                    Uri.parse(dashboardBean.video_url)
+
+                sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    Uri.parse(dashboardBean.video_url)
+                )
+                startActivity(sendIntent)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(
+                    this@DashboardActivity,
+                    getString(R.string.whatsapp_not_install_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                e.printStackTrace()
             }
-            startActivity(intent)
         }
         bottomSheetDialogShare.ivShareApp.setOnClickListener {
             bottomSheetDialogShare.dismiss()
+            postShare(dashboardBean.id.toInt())
             addFragment(
                 ShareAppFragment.getInstance(
                     sessionManager.getUserId(),
@@ -289,9 +302,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 Constants.SHARE_APP_FRAGMENT
             )
         }
-
-
         bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+            postShare(dashboardBean.id.toInt())
             var facebookAppFound = false
             var shareIntent =
                 Intent(Intent.ACTION_SEND)
@@ -322,8 +334,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             }
             startActivity(shareIntent)
         }
-
         bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+            postShare(dashboardBean.id.toInt())
             var intent =
                 packageManager.getLaunchIntentForPackage("com.instagram.android")
             if (intent != null) {
@@ -358,38 +370,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 startActivity(intent)
             }
         }
-
-        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
-            try {
-                val pm: PackageManager = packageManager
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                sendIntent.type = "*/*"
-                sendIntent.type = "text/plain"
-                sendIntent.setPackage("com.whatsapp")
-
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(dashboardBean.video_url)
-
-                sendIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Uri.parse(dashboardBean.video_url)
-                )
-                startActivity(sendIntent)
-            } catch (e: PackageManager.NameNotFoundException) {
-                Toast.makeText(
-                    this@DashboardActivity,
-                    getString(R.string.whatsapp_not_install_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-                e.printStackTrace()
+        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+            postShare(dashboardBean.id.toInt())
+            val tweetUrl =
+                StringBuilder("https://twitter.com/intent/tweet?text=")
+            tweetUrl.append(dashboardBean.video_url)
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(tweetUrl.toString())
+            )
+            val matches: List<ResolveInfo> =
+                packageManager.queryIntentActivities(intent, 0)
+            for (info in matches) {
+                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                        .startsWith("com.twitter")
+                ) {
+                    intent.setPackage(info.activityInfo.packageName)
+                }
             }
+            startActivity(intent)
         }
-
         bottomSheetDialogShare.ivShareOther.setOnClickListener {
+            postShare(dashboardBean.id.toInt())
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
@@ -399,6 +401,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
         }
+
+        //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
             dashboardViewModel.savePost(dashboardBean.id)
@@ -409,7 +413,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
             displayReportUserDialog(dashboardBean)
         }
-
         bottomSheetDialogShare.tvShareBlock.setOnClickListener {
             displayBlockUserDialog(dashboardBean)
         }
@@ -418,6 +421,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
         bottomSheetDialogShare.show()
+    }
+
+    private fun postShare(postId: Int) {
+        dashboardViewModel.postShare(postId, 1)
     }
 
     /* fun download(link: String, path: String) {
@@ -824,6 +831,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
     animation.setRepeatMode(Animation.REVERSE)
     return animation
 }*/
+    fun onClickDiscover(view: View) {
+        dashboardViewModel.getFeedList(0)
+        val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+        intent.putExtra("categoryList", categoryBeanList)
+        openActivityForResult(intent, Constants.FILTER_OK)
+    }
 
     /**
      * Click on commnet count display list of comment and add comment dialog
@@ -1008,7 +1021,28 @@ private fun prepareAnimation(animation: Animation): Animation? {
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
                 showBoostPendingDialog()
+            } else {
+                showBoostSuccessDialog()
             }
+        }
+    }
+
+    private fun showBoostSuccessDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_success, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        view.btnAlertOk.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        view.tvNoThanks.setOnClickListener {
+            alertDialog.dismiss()
         }
     }
 
@@ -1027,7 +1061,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         c[Calendar.MINUTE] = 29
         c[Calendar.SECOND] = 59
         c[Calendar.MILLISECOND] = 59
-        val millis =   c.timeInMillis - System.currentTimeMillis()
+        val millis = c.timeInMillis - System.currentTimeMillis()
         val interval = 1000L
         Log.e("DashboardActivity", "millis: $millis")
         Log.e("DashboardActivity", "timeInMillis: ${c.timeInMillis}")
@@ -1052,7 +1086,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 )
                 Log.e("DashboardActivity", "timer: $timer")
 
-                view.tvTimeRemaining.text = timer
+                view.tvTimeRemaining.text =
+                    timer.plus(" ").plus(resources.getString(R.string.remaining))
             }
 
             override fun onFinish() {
@@ -1066,7 +1101,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
             alertDialog.dismiss()
         }
     }
-
 
     override fun onSelectItemClick(userId: Long, position: Int) {
     }
@@ -1501,6 +1535,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }.show()
     }
 
+    override fun onSuccessPostShare(msg: String) {
+        Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
+    }
+
     override fun onSuccessBlockUser(msg: String) {
         object : CustomAlertDialog(
             this@DashboardActivity,
@@ -1512,13 +1550,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 dashboardViewModel.getFeedList(0)
             }
         }.show()
-    }
-
-    fun onClickDiscover(view: View) {
-        dashboardViewModel.getFeedList(0)
-        val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
-        intent.putExtra("categoryList", categoryBeanList)
-        openActivityForResult(intent, Constants.FILTER_OK)
     }
 
     override fun onMentionItemClick(userId: Long, position: Int, username: String) {

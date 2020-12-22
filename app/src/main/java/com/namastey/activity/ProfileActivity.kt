@@ -13,6 +13,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -292,12 +293,20 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
         manageVisibility(view)
         view.btnBoost.setOnClickListener {
-           /* Handler().postDelayed(Runnable {
-                sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-            }, 1800000)*/
+            Handler().postDelayed(Runnable {
+                sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
+                startBoostService()
+            }, 1800000)
             sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-            showBoostSuccessDialog()
-            startBoostService()
+            //startBoostService()
+            // showBoostSuccessDialog()
+            //startBoostService()
+            alertDialog.dismiss()
+
+            val intent = Intent(this@ProfileActivity, DashboardActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
         view.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
@@ -307,9 +316,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private fun startBoostService() {
         val calendar = Calendar.getInstance()
         // calendar[Calendar.HOUR_OF_DAY] = 23
+       // calendar[Calendar.MINUTE] = 29
         calendar[Calendar.MINUTE] = 29
         calendar[Calendar.SECOND] = 59
-        calendar[Calendar.MILLISECOND] = 0
+        calendar[Calendar.MILLISECOND] = 59
         val pendingIntent = PendingIntent.getService(
             this,
             0,

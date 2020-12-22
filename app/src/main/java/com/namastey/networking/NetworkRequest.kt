@@ -396,4 +396,11 @@ interface NetworkRequest {
         @Field(Constants.ALBUM_ID) albumId: Long,
         @Field("is_hide") isHide: Int
     ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.POST_SHARE)
+    fun requestToSharePostAsync(
+        @Field(Constants.POST_ID) postId: Int,
+        @Field(Constants.IS_SHARE) isShare: Int
+    ): Deferred<AppResponse<PostShareBean>>
 }

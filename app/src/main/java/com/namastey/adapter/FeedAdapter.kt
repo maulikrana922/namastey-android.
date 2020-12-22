@@ -213,6 +213,8 @@ class FeedAdapter(
                 }
             }
 
+            tvFeedShare.text = dashboardBean.share.toString()
+
             tvFeedShare.setOnClickListener {
                 onFeedItemClick.onItemClick(dashboardBean)
             }
@@ -252,27 +254,37 @@ class FeedAdapter(
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
 
+            ivFeedBoost.setOnClickListener {
+                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
+            }
+
             if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1) {
                 animationVideoLike.visibility = View.VISIBLE
             } else {
                 animationVideoLike.visibility = View.GONE
             }
 
-            Log.e("FeedAdapter", "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}")
+            Log.e(
+                "FeedAdapter",
+                "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}"
+            )
 
             if (SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
                 tvFeedBoost.visibility = View.VISIBLE
-               /* val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
+                ivFeedBoost.setImageDrawable(resources.getDrawable(R.drawable.ic_boost_brown))
+                /*val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
                 drawable.setColorFilter(resources.getColor(R.color.color_instagram), PorterDuff.Mode.SRC_ATOP)
-                tvFeedBoost.setCompoundDrawables(null, drawable, null, null)*/
+                tvFeedBoost.setCompoundDrawables(null, resources.getDrawable(R.drawable.ic_boost_brown), null, null)*/
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
-               /* val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
+                tvFeedBoost.visibility = View.VISIBLE
+                ivFeedBoost.setImageDrawable(resources.getDrawable(R.drawable.ic_boost))
+                /*val drawable: Drawable = resources.getDrawable(R.drawable.ic_boost).mutate()
                 drawable.setColorFilter(resources.getColor(R.color.colorLightGrayText), PorterDuff.Mode.SRC_ATOP)
-                tvFeedBoost.setCompoundDrawables(null, drawable, null, null)*/
+                tvFeedBoost.setCompoundDrawables(null, resources.getDrawable(R.drawable.ic_boost), null, null)*/
             }
 
             boostAnimationProgress(itemView)
