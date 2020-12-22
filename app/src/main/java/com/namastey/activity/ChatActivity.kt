@@ -145,8 +145,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             chatMsgList.add(chatMessage)
                         }
                     }
-                    if (chatMsgList.size >= 1 && matchesListBean.is_read == 0) {    // Call api for start chat if any message share bw both
-                        chatViewModel.startChat(matchesListBean.id, 1)
+                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
+                        if (isFromProfile)
+                            chatViewModel.startChat(matchesListBean.id, 1)
+                        else if (!isFromMessage)
+                            chatViewModel.startChat(matchesListBean.id, 1)
                     }
                     chatViewModel.setIsLoading(false)
                     chatAdapter =
@@ -346,15 +349,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 } else if (data?.data != null) {
                     // if single image is selected
                     val imageUri: Uri = data.data!!
-                    intent.putExtra("imageUri",imageUri)
+                    intent.putExtra("imageUri", imageUri)
                 }
                 openActivityForResult(intent, Constants.REQUEST_CODE_SLIDE_IMAGE)
-            }else if (requestCode == Constants.REQUEST_CODE_SLIDE_IMAGE){
-                if (data != null){
-                    if (data.hasExtra("imageUri")){
+            } else if (requestCode == Constants.REQUEST_CODE_SLIDE_IMAGE) {
+                if (data != null) {
+                    if (data.hasExtra("imageUri")) {
                         val imageUri: Uri = data.getParcelableExtra<Uri>("imageUri")!!
-                        uploadFile(imageUri,true)
-                    }else {
+                        uploadFile(imageUri, true)
+                    } else {
                         val count = data.clipData?.itemCount
                         for (i in 0 until count!!) {
                             val imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
