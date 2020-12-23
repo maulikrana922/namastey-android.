@@ -58,7 +58,7 @@ class MembershipSliderAdapter(
         if (SessionManager(context).getBooleanValue(Constants.KEY_MAX_USER_LIKE)) {
             if (position == 1) {
                 val c = Calendar.getInstance()
-               // c.add(Calendar.DAY_OF_MONTH, 1)
+                c.add(Calendar.DAY_OF_MONTH, 1)
                 c[Calendar.HOUR_OF_DAY] = 0
                 c[Calendar.MINUTE] = 0
                 c[Calendar.SECOND] = 0
@@ -83,7 +83,8 @@ class MembershipSliderAdapter(
                                 )
                             )
                         )
-                        tvDescription1.text = timer.plus(" ").plus(membershipList[position].description)
+                        tvDescription1.text =
+                            timer.plus(" ").plus(membershipList[position].description)
                     }
 
                     override fun onFinish() {

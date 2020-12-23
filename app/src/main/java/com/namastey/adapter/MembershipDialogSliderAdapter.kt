@@ -52,7 +52,7 @@ class MembershipDialogSliderAdapter(
         if (SessionManager(context).getBooleanValue(Constants.KEY_MAX_USER_LIKE)) {
             if (position == 1) {
                 val c = Calendar.getInstance()
-                //  c.add(Calendar.DAY_OF_MONTH, 1)
+                c.add(Calendar.DAY_OF_MONTH, 1)
                 c[Calendar.HOUR_OF_DAY] = 0
                 c[Calendar.MINUTE] = 0
                 c[Calendar.SECOND] = 0
@@ -77,7 +77,8 @@ class MembershipDialogSliderAdapter(
                                 )
                             )
                         )
-                        view.tvText2.text = timer.plus(" ").plus(membershipList[position].description)
+                        view.tvText2.text =
+                            timer.plus(" ").plus(membershipList[position].description)
 
                         Log.e("DashboardActivity", "timer: \t $timer ")
                     }
