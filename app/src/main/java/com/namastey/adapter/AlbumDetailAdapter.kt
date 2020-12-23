@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
@@ -19,6 +20,7 @@ class AlbumDetailAdapter(
     var activity: Context,
     var onItemClick: OnItemClick,
     var onPostImageClick: OnPostImageClick,
+    var onSelectUserItemClick: OnSelectUserItemClick,
     var fromEdit: Boolean,
     var fromFilter: Boolean,
     var isSavedAlbum: Boolean
@@ -52,10 +54,12 @@ class AlbumDetailAdapter(
                 val videoBean = videoList[position]
                 if (fromFilter) {
                     tvUsername.visibility = View.VISIBLE
+                    ivUserProfile.visibility = View.VISIBLE
                     tvVideoViewers.visibility = View.GONE
                     tvUsername.text = videoBean.username
                 } else {
                     tvUsername.visibility = View.GONE
+                    ivUserProfile.visibility = View.GONE
                     tvVideoViewers.visibility = View.VISIBLE
                 }
                 viewAlbumDetails.visibility = View.VISIBLE
@@ -67,6 +71,18 @@ class AlbumDetailAdapter(
 
                 if (videoBean.cover_image_url != null)
                     GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
+
+                GlideLib
+                    .loadImage(
+                        activity, ivUserProfile, videoBean.profile_url
+                    )
+
+                ivUserProfile.setOnClickListener {
+                    onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+                }
+                tvUsername.setOnClickListener {
+                    onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+                }
 
                 if (fromEdit) {
                     ivRemoveVideo.visibility = View.VISIBLE

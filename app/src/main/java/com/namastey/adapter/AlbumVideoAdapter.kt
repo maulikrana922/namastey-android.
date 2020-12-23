@@ -164,7 +164,7 @@ class AlbumVideoAdapter(
 
             }
             tvFeedShare.setOnClickListener {
-                onVideoClick.onShareClick(videoBean)
+                onVideoClick.onShareClick(position, videoBean)
             }
 
         }

@@ -60,7 +60,21 @@
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.namastey.customViews.CustomTextView
+        <com.namastey.customViews.RoundImageView
+            android:id="@+id/ivUserProfile"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:roundedCorners="all" />
+
+        <!--<com.namastey.customViews.CustomTextView
             android:id="@+id/tvUsername"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginStart="@dimen/_15sdp"
@@ -68,7 +82,18 @@
             android:visibility="gone"
             app:typeface="MULI_EXTRA_BOLD"
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />-->
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvUsername"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivUserProfile"
+            app:layout_constraintStart_toEndOf="@id/ivUserProfile"
+            app:layout_constraintTop_toTopOf="@id/ivUserProfile"
+            app:typeface="MULI_EXTRA_BOLD" />
 
         <ImageView
             android:id="@+id/ivRemoveVideo"

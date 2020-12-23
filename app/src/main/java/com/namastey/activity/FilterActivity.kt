@@ -111,6 +111,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 this@FilterActivity,
                 this,
                 this,
+                this,
                 false,
                 true,
                 false
@@ -216,9 +217,13 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
+        val intent = Intent(this, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
     }
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        TODO("Not yet implemented")
     }
 
     // Temp for ui
@@ -236,6 +241,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             AlbumDetailAdapter(
                 postList,
                 this@FilterActivity,
+                this,
                 this,
                 this,
                 false, true, false

@@ -461,7 +461,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogComment.show()
     }
 
-    override fun onShareClick(videoBean: VideoBean) {
+    override fun onShareClick(position: Int, videoBean: VideoBean) {
         if (sessionManager.isGuestUser()) {
             // Need to add data
         } else {
@@ -842,6 +842,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onSuccessPostShare(msg: String) {
         Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
+        videoList[position].share = videoList[position].share + 1
+        albumVideoAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroy() {

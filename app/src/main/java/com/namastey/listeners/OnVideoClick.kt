@@ -7,8 +7,8 @@ interface OnVideoClick {
     fun onUpnextClick(position: Int)
     fun onVideoClick()
     fun onCommentClick(postId: Long)
-    fun onShareClick(videoBean: VideoBean)
+    fun onShareClick(position: Int, videoBean: VideoBean)
     fun onPostViewer(postId: Long)
-    fun onPostEdit(position: Int,videoBean: VideoBean)
+    fun onPostEdit(position: Int, videoBean: VideoBean)
     fun onClickLike(position: Int, videoBean: VideoBean, isLike: Int)
 }

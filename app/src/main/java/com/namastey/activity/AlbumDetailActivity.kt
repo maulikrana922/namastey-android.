@@ -29,6 +29,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumDetailBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.VideoBean
@@ -44,7 +45,7 @@ import java.lang.reflect.Method
 import javax.inject.Inject
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
-    OnItemClick, OnPostImageClick {
+    OnItemClick, OnPostImageClick, OnSelectUserItemClick {
     //    OnTrimVideoListener
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -154,6 +155,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 AlbumDetailAdapter(
                     albumBean.post_video_list,
                     this@AlbumDetailActivity,
+                    this,
                     this,
                     this,
                     fromEdit,
@@ -606,6 +608,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this@AlbumDetailActivity,
                     this,
                     this,
+                    this,
                     fromEdit,
                     false,
                     isSavedAlbum
@@ -645,6 +648,16 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         if (::bottomSheetDialog.isInitialized)
             bottomSheetDialog.dismiss()
         albumViewModel.onDestroy()
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int) {
+        val intent = Intent(this, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, userId)
+        openActivity(intent)
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+        TODO("Not yet implemented")
     }
 
 
