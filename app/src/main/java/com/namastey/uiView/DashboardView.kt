@@ -1,9 +1,6 @@
 package com.namastey.uiView
 
-import com.namastey.model.CategoryBean
-import com.namastey.model.CommentBean
-import com.namastey.model.DashboardBean
-import com.namastey.model.MentionListBean
+import com.namastey.model.*
 
 interface DashboardView : BaseView {
 
@@ -19,5 +16,5 @@ interface DashboardView : BaseView {
     fun onSuccessMention(mentionList: ArrayList<MentionListBean>)
     fun onFailedMaxLike(msg: String, error: Int)
     fun onSuccessPostShare(msg: String)
-
+    fun onSuccessMembershipList(membershipView:  ArrayList<MembershipPriceBean>)
 }

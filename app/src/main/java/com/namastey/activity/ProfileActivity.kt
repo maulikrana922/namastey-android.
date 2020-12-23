@@ -307,6 +307,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
+            overridePendingTransition(R.anim.enter, R.anim.exit);
         }
         view.tvNothanks.setOnClickListener {
             alertDialog.dismiss()

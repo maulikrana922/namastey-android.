@@ -2,6 +2,7 @@ package com.namastey.adapter
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,11 +45,14 @@ class MembershipDialogSliderAdapter(
         view.tvText2.text = membershipList[position].description
         view.ivIcon.setImageResource(membershipList[position].profile_url)
 
-        //todo: Start timer According to condition
+        Log.e(
+            "DashboardActivity",
+            "KEY_MAX_USER_LIKE: \t ${SessionManager(context).getBooleanValue(Constants.KEY_MAX_USER_LIKE)} "
+        )
         if (SessionManager(context).getBooleanValue(Constants.KEY_MAX_USER_LIKE)) {
             if (position == 1) {
                 val c = Calendar.getInstance()
-                c.add(Calendar.DAY_OF_MONTH, 1)
+                //  c.add(Calendar.DAY_OF_MONTH, 1)
                 c[Calendar.HOUR_OF_DAY] = 0
                 c[Calendar.MINUTE] = 0
                 c[Calendar.SECOND] = 0
@@ -74,6 +78,8 @@ class MembershipDialogSliderAdapter(
                             )
                         )
                         view.tvText2.text = timer.plus(" ").plus(membershipList[position].description)
+
+                        Log.e("DashboardActivity", "timer: \t $timer ")
                     }
 
                     override fun onFinish() {

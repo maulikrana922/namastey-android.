@@ -307,6 +307,28 @@ class DashboardViewModel constructor(
         }
     }
 
+    fun getMembershipPriceList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToMembershipPriceList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessMembershipList(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

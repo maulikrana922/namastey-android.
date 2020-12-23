@@ -216,7 +216,7 @@ class FeedAdapter(
             tvFeedShare.text = dashboardBean.share.toString()
 
             tvFeedShare.setOnClickListener {
-                onFeedItemClick.onItemClick(dashboardBean)
+                onFeedItemClick.onItemClick(position, dashboardBean)
             }
 
             // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {

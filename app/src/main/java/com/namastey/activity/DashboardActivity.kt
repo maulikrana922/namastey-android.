@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -30,16 +31,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import com.hendraanggrian.appcompat.widget.Mention
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
-import com.namastey.adapter.CategoryAdapter
-import com.namastey.adapter.CommentAdapter
-import com.namastey.adapter.FeedAdapter
-import com.namastey.adapter.MentionListAdapter
+import com.namastey.adapter.*
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fcm.MyFirebaseMessagingService
@@ -59,7 +59,6 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
@@ -67,6 +66,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -107,6 +107,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var postId = 0L
     private var notification: Notification = Notification()
     private var fragmentRefreshListener: FragmentRefreshListener? = null
+    private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
+    private var membershipViewList = ArrayList<MembershipPriceBean>()
 
     override fun getViewModel() = dashboardViewModel
 
@@ -189,10 +191,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         else
             ivUser.setImageResource(R.drawable.ic_top_profile)
 
+        dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
 //        setDashboardList()
 
         setupPermissions()
+        setSliderData()
 
         dashboardViewModel.getFeedList(0)
 
@@ -572,6 +576,377 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     }
 
+    private fun showMembershipDialog(position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(this@DashboardActivity)
+                .inflate(R.layout.dialog_membership, null, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+
+        /*Show dialog slider*/
+        val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
+        val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
+        manageVisibility(dialogView)
+        viewpager.adapter =
+            MembershipDialogSliderAdapter(this@DashboardActivity, membershipSliderArrayList)
+        tabview.setupWithViewPager(viewpager, true)
+        viewpager.currentItem = position
+        dialogView.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
+    private fun setSliderData() {
+        membershipSliderArrayList = ArrayList()
+        membershipSliderArrayList.clear()
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string._1_boost_each_month),
+                getString(R.string.skip_the_line_to_get_more_matches),
+                R.drawable.ic_cards_boots,
+                R.drawable.dialog_offread_gradiant,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.out_of_likes),
+                getString(R.string.do_not_want_to_wait_slider),
+                R.drawable.ic_cards_outoflike,
+                R.drawable.dialog_gradiant_two,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.swipe_around_the_world),
+                getString(R.string.passport_to_anywhere),
+                R.drawable.ic_cards_passport,
+                R.drawable.dialog_gradiant_three,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string._5_free_super_message),
+                getString(R.string.your_3x_more_likes),
+                R.drawable.ic_cards_super_message,
+                R.drawable.dialog_gradiant_five,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.see_who_like_you),
+                getString(R.string.month_with_them_instantly),
+                R.drawable.ic_cards_super_like,
+                R.drawable.dialog_gradiant_six,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+    }
+
+    private fun manageVisibility(view: View) {
+        val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)
+        val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
+        val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
+
+        for (data in membershipViewList) {
+            val membershipType = data.membership_type
+            val price = data.price
+            val discount = data.discount_pr
+
+            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
+            Log.e("MembershipActivity", "price: \t $price")
+            Log.e("MembershipActivity", "discount: \t $discount")
+
+            if (membershipType == 0) {
+                view.tvTextLowEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+            }
+
+            if (membershipType == 1) {
+                view.tvTextMediumEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))
+
+            }
+
+            if (membershipType == 2) {
+                view.tvTextHighEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))
+            }
+        }
+
+        constLow.setOnClickListener {
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.white
+                )
+            )
+            //  view.tvOfferLow.visibility = View.VISIBLE
+            view.viewSelectedLow.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+        }
+
+        constMedium.setOnClickListener {
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.white
+                )
+            )
+            view.tvOfferMedium.visibility = View.VISIBLE
+            view.viewSelectedMedium.visibility = View.VISIBLE
+
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+        }
+
+        constHigh.setOnClickListener {
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.white
+                )
+            )
+            view.tvOfferHigh.visibility = View.VISIBLE
+            view.viewSelectedHigh.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this@DashboardActivity,
+                    R.color.colorDarkGray
+                )
+            )
+        }
+    }
+
     /**
      * Success of get category list
      */
@@ -793,7 +1168,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
-    override fun onItemClick(dashboardBean: DashboardBean) {
+    override fun onItemClick(position: Int, dashboardBean: DashboardBean) {
         if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -803,6 +1178,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                this.position = position
                 openShareOptionDialog(dashboardBean)
             } else {
                 completeSignUpDialog()
@@ -1046,7 +1422,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
                 showBoostPendingDialog()
             } else {
-                showBoostSuccessDialog()
+                //showBoostSuccessDialog()
             }
         }
     }
@@ -1091,6 +1467,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("DashboardActivity", "timeInMillis: ${c.timeInMillis}")
         Log.e("DashboardActivity", "currentTimeMillis: ${System.currentTimeMillis()}")
 
+        if (millis.toString().contains("-")) {
+            alertDialog.dismiss()
+        }
+
         val t: CountDownTimer
         t = object : CountDownTimer(millis, interval) {
             override fun onTick(millisUntilFinished: Long) {
@@ -1115,6 +1495,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
             }
 
             override fun onFinish() {
+                alertDialog.dismiss()
+                showBoostSuccessDialog()
                 cancel()
             }
         }.start()
@@ -1542,25 +1924,33 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onFailedMaxLike(msg: String, error: Int) {
         Log.e("DashboardActivity", "onFailedMaxLike: msg:\t  $msg \t error:\t  $error")
-        object : CustomAlertDialog(
-            this,
-            msg,
-            getString(R.string.ok),
-            ""
-        ) {
-            override fun onBtnClick(id: Int) {
-                when (id) {
-                    btnPos.id -> {
-                        sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
-                        dismiss()
-                    }
-                }
-            }
-        }.show()
+        /* object : CustomAlertDialog(
+             this,
+             msg,
+             getString(R.string.ok),
+             ""
+         ) {
+             override fun onBtnClick(id: Int) {
+                 when (id) {
+                     btnPos.id -> {
+                         sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
+                         dismiss()
+                     }
+                 }
+             }
+         }.show()*/
+
+        showMembershipDialog(1)
+    }
+
+    override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
+        this.membershipViewList = membershipView
     }
 
     override fun onSuccessPostShare(msg: String) {
         Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
+        feedList[position].share = feedList[position].share + 1
+        feedAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccessBlockUser(msg: String) {

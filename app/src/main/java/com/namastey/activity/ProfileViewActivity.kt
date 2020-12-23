@@ -258,17 +258,36 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.facebook) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_facebook)
                     ivSocialIcon.setOnClickListener {
-                        val intent =
-                            packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                        if (intent != null) {
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("fb://profile/".plus(socialBean.link))
+                        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+                            if (profileBean.user_profile_type == 0) {
+                                val intent =
+                                    packageManager.getLaunchIntentForPackage("com.facebook.katana")
+                                if (intent != null) {
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("fb://profile/".plus(socialBean.link))
 //                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+                                        )
+                                    )
+                                }
+                            } else if (profileBean.user_profile_type == 1) {
+                              //Do Nothing
+                            }
+                        } else {
+                            val intent =
+                                packageManager.getLaunchIntentForPackage("com.facebook.katana")
+                            if (intent != null) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("fb://profile/".plus(socialBean.link))
+//                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+                                    )
                                 )
-                            )
+                            }
                         }
+
 //                        else{
 //                            intent = Intent(Intent.ACTION_VIEW)
 //                            intent.data = Uri.parse("market://details?id=com.spotify.music")
@@ -289,20 +308,40 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.spotify) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_spotify)
                     ivSocialIcon.setOnClickListener {
-
-                        var intent =
-                            packageManager.getLaunchIntentForPackage("com.spotify.music")
-                        if (intent != null) {
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(socialBean.link)
-                                )
-                            )
+                        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+                            if (profileBean.user_profile_type == 0) {
+                                var intent =
+                                    packageManager.getLaunchIntentForPackage("com.spotify.music")
+                                if (intent != null) {
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(socialBean.link)
+                                        )
+                                    )
+                                } else {
+                                    intent = Intent(Intent.ACTION_VIEW)
+                                    intent.data = Uri.parse("market://details?id=com.spotify.music")
+                                    startActivity(intent)
+                                }
+                            } else if (profileBean.user_profile_type == 1) {
+                                //Do Nothing
+                            }
                         } else {
-                            intent = Intent(Intent.ACTION_VIEW)
-                            intent.data = Uri.parse("market://details?id=com.spotify.music")
-                            startActivity(intent)
+                            var intent =
+                                packageManager.getLaunchIntentForPackage("com.spotify.music")
+                            if (intent != null) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(socialBean.link)
+                                    )
+                                )
+                            } else {
+                                intent = Intent(Intent.ACTION_VIEW)
+                                intent.data = Uri.parse("market://details?id=com.spotify.music")
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
@@ -312,24 +351,53 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.twitter) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_share_twitter)
                     ivSocialIcon.setOnClickListener {
-                        try {
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(socialBean.link)
+
+                        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+                            if (profileBean.user_profile_type == 0) {
+                                try {
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(socialBean.link)
+                                        )
+                                    )
+                                } catch (e: java.lang.Exception) {
+                                    val index = socialBean.link.indexOf('=')
+                                    val name: String? = if (index == -1) "" else socialBean.link
+                                        .substring(index + 1)
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("https://twitter.com/".plus(name))
+                                        )
+                                    )
+                                }
+
+                            } else if (profileBean.user_profile_type == 1) {
+                                //Do Nothing
+                            }
+                        } else {
+                            try {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(socialBean.link)
+                                    )
                                 )
-                            )
-                        } catch (e: java.lang.Exception) {
-                            val index = socialBean.link.indexOf('=')
-                            val name: String? = if (index == -1) "" else socialBean.link
-                                .substring(index + 1)
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://twitter.com/".plus(name))
+                            } catch (e: java.lang.Exception) {
+                                val index = socialBean.link.indexOf('=')
+                                val name: String? = if (index == -1) "" else socialBean.link
+                                    .substring(index + 1)
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://twitter.com/".plus(name))
+                                    )
                                 )
-                            )
+                            }
+
                         }
+
                     }
                 }
             }

@@ -50,8 +50,9 @@ import org.json.JSONException
 import javax.inject.Inject
 
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
-    , LoginStateController.OnLoginStateChangedListener,
+class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
+    SignUpView,
+    LoginStateController.OnLoginStateChangedListener,
     FetchUserDataCallback {
 
     @Inject
@@ -108,6 +109,19 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         setupPermissions()
     }
 
+    private fun initializeGoogleApi() {
+        SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
+
+        //For facebook used initializer
+        callbackManager = CallbackManager.Factory.create()
+
+        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+    }
+
     private fun setupPermissions() {
         val locationPermission = ContextCompat.checkSelfPermission(
             this,
@@ -131,7 +145,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 //        if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED || cameraPermission != PackageManager.PERMISSION_GRANTED ||
 //            storagePermission != PackageManager.PERMISSION_GRANTED
 //        )
-            if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED) {
+        if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission to user")
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this,
@@ -142,9 +156,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
                 builder.setMessage(getString(R.string.location_permission_message))
                     .setTitle(getString(R.string.permission_required))
 
-                builder.setPositiveButton(
-                    getString(R.string.ok)
-                ) { dialog, id ->
+                builder.setPositiveButton(getString(R.string.ok)) { dialog, id ->
                     makeRequest()
                 }
 
@@ -169,101 +181,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         )
     }
 
-    override fun onPause() {
-        super.onPause()
-        videoViewSignup.pause()
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        if (videoViewSignup != null)
-            videoViewSignup.start()
-    }
-
-    override fun skipLogin() {
-        tvSkipSignUp.visibility = View.INVISIBLE
-        sessionManager.setGuestUser(true)
-        addFragment(
-            SelectGenderFragment.getInstance("user"),
-            Constants.SELECT_GENDER_FRAGMENT
-        )
-    }
-
-    override fun onSuccessResponse(user: User) {
-        tvSkipSignUp.visibility = View.INVISIBLE
-        sessionManager.setGuestUser(false)
-        sessionManager.setAccessToken(user.token)
-        sessionManager.setUserEmail(user.email)
-        sessionManager.setUserPhone(user.mobile)
-        sessionManager.setVerifiedUser(user.is_verified)
-        sessionManager.setuserUniqueId(user.user_uniqueId)
-        if (user.is_completly_signup == 1) {
-            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
-        } else {
-            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
-        }
-        addFragment(
-            SelectGenderFragment.getInstance(
-                "user"
-            ),
-            Constants.SELECT_GENDER_FRAGMENT
-        )
-    }
-
-    override fun onBackPressed() {
-        val selectGenderFragment =
-            supportFragmentManager.findFragmentByTag(Constants.SELECT_GENDER_FRAGMENT)
-        val videoLanguageFrgment =
-            supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAGE_FRAGMENT)
-        val chooseInterestFragment =
-            supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
-        val signupWithPhoneFragment =
-            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
-
-
-        if (videoLanguageFrgment != null || chooseInterestFragment != null) {
-            supportFragmentManager.popBackStack()
-        } else if (selectGenderFragment != null) {
-            if (SelectGenderFragment.datePickerDialog != null)
-                SelectGenderFragment.datePickerDialog!!.dismiss()
-
-            tvSkipSignUp.visibility = View.VISIBLE
-            removeAllFragment()
-
-        } else if (signupWithPhoneFragment != null) {
-            var childFm = signupWithPhoneFragment.childFragmentManager
-            if (childFm.backStackEntryCount > 0) {
-                childFm.popBackStack()
-            } else {
-                tvSkipSignUp.visibility = View.VISIBLE
-                supportFragmentManager.popBackStack()
-            }
-        } else
-            super.onBackPressed()
-    }
-
     /**
      * Remove all fragment from stack
      */
     private fun removeAllFragment() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.e("SignUpActivity", "resultCode: $resultCode")
-        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
-            callbackManager.onActivityResult(requestCode, resultCode, data)
-        }
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == RC_SIGN_IN) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
-                handleSignInResult(task)
-            }
         }
     }
 
@@ -304,26 +227,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("SignUpActivity", "signInResult:failed code=" + e.statusCode)
-        }
-    }
-
-    fun onLoginClick(view: View) {
-        when (view) {
-            llSignupWithPhone -> {
-                signupWithPhone()
-            }
-
-            llSignupWithFacebook -> {
-                facebookLogin()
-            }
-
-            llSignupWithGoogle -> {
-                googleLogin()
-            }
-
-            llSignupWithSnapchat -> {
-                loginWithSnapchat()
-            }
         }
     }
 
@@ -417,24 +320,50 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
         tvSkipSignUp.visibility = View.INVISIBLE
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                false,false
+                false, false
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )
     }
 
-    private fun initializeGoogleApi() {
-        SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
+    private fun fetchUserData() {
+        val query = "{me{bitmoji{avatar},displayName,externalId}}"
+        SnapLogin.fetchUserData(this, query, null, this)
+    }
 
-        //For facebook used initializer
-        callbackManager =
-            CallbackManager.Factory.create()
+    fun onLoginClick(view: View) {
+        when (view) {
+            llSignupWithPhone -> {
+                signupWithPhone()
+            }
 
-        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
+            llSignupWithFacebook -> {
+                facebookLogin()
+            }
 
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+            llSignupWithGoogle -> {
+                googleLogin()
+            }
+
+            llSignupWithSnapchat -> {
+                loginWithSnapchat()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("SignUpActivity", "resultCode: $resultCode")
+        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
+            callbackManager.onActivityResult(requestCode, resultCode, data)
+        }
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RC_SIGN_IN) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+                handleSignInResult(task)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -474,11 +403,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
     override fun onLoginSucceeded() {
         signUpViewModel.setIsLoading(true)
         fetchUserData()
-    }
-
-    private fun fetchUserData() {
-        val query = "{me{bitmoji{avatar},displayName,externalId}}"
-        SnapLogin.fetchUserData(this, query, null, this)
     }
 
     override fun onRequestPermissionsResult(
@@ -537,8 +461,79 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(), SignUpView
 
                 }
             }
-
         }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        videoViewSignup.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (videoViewSignup != null)
+            videoViewSignup.start()
+    }
+
+    override fun skipLogin() {
+        tvSkipSignUp.visibility = View.INVISIBLE
+        sessionManager.setGuestUser(true)
+        addFragment(
+            SelectGenderFragment.getInstance("user"),
+            Constants.SELECT_GENDER_FRAGMENT
+        )
+    }
+
+    override fun onSuccessResponse(user: User) {
+        tvSkipSignUp.visibility = View.INVISIBLE
+        sessionManager.setGuestUser(false)
+        sessionManager.setAccessToken(user.token)
+        sessionManager.setUserEmail(user.email)
+        sessionManager.setUserPhone(user.mobile)
+        sessionManager.setVerifiedUser(user.is_verified)
+        sessionManager.setuserUniqueId(user.user_uniqueId)
+        if (user.is_completly_signup == 1) {
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        } else {
+            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+        }
+        addFragment(
+            SelectGenderFragment.getInstance(
+                "user"
+            ),
+            Constants.SELECT_GENDER_FRAGMENT
+        )
+    }
+
+    override fun onBackPressed() {
+        val selectGenderFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SELECT_GENDER_FRAGMENT)
+        val videoLanguageFrgment =
+            supportFragmentManager.findFragmentByTag(Constants.VIDEO_LANGUAGE_FRAGMENT)
+        val chooseInterestFragment =
+            supportFragmentManager.findFragmentByTag(Constants.CHOOSE_INTEREST_FRAGMENT)
+        val signupWithPhoneFragment =
+            supportFragmentManager.findFragmentByTag(Constants.SIGNUP_WITH_PHONE_FRAGMENT)
+
+
+        if (videoLanguageFrgment != null || chooseInterestFragment != null) {
+            supportFragmentManager.popBackStack()
+        } else if (selectGenderFragment != null) {
+            if (SelectGenderFragment.datePickerDialog != null)
+                SelectGenderFragment.datePickerDialog!!.dismiss()
+
+            tvSkipSignUp.visibility = View.VISIBLE
+            removeAllFragment()
+
+        } else if (signupWithPhoneFragment != null) {
+            var childFm = signupWithPhoneFragment.childFragmentManager
+            if (childFm.backStackEntryCount > 0) {
+                childFm.popBackStack()
+            } else {
+                tvSkipSignUp.visibility = View.VISIBLE
+                supportFragmentManager.popBackStack()
+            }
+        } else
+            super.onBackPressed()
     }
 }
