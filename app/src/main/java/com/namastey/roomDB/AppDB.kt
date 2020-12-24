@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.namastey.roomDB.dao.RecentLocationsDao
 import com.namastey.roomDB.dao.RecentUserDao
 import com.namastey.roomDB.dao.UserDao
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.roomDB.entity.RecentUser
 import com.namastey.roomDB.entity.User
 
-@Database(entities = [User::class, RecentUser::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, RecentUser::class, RecentLocations::class], version = 1, exportSchema = false)
 abstract class AppDB : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun recentUserDao(): RecentUserDao
+    abstract fun recentLocationDao(): RecentLocationsDao
 
     companion object {
         var INSTANCE: AppDB? = null

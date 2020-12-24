@@ -331,8 +331,4 @@ class SearchLocationActivity : FragmentActivity(),
         onBackPressed()
     }
 
-    /*override fun onDestroy() {
-        locationViewModel.onDestroy()
-        super.onDestroy()
-    }*/
 }

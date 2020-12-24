@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
@@ -88,14 +89,28 @@ open class PassportContentActivity : FragmentActivity(),
             llPassportContentBackground.background = getDrawable(R.drawable.female_bg)
         }
 
+        searchDestination()
         Log.e(
             "PassportContent",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
         )
     }
 
+    private fun searchDestination() {
+        searchDestination.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                startActivity(Intent(this@PassportContentActivity, SearchLocationActivity::class.java))
+                return false
+            }
+        })
+    }
+    
     fun onClickSearchDestination(view: View) {
-        startActivity(Intent(this, SearchLocationActivity::class.java))
+        //startActivity(Intent(this, SearchLocationActivity::class.java))
     }
 
     fun onClickPassportContentBack(view: View) {

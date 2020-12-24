@@ -19,26 +19,35 @@ import com.namastey.adapter.CurrentLocationAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityLocationBinding
 import com.namastey.location.AppLocationService
+import com.namastey.roomDB.AppDB
+import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.LocationView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location.*
+import org.jetbrains.anko.doAsync
 import java.util.*
 import javax.inject.Inject
 
 
-class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
+class LocationActivity : BaseActivity<ActivityLocationBinding>(),
+    LocationView{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var sessionManager: SessionManager
+
+    lateinit var dbHelper: DBHelper
+    private lateinit var appDb: AppDB
     private lateinit var activityProfileViewBinding: ActivityLocationBinding
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var currentLocationAdapter: CurrentLocationAdapter
     private lateinit var appLocationService: AppLocationService
+    private lateinit var locationListFromDB: ArrayList<RecentLocations>
 
     override fun getViewModel() = locationViewModel
 
@@ -56,6 +65,9 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
         activityProfileViewBinding = bindViewData()
         activityProfileViewBinding.viewModel = locationViewModel
 
+        appDb = AppDB.getAppDataBase(this)!!
+        dbHelper = DBHelper(appDb)
+
         initData()
     }
 
@@ -65,9 +77,8 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
         else
             llLocationBackground.background = getDrawable(R.drawable.pink_bar)
 
-
-        currentLocationAdapter = CurrentLocationAdapter(this)
-        rvLocation.adapter = currentLocationAdapter
+        insertLocationToDB()
+        getAllRecentLocationFromDB()
 
         btnAddNewLocation.setOnClickListener {
             openActivity(this, PassportContentActivity())
@@ -75,11 +86,121 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
 
         getLocation()
         //getAddress()
-        /*addFragment(
-            CurrentLocationFragment(),
-            Constants.CURRENT_LOCATION_FRAGMENT
-        )*/
+    }
 
+    private fun insertLocationToDB() {
+        val locationBeanList = ArrayList<RecentLocations>()
+        locationBeanList.clear()
+
+        val currentTime = System.currentTimeMillis()
+        locationBeanList.add(
+            RecentLocations(
+                1,
+                "Surat",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                2,
+                "Valsad",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                3,
+                "Vapi",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                4,
+                "Baroda",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                5,
+                "Mumbai",
+                "Maharasthra",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                6,
+                "Bharuch",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+        locationBeanList.add(
+            RecentLocations(
+                7,
+                "Gandhinagar",
+                "Gujarat",
+                "India",
+                "359009",
+                "Adajan",
+                currentTime,
+                21.1702,
+                72.8311
+            )
+        )
+
+        doAsync {
+            dbHelper.addAllRecentLocation(locationBeanList)
+        }
+    }
+
+    private fun getAllRecentLocationFromDB() {
+        locationListFromDB = dbHelper.getAllRecentLocations() as ArrayList<RecentLocations>
+        Log.e("LocationActivity", "locationListFromDB: \t ${locationListFromDB.size}")
+
+        if (locationListFromDB.size != 0) {
+            currentLocationAdapter = CurrentLocationAdapter(
+                this,
+                locationListFromDB
+            )
+            rvLocation.adapter = currentLocationAdapter
+        }
     }
 
     private fun getLocation() {
@@ -237,4 +358,5 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), LocationView {
         locationViewModel.onDestroy()
         super.onDestroy()
     }
+
 }

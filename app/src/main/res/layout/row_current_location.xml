@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llLocationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_2sdp"
@@ -23,7 +24,6 @@
             android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:onClick="onClickLocationBack"
             android:src="@drawable/ic_current_location"
             android:tint="@color/color_chip_gray" />
 
@@ -63,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:onClick="onClickLocationBack"
             android:src="@drawable/ic_done"
             android:tint="@color/color_chip_gray" />
 

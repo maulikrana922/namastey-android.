@@ -1,13 +1,16 @@
 package com.namastey.roomDB
 
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.roomDB.entity.RecentUser
 import com.namastey.roomDB.entity.User
 import com.namastey.scopes.PerApplication
+import java.util.*
 import javax.inject.Inject
 
 @PerApplication
 class DBHelper @Inject constructor(var appDB: AppDB) {
 
+    //For User Table
     fun setLoggedInUser(user: User): List<Long> {
         return appDB.userDao().setLoggedInUser(user)
     }
@@ -20,20 +23,10 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.userDao().getUser()
     }
 
+
+    // For Recent User Table
     fun addRecentUser(recentUser: RecentUser) {
         return appDB.recentUserDao().addRecentUser(recentUser)
-    }
-
-    fun deleteRecentUser(recentUser: RecentUser) {
-        return appDB.recentUserDao().deleteRecentUser(recentUser)
-    }
-
-    fun getRecentUser(): RecentUser {
-        return appDB.recentUserDao().getRecentUser()
-    }
-
-    fun updateRecentUser(recentUser: RecentUser) {
-        return appDB.recentUserDao().updateRecentUser(recentUser)
     }
 
     fun getAllRecentUser(): List<RecentUser> {
@@ -46,6 +39,27 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
 
     fun deleteExistingUser(userId: Int){
         return appDB.recentUserDao().deleteExistingUser(userId)
+    }
+
+    // For Recent Location Table
+    fun addRecentLocation(recentLocations: RecentLocations) {
+        return appDB.recentLocationDao().addRecentLocations(recentLocations)
+    }
+
+     fun addAllRecentLocation(recentLocationList: ArrayList<RecentLocations>) {
+        return appDB.recentLocationDao().addAllRecentLocations(recentLocationList)
+    }
+
+    fun getAllRecentLocations(): List<RecentLocations> {
+        return appDB.recentLocationDao().getAllRecentLocations()
+    }
+
+    fun getExistingRecentLocation(locationId: Int): Boolean {
+        return appDB.recentLocationDao().getExistingRecentLocations(locationId)
+    }
+
+    fun deleteExistingLocation(locationId: Int){
+        return appDB.recentLocationDao().deleteExistingLocations(locationId)
     }
 
 }
