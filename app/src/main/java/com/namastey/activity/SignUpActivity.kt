@@ -165,7 +165,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             } else
                 makeRequest()
         }
-
     }
 
     private fun makeRequest() {
@@ -242,7 +241,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
      * Click on continue with Google
      */
     private fun googleLogin() {
-        var signInIntent = googleSignInClient.signInIntent
+       /* var signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)*/
+
+        val signInIntent: Intent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 

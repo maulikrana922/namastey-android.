@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_25sdp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/place_autocomplete_clear_button"
+        android:layout_width="@dimen/_26sdp"
+        android:layout_height="@dimen/_26sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:background="@drawable/rounded_white_solid_all_corner"
+        android:contentDescription="@string/app_name"
+        android:onClick="onClickSearchLocationBack"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_close"
+        android:tint="@color/colorBlack" />
+
+    <LinearLayout
+        android:id="@+id/llSearchSearchLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/rounded_white_solid"
+        android:orientation="horizontal">
+
+        <!-- <fragment
+             android:id="@+id/place_autocomplete_fragment"
+             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_weight="1" />-->
+
+        <EditText
+            android:id="@+id/place_autocomplete_search_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center|start"
+            android:hint="@string/enter_destination"
+            android:inputType="text"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:visibility="visible"
+            app:searchHintIcon="@drawable/ic_search" />
+
+        <ImageButton
+            android:id="@+id/place_autocomplete_search_button"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:onClick="searchLocation"
+            android:src="@drawable/ic_current_location"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/place_autocomplete_search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@null"
+        android:contentDescription="@string/place_autocomplete_search_hint"
+        android:padding="@dimen/place_autocomplete_button_padding"
+        android:src="@drawable/places_ic_search" />
+
+    <EditText
+        android:id="@+id/place_autocomplete_search_input"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="@string/place_autocomplete_search_hint"
+        android:inputType="textNoSuggestions"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:singleLine="true"
+        android:textColor="@color/place_autocomplete_search_text"
+        android:textColorHint="@color/place_autocomplete_search_hint"
+        android:textSize="20dp" />
+
+    <ImageButton
+        android:id="@+id/place_autocomplete_clear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@null"
+        android:contentDescription="@string/place_autocomplete_clear_button"
+        android:padding="@dimen/place_autocomplete_button_padding"
+        android:src="@drawable/places_ic_clear" />
+
+    </LinearLayout>-->

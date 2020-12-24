@@ -19,15 +19,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.SearchLocationActivity">
 
-    <ImageView
-        android:id="@+id/imageMap"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scaleType="fitXY"
-        android:src="@drawable/map"
-        android:visibility="gone"
-        tools:ignore="ContentDescription" />
 
     <fragment
         android:id="@+id/map"
@@ -36,12 +27,22 @@
         android:layout_height="match_parent"
         tools:context=".activity.SearchLocationActivity" />
 
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/_25sdp"
+        tools:context=".activity.SearchLocationActivity" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_25sdp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/ivSearchLocationBack"
@@ -75,15 +76,6 @@
                  android:layout_gravity="center"
                  android:layout_weight="1" />-->
 
-            <androidx.appcompat.widget.SearchView
-                style="@style/searchViewStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                app:defaultQueryHint="@string/search_user"
-                app:iconifiedByDefault="false"
-                app:queryHint="@string/enter_destination"
-                app:searchHintIcon="@drawable/ic_search" />
 
             <EditText
                 android:id="@+id/searchDestination"

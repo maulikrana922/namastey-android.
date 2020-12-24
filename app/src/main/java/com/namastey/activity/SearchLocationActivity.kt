@@ -18,9 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
+import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.namastey.R
@@ -65,8 +69,7 @@ class SearchLocationActivity : FragmentActivity(),
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
-
-        /* val autocompleteFragment: PlaceAutocompleteFragment =
+         val autocompleteFragment: PlaceAutocompleteFragment =
              fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
 
          autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -93,7 +96,7 @@ class SearchLocationActivity : FragmentActivity(),
                 Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
                 Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
             }
-        })*/
+        })
 
         /*getActivityComponent().inject(this)
         locationViewModel =
