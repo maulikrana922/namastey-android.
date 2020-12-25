@@ -14,30 +14,41 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.Place
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
-import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_search_location.*
+import java.util.*
 
 class SearchLocationActivity : FragmentActivity(),
     OnMapReadyCallback,
     LocationListener,
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
+    private val TAG: String = SearchLocationActivity::class.java.simpleName
 
     private lateinit var sessionManager: SessionManager
     private var mMap: GoogleMap? = null
@@ -47,6 +58,8 @@ class SearchLocationActivity : FragmentActivity(),
     private var mLocationRequest: LocationRequest? = null
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private var apiKey = ""
+    private var mResult: StringBuilder? = null
 
     /*  @Inject
       lateinit var viewModelFactory: ViewModelFactory
@@ -66,45 +79,17 @@ class SearchLocationActivity : FragmentActivity(),
 
         sessionManager = SessionManager(this)
 
+        apiKey = getString(R.string.google_api_key)
+
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, apiKey)
+        }
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
 
-         val autocompleteFragment: PlaceAutocompleteFragment =
-             fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
-
-         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-             override fun onPlaceSelected(place: Place) {
-                 Log.e("SearchLocationActivity", "place: \t ${place.address}")
-                 mMap!!.clear()
-                 mMap!!.addMarker(
-                     MarkerOptions().position(place.latLng).icon(
-                         BitmapDescriptorFactory.fromBitmap(
-                             createCustomMarker(
-                                 this@SearchLocationActivity,
-                                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                                 sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                             )
-                         )
-                     ).title(place.name.toString())
-                 )
-                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-                 mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
-             }
-
-            override fun onError(status: Status?) {
-                Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
-                Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
-                Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
-            }
-        })
-
-        /*getActivityComponent().inject(this)
-        locationViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(LocationViewModel::class.java)
-        locationViewModel.setViewInterface(this)
-        activitySearchLocationBinding = bindViewData()
-        activitySearchLocationBinding.viewModel = locationViewModel*/
-
+        //searchOnCustomView()
+        searchPlace()
         initData()
     }
 
@@ -113,6 +98,133 @@ class SearchLocationActivity : FragmentActivity(),
             "SearchLocationActivity",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
         )
+    }
+
+    /**
+     * Method to search using custom  EditText
+     */
+    private fun searchOnCustomView() {
+        val placesClient: PlacesClient = Places.createClient(this)
+
+        ivLocation.setOnClickListener { v ->
+            Toast.makeText(
+                this@SearchLocationActivity,
+                searchDestination.text.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+            // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+            // and once again when the user makes a selection (for example when calling fetchPlace()).
+            val token: AutocompleteSessionToken = AutocompleteSessionToken.newInstance()
+            // Create a RectangularBounds object.
+            /* val bounds: RectangularBounds = RectangularBounds.newInstance(
+                 LatLng(-33.880490, 151.184363),  //dummy lat/lng
+                 LatLng(-33.858754, 151.229596)
+             )*/
+            // Use the builder to create a FindAutocompletePredictionsRequest.
+            val request: FindAutocompletePredictionsRequest =
+                FindAutocompletePredictionsRequest.builder() // Call either setLocationBias() OR setLocationRestriction().
+                    //  .setLocationBias(bounds) //.setLocationRestriction(bounds)
+                    //  .setCountry("ng") //Nigeria
+                    .setTypeFilter(TypeFilter.ADDRESS)
+                    .setSessionToken(token)
+                    .setQuery(searchDestination.text.toString())
+                    .build()
+            placesClient.findAutocompletePredictions(request)
+                .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
+                    mResult = StringBuilder()
+                    for (prediction in response.autocompletePredictions) {
+                        mResult!!.append(" ")
+                            .append("""${prediction.getFullText(null)}""".trimIndent())
+                        Log.e(TAG, prediction.placeId)
+                        Log.e(TAG, prediction.getPrimaryText(null).toString())
+                        Toast.makeText(
+                            this@SearchLocationActivity,
+                            prediction.getPrimaryText(null)
+                                .toString() + "-" + prediction.getSecondaryText(null),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    Log.e("SearchLocationActivity", " mResult:\t $mResult")
+                }.addOnFailureListener { exception: Exception ->
+                    if (exception is ApiException) {
+                        val apiException: ApiException = exception
+                        Log.e(TAG, "Place not found: " + apiException.statusCode)
+                        Log.e(TAG, "Place not found: " + apiException.status)
+                        Log.e(TAG, "Place not found: " + apiException.message)
+                    }
+                }
+        }
+    }
+
+    /**
+     * Method to search in default View
+     */
+    private fun searchPlace() {
+        /* val autocompleteFragment: PlaceAutocompleteFragment =
+         fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
+
+     autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+         override fun onPlaceSelected(place: Place) {
+             Log.e("SearchLocationActivity", "place: \t ${place.address}")
+             mMap!!.clear()
+             mMap!!.addMarker(
+                 MarkerOptions().position(place.latLng).icon(
+                     BitmapDescriptorFactory.fromBitmap(
+                         createCustomMarker(
+                             this@SearchLocationActivity,
+                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+                             sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                         )
+                     )
+                 ).title(place.name.toString())
+             )
+             mMap!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+             mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
+         }
+
+         override fun onError(status: Status?) {
+             Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
+             Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
+             Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
+         }
+     })*/
+
+        val autocompleteFragment: AutocompleteSupportFragment? =
+            supportFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment?
+
+        autocompleteFragment!!.setPlaceFields(
+            Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME
+            )
+        )
+
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+
+                Log.e("SearchLocationActivity", "place: \t ${place.address}")
+                mMap!!.clear()
+                mMap!!.addMarker(
+                    MarkerOptions().position(place.latLng!!).icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            createCustomMarker(
+                                this@SearchLocationActivity,
+                                sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+                                sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            )
+                        )
+                    ).title(place.name.toString())
+                )
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
+                mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
+            }
+
+            override fun onError(status: Status) {
+                Log.e("SearchLocationActivity", "status: \t ${status.statusCode}")
+                Log.e("SearchLocationActivity", "status: \t ${status.isSuccess}")
+                Log.e("SearchLocationActivity", "status: \t ${status.status}")
+            }
+        })
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -156,11 +268,12 @@ class SearchLocationActivity : FragmentActivity(),
     }
 
     @Synchronized
-    protected fun buildGoogleApiClient() {
+    private fun buildGoogleApiClient() {
         mGoogleApiClient = GoogleApiClient.Builder(this)
             .addConnectionCallbacks(this)
             .addOnConnectionFailedListener(this)
-            .addApi(LocationServices.API).build()
+            .addApi(LocationServices.API)
+            .build()
         mGoogleApiClient!!.connect()
     }
 
@@ -262,7 +375,10 @@ class SearchLocationActivity : FragmentActivity(),
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
-        marker.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        marker.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
         marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
         marker.buildDrawingCache()

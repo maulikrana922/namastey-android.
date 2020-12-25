@@ -28,7 +28,7 @@
         tools:context=".activity.SearchLocationActivity" />
 
     <!--Todo: visibility = Visible, when billing account-->
-    <fragment
+    <!--<fragment
         android:id="@+id/place_autocomplete_fragment"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="match_parent"
@@ -36,6 +36,16 @@
         android:layout_gravity="top"
         android:layout_marginTop="@dimen/_25sdp"
         android:visibility="gone"
+        tools:context=".activity.SearchLocationActivity" /> -->
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:visibility="visible"
         tools:context=".activity.SearchLocationActivity" />
 
     <!--Todo: visibility = Gone, when billing account-->
@@ -44,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_25sdp"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <ImageView
