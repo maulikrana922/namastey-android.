@@ -98,6 +98,7 @@ object Constants {
     const val DELETE_MESSAGE_CONVERSATION = "delete-message-conversation"
     const val DELETE_ALBUM = "delete-album"
     const val HIDE_ALBUM = "hide-album"
+    const val GET_NEW_FEED_LIST = "new-feed-list"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -278,6 +279,7 @@ object Constants {
     const val IS_READ = "is_read"
     const val MESSAGE_USER_ID = "message_user_id"
     const val IS_CHAT = "is_chat"
+    const val PAGE = "page"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

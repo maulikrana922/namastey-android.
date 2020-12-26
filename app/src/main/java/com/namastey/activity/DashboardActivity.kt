@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.hendraanggrian.appcompat.widget.Mention
@@ -109,6 +110,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var fragmentRefreshListener: FragmentRefreshListener? = null
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
+    private var currentPage = 1
+    private var mbNext = true
+    private var mbLoading = true
 
     override fun getViewModel() = dashboardViewModel
 
@@ -193,15 +197,89 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
+        dashboardViewModel.getNewFeedList(currentPage, 0)
+
+        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
+        viewpagerFeed.adapter = feedAdapter
+
 //        setDashboardList()
 
         setupPermissions()
         setSliderData()
+        startPagination()
 
-        dashboardViewModel.getFeedList(0)
+        // dashboardViewModel.getFeedList(0)
 
         mentionArrayAdapter = MentionArrayAdapter(this)
 
+    }
+
+    private fun startPagination() {
+
+        /* viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+             override fun onPageSelected(position: Int) {
+                 super.onPageSelected(position)
+             }
+         })*/
+
+        viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
+                // println(state)
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                // println(position)
+                // Log.e("DashboardActivity", "onPageScrolled: position:\t $position")
+                /*  val visibleItemCount: Int = LinearLayoutManager(
+                      this@DashboardActivity,
+                      LinearLayoutManager.VERTICAL,
+                      false
+                  ).childCount
+                  val totalItemCount: Int = LinearLayoutManager(
+                      this@DashboardActivity,
+                      LinearLayoutManager.VERTICAL,
+                      false
+                  ).itemCount
+                  val firstVisibleItemPosition: Int = LinearLayoutManager(
+                      this@DashboardActivity,
+                      LinearLayoutManager.VERTICAL,
+                      false
+                  ).findFirstVisibleItemPosition()*/
+
+                val visibleItemCount: Int = viewpagerFeed.childCount
+                val totalItemCount: Int = feedAdapter.itemCount
+                val firstVisibleItemPosition: Int = position
+
+                Log.e("DashboardActivity", "onPageScrolled: visibleItemCount:\t $visibleItemCount")
+                Log.e("DashboardActivity", "onPageScrolled: totalItemCount:\t $totalItemCount")
+                Log.e(
+                    "DashboardActivity",
+                    "onPageScrolled: firstVisibleItemPosition:\t $firstVisibleItemPosition"
+                )
+                if (!mbLoading && mbNext) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                        currentPage += 1
+                        Log.e(
+                            "DashboardActivity",
+                            "onPageScrolled: miCurrentPage:\t $currentPage"
+                        )
+                        dashboardViewModel.getNewFeedList(0, currentPage)
+                    }
+                }
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                // println(position)
+                // Log.e("DashboardActivity", "onPageSelected: position:\t $position")
+            }
+        })
     }
 
     private fun setupPermissions() {
@@ -967,9 +1045,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
-        feedList = dashboardList
-        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
-        viewpagerFeed.adapter = feedAdapter
+        Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
+
+        feedList.addAll(dashboardList)
+        feedAdapter.notifyDataSetChanged()
+
+        mbNext = dashboardList.size != 0
+
+        if (mbNext) {
+            mbLoading = false
+        }
     }
 
     // Temp open this activity
@@ -1013,7 +1098,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         if (resultCode == Constants.REQUEST_CODE && data != null) {
             when {
                 data.hasExtra("fromSubCategory") -> {
-                    with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId", 0)) }
+                    with(dashboardViewModel) {
+                        feedList.clear()
+                        getNewFeedList(
+                            data.getIntExtra("subCategoryId", 0),
+                            currentPage
+                        )
+                    }
                 }
             }
         }
@@ -1025,7 +1116,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         if (requestCode == Constants.FILTER_OK) {
             if (data != null && data.hasExtra("fromSubCategory")) {
                 supportFragmentManager.popBackStack()
-                with(dashboardViewModel) { getFeedList(data.getIntExtra("subCategoryId", 0)) }
+                with(dashboardViewModel) {
+                    feedList.clear()
+                    getNewFeedList(
+                        data.getIntExtra("subCategoryId", 0),
+                        currentPage
+                    )
+                }
             } else {
                 supportFragmentManager.popBackStack()
             }
@@ -1232,7 +1329,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
     return animation
 }*/
     fun onClickDiscover(view: View) {
-        dashboardViewModel.getFeedList(0)
+        feedList.clear()
+        dashboardViewModel.getNewFeedList(0, currentPage)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
@@ -1947,6 +2045,19 @@ private fun prepareAnimation(animation: Animation): Animation? {
         this.membershipViewList = membershipView
     }
 
+    /* override fun onSuccessNewFeed(dashboardList: ArrayList<DashboardBean>) {
+         Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
+
+         feedList.addAll(dashboardList)
+         feedAdapter.notifyDataSetChanged()
+
+         mbNext = dashboardList.size != 0
+
+         if (mbNext) {
+             mbLoading = false
+         }
+     }*/
+
     override fun onSuccessPostShare(msg: String) {
         Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
         feedList[position].share = feedList[position].share + 1
@@ -1961,7 +2072,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             override fun onBtnClick(id: Int) {
                 dismiss()
                 feedList.clear()
-                dashboardViewModel.getFeedList(0)
+                dashboardViewModel.getNewFeedList(0, currentPage)
             }
         }.show()
     }

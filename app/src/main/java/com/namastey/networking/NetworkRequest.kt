@@ -382,7 +382,7 @@ interface NetworkRequest {
     fun requestToGetLikeUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
 
     @GET(Constants.LIKED_USER_COUNT)
-    fun requestToGetLikedUserCountAsync( ): Deferred<AppResponse<LikedUserCountBean>>
+    fun requestToGetLikedUserCountAsync(): Deferred<AppResponse<LikedUserCountBean>>
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = Constants.DELETE_ALBUM, hasBody = true)
@@ -403,4 +403,12 @@ interface NetworkRequest {
         @Field(Constants.POST_ID) postId: Int,
         @Field(Constants.IS_SHARE) isShare: Int
     ): Deferred<AppResponse<Any>>
+
+    @FormUrlEncoded
+    @POST(Constants.GET_NEW_FEED_LIST)
+    fun requestToGetNewFeedListAsync(
+        @Field(Constants.PAGE) page: Int,
+        @Field(Constants.SUB_CAT_ID) subCatId: Int
+    ): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
 }
