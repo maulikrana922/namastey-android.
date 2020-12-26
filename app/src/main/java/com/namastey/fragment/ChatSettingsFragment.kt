@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
@@ -36,8 +38,9 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     private var matchesListBean: MatchesListBean = MatchesListBean()
     private lateinit var bottomSheetDialogReport: BottomSheetDialog
     private lateinit var onDataPassActivity: onDataPassToActivity
-    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private var myChatRef: DatabaseReference = database.reference
+//    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+//    private var myChatRef: DatabaseReference = database.reference
+    private val db = Firebase.firestore
 
     override fun getViewModel() = chatViewModel
 
@@ -281,14 +284,19 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     override fun onSuccessDeleteMatches(msg: String) {
         Log.e("ChatSetting", "onSuccessDeleteMatches: \t msg:  $msg")
 
-        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
+//        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
 
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
-            sessionManager.getUserId().toString().plus(matchesListBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
         else
-            matchesListBean.id.toString().plus(sessionManager.getUserId())
+            matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
 
-        myChatRef.child(chatId).removeValue()
+//        myChatRef.child(chatId).removeValue()
+        db.collection(Constants.FirebaseConstant.MESSAGES).document(chatId)
+            .delete()
+            .addOnSuccessListener { Log.d("Success", "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w("Failure", "Error deleting document", e) }
+
         object : CustomAlertDialog(
             requireActivity(),
             msg, getString(R.string.ok), ""

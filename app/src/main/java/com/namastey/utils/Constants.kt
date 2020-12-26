@@ -15,7 +15,9 @@ object Constants {
     }
 
     object FirebaseConstant{
+        var MESSAGES = "Messages"
         var CHATS = "Chats"
+        var LAST_MESSAGE = "Last_message"
         var IMAGES = "Images"
         var VOICE = "Voice"
         var MSG_TYPE_IMAGE = "MsgTypeImage"

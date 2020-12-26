@@ -5,7 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
@@ -24,6 +30,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.MatchesProfileViewModel
+import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
 import kotlinx.android.synthetic.main.view_matches_messages_list.*
@@ -45,12 +52,15 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private lateinit var messagesAdapter: MessagesAdapter
     private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
     private var messageList: ArrayList<MatchesListBean> = ArrayList()
-    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private var myChatRef: DatabaseReference = database.reference
+//    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+//    private var myChatRef: DatabaseReference = database.reference
     private var likeUserCount = 0
     private var lastUserProfile = ""
-    private lateinit var messageListListener: ValueEventListener
-    private lateinit var getMessageListQuery: Query
+//    private lateinit var messageListListener: ValueEventListener
+//    private lateinit var getMessageListQuery: Query
+    private val db = Firebase.firestore
+    private lateinit var docReference: DocumentReference
+    private lateinit var listenerRegistration: ListenerRegistration
 
 
     override fun getViewModel() = matchesProfileViewModel
@@ -137,79 +147,76 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
         rvMessagesList.adapter = messagesAdapter
 
-        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
+//        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
 
         removeListeners()
 
         for (i in 0 until messageList.size){
             getMessageFromFirebase(messageList[i].id, i)
         }
-//        messageList.forEachIndexed { index, matchedBean ->
-//
-//            val chatId = if (sessionManager.getUserId() < matchedBean.id)
-//                sessionManager.getUserId().toString().plus(matchedBean.id)
-//            else
-//                matchedBean.id.toString().plus(sessionManager.getUserId())
-//
-//            val lastQuery: Query = myChatRef.child(chatId).orderByKey().limitToLast(1)
-//
-//            lastQuery.addValueEventListener(object : ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    for (snapshot in dataSnapshot.children) {
-//                        val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
-//                        Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
-//
-//                        messageList[index].timestamp =
-//                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-//                        messageList[index].message = chatMessage.message
-//                        messageList[index].url = chatMessage.url
-//                    }
-//                    messagesAdapter.notifyDataSetChanged()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    // Failed to read value
-//                    Log.w("Firebase :", "Failed to read value.", error.toException())
-//                }
-//            })
-//
-//        }
     }
 
     private fun removeListeners() {
-        if (::messageListListener.isInitialized && ::getMessageListQuery.isInitialized){
-            getMessageListQuery.removeEventListener(messageListListener)
-        }
+//        if (::messageListListener.isInitialized && ::getMessageListQuery.isInitialized){
+//            getMessageListQuery.removeEventListener(messageListListener)
+
+            if (::listenerRegistration.isInitialized)
+                listenerRegistration.remove()
+//        }
     }
 
     private fun getMessageFromFirebase(messageUserId: Long, position: Int){
 
         val chatId = if (sessionManager.getUserId() < messageUserId)
-            sessionManager.getUserId().toString().plus(messageUserId)
+            sessionManager.getUserId().toString().plus("_").plus(messageUserId)
         else
-            messageUserId.toString().plus(sessionManager.getUserId())
+            messageUserId.toString().plus("_").plus(sessionManager.getUserId())
 
-        getMessageListQuery = myChatRef.child(chatId).orderByKey().limitToLast(1)
+//        getMessageListQuery = myChatRef.child(chatId).orderByKey().limitToLast(1)
 
-        messageListListener = getMessageListQuery.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
-                    Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
+        val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId).collection(Constants.FirebaseConstant.LAST_MESSAGE).document(chatId)
 
-                    messageList[position].timestamp =
-                        Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                    messageList[position].message = chatMessage.message
-                    messageList[position].url = chatMessage.url
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("Success", "DocumentSnapshot data: ${document.data}")
+                    val chatMessage = document.toObject(ChatMessage::class.java)
+
+                    if (chatMessage != null) {
+                        messageList[position].timestamp =
+                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                        messageList[position].message = chatMessage.message
+                        messageList[position].url = chatMessage.url
+                    }
+                    messagesAdapter.notifyDataSetChanged()
+                } else {
+                    Log.d("TAG", "No such document")
                 }
-                messagesAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "get failed with ", exception)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w("Firebase :", "Failed to read value.", error.toException())
-            }
-        })
+//        messageListListener = getMessageListQuery.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (snapshot in dataSnapshot.children) {
+//                    val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
+//                    Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
+//
+//                    messageList[position].timestamp =
+//                        Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+//                    messageList[position].message = chatMessage.message
+//                    messageList[position].url = chatMessage.url
+//                }
+//                messagesAdapter.notifyDataSetChanged()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Failed to read value
+//                Log.w("Firebase :", "Failed to read value.", error.toException())
+//            }
+//        })
     }
     override fun onSuccessLikeUserCount(likedUserCountBean: LikedUserCountBean) {
         this.likeUserCount = likedUserCountBean.like_count
