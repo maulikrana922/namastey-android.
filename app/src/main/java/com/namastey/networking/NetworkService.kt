@@ -450,4 +450,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToSharePostAsync(postId, isShare).await()
         }
+
+    suspend fun requestToGetNewFeed(page: Int, subCatId: Int): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetNewFeedListAsync(page, subCatId).await()
+        }
+
 }

@@ -329,6 +329,29 @@ class DashboardViewModel constructor(
         }
     }
 
+    fun getNewFeedList(page: Int, subCatId: Int) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetNewFeed(page, subCatId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK){
+                            dashboardView.onSuccessFeed(appResponse.data!!)}
+                        else{
+                            dashboardView.onFailed(appResponse.message, appResponse.error)
+                        }}
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()
