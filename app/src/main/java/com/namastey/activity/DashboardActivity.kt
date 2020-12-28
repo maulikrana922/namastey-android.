@@ -269,7 +269,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                             "DashboardActivity",
                             "onPageScrolled: miCurrentPage:\t $currentPage"
                         )
-                        dashboardViewModel.getNewFeedList(0, currentPage)
+                        dashboardViewModel.getNewFeedList(currentPage, 0)
                     }
                 }
             }
@@ -1100,9 +1100,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 data.hasExtra("fromSubCategory") -> {
                     with(dashboardViewModel) {
                         feedList.clear()
+                        currentPage = 1
                         getNewFeedList(
-                            data.getIntExtra("subCategoryId", 0),
-                            currentPage
+                            currentPage,
+                            data.getIntExtra("subCategoryId", 0)
                         )
                     }
                 }
@@ -1118,9 +1119,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 supportFragmentManager.popBackStack()
                 with(dashboardViewModel) {
                     feedList.clear()
+                    currentPage = 1
                     getNewFeedList(
-                        data.getIntExtra("subCategoryId", 0),
-                        currentPage
+                        currentPage,
+                        data.getIntExtra("subCategoryId", 0)
                     )
                 }
             } else {
@@ -1330,7 +1332,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 }*/
     fun onClickDiscover(view: View) {
         feedList.clear()
-        dashboardViewModel.getNewFeedList(0, currentPage)
+        dashboardViewModel.getNewFeedList(currentPage, 0)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
@@ -2072,7 +2074,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             override fun onBtnClick(id: Int) {
                 dismiss()
                 feedList.clear()
-                dashboardViewModel.getNewFeedList(0, currentPage)
+                dashboardViewModel.getNewFeedList(currentPage, 0)
             }
         }.show()
     }

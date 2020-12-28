@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.CommentBean
@@ -18,7 +19,7 @@ class CommentAdapter(
     var commentList: ArrayList<CommentBean>,
     var activity: Context,
     var onSelectUserItemClick: OnSelectUserItemClick
-) : androidx.recyclerview.widget.RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -37,8 +38,7 @@ class CommentAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
 
@@ -46,6 +46,14 @@ class CommentAdapter(
             tvUsername.text = commentBean.username
             tvComment.text = commentBean.comment
             tvComment.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
+            tvComment.setOnMentionClickListener { view, text ->
+                Log.e("CommentAdapter", "setOnMentionClickListener: $text")
+                Log.e("CommentAdapter", "setOnMentionClickListener: ${view.mentions}")
+            }
+
+            tvComment.setMentionTextChangedListener { view, text ->
+                Log.e("CommentAdapter", "setMentionTextChangedListener: $text")
+            }
             GlideLib.loadImageUrlRoundCorner(activity, ivCommentUser, commentBean.profile_pic)
 
             Log.e("CommentAdapter", "mentionColor: ${commentBean.comment}")
