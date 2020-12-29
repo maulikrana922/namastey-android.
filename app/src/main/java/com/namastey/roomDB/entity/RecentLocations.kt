@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class RecentLocations(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int,
     var city: String,
     var state: String,

@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
@@ -28,6 +27,7 @@ import com.namastey.R
 import com.namastey.dagger.module.GlideApp
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_passport_content.*
 
@@ -89,32 +89,24 @@ open class PassportContentActivity : FragmentActivity(),
             llPassportContentBackground.background = getDrawable(R.drawable.female_bg)
         }
 
-        searchDestination()
         Log.e(
             "PassportContent",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
         )
     }
 
-    private fun searchDestination() {
-        searchDestination.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                startActivity(Intent(this@PassportContentActivity, SearchLocationActivity::class.java))
-                return false
-            }
-        })
-    }
-    
     fun onClickSearchDestination(view: View) {
-        //startActivity(Intent(this, SearchLocationActivity::class.java))
+        Utils.hideKeyboard(this@PassportContentActivity)
+        startActivity(Intent(this, SearchLocationActivity::class.java))
     }
 
     fun onClickPassportContentBack(view: View) {
         onBackPressed()
+    }
+
+    fun onClickSearchIcon(view: View) {
+        Utils.hideKeyboard(this@PassportContentActivity)
+        startActivity(Intent(this, LocationActivity::class.java))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -264,6 +256,7 @@ open class PassportContentActivity : FragmentActivity(),
         Log.e("PassportContent", "onConnectionFailed: \t ${p0.errorCode}")
         Log.e("PassportContent", "onConnectionFailed: \t ${p0.errorMessage}")
     }
+
 
     /*override fun onDestroy() {
         locationViewModel.onDestroy()

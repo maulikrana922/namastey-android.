@@ -27,7 +27,6 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location.*
-import org.jetbrains.anko.doAsync
 import java.util.*
 import javax.inject.Inject
 
@@ -77,117 +76,15 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
         else
             llLocationBackground.background = getDrawable(R.drawable.pink_bar)
 
-        insertLocationToDB()
+        //insertLocationToDB()
         getAllRecentLocationFromDB()
 
         btnAddNewLocation.setOnClickListener {
-            openActivity(this, PassportContentActivity())
+            openActivity(this, SearchLocationActivity())
         }
 
         getLocation()
         //getAddress()
-    }
-
-    private fun insertLocationToDB() {
-        val locationBeanList = ArrayList<RecentLocations>()
-        locationBeanList.clear()
-
-        val currentTime = System.currentTimeMillis()
-        locationBeanList.add(
-            RecentLocations(
-                1,
-                "Surat",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                2,
-                "Valsad",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                3,
-                "Vapi",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                4,
-                "Baroda",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                5,
-                "Mumbai",
-                "Maharasthra",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                6,
-                "Bharuch",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-        locationBeanList.add(
-            RecentLocations(
-                7,
-                "Gandhinagar",
-                "Gujarat",
-                "India",
-                "359009",
-                "Adajan",
-                currentTime,
-                21.1702,
-                72.8311
-            )
-        )
-
-        doAsync {
-            dbHelper.addAllRecentLocation(locationBeanList)
-        }
     }
 
     private fun getAllRecentLocationFromDB() {

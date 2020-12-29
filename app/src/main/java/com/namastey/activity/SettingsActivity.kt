@@ -13,6 +13,9 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySettingsBinding
+import com.namastey.roomDB.AppDB
+import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
@@ -23,6 +26,7 @@ import kotlinx.android.synthetic.main.dialog_alert.*
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
+
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -36,6 +40,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     private var minAge = ""
     private var maxAge = ""
     private var distance = ""
+    lateinit var dbHelper: DBHelper
+    private lateinit var appDb: AppDB
+    private lateinit var currentLocationFromDB: RecentLocations
+
 
     override fun getViewModel() = settingsViewModel
 
@@ -51,6 +59,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             ViewModelProviders.of(this, viewModelFactory).get(SettingsViewModel::class.java)
         activitySettingsBinding = bindViewData()
         activitySettingsBinding.viewModel = settingsViewModel
+
+        appDb = AppDB.getAppDataBase(this)!!
+        dbHelper = DBHelper(appDb)
 
         initData()
     }
@@ -71,6 +82,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
                 3 -> setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
             }
         }
+
+        setCurrentLocation()
 
         switchHideProfile.isChecked = sessionManager.getIntegerValue(Constants.IS_HIDE) == 1
         switchPrivateAccount.isChecked = sessionManager.getIntegerValue(Constants.PROFILE_TYPE) == 1
@@ -158,6 +171,18 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         }
 
+    }
+
+    private fun setCurrentLocation() {
+        currentLocationFromDB = dbHelper.getLastRecentLocations()
+        Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.id}")
+        Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
+        if (currentLocationFromDB.city != "" && currentLocationFromDB.state != "") {
+            tvMyCurrentLocation.text =
+                currentLocationFromDB.city.plus(", ").plus(currentLocationFromDB.state)
+        } else {
+            tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+        }
     }
 
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
@@ -252,7 +277,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                      settingsViewModel.logOut()
+                        settingsViewModel.logOut()
                     }
                     btnNeg.id -> {
                         dismiss()
@@ -266,10 +291,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         openActivity(this@SettingsActivity, AccountSettingsActivity())
 
         //For Testing
-       /* val intent = Intent(this@SettingsActivity, MatchesScreenActivity::class.java)
-        intent.putExtra("username", "Demo");
-        intent.putExtra("profile_url", "");
-        openActivity(intent)*/
+        /* val intent = Intent(this@SettingsActivity, MatchesScreenActivity::class.java)
+         intent.putExtra("username", "Demo");
+         intent.putExtra("profile_url", "");
+         openActivity(intent)*/
     }
 
     fun onClickMyCurrentLocation(view: View) {

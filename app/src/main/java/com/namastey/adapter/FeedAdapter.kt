@@ -1,13 +1,24 @@
 package com.namastey.adapter
 
+
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.Player.*
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
 import com.namastey.listeners.OnFeedItemClick
@@ -26,8 +37,11 @@ class FeedAdapter(
     var onFeedItemClick: OnFeedItemClick,
     var sessionManager: SessionManager
 ) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+    private val TAG = "FeedAdapter"
 
     val handlerVideo = Handler(activity.mainLooper)
+    private lateinit var simpleExoPlayer: SimpleExoPlayer
+    private lateinit var mediaDataSourceFactory: DataSource.Factory
 
 //    private var timeCountInMilliSeconds: Long = 1 * 60000.toLong()
 //
@@ -50,8 +64,7 @@ class FeedAdapter(
         holder.bind(position)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) = with(itemView) {
             val dashboardBean = feedList[position]
 
@@ -63,28 +76,27 @@ class FeedAdapter(
 //            val mediaController = MediaController(activity)
 //            mediaController.setAnchorView(postVideo)
 //            postVideo.setMediaController(mediaController)
-
 //                var uri = Uri.parse("android.resource://" + activity.packageName + "/" + R.raw.signupvideo);
-
 //            postVideo.setVideoURI(Uri.parse("http://testyourapp.online/namasteyapp/public/uploads/post_video/c24de581af92c8a9e32a47a84a255d45.mp4"))
-
 //                postVideo.setVideoURI(Uri.parse(dashboardBean.video_url))
-                postVideo.setVideoPath(dashboardBean.video_url)
-                postVideo.requestFocus()
-                postVideo.start()
 
 
-                postVideo.setOnPreparedListener { mp ->
-                    //Start Playback
-                    postVideo.start()
+                /*  postVideo.setVideoPath(dashboardBean.video_url)
+                  postVideo.requestFocus()
+                  postVideo.start()
+                  postVideo.setOnPreparedListener { mp ->
+                      //Start Playback
+                      postVideo.start()
 
-                    handlerVideo.postDelayed({
-                        onFeedItemClick.onPostViewer(dashboardBean.id)
-                    }, 5000)
+                      handlerVideo.postDelayed({
+                          onFeedItemClick.onPostViewer(dashboardBean.id)
+                      }, 5000)
 
-                    //Loop Video
-                    mp!!.isLooping = true
-                }
+                      //Loop Video
+                      mp!!.isLooping = true
+                  }*/
+
+                initializePlayer(itemView, dashboardBean.video_url)
             }
 
             if (dashboardBean.is_comment == 1) {
@@ -339,45 +351,104 @@ class FeedAdapter(
         })
     }
 
-    /*private fun startStop(itemView: View) {
-        if (timerStatus === TimerStatus.STOPPED) {
-            setTimerValues()
-            setProgressBarValues(itemView)
-            timerStatus = TimerStatus.STARTED
-            startCountDownTimer(itemView)
-        } else {
-            timerStatus = TimerStatus.STOPPED
-            stopCountDownTimer()
-        }
-    }
+    private fun initializePlayer(itemView: View, videoUrl: String) {
 
-    private fun setTimerValues() {
-        val time = 1
-        timeCountInMilliSeconds = time * 30 * 1000.toLong()
-    }
+        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(activity)
 
-    private fun startCountDownTimer(itemView: View) {
-        countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                itemView.progressBarBoost.progress = (millisUntilFinished / 1000).toInt()
+        mediaDataSourceFactory =
+            DefaultDataSourceFactory(activity, Util.getUserAgent(activity, "mediaPlayerSample"))
+
+        val mediaSource = ProgressiveMediaSource.Factory(mediaDataSourceFactory)
+            .createMediaSource(Uri.parse(videoUrl))
+
+        simpleExoPlayer.prepare(mediaSource, false, false)
+        simpleExoPlayer.playWhenReady = true
+
+        itemView.playerView.setShutterBackgroundColor(Color.TRANSPARENT)
+        itemView.playerView.player = simpleExoPlayer
+        itemView.playerView.requestFocus()
+
+        simpleExoPlayer.addListener(object : EventListener {
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+                Log.e(
+                    TAG,
+                    "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
+                )
             }
 
-            override fun onFinish() {
-                setProgressBarValues(itemView)
-                // changing the timer status to stopped
-                timerStatus = TimerStatus.STOPPED
+            override fun onSeekProcessed() {
+                Log.e(TAG, "onSeekProcessed: ")
             }
-        }.start()
-        // countDownTimer.start()
+
+            override fun onTracksChanged(
+                trackGroups: TrackGroupArray?,
+                trackSelections: TrackSelectionArray?
+            ) {
+                Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
+                Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
+            }
+
+            override fun onPlayerError(error: ExoPlaybackException?) {
+                Log.e(TAG, "onPlayerError: error: ${error!!.message}")
+                Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
+            }
+
+            // * 4 playbackState exists
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                Log.e(TAG, "onPlayerError: playbackState: $playbackState")
+                when (playbackState) {
+                    STATE_BUFFERING -> {
+                        // progressBar.visibility = View.VISIBLE
+                        Log.e(TAG, "onPlayerStateChanged - STATE_BUFFERING")
+                        //toast("onPlayerStateChanged - STATE_BUFFERING")
+                    }
+                    STATE_READY -> {
+                        //  progressBar.visibility = View.INVISIBLE
+                        Log.e(TAG, "onPlayerStateChanged - STATE_READY")
+                        // toast("onPlayerStateChanged - STATE_READY")
+                    }
+                    STATE_IDLE -> {
+                        Log.e(TAG, "onPlayerStateChanged - STATE_IDLE")
+                        // toast("onPlayerStateChanged - STATE_IDLE")
+                    }
+                    STATE_ENDED -> {
+                        simpleExoPlayer.seekTo(0);
+                        Log.e(TAG, "onPlayerStateChanged - STATE_ENDED")
+                        //toast("onPlayerStateChanged - STATE_ENDED")
+                    }
+                }
+            }
+
+            override fun onLoadingChanged(isLoading: Boolean) {
+                Log.e(TAG, "onLoadingChanged: isLoading: $isLoading")
+            }
+
+            override fun onPositionDiscontinuity(reason: Int) {
+                Log.e(TAG, "onPositionDiscontinuity: reason: $reason")
+            }
+
+            override fun onRepeatModeChanged(repeatMode: Int) {
+                Log.e(TAG, "onRepeatModeChanged:\t repeatMode: $repeatMode ")
+                // Toast.makeText(activity, "repeat mode changed", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+                Log.e(
+                    TAG,
+                    "onShuffleModeEnabledChanged: : \t shuffleModeEnabled: $shuffleModeEnabled "
+                )
+            }
+
+            override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
+                Log.e(TAG, "onTimelineChanged: reason: $reason")
+            }
+        })
     }
 
-    private fun stopCountDownTimer() {
-        countDownTimer!!.cancel()
+    public fun releasePlayer() {
+        simpleExoPlayer.release()
     }
-
-    private fun setProgressBarValues(itemView: View) {
-        itemView.progressBarBoost.max = timeCountInMilliSeconds.toInt() / 1000
-        itemView.progressBarBoost.progress = timeCountInMilliSeconds.toInt() / 1000
-    }*/
 
 }

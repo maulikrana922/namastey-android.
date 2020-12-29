@@ -37,7 +37,7 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.recentUserDao().getExistingRecentUser(userId)
     }
 
-    fun deleteExistingUser(userId: Int){
+    fun deleteExistingUser(userId: Int) {
         return appDB.recentUserDao().deleteExistingUser(userId)
     }
 
@@ -46,7 +46,7 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.recentLocationDao().addRecentLocations(recentLocations)
     }
 
-     fun addAllRecentLocation(recentLocationList: ArrayList<RecentLocations>) {
+    fun addAllRecentLocation(recentLocationList: ArrayList<RecentLocations>) {
         return appDB.recentLocationDao().addAllRecentLocations(recentLocationList)
     }
 
@@ -54,11 +54,15 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.recentLocationDao().getAllRecentLocations()
     }
 
+    fun getLastRecentLocations(): RecentLocations {
+        return appDB.recentLocationDao().getLastRecentLocations()
+    }
+
     fun getExistingRecentLocation(locationId: Int): Boolean {
         return appDB.recentLocationDao().getExistingRecentLocations(locationId)
     }
 
-    fun deleteExistingLocation(locationId: Int){
+    fun deleteExistingLocation(locationId: Int) {
         return appDB.recentLocationDao().deleteExistingLocations(locationId)
     }
 

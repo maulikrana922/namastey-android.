@@ -104,7 +104,6 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:onClick="searchLocation"
                 android:src="@drawable/ic_current_location"
                 tools:ignore="ContentDescription" />
 

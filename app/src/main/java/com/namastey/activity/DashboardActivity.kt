@@ -2024,22 +2024,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onFailedMaxLike(msg: String, error: Int) {
         Log.e("DashboardActivity", "onFailedMaxLike: msg:\t  $msg \t error:\t  $error")
-        /* object : CustomAlertDialog(
-             this,
-             msg,
-             getString(R.string.ok),
-             ""
-         ) {
-             override fun onBtnClick(id: Int) {
-                 when (id) {
-                     btnPos.id -> {
-                         sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
-                         dismiss()
-                     }
-                 }
-             }
-         }.show()*/
-
+        sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
         showMembershipDialog(1)
     }
 

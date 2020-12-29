@@ -2,10 +2,11 @@ package com.namastey.activity
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -37,10 +38,14 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
+import com.namastey.roomDB.AppDB
+import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_search_location.*
+import org.jetbrains.anko.doAsync
 import java.util.*
 
 class SearchLocationActivity : FragmentActivity(),
@@ -61,6 +66,10 @@ class SearchLocationActivity : FragmentActivity(),
     private var apiKey = ""
     private var mResult: StringBuilder? = null
 
+
+    lateinit var dbHelper: DBHelper
+    private lateinit var appDb: AppDB
+
     /*  @Inject
       lateinit var viewModelFactory: ViewModelFactory
       private lateinit var activitySearchLocationBinding: ActivitySearchLocationBinding
@@ -74,11 +83,12 @@ class SearchLocationActivity : FragmentActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_search_location)
 
-        sessionManager = SessionManager(this)
+        appDb = AppDB.getAppDataBase(this)!!
+        dbHelper = DBHelper(appDb)
 
+        sessionManager = SessionManager(this)
         apiKey = getString(R.string.google_api_key)
 
         if (!Places.isInitialized()) {
@@ -137,12 +147,6 @@ class SearchLocationActivity : FragmentActivity(),
                             .append("""${prediction.getFullText(null)}""".trimIndent())
                         Log.e(TAG, prediction.placeId)
                         Log.e(TAG, prediction.getPrimaryText(null).toString())
-                        Toast.makeText(
-                            this@SearchLocationActivity,
-                            prediction.getPrimaryText(null)
-                                .toString() + "-" + prediction.getSecondaryText(null),
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                     Log.e("SearchLocationActivity", " mResult:\t $mResult")
                 }.addOnFailureListener { exception: Exception ->
@@ -195,14 +199,15 @@ class SearchLocationActivity : FragmentActivity(),
         autocompleteFragment!!.setPlaceFields(
             Arrays.asList(
                 Place.Field.ID,
-                Place.Field.NAME
+                Place.Field.NAME,
+                Place.Field.LAT_LNG
             )
         )
 
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-
-                Log.e("SearchLocationActivity", "place: \t ${place.address}")
+                Log.e("SearchLocationActivity", "place: \t ${place.latLng}")
+                getAddress(place.latLng!!.latitude, place.latLng!!.longitude)
                 mMap!!.clear()
                 mMap!!.addMarker(
                     MarkerOptions().position(place.latLng!!).icon(
@@ -225,6 +230,59 @@ class SearchLocationActivity : FragmentActivity(),
                 Log.e("SearchLocationActivity", "status: \t ${status.status}")
             }
         })
+    }
+
+    private fun getAddress(latitude: Double, longitude: Double) {
+
+        val addresses: List<Address>
+        val geoCoder: Geocoder = Geocoder(this, Locale.getDefault())
+
+        addresses = geoCoder.getFromLocation(
+            latitude,
+            longitude,
+            1
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        val address: String =
+            addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+        val city: String = addresses[0].locality
+        val state: String = addresses[0].adminArea
+        val country: String = addresses[0].countryName
+        val postalCode = if (addresses[0].postalCode != null && addresses[0].postalCode != "") {
+            addresses[0].postalCode
+        } else {
+            ""
+        }
+         val knownName = if (addresses[0].featureName != null && addresses[0].featureName != "") {
+            addresses[0].featureName
+        } else {
+            ""
+        }
+       // val knownName: String = addresses[0].featureName // Only if available else return NULL
+
+        Log.e("LocationActivity", "getAddress: \taddress: $address")
+        Log.e("LocationActivity", "getAddress: \tcity: $city")
+        Log.e("LocationActivity", "getAddress: \tstate: $state")
+        Log.e("LocationActivity", "getAddress: \tcountry: $country")
+        Log.e("LocationActivity", "getAddress: \tpostalCode: $postalCode")
+        Log.e("LocationActivity", "getAddress: \tknownName: $knownName")
+
+        val currentTime = System.currentTimeMillis()
+        val recentLocation = RecentLocations(
+            0,
+            city,
+            state,
+            country,
+            postalCode,
+            knownName,
+            currentTime,
+            latitude,
+            longitude
+        )
+        doAsync {
+            dbHelper.addRecentLocation(recentLocation)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -392,46 +450,9 @@ class SearchLocationActivity : FragmentActivity(),
         return bitmap
     }
 
-    fun searchLocation(view: View?) {
-
+    /*fun searchLocation(view: View?) {
         startActivity(Intent(this, LocationActivity::class.java))
-
-        /* val locationSearch: EditText = findViewById<EditText>(R.id.searchDestination)
-         val location: String = locationSearch.text.toString()
-         var addressList: List<Address>? = null
-         if (location != null || location != "") {
-             val geocoder = Geocoder(this)
-             try {
-                 addressList = geocoder.getFromLocationName(location, 1)
-             } catch (e: IOException) {
-                 e.printStackTrace()
-             }
-             val address: Address = addressList!![0]
-             val latLng = LatLng(address.latitude, address.longitude)
-             mMap!!.addMarker(
-                 MarkerOptions().position(latLng).icon(
-                     BitmapDescriptorFactory.fromBitmap(
-                         createCustomMarker(
-                             this@SearchLocationActivity,
-                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                             sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                         )
-                     )
-                 ).title(location)
-             )
-             mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-             Toast.makeText(
-                 applicationContext,
-                 address.latitude.toString() + " " + address.longitude,
-                 Toast.LENGTH_LONG
-             ).show()
-
-             Log.e(
-                 "SearchLocationActivity",
-                 "LatLong: \t ${address.latitude.toString() + " " + address.longitude}"
-             )
-         }*/
-    }
+    }*/
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         Log.e("SearchLocationActivity", "onConnectionFailed: \t ${p0.errorCode}")

@@ -23,8 +23,11 @@ interface RecentLocationsDao {
     fun updateRecentLocations(recentLocations: RecentLocations)
 
     // @Query(value = "SELECT * FROM recentLocations ORDER BY currentTime DESC LIMIT 0,5")
-    @Query(value = "SELECT * FROM recentLocations")
+    @Query(value = "SELECT * FROM recentLocations ORDER BY currentTime DESC LIMIT 0,5")
     fun getAllRecentLocations(): List<RecentLocations>
+
+    @Query(value = "SELECT * FROM recentLocations ORDER BY currentTime DESC LIMIT 1")
+    fun getLastRecentLocations(): RecentLocations
 
     @Query("SELECT * FROM recentLocations WHERE id = :locationId")
     fun getExistingRecentLocations(locationId: Int): Boolean
