@@ -73,8 +73,10 @@ class MessagesAdapter(
             }
 
             tvUsername.text = matchesListBean.username
-            tvLastTime.text =
-                Utils.convertTimestampToChatFormat(matchesListBean.chatMessage.timestamp)
+            if (matchesListBean.chatMessage.timestamp != -1L) {
+                tvLastTime.text =
+                    Utils.convertTimestampToChatFormat(matchesListBean.chatMessage.timestamp)
+            }
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
             if (matchesListBean.chatMessage.read || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {

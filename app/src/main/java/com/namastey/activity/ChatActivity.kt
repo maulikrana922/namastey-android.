@@ -143,34 +143,43 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
                 .document(chatId)
                 .collection(Constants.FirebaseConstant.LAST_MESSAGE)
-                .document(chatId)
 
-            docRef.get()
-                .addOnSuccessListener { document ->
+
+            docRef.addSnapshotListener { document, error ->
                     if (document != null) {
-                        Log.d("Success", "DocumentSnapshot data: ${document.data}")
-                        val chatMessage = document.toObject(ChatMessage::class.java)
-
-                        if (chatMessage != null) {
-                            unreadCount = chatMessage.unreadCount
-                            if (chatMessage.sender != sessionManager.getUserId()) {
-                                db.collection(Constants.FirebaseConstant.MESSAGES)
-                                    .document(chatId)
-                                    .collection(Constants.FirebaseConstant.LAST_MESSAGE)
-                                    .document(chatId).update(
+                        Log.d("Success", "DocumentSnapshot data: ")
+                        for (messageDocument in document.documents) {
+                            val chatMessage = messageDocument.toObject(ChatMessage::class.java)
+                            if (chatMessage != null) {
+                                unreadCount = chatMessage.unreadCount
+                                if (chatMessage.sender != sessionManager.getUserId()) {
+                                    docRef.document(chatId).update(
                                         "read", true,
                                         "unreadCount", 0
                                     )
+                                }
                             }
                         }
+//                        Log.d("Success", "DocumentSnapshot data: ${document.data}")
+//                        val chatMessage = document.toObject(ChatMessage::class.java)
+
+//                        if (chatMessage != null) {
+//                            unreadCount = chatMessage.unreadCount
+//                            if (chatMessage.sender != sessionManager.getUserId()) {
+//                                docRef.update(
+//                                        "read", true,
+//                                        "unreadCount", 0
+//                                    )
+//                            }
+//                        }
 
                     } else {
                         Log.d("TAG", "No such document")
                     }
                 }
-                .addOnFailureListener { exception ->
-                    Log.d("TAG", "get failed with ", exception)
-                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("TAG", "get failed with ", exception)
+//                }
 //            This part for isRead message or not
 
 //            myChatRef.child(chatId).addValueEventListener(object : ValueEventListener {
