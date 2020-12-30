@@ -16,8 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -55,16 +54,19 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private lateinit var chatAdapter: ChatAdapter
     private var matchesListBean = MatchesListBean()
     private var chatMsgList = ArrayList<ChatMessage>()
-//    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private var storage = Firebase.storage
     private var storageRef = storage.reference
+    private var unreadCount = 0
 //    private lateinit var lastVisible: DocumentSnapshot
 //    private var pageLimit = 5L
 //    private var isScrolling = false
 //    private var isLastItemReached = false
 
     private val db = Firebase.firestore
+    private lateinit var docReference: DocumentReference
 
     private val TAG = "ChatActivity"
     private var recorder: MediaRecorder? = null
@@ -137,6 +139,40 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             else
                 matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
 
+//            This part for isRead message or not
+            val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                .document(chatId)
+
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d("Success", "DocumentSnapshot data: ${document.data}")
+                        val chatMessage = document.toObject(ChatMessage::class.java)
+
+                        if (chatMessage != null) {
+                            unreadCount = chatMessage.unreadCount
+                            if (chatMessage.sender != sessionManager.getUserId()) {
+                                db.collection(Constants.FirebaseConstant.MESSAGES)
+                                    .document(chatId)
+                                    .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                                    .document(chatId).update(
+                                        "read", true,
+                                        "unreadCount", 0
+                                    )
+                            }
+                        }
+
+                    } else {
+                        Log.d("TAG", "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("TAG", "get failed with ", exception)
+                }
+//            This part for isRead message or not
+
 //            myChatRef.child(chatId).addValueEventListener(object : ValueEventListener {
 //                override fun onDataChange(dataSnapshot: DataSnapshot) {
 //                    // This method is called once with the initial value and again
@@ -177,8 +213,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)
             rvChat.adapter = chatAdapter
 
-            val messageCollection = db.collection(Constants.FirebaseConstant.MESSAGES)
-                .document(chatId).collection(Constants.FirebaseConstant.CHATS)
+//            val messageCollection = db.collection(Constants.FirebaseConstant.MESSAGES)
+//                .document(chatId).collection(Constants.FirebaseConstant.CHATS)
 //            val query =
 //                messageCollection
 //                    .orderBy("timestamp", Query.Direction.DESCENDING).limit(pageLimit)
@@ -202,8 +238,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 .document(chatId)
                 .collection(Constants.FirebaseConstant.CHATS)
                 .addSnapshotListener { messageSnapshot, exception ->
-                    if (messageSnapshot == null || messageSnapshot.isEmpty)
+                    if (messageSnapshot == null || messageSnapshot.isEmpty) {
+                        chatViewModel.setIsLoading(false)
                         return@addSnapshotListener
+                    }
                     chatMsgList.clear()
 //
 //                    for (dc in messageSnapshot.documentChanges) {
@@ -241,12 +279,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             }
                         }
                     }
-                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
-                        if (isFromProfile)
-                            chatViewModel.startChat(matchesListBean.id, 1)
-                        else if (!isFromMessage)
-                            chatViewModel.startChat(matchesListBean.id, 1)
-                    }
+//                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
+//                        if (isFromProfile)
+//                            chatViewModel.startChat(matchesListBean.id, 1)
+//                        else if (!isFromMessage)
+//                            chatViewModel.startChat(matchesListBean.id, 1)
+//                    }
                     chatViewModel.setIsLoading(false)
 
                     chatMsgList.sortBy { it.timestamp }
@@ -443,6 +481,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     override fun onDestroy() {
         chatViewModel.onDestroy()
         super.onDestroy()
+
     }
 
     fun onClickSendMessage(view: View) {
@@ -459,12 +498,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     private fun sendMessage(message: String, imageUrl: String) {
 
+        chatViewModel.startChat(matchesListBean.id, 1)
+
         val chatMessage = ChatMessage(
             message,
             sessionManager.getUserId(),
             matchesListBean.id,
             imageUrl,
-            System.currentTimeMillis()
+            System.currentTimeMillis(),
+            false,0
         )
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
             sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
@@ -496,10 +538,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 }
 
 //            Added last message
+            chatMessage.unreadCount = ++unreadCount
             db.collection(Constants.FirebaseConstant.MESSAGES)
                 .document(chatId)
                 .collection(Constants.FirebaseConstant.LAST_MESSAGE)
-                 .document(chatId).set(chatMessage)
+                .document(chatId).set(chatMessage)
                 .addOnSuccessListener { documentReference ->
                     Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference}")
                 }

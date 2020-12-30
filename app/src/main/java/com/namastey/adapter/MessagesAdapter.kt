@@ -6,22 +6,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.MatchesListBean
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
-import kotlinx.android.synthetic.main.row_category.view.*
 import kotlinx.android.synthetic.main.row_message.view.*
-import kotlinx.android.synthetic.main.row_message.view.mainCategoryView
-import kotlinx.android.synthetic.main.row_message.view.tvCategory
 
 class MessagesAdapter(
     var matchesList: ArrayList<MatchesListBean>,
     var activity: Activity,
-    var onMatchesItemClick: OnMatchesItemClick
+    var onMatchesItemClick: OnMatchesItemClick,
+    var sessionManager: SessionManager
 ) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -44,7 +44,7 @@ class MessagesAdapter(
 //            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
 
             llMessageView.setOnClickListener {
-                onMatchesItemClick.onMatchesItemClick(position, matchesListBean,true)
+                onMatchesItemClick.onMatchesItemClick(position, matchesListBean, true)
             }
 
             /*  if (matchesListBean.is_read == 1)
@@ -52,11 +52,12 @@ class MessagesAdapter(
               else
                   llMessage.visibility = View.GONE*/
 
-            if (matchesListBean.sub_cat_details != null && matchesListBean.sub_cat_details.size > 0) {
+            if (matchesListBean.sub_cat_details.size > 0) {
                 Log.e(
                     "MessagesAdapter",
                     "sub_cat_details: \t ${matchesListBean.sub_cat_details[0].name}"
                 )
+                mainCategoryView.visibility = View.VISIBLE
                 tvCategory.text = matchesListBean.sub_cat_details[0].name
 
                 Utils.rectangleShapeGradient(
@@ -67,30 +68,49 @@ class MessagesAdapter(
                 )
                 mainCategoryView.alpha = 0.5f
             } else {
-                tvCategory.visibility = View.GONE
+//                tvCategory.visibility = View.GONE
                 mainCategoryView.visibility = View.GONE
             }
 
             tvUsername.text = matchesListBean.username
-            tvLastTime.text = matchesListBean.timestamp
+            tvLastTime.text =
+                Utils.convertTimestampToChatFormat(matchesListBean.chatMessage.timestamp)
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
-            when (matchesListBean.message) {
+            if (matchesListBean.chatMessage.read || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {
+                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
+                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
+            } else {
+                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
+                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
+            }
+
+            when (matchesListBean.chatMessage.message) {
                 Constants.FirebaseConstant.MSG_TYPE_IMAGE -> {
                     tvLastMsg.text = activity.getString(R.string.image)
-                    tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_camera_blue, 0, 0, 0)
+                    tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_camera_blue,
+                        0,
+                        0,
+                        0
+                    )
                     tvLastMsg.compoundDrawablePadding = 10
                 }
                 Constants.FirebaseConstant.MSG_TYPE_VOICE -> {
-                    if (matchesListBean.url.isNotEmpty())
-                        tvLastMsg.text = Utils.getMediaDuration(matchesListBean.url)
+                    if (matchesListBean.chatMessage.url.isNotEmpty())
+                        tvLastMsg.text = Utils.getMediaDuration(matchesListBean.chatMessage.url)
                     else
                         tvLastMsg.text = activity.getString(R.string.voice_message)
-                    tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_microphone_blue, 0, 0, 0)
+                    tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_microphone_blue,
+                        0,
+                        0,
+                        0
+                    )
                     tvLastMsg.compoundDrawablePadding = 10
                 }
                 else -> {
-                    tvLastMsg.text = matchesListBean.message
+                    tvLastMsg.text = matchesListBean.chatMessage.message
                     tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }

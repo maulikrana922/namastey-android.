@@ -17,9 +17,7 @@ class MatchesListBean() : Parcelable {
     var profile_pic: String = ""
     var is_read: Int = 0
     var sub_cat_details: ArrayList<FollowRequestSubCategoryBean> = ArrayList()
-    var message: String = ""
-    var timestamp: String = ""
-    var url: String = ""
+    var chatMessage: ChatMessage = ChatMessage()
     var is_match: Int = 0
     var is_block: Int = 0
 
@@ -35,9 +33,7 @@ class MatchesListBean() : Parcelable {
         profile_pic = parcel.readString() ?: ""
         is_read = parcel.readInt() ?: 0
         sub_cat_details = parcel.createTypedArrayList(FollowRequestSubCategoryBean) ?: ArrayList()
-        message = parcel.readString() ?: ""
-        timestamp = parcel.readString() ?: ""
-        url = parcel.readString() ?: ""
+        chatMessage = parcel.readValue(ChatMessage::class.java.classLoader) as ChatMessage
         is_match = parcel.readInt() ?: 0
         is_block = parcel.readInt() ?: 0
     }
@@ -54,9 +50,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeString(profile_pic)
         parcel.writeInt(is_read)
         parcel.writeTypedList(sub_cat_details)
-        parcel.writeString(message)
-        parcel.writeString(timestamp)
-        parcel.writeString(url)
+        parcel.writeValue(chatMessage)
         parcel.writeInt(is_match)
         parcel.writeInt(is_block)
     }

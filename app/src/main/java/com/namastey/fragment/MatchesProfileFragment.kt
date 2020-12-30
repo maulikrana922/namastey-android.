@@ -108,6 +108,9 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             intent.putExtra("lastUserProfile", lastUserProfile)
             openActivity(intent)
         }
+
+        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this,sessionManager)
+        rvMessagesList.adapter = messagesAdapter
     }
 
     override fun onResume() {
@@ -132,7 +135,8 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     override fun onSuccessMessageList(chatMessageList: ArrayList<MatchesListBean>) {
-        messageList = chatMessageList
+        messageList.clear()
+        messageList.addAll(chatMessageList)
 
         if (messageList.isEmpty()) {
             ivNoMatch.visibility = View.VISIBLE
@@ -143,9 +147,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
         }
-
-        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this)
-        rvMessagesList.adapter = messagesAdapter
 
 //        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
 
@@ -175,7 +176,9 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 //        getMessageListQuery = myChatRef.child(chatId).orderByKey().limitToLast(1)
 
         val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
-            .document(chatId).collection(Constants.FirebaseConstant.LAST_MESSAGE).document(chatId)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId)
 
         docRef.get()
             .addOnSuccessListener { document ->
@@ -184,12 +187,14 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                     val chatMessage = document.toObject(ChatMessage::class.java)
 
                     if (chatMessage != null) {
-                        messageList[position].timestamp =
-                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                        messageList[position].message = chatMessage.message
-                        messageList[position].url = chatMessage.url
+                        messageList[position].chatMessage = chatMessage
+//                        messageList[position].timestamp =
+//                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+//                        messageList[position].message = chatMessage.message
+//                        messageList[position].url = chatMessage.url
                     }
-                    messagesAdapter.notifyDataSetChanged()
+//                    messageList.sortByDescending { it.timestamp }
+                    messagesAdapter.notifyItemChanged(position)
                 } else {
                     Log.d("TAG", "No such document")
                 }
@@ -197,6 +202,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             .addOnFailureListener { exception ->
                 Log.d("TAG", "get failed with ", exception)
             }
+
 
 //        messageListListener = getMessageListQuery.addValueEventListener(object : ValueEventListener {
 //            override fun onDataChange(dataSnapshot: DataSnapshot) {

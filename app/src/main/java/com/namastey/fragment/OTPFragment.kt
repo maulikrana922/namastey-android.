@@ -147,6 +147,9 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     private fun initUI() {
         if (sessionManager.getFirebaseToken() == "") {
             Log.e("OTPFragment", "getFirebaseToken: Empty")
+            //            val token = FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+//                sessionManager.setFirebaseToken(task.result)
+//            }
             val token = FirebaseInstanceId.getInstance().token
             Log.e("OTPFragment", "FCM Registration Token: $token")
             sessionManager.setFirebaseToken(token!!)
