@@ -101,6 +101,7 @@ class SearchLocationActivity : FragmentActivity(),
         //searchOnCustomView()
         searchPlace()
         initData()
+        //getIntentData()
     }
 
     private fun initData() {
@@ -108,6 +109,17 @@ class SearchLocationActivity : FragmentActivity(),
             "SearchLocationActivity",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
         )
+    }
+
+    private fun getIntentData() {
+        if (intent.extras != null) {
+            latitude = intent.extras!!.getDouble("latitude", 0.0)
+            longitude = intent.extras!!.getDouble("longitude", 0.0)
+
+            Log.e("SearchLocationActivity", " latitude:\t $latitude")
+            Log.e("SearchLocationActivity", " longitude:\t $longitude")
+        }
+
     }
 
     /**
@@ -254,12 +266,12 @@ class SearchLocationActivity : FragmentActivity(),
         } else {
             ""
         }
-         val knownName = if (addresses[0].featureName != null && addresses[0].featureName != "") {
+        val knownName = if (addresses[0].featureName != null && addresses[0].featureName != "") {
             addresses[0].featureName
         } else {
             ""
         }
-       // val knownName: String = addresses[0].featureName // Only if available else return NULL
+        // val knownName: String = addresses[0].featureName // Only if available else return NULL
 
         Log.e("LocationActivity", "getAddress: \taddress: $address")
         Log.e("LocationActivity", "getAddress: \tcity: $city")
@@ -361,9 +373,24 @@ class SearchLocationActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        latitude = location.latitude
-        longitude = location.longitude
-        val latLng = LatLng(location.latitude, location.longitude)
+        if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0  && intent.extras!!.getDouble("longitude") != 0.0  ) {
+
+            latitude = intent.extras!!.getDouble("latitude", 0.0)
+            longitude = intent.extras!!.getDouble("longitude", 0.0)
+
+            Log.e("SearchLocationActivity", "extras latitude:\t $latitude")
+            Log.e("SearchLocationActivity", "extras longitude:\t $longitude")
+
+
+        } else {
+            latitude = location.latitude
+            longitude = location.longitude
+
+            Log.e("SearchLocationActivity", " latitude:\t $latitude")
+            Log.e("SearchLocationActivity", " longitude:\t $longitude")
+        }
+
+        val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions()
         markerOptions.position(latLng)
         markerOptions.title("Current Position")
