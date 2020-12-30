@@ -82,9 +82,14 @@ class MessagesAdapter(
             if (matchesListBean.chatMessage.read || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
+                tvUnreadMsg.visibility = View.GONE
             } else {
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
+                if (matchesListBean.chatMessage.unreadCount != 0) {
+                    tvUnreadMsg.visibility = View.VISIBLE
+                    tvUnreadMsg.text = matchesListBean.chatMessage.unreadCount.toString()
+                }
             }
 
             when (matchesListBean.chatMessage.message) {

@@ -152,7 +152,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             val chatMessage = messageDocument.toObject(ChatMessage::class.java)
                             if (chatMessage != null) {
                                 unreadCount = chatMessage.unreadCount
-                                if (chatMessage.sender != sessionManager.getUserId()) {
+                                if (chatMessage.sender == matchesListBean.id && chatMessage.receiver == sessionManager.getUserId()) {
                                     docRef.document(chatId).update(
                                         "read", true,
                                         "unreadCount", 0
