@@ -42,8 +42,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     private var distance = ""
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
-    private lateinit var currentLocationFromDB: RecentLocations
-
+    private var currentLocationFromDB: RecentLocations? = null
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     override fun getViewModel() = settingsViewModel
 
@@ -170,16 +171,21 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
 
             }
         }
-
     }
 
     private fun setCurrentLocation() {
         currentLocationFromDB = dbHelper.getLastRecentLocations()
-        Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.id}")
-        Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
-        if (currentLocationFromDB.city != "" && currentLocationFromDB.state != "") {
-            tvMyCurrentLocation.text =
-                currentLocationFromDB.city.plus(", ").plus(currentLocationFromDB.state)
+        //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.id}")
+        //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
+        if (currentLocationFromDB != null) {
+            latitude = currentLocationFromDB!!.latitude
+            longitude = currentLocationFromDB!!.longitude
+        }
+        if (currentLocationFromDB != null) {
+            if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
+                tvMyCurrentLocation.text =
+                    currentLocationFromDB!!.city.plus(", ").plus(currentLocationFromDB!!.state)
+            }
         } else {
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
@@ -298,6 +304,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     }
 
     fun onClickMyCurrentLocation(view: View) {
-        openActivity(this, PassportContentActivity())
+        val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
+        intent.putExtra("latitude", latitude)
+        intent.putExtra("longitude", longitude)
+        openActivity(intent)
+        // openActivity(this, PassportContentActivity())
     }
 }

@@ -203,6 +203,6 @@ dependencies {
     implementation 'me.tankery.lib:circularSeekBar:1.3.0'
 
     //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.0'
-
+   // implementation 'com.google.android.exoplayer:exoplayer:2.10.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
 }
