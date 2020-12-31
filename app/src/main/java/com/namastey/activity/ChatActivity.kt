@@ -140,6 +140,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
             else
                 matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
+            db.clearPersistence()
 
 //            This part for isRead message or not
             val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)

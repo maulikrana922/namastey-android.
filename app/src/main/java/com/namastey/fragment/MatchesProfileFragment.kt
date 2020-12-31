@@ -179,7 +179,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             messageUserId.toString().plus("_").plus(sessionManager.getUserId())
 
 //        getMessageListQuery = myChatRef.child(chatId).orderByKey().limitToLast(1)
-
+        db.clearPersistence()
         val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
             .document(chatId)
             .collection(Constants.FirebaseConstant.LAST_MESSAGE)
