@@ -1729,6 +1729,16 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         intentMatchesActivity.putExtra("onFollowRequest", true)
                         openActivity(intentMatchesActivity)
                     }
+                    "7" -> { // For chat notification
+                        val intentMatchesActivity =
+                            Intent(this@DashboardActivity, MatchesActivity::class.java)
+                        intentMatchesActivity.putExtra("isFromMessage", true)
+                        intentMatchesActivity.putExtra("chatNotification", true)
+                        Log.d("Chat notification :","7 pass")
+                        val matchesListBean = intent.getParcelableExtra<MatchesListBean>("matchesListBean")
+                        intentMatchesActivity.putExtra("matchesListBean",matchesListBean)
+                        openActivity(intentMatchesActivity)
+                    }
                     else -> { // Default
                         val intentMatchesActivity =
                             Intent(this@DashboardActivity, MatchesActivity::class.java)

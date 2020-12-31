@@ -37,8 +37,8 @@ class LikeProfileAdapter(
         fun bind(position: Int) = with(itemView) {
             val videoBean = videoBeanList[position]
 
-            Log.e("LikeProfileAdapter", "profile_url: ${videoBean.profile_url}")
-            Log.e("LikeProfileAdapter", "profile_url: ${videoBean.profile_pic}")
+//            Log.e("LikeProfileAdapter", "profile_url: ${videoBean.profile_url}")
+//            Log.e("LikeProfileAdapter", "profile_url: ${videoBean.profile_pic}")
 
             GlideLib
                 .loadImage(

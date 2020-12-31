@@ -141,6 +141,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
     override fun onSuccessMessageList(chatMessageList: ArrayList<MatchesListBean>) {
         messageList.clear()
+        messagesAdapter.notifyDataSetChanged()
         messageList.addAll(chatMessageList)
 
         if (messageList.isEmpty()) {
