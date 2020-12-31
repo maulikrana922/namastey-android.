@@ -84,8 +84,8 @@ class MessagesAdapter(
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
                 tvUnreadMsg.visibility = View.GONE
             } else {
-                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
-                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorGreen))
+                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
+                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
                 if (matchesListBean.chatMessage.unreadCount != 0) {
                     tvUnreadMsg.visibility = View.VISIBLE
                     tvUnreadMsg.text = matchesListBean.chatMessage.unreadCount.toString()

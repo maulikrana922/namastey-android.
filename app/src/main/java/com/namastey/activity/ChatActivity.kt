@@ -157,7 +157,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 unreadCount = chatMessage.unreadCount
                                 if (chatMessage.sender == matchesListBean.id && chatMessage.receiver == sessionManager.getUserId()) {
                                     docRef.document(chatId).update(
-                                        "read", true,
+                                        "read", 1,
                                         "unreadCount", 0
                                     )
                                 }
