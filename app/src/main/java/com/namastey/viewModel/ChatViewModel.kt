@@ -112,11 +112,11 @@ class ChatViewModel constructor(
                 networkService.requestToStartChat(messageUserId, isChat).let { appResponse ->
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccess(appResponse.message)
-                    else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+//                    else
+//                        chatBasicView.onFailed(appResponse.message, appResponse.error)
                 }
             } catch (t: Throwable) {
-                chatBasicView.onHandleException(t)
+//                chatBasicView.onHandleException(t)
             }
         }
     }

@@ -17,9 +17,11 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
+import com.namastey.activity.ChatActivity
 import com.namastey.activity.DashboardActivity
 import com.namastey.activity.MatchesActivity
 import com.namastey.activity.ProfileActivity
+import com.namastey.model.MatchesListBean
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import org.json.JSONException
@@ -104,12 +106,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 postImage = mainJsonObject.getString("post_image")
                 getNotification.postImage = postImage
             }
+            if (mainJsonObject.has("profile_pic")) {
+                postImage = mainJsonObject.getString("profile_pic")
+                getNotification.postImage = postImage
+            }
             if (mainJsonObject.has("is_read")) {
                 val isRead = mainJsonObject.getString("is_read")
                 getNotification.isRead = isRead
             }
 
-            showNotification(
+            showNotification(mainJsonObject,
                 getNotification.title,
                 getNotification.message,
                 postImage
@@ -137,6 +143,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(
+        jsonObject: JSONObject,
         title: String?,
         body: String?,
         postImage: String
@@ -195,6 +202,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         }*/
 
+        var openChatActivity = false
         if (isBackground()) {
             intent = Intent(this, DashboardActivity::class.java)
             intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
@@ -203,6 +211,24 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_PENDING_INTENT)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+            if (getNotification.isNotificationType == "7"){
+//                intent =
+//                    Intent(this, DashboardActivity::class.java)
+                val matchesListBean = MatchesListBean()
+                matchesListBean.username = jsonObject.getString("username")
+                matchesListBean.profile_pic = jsonObject.getString("profile_pic")
+                matchesListBean.id = jsonObject.getLong("user_id")
+                matchesListBean.is_match = jsonObject.getInt("is_match")
+                intent.putExtra("isFromMessage", true)
+                intent.putExtra("chatNotification", true)
+                intent.putExtra("matchesListBean",matchesListBean)
+                Log.d("Chat notification :","6 pass")
+                if (ChatActivity.isChatActivityOpen){
+                    if (ChatActivity.userId == matchesListBean.id)
+                        openChatActivity = true
+                }
+            }
         } else {
             intent = Intent(this, DashboardActivity::class.java)
             intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
@@ -247,46 +273,71 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         Intent(this, MatchesActivity::class.java)
                     intent.putExtra("onFollowRequest", true)
                 }
-                else -> { // Default
+                "7" -> { // For New message
                     intent =
-                        Intent(this, MatchesActivity::class.java)
-                    intent.putExtra("onClickMatches", false)
+                        Intent(this, ChatActivity::class.java)
+                    val matchesListBean = MatchesListBean()
+                    matchesListBean.username = jsonObject.getString("username")
+                    matchesListBean.profile_pic = jsonObject.getString("profile_pic")
+                    matchesListBean.id = jsonObject.getLong("user_id")
+                    matchesListBean.is_match = jsonObject.getInt("is_match")
+                    intent.putExtra("isFromMessage", true)
+                    intent.putExtra("chatNotification", true)
+                    intent.putExtra("matchesListBean",matchesListBean)
+                    Log.d("Chat notification :","6 pass")
+                    if (ChatActivity.isChatActivityOpen){
+                        if (ChatActivity.userId == matchesListBean.id)
+                            openChatActivity = true
+                    }
+
+                }
+                else -> { // Default
+//                    intent =
+//                        Intent(this, MatchesActivity::class.java)
+//                    intent.putExtra("onClickMatches", false)
+                    intent =
+                        Intent(this, DashboardActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 }
             }
         }
         //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        val channelId = getString(R.string.channel_id)
-        val channelName = getString(R.string.notifiy)
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (!openChatActivity) {
+            val pendingIntent =
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+            val channelId = getString(R.string.channel_id)
+            val channelName = getString(R.string.notifiy)
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setupNotificationChannels(channelId, channelName, notificationManager)
+            // Since android Oreo notification channel is needed.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setupNotificationChannels(channelId, channelName, notificationManager)
+            }
+
+            val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val notificationBuilder = NotificationCompat.Builder(this, channelId)
+                //.setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                //.setSmallIcon(getNotificationIcon(NotificationCompat.Builder(this, channelId)))
+                .setLargeIcon(getBitmapFromURL(postImage))
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSound(soundUri)
+                .setContentIntent(pendingIntent)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                notificationBuilder.setDefaults(NotificationManager.IMPORTANCE_HIGH)
+            } else {
+                notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            }
+
+            notificationManager.notify(getNotification.notificationCount.toInt(), notificationBuilder.build())
         }
-
-        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            //.setSmallIcon(R.mipmap.ic_launcher)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            //.setSmallIcon(getNotificationIcon(NotificationCompat.Builder(this, channelId)))
-            .setLargeIcon(getBitmapFromURL(postImage))
-            .setContentTitle(title)
-            .setContentText(body)
-            .setAutoCancel(true)
-            .setSound(soundUri)
-            .setContentIntent(pendingIntent)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            notificationBuilder.setDefaults(NotificationManager.IMPORTANCE_HIGH)
-        } else {
-            notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-        }
-
-        notificationManager.notify(0, notificationBuilder.build())
     }
 
     private fun getNotificationIcon(notificationBuilder: NotificationCompat.Builder): Int {

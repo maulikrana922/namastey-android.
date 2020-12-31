@@ -369,29 +369,29 @@ class FeedAdapter(
         itemView.playerView.requestFocus()
 
         simpleExoPlayer.addListener(object : EventListener {
-            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
-                Log.e(
-                    TAG,
-                    "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
-                )
-            }
+//            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+//                Log.e(
+//                    TAG,
+//                    "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
+//                )
+//            }
 
             override fun onSeekProcessed() {
                 Log.e(TAG, "onSeekProcessed: ")
             }
 
-            override fun onTracksChanged(
-                trackGroups: TrackGroupArray?,
-                trackSelections: TrackSelectionArray?
-            ) {
-                Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
-                Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
-            }
+//            override fun onTracksChanged(
+//                trackGroups: TrackGroupArray?,
+//                trackSelections: TrackSelectionArray?
+//            ) {
+//                Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
+//                Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
+//            }
 
-            override fun onPlayerError(error: ExoPlaybackException?) {
-                Log.e(TAG, "onPlayerError: error: ${error!!.message}")
-                Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
-            }
+//            override fun onPlayerError(error: ExoPlaybackException?) {
+//                Log.e(TAG, "onPlayerError: error: ${error!!.message}")
+//                Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
+//            }
 
             // * 4 playbackState exists
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
@@ -440,10 +440,10 @@ class FeedAdapter(
                 )
             }
 
-            override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
-                Log.e(TAG, "onTimelineChanged: reason: $reason")
-            }
+//            override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+//                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
+//                Log.e(TAG, "onTimelineChanged: reason: $reason")
+//            }
         })
     }
 

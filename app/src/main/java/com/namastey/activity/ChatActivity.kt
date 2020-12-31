@@ -75,10 +75,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var voiceFileName: String? = ""
     private var isFromProfile = false
     private var isFromMessage = false
+    private var chatNotification = false
     private var whoCanSendMessage: Int = -1
     private var isFollowMe = false
     private var characterCount: Int = 0
 
+    companion object{
+        var isChatActivityOpen = false
+        var userId: Long = 0L
+    }
     override fun getViewModel() = chatViewModel
 
     override fun getLayoutId() = R.layout.activity_chat
@@ -94,6 +99,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         activityChatBinding = bindViewData()
         activityChatBinding.viewModel = chatViewModel
 
+        isChatActivityOpen = true
         initData()
     }
 
@@ -118,6 +124,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             if (intent.hasExtra("isFromMessage"))
                 isFromMessage = intent.getBooleanExtra("isFromMessage", false)
 
+            if (intent.hasExtra("chatNotification"))
+                chatNotification = intent.getBooleanExtra("chatNotification", false)
+
             if (matchesListBean.is_match == 1 || whoCanSendMessage == 0 || isFromMessage)
                 chatToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
             else {
@@ -133,6 +142,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             if (matchesListBean.is_read == 0) {
                 chatViewModel.readMatches(matchesListBean.id, 1)
             }
+            userId = matchesListBean.id
             chatViewModel.setIsLoading(true)
 //            myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
 
@@ -492,6 +502,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     override fun onDestroy() {
         chatViewModel.onDestroy()
+        isChatActivityOpen = false
+        userId = 0
         super.onDestroy()
         if (::listenerRegistration.isInitialized)
             listenerRegistration.remove()
@@ -500,7 +512,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     fun onClickSendMessage(view: View) {
         if (edtMessage.text.trim().isNotEmpty()) {
             characterCount += edtMessage.text.length
-            if (matchesListBean.is_match == 1 || isFollowMe)
+            if (chatNotification){
+                sendMessage(edtMessage.text.toString(), "")
+            }else if (matchesListBean.is_match == 1 || isFollowMe)
                 sendMessage(edtMessage.text.toString(), "")
             else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER) {   // your can send 280 character with public account else purchase plan
                 Log.d("ChatActivity : ", "Count  $characterCount")
@@ -742,6 +756,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         super.onStop()
         recorder?.release()
         recorder = null
+        isChatActivityOpen = false
+        userId = 0
 //        player?.release()
 //        player = null
     }

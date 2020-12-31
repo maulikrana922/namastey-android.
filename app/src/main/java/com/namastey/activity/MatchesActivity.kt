@@ -1,7 +1,9 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -16,6 +18,7 @@ import com.namastey.databinding.ActivityMatchesBinding
 import com.namastey.fragment.FollowRequestFragment
 import com.namastey.fragment.MatchesProfileFragment
 import com.namastey.fragment.NotificationFragment
+import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -58,6 +61,14 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
                 tabMatchesProfile.getTabAt(0)?.select()
             else
                 tabMatchesProfile.getTabAt(1)?.select()
+        }else if (intent.hasExtra("chatNotification")){
+            val intentChat = Intent(this@MatchesActivity, ChatActivity::class.java)
+            intentChat.putExtra("isFromMessage", true)
+            intentChat.putExtra("chatNotification", true)
+            Log.d("Chat notification :","8 pass")
+            val matchesListBean = intent.getParcelableExtra<MatchesListBean>("matchesListBean")
+            intentChat.putExtra("matchesListBean", matchesListBean)
+            openActivity(intentChat)
         }
 
         if (intent.hasExtra("onFollowRequest")) {
