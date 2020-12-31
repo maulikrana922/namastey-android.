@@ -408,7 +408,9 @@ interface NetworkRequest {
     @POST(Constants.GET_NEW_FEED_LIST)
     fun requestToGetNewFeedListAsync(
         @Field(Constants.PAGE) page: Int,
-        @Field(Constants.SUB_CAT_ID) subCatId: Int
+        @Field(Constants.SUB_CAT_ID) subCatId: Int,
+        @Field(Constants.LAT) lat: Double,
+        @Field(Constants.LNG) lng: Double
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
 }

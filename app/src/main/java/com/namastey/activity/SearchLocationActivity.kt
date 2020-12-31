@@ -2,6 +2,7 @@ package com.namastey.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -66,9 +67,10 @@ class SearchLocationActivity : FragmentActivity(),
     private var apiKey = ""
     private var mResult: StringBuilder? = null
 
-
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
+
+    private var isFromPassportContentActivity = false
 
     /*  @Inject
       lateinit var viewModelFactory: ViewModelFactory
@@ -109,15 +111,17 @@ class SearchLocationActivity : FragmentActivity(),
             "SearchLocationActivity",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
         )
+        getIntentData()
     }
 
     private fun getIntentData() {
         if (intent.extras != null) {
-            latitude = intent.extras!!.getDouble("latitude", 0.0)
-            longitude = intent.extras!!.getDouble("longitude", 0.0)
+            isFromPassportContentActivity = intent.extras!!.getBoolean("isFromPassPort", false)
 
-            Log.e("SearchLocationActivity", " latitude:\t $latitude")
-            Log.e("SearchLocationActivity", " longitude:\t $longitude")
+            Log.e(
+                "SearchLocationActivity",
+                " isFromPassportContentActivity:\t $isFromPassportContentActivity"
+            )
         }
 
     }
@@ -373,15 +377,15 @@ class SearchLocationActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0  && intent.extras!!.getDouble("longitude") != 0.0  ) {
-
+        if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0 && intent.extras!!.getDouble(
+                "longitude"
+            ) != 0.0
+        ) {
             latitude = intent.extras!!.getDouble("latitude", 0.0)
             longitude = intent.extras!!.getDouble("longitude", 0.0)
 
             Log.e("SearchLocationActivity", "extras latitude:\t $latitude")
             Log.e("SearchLocationActivity", "extras longitude:\t $longitude")
-
-
         } else {
             latitude = location.latitude
             longitude = location.longitude
@@ -487,7 +491,14 @@ class SearchLocationActivity : FragmentActivity(),
     }
 
     override fun onBackPressed() {
-        finish()
+        if (isFromPassportContentActivity) {
+            val intent = Intent(this@SearchLocationActivity, PassportContentActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            this@SearchLocationActivity.finish()
+        } else {
+            finish()
+        }
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
     }
 

@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.listeners.OnRecentLocationClick
 import com.namastey.roomDB.entity.RecentLocations
 import kotlinx.android.synthetic.main.row_current_location.view.*
 
 class CurrentLocationAdapter(
     var activity: Activity,
-    var locationBeanList: ArrayList<RecentLocations>
+    var locationBeanList: ArrayList<RecentLocations>,
+    var onRecentLocationClick: OnRecentLocationClick
 ) : RecyclerView.Adapter<CurrentLocationAdapter.ViewHolder>() {
     private var checkedPosition = 0
 
@@ -92,6 +94,7 @@ class CurrentLocationAdapter(
                         R.color.colorBlueLight
                     )
                 )
+                onRecentLocationClick.onRecentLocationItemClick(locationBean)
                 if (checkedPosition != adapterPosition) {
                     notifyItemChanged(checkedPosition)
                     checkedPosition = adapterPosition

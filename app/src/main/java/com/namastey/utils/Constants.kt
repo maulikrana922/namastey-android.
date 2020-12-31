@@ -210,6 +210,7 @@ object Constants {
     const val KEY_CHOOSE_INTEREST_LIST = "KEY_CHOOSE_INTEREST_LIST"
     const val KEY_MAX_USER_LIKE = "KEY_MAX_USER_LIKE"
     const val KEY_BOOST_ME = "KEY_BOOST_ME"
+    const val KEY_SET_RECENT_LOCATION = "KEY_SET_RECENT_LOCATION"
 
 
     //    field key
@@ -280,6 +281,8 @@ object Constants {
     const val MESSAGE_USER_ID = "message_user_id"
     const val IS_CHAT = "is_chat"
     const val PAGE = "page"
+    const val LAT = "lat"
+    const val LNG = "lng"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

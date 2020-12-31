@@ -18,6 +18,7 @@ import com.namastey.R
 import com.namastey.adapter.CurrentLocationAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityLocationBinding
+import com.namastey.listeners.OnRecentLocationClick
 import com.namastey.location.AppLocationService
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
@@ -27,12 +28,13 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location.*
+import org.jetbrains.anko.doAsync
 import java.util.*
 import javax.inject.Inject
 
 
-class LocationActivity : BaseActivity<ActivityLocationBinding>(),
-    LocationView{
+class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocationClick,
+    LocationView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -47,6 +49,15 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
     private lateinit var currentLocationAdapter: CurrentLocationAdapter
     private lateinit var appLocationService: AppLocationService
     private lateinit var locationListFromDB: ArrayList<RecentLocations>
+
+    private var city = ""
+    private var state = ""
+    private var country = ""
+    private var postalCode = ""
+    private var knownName = ""
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+
 
     override fun getViewModel() = locationViewModel
 
@@ -94,7 +105,8 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
         if (locationListFromDB.size != 0) {
             currentLocationAdapter = CurrentLocationAdapter(
                 this,
-                locationListFromDB
+                locationListFromDB,
+                this
             )
             rvLocation.adapter = currentLocationAdapter
         }
@@ -105,8 +117,8 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
 
         val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
         if (gpsLocation != null) {
-            val latitude: Double = gpsLocation.latitude
-            val longitude: Double = gpsLocation.longitude
+            latitude = gpsLocation.latitude
+            longitude = gpsLocation.longitude
             val result = "Latitude: " + gpsLocation.latitude.toString() +
                     " Longitude: " + gpsLocation.longitude
 
@@ -159,11 +171,11 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
             val address: String =
                 addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
-            val city: String = addresses[0].locality
-            val state: String = addresses[0].adminArea
-            val country: String = addresses[0].countryName
-            val postalCode: String = addresses[0].postalCode
-            val knownName: String = addresses[0].featureName // Only if available else return NULL
+            city = addresses[0].locality
+            state = addresses[0].adminArea
+            country = addresses[0].countryName
+            postalCode = addresses[0].postalCode
+            knownName = addresses[0].featureName // Only if available else return NULL
 
             if (knownName != null && knownName != "" || city != null && city != "" || state != null && state != "") {
                 tvMyCurrentLocation.text = "$knownName $city $state"
@@ -256,4 +268,32 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(),
         super.onDestroy()
     }
 
+    override fun onRecentLocationItemClick(recentLocation: RecentLocations) {
+        sessionManager.setBooleanValue(true, Constants.KEY_SET_RECENT_LOCATION)
+        val intent = Intent(this@LocationActivity, SearchLocationActivity::class.java)
+        intent.putExtra("latitude", recentLocation.latitude)
+        intent.putExtra("longitude", recentLocation.longitude)
+        openActivity(intent)
+    }
+
+    fun onClickMyCurrentLocation(view: View) {
+
+        val currentTime = System.currentTimeMillis()
+        val recentLocation = RecentLocations(
+            0,
+            city,
+            state,
+            country,
+            postalCode,
+            knownName,
+            currentTime,
+            latitude,
+            longitude
+        )
+
+        doAsync {
+            dbHelper.addRecentLocation(recentLocation)
+        }
+
+    }
 }
