@@ -119,6 +119,11 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchesProfileViewModel.getChatMessageList()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (::listenerRegistration.isInitialized)
+            listenerRegistration.remove()
+    }
     override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean, fromMessage: Boolean) {
         val intent = Intent(requireActivity(), ChatActivity::class.java)
         intent.putExtra("isFromMessage", fromMessage)
@@ -180,8 +185,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             .collection(Constants.FirebaseConstant.LAST_MESSAGE)
             .document(chatId)
 
-        docRef.get()
-            .addOnSuccessListener { document ->
+        listenerRegistration = docRef.addSnapshotListener { document, error ->
                 if (document != null) {
                     Log.d("Success", "DocumentSnapshot data: ${document.data}")
                     val chatMessage = document.toObject(ChatMessage::class.java)
@@ -199,9 +203,9 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                     Log.d("TAG", "No such document")
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "get failed with ", exception)
-            }
+//            .addOnFailureListener { exception ->
+//                Log.d("TAG", "get failed with ", exception)
+//            }
 
 
 //        messageListListener = getMessageListQuery.addValueEventListener(object : ValueEventListener {

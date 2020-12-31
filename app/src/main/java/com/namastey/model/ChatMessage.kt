@@ -9,18 +9,18 @@ class ChatMessage(
     var receiver: Long,
     var url: String,
     var timestamp: Long,
-    var read: Boolean,
+    var read: Int,
     var unreadCount: Int
 ) : Parcelable {
-    constructor() : this("", -1, -1, "", -1, false,0)
+    constructor() : this("", -1, -1, "", -1, 0,0)
 
-    constructor(parcel: Parcel) : this("", -1, -1, "", -1, false,0) {
+    constructor(parcel: Parcel) : this("", -1, -1, "", -1, 0,0) {
         message = parcel.readString() ?: ""
         sender = parcel.readLong() ?: 0
         receiver = parcel.readLong() ?: 0
         url = parcel.readString() ?: ""
         timestamp = parcel.readLong() ?: 0
-        read = parcel.readBoolean()
+        read = parcel.readInt() ?: 0
         unreadCount = parcel.readInt()
     }
 
@@ -30,7 +30,7 @@ class ChatMessage(
         parcel.writeLong(receiver)
         parcel.writeString(url)
         parcel.writeLong(timestamp)
-        parcel.writeByte(if (read) 1 else 0)
+        parcel.writeInt(read)
         parcel.writeInt(unreadCount)
     }
 

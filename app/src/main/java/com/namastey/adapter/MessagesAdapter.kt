@@ -79,7 +79,7 @@ class MessagesAdapter(
             }
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
-            if (matchesListBean.chatMessage.read || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {
+            if (matchesListBean.chatMessage.read == 1 || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
                 tvUnreadMsg.visibility = View.GONE

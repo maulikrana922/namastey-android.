@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -67,6 +68,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     private val db = Firebase.firestore
     private lateinit var docReference: DocumentReference
+    private lateinit var listenerRegistration: ListenerRegistration
 
     private val TAG = "ChatActivity"
     private var recorder: MediaRecorder? = null
@@ -145,7 +147,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 .collection(Constants.FirebaseConstant.LAST_MESSAGE)
 
 
-            docRef.addSnapshotListener { document, error ->
+            listenerRegistration = docRef.addSnapshotListener { document, error ->
                     if (document != null) {
                         Log.d("Success", "DocumentSnapshot data: ")
                         for (messageDocument in document.documents) {
@@ -490,7 +492,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     override fun onDestroy() {
         chatViewModel.onDestroy()
         super.onDestroy()
-
+        if (::listenerRegistration.isInitialized)
+            listenerRegistration.remove()
     }
 
     fun onClickSendMessage(view: View) {
@@ -515,7 +518,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             matchesListBean.id,
             imageUrl,
             System.currentTimeMillis(),
-            false,0
+            0,0
         )
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
             sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
