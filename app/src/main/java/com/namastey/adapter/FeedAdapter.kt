@@ -11,13 +11,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.*
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
@@ -42,6 +47,8 @@ class FeedAdapter(
     val handlerVideo = Handler(activity.mainLooper)
     private lateinit var simpleExoPlayer: SimpleExoPlayer
     private lateinit var mediaDataSourceFactory: DataSource.Factory
+    var lastWindowIndex = 0
+    private var expoPLayerList: ArrayList<SimpleExoPlayer> = arrayListOf()
 
 //    private var timeCountInMilliSeconds: Long = 1 * 60000.toLong()
 //
@@ -81,22 +88,28 @@ class FeedAdapter(
 //                postVideo.setVideoURI(Uri.parse(dashboardBean.video_url))
 
 
-                /*  postVideo.setVideoPath(dashboardBean.video_url)
-                  postVideo.requestFocus()
-                  postVideo.start()
-                  postVideo.setOnPreparedListener { mp ->
-                      //Start Playback
-                      postVideo.start()
 
-                      handlerVideo.postDelayed({
-                          onFeedItemClick.onPostViewer(dashboardBean.id)
-                      }, 5000)
+                /* postVideo.setVideoPath(dashboardBean.video_url)
+                 postVideo.requestFocus()
+                 postVideo.start()
+                 postVideo.setOnPreparedListener { mp ->
+                     //Start Playback
+                     postVideo.start()
 
-                      //Loop Video
-                      mp!!.isLooping = true
-                  }*/
+                     handlerVideo.postDelayed({
+                         onFeedItemClick.onPostViewer(dashboardBean.id)
+                     }, 5000)
 
-                initializePlayer(itemView, dashboardBean.video_url)
+                     //Loop Video
+                     mp!!.isLooping = true
+                 }*/
+
+
+
+                //onFeedItemClick.onScrollItem(position, dashboardBean, playerView)
+                //initializePlayer(itemView, dashboardBean.video_url)
+
+                initializePlayer(itemView, dashboardBean.video_url, position)
             }
 
             if (dashboardBean.is_comment == 1) {
@@ -351,12 +364,15 @@ class FeedAdapter(
         })
     }
 
-    private fun initializePlayer(itemView: View, videoUrl: String) {
+    private fun initializePlayer(itemView: View, videoUrl: String, position: Int) {
 
         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(activity)
 
         mediaDataSourceFactory =
-            DefaultDataSourceFactory(activity, Util.getUserAgent(activity, "mediaPlayerSample"))
+            DefaultDataSourceFactory(
+                activity,
+                Util.getUserAgent(activity, activity.resources.getString(R.string.app_name))
+            )
 
         val mediaSource = ProgressiveMediaSource.Factory(mediaDataSourceFactory)
             .createMediaSource(Uri.parse(videoUrl))
@@ -369,53 +385,52 @@ class FeedAdapter(
         itemView.playerView.requestFocus()
 
         simpleExoPlayer.addListener(object : EventListener {
-            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+            /*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
                 Log.e(
                     TAG,
                     "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
                 )
-            }
+            }*/
 
-            override fun onSeekProcessed() {
-                Log.e(TAG, "onSeekProcessed: ")
-            }
+            /* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+               Log.e(TAG, "onTimelineChanged: timeline: $timeline")
+               Log.e(TAG, "onTimelineChanged: reason: $reason")
+           }*/
 
-            override fun onTracksChanged(
+            /*override fun onTracksChanged(
                 trackGroups: TrackGroupArray?,
                 trackSelections: TrackSelectionArray?
             ) {
                 Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
                 Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
+            }*/
+
+            /* override fun onPlayerError(error: ExoPlaybackException?) {
+                 Log.e(TAG, "onPlayerError: error: ${error!!.message}")
+                 Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
+                 simpleExoPlayer.stop()
+             }*/
+
+            override fun onSeekProcessed() {
+                Log.e(TAG, "onSeekProcessed: ")
             }
 
-            override fun onPlayerError(error: ExoPlaybackException?) {
-                Log.e(TAG, "onPlayerError: error: ${error!!.message}")
-                Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
-            }
-
-            // * 4 playbackState exists
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
                 Log.e(TAG, "onPlayerError: playbackState: $playbackState")
                 when (playbackState) {
                     STATE_BUFFERING -> {
-                        // progressBar.visibility = View.VISIBLE
                         Log.e(TAG, "onPlayerStateChanged - STATE_BUFFERING")
-                        //toast("onPlayerStateChanged - STATE_BUFFERING")
                     }
                     STATE_READY -> {
-                        //  progressBar.visibility = View.INVISIBLE
                         Log.e(TAG, "onPlayerStateChanged - STATE_READY")
-                        // toast("onPlayerStateChanged - STATE_READY")
                     }
                     STATE_IDLE -> {
                         Log.e(TAG, "onPlayerStateChanged - STATE_IDLE")
-                        // toast("onPlayerStateChanged - STATE_IDLE")
                     }
                     STATE_ENDED -> {
-                        simpleExoPlayer.seekTo(0);
+                        simpleExoPlayer.seekTo(0)
                         Log.e(TAG, "onPlayerStateChanged - STATE_ENDED")
-                        //toast("onPlayerStateChanged - STATE_ENDED")
                     }
                 }
             }
@@ -426,11 +441,18 @@ class FeedAdapter(
 
             override fun onPositionDiscontinuity(reason: Int) {
                 Log.e(TAG, "onPositionDiscontinuity: reason: $reason")
+
+                val latestWindowIndex: Int = simpleExoPlayer.currentWindowIndex
+                if (latestWindowIndex != lastWindowIndex) {
+                    // item selected in playlist has changed, handle here
+                    lastWindowIndex = latestWindowIndex
+                    Log.e(TAG, "onPositionDiscontinuity: latestWindowIndex: $latestWindowIndex")
+                    Log.e(TAG, "onPositionDiscontinuity: lastWindowIndex: $lastWindowIndex")
+                }
             }
 
             override fun onRepeatModeChanged(repeatMode: Int) {
                 Log.e(TAG, "onRepeatModeChanged:\t repeatMode: $repeatMode ")
-                // Toast.makeText(activity, "repeat mode changed", Toast.LENGTH_SHORT).show()
             }
 
             override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
@@ -439,16 +461,189 @@ class FeedAdapter(
                     "onShuffleModeEnabledChanged: : \t shuffleModeEnabled: $shuffleModeEnabled "
                 )
             }
+        })
+    }
 
-            override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
-                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
-                Log.e(TAG, "onTimelineChanged: reason: $reason")
+    fun releasePlayer() {
+        simpleExoPlayer.release()
+    }
+
+    fun stopPlayer() {
+        simpleExoPlayer.stop()
+    }
+
+    private fun initVideoPlayerTemp(itemView: View, url: String, position: Int) {
+        Log.e(TAG, "loading url is $url")
+        val uri = Uri.parse(url)
+        expoPLayerList.add(initExpoPlayer())
+        expoPLayerList[position]
+        val sourceFactory =
+            DefaultHttpDataSourceFactory(activity.resources.getString(R.string.app_name))
+        val mediaSource =
+            ExtractorMediaSource(uri, sourceFactory, DefaultExtractorsFactory(), null, null)
+        itemView.playerView.setShutterBackgroundColor(Color.TRANSPARENT)
+        itemView.playerView.player = expoPLayerList[position]
+        expoPLayerList[position].prepare(mediaSource)
+        expoPLayerList[position].playWhenReady = false
+        itemView.playerView.requestFocus()
+        // loadFirstVideo()
+
+        expoPLayerList[position].addListener(object : EventListener {
+            /*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+                Log.e(
+                    TAG,
+                    "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
+                )
+            }*/
+
+            /* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+               Log.e(TAG, "onTimelineChanged: timeline: $timeline")
+               Log.e(TAG, "onTimelineChanged: reason: $reason")
+           }*/
+
+            /*override fun onTracksChanged(
+                trackGroups: TrackGroupArray?,
+                trackSelections: TrackSelectionArray?
+            ) {
+                Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
+                Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
+            }*/
+
+            /* override fun onPlayerError(error: ExoPlaybackException?) {
+                 Log.e(TAG, "onPlayerError: error: ${error!!.message}")
+                 Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
+                 simpleExoPlayer.stop()
+             }*/
+
+            override fun onSeekProcessed() {
+                Log.e(TAG, "onSeekProcessed: ")
+            }
+
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                Log.e(TAG, "onPlayerError: playbackState: $playbackState")
+                when (playbackState) {
+                    STATE_BUFFERING -> {
+                        Log.e(TAG, "onPlayerStateChanged - STATE_BUFFERING")
+                    }
+                    STATE_READY -> {
+                        Log.e(TAG, "onPlayerStateChanged - STATE_READY")
+                    }
+                    STATE_IDLE -> {
+                        Log.e(TAG, "onPlayerStateChanged - STATE_IDLE")
+                    }
+                    STATE_ENDED -> {
+                        simpleExoPlayer.seekTo(0)
+                        Log.e(TAG, "onPlayerStateChanged - STATE_ENDED")
+                    }
+                }
+            }
+
+            override fun onLoadingChanged(isLoading: Boolean) {
+                Log.e(TAG, "onLoadingChanged: isLoading: $isLoading")
+            }
+
+            override fun onPositionDiscontinuity(reason: Int) {
+                Log.e(TAG, "onPositionDiscontinuity: reason: $reason")
+
+                val latestWindowIndex: Int = simpleExoPlayer.currentWindowIndex
+                if (latestWindowIndex != lastWindowIndex) {
+                    // item selected in playlist has changed, handle here
+                    lastWindowIndex = latestWindowIndex
+                    Log.e(TAG, "onPositionDiscontinuity: latestWindowIndex: $latestWindowIndex")
+                    Log.e(TAG, "onPositionDiscontinuity: lastWindowIndex: $lastWindowIndex")
+                }
+            }
+
+            override fun onRepeatModeChanged(repeatMode: Int) {
+                Log.e(TAG, "onRepeatModeChanged:\t repeatMode: $repeatMode ")
+            }
+
+            override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+                Log.e(
+                    TAG,
+                    "onShuffleModeEnabledChanged: : \t shuffleModeEnabled: $shuffleModeEnabled "
+                )
+            }
+        })
+
+    }
+
+    fun releaseAllPlayer() {
+        for (expoPlayer in expoPLayerList) {
+            expoPlayer.release()
+        }
+    }
+
+    private fun initVideoPlayerTemp(itemView: View, url: String) {
+        val uri = Uri.parse(url)
+        val exoPLayer = initExpoPlayer()
+        expoPLayerList.add(exoPLayer)
+        val sourceFactory =
+            DefaultHttpDataSourceFactory(activity.resources.getString(R.string.app_name))
+        val mediaSource =
+            ExtractorMediaSource(uri, sourceFactory, DefaultExtractorsFactory(), null, null)
+        itemView.playerView.player = exoPLayer
+        exoPLayer.prepare(mediaSource)
+        exoPLayer.playWhenReady = false
+        exoPLayer.seekTo(0)
+
+        exoPLayer.addListener(object : Player.EventListener {
+            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+
+                if (!playWhenReady && exoPLayer.currentPosition <= 0) {
+                    Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                } else {
+                    Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                }
+
+            }
+        })
+
+    }
+
+    private fun initVideoPlayer(itemView: View, url: String, position: Int) {
+        Log.e(TAG, "onPlayerError: url: $url")
+        val uri = Uri.parse(url)
+        val exoPLayer = initExpoPlayer()
+        expoPLayerList.add(exoPLayer)
+        val sourceFactory =
+            DefaultHttpDataSourceFactory(activity.resources.getString(R.string.app_name))
+        val mediaSource =
+            ExtractorMediaSource(uri, sourceFactory, DefaultExtractorsFactory(), null, null)
+        itemView.playerView.player = exoPLayer
+        exoPLayer.prepare(mediaSource)
+        exoPLayer.playWhenReady = position == 0
+        exoPLayer.seekTo(10)
+
+
+        exoPLayer.addListener(object : Player.EventListener {
+            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+
+                super.onPlayWhenReadyChanged(playWhenReady, reason)
+                Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+
+                if (!playWhenReady && exoPLayer.currentPosition <= 0) {
+                    Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                } else {
+                    Log.e(TAG, "onPlayerError: playWhenReady: $playWhenReady")
+                }
             }
         })
     }
 
-    public fun releasePlayer() {
-        simpleExoPlayer.release()
+    fun startPlayer(exoPLayer: SimpleExoPlayer) {
+        exoPLayer.play()
     }
 
+    fun getPlayerInstance(position: Int): SimpleExoPlayer {
+        return expoPLayerList[position]
+    }
+
+    fun getAllPlayers() = expoPLayerList
+
+    private fun initExpoPlayer(): SimpleExoPlayer {
+        val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
+        return ExoPlayerFactory.newSimpleInstance(activity, trackSelector)
+    }
 }

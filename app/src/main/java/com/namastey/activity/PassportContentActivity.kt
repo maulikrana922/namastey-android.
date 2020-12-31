@@ -25,6 +25,9 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
+import com.namastey.roomDB.AppDB
+import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
@@ -48,6 +51,9 @@ open class PassportContentActivity : FragmentActivity(),
     private var mLocationRequest: LocationRequest? = null
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    lateinit var dbHelper: DBHelper
+    private lateinit var appDb: AppDB
+    private var currentLocationFromDB: RecentLocations? = null
 
     /* @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -68,6 +74,9 @@ open class PassportContentActivity : FragmentActivity(),
         setContentView(R.layout.activity_passport_content)
 
         sessionManager = SessionManager(this)
+        appDb = AppDB.getAppDataBase(this)!!
+        dbHelper = DBHelper(appDb)
+        currentLocationFromDB = dbHelper.getLastRecentLocations()
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -88,7 +97,6 @@ open class PassportContentActivity : FragmentActivity(),
         } else {
             llPassportContentBackground.background = getDrawable(R.drawable.female_bg)
         }
-
         Log.e(
             "PassportContent",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
@@ -97,7 +105,11 @@ open class PassportContentActivity : FragmentActivity(),
 
     fun onClickSearchDestination(view: View) {
         Utils.hideKeyboard(this@PassportContentActivity)
-        startActivity(Intent(this, SearchLocationActivity::class.java))
+        val intent = Intent(this@PassportContentActivity, SearchLocationActivity::class.java)
+        intent.putExtra("isFromPassPort", true)
+        startActivity(intent)
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+        // startActivity(Intent(this, SearchLocationActivity::class.java))
     }
 
     fun onClickPassportContentBack(view: View) {
@@ -106,11 +118,16 @@ open class PassportContentActivity : FragmentActivity(),
 
     fun onClickSearchIcon(view: View) {
         Utils.hideKeyboard(this@PassportContentActivity)
-        startActivity(Intent(this, LocationActivity::class.java))
+        //startActivity(Intent(this, LocationActivity::class.java))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        setMarkerAtLocation()
+    }
+
+    private fun setMarkerAtLocation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -147,6 +164,7 @@ open class PassportContentActivity : FragmentActivity(),
             mMap!!.moveCamera(cu)
             mMap!!.animateCamera(CameraUpdateFactory.zoomTo(14f), 2000, null)
         }
+
     }
 
     @Synchronized
@@ -184,9 +202,15 @@ open class PassportContentActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        latitude = location.latitude
-        longitude = location.longitude
-        val latLng = LatLng(location.latitude, location.longitude)
+        if (currentLocationFromDB != null) {
+            latitude = currentLocationFromDB!!.latitude
+            longitude = currentLocationFromDB!!.longitude
+        } else {
+            latitude = location.latitude
+            longitude = location.longitude
+        }
+
+        val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions()
         markerOptions.position(latLng)
         markerOptions.title("Current Position")
@@ -206,10 +230,27 @@ open class PassportContentActivity : FragmentActivity(),
         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
 
+        mMap!!.setOnMarkerClickListener {
+            startActivity(Intent(this, LocationActivity::class.java))
+            true
+        }
+
         //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("PassportContent", "onResume: \t ${currentLocationFromDB!!.id}")
+        currentLocationFromDB = dbHelper.getLastRecentLocations()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.e("PassportContent", "onRestart: \t ${currentLocationFromDB!!.id}")
+        currentLocationFromDB = dbHelper.getLastRecentLocations()
     }
 
     private fun createCustomMarker(
@@ -257,9 +298,4 @@ open class PassportContentActivity : FragmentActivity(),
         Log.e("PassportContent", "onConnectionFailed: \t ${p0.errorMessage}")
     }
 
-
-    /*override fun onDestroy() {
-        locationViewModel.onDestroy()
-        super.onDestroy()
-    }*/
 }

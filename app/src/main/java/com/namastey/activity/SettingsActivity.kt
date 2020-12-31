@@ -177,7 +177,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         currentLocationFromDB = dbHelper.getLastRecentLocations()
         //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.id}")
         //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
-        if (currentLocationFromDB != null) {
+       /* if (currentLocationFromDB != null) {
             latitude = currentLocationFromDB!!.latitude
             longitude = currentLocationFromDB!!.longitude
         }
@@ -188,7 +188,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         } else {
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
-        }
+        }*/
+
+        tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
     }
 
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {

@@ -58,11 +58,12 @@ class DashboardViewModel constructor(
                 if (dashboardView.isInternetAvailable()) {
                     networkService.requestToGetFeed(subCatId).let { appResponse ->
                         setIsLoading(false)
-                        if (appResponse.status == Constants.OK){
-                            dashboardView.onSuccessFeed(appResponse.data!!)}
-                        else{
+                        if (appResponse.status == Constants.OK) {
+                            dashboardView.onSuccessFeed(appResponse.data!!)
+                        } else {
                             dashboardView.onFailed(appResponse.message, appResponse.error)
-                    }}
+                        }
+                    }
                 } else {
                     setIsLoading(false)
                     dashboardView.showMsg(R.string.no_internet)
@@ -141,10 +142,17 @@ class DashboardViewModel constructor(
                     networkService.requestToLikeUserProfile(likedUserId, isLike)
                         .let { appResponse ->
                             if (appResponse.status == Constants.OK)
-                                appResponse.data?.let { dashboardView.onSuccessProfileLike(appResponse.data!!) }
+                                appResponse.data?.let {
+                                    dashboardView.onSuccessProfileLike(
+                                        appResponse.data!!
+                                    )
+                                }
                             else
-                                dashboardView.onFailedMaxLike(appResponse.message, appResponse.error)
-                               // dashboardView.onFailed(appResponse.message, appResponse.error)
+                                dashboardView.onFailedMaxLike(
+                                    appResponse.message,
+                                    appResponse.error
+                                )
+                            // dashboardView.onFailed(appResponse.message, appResponse.error)
                         }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)
@@ -329,18 +337,20 @@ class DashboardViewModel constructor(
         }
     }
 
-    fun getNewFeedList(page: Int, subCatId: Int) {
+    fun getNewFeedList(page: Int, subCatId: Int, lat: Double, lng: Double) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToGetNewFeed(page, subCatId).let { appResponse ->
-                        setIsLoading(false)
-                        if (appResponse.status == Constants.OK){
-                            dashboardView.onSuccessFeed(appResponse.data!!)}
-                        else{
-                            dashboardView.onFailed(appResponse.message, appResponse.error)
-                        }}
+                    networkService.requestToGetNewFeed(page, subCatId, lat, lng)
+                        .let { appResponse ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                dashboardView.onSuccessFeed(appResponse.data!!)
+                            } else {
+                                dashboardView.onFailed(appResponse.message, appResponse.error)
+                            }
+                        }
                 } else {
                     setIsLoading(false)
                     dashboardView.showMsg(R.string.no_internet)
@@ -350,7 +360,6 @@ class DashboardViewModel constructor(
             }
         }
     }
-
 
     fun onDestroy() {
         if (::job.isInitialized) {

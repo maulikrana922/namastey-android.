@@ -446,14 +446,19 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToHideAlbumAsync(albumId, isHide).await()
         }
 
-    suspend fun requestToSharePost(postId: Int,isShare: Int): AppResponse<Any> =
+    suspend fun requestToSharePost(postId: Int, isShare: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToSharePostAsync(postId, isShare).await()
         }
 
-    suspend fun requestToGetNewFeed(page: Int, subCatId: Int): AppResponse<ArrayList<DashboardBean>> =
+    suspend fun requestToGetNewFeed(
+        page: Int,
+        subCatId: Int,
+        lat: Double,
+        lng: Double
+    ): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetNewFeedListAsync(page, subCatId).await()
+            networkRequest.requestToGetNewFeedListAsync(page, subCatId, lat, lng).await()
         }
 
 }

@@ -11,6 +11,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -33,6 +35,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.hendraanggrian.appcompat.widget.Mention
@@ -51,9 +57,13 @@ import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
+import com.namastey.location.AppLocationService
 import com.namastey.model.*
 import com.namastey.receivers.MaxLikeReceiver
 import com.namastey.receivers.MaxLikeService
+import com.namastey.roomDB.AppDB
+import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
@@ -79,9 +89,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
-    OnSelectUserItemClick, OnMentionUserItemClick {
+    OnSelectUserItemClick, OnMentionUserItemClick, LocationListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -113,6 +122,20 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var currentPage = 1
     private var mbNext = true
     private var mbLoading = true
+    private lateinit var appLocationService: AppLocationService
+
+    private lateinit var simpleExoPlayer: SimpleExoPlayer
+    private lateinit var mediaDataSourceFactory: DataSource.Factory
+    var lastWindowIndex = 0
+    private var dashboardBean: DashboardBean = DashboardBean()
+    private lateinit var playerView: PlayerView
+    private var oldExoPlayer: SimpleExoPlayer? = null
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    lateinit var dbHelper: DBHelper
+    private lateinit var appDb: AppDB
+    private var currentLocationFromDB: RecentLocations? = null
+
 
     override fun getViewModel() = dashboardViewModel
 
@@ -176,6 +199,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         startMaxLikeService()
         //scheduleAlarm()
 
+        getLocation()
         initData()
         getDataFromIntent(intent!!)
     }
@@ -183,6 +207,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun initData() {
         sessionManager.setLoginUser(true)
         Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
+
+        appDb = AppDB.getAppDataBase(this)!!
+        dbHelper = DBHelper(appDb)
+        currentLocationFromDB = dbHelper.getLastRecentLocations()
 
         Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
@@ -196,8 +224,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             ivUser.setImageResource(R.drawable.ic_top_profile)
 
         dashboardViewModel.getMembershipPriceList()
-        dashboardViewModel.getCategoryList()
-        dashboardViewModel.getNewFeedList(currentPage, 0)
+        //dashboardViewModel.getCategoryList()
+        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
 
         feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
         viewpagerFeed.adapter = feedAdapter
@@ -256,29 +284,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 val totalItemCount: Int = feedAdapter.itemCount
                 val firstVisibleItemPosition: Int = position
 
-                Log.e("DashboardActivity", "onPageScrolled: visibleItemCount:\t $visibleItemCount")
-                Log.e("DashboardActivity", "onPageScrolled: totalItemCount:\t $totalItemCount")
-                Log.e(
-                    "DashboardActivity",
-                    "onPageScrolled: firstVisibleItemPosition:\t $firstVisibleItemPosition"
-                )
+                // Log.e("DashboardActivity", "onPageScrolled: visibleItemCount:\t $visibleItemCount")
+                // Log.e("DashboardActivity", "onPageScrolled: totalItemCount:\t $totalItemCount")
+                //  Log.e("DashboardActivity", "onPageScrolled: firstVisibleItemPosition:\t $firstVisibleItemPosition")
                 if (!mbLoading && mbNext) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
                         currentPage += 1
-                        Log.e(
-                            "DashboardActivity",
-                            "onPageScrolled: miCurrentPage:\t $currentPage"
-                        )
-                        dashboardViewModel.getNewFeedList(currentPage, 0)
+                        //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
                     }
                 }
             }
 
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                // println(position)
-                // Log.e("DashboardActivity", "onPageSelected: position:\t $position")
-            }
         })
     }
 
@@ -1091,6 +1108,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         super.onDestroy()
         unregisterReceiver(notificationBroadcast)
+        feedAdapter.releasePlayer()
+        feedAdapter.stopPlayer()
+        //if (Util.SDK_INT <= 23) releasePlayer()
     }
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
@@ -1103,7 +1123,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                         currentPage = 1
                         getNewFeedList(
                             currentPage,
-                            data.getIntExtra("subCategoryId", 0)
+                            data.getIntExtra("subCategoryId", 0),
+                            latitude,
+                            longitude
                         )
                     }
                 }
@@ -1122,7 +1144,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                     currentPage = 1
                     getNewFeedList(
                         currentPage,
-                        data.getIntExtra("subCategoryId", 0)
+                        data.getIntExtra("subCategoryId", 0),
+                        latitude,
+                        longitude
                     )
                 }
             } else {
@@ -1244,7 +1268,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
-
     /**
      * user_profile_type = 1 means private
      * and user_profile_type = 0 means public
@@ -1332,7 +1355,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 }*/
     fun onClickDiscover(view: View) {
         feedList.clear()
-        dashboardViewModel.getNewFeedList(currentPage, 0)
+        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
@@ -1745,6 +1768,20 @@ private fun prepareAnimation(animation: Animation): Animation? {
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
         )
+
+        if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
+            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
+        }
+        // if (Util.SDK_INT <= 23) initializePlayer(dashboardBean.video_url, playerView)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
+            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
+        }
     }
 
     private fun addFragmentWithoutCurrentFrag(fragment: Fragment, tag: String) {
@@ -1916,7 +1953,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onSuccessAddComment(commentBean: CommentBean) {
         bottomSheetDialogComment.edtComment.setText("")
         commentAdapter.addCommentLastPosition(commentBean)
-        bottomSheetDialogComment.rvPostComment.scrollToPosition(commentAdapter.itemCount - 1);
+        bottomSheetDialogComment.rvPostComment.scrollToPosition(commentAdapter.itemCount - 1)
 
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
@@ -2059,7 +2096,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             override fun onBtnClick(id: Int) {
                 dismiss()
                 feedList.clear()
-                dashboardViewModel.getNewFeedList(currentPage, 0)
+                dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             }
         }.show()
     }
@@ -2068,4 +2105,189 @@ private fun prepareAnimation(animation: Animation): Animation? {
         bottomSheetDialogComment.edtComment.setText(username)
         bottomSheetDialogComment.rvMentionList.visibility = View.GONE
     }
+
+    /* override fun onScrollItem(position: Int, dashboardBean: DashboardBean, playerView: PlayerView) {
+         this.position = position
+         this.dashboardBean = dashboardBean
+         this.playerView = playerView
+
+         initializePlayer(dashboardBean.video_url, playerView)
+     }
+
+     private fun initializePlayer(videoUrl: String, playerView: PlayerView) {
+
+         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this)
+
+         mediaDataSourceFactory =
+             DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"))
+
+         val mediaSource = ProgressiveMediaSource.Factory(mediaDataSourceFactory)
+             .createMediaSource(Uri.parse(videoUrl))
+
+         simpleExoPlayer.prepare(mediaSource, false, false)
+         simpleExoPlayer.playWhenReady = true
+
+         playerView.setShutterBackgroundColor(Color.TRANSPARENT)
+         playerView.player = simpleExoPlayer
+         playerView.requestFocus()
+
+         simpleExoPlayer.addListener(object : Player.EventListener {
+             override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+                 Log.e(
+                     "DashboardActivity",
+                     "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
+                 )
+             }
+
+             override fun onSeekProcessed() {
+                 Log.e("DashboardActivity", "onSeekProcessed: ")
+             }
+
+             override fun onTracksChanged(
+                 trackGroups: TrackGroupArray?,
+                 trackSelections: TrackSelectionArray?
+             ) {
+                 Log.e("DashboardActivity", "onTracksChanged: trackGroups: $trackGroups")
+                 Log.e("DashboardActivity", "onTracksChanged: trackSelections: $trackSelections")
+             }
+
+             override fun onPlayerError(error: ExoPlaybackException?) {
+                 Log.e("DashboardActivity", "onPlayerError: error: ${error!!.message}")
+                 Log.e("DashboardActivity", "onPlayerError: error: ${error.stackTrace}")
+                 simpleExoPlayer.stop()
+             }
+
+             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                 Log.e("DashboardActivity", "onPlayerError: playWhenReady: $playWhenReady")
+                 Log.e("DashboardActivity", "onPlayerError: playbackState: $playbackState")
+                 when (playbackState) {
+                     STATE_BUFFERING -> {
+                         Log.e("DashboardActivity", "onPlayerStateChanged - STATE_BUFFERING")
+                     }
+                     STATE_READY -> {
+                         Log.e("DashboardActivity", "onPlayerStateChanged - STATE_READY")
+                     }
+                     STATE_IDLE -> {
+                         Log.e("DashboardActivity", "onPlayerStateChanged - STATE_IDLE")
+                     }
+                     STATE_ENDED -> {
+                         simpleExoPlayer.seekTo(0)
+                         simpleExoPlayer.playWhenReady = false // replay from start
+                         Log.e("DashboardActivity", "onPlayerStateChanged - STATE_ENDED")
+                     }
+                 }
+             }
+
+             override fun onLoadingChanged(isLoading: Boolean) {
+                 Log.e("DashboardActivity", "onLoadingChanged: isLoading: $isLoading")
+             }
+
+             override fun onPositionDiscontinuity(reason: Int) {
+                 Log.e("DashboardActivity", "onPositionDiscontinuity: reason: $reason")
+
+                 val latestWindowIndex: Int = simpleExoPlayer.currentWindowIndex
+                 if (latestWindowIndex != lastWindowIndex) {
+                     // item selected in playlist has changed, handle here
+                     lastWindowIndex = latestWindowIndex
+                     Log.e(
+                         "DashboardActivity",
+                         "onPositionDiscontinuity: latestWindowIndex: $latestWindowIndex"
+                     )
+                     Log.e(
+                         "DashboardActivity",
+                         "onPositionDiscontinuity: lastWindowIndex: $lastWindowIndex"
+                     )
+                 }
+             }
+
+             override fun onRepeatModeChanged(repeatMode: Int) {
+                 Log.e("DashboardActivity", "onRepeatModeChanged:\t repeatMode: $repeatMode ")
+             }
+
+             override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+                 Log.e(
+                     "DashboardActivity",
+                     "onShuffleModeEnabledChanged: : \t shuffleModeEnabled: $shuffleModeEnabled "
+                 )
+             }
+
+             override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+                 Log.e("DashboardActivity", "onTimelineChanged: timeline: ${timeline!!.periodCount}")
+                 Log.e("DashboardActivity", "onTimelineChanged: reason: $reason")
+             }
+         })
+
+     }
+
+     private fun releasePlayer() {
+         simpleExoPlayer.release()
+     }
+
+     public override fun onStart() {
+         super.onStart()
+         //if (Util.SDK_INT > 23) initializePlayer(dashboardBean.video_url, playerView)
+     }
+
+     public override fun onPause() {
+         super.onPause()
+         if (Util.SDK_INT <= 23) releasePlayer()
+     }
+
+     public override fun onStop() {
+         super.onStop()
+         if (Util.SDK_INT > 23) releasePlayer()
+     }*/
+
+    public override fun onPause() {
+        super.onPause()
+        //pauseAllPlayer()
+        feedAdapter.releasePlayer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        feedAdapter.releasePlayer()
+        feedAdapter.stopPlayer()
+    }
+
+    private fun pauseAllPlayer() {
+        if (::feedAdapter.isInitialized)
+            for (exoPlayer in feedAdapter.getAllPlayers()) {
+                if (exoPlayer.isPlaying) {
+                    exoPlayer.pause()
+                }
+            }
+    }
+
+    private fun getLocation() {
+        appLocationService = AppLocationService(this)
+
+        val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
+        if (gpsLocation != null) {
+
+            if (currentLocationFromDB != null) {
+                latitude = currentLocationFromDB!!.latitude
+                longitude = currentLocationFromDB!!.longitude
+            } else {
+                latitude = gpsLocation.latitude
+                longitude = gpsLocation.longitude
+            }
+
+            Log.e("DashboardActivity", "latitude: $latitude")
+            Log.e("DashboardActivity", "longitude: $longitude")
+        } else {
+            // turnGPSOn()
+
+            //showSettingsAlert()
+        }
+    }
+
+
+    override fun onLocationChanged(location: Location) {
+        latitude = location.latitude
+        longitude = location.longitude
+        Log.e("DashboardActivity", "latitude: $latitude")
+        Log.e("DashboardActivity", "longitude: $longitude")
+    }
+
 }
