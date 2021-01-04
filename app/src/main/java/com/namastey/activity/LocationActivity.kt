@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -57,7 +58,9 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
     private var knownName = ""
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-
+    private var isFromPassportContentActivity = false
+    private var isFromSearchLocationActivity = false
+    private var isFromLocationActivity = false
 
     override fun getViewModel() = locationViewModel
 
@@ -89,13 +92,24 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
 
         //insertLocationToDB()
         getAllRecentLocationFromDB()
-
+        getLocation()
+        getIntentData()
         btnAddNewLocation.setOnClickListener {
+            val intent = Intent(this@LocationActivity, SearchLocationActivity::class.java)
+            intent.putExtra("isFromLocation", true)
+            overridePendingTransition(R.anim.enter, R.anim.exit);
             openActivity(this, SearchLocationActivity())
         }
 
-        getLocation()
         //getAddress()
+    }
+
+    private fun getIntentData() {
+        if (intent.extras != null) {
+            isFromPassportContentActivity = intent.extras!!.getBoolean("isFromPassPort", false)
+            isFromSearchLocationActivity = intent.extras!!.getBoolean("isFromSearch", false)
+            isFromLocationActivity = intent.extras!!.getBoolean("isFromLocation", false)
+        }
     }
 
     private fun getAllRecentLocationFromDB() {
@@ -259,9 +273,31 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
         if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
         } else {
+            /*if (isFromPassportContentActivity) {
+                val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+                this@LocationActivity.finish()
+            } else if (isFromSearchLocationActivity) {
+                val intent = Intent(this@LocationActivity, SettingsActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+                this@LocationActivity.finish()
+            } else if (isFromLocationActivity) {
+                val intent = Intent(this@LocationActivity, LocationActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+                this@LocationActivity.finish()
+            } else {
+                finish()
+            }
+            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)*/
+
             finishActivity()
+
         }
     }
+
 
     override fun onDestroy() {
         locationViewModel.onDestroy()
@@ -270,7 +306,15 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
 
     override fun onRecentLocationItemClick(recentLocation: RecentLocations) {
         sessionManager.setBooleanValue(true, Constants.KEY_SET_RECENT_LOCATION)
+        Log.e("LocationActivity", "recentLocation: \t ${recentLocation.isSelected}")
+        Log.e("LocationActivity", "recentLocation: \t ${recentLocation.id}")
+        sessionManager.setRecentLocationFromList(recentLocation)
+        doAsync {
+            dbHelper.updateSelectedLocation(recentLocation.isSelected, recentLocation.id)
+        }
         val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
+        intent.flags = /*Intent.FLAG_ACTIVITY_NEW_TASK or*/
+            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.putExtra("latitude", recentLocation.latitude)
         intent.putExtra("longitude", recentLocation.longitude)
         openActivity(intent)
@@ -288,12 +332,20 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
             knownName,
             currentTime,
             latitude,
-            longitude
+            longitude,
+            false
         )
 
-        doAsync {
-            dbHelper.addRecentLocation(recentLocation)
-        }
+        ivCurrentLocation.setColorFilter(
+            ContextCompat.getColor(
+                this@LocationActivity,
+                R.color.colorBlueLight
+            )
+        )
+        sessionManager.setRecentLocationFromList(recentLocation)
 
+       /* doAsync {
+            dbHelper.updateRecentLocations(recentLocation)
+        }*/
     }
 }

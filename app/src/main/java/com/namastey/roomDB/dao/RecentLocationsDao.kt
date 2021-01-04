@@ -13,6 +13,9 @@ interface RecentLocationsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addAllRecentLocations(recentLocationList: ArrayList<RecentLocations>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun addRecentLocationsFromList(recentLocations: RecentLocations)
+
     @Delete
     fun deleteRecentLocations(recentLocations: RecentLocations)
 
@@ -34,4 +37,8 @@ interface RecentLocationsDao {
 
     @Query("DELETE FROM recentLocations WHERE id = :locationId")
     fun deleteExistingLocations(locationId: Int)
+
+    @Query("UPDATE recentlocations SET isSelected=:isSelected WHERE id = :id")
+    fun updateSelectedLocation(isSelected: Boolean?, id: Int)
+
 }

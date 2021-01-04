@@ -87,8 +87,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:orientation="horizontal"
                     android:onClick="onClickMyCurrentLocation"
+                    android:orientation="horizontal"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_15sdp"
@@ -104,7 +104,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:onClick="onClickLocationBack"
-                        android:src="@drawable/ic_current_location" />
+                        android:src="@drawable/ic_current_location"
+                        android:tint="@color/color_chip_gray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -158,14 +159,38 @@
                     android:id="@+id/rvLocation"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_4sdp"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@+id/btnAddNewLocation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvRecentPassportLocation"
-                    tools:listitem="@layout/row_current_location"/>
+                    tools:listitem="@layout/row_current_location" />
+
+                <com.namastey.customViews.CustomButton
+                    android:id="@+id/btnAddNewLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="@drawable/rounded_red_solid"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="@dimen/_6sdp"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_30sdp"
+                    android:paddingEnd="@dimen/_30sdp"
+                    android:text="@string/add_a_new_location"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:typeface="MULI_EXTRA_BOLD" />
 
                 <LinearLayout
                     android:id="@+id/llRecentPassportLocation"
@@ -259,15 +284,15 @@
                         android:textSize="18sp"
                         app:typeface="MULI_EXTRA_BOLD" />-->
 
-                  <!--  <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorWhite"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/row_current_location" />-->
+                    <!--  <androidx.recyclerview.widget.RecyclerView
+                          android:id="@+id/rvLocation"
+                          android:layout_width="match_parent"
+                          android:layout_height="0dp"
+                          android:layout_weight="1"
+                          android:background="@color/colorWhite"
+                          android:orientation="vertical"
+                          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                          tools:listitem="@layout/row_current_location" />-->
 
                 </LinearLayout>
 
@@ -289,24 +314,24 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <com.namastey.customViews.CustomButton
-            android:id="@+id/btnAddNewLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/_24sdp"
-            android:background="@drawable/rounded_red_solid"
-            android:drawableStart="@drawable/ic_location"
-            android:drawablePadding="@dimen/_6sdp"
-            android:gravity="center"
-            android:paddingStart="@dimen/_30sdp"
-            android:paddingEnd="@dimen/_30sdp"
-            android:text="@string/add_a_new_location"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            app:typeface="MULI_EXTRA_BOLD" />
+        <!-- <com.namastey.customViews.CustomButton
+             android:id="@+id/btnAddNewLocation"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_centerInParent="true"
+             android:layout_marginBottom="@dimen/_24sdp"
+             android:background="@drawable/rounded_red_solid"
+             android:drawableStart="@drawable/ic_location"
+             android:drawablePadding="@dimen/_6sdp"
+             android:gravity="center"
+             android:paddingStart="@dimen/_30sdp"
+             android:paddingEnd="@dimen/_30sdp"
+             android:text="@string/add_a_new_location"
+             android:textAllCaps="false"
+             android:textColor="@color/colorWhite"
+             android:textSize="16sp"
+             app:typeface="MULI_EXTRA_BOLD" />-->
 
     </RelativeLayout>
 </layout>

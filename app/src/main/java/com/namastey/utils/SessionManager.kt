@@ -11,6 +11,7 @@ import com.namastey.model.CategoryBean
 import com.namastey.model.EducationBean
 import com.namastey.model.JobBean
 import com.namastey.model.VideoLanguageBean
+import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.utils.Constants.EMAIL
 import com.namastey.utils.Constants.KEY_CATEGORY_LIST
 import com.namastey.utils.Constants.KEY_CHOOSE_INTEREST_LIST
@@ -26,6 +27,7 @@ import com.namastey.utils.Constants.KEY_JOB
 import com.namastey.utils.Constants.KEY_LANGUAGE_LIST
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_NOTIFICATION_DATA
+import com.namastey.utils.Constants.KEY_RECENT_LOCATION
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
 import com.namastey.utils.Constants.KEY_USER_ID
 import com.namastey.utils.Constants.MOBILE
@@ -285,4 +287,18 @@ class SessionManager(context: Context) {
         ) else ArrayList<Int>()
     }
 
+
+    fun setRecentLocationFromList(recentLocations: RecentLocations?) {
+        val e = mPrefs.edit()
+        e.putString(KEY_RECENT_LOCATION, Gson().toJson(recentLocations))
+        e.apply()
+    }
+
+    fun getRecentLocationFromList(): RecentLocations? {
+        val str = mPrefs.getString(KEY_RECENT_LOCATION, "")!!
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            RecentLocations::class.java
+        ) else RecentLocations()
+    }
 }

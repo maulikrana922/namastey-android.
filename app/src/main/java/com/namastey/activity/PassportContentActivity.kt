@@ -204,18 +204,27 @@ open class PassportContentActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0 && intent.extras!!.getDouble("longitude") != 0.0) {
-            latitude = intent.extras!!.getDouble("latitude", 0.0)
-            longitude = intent.extras!!.getDouble("longitude", 0.0)
-            Log.e("PassportContentActivity", "extras latitude:\t $latitude")
-            Log.e("PassportContentActivity", "extras longitude:\t $longitude")
-        } else if (currentLocationFromDB != null) {
-            latitude = currentLocationFromDB!!.latitude
-            longitude = currentLocationFromDB!!.longitude
-        } else {
-            latitude = location.latitude
-            longitude = location.longitude
-        }
+        if (sessionManager.getRecentLocationFromList() != null) {
+            latitude = sessionManager.getRecentLocationFromList()!!.latitude
+            longitude = sessionManager.getRecentLocationFromList()!!.longitude
+            Log.e("PassportContentActivity", "sessionManager latitude:\t $latitude")
+            Log.e("PassportContentActivity", "sessionManager longitude:\t $longitude")
+        } else
+            if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0 && intent.extras!!.getDouble(
+                    "longitude"
+                ) != 0.0
+            ) {
+                latitude = intent.extras!!.getDouble("latitude", 0.0)
+                longitude = intent.extras!!.getDouble("longitude", 0.0)
+                Log.e("PassportContentActivity", "extras latitude:\t $latitude")
+                Log.e("PassportContentActivity", "extras longitude:\t $longitude")
+            } else if (currentLocationFromDB != null) {
+                latitude = currentLocationFromDB!!.latitude
+                longitude = currentLocationFromDB!!.longitude
+            } else {
+                latitude = location.latitude
+                longitude = location.longitude
+            }
 
         val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions()
@@ -238,7 +247,12 @@ open class PassportContentActivity : FragmentActivity(),
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
 
         mMap!!.setOnMarkerClickListener {
-            startActivity(Intent(this, LocationActivity::class.java))
+            val intent = Intent(this@PassportContentActivity, LocationActivity::class.java)
+            intent.putExtra("isFromPassPort", true)
+            startActivity(intent)
+            overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            // startActivity(Intent(this, LocationActivity::class.java))
             true
         }
 

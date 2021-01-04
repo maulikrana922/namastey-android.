@@ -1,6 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class CurrentLocationAdapter(
     var locationBeanList: ArrayList<RecentLocations>,
     var onRecentLocationClick: OnRecentLocationClick
 ) : RecyclerView.Adapter<CurrentLocationAdapter.ViewHolder>() {
-    private var checkedPosition = 0
+    private var checkedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -64,10 +65,23 @@ class CurrentLocationAdapter(
                 )
             }*/
 
+            Log.e("CurrentLocationAdapter", "isSelected: \t ${locationBean.isSelected}")
+
+            if (locationBean.isSelected) {
+                ivAddressSelected.visibility = View.VISIBLE
+                ivCurrentLocation.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.colorBlueLight
+                    )
+                )
+            }
+
             if (checkedPosition == -1) {
                 ivAddressSelected.visibility = View.GONE
             } else {
                 if (checkedPosition == adapterPosition) {
+                    locationBean.isSelected = true
                     ivAddressSelected.visibility = View.VISIBLE
                     ivCurrentLocation.setColorFilter(
                         ContextCompat.getColor(
@@ -76,6 +90,7 @@ class CurrentLocationAdapter(
                         )
                     )
                 } else {
+                    locationBean.isSelected = false
                     ivAddressSelected.visibility = View.GONE
                     ivCurrentLocation.setColorFilter(
                         ContextCompat.getColor(
@@ -87,6 +102,7 @@ class CurrentLocationAdapter(
             }
 
             llLocationView.setOnClickListener {
+                locationBean.isSelected = true
                 ivAddressSelected.visibility = View.VISIBLE
                 ivCurrentLocation.setColorFilter(
                     ContextCompat.getColor(
@@ -94,6 +110,7 @@ class CurrentLocationAdapter(
                         R.color.colorBlueLight
                     )
                 )
+
                 onRecentLocationClick.onRecentLocationItemClick(locationBean)
                 if (checkedPosition != adapterPosition) {
                     notifyItemChanged(checkedPosition)

@@ -175,9 +175,18 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     }
 
     private fun setCurrentLocation() {
-        currentLocationFromDB = dbHelper.getLastRecentLocations()
         //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
-        if (currentLocationFromDB != null) {
+        Log.e(
+            "SettingsActivity",
+            "getRecentLocationFromList() : ${sessionManager.getRecentLocationFromList()}"
+        )
+        if (sessionManager.getRecentLocationFromList() != null) {
+            currentLocationFromDB = sessionManager.getRecentLocationFromList()
+            Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB!!.id}")
+            latitude = currentLocationFromDB!!.latitude
+            longitude = currentLocationFromDB!!.longitude
+        } else if (dbHelper.getLastRecentLocations() != null) {
+            currentLocationFromDB = dbHelper.getLastRecentLocations()
             Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB!!.id}")
             latitude = currentLocationFromDB!!.latitude
             longitude = currentLocationFromDB!!.longitude

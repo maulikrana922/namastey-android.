@@ -72,6 +72,7 @@ class SearchLocationActivity : FragmentActivity(),
 
     private var isFromPassportContentActivity = false
     private var isFromSearchLocationActivity = false
+    private var isFromLocationActivity = false
 
     /*  @Inject
       lateinit var viewModelFactory: ViewModelFactory
@@ -119,12 +120,12 @@ class SearchLocationActivity : FragmentActivity(),
         if (intent.extras != null) {
             isFromPassportContentActivity = intent.extras!!.getBoolean("isFromPassPort", false)
             isFromSearchLocationActivity = intent.extras!!.getBoolean("isFromSearch", false)
+            isFromLocationActivity = intent.extras!!.getBoolean("isFromLocation", false)
             Log.e(
                 "SearchLocationActivity",
                 " isFromPassportContentActivity:\t $isFromPassportContentActivity"
             )
         }
-
     }
 
     /**
@@ -295,8 +296,11 @@ class SearchLocationActivity : FragmentActivity(),
             knownName,
             currentTime,
             latitude,
-            longitude
+            longitude,
+            true
         )
+        sessionManager.setRecentLocationFromList(recentLocation)
+
         doAsync {
             dbHelper.addRecentLocation(recentLocation)
         }
@@ -436,7 +440,7 @@ class SearchLocationActivity : FragmentActivity(),
         //markerImage.setImageResource(imageUrl)
 
         GlideApp
-            .with(this)
+            .with(this@SearchLocationActivity)
             .load(imageUrl)
             .into(markerImage)
 
@@ -499,6 +503,13 @@ class SearchLocationActivity : FragmentActivity(),
             this@SearchLocationActivity.finish()
         } else if (isFromSearchLocationActivity) {
             val intent = Intent(this@SearchLocationActivity, SettingsActivity::class.java)
+            intent.putExtra("latitude", latitude)
+            intent.putExtra("longitude", longitude)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            this@SearchLocationActivity.finish()
+        } else if (isFromLocationActivity) {
+            val intent = Intent(this@SearchLocationActivity, LocationActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             this@SearchLocationActivity.finish()

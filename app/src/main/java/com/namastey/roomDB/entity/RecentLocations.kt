@@ -14,7 +14,8 @@ data class RecentLocations(
     var knownName: String,
     var currentTime: Long,
     var latitude: Double,
-    var longitude: Double
+    var longitude: Double,
+    var isSelected: Boolean
 
 ) {
     constructor() : this(
@@ -26,6 +27,7 @@ data class RecentLocations(
         "",
         0,
         0.0,
-        0.0
+        0.0,
+        false
     )
 }

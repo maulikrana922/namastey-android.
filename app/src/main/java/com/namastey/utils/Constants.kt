@@ -211,6 +211,7 @@ object Constants {
     const val KEY_MAX_USER_LIKE = "KEY_MAX_USER_LIKE"
     const val KEY_BOOST_ME = "KEY_BOOST_ME"
     const val KEY_SET_RECENT_LOCATION = "KEY_SET_RECENT_LOCATION"
+    const val KEY_RECENT_LOCATION = "KEY_RECENT_LOCATION"
 
 
     //    field key
