@@ -7,8 +7,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.tasks.Task
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -148,12 +147,12 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     private fun initUI() {
         if (sessionManager.getFirebaseToken() == "") {
             Log.e("OTPFragment", "getFirebaseToken: Empty")
-            val token = FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
-               // sessionManager.setFirebaseToken(task.result)
-            }
-            //val token = FirebaseInstanceId.getInstance().token
+            /*val token = FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+               sessionManager.setFirebaseToken(task.result)
+            }*/
+            val token = FirebaseInstanceId.getInstance().token
             Log.e("OTPFragment", "FCM Registration Token: ${token.toString()}")
-            sessionManager.setFirebaseToken(token.toString()!!)
+            sessionManager.setFirebaseToken(token.toString())
         } else {
             Log.e("OTPFragment", "getFirebaseToken(): \t ${sessionManager.getFirebaseToken().toString()}")
         }

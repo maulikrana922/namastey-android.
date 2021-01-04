@@ -226,7 +226,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             ivUser.setImageResource(R.drawable.ic_top_profile)
 
         dashboardViewModel.getMembershipPriceList()
-        //dashboardViewModel.getCategoryList()
+        dashboardViewModel.getCategoryList()
         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
 
         feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
