@@ -284,9 +284,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 val totalItemCount: Int = feedAdapter.itemCount
                 val firstVisibleItemPosition: Int = position
 
-                // Log.e("DashboardActivity", "onPageScrolled: visibleItemCount:\t $visibleItemCount")
-                // Log.e("DashboardActivity", "onPageScrolled: totalItemCount:\t $totalItemCount")
-                //  Log.e("DashboardActivity", "onPageScrolled: firstVisibleItemPosition:\t $firstVisibleItemPosition")
                 if (!mbLoading && mbNext) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
                         currentPage += 1
@@ -1108,8 +1105,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         super.onDestroy()
         unregisterReceiver(notificationBroadcast)
-        feedAdapter.releasePlayer()
-        feedAdapter.stopPlayer()
+        //feedAdapter.releasePlayer()
+        //feedAdapter.stopPlayer()
         //if (Util.SDK_INT <= 23) releasePlayer()
     }
 
@@ -2251,23 +2248,23 @@ private fun prepareAnimation(animation: Animation): Animation? {
     public override fun onPause() {
         super.onPause()
         //pauseAllPlayer()
-        feedAdapter.releasePlayer()
+       // feedAdapter.releasePlayer()
     }
 
     override fun onStop() {
         super.onStop()
-        feedAdapter.releasePlayer()
-        feedAdapter.stopPlayer()
+       // feedAdapter.releasePlayer()
+       // feedAdapter.stopPlayer()
     }
 
-    private fun pauseAllPlayer() {
+    /*private fun pauseAllPlayer() {
         if (::feedAdapter.isInitialized)
             for (exoPlayer in feedAdapter.getAllPlayers()) {
                 if (exoPlayer.isPlaying) {
                     exoPlayer.pause()
                 }
             }
-    }
+    }*/
 
     private fun getLocation() {
         appLocationService = AppLocationService(this)
@@ -2291,7 +2288,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
             //showSettingsAlert()
         }
     }
-
 
     override fun onLocationChanged(location: Location) {
         latitude = location.latitude

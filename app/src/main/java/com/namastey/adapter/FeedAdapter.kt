@@ -3,27 +3,14 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Player.*
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.exoplayer2.util.Util
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
 import com.namastey.listeners.OnFeedItemClick
@@ -88,28 +75,25 @@ class FeedAdapter(
 //                postVideo.setVideoURI(Uri.parse(dashboardBean.video_url))
 
 
+                Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
 
-                /* postVideo.setVideoPath(dashboardBean.video_url)
-                 postVideo.requestFocus()
-                 postVideo.start()
-                 postVideo.setOnPreparedListener { mp ->
-                     //Start Playback
-                     postVideo.start()
+                postVideo.setVideoPath(dashboardBean.video_url)
+                postVideo.requestFocus()
+                postVideo.start()
+                postVideo.setOnPreparedListener { mp ->
+                    //Start Playback
+                    postVideo.start()
 
-                     handlerVideo.postDelayed({
-                         onFeedItemClick.onPostViewer(dashboardBean.id)
-                     }, 5000)
+                    handlerVideo.postDelayed({
+                        onFeedItemClick.onPostViewer(dashboardBean.id)
+                    }, 5000)
 
-                     //Loop Video
-                     mp!!.isLooping = true
-                 }*/
+                    //Loop Video
+                    mp!!.isLooping = true
+                }
 
 
-
-                //onFeedItemClick.onScrollItem(position, dashboardBean, playerView)
-                //initializePlayer(itemView, dashboardBean.video_url)
-
-                initializePlayer(itemView, dashboardBean.video_url, position)
+                // initializePlayer(itemView, dashboardBean.video_url, position)
             }
 
             if (dashboardBean.is_comment == 1) {
@@ -364,52 +348,52 @@ class FeedAdapter(
         })
     }
 
-    private fun initializePlayer(itemView: View, videoUrl: String, position: Int) {
+    /*  private fun initializePlayer(itemView: View, videoUrl: String, position: Int) {
 
-        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(activity)
+          simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(activity)
 
-        mediaDataSourceFactory =
-            DefaultDataSourceFactory(
-                activity,
-                Util.getUserAgent(activity, activity.resources.getString(R.string.app_name))
-            )
+          mediaDataSourceFactory =
+              DefaultDataSourceFactory(
+                  activity,
+                  Util.getUserAgent(activity, activity.resources.getString(R.string.app_name))
+              )
 
-        val mediaSource = ProgressiveMediaSource.Factory(mediaDataSourceFactory)
-            .createMediaSource(Uri.parse(videoUrl))
+          val mediaSource = ProgressiveMediaSource.Factory(mediaDataSourceFactory)
+              .createMediaSource(Uri.parse(videoUrl))
 
-        simpleExoPlayer.prepare(mediaSource, false, false)
-        simpleExoPlayer.playWhenReady = true
+          simpleExoPlayer.prepare(mediaSource, false, false)
+          simpleExoPlayer.playWhenReady = true
 
-        itemView.playerView.setShutterBackgroundColor(Color.TRANSPARENT)
-        itemView.playerView.player = simpleExoPlayer
-        itemView.playerView.requestFocus()
+          itemView.playerView.setShutterBackgroundColor(Color.TRANSPARENT)
+          itemView.playerView.player = simpleExoPlayer
+          itemView.playerView.requestFocus()
 
-        simpleExoPlayer.addListener(object : EventListener {
-            /*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+          simpleExoPlayer.addListener(object : EventListener {
+              *//*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
                 Log.e(
                     TAG,
                     "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
                 )
-            }*/
+            }*//*
 
-            /* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+            *//* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
                Log.e(TAG, "onTimelineChanged: reason: $reason")
-           }*/
+           }*//*
 
-            /*override fun onTracksChanged(
+            *//*override fun onTracksChanged(
                 trackGroups: TrackGroupArray?,
                 trackSelections: TrackSelectionArray?
             ) {
                 Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
                 Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
-            }*/
+            }*//*
 
-            /* override fun onPlayerError(error: ExoPlaybackException?) {
+            *//* override fun onPlayerError(error: ExoPlaybackException?) {
                  Log.e(TAG, "onPlayerError: error: ${error!!.message}")
                  Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
                  simpleExoPlayer.stop()
-             }*/
+             }*//*
 
             override fun onSeekProcessed() {
                 Log.e(TAG, "onSeekProcessed: ")
@@ -489,31 +473,31 @@ class FeedAdapter(
         // loadFirstVideo()
 
         expoPLayerList[position].addListener(object : EventListener {
-            /*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+            *//*override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
                 Log.e(
                     TAG,
                     "onPlaybackParametersChanged: playbackParameters: ${playbackParameters!!.speed}"
                 )
-            }*/
+            }*//*
 
-            /* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+            *//* override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
                Log.e(TAG, "onTimelineChanged: timeline: $timeline")
                Log.e(TAG, "onTimelineChanged: reason: $reason")
-           }*/
+           }*//*
 
-            /*override fun onTracksChanged(
+            *//*override fun onTracksChanged(
                 trackGroups: TrackGroupArray?,
                 trackSelections: TrackSelectionArray?
             ) {
                 Log.e(TAG, "onTracksChanged: trackGroups: $trackGroups")
                 Log.e(TAG, "onTracksChanged: trackSelections: $trackSelections")
-            }*/
+            }*//*
 
-            /* override fun onPlayerError(error: ExoPlaybackException?) {
+            *//* override fun onPlayerError(error: ExoPlaybackException?) {
                  Log.e(TAG, "onPlayerError: error: ${error!!.message}")
                  Log.e(TAG, "onPlayerError: error: ${error.stackTrace}")
                  simpleExoPlayer.stop()
-             }*/
+             }*//*
 
             override fun onSeekProcessed() {
                 Log.e(TAG, "onSeekProcessed: ")
@@ -645,5 +629,5 @@ class FeedAdapter(
     private fun initExpoPlayer(): SimpleExoPlayer {
         val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory())
         return ExoPlayerFactory.newSimpleInstance(activity, trackSelector)
-    }
+    }*/
 }
