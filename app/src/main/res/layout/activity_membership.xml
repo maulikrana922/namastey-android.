@@ -237,6 +237,7 @@
                     android:elevation="@dimen/_4sdp"
                     android:gravity="center"
                     android:text="@string/buy_now"
+                    android:onClick="onClickLike"
                     app:layout_constraintTop_toBottomOf="@+id/llSuggestion" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,6 +40,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     private lateinit var membershipViewModel: MembershipViewModel
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
+    private var selectedMonths = 1
 
     override fun getViewModel() = membershipViewModel
 
@@ -117,6 +118,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     }
 
     private fun showCustomDialog(position: Int) {
+        selectedMonths = 1
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@MembershipActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val dialogView: View =
@@ -150,9 +152,9 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
             val price = data.price
             val discount = data.discount_pr
 
-            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
-            Log.e("MembershipActivity", "price: \t $price")
-            Log.e("MembershipActivity", "discount: \t $discount")
+//            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
+//            Log.e("MembershipActivity", "price: \t $price")
+//            Log.e("MembershipActivity", "discount: \t $discount")
 
             if (membershipType == 0) {
                 view.tvTextLowEachBoost.text =
@@ -187,6 +189,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         }
 
         constLow.setOnClickListener {
+            selectedMonths = 0
             view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTextLowEachBoost.setTextColor(
@@ -235,6 +238,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         }
 
         constMedium.setOnClickListener {
+            selectedMonths = 1
             view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTextBoostMedium.setTextColor(
                 ContextCompat.getColor(
@@ -288,6 +292,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         }
 
         constHigh.setOnClickListener {
+            selectedMonths = 2
             view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorBlueLight))
             view.tvTextHighEachBoost.setTextColor(
@@ -336,6 +341,11 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         }
     }
 
+    fun onClickContinue(view: View){
+        Log.d("Membership :", "Selected month ".plus(selectedMonths))
+        Log.d("Membership :", "Selected month Price ".plus(membershipViewList[selectedMonths].price))
+
+    }
     fun onClickMembershipBack(view: View) {
         onBackPressed()
     }
