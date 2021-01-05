@@ -199,6 +199,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         startMaxLikeService()
         //scheduleAlarm()
 
+        //addLocationPermission()
+
         getLocation()
         initData()
         getDataFromIntent(intent!!)
@@ -240,6 +242,27 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         mentionArrayAdapter = MentionArrayAdapter(this)
 
+    }
+
+    private fun addLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openActivity(this, PassportContentActivity())
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ), PERMISSION_REQUEST_CODE
+                )
+            }
+        } else {
+            openActivity(this, PassportContentActivity())
+        }
     }
 
     private fun startPagination() {
@@ -2283,9 +2306,25 @@ private fun prepareAnimation(animation: Animation): Animation? {
             Log.e("DashboardActivity", "latitude: $latitude")
             Log.e("DashboardActivity", "longitude: $longitude")
         } else {
-            // turnGPSOn()
+             turnGPSOn()
 
             //showSettingsAlert()
+        }
+    }
+
+    private fun turnGPSOn() {
+        val provider =
+            Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
+        Log.e("Dashboard", "provider: $provider")
+        if (!provider.contains("gps")) { //if gps is disabled
+            val poke = Intent()
+            poke.setClassName(
+                "com.android.settings",
+                "com.android.settings.widget.SettingsAppWidgetProvider"
+            )
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE)
+            poke.data = Uri.parse("3")
+            this.sendBroadcast(poke)
         }
     }
 

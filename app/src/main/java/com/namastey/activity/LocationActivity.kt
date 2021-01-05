@@ -270,7 +270,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
 
     override fun onRecentLocationItemClick(recentLocation: RecentLocations) {
         sessionManager.setBooleanValue(true, Constants.KEY_SET_RECENT_LOCATION)
-        val intent = Intent(this@LocationActivity, SearchLocationActivity::class.java)
+        val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
         intent.putExtra("latitude", recentLocation.latitude)
         intent.putExtra("longitude", recentLocation.longitude)
         openActivity(intent)

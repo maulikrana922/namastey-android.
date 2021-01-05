@@ -107,6 +107,8 @@ open class PassportContentActivity : FragmentActivity(),
         Utils.hideKeyboard(this@PassportContentActivity)
         val intent = Intent(this@PassportContentActivity, SearchLocationActivity::class.java)
         intent.putExtra("isFromPassPort", true)
+        intent.putExtra("latitude", latitude)
+        intent.putExtra("longitude", longitude)
         startActivity(intent)
         overridePendingTransition(R.anim.enter, R.anim.exit);
         // startActivity(Intent(this, SearchLocationActivity::class.java))
@@ -202,7 +204,12 @@ open class PassportContentActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        if (currentLocationFromDB != null) {
+        if (intent.extras != null && intent.extras!!.getDouble("latitude") != 0.0 && intent.extras!!.getDouble("longitude") != 0.0) {
+            latitude = intent.extras!!.getDouble("latitude", 0.0)
+            longitude = intent.extras!!.getDouble("longitude", 0.0)
+            Log.e("PassportContentActivity", "extras latitude:\t $latitude")
+            Log.e("PassportContentActivity", "extras longitude:\t $longitude")
+        } else if (currentLocationFromDB != null) {
             latitude = currentLocationFromDB!!.latitude
             longitude = currentLocationFromDB!!.longitude
         } else {
@@ -243,14 +250,14 @@ open class PassportContentActivity : FragmentActivity(),
 
     override fun onResume() {
         super.onResume()
-        Log.e("PassportContent", "onResume: \t ${currentLocationFromDB!!.id}")
         currentLocationFromDB = dbHelper.getLastRecentLocations()
+        // Log.e("PassportContent", "onResume: \t ${currentLocationFromDB!!.id}")
     }
 
     override fun onRestart() {
         super.onRestart()
-        Log.e("PassportContent", "onRestart: \t ${currentLocationFromDB!!.id}")
         currentLocationFromDB = dbHelper.getLastRecentLocations()
+        //Log.e("PassportContent", "onRestart: \t ${currentLocationFromDB!!.id}")
     }
 
     private fun createCustomMarker(

@@ -65,6 +65,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         dbHelper = DBHelper(appDb)
 
         initData()
+
     }
 
     private fun initData() {
@@ -175,9 +176,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
 
     private fun setCurrentLocation() {
         currentLocationFromDB = dbHelper.getLastRecentLocations()
-        //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.id}")
         //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
-       /* if (currentLocationFromDB != null) {
+        if (currentLocationFromDB != null) {
+            Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB!!.id}")
             latitude = currentLocationFromDB!!.latitude
             longitude = currentLocationFromDB!!.longitude
         }
@@ -188,9 +189,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         } else {
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
-        }*/
+        }
 
-        tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+        //tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
     }
 
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
@@ -309,6 +310,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
         intent.putExtra("latitude", latitude)
         intent.putExtra("longitude", longitude)
+        intent.putExtra("isFromSearch", true)
         openActivity(intent)
         // openActivity(this, PassportContentActivity())
     }

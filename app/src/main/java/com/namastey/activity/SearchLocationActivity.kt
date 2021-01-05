@@ -71,6 +71,7 @@ class SearchLocationActivity : FragmentActivity(),
     private lateinit var appDb: AppDB
 
     private var isFromPassportContentActivity = false
+    private var isFromSearchLocationActivity = false
 
     /*  @Inject
       lateinit var viewModelFactory: ViewModelFactory
@@ -117,7 +118,7 @@ class SearchLocationActivity : FragmentActivity(),
     private fun getIntentData() {
         if (intent.extras != null) {
             isFromPassportContentActivity = intent.extras!!.getBoolean("isFromPassPort", false)
-
+            isFromSearchLocationActivity = intent.extras!!.getBoolean("isFromSearch", false)
             Log.e(
                 "SearchLocationActivity",
                 " isFromPassportContentActivity:\t $isFromPassportContentActivity"
@@ -493,6 +494,11 @@ class SearchLocationActivity : FragmentActivity(),
     override fun onBackPressed() {
         if (isFromPassportContentActivity) {
             val intent = Intent(this@SearchLocationActivity, PassportContentActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            this@SearchLocationActivity.finish()
+        } else if (isFromSearchLocationActivity) {
+            val intent = Intent(this@SearchLocationActivity, SettingsActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             this@SearchLocationActivity.finish()
