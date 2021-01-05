@@ -413,4 +413,10 @@ interface NetworkRequest {
         @Field(Constants.LNG) lng: Double
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
+    @FormUrlEncoded
+    @POST(Constants.COMPARE_USERNAME)
+    fun requestToCheckUniqueUsernameAsync(
+        @Field(Constants.USER_NAME) username: String
+    ): Deferred<ErrorAppResponse<ErrorBean>>
+
 }

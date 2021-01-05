@@ -461,4 +461,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetNewFeedListAsync(page, subCatId, lat, lng).await()
         }
 
+    suspend fun requestToCheckUniqueUsername(username: String): ErrorAppResponse<ErrorBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToCheckUniqueUsernameAsync(username).await()
+        }
+
 }

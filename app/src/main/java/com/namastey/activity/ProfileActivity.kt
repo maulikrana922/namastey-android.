@@ -291,6 +291,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.show()
 
+        view.llRecurringTextView.visibility = View.GONE
         manageVisibility(view)
         view.btnBoost.setOnClickListener {
             Handler().postDelayed(Runnable {

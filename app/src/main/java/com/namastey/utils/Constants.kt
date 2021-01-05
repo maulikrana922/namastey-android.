@@ -99,6 +99,7 @@ object Constants {
     const val DELETE_ALBUM = "delete-album"
     const val HIDE_ALBUM = "hide-album"
     const val GET_NEW_FEED_LIST = "new-feed-list"
+    const val COMPARE_USERNAME = "compare-username"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -301,6 +302,7 @@ object Constants {
     const val WHO_CAN_SEND_DIRECT_MESSAGE = "who_can_send_message"
     const val IS_SHARE = "is_share"
     const val DEVICE_TOKEN = "device_token"
+    const val USER_NAME = "user_name"
     //const val POST_ID = "post_id"
 
 

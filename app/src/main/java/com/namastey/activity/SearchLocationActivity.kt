@@ -394,17 +394,16 @@ class SearchLocationActivity : FragmentActivity(),
         ) {
             latitude = intent.extras!!.getDouble("latitude", 0.0)
             longitude = intent.extras!!.getDouble("longitude", 0.0)
-            getAddress(latitude, longitude)
 
             Log.e("SearchLocationActivity", "extras latitude:\t $latitude")
             Log.e("SearchLocationActivity", "extras longitude:\t $longitude")
         } else {
             latitude = location.latitude
             longitude = location.longitude
-
             Log.e("SearchLocationActivity", " latitude:\t $latitude")
             Log.e("SearchLocationActivity", " longitude:\t $longitude")
         }
+        getAddress(latitude, longitude)
 
         val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions()
@@ -430,6 +429,10 @@ class SearchLocationActivity : FragmentActivity(),
         mMap!!.setOnMarkerClickListener {
             sessionManager.setRecentLocationFromList(recentLocation)
             Log.e("SearchLocationActivity", "setOnMarkerClickListener: In")
+            val intent = Intent(this@SearchLocationActivity, PassportContentActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            this@SearchLocationActivity.finish()
             true
         }
 

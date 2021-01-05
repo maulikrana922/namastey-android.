@@ -16,7 +16,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAddComment"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite">
 
                 <ImageView
                     android:id="@+id/llLocationBackground"
@@ -147,7 +148,7 @@
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_15sdp"
                     android:paddingBottom="@dimen/_15sdp"
-                    android:text="@string/recent_passport_locations"
+                    android:text="@string/recent_airport_locations"
                     android:textColor="@color/color_chip_gray"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -191,110 +192,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:typeface="MULI_EXTRA_BOLD" />
-
-                <LinearLayout
-                    android:id="@+id/llRecentPassportLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llMyCurrentLocation">
-
-                    <!-- <com.namastey.customViews.CustomTextView
-                         android:id="@+id/tvCurrentLocation"
-                         style="@style/tvWrapWhiteStyle"
-                         android:layout_width="match_parent"
-                         android:gravity="start|center"
-                         android:paddingStart="@dimen/_15sdp"
-                         android:paddingEnd="@dimen/_15sdp"
-                         android:paddingBottom="@dimen/_15sdp"
-                         android:text="@string/current_location"
-                         android:textColor="@color/color_chip_gray"
-                         android:textSize="18sp"
-                         app:typeface="MULI_EXTRA_BOLD" />-->
-
-                    <!--<LinearLayout
-                        android:id="@+id/llMyCurrentLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_15sdp">
-
-                        <ImageView
-                            android:id="@+id/ivCurrentLocation"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_32sdp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/app_name"
-                            android:onClick="onClickLocationBack"
-                            android:src="@drawable/ic_current_location" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:orientation="vertical">
-
-                            <com.namastey.customViews.CustomTextView
-                                android:id="@+id/tvMyCurrentLocation"
-                                style="@style/tvWrapWhiteStyle"
-                                android:layout_width="match_parent"
-                                android:gravity="start|center"
-                                android:text="@string/my_current_location"
-                                android:textColor="@color/color_chip_gray"
-                                android:textSize="16sp"
-                                app:typeface="MULI_SEMIBOLD" />
-
-                            <com.namastey.customViews.CustomTextView
-                                android:id="@+id/tvMyCurrentAddress"
-                                style="@style/tvWrapWhiteStyle"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:gravity="start|center"
-                                android:text="@string/my_current_address"
-                                android:textColor="@color/colorLightGrayText"
-                                android:textSize="16sp"
-                                app:typeface="MULI_SEMIBOLD" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>-->
-
-                    <!--<LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">-->
-
-                    <!--<com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:layout_width="match_parent"
-                        android:gravity="start|center"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_15sdp"
-                        android:text="@string/recent_passport_locations"
-                        android:textColor="@color/color_chip_gray"
-                        android:textSize="18sp"
-                        app:typeface="MULI_EXTRA_BOLD" />-->
-
-                    <!--  <androidx.recyclerview.widget.RecyclerView
-                          android:id="@+id/rvLocation"
-                          android:layout_width="match_parent"
-                          android:layout_height="0dp"
-                          android:layout_weight="1"
-                          android:background="@color/colorWhite"
-                          android:orientation="vertical"
-                          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                          tools:listitem="@layout/row_current_location" />-->
-
-                </LinearLayout>
 
                 <!-- </LinearLayout>-->
 

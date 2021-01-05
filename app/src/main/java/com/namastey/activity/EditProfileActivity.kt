@@ -19,6 +19,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityEditProfileBinding
 import com.namastey.fragment.AlbumFragment
 import com.namastey.fragment.EditProfileFragment
+import com.namastey.model.ErrorBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
@@ -62,6 +63,13 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
+    }
+
+    override fun onSuccessUniqueName(msg: String) {
+    }
+
+    override fun onFailedUniqueName(error: ErrorBean?) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = profileBasicViewModel

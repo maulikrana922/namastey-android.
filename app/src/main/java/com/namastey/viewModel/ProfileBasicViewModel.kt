@@ -27,15 +27,15 @@ class ProfileBasicViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (profileBasicView.isInternetAvailable()){
+                if (profileBasicView.isInternetAvailable()) {
                     networkService.requestToGetUserFullProfile(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileBasicView.onSuccessProfileDetails(appResponse.data!!)
                         else
-                            profileBasicView.onFailed(appResponse.message,appResponse.error)
+                            profileBasicView.onFailed(appResponse.message, appResponse.error)
                     }
-                }else{
+                } else {
                     setIsLoading(false)
                     profileBasicView.showMsg(R.string.no_internet)
                 }
@@ -46,7 +46,7 @@ class ProfileBasicViewModel constructor(
         }
     }
 
-    fun editProfile(jsonObject: JsonObject){
+    fun editProfile(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -75,15 +75,15 @@ class ProfileBasicViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetSocialLinksList().let {
-                        appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
-                    setIsLoading(false)
-                    if (appResponse.status == Constants.OK) {
-                        profileBasicView.onSuccessSocialAccount(appResponse.data!!)
-                    } else {
-                        profileBasicView.onFailed(appResponse.message, appResponse.error)
+                networkService.requestToGetSocialLinksList()
+                    .let { appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            profileBasicView.onSuccessSocialAccount(appResponse.data!!)
+                        } else {
+                            profileBasicView.onFailed(appResponse.message, appResponse.error)
+                        }
                     }
-                }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 profileBasicView.onHandleException(exception)
@@ -91,8 +91,31 @@ class ProfileBasicViewModel constructor(
         }
     }
 
-    fun onDestroy(){
-        if (::job.isInitialized){
+    fun checkUniqueUsername(username: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileBasicView.isInternetAvailable()) {
+                    networkService.requestToCheckUniqueUsername(username).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileBasicView.onSuccessUniqueName(appResponse.message)
+                        else
+                            profileBasicView.onFailedUniqueName(appResponse.errors)
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileBasicView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileBasicView.onHandleException(t)
+            }
+        }
+    }
+
+    fun onDestroy() {
+        if (::job.isInitialized) {
             job.cancel()
         }
     }

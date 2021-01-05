@@ -25,6 +25,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_EXTRA_BOLD" />
 
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUniqueNameError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:singleLine="true"
+        android:textColor="@color/colorRed"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
+        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
+        app:layout_constraintTop_toBottomOf="@id/edtProfileCasualName"
+        app:typeface="MULI_EXTRA_BOLD" />
+
+
     <LinearLayout
         android:id="@+id/llCategory"
         style="@style/tvRoundCornerStyle"
