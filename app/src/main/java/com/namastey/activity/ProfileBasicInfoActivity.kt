@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
@@ -11,10 +12,7 @@ import com.namastey.fragment.EducationFragment
 import com.namastey.fragment.InterestInFragment
 import com.namastey.fragment.JobFragment
 import com.namastey.fragment.SelectCategoryFragment
-import com.namastey.model.EducationBean
-import com.namastey.model.JobBean
-import com.namastey.model.ProfileBean
-import com.namastey.model.SocialAccountBean
+import com.namastey.model.*
 import com.namastey.uiView.ProfileBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -25,6 +23,8 @@ import javax.inject.Inject
 
 
 class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>(), ProfileBasicView {
+
+    private val TAG: String = ProfileBasicInfoActivity::class.java.simpleName
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -39,6 +39,18 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     }
 
     override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
+    }
+
+    override fun onFailedUniqueName(error: ErrorBean?) {
+        Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
+        tvUniqueNameError.visibility = View.VISIBLE
+        tvUniqueNameError.text = error!!.user_name
+    }
+
+    override fun onSuccessUniqueName(msg: String) {
+        super.onSuccess(msg)
+        tvUniqueNameError.visibility = View.GONE
+        Log.e(TAG, "onSuccess: Error: \t $msg")
     }
 
     override fun getViewModel() = profileBasicViewModel
@@ -65,8 +77,8 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         rangeProfileAge.apply()
         rangeProfileAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
             tvProfileAgeValue.text = "$minValue and $maxValue"
-            sessionManager.setStringValue(minValue.toString(),Constants.KEY_AGE_MIN)
-            sessionManager.setStringValue(maxValue.toString(),Constants.KEY_AGE_MAX)
+            sessionManager.setStringValue(minValue.toString(), Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(maxValue.toString(), Constants.KEY_AGE_MAX)
         }
 
         initValue()
@@ -105,7 +117,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
         }
 
-        if (sessionManager.getCategoryList().size >=3){
+        if (sessionManager.getCategoryList().size >= 3) {
             tvProfileSelectCategory.text = sessionManager.getCategoryList().get(0).name
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
         }
@@ -126,9 +138,17 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 //            edtProfileCasualName.error = "casual name required"
 //        }
 
+        profileBasicViewModel.checkUniqueUsername(edtProfileCasualName.text.toString().trim())
+
         if (validation()) {
-            sessionManager.setStringValue(edtProfileCasualName.text.toString().trim(),Constants.KEY_CASUAL_NAME)
-            sessionManager.setStringValue(edtProfileTagline.text.toString().trim(),Constants.KEY_TAGLINE)
+            sessionManager.setStringValue(
+                edtProfileCasualName.text.toString().trim(),
+                Constants.KEY_CASUAL_NAME
+            )
+            sessionManager.setStringValue(
+                edtProfileTagline.text.toString().trim(),
+                Constants.KEY_TAGLINE
+            )
             openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
         }
     }
@@ -195,14 +215,16 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             }
             llEducation -> {
                 addFragment(
-                    EducationFragment.getInstance(false, EducationBean()
+                    EducationFragment.getInstance(
+                        false, EducationBean()
                     ),
                     Constants.EDUCATION_FRAGMENT
                 )
             }
             llJob -> {
                 addFragment(
-                    JobFragment.getInstance(false,JobBean()
+                    JobFragment.getInstance(
+                        false, JobBean()
                     ),
                     Constants.JOB_FRAGMENT
                 )

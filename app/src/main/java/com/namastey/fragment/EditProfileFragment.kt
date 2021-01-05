@@ -23,6 +23,7 @@ import com.namastey.activity.JobListingActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEditProfileBinding
 import com.namastey.listeners.OnInteractionWithFragment
+import com.namastey.model.ErrorBean
 import com.namastey.model.ProfileBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileBasicView
@@ -37,6 +38,7 @@ import javax.inject.Inject
 
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileBasicView,
     OnInteractionWithFragment {
+    private val TAG: String = EditProfileFragment::class.java.simpleName
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -61,6 +63,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         socialAccountUI(socialAccountList)
 
         editProfileApiCall()
+    }
+
+    override fun onFailedUniqueName(error: ErrorBean?) {
+        Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
+        tvUniqueNameError.visibility = View.VISIBLE
+        tvUniqueNameError.text = error!!.user_name
+    }
+
+    override fun onSuccessUniqueName(msg: String) {
+        super.onSuccess(msg)
+        tvUniqueNameError.visibility = View.GONE
+        Log.e(TAG, "onSuccess: Error: \t $msg")
     }
 
     override fun onSuccess(msg: String) {
@@ -388,7 +402,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 //            mainLinkedin.visibility = View.GONE
 //        }
     }
-
 
     override fun onClickOfFragmentView(view: View) {
         onClick(view)
