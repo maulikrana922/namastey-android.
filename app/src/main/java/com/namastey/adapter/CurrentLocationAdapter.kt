@@ -75,9 +75,38 @@ class CurrentLocationAdapter(
                         R.color.colorBlueLight
                     )
                 )
+                locationBean.isSelected = false
             }
 
-            if (checkedPosition == -1) {
+           /* val id: Int = locationBean.id
+            if (id == AppSingleTon.visaType) {
+                viewHolder.visa_layout.setSelected(true)
+            } else {
+                viewHolder.visa_layout.setSelected(false)
+            }*/
+
+            if (position == checkedPosition) {
+                locationBean.isSelected = true
+                ivAddressSelected.visibility = View.VISIBLE
+                ivCurrentLocation.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.colorBlueLight
+                    )
+                )
+            } else {
+                locationBean.isSelected = false
+                ivAddressSelected.visibility = View.GONE
+                ivCurrentLocation.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_chip_gray
+                    )
+                )
+            }
+
+
+            /*if (checkedPosition == -1) {
                 ivAddressSelected.visibility = View.GONE
             } else {
                 if (checkedPosition == adapterPosition) {
@@ -99,7 +128,7 @@ class CurrentLocationAdapter(
                         )
                     )
                 }
-            }
+            }*/
 
             llLocationView.setOnClickListener {
                 locationBean.isSelected = true
@@ -111,12 +140,16 @@ class CurrentLocationAdapter(
                     )
                 )
 
-                onRecentLocationClick.onRecentLocationItemClick(locationBean)
-                if (checkedPosition != adapterPosition) {
+                checkedPosition = adapterPosition
+                notifyDataSetChanged()
+
+                onRecentLocationClick.onRecentLocationItemClick(locationBean, locationBeanList)
+               /* if (checkedPosition != adapterPosition) {
                     notifyItemChanged(checkedPosition)
                     checkedPosition = adapterPosition
-                }
+                }*/
             }
+
 
             /* llLocationView.setOnClickListener { v ->
                  if (ivAddressSelected.visibility == View.VISIBLE) {

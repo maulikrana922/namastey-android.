@@ -62,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_done"
             android:tint="@color/color_chip_gray" />

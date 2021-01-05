@@ -46,6 +46,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_search_location.*
+import kotlinx.android.synthetic.main.view_search_location_marker.view.*
 import org.jetbrains.anko.doAsync
 import java.util.*
 
@@ -66,6 +67,9 @@ class SearchLocationActivity : FragmentActivity(),
     private var longitude: Double = 0.0
     private var apiKey = ""
     private var mResult: StringBuilder? = null
+    private var recentLocation: RecentLocations = RecentLocations()
+    private var city = ""
+    private var state = ""
 
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
@@ -265,8 +269,8 @@ class SearchLocationActivity : FragmentActivity(),
         val address: String =
             addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
-        val city: String = addresses[0].locality
-        val state: String = addresses[0].adminArea
+        city = addresses[0].locality
+        state = addresses[0].adminArea
         val country: String = addresses[0].countryName
         val postalCode = if (addresses[0].postalCode != null && addresses[0].postalCode != "") {
             addresses[0].postalCode
@@ -288,7 +292,7 @@ class SearchLocationActivity : FragmentActivity(),
         Log.e("LocationActivity", "getAddress: \tknownName: $knownName")
 
         val currentTime = System.currentTimeMillis()
-        val recentLocation = RecentLocations(
+        recentLocation = RecentLocations(
             0,
             city,
             state,
@@ -300,7 +304,7 @@ class SearchLocationActivity : FragmentActivity(),
             longitude,
             true
         )
-        sessionManager.setRecentLocationFromList(recentLocation)
+        //sessionManager.setRecentLocationFromList(recentLocation)
 
         doAsync {
             dbHelper.addRecentLocation(recentLocation)
@@ -390,6 +394,7 @@ class SearchLocationActivity : FragmentActivity(),
         ) {
             latitude = intent.extras!!.getDouble("latitude", 0.0)
             longitude = intent.extras!!.getDouble("longitude", 0.0)
+            getAddress(latitude, longitude)
 
             Log.e("SearchLocationActivity", "extras latitude:\t $latitude")
             Log.e("SearchLocationActivity", "extras longitude:\t $longitude")
@@ -421,6 +426,12 @@ class SearchLocationActivity : FragmentActivity(),
         //move map camera
         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
+
+        mMap!!.setOnMarkerClickListener {
+            sessionManager.setRecentLocationFromList(recentLocation)
+            Log.e("SearchLocationActivity", "setOnMarkerClickListener: In")
+            true
+        }
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -469,6 +480,20 @@ class SearchLocationActivity : FragmentActivity(),
                 R.layout.view_search_location_marker,
                 null
             )
+
+        if (recentLocation.city != "" && recentLocation.city != null) {
+            marker.tvMyCurrentAddress1.text =
+                getString(R.string.go_to).plus(" ").plus(recentLocation.city)
+        } else if (city != "")  {
+            marker.tvMyCurrentAddress1.text =
+                getString(R.string.go_to).plus(" ").plus(city)
+        }
+
+        if (recentLocation.state != "" && recentLocation.state != null) {
+            marker.tvMyCurrentAddress2.text = recentLocation.state
+        } else if (state != "")  {
+            marker.tvMyCurrentAddress2.text = state
+        }
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)

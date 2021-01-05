@@ -289,7 +289,7 @@ open class PassportContentActivity : FragmentActivity(),
         //markerImage.setImageResource(imageUrl)
 
         GlideApp
-            .with(this)
+            .with(this@PassportContentActivity)
             .load(imageUrl)
             .into(markerImage)
 

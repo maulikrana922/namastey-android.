@@ -50,6 +50,10 @@ class DBHelper @Inject constructor(var appDB: AppDB) {
         return appDB.recentLocationDao().updateRecentLocations(recentLocations)
     }
 
+    fun updateAllRecentLocations(recentLocationList: ArrayList<RecentLocations>) {
+        return appDB.recentLocationDao().updateAllRecentLocations(recentLocationList)
+    }
+
     fun addAllRecentLocation(recentLocationList: ArrayList<RecentLocations>) {
         return appDB.recentLocationDao().addAllRecentLocations(recentLocationList)
     }

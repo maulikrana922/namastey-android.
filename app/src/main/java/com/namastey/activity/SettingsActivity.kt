@@ -2,17 +2,21 @@ package com.namastey.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.LocationListener
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySettingsBinding
+import com.namastey.location.AppLocationService
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
 import com.namastey.roomDB.entity.RecentLocations
@@ -25,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import javax.inject.Inject
 
-class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
+class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, LocationListener {
 
 
     @Inject
@@ -45,6 +49,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
     private var currentLocationFromDB: RecentLocations? = null
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private var realLatitude: Double = 0.0
+    private var realLongitude: Double = 0.0
+    private lateinit var appLocationService: AppLocationService
 
     override fun getViewModel() = settingsViewModel
 
@@ -85,6 +92,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
             }
         }
 
+        getLocation()
         setCurrentLocation()
 
         switchHideProfile.isChecked = sessionManager.getIntegerValue(Constants.IS_HIDE) == 1
@@ -193,12 +201,20 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         }
         if (currentLocationFromDB != null) {
             if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
-                tvMyCurrentLocation.text =
-                    currentLocationFromDB!!.city.plus(", ").plus(currentLocationFromDB!!.state)
+
+                Log.e("DashboardActivity", "latitude: $latitude")
+                Log.e("DashboardActivity", "longitude: $longitude")
+                if (realLatitude == latitude && realLongitude == longitude) {
+                    tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+                } else {
+                    tvMyCurrentLocation.text =
+                        currentLocationFromDB!!.city.plus(", ").plus(currentLocationFromDB!!.state)
+                }
             }
         } else {
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
+
 
         //tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
     }
@@ -322,5 +338,24 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView {
         intent.putExtra("isFromSearch", true)
         openActivity(intent)
         // openActivity(this, PassportContentActivity())
+    }
+
+    private fun getLocation() {
+        appLocationService = AppLocationService(this)
+
+        val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
+        if (gpsLocation != null) {
+            realLatitude = gpsLocation.latitude
+            realLongitude = gpsLocation.longitude
+            Log.e("DashboardActivity", "realLatitude: $realLatitude")
+            Log.e("DashboardActivity", "realLongitude: $realLongitude")
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        realLatitude = location.latitude
+        realLongitude = location.longitude
+        Log.e("DashboardActivity", "realLatitude: $realLatitude")
+        Log.e("DashboardActivity", "realLongitude: $realLongitude")
     }
 }

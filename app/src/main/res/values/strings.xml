@@ -461,5 +461,6 @@
     <string name="okay">Okay</string>
     <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best result.</string>
     <string name="remaining">Remaining</string>
+    <string name="go_to">Go to,</string>
 
 </resources>

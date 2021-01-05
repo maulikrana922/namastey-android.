@@ -298,20 +298,23 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
         }
     }
 
-
     override fun onDestroy() {
         locationViewModel.onDestroy()
         super.onDestroy()
     }
 
-    override fun onRecentLocationItemClick(recentLocation: RecentLocations) {
+    override fun onRecentLocationItemClick(recentLocation: RecentLocations, recentLocationList: ArrayList<RecentLocations>) {
         sessionManager.setBooleanValue(true, Constants.KEY_SET_RECENT_LOCATION)
         Log.e("LocationActivity", "recentLocation: \t ${recentLocation.isSelected}")
         Log.e("LocationActivity", "recentLocation: \t ${recentLocation.id}")
         sessionManager.setRecentLocationFromList(recentLocation)
-        doAsync {
-            dbHelper.updateSelectedLocation(recentLocation.isSelected, recentLocation.id)
+         doAsync {
+            dbHelper.updateRecentLocations(recentLocation)
+            dbHelper.updateAllRecentLocations(recentLocationList)
         }
+       /* doAsync {
+            dbHelper.updateSelectedLocation(recentLocation.isSelected, recentLocation.id)
+        }*/
         val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
         intent.flags = /*Intent.FLAG_ACTIVITY_NEW_TASK or*/
             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -343,6 +346,13 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
             )
         )
         sessionManager.setRecentLocationFromList(recentLocation)
+
+        val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
+        intent.flags = /*Intent.FLAG_ACTIVITY_NEW_TASK or*/
+            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.putExtra("latitude", recentLocation.latitude)
+        intent.putExtra("longitude", recentLocation.longitude)
+        openActivity(intent)
 
        /* doAsync {
             dbHelper.updateRecentLocations(recentLocation)

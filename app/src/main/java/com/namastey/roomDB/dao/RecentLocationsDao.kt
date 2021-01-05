@@ -25,6 +25,9 @@ interface RecentLocationsDao {
     @Update
     fun updateRecentLocations(recentLocations: RecentLocations)
 
+    @Update
+    fun updateAllRecentLocations(recentLocationList: ArrayList<RecentLocations>)
+
     // @Query(value = "SELECT * FROM recentLocations ORDER BY currentTime DESC LIMIT 0,5")
     @Query(value = "SELECT * FROM recentLocations ORDER BY currentTime DESC LIMIT 0,5")
     fun getAllRecentLocations(): List<RecentLocations>
