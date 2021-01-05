@@ -230,11 +230,12 @@ class SearchLocationActivity : FragmentActivity(),
                 mMap!!.addMarker(
                     MarkerOptions().position(place.latLng!!).icon(
                         BitmapDescriptorFactory.fromBitmap(
-                            createCustomMarker(
-                                this@SearchLocationActivity,
-                                sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                                sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                            )
+                            searchLocationMarker(this@SearchLocationActivity)
+//                            createCustomMarker(
+//                                this@SearchLocationActivity,
+//                                sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+//                                sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                            )
                         )
                     ).title(place.name.toString())
                 )
@@ -327,11 +328,12 @@ class SearchLocationActivity : FragmentActivity(),
             mMap!!.addMarker(
                 MarkerOptions().position(customMarkerLocationOne).icon(
                     BitmapDescriptorFactory.fromBitmap(
-                        createCustomMarker(
-                            this@SearchLocationActivity,
-                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                        )
+//                        createCustomMarker(
+//                            this@SearchLocationActivity,
+//                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+//                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                        )
+                        searchLocationMarker(this@SearchLocationActivity)
                     )
                 )
             ).title = ""
@@ -406,11 +408,12 @@ class SearchLocationActivity : FragmentActivity(),
         //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
         markerOptions.icon(
             BitmapDescriptorFactory.fromBitmap(
-                createCustomMarker(
-                    this@SearchLocationActivity,
-                    sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                    sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                )
+//                createCustomMarker(
+//                    this@SearchLocationActivity,
+//                    sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+//                    sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                )
+                searchLocationMarker(this@SearchLocationActivity)
             )
         )
         mCurrLocationMarker = mMap!!.addMarker(markerOptions)
@@ -470,7 +473,7 @@ class SearchLocationActivity : FragmentActivity(),
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         marker.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            150,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)

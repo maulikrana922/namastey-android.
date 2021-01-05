@@ -20,6 +20,7 @@ class MatchesListBean() : Parcelable {
     var chatMessage: ChatMessage = ChatMessage()
     var is_match: Int = 0
     var is_block: Int = 0
+    var is_follow_me: Int = 0
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -36,6 +37,7 @@ class MatchesListBean() : Parcelable {
         chatMessage = parcel.readValue(ChatMessage::class.java.classLoader) as ChatMessage
         is_match = parcel.readInt() ?: 0
         is_block = parcel.readInt() ?: 0
+        is_follow_me = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -53,6 +55,7 @@ class MatchesListBean() : Parcelable {
         parcel.writeValue(chatMessage)
         parcel.writeInt(is_match)
         parcel.writeInt(is_block)
+        parcel.writeInt(is_follow_me)
     }
 
     override fun describeContents(): Int {

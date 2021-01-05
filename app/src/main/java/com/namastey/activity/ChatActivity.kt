@@ -121,9 +121,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //                else
 //                    viewBuyNow.visibility = View.VISIBLE
             }
-            if (intent.hasExtra("isFromMessage"))
+            if (intent.hasExtra("isFromMessage")) {
                 isFromMessage = intent.getBooleanExtra("isFromMessage", false)
-
+                when (matchesListBean.is_follow_me) {
+                    1 -> isFollowMe = true
+                    else -> isFollowMe = false
+                }
+            }
             if (intent.hasExtra("chatNotification"))
                 chatNotification = intent.getBooleanExtra("chatNotification", false)
 
@@ -512,7 +516,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     fun onClickSendMessage(view: View) {
         if (edtMessage.text.trim().isNotEmpty()) {
             characterCount += edtMessage.text.length
-            if (chatNotification){
+            if (chatNotification || isFromMessage){
                 sendMessage(edtMessage.text.toString(), "")
             }else if (matchesListBean.is_match == 1 || isFollowMe)
                 sendMessage(edtMessage.text.toString(), "")
@@ -588,7 +592,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         if (matchesListBean.is_block == 1) {
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
-            if (matchesListBean.is_match == 1) {
+            if (matchesListBean.is_match == 1 || isFollowMe) {
                 if (isPermissionGrantedForCamera())
                     capturePhoto()
             }
@@ -694,7 +698,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         if (matchesListBean.is_block == 1) {
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
-            if (matchesListBean.is_match == 1) {
+            if (matchesListBean.is_match == 1 || isFollowMe) {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)

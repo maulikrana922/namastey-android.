@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
@@ -34,7 +33,6 @@
                 android:id="@+id/tvMyCurrentAddress1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/my_current_address"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:typeface="MULI_EXTRA_BOLD" />
@@ -44,7 +42,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:text="@string/my_current_address"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:typeface="MULI_SEMIBOLD" />
@@ -54,7 +51,7 @@
 
     <ImageView
         android:id="@+id/ivPin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_pin"
         tools:ignore="ContentDescription" />
