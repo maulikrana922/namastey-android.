@@ -25,64 +25,65 @@
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_EXTRA_BOLD" />
 
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvUniqueNameError"
+    <LinearLayout
+        android:id="@+id/llCentreView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_25sdp"
         android:layout_marginEnd="@dimen/_25sdp"
-        android:layout_marginBottom="@dimen/_4sdp"
-        android:paddingStart="@dimen/_15sdp"
-        android:paddingTop="@dimen/_3sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:singleLine="true"
-        android:textColor="@color/colorRed"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
-        app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
-        app:layout_constraintTop_toBottomOf="@id/edtProfileCasualName"
-        app:typeface="MULI_EXTRA_BOLD" />
-
-
-    <LinearLayout
-        android:id="@+id/llCategory"
-        style="@style/tvRoundCornerStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:background="@drawable/rounded_white_solid"
-        android:gravity="center_vertical"
-        android:onClick="onClickBasicInfo"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
         app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
         app:layout_constraintTop_toBottomOf="@id/edtProfileCasualName">
 
         <com.namastey.customViews.CustomTextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvUniqueNameError"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_category"
-            android:textSize="14sp"
-            app:typeface="MULI_SEMIBOLD" />
-
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvProfileSelectCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_2sdp"
-            android:layout_weight="1"
-            android:gravity="right"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_10sdp"
             android:singleLine="true"
             android:textColor="@color/colorRed"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:visibility="gone"
             app:typeface="MULI_EXTRA_BOLD" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llCategory"
+            style="@style/tvRoundCornerStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_dropdown" />
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/rounded_white_solid"
+            android:gravity="center_vertical"
+            android:onClick="onClickBasicInfo"
+            android:orientation="horizontal">
 
+            <com.namastey.customViews.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_category"
+                android:textSize="14sp"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvProfileSelectCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:textColor="@color/colorRed"
+                android:textSize="14sp"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_dropdown" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -97,7 +98,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@id/edtProfileCasualName"
         app:layout_constraintStart_toStartOf="@id/edtProfileCasualName"
-        app:layout_constraintTop_toBottomOf="@id/llCategory">
+        app:layout_constraintTop_toBottomOf="@id/llCentreView">
 
         <com.namastey.customViews.CustomTextView
             android:layout_width="wrap_content"

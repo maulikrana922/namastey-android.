@@ -82,8 +82,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         Log.d("Success : ", msg)
         isEditTagLine = false
         isEditUsername = false
-        sessionManager.setStringValue(edtProfileCasualName.text.toString().trim(),Constants.KEY_CASUAL_NAME)
-        sessionManager.setStringValue(edtProfileTagline.text.toString().trim(),Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(
+            edtProfileCasualName.text.toString().trim(),
+            Constants.KEY_CASUAL_NAME
+        )
+        sessionManager.setStringValue(
+            edtProfileTagline.text.toString().trim(),
+            Constants.KEY_TAGLINE
+        )
         edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -161,7 +167,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             isEditUsername = false
                             edtProfileCasualName.inputType = InputType.TYPE_NULL
                             edtProfileCasualName.clearFocus()
-                            editProfileApiCall()
+                            if (edtProfileCasualName.text.toString().trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)){
+                                profileBasicViewModel.checkUniqueUsername(edtProfileCasualName.text.toString().trim())
+                                editProfileApiCall()
+                            }
                             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
                                 0,
                                 0,
@@ -320,8 +329,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             0
                         )
                     } else {
-                        val count = llProfileTag.childCount -1
-                        for (index in 0..count){
+                        val count = llProfileTag.childCount - 1
+                        for (index in 0..count) {
                             val viewCategory = llProfileTag.getChildAt(index)
                             viewCategory.chipProfileTag.visibility = View.GONE
                             viewCategory.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -556,11 +565,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("onActivityResult", "onActivityResult")
-        if (requestCode == Constants.REQUEST_CODE_EDUCATION || requestCode == Constants.REQUEST_CODE_JOB){
+        if (requestCode == Constants.REQUEST_CODE_EDUCATION || requestCode == Constants.REQUEST_CODE_JOB) {
             tvProfileJobs.text = sessionManager.getJobBean().title
             tvProfileEducation.text = sessionManager.getEducationBean().course
             editProfileApiCall()
-        }else if (data != null) {
+        } else if (data != null) {
             when {
                 data.hasExtra("fromInterestIn") -> {
                     when (sessionManager.getInterestIn()) {
