@@ -207,7 +207,7 @@ dependencies {
 
     //ExoPlayer
    // implementation 'com.google.android.exoplayer:exoplayer:2.10.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
+   // implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
 
 //    For in-app purchase
     implementation "com.android.billingclient:billing-ktx:$billing_version"

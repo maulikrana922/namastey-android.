@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
@@ -158,8 +162,32 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         }
     }
 
+    private fun dialogAdminBlockUser() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val dialogView: View =
+            LayoutInflater.from(requireActivity())
+                .inflate(R.layout.dialog_admin_block_user, null, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        alertDialog.show()
+
+    }
+
+
     override fun onDestroy() {
         otpViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    override fun onFailed(msg: String, error: Int) {
+        super.onFailed(msg, error)
+        Log.e("OTPFragment", "onFailed: msg \t $msg")
+        Log.e("OTPFragment", "onFailed: error \t $error")
+        if(error == Constants.ADMIN_BLOCK_USER_CODE){
+            dialogAdminBlockUser()
+        }
     }
 }

@@ -51,6 +51,8 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         super.onSuccess(msg)
         tvUniqueNameError.visibility = View.GONE
         Log.e(TAG, "onSuccess: Error: \t $msg")
+        openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
+
     }
 
     override fun getViewModel() = profileBasicViewModel
@@ -149,7 +151,10 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
                 edtProfileTagline.text.toString().trim(),
                 Constants.KEY_TAGLINE
             )
-            openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
+
+            /*if (tvUniqueNameError.visibility == View.GONE) {
+                openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
+            }*/
         }
     }
 

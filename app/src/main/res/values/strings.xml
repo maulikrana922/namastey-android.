@@ -464,5 +464,8 @@
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
     <string name="buy_boost">BUY boost</string>
+    <string name="text_ban_account">Your account has been banned.</string>
+    <string name="text_violation">Your Namastey profile has been banned for activity that violets our Terms of use</string>
+    <string name="text_admin_block_note">Please note that if you are subscribed to any premium services through the App Store, you will need to cancel your subscription with the appropriate provider.</string>
 
 </resources>

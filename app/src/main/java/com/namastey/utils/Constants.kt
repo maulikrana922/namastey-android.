@@ -129,6 +129,7 @@ object Constants {
 
     //    api response error code
     const val OK = 200
+    const val ADMIN_BLOCK_USER_CODE = 401
 
     const val TIME_OUT: Long = 60
     const val CACHE_TIME = 432000

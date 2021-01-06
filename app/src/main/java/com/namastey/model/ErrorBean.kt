@@ -7,13 +7,16 @@ import android.os.Parcelable
 class ErrorBean() : Parcelable {
 
     var user_name: String = ""
+    var error: String = ""
 
     constructor(parcel: Parcel) : this() {
         user_name = parcel.readString() ?: ""
+        error = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(user_name)
+        parcel.writeString(error)
 
     }
 

@@ -10,7 +10,7 @@
     android:orientation="vertical"
     tools:targetApi="28">
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -24,8 +24,8 @@
         <ImageButton android:id="@id/exo_rew"
             style="@style/ExoMediaButton.Rewind"/>
 
-        <!--<ImageButton android:id="@id/exo_shuffle"
-            style="@style/ExoMediaButton.Shuffle"/>-->
+        &lt;!&ndash;<ImageButton android:id="@id/exo_shuffle"
+            style="@style/ExoMediaButton.Shuffle"/>&ndash;&gt;
 
         <ImageButton android:id="@id/exo_repeat_toggle"
             style="@style/ExoMediaButton"/>
@@ -45,7 +45,7 @@
         <ImageButton android:id="@id/exo_vr"
             style="@style/ExoMediaButton.VR"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,11 +65,11 @@
             android:textSize="14sp"
             android:textStyle="bold"/>
 
-        <com.google.android.exoplayer2.ui.DefaultTimeBar
+       <!-- <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             android:layout_width="0dp"
             android:layout_height="26dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"/>-->
 
         <TextView android:id="@id/exo_duration"
             android:layout_width="wrap_content"

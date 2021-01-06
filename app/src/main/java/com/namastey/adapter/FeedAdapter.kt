@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.upstream.DataSource
 import com.namastey.R
 import com.namastey.activity.ProfileActivity
 import com.namastey.listeners.OnFeedItemClick
@@ -32,10 +30,10 @@ class FeedAdapter(
     private val TAG = "FeedAdapter"
 
     val handlerVideo = Handler(activity.mainLooper)
-    private lateinit var simpleExoPlayer: SimpleExoPlayer
+   /* private lateinit var simpleExoPlayer: SimpleExoPlayer
     private lateinit var mediaDataSourceFactory: DataSource.Factory
     var lastWindowIndex = 0
-    private var expoPLayerList: ArrayList<SimpleExoPlayer> = arrayListOf()
+    private var expoPLayerList: ArrayList<SimpleExoPlayer> = arrayListOf()*/
 
 //    private var timeCountInMilliSeconds: Long = 1 * 60000.toLong()
 //

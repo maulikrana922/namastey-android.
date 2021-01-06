@@ -35,9 +35,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -124,12 +121,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var mbLoading = true
     private lateinit var appLocationService: AppLocationService
 
-    private lateinit var simpleExoPlayer: SimpleExoPlayer
-    private lateinit var mediaDataSourceFactory: DataSource.Factory
     var lastWindowIndex = 0
     private var dashboardBean: DashboardBean = DashboardBean()
-    private lateinit var playerView: PlayerView
-    private var oldExoPlayer: SimpleExoPlayer? = null
+   // private lateinit var playerView: PlayerView
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -2333,6 +2327,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
         longitude = location.longitude
         Log.e("DashboardActivity", "latitude: $latitude")
         Log.e("DashboardActivity", "longitude: $longitude")
+    }
+
+    override fun onFailed(msg: String, error: Int) {
+        super.onFailed(msg, error)
+        Log.e("DashboardActivity", "onFailed  error: $error")
+        Log.e("DashboardActivity", "onFailed  msg: $msg")
     }
 
 }

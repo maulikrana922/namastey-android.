@@ -71,6 +71,20 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as LocationActivity).showMsg(msgId)
         else if (activity != null && activity!! is LikeProfileActivity)
             (activity!! as LikeProfileActivity).showMsg(msgId)
+        else if (activity != null && activity!! is AlbumDetailActivity)
+            (activity!! as AlbumDetailActivity).showMsg(msgId)
+        else if (activity != null && activity!! is CreateAlbumActivity)
+            (activity!! as CreateAlbumActivity).showMsg(msgId)
+        else if (activity != null && activity!! is ImageSliderActivity)
+            (activity!! as ImageSliderActivity).showMsg(msgId)
+        else if (activity != null && activity!! is MembershipActivity)
+            (activity!! as MembershipActivity).showMsg(msgId)
+        else if (activity != null && activity!! is PostVideoActivity)
+            (activity!! as PostVideoActivity).showMsg(msgId)
+        else if (activity != null && activity!! is ProfileViewActivity)
+            (activity!! as ProfileViewActivity).showMsg(msgId)
+        else if (activity != null && activity!! is SettingsActivity)
+            (activity!! as SettingsActivity).showMsg(msgId)
     }
 
     override fun showMsg(msg: String) {
@@ -106,6 +120,20 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as LocationActivity).showMsg(msg)
         else if (activity != null && activity!! is LikeProfileActivity)
             (activity!! as LikeProfileActivity).showMsg(msg)
+        else if (activity != null && activity!! is AlbumDetailActivity)
+            (activity!! as AlbumDetailActivity).showMsg(msg)
+        else if (activity != null && activity!! is CreateAlbumActivity)
+            (activity!! as CreateAlbumActivity).showMsg(msg)
+        else if (activity != null && activity!! is ImageSliderActivity)
+            (activity!! as ImageSliderActivity).showMsg(msg)
+        else if (activity != null && activity!! is MembershipActivity)
+            (activity!! as MembershipActivity).showMsg(msg)
+        else if (activity != null && activity!! is PostVideoActivity)
+            (activity!! as PostVideoActivity).showMsg(msg)
+        else if (activity != null && activity!! is ProfileViewActivity)
+            (activity!! as ProfileViewActivity).showMsg(msg)
+        else if (activity != null && activity!! is SettingsActivity)
+            (activity!! as SettingsActivity).showMsg(msg)
     }
 
     override fun hideKeyboard() {
@@ -141,6 +169,20 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as LocationActivity).hideKeyboard()
         else if (activity != null && activity!! is LikeProfileActivity)
             (activity!! as LikeProfileActivity).hideKeyboard()
+        else if (activity != null && activity!! is AlbumDetailActivity)
+            (activity!! as AlbumDetailActivity).hideKeyboard()
+        else if (activity != null && activity!! is CreateAlbumActivity)
+            (activity!! as CreateAlbumActivity).hideKeyboard()
+        else if (activity != null && activity!! is ImageSliderActivity)
+            (activity!! as ImageSliderActivity).hideKeyboard()
+        else if (activity != null && activity!! is MembershipActivity)
+            (activity!! as MembershipActivity).hideKeyboard()
+        else if (activity != null && activity!! is PostVideoActivity)
+            (activity!! as PostVideoActivity).hideKeyboard()
+        else if (activity != null && activity!! is ProfileViewActivity)
+            (activity!! as ProfileViewActivity).hideKeyboard()
+        else if (activity != null && activity!! is SettingsActivity)
+            (activity!! as SettingsActivity).hideKeyboard()
     }
 
     override fun onSuccess(msg: String) {
@@ -155,31 +197,47 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         else if (activity != null && activity!! is ProfileBasicInfoActivity)
             (activity!! as ProfileBasicInfoActivity).onFailed(msg, error)
         else if (activity != null && activity!! is ProfileInterestActivity)
-            (activity!! as ProfileInterestActivity).onFailed(msg,error)
+            (activity!! as ProfileInterestActivity).onFailed(msg, error)
         else if (activity != null && activity!! is EditProfileActivity)
-            (activity!! as EditProfileActivity).onFailed(msg,error)
+            (activity!! as EditProfileActivity).onFailed(msg, error)
         else if (activity != null && activity!! is JobListingActivity)
-            (activity!! as JobListingActivity).onFailed(msg,error)
+            (activity!! as JobListingActivity).onFailed(msg, error)
         else if (activity != null && activity!! is EducationListActivity)
-            (activity!! as EducationListActivity).onFailed(msg,error)
+            (activity!! as EducationListActivity).onFailed(msg, error)
         else if (activity != null && activity!! is FollowingFollowersActivity)
-            (activity!! as FollowingFollowersActivity).onFailed(msg,error)
+            (activity!! as FollowingFollowersActivity).onFailed(msg, error)
         else if (activity != null && activity!! is AccountSettingsActivity)
-            (activity!! as AccountSettingsActivity).onFailed(msg,error)
+            (activity!! as AccountSettingsActivity).onFailed(msg, error)
         else if (activity != null && activity!! is DashboardActivity)
-            (activity!! as DashboardActivity).onFailed(msg,error)
+            (activity!! as DashboardActivity).onFailed(msg, error)
         else if (activity != null && activity!! is FilterActivity)
-            (activity!! as FilterActivity).onFailed(msg,error)
+            (activity!! as FilterActivity).onFailed(msg, error)
         else if (activity != null && activity!! is MatchesActivity)
-            (activity!! as MatchesActivity).onFailed(msg,error)
+            (activity!! as MatchesActivity).onFailed(msg, error)
         else if (activity != null && activity!! is ChatActivity)
-            (activity!! as ChatActivity).onFailed(msg,error)
+            (activity!! as ChatActivity).onFailed(msg, error)
         else if (activity != null && activity!! is MatchesScreenActivity)
-            (activity!! as MatchesScreenActivity).onFailed(msg,error)
+            (activity!! as MatchesScreenActivity).onFailed(msg, error)
         else if (activity != null && activity!! is LocationActivity)
-            (activity!! as LocationActivity).onFailed(msg,error)
+            (activity!! as LocationActivity).onFailed(msg, error)
         else if (activity != null && activity!! is LikeProfileActivity)
-            (activity!! as LikeProfileActivity).onFailed(msg,error)
+            (activity!! as LikeProfileActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is AlbumDetailActivity)
+            (activity!! as AlbumDetailActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is CreateAlbumActivity)
+            (activity!! as CreateAlbumActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is ImageSliderActivity)
+            (activity!! as ImageSliderActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is MembershipActivity)
+            (activity!! as MembershipActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is PostVideoActivity)
+            (activity!! as PostVideoActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is ProfileViewActivity)
+            (activity!! as ProfileViewActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is SettingsActivity)
+            (activity!! as SettingsActivity).onFailed(msg, error)
+        else if (activity != null && activity!! is SplashActivity)
+            (activity!! as SplashActivity).onFailed(msg, error)
     }
 
     override fun onHandleException(e: Throwable) {
@@ -215,6 +273,20 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as LocationActivity).onHandleException(e)
         else if (activity != null && activity!! is LikeProfileActivity)
             (activity!! as LikeProfileActivity).onHandleException(e)
+        else if (activity != null && activity!! is AlbumDetailActivity)
+            (activity!! as AlbumDetailActivity).onHandleException(e)
+        else if (activity != null && activity!! is CreateAlbumActivity)
+            (activity!! as CreateAlbumActivity).onHandleException(e)
+        else if (activity != null && activity!! is ImageSliderActivity)
+            (activity!! as ImageSliderActivity).onHandleException(e)
+        else if (activity != null && activity!! is MembershipActivity)
+            (activity!! as MembershipActivity).onHandleException(e)
+        else if (activity != null && activity!! is PostVideoActivity)
+            (activity!! as PostVideoActivity).onHandleException(e)
+        else if (activity != null && activity!! is ProfileViewActivity)
+            (activity!! as ProfileViewActivity).onHandleException(e)
+        else if (activity != null && activity!! is SettingsActivity)
+            (activity!! as SettingsActivity).onHandleException(e)
     }
 
     override fun isInternetAvailable() =
@@ -238,6 +310,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
                 activity!! is AlbumVideoActivity -> (activity!! as AlbumVideoActivity).isInternetAvailable()
                 activity!! is ProfileViewActivity -> (activity!! as ProfileViewActivity).isInternetAvailable()
                 activity!! is LikeProfileActivity -> (activity!! as LikeProfileActivity).isInternetAvailable()
+                activity!! is AlbumDetailActivity -> (activity!! as AlbumDetailActivity).isInternetAvailable()
+                activity!! is CreateAlbumActivity -> (activity!! as CreateAlbumActivity).isInternetAvailable()
+                activity!! is ImageSliderActivity -> (activity!! as ImageSliderActivity).isInternetAvailable()
+                activity!! is MembershipActivity -> (activity!! as MembershipActivity).isInternetAvailable()
+                activity!! is PostVideoActivity -> (activity!! as PostVideoActivity).isInternetAvailable()
+                activity!! is SettingsActivity -> (activity!! as SettingsActivity).isInternetAvailable()
                 else -> false
             }
         } else false
@@ -254,6 +332,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         startActivity(intent)
         activity!!.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
+
     fun openActivityWithResultCode(
         activity: Activity,
         destinationActivity: Activity,
@@ -268,7 +347,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
         intent: Intent,
         resultCode: Int
     ) {
-        startActivityForResult(intent,resultCode)
+        startActivityForResult(intent, resultCode)
         activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
