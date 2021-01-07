@@ -32,7 +32,7 @@ class PersonalizeDataViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             personalizeDataView.onSuccessResponse(appResponse.data!!)
                         } else {
-                            personalizeDataView.onFailed(appResponse.message, appResponse.error)
+                            personalizeDataView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {

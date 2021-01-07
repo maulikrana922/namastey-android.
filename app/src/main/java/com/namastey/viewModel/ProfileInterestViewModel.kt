@@ -38,7 +38,7 @@ class ProfileInterestViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 profileInterestView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                profileInterestView.onFailed(appResponse.message, appResponse.error)
+                                profileInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
             } catch (exception: Throwable) {
@@ -59,7 +59,7 @@ class ProfileInterestViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             profileInterestView.onSuccessResponse(appResponse.data!!)
                         } else {
-                            profileInterestView.onFailed(appResponse.message, appResponse.error)
+                            profileInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {

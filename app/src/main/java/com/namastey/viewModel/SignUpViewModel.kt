@@ -48,12 +48,16 @@ class SignUpViewModel constructor(
                 networkService.requestSocialLogin(
                     jsonObject
                 )
-                    .let { response ->
+                    .let { appResponse ->
                         setIsLoading(false)
-                        if (response.status == Constants.OK) {
-                            signUpView.onSuccessResponse(response.data!!)
+                        if (appResponse.status == Constants.OK) {
+                            signUpView.onSuccessResponse(appResponse.data!!)
                         } else {
-                            signUpView.onFailed(response.message, response.error)
+                            signUpView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                         }
                     }
             } catch (t: Throwable) {

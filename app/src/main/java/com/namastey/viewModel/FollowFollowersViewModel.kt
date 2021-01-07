@@ -28,7 +28,7 @@ class FollowFollowersViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         folloFollowersView.onSuccessSearchList(appResponse.data!!)
                     else
-                        folloFollowersView.onFailed(appResponse.message, appResponse.error)
+                        folloFollowersView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
 
             } catch (t: Throwable) {

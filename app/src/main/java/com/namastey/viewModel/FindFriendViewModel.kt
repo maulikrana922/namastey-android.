@@ -29,7 +29,7 @@ class FindFriendViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         findFriendView.onSuccessSearchList(appResponse.data!!)
                     else
-                        findFriendView.onFailed(appResponse.message, appResponse.error)
+                        findFriendView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
 
             } catch (t: Throwable) {
@@ -49,7 +49,7 @@ class FindFriendViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         findFriendView.onSuccessSuggestedList(appResponse.data!!)
                     else
-                        findFriendView.onFailed(appResponse.message, appResponse.error)
+                        findFriendView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
 
             } catch (t: Throwable) {
@@ -76,7 +76,7 @@ class FindFriendViewModel constructor(
                             if (appResponse.status == Constants.OK)
                                 findFriendView.onSuccess(appResponse.message)
                             else
-                                findFriendView.onFailed(appResponse.message, appResponse.error)
+                                findFriendView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                 } else {
                     setIsLoading(false)

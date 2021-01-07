@@ -31,7 +31,7 @@ class SafetySubViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             safetySubView.onSuccessYourFollowerResponse(appResponse.data!!)
                         } else {
-                            safetySubView.onFailed(appResponse.message, appResponse.error)
+                            safetySubView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -51,7 +51,7 @@ class SafetySubViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             safetySubView.onSuccessWhoCanCommentYourVideoResponse(appResponse.data!!)
                         } else {
-                            safetySubView.onFailed(appResponse.message, appResponse.error)
+                            safetySubView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -71,7 +71,7 @@ class SafetySubViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             safetySubView.onSuccessWhoCanSendYouDirectMessageResponse(appResponse.data!!)
                         } else {
-                            safetySubView.onFailed(appResponse.message, appResponse.error)
+                            safetySubView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {

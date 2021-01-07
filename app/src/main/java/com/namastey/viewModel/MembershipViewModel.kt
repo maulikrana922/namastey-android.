@@ -30,7 +30,7 @@ class MembershipViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             memberShipView.onSuccessMembershipList(appResponse.data!!)
                         else
-                            memberShipView.onFailed(appResponse.message, appResponse.error)
+                            memberShipView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

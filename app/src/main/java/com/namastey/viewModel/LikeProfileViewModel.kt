@@ -30,7 +30,7 @@ class LikeProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileLikeView.onSuccess(appResponse.data!!)
                         else
-                            profileLikeView.onFailed(appResponse.message, appResponse.error)
+                            profileLikeView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -53,7 +53,7 @@ class LikeProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileLikeView.onSuccess(appResponse.data!!)
                         else
-                            profileLikeView.onFailed(appResponse.message, appResponse.error)
+                            profileLikeView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

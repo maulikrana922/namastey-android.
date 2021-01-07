@@ -34,7 +34,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessResponse(appResponse.data!!)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -71,7 +71,7 @@ class ProfileViewModel constructor(
                                 if (appResponse.status == Constants.OK)
                                     profileView.onSuccess(appResponse.message)
                                 else
-                                    profileView.onFailed(appResponse.message, appResponse.error)
+                                    profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                     }
                 } else {
@@ -95,7 +95,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessResponse(appResponse.data!!)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -118,7 +118,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessFollow(appResponse.data!!)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -140,7 +140,7 @@ class ProfileViewModel constructor(
                             if (appResponse.status == Constants.OK)
                                 appResponse.data?.let { profileView.onSuccessProfileLike(appResponse.data!!) }
                             else
-                                profileView.onFailed(appResponse.message, appResponse.error)
+                                profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                 } else {
                     profileView.showMsg(R.string.no_internet)
@@ -161,7 +161,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessBlockUser(appResponse.message)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -184,7 +184,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessSavePost(appResponse.message)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -208,7 +208,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessReport(appResponse.message)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -231,7 +231,7 @@ class ProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessBoostPriceList(appResponse.data!!)
                         else
-                            profileView.onFailed(appResponse.message, appResponse.error)
+                            profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

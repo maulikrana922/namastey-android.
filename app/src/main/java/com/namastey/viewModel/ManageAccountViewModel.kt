@@ -32,7 +32,7 @@ class ManageAccountViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 manageAccountView.onSuccess(appResponse.message)
                             } else {
-                                manageAccountView.onFailed(appResponse.message, appResponse.error)
+                                manageAccountView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {

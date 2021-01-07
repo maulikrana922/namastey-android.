@@ -28,7 +28,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessReport(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -46,7 +46,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessBlockUser(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -64,7 +64,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessDeleteMatches(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -82,7 +82,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessDeleteMatches(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -98,7 +98,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccess(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 chatBasicView.onHandleException(t)
@@ -113,7 +113,7 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccess(appResponse.message)
 //                    else
-//                        chatBasicView.onFailed(appResponse.message, appResponse.error)
+//                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
 //                chatBasicView.onHandleException(t)

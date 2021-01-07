@@ -33,7 +33,7 @@ class ProfileBasicViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             profileBasicView.onSuccessProfileDetails(appResponse.data!!)
                         else
-                            profileBasicView.onFailed(appResponse.message, appResponse.error)
+                            profileBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -57,7 +57,7 @@ class ProfileBasicViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 profileBasicView.onSuccess(appResponse.message)
                             } else {
-                                profileBasicView.onFailed(appResponse.message, appResponse.error)
+                                profileBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -81,7 +81,7 @@ class ProfileBasicViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             profileBasicView.onSuccessSocialAccount(appResponse.data!!)
                         } else {
-                            profileBasicView.onFailed(appResponse.message, appResponse.error)
+                            profileBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {

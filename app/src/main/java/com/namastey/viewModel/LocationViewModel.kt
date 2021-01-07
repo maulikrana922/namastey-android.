@@ -15,8 +15,6 @@ class LocationViewModel constructor(
     private var locationView: LocationView = baseView as LocationView
     private lateinit var job: Job
 
-
-
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

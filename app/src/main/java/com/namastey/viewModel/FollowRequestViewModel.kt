@@ -31,7 +31,7 @@ class FollowRequestViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             followRequestView.onSuccessFollowRequest(appResponse.data!!)
                         } else {
-                            followRequestView.onFailed(appResponse.message, appResponse.error)
+                            followRequestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -52,7 +52,7 @@ class FollowRequestViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         followRequestView.onSuccess(appResponse.message)
                     else
-                        followRequestView.onFailed(appResponse.message, appResponse.error)
+                        followRequestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)

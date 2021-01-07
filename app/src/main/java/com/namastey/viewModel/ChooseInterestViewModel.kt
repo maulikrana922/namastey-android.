@@ -39,7 +39,7 @@ class ChooseInterestViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             chooseInterestView.onSuccess(appResponse.data!!)
                         else
-                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -61,7 +61,7 @@ class ChooseInterestViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             chooseInterestView.onSuccessAllCategoryList(appResponse.data!!)
                         else
-                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -88,7 +88,7 @@ class ChooseInterestViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             chooseInterestView.onSuccessCreateOrUpdate(appResponse.data!!)
                         else
-                            chooseInterestView.onFailed(appResponse.message, appResponse.error)
+                            chooseInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

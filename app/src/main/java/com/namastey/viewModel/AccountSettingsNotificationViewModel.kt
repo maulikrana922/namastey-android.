@@ -36,7 +36,8 @@ class AccountSettingsNotificationViewModel constructor(
                         } else {
                             accountSettingsNotificationView.onFailed(
                                 appResponse.message,
-                                appResponse.error
+                                appResponse.error,
+                                appResponse.status
                             )
                         }
                     }

@@ -34,7 +34,8 @@ class ShareAppViewModel constructor(
                         else
                             followingView.onFailed(
                                 appResponse.message,
-                                appResponse.error
+                                appResponse.error,
+                                appResponse.status
                             )
                     }
                 } else {

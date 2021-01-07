@@ -9,14 +9,13 @@ interface BaseView {
 
     fun showMsg(msg: String)
 
-
     fun hideKeyboard()
 
     fun onHandleException(e: Throwable)
 
     fun onSuccess(msg: String)
 
-    fun onFailed(msg: String, error: Int)
+    fun onFailed(msg: String, error: Int, status: Int)
 
     fun getViewModel(): BaseViewModel
 

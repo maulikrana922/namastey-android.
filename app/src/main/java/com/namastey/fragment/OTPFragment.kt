@@ -1,15 +1,13 @@
 package com.namastey.fragment
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
@@ -158,35 +156,39 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             Log.e("OTPFragment", "FCM Registration Token: ${token.toString()}")
             sessionManager.setFirebaseToken(token.toString())
         } else {
-            Log.e("OTPFragment", "getFirebaseToken(): \t ${sessionManager.getFirebaseToken().toString()}")
+            Log.e("OTPFragment", "getFirebaseToken(): \t ${sessionManager.getFirebaseToken()}")
         }
     }
 
     private fun dialogAdminBlockUser() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+       /* val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         val dialogView: View =
             LayoutInflater.from(requireActivity())
                 .inflate(R.layout.dialog_admin_block_user, null, false)
         builder.setView(dialogView)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        alertDialog.show()
+        alertDialog.show()*/
+
+        val dialog = Dialog(requireActivity(), android.R.style.Theme_Light)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_admin_block_user)
+        dialog.show()
+
 
     }
-
 
     override fun onDestroy() {
         otpViewModel.onDestroy()
         super.onDestroy()
     }
 
-    override fun onFailed(msg: String, error: Int) {
-        super.onFailed(msg, error)
+    override fun onFailed(msg: String, error: Int, status: Int) {
+        super.onFailed(msg, error, status)
         Log.e("OTPFragment", "onFailed: msg \t $msg")
         Log.e("OTPFragment", "onFailed: error \t $error")
-        if(error == Constants.ADMIN_BLOCK_USER_CODE){
+        if(status == Constants.ADMIN_BLOCK_USER_CODE){
             dialogAdminBlockUser()
         }
     }

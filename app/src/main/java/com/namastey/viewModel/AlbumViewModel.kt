@@ -35,7 +35,8 @@ class AlbumViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         albumView.onSuccessAlbumList(appResponse.data!!)
                     else
-                        albumView.onFailed(appResponse.message, appResponse.error)
+                        albumView.onFailed(appResponse.message, appResponse.error,
+                            appResponse.status)
                 }
 
             } catch (t: Throwable) {
@@ -56,7 +57,8 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessGetComment(appResponse.data!!)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error,
+                                appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -77,7 +79,8 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessAddComment(appResponse.data!!)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error,
+                                appResponse.status)
                     }
                 } else {
                     albumView.showMsg(R.string.no_internet)
@@ -96,7 +99,7 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccess(appResponse.message)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     albumView.showMsg(R.string.no_internet)
@@ -117,7 +120,7 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessSavePost(appResponse.message)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -141,7 +144,7 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessSavePost(appResponse.message)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -164,7 +167,7 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessBlockUser(appResponse.message)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -203,7 +206,7 @@ class AlbumViewModel constructor(
                             if (appResponse.status == Constants.OK)
                                 appResponse.data?.let { albumView.onSuccessProfileLike(appResponse.data!!) }
                             else
-                                albumView.onFailed(appResponse.message, appResponse.error)
+                                albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                 } else {
                     albumView.showMsg(R.string.no_internet)
@@ -224,7 +227,7 @@ class AlbumViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             albumView.onSuccessPostShare(appResponse.message)
                         else
-                            albumView.onFailed(appResponse.message, appResponse.error)
+                            albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

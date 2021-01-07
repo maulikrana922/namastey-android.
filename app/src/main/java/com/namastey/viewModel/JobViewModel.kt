@@ -34,7 +34,7 @@ class JobViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 jobView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                jobView.onFailed(appResponse.message, appResponse.error)
+                                jobView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -58,7 +58,7 @@ class JobViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             jobView.onSuccessJobList(appResponse.data!!)
                         else
-                            jobView.onFailed(appResponse.message, appResponse.error)
+                            jobView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -83,7 +83,7 @@ class JobViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 jobView.onSuccess(appResponse.message)
                             } else {
-                                jobView.onFailed(appResponse.message, appResponse.error)
+                                jobView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {

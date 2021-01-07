@@ -33,7 +33,8 @@ class SelectCategoryViewModel constructor(
                         else
                             profileSelectCategoryView.onFailed(
                                 appResponse.message,
-                                appResponse.error
+                                appResponse.error,
+                                appResponse.status
                             )
                     }
                 } else {

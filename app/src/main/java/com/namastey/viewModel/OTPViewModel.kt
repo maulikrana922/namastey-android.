@@ -42,7 +42,7 @@ class OTPViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 otpView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                otpView.onFailed(appResponse.message, appResponse.error)
+                                otpView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                     } else {

@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import java.io.File
 
 class PostVideoViewModel constructor(
@@ -39,7 +38,11 @@ class PostVideoViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 postVideoView.onSuccessPostVideoDesc(appResponse.data!!)
                             } else {
-                                postVideoView.onFailed(appResponse.message, appResponse.error)
+                                postVideoView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -59,27 +62,43 @@ class PostVideoViewModel constructor(
             try {
 //                file_type: post_video
 //                file_type: cover_image
-                    var mbVideo: MultipartBody.Part? = null
-                    if (videoFile != null && videoFile.exists()) {
-                        mbVideo = MultipartBody.Part.createFormData(
-                            Constants.FILE,
-                            videoFile.name,
-                            RequestBody.create(MediaType.parse("*/*"), videoFile)
-                        )
-                    }
-                    val rbDeviceType = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
-                    val rbPostVideoId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), postVideoId.toString())
-                    val rbFileType = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.TAG_POST_VIDEO)
+                var mbVideo: MultipartBody.Part? = null
+                if (videoFile != null && videoFile.exists()) {
+                    mbVideo = MultipartBody.Part.createFormData(
+                        Constants.FILE,
+                        videoFile.name,
+                        RequestBody.create(MediaType.parse("*/*"), videoFile)
+                    )
+                }
+                val rbDeviceType =
+                    RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
+                val rbPostVideoId = RequestBody.create(
+                    MediaType.parse(Constants.TEXT_PLAIN),
+                    postVideoId.toString()
+                )
+                val rbFileType = RequestBody.create(
+                    MediaType.parse(Constants.TEXT_PLAIN),
+                    Constants.TAG_POST_VIDEO
+                )
 
-                    if (mbVideo != null) {
-                        networkService.requestToAddMediaAsync(mbVideo,rbFileType,rbPostVideoId,rbDeviceType).let { appResponse ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK)
-                                postVideoView.onSuccessPostVideo(appResponse.data!!)
-                            else
-                                postVideoView.onFailed(appResponse.message, appResponse.error)
-                        }
+                if (mbVideo != null) {
+                    networkService.requestToAddMediaAsync(
+                        mbVideo,
+                        rbFileType,
+                        rbPostVideoId,
+                        rbDeviceType
+                    ).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            postVideoView.onSuccessPostVideo(appResponse.data!!)
+                        else
+                            postVideoView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
+                }
             } catch (t: Throwable) {
                 setIsLoading(false)
                 postVideoView.onHandleException(t)
@@ -95,26 +114,40 @@ class PostVideoViewModel constructor(
 
                 var mbImage: MultipartBody.Part? = null
                 if (pictuareFile != null && pictuareFile.exists()) {
-                        mbImage = MultipartBody.Part.createFormData(
-                            Constants.FILE,
-                            pictuareFile.name,
-                            RequestBody.create(MediaType.parse("*/*"), pictuareFile)
-                        )
-                    }
+                    mbImage = MultipartBody.Part.createFormData(
+                        Constants.FILE,
+                        pictuareFile.name,
+                        RequestBody.create(MediaType.parse("*/*"), pictuareFile)
+                    )
+                }
 
-                    val rbDeviceType = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
-                    val rbPostVideoId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), postVideoId.toString())
-                    val rbFileType = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.COVER_IMAGE)
+                val rbDeviceType =
+                    RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.ANDROID)
+                val rbPostVideoId = RequestBody.create(
+                    MediaType.parse(Constants.TEXT_PLAIN),
+                    postVideoId.toString()
+                )
+                val rbFileType =
+                    RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN), Constants.COVER_IMAGE)
 
-                    if (mbImage != null) {
-                        networkService.requestToAddMediaAsync(mbImage,rbFileType,rbPostVideoId,rbDeviceType).let { appResponse ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK)
-                                postVideoView.onSuccessPostCoverImage(appResponse.data!!)
-                            else
-                                postVideoView.onFailed(appResponse.message, appResponse.error)
-                        }
+                if (mbImage != null) {
+                    networkService.requestToAddMediaAsync(
+                        mbImage,
+                        rbFileType,
+                        rbPostVideoId,
+                        rbDeviceType
+                    ).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            postVideoView.onSuccessPostCoverImage(appResponse.data!!)
+                        else
+                            postVideoView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
+                }
             } catch (t: Throwable) {
                 setIsLoading(false)
                 postVideoView.onHandleException(t)
@@ -132,13 +165,17 @@ class PostVideoViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                    networkService.requestToGetAlbumList().let { appResponse ->
-                        setIsLoading(false)
-                        if (appResponse.status == Constants.OK)
-                            postVideoView.onSuccessAlbumList(appResponse.data!!)
-                        else
-                            postVideoView.onFailed(appResponse.message,appResponse.error)
-                    }
+                networkService.requestToGetAlbumList().let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        postVideoView.onSuccessAlbumList(appResponse.data!!)
+                    else
+                        postVideoView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
+                }
 
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -159,7 +196,11 @@ class PostVideoViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             postVideoView.onSuccessMention(appResponse.data!!)
                         else
-                            postVideoView.onFailed(appResponse.message, appResponse.error)
+                            postVideoView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)

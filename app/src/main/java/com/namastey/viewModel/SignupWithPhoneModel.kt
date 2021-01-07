@@ -15,54 +15,62 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SignupWithPhoneModel constructor(private val networkService: NetworkService,
-                                       private val dbHelper: DBHelper,
-                                       baseView: BaseView
-) : BaseViewModel(networkService,dbHelper,baseView) {
+class SignupWithPhoneModel constructor(
+    private val networkService: NetworkService,
+    private val dbHelper: DBHelper,
+    baseView: BaseView
+) : BaseViewModel(networkService, dbHelper, baseView) {
 
     private val signupWithPhoneView = baseView as SignupWithPhoneView
     private lateinit var job: Job
 
-    fun closeSignFragment(){
-      signupWithPhoneView.onCloseSignup()
+    fun closeSignFragment() {
+        signupWithPhoneView.onCloseSignup()
     }
 
-    fun onClickPhone(){
+    fun onClickPhone() {
         signupWithPhoneView.onClickPhone()
     }
-    fun onClickEmail(){
+
+    fun onClickEmail() {
         signupWithPhoneView.onClickEmail()
     }
-    fun onClickCountry(){
+
+    fun onClickCountry() {
         signupWithPhoneView.onClickCountry()
     }
+
     fun sendOTP(jsonObject: JsonObject) {
 
-            setIsLoading(true)
-            job = GlobalScope.launch(Dispatchers.Main){
-                try {
-                    if (signupWithPhoneView.isInternetAvailable()){
-                        networkService.requestSendOTP(jsonObject).let { appResponse: AppResponse<User> ->
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (signupWithPhoneView.isInternetAvailable()) {
+                    networkService.requestSendOTP(jsonObject)
+                        .let { appResponse: AppResponse<User> ->
                             setIsLoading(false)
-                            if (appResponse.status == Constants.OK){
+                            if (appResponse.status == Constants.OK) {
                                 signupWithPhoneView.onSuccessResponse(appResponse.data!!)
-                            }else{
-                                signupWithPhoneView.onFailed(appResponse.message,appResponse.error)
+                            } else {
+                                signupWithPhoneView.onFailed(
+                                    appResponse.message, appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
-                    }else{
-                        setIsLoading(false)
-                        signupWithPhoneView.showMsg(R.string.no_internet)
-                    }
-                }catch (exception: Throwable){
+                } else {
                     setIsLoading(false)
-                    signupWithPhoneView.onHandleException(exception)
+                    signupWithPhoneView.showMsg(R.string.no_internet)
                 }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                signupWithPhoneView.onHandleException(exception)
             }
+        }
 
     }
 
-    fun onClickNext(){
+    fun onClickNext() {
         signupWithPhoneView.onClickNext()
     }
 
@@ -81,7 +89,7 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
     fun getCountry() {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetCountry().let {appResponse ->
+                networkService.requestToGetCountry().let { appResponse ->
                     signupWithPhoneView.onGetCountry(appResponse.data!!)
                 }
             } catch (t: Throwable) {
@@ -90,8 +98,8 @@ class SignupWithPhoneModel constructor(private val networkService: NetworkServic
         }
     }
 
-    fun onDestroy(){
-        if (::job.isInitialized){
+    fun onDestroy() {
+        if (::job.isInitialized) {
             job.cancel()
         }
     }

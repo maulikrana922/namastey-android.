@@ -32,7 +32,7 @@ class BlockListViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             blockListView.onSuccessBlockUserList(appResponse.data!!)
                         } else {
-                            blockListView.onFailed(appResponse.message, appResponse.error)
+                            blockListView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -52,7 +52,7 @@ class BlockListViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             blockListView.onSuccessBlockUser(appResponse.message)
                         else
-                            blockListView.onFailed(appResponse.message, appResponse.error)
+                            blockListView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

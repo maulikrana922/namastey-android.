@@ -123,7 +123,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     var lastWindowIndex = 0
     private var dashboardBean: DashboardBean = DashboardBean()
-   // private lateinit var playerView: PlayerView
+
+    // private lateinit var playerView: PlayerView
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -1748,9 +1749,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
                             Intent(this@DashboardActivity, MatchesActivity::class.java)
                         intentMatchesActivity.putExtra("isFromMessage", true)
                         intentMatchesActivity.putExtra("chatNotification", true)
-                        Log.d("Chat notification :","7 pass")
-                        val matchesListBean = intent.getParcelableExtra<MatchesListBean>("matchesListBean")
-                        intentMatchesActivity.putExtra("matchesListBean",matchesListBean)
+                        Log.d("Chat notification :", "7 pass")
+                        val matchesListBean =
+                            intent.getParcelableExtra<MatchesListBean>("matchesListBean")
+                        intentMatchesActivity.putExtra("matchesListBean", matchesListBean)
                         openActivity(intentMatchesActivity)
                     }
                     else -> { // Default
@@ -2265,13 +2267,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
     public override fun onPause() {
         super.onPause()
         //pauseAllPlayer()
-       // feedAdapter.releasePlayer()
+        // feedAdapter.releasePlayer()
     }
 
     override fun onStop() {
         super.onStop()
-       // feedAdapter.releasePlayer()
-       // feedAdapter.stopPlayer()
+        // feedAdapter.releasePlayer()
+        // feedAdapter.stopPlayer()
     }
 
     /*private fun pauseAllPlayer() {
@@ -2300,7 +2302,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             Log.e("DashboardActivity", "latitude: $latitude")
             Log.e("DashboardActivity", "longitude: $longitude")
         } else {
-             turnGPSOn()
+            turnGPSOn()
 
             //showSettingsAlert()
         }
@@ -2329,8 +2331,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("DashboardActivity", "longitude: $longitude")
     }
 
-    override fun onFailed(msg: String, error: Int) {
-        super.onFailed(msg, error)
+    override fun onFailed(msg: String, error: Int, status: Int) {
+        super.onFailed(msg, error, status)
         Log.e("DashboardActivity", "onFailed  error: $error")
         Log.e("DashboardActivity", "onFailed  msg: $msg")
     }

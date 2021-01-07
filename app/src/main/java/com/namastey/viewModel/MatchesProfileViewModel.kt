@@ -31,7 +31,7 @@ class MatchesProfileViewModel constructor(
                     if (appResponse.status == Constants.OK) {
                         matchesProfileView.onSuccessMatchesList(appResponse.data!!)
                     } else {
-                        matchesProfileView.onFailed(appResponse.message, appResponse.error)
+                        matchesProfileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 }
             } catch (exception: Throwable) {
@@ -49,7 +49,7 @@ class MatchesProfileViewModel constructor(
                     if (appResponse.status == Constants.OK) {
                         matchesProfileView.onSuccessMessageList(appResponse.data!!)
                     } else {
-                        matchesProfileView.onFailed(appResponse.message, appResponse.error)
+                        matchesProfileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 }
             } catch (t: Throwable) {
@@ -67,7 +67,7 @@ class MatchesProfileViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             matchesProfileView.onSuccessLikeUserCount(appResponse.data!!)
                         else
-                            matchesProfileView.onFailed(appResponse.message, appResponse.error)
+                            matchesProfileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
 //                    setIsLoading(false)

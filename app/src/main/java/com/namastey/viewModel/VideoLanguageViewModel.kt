@@ -32,15 +32,18 @@ class VideoLanguageViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                if (videoLanguageView.isInternetAvailable()){
+                if (videoLanguageView.isInternetAvailable()) {
                     networkService.requestToGetVideoLanguage(locale).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             videoLanguageView.onSuccess(appResponse.data!!)
                         else
-                            videoLanguageView.onFailed(appResponse.message,appResponse.error)
+                            videoLanguageView.onFailed(
+                                appResponse.message, appResponse.error,
+                                appResponse.status
+                            )
                     }
-                }else{
+                } else {
                     setIsLoading(false)
                     videoLanguageView.showMsg(R.string.no_internet)
                 }
@@ -50,8 +53,8 @@ class VideoLanguageViewModel constructor(
         }
     }
 
-    fun onDestroy(){
-        if (::job.isInitialized){
+    fun onDestroy() {
+        if (::job.isInitialized) {
             job.cancel()
         }
     }

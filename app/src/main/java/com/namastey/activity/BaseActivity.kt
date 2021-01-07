@@ -108,10 +108,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         showMsg(msg)
     }
 
-    override fun onFailed(msg: String, error: Int) {
+    override fun onFailed(msg: String, error: Int, status: Int) {
         Log.e("BaseActivity", "onFailed  error: $error")
         Log.e("BaseActivity", "onFailed  msg: $msg")
-        when (error) {
+        when (status) {
             INVALID_SESSION_ERROR_CODE -> {
                 // logout from app and go to launch screen
             }

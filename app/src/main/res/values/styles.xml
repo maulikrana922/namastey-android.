@@ -153,4 +153,15 @@
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"/>
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem"/>
+
+    <style name="FullScreenDialogTheme" parent="android:Theme.Dialog">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
 </resources>

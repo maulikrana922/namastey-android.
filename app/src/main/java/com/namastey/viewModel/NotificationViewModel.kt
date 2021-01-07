@@ -34,7 +34,7 @@ class NotificationViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             notificationView.onSuccessFollowRequest(appResponse.data!!)
                         } else {
-                            notificationView.onFailed(appResponse.message, appResponse.error)
+                            notificationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -54,7 +54,7 @@ class NotificationViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             notificationView.onSuccessActivityList(appResponse.data!!)
                         } else {
-                            notificationView.onFailed(appResponse.message, appResponse.error)
+                            notificationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -74,7 +74,7 @@ class NotificationViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             notificationView.onSuccessFollow(appResponse.data!!)
                         else
-                            notificationView.onFailed(appResponse.message, appResponse.error)
+                            notificationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -98,7 +98,7 @@ class NotificationViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             notificationView.onSuccessPostVideoDetailResponse(appResponse.data!!)
                         } else {
-                            notificationView.onFailed(appResponse.message, appResponse.error)
+                            notificationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -119,7 +119,7 @@ class NotificationViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             notificationView.onSuccessMembershipList(appResponse.data!!)
                         else
-                            notificationView.onFailed(appResponse.message, appResponse.error)
+                            notificationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

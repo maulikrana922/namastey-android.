@@ -33,7 +33,7 @@ class SettingsViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 settingsView.onSuccess(appResponse.message)
                             } else {
-                                settingsView.onFailed(appResponse.message, appResponse.error)
+                                settingsView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -58,7 +58,7 @@ class SettingsViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 settingsView.onSuccessHideProfile(appResponse.message)
                             } else {
-                                settingsView.onFailed(appResponse.message, appResponse.error)
+                                settingsView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -83,7 +83,7 @@ class SettingsViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 settingsView.onSuccessProfileType(appResponse.message)
                             } else {
-                                settingsView.onFailed(appResponse.message, appResponse.error)
+                                settingsView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {

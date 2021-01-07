@@ -33,7 +33,7 @@ class EducationViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 educationView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                educationView.onFailed(appResponse.message, appResponse.error)
+                                educationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -58,7 +58,7 @@ class EducationViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 educationView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                educationView.onFailed(appResponse.message, appResponse.error)
+                                educationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -82,7 +82,7 @@ class EducationViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             educationView.onSuccessEducationList(appResponse.data!!)
                         else
-                            educationView.onFailed(appResponse.message, appResponse.error)
+                            educationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)
@@ -106,7 +106,7 @@ class EducationViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 educationView.onSuccess(appResponse.message)
                             } else {
-                                educationView.onFailed(appResponse.message, appResponse.error)
+                                educationView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
                         }
                 } else {
@@ -118,9 +118,7 @@ class EducationViewModel constructor(
                 educationView.onHandleException(exception)
             }
         }
-
     }
-
 
     fun onDestroy() {
         if (::job.isInitialized)

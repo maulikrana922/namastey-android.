@@ -32,7 +32,8 @@ class FollowingViewModel constructor(
                         else
                             followingView.onFailed(
                                 appResponse.message,
-                                appResponse.error
+                                appResponse.error,
+                                appResponse.status
                             )
                     }
                 } else {
@@ -60,7 +61,8 @@ class FollowingViewModel constructor(
                         else
                             followingView.onFailed(
                                 appResponse.message,
-                                appResponse.error
+                                appResponse.error,
+                                appResponse.status
                             )
                     }
                 } else {
@@ -82,7 +84,7 @@ class FollowingViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             followingView.onSuccess(appResponse.message)
                         else
-                            followingView.onFailed(appResponse.message, appResponse.error)
+                            followingView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     followingView.showMsg(R.string.no_internet)
@@ -103,7 +105,7 @@ class FollowingViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             followingView.onSuccess(appResponse.message)
                         else
-                            followingView.onFailed(appResponse.message, appResponse.error)
+                            followingView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

@@ -30,7 +30,7 @@ class ContentLanguageViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             contentLanguageView.onSuccess(appResponse.data!!)
                         else
-                            contentLanguageView.onFailed(appResponse.message, appResponse.error)
+                            contentLanguageView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

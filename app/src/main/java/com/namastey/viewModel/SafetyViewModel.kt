@@ -31,7 +31,7 @@ class SafetyViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             safetyView.onSuccessIsSuccessResponse(appResponse.data!!)
                         } else {
-                            safetyView.onFailed(appResponse.message, appResponse.error)
+                            safetyView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {
@@ -52,7 +52,7 @@ class SafetyViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             safetyView.onSuccessShareProfileSafetyResponse(appResponse.data!!)
                         } else {
-                            safetyView.onFailed(appResponse.message, appResponse.error)
+                            safetyView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
                     }
             } catch (exception: Throwable) {

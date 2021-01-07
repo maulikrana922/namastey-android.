@@ -29,7 +29,7 @@ class FilterViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         filterView.onSuccessSearchList(appResponse.data!!)
                     else
-                        filterView.onFailed(appResponse.message, appResponse.error)
+                        filterView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                 }
 
             } catch (t: Throwable) {
@@ -50,7 +50,7 @@ class FilterViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             filterView.onSuccessTreding(appResponse.data!!)
                         else
-                            filterView.onFailed(appResponse.message, appResponse.error)
+                            filterView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
                 } else {
                     setIsLoading(false)

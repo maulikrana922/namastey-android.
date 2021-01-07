@@ -37,7 +37,11 @@ class CreateAlbumViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 createAlbumView.onSuccessResponse(appResponse.data!!)
                             } else {
-                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                                createAlbumView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -51,7 +55,7 @@ class CreateAlbumViewModel constructor(
         }
     }
 
-    fun createProfile(jsonObject: JsonObject){
+    fun createProfile(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -62,7 +66,11 @@ class CreateAlbumViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 createAlbumView.onSuccess(appResponse.message)
                             } else {
-                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                                createAlbumView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -76,7 +84,7 @@ class CreateAlbumViewModel constructor(
         }
     }
 
-    fun getAlbumList(){
+    fun getAlbumList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -87,7 +95,11 @@ class CreateAlbumViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 createAlbumView.onSuccessAlbumDetails(appResponse.data!!)
                             } else {
-                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                                createAlbumView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -110,7 +122,11 @@ class CreateAlbumViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumDetails(appResponse.data!!)
                     else
-                        createAlbumView.onFailed(appResponse.message,appResponse.error)
+                        createAlbumView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
 
             } catch (t: Throwable) {
@@ -125,14 +141,18 @@ class CreateAlbumViewModel constructor(
             try {
                 if (createAlbumView.isInternetAvailable()) {
                     var jsonObject = JsonObject()
-                    jsonObject.addProperty(Constants.POST_ID,postId)
+                    jsonObject.addProperty(Constants.POST_ID, postId)
                     networkService.requestToDeletePost(jsonObject)
                         .let { appResponse: AppResponse<Any> ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK) {
                                 createAlbumView.onSuccessDeletePost()
                             } else {
-                                createAlbumView.onFailed(appResponse.message, appResponse.error)
+                                createAlbumView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -156,7 +176,11 @@ class CreateAlbumViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumDelete(appResponse.message)
                     else
-                        createAlbumView.onFailed(appResponse.message, appResponse.error)
+                        createAlbumView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -174,7 +198,11 @@ class CreateAlbumViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumHide(appResponse.message)
                     else
-                        createAlbumView.onFailed(appResponse.message, appResponse.error)
+                        createAlbumView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
