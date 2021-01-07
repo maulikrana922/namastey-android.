@@ -85,12 +85,12 @@ class ProfileViewModel constructor(
         }
     }
 
-    fun getUserFullProfile(userId: Long) {
+    fun getUserFullProfile(userId: String, username: String) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (profileView.isInternetAvailable()) {
-                    networkService.requestToGetUserFullProfile(userId).let { appResponse ->
+                    networkService.requestToGetUserFullProfile(userId, username).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileView.onSuccessResponse(appResponse.data!!)

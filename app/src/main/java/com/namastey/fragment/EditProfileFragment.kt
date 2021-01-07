@@ -144,7 +144,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         edtProfileTagline.minLines = 5
         edtProfileTagline.maxLines = 5
 
-        profileBasicViewModel.getUserFullProfile(sessionManager.getUserId())
+        profileBasicViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
 //        generateProfileTagUI()
         edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,

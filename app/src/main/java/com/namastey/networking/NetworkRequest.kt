@@ -51,7 +51,10 @@ interface NetworkRequest {
 
     @FormUrlEncoded
     @POST(Constants.GET_USER_FULL_PROFILE)
-    fun requestToGetUserFullProfileAsync(@Field(Constants.USER_ID) userId: Long): Deferred<AppResponse<ProfileBean>>
+    fun requestToGetUserFullProfileAsync(
+        @Field(Constants.USER_ID) userId: String,
+        @Field(Constants.USERNAME) username: String
+    ): Deferred<AppResponse<ProfileBean>>
 
     @GET(Constants.GET_CATEGORY_LIST)
     fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>

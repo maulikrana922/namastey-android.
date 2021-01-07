@@ -55,6 +55,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var profileBean = ProfileBean()
     private var isMyProfile = false
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
+    private var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -272,7 +273,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                     )
                                 }
                             } else if (profileBean.user_profile_type == 1) {
-                              //Do Nothing
+                                //Do Nothing
                             }
                         } else {
                             val intent =
@@ -412,6 +413,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+        if (intent.getStringExtra(Constants.USERNAME) != "" && intent.getStringExtra(Constants.USERNAME) != null) {
+            username = intent.getStringExtra(Constants.USERNAME)!!
+            Log.e("ProfileViewActivity", "username, $username")
+        } else {
+            username = ""
+        }
 
         if (intent.hasExtra("profileBean")) {
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
@@ -456,6 +463,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
             }*/
         }
+
+
 //        else {
 //            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
 //        }
@@ -466,9 +475,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         super.onResume()
 
         if (intent.hasExtra("profileBean")) {
-            profileViewModel.getUserFullProfile(sessionManager.getUserId())
+            Log.e("ProfileViewActivity", "profileBean, ")
+            profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
         } else {
-            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
+            // profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0), username)
+            profileViewModel.getUserFullProfile("", username)
+           /* if (username != "") {
+                Log.e("ProfileViewActivity", "username, ")
+                profileViewModel.getUserFullProfile("", username)
+            } else {
+                Log.e("ProfileViewActivity", "USER_ID ")
+                profileViewModel.getUserFullProfile(
+                    intent.getLongExtra(Constants.USER_ID, 0).toString(), ""
+                )
+            }*/
         }
         if (profileBean.user_id == sessionManager.getUserId()) {
             if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
