@@ -81,7 +81,7 @@ class CommentAdapter(
                 onSelectUserItemClick.onSelectItemClick(
                     commentBean.user_id,
                     position,
-                    commentBean.user_profile_type
+                      commentBean.user_profile_type
                 )
             }
 

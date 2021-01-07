@@ -479,8 +479,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
         } else {
             // profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0), username)
-            profileViewModel.getUserFullProfile("", username)
-           /* if (username != "") {
+            //profileViewModel.getUserFullProfile("", username)
+            if (username != "") {
                 Log.e("ProfileViewActivity", "username, ")
                 profileViewModel.getUserFullProfile("", username)
             } else {
@@ -488,7 +488,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileViewModel.getUserFullProfile(
                     intent.getLongExtra(Constants.USER_ID, 0).toString(), ""
                 )
-            }*/
+            }
         }
         if (profileBean.user_id == sessionManager.getUserId()) {
             if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
