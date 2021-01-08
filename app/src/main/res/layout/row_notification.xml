@@ -8,10 +8,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llRowNotification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:id="@+id/llRowNotification"
         android:orientation="horizontal"
         android:padding="@dimen/_8sdp">
 
@@ -34,16 +34,29 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_4sdp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/_4sdp"
+            android:layout_weight="1"
             android:gravity="center|start"
             android:maxLines="6"
-            android:visibility="gone"
             android:textColor="@color/colorLightGrayText"
             android:textSize="14sp"
+            android:visibility="gone"
             app:typeface="MULI_SEMIBOLD" />
 
-        <TextView
+        <!--<TextView
+            android:id="@+id/tvNotification"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:maxLines="6"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="14sp" />-->
+
+        <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/tvNotification"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
@@ -60,9 +73,9 @@
             android:id="@+id/mainFollowBackView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="center"
-            android:background="@drawable/rounded_red_solid">
+            android:background="@drawable/rounded_red_solid"
+            android:visibility="gone">
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvFollowBack"
@@ -117,8 +130,8 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:visibility="gone"
             android:src="@drawable/default_placeholder"
+            android:visibility="gone"
             app:cornerRadius="@dimen/_20sdp"
             app:roundedCorners="all" />
     </LinearLayout>

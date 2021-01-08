@@ -464,8 +464,8 @@
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
     <string name="buy_boost">BUY boost</string>
-    <string name="text_ban_account">Your account has been banned.</string>
-    <string name="text_violation">Your Namastey profile has been banned for activity that violets our Terms of use</string>
-
-    <string name="text_admin_block_note">"Please note that if you are subscribed to any premium services through the Playstore, you will need to cancel your subscription with the appropriate provider."</string>
+    <string name="text_ban_account">Your account has been banned.</string>  <!-- <![CDATA[<u><font color=#000000>Terms of use.</font></u>]]>-->
+    <string name="text_violation">Your Namastey profile has been banned for activity that violets our <u>Terms of use.</u></string>
+    <string name="text_violation1">Your Namastey profile has been banned for activity that violets our <![CDATA[<u><font color=#000000>Terms of use.</font></u>]]></string>
+    <string name="text_admin_block_note">"Please note that if you are subscribed to any premium services through the Play store, you will need to cancel your subscription with the appropriate provider."</string>
 </resources>

@@ -38,6 +38,7 @@ import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
+import com.namastey.listeners.OnSocialTextViewClick
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.CommentBean
@@ -64,7 +65,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
-    OnItemClick, OnSelectUserItemClick {
+    OnItemClick, OnSelectUserItemClick, OnSocialTextViewClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -151,7 +152,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             )
         )
 
-        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity, this)
+        commentAdapter = CommentAdapter(data, this@AlbumVideoActivity, this, this)
         bottomSheetDialogComment.rvPostComment.adapter = commentAdapter
 
         val params: ViewGroup.LayoutParams =
@@ -377,9 +378,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        /* val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
-         intent.putExtra(Constants.USER_ID, userId)
-         openActivity(intent)*/
     }
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
@@ -404,6 +402,22 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         upnextVideoAdapter =
             UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
         rvAlbumUpnext.adapter = upnextVideoAdapter
+    }
+
+    override fun onClickSocialText(userName: String) {
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
+            intent.putExtra(Constants.USERNAME, userName)
+            openActivity(intent)
+
+        }
     }
 
     override fun onCommentClick(postId: Long) {

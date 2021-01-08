@@ -55,20 +55,6 @@ open class PassportContentActivity : FragmentActivity(),
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
 
-    /* @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    @Inject
-    lateinit var sessionManager: SessionManager
-    private lateinit var activityPassportContentBinding: ActivityPassportContentBinding
-    private lateinit var locationViewModel: LocationViewModel*/
-
-    /*override fun getViewModel() = locationViewModel
-
-    override fun getLayoutId() = R.layout.activity_passport_content
-
-    override fun getBindingVariable() = BR.viewModel*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passport_content)
@@ -80,13 +66,6 @@ open class PassportContentActivity : FragmentActivity(),
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
-
-        //getActivityComponent().inject(this)
-        /* locationViewModel =
-             ViewModelProviders.of(this, viewModelFactory).get(LocationViewModel::class.java)
-         locationViewModel.setViewInterface(this)
-         activityPassportContentBinding = bindViewData()
-         activityPassportContentBinding.viewModel = locationViewModel*/
 
         initData()
     }

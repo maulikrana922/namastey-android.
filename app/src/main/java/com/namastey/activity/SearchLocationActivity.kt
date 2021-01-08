@@ -78,17 +78,6 @@ class SearchLocationActivity : FragmentActivity(),
     private var isFromSearchLocationActivity = false
     private var isFromLocationActivity = false
 
-    /*  @Inject
-      lateinit var viewModelFactory: ViewModelFactory
-      private lateinit var activitySearchLocationBinding: ActivitySearchLocationBinding
-      private lateinit var locationViewModel: LocationViewModel
-
-      override fun getViewModel() = locationViewModel
-
-      override fun getLayoutId() = R.layout.activity_search_location
-
-      override fun getBindingVariable() = BR.viewModel*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_location)
@@ -148,15 +137,9 @@ class SearchLocationActivity : FragmentActivity(),
             // and once again when the user makes a selection (for example when calling fetchPlace()).
             val token: AutocompleteSessionToken = AutocompleteSessionToken.newInstance()
             // Create a RectangularBounds object.
-            /* val bounds: RectangularBounds = RectangularBounds.newInstance(
-                 LatLng(-33.880490, 151.184363),  //dummy lat/lng
-                 LatLng(-33.858754, 151.229596)
-             )*/
             // Use the builder to create a FindAutocompletePredictionsRequest.
             val request: FindAutocompletePredictionsRequest =
                 FindAutocompletePredictionsRequest.builder() // Call either setLocationBias() OR setLocationRestriction().
-                    //  .setLocationBias(bounds) //.setLocationRestriction(bounds)
-                    //  .setCountry("ng") //Nigeria
                     .setTypeFilter(TypeFilter.ADDRESS)
                     .setSessionToken(token)
                     .setQuery(searchDestination.text.toString())
@@ -186,35 +169,6 @@ class SearchLocationActivity : FragmentActivity(),
      * Method to search in default View
      */
     private fun searchPlace() {
-        /* val autocompleteFragment: PlaceAutocompleteFragment =
-         fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
-
-     autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-         override fun onPlaceSelected(place: Place) {
-             Log.e("SearchLocationActivity", "place: \t ${place.address}")
-             mMap!!.clear()
-             mMap!!.addMarker(
-                 MarkerOptions().position(place.latLng).icon(
-                     BitmapDescriptorFactory.fromBitmap(
-                         createCustomMarker(
-                             this@SearchLocationActivity,
-                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                             sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
-                         )
-                     )
-                 ).title(place.name.toString())
-             )
-             mMap!!.moveCamera(CameraUpdateFactory.newLatLng(place.latLng))
-             mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 12.0f))
-         }
-
-         override fun onError(status: Status?) {
-             Log.e("SearchLocationActivity", "status: \t ${status!!.statusCode}")
-             Log.e("SearchLocationActivity", "status: \t ${status!!.isSuccess}")
-             Log.e("SearchLocationActivity", "status: \t ${status!!.status}")
-         }
-     })*/
-
         val autocompleteFragment: AutocompleteSupportFragment? =
             supportFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment?
 

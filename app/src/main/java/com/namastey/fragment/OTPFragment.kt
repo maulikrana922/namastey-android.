@@ -161,22 +161,20 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     private fun dialogAdminBlockUser() {
-       /* val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-        val dialogView: View =
-            LayoutInflater.from(requireActivity())
-                .inflate(R.layout.dialog_admin_block_user, null, false)
-        builder.setView(dialogView)
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alertDialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        alertDialog.show()*/
+        /* val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+         val dialogView: View =
+             LayoutInflater.from(requireActivity())
+                 .inflate(R.layout.dialog_admin_block_user, null, false)
+         builder.setView(dialogView)
+         val alertDialog: AlertDialog = builder.create()
+         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+         alertDialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+         alertDialog.show()*/
 
         val dialog = Dialog(requireActivity(), android.R.style.Theme_Light)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_admin_block_user)
         dialog.show()
-
-
     }
 
     override fun onDestroy() {
@@ -185,11 +183,13 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     }
 
     override fun onFailed(msg: String, error: Int, status: Int) {
-        super.onFailed(msg, error, status)
+        //super.onFailed(msg, error, status)
         Log.e("OTPFragment", "onFailed: msg \t $msg")
         Log.e("OTPFragment", "onFailed: error \t $error")
-        if(status == Constants.ADMIN_BLOCK_USER_CODE){
+        if (status == Constants.ADMIN_BLOCK_USER_CODE) {
             dialogAdminBlockUser()
+        } else {
+            showMsg(msg.toString())
         }
     }
 }

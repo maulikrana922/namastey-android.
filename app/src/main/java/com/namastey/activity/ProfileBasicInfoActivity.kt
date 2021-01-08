@@ -48,7 +48,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     }
 
     override fun onSuccessUniqueName(msg: String) {
-        super.onSuccess(msg)
+        //super.onSuccess(msg)
         tvUniqueNameError.visibility = View.GONE
         Log.e(TAG, "onSuccess: Error: \t $msg")
         openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())

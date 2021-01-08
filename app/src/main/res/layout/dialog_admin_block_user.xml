@@ -15,74 +15,72 @@
         android:orientation="vertical"
         android:padding="@dimen/_8sdp">
 
-        <LinearLayout
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:src="@drawable/ic_warning"
+            app:layout_constraintBottom_toTopOf="@id/tvAccountBan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvAccountBan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
             android:gravity="center"
-            android:orientation="vertical"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/text_ban_account"
+            android:textColor="@color/color_chip_gray"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_BLACK" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_warning"
-                tools:ignore="ContentDescription" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAccountBan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:gravity="center"
-                android:padding="@dimen/_4sdp"
-                android:text="@string/text_ban_account"
-                android:textColor="@color/color_chip_gray"
-                android:textSize="20sp"
-                app:typeface="MULI_BLACK" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvProfileBan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_4sdp"
-                android:text="@string/text_violation"
-                android:textColor="@color/colorGray"
-                android:textSize="16sp"
-                app:typeface="MULI_SEMIBOLD" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvProfileBan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/text_violation"
+            android:textColor="@color/colorGray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAccountBan"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <!--android:text="@{Html.fromHtml(@string/text_violation)}"-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toTopOf="@+id/tvAdminBlockNote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvAdminBlockNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/text_admin_block_note"
+            android:textColor="@color/colorLightGrayText"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:typeface="MULI_SEMIBOLD" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGray" />
-
-            <com.namastey.customViews.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:gravity="center"
-                android:padding="@dimen/_4sdp"
-                android:text="@string/text_admin_block_note"
-                android:textColor="@color/colorLightGrayText"
-                android:textSize="14sp"
-                app:typeface="MULI_SEMIBOLD" />
-
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -67,12 +67,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
     override fun onFailedUniqueName(error: ErrorBean?) {
         Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
+        isEditUsername = true
+        edtProfileCasualName.requestFocus()
+        edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
+        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_done_red,
+            0
+        )
         tvUniqueNameError.visibility = View.VISIBLE
-        tvUniqueNameError.text = error!!.user_name
+        tvUniqueNameError.text = error.user_name
     }
 
     override fun onSuccessUniqueName(msg: String) {
-        super.onSuccess(msg)
+        //super.onSuccess(msg)
         tvUniqueNameError.visibility = View.GONE
         Log.e(TAG, "onSuccess: Error: \t $msg")
     }
@@ -81,7 +90,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         Utils.hideKeyboard(requireActivity())
         Log.d("Success : ", msg)
         isEditTagLine = false
-        isEditUsername = false
+        //isEditUsername = false
         sessionManager.setStringValue(
             edtProfileCasualName.text.toString().trim(),
             Constants.KEY_CASUAL_NAME
@@ -90,13 +99,22 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             edtProfileTagline.text.toString().trim(),
             Constants.KEY_TAGLINE
         )
-        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-            0,
-            0,
-            R.drawable.ic_edit_gray,
-            0
-        );
-        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
+        if (isEditUsername) {
+            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_done_red,
+                0
+            )
+        } else {
+            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_edit_gray,
+                0
+            )
+        }
+        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 
     }
 
@@ -151,32 +169,36 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             0,
             R.drawable.ic_edit_gray,
             0
-        );
+        )
         edtProfileCasualName.compoundDrawablePadding = 25
 
-        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0);
+        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
         edtProfileTagline.compoundDrawablePadding = 25
 
         edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
-                if (event.getAction() === MotionEvent.ACTION_UP) {
+                if (event.action === MotionEvent.ACTION_UP) {
                     if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
                         if (isEditUsername) {
                             isEditUsername = false
                             edtProfileCasualName.inputType = InputType.TYPE_NULL
                             edtProfileCasualName.clearFocus()
-                            if (edtProfileCasualName.text.toString().trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)){
-                                profileBasicViewModel.checkUniqueUsername(edtProfileCasualName.text.toString().trim())
+                            if (edtProfileCasualName.text.toString()
+                                    .trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            ) {
                                 editProfileApiCall()
+                                profileBasicViewModel.checkUniqueUsername(
+                                    edtProfileCasualName.text.toString().trim()
+                                )
                             }
                             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
                                 0,
                                 0,
                                 R.drawable.ic_edit_gray,
                                 0
-                            );
+                            )
                         } else {
                             isEditUsername = true
                             edtProfileCasualName.requestFocus()
@@ -186,7 +208,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                                 0,
                                 R.drawable.ic_done_red,
                                 0
-                            );
+                            )
                         }
 
                         return true
@@ -198,7 +220,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
-                if (event.getAction() === MotionEvent.ACTION_UP) {
+                if (event.action === MotionEvent.ACTION_UP) {
                     if (event.rawX >= edtProfileTagline.right - (edtProfileTagline.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
                         if (isEditTagLine) {
@@ -211,7 +233,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                                 0,
                                 R.drawable.ic_edit_gray,
                                 0
-                            );
+                            )
                         } else {
                             isEditTagLine = true
                             edtProfileTagline.inputType = InputType.TYPE_CLASS_TEXT
@@ -221,7 +243,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                                 0,
                                 R.drawable.ic_done_red,
                                 0
-                            );
+                            )
                         }
 
                         return true

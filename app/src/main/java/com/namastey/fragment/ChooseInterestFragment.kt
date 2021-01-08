@@ -192,9 +192,6 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
 
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
         Log.e("ChooseInterestFragment", "interestList")
-        /* rvChooseInterest.addItemDecoration(GridSpacingItemDecoration(3, 10, false))
-         interestAdapter = InterestAdapter(interestList, activity!!, this,true)
-         rvChooseInterest.adapter = interestAdapter*/
     }
 
     override fun onSuccessAllCategoryList(interestList: ArrayList<InterestSubCategoryBean>) {

@@ -228,7 +228,22 @@
         app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
         app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
 
-    <com.namastey.customViews.CustomTextView
+    <!-- <com.namastey.customViews.CustomTextView
+         android:id="@+id/tvFeedDesc"
+         style="@style/tvWrapWhiteStyle"
+         android:layout_width="0dp"
+         android:layout_marginTop="@dimen/_5sdp"
+         android:gravity="top"
+         android:maxLines="2"
+         android:minLines="2"
+         android:paddingEnd="@dimen/_5sdp"
+         android:textSize="14sp"
+         app:layout_constraintBottom_toBottomOf="@id/tvFeedView"
+         app:layout_constraintEnd_toStartOf="@id/tvFeedView"
+         app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
+         app:layout_constraintTop_toBottomOf="@+id/ivFeedFollow" />-->
+
+    <com.hendraanggrian.appcompat.widget.SocialTextView
         android:id="@+id/tvFeedDesc"
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"

@@ -7,49 +7,50 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="android.text.Html"/>
+
+        <import type="android.text.Html" />
 
         <variable
             name="viewModel"
             type="com.namastey.viewModel.SignUpViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <VideoView
             android:id="@+id/videoViewSignup"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/video_tint"
             android:fillViewport="true"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
-<!--                <ImageView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    android:src="@drawable/video_tint"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"/>-->
+                <!--                <ImageView-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    android:src="@drawable/video_tint"-->
+                <!--                    android:scaleType="centerCrop"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"/>-->
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSkipSignUp"
@@ -90,14 +91,14 @@
                     android:id="@+id/llSignupWithFacebook"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
                     android:layout_marginStart="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_40sdp"
                     android:layout_marginEnd="@dimen/_30sdp"
                     android:background="@drawable/rounded_blue_solid"
                     android:gravity="center"
                     android:onClick="onLoginClick"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvVideoSignUp">
@@ -119,11 +120,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
                     android:background="@drawable/rounded_red_solid"
                     android:gravity="center"
                     android:onClick="onLoginClick"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithFacebook">
@@ -144,12 +145,12 @@
                     android:id="@+id/llSignupWithPhone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/rounded_white_solid"
                     android:gravity="center"
                     android:onClick="onLoginClick"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithGoogle">
@@ -168,11 +169,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
                     android:background="@drawable/rounded_yellow_solid"
                     android:gravity="center"
                     android:onClick="onLoginClick"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithPhone">
@@ -189,43 +190,43 @@
 
                 </LinearLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:visibility="invisible"-->
-<!--                    android:id="@+id/llSignupWithTiktok"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="@dimen/_35sdp"-->
-<!--                    android:layout_marginTop="@dimen/_15sdp"-->
-<!--                    android:background="@drawable/rounded_black_solid"-->
-<!--                    android:gravity="center"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat">-->
+                <!--                <LinearLayout-->
+                <!--                    android:visibility="invisible"-->
+                <!--                    android:id="@+id/llSignupWithTiktok"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="@dimen/_35sdp"-->
+                <!--                    android:layout_marginTop="@dimen/_15sdp"-->
+                <!--                    android:background="@drawable/rounded_black_solid"-->
+                <!--                    android:gravity="center"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"-->
+                <!--                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat">-->
 
-<!--                    <com.namastey.customViews.CustomTextView-->
-<!--                        style="@style/tvWrapWhiteStyle"-->
-<!--                        android:drawableStart="@drawable/ic_tiktok"-->
-<!--                        android:drawablePadding="@dimen/_5sdp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:text="@string/btn_signup_tiktok"-->
-<!--                        android:textAllCaps="false"-->
-<!--                        android:textColor="@color/colorWhite"-->
-<!--                        android:textStyle="bold" />-->
+                <!--                    <com.namastey.customViews.CustomTextView-->
+                <!--                        style="@style/tvWrapWhiteStyle"-->
+                <!--                        android:drawableStart="@drawable/ic_tiktok"-->
+                <!--                        android:drawablePadding="@dimen/_5sdp"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:text="@string/btn_signup_tiktok"-->
+                <!--                        android:textAllCaps="false"-->
+                <!--                        android:textColor="@color/colorWhite"-->
+                <!--                        android:textStyle="bold" />-->
 
-<!--                </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
                 <com.namastey.customViews.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
                     android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
+                    android:gravity="center"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@{Html.fromHtml(@string/tv_term_condition_message)}"
                     android:textColor="@color/colorWhite"
-                    android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -245,7 +246,7 @@
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"/>
+            android:fitsSystemWindows="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,5 +11,6 @@ interface OnFeedItemClick {
     fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int)
     fun onPostViewer(postId: Long)
     fun onFeedBoost(userId: Long)
+    fun onDescriptionClick(userName: String)
    // fun onScrollItem(position: Int, dashboardBean: DashboardBean, playerView: PlayerView)
 }

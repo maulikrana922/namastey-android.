@@ -1,14 +1,19 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.VideoBean
+import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_album_video.view.*
@@ -86,6 +91,18 @@ class AlbumVideoAdapter(
                 tvFeedLike.text = activity.getString(R.string.like)*/
             tvFeedShare.text = videoBean.share.toString()
             tvFeedDesc.text = videoBean.description
+            tvFeedDesc.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
+            tvFeedDesc.setOnMentionClickListener { view, text ->
+                Log.e("AlbumVideoAdapter", "setOnMentionClickListener: $text")
+                Log.e("AlbumVideoAdapter", "setOnMentionClickListener: ${view.mentions}")
+                val intent = Intent(context, ProfileViewActivity::class.java)
+                intent.putExtra(Constants.USERNAME, text.toString())
+                context.startActivity(intent)
+                activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+
+
+
             tvFeedView.text = videoBean.viewers.toString()
             if (videoBean.is_comment == 1) {
                 tvCommentFeed.text = activity.getString(R.string.comments_off)

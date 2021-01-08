@@ -55,16 +55,6 @@ class CurrentLocationAdapter(
                 .plus(" ")
                 .plus(locationBean.postalCode)
 
-            /*if (selectedLocationList.contains(locationBeanList[position].id)) {
-                ivAddressSelected.visibility = View.VISIBLE
-                ivCurrentLocation.setColorFilter(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.colorBlueLight
-                    )
-                )
-            }*/
-
             Log.e("CurrentLocationAdapter", "isSelected: \t ${locationBean.isSelected}")
 
             if (locationBean.isSelected) {
@@ -77,13 +67,6 @@ class CurrentLocationAdapter(
                 )
                 locationBean.isSelected = false
             }
-
-           /* val id: Int = locationBean.id
-            if (id == AppSingleTon.visaType) {
-                viewHolder.visa_layout.setSelected(true)
-            } else {
-                viewHolder.visa_layout.setSelected(false)
-            }*/
 
             if (position == checkedPosition) {
                 locationBean.isSelected = true
@@ -106,30 +89,6 @@ class CurrentLocationAdapter(
             }
 
 
-            /*if (checkedPosition == -1) {
-                ivAddressSelected.visibility = View.GONE
-            } else {
-                if (checkedPosition == adapterPosition) {
-                    locationBean.isSelected = true
-                    ivAddressSelected.visibility = View.VISIBLE
-                    ivCurrentLocation.setColorFilter(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.colorBlueLight
-                        )
-                    )
-                } else {
-                    locationBean.isSelected = false
-                    ivAddressSelected.visibility = View.GONE
-                    ivCurrentLocation.setColorFilter(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.color_chip_gray
-                        )
-                    )
-                }
-            }*/
-
             llLocationView.setOnClickListener {
                 locationBean.isSelected = true
                 ivAddressSelected.visibility = View.VISIBLE
@@ -144,40 +103,7 @@ class CurrentLocationAdapter(
                 notifyDataSetChanged()
 
                 onRecentLocationClick.onRecentLocationItemClick(locationBean, locationBeanList)
-               /* if (checkedPosition != adapterPosition) {
-                    notifyItemChanged(checkedPosition)
-                    checkedPosition = adapterPosition
-                }*/
             }
-
-
-            /* llLocationView.setOnClickListener { v ->
-                 if (ivAddressSelected.visibility == View.VISIBLE) {
-                     ivAddressSelected.visibility = View.GONE
-                     ivCurrentLocation.setColorFilter(
-                         ContextCompat.getColor(
-                             context,
-                             R.color.color_chip_gray
-                         )
-                     )
-                 } else {
-                     ivAddressSelected.visibility = View.VISIBLE
-                     ivCurrentLocation.setColorFilter(
-                         ContextCompat.getColor(
-                             context,
-                             R.color.colorBlueLight
-                         )
-                     )
-                 }
-                 onItemClick.onLocationClick(locationBeanList[position])
-             }*/
         }
-
-    }
-
-    fun getSelected(): RecentLocations? {
-        return if (checkedPosition != -1) {
-            locationBeanList[checkedPosition]
-        } else null
     }
 }

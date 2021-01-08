@@ -225,45 +225,9 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
             this.sendBroadcast(poke)
         }
 
-        /* val intent =
-             Intent("android.location.GPS_ENABLED_CHANGE")
-         intent.putExtra("enabled", true)
-         sendBroadcast(intent)*/
+
     }
 
-    /*private fun getAddress() {
-        val location = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
-
-        if (location != null) {
-            val latitude = location.latitude
-            val longitude = location.longitude
-            val locationAddress = LocationAddress()
-            locationAddress.getAddressFromLocation(
-                latitude,
-                longitude,
-                applicationContext,
-                GeoCoderHandler()
-            )
-            Log.e("LocationActivity", "getAddress: \tlocationAddress: $locationAddress")
-        } else {
-            showSettingsAlert()
-        }
-    }
-
-
-    private class GeoCoderHandler : Handler() {
-        override fun handleMessage(message: Message) {
-            val locationAddress: String?
-            locationAddress = when (message.what) {
-                1 -> {
-                    val bundle: Bundle = message.data
-                    bundle.getString("address")
-                }
-                else -> null
-            }
-            Log.e("LocationActivity", "locationAddress: $locationAddress")
-        }
-    }*/
 
     fun onClickLocationBack(view: View) {
         onBackPressed()
@@ -273,26 +237,6 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
         if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
         } else {
-            /*if (isFromPassportContentActivity) {
-                val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                this@LocationActivity.finish()
-            } else if (isFromSearchLocationActivity) {
-                val intent = Intent(this@LocationActivity, SettingsActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                this@LocationActivity.finish()
-            } else if (isFromLocationActivity) {
-                val intent = Intent(this@LocationActivity, LocationActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-                this@LocationActivity.finish()
-            } else {
-                finish()
-            }
-            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)*/
-
             finishActivity()
 
         }
@@ -312,9 +256,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
             dbHelper.updateRecentLocations(recentLocation)
             dbHelper.updateAllRecentLocations(recentLocationList)
         }
-       /* doAsync {
-            dbHelper.updateSelectedLocation(recentLocation.isSelected, recentLocation.id)
-        }*/
+
         val intent = Intent(this@LocationActivity, PassportContentActivity::class.java)
         intent.flags = /*Intent.FLAG_ACTIVITY_NEW_TASK or*/
             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP

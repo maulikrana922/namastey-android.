@@ -1,14 +1,18 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnNotificationClick
 import com.namastey.model.ActivityListBean
+import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_notification.view.*
@@ -182,6 +186,16 @@ class NotificationAdapter(
                 }
             }
 
+            tvNotification.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
+            tvNotification.setOnMentionClickListener { view, text ->
+                Log.e("NotificationAdapter", "setOnMentionClickListener: $text")
+                Log.e("NotificationAdapter", "setOnMentionClickListener: ${view.mentions}")
+                val intent = Intent(context, ProfileViewActivity::class.java)
+                intent.putExtra(Constants.USERNAME, text.toString())
+                context.startActivity(intent)
+                activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+
             ivCommentCover.setOnClickListener {
                 onNotificationClick.onPostVideoClick(position, activityListBean.post_id)
             }
@@ -189,7 +203,10 @@ class NotificationAdapter(
             ivUserProfile.setOnClickListener {
                 Log.e("NotificationAdapter", "user_id: \t ${activityListBean.user_id}")
                 if (activityListBean.following_user_id != 0L) {
-                    onNotificationClick.onNotificationClick(activityListBean.following_user_id, position)
+                    onNotificationClick.onNotificationClick(
+                        activityListBean.following_user_id,
+                        position
+                    )
                 } else {
                     onNotificationClick.onNotificationClick(activityListBean.user_id, position)
                 }

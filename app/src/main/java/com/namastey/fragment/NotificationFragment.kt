@@ -124,8 +124,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         setSelectedApi()
 
         setSliderData()
-        /* notificationAdapter = NotificationAdapter(requireActivity())
-         rvNotification.adapter = notificationAdapter*/
 
         tvFollowRequest.setOnClickListener {
             val followRequestFragment = FollowRequestFragment.getInstance()
@@ -395,14 +393,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     }
 
     private fun setImageViewColor(imageView: ImageView, drawable: Int, customLayout: View) {
-        /* ivAllActivity.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivLikes.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivComments.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivMentions.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-         ivFollowers.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorBlack), android.graphics.PorterDuff.Mode.SRC_IN);
-
-         imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.colorRed), android.graphics.PorterDuff.Mode.SRC_IN);*/
-
         customLayout.ivAllActivity.setImageDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
@@ -436,10 +426,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
         imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
 
-        /* val unwrappedDrawable: Drawable? =
-             AppCompatResources.getDrawable(context!!, drawable)
-         val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable!!)
-         DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireContext'(), R.color.colorRed))*/
     }
 
     private fun setSliderData() {
@@ -529,12 +515,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             if (membershipType == 2) {
                 view.tvTextHighEachBoost.text =
                     resources.getString(R.string.dollars)
-                        .plus( price)
+                        .plus(price)
                         .plus(resources.getString(R.string.per_month))
                         .plus("\n")
                         .plus(resources.getString(R.string.save))
-                        .plus( " ")
-                        .plus( discount )
+                        .plus(" ")
+                        .plus(discount)
                         .plus(resources.getString(R.string.percentage))
             }
         }

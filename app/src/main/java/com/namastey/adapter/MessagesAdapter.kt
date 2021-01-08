@@ -40,17 +40,9 @@ class MessagesAdapter(
 
         fun bind(position: Int) = with(itemView) {
             val matchesListBean = matchesList[position]
-
-//            Log.e("MessagesAdapter", "matchesListBean: \t ${matchesListBean.id}")
-
             llMessageView.setOnClickListener {
                 onMatchesItemClick.onMatchesItemClick(position, matchesListBean, true)
             }
-
-            /*  if (matchesListBean.is_read == 1)
-                  llMessage.visibility = View.VISIBLE
-              else
-                  llMessage.visibility = View.GONE*/
 
             if (matchesListBean.sub_cat_details.size > 0) {
                 Log.e(
@@ -121,15 +113,6 @@ class MessagesAdapter(
                     tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 }
             }
-
-            /*Utils.rectangleShapeGradient(
-                mainCategoryView, intArrayOf(
-                    Color.parseColor("#28BAD3"),
-                    Color.parseColor("#A19FEE")
-                )
-            )*/
-
         }
-
     }
 }

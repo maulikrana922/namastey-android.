@@ -137,7 +137,6 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     }
 
     override fun onSuccess(data: ArrayList<VideoBean>) {
-        TODO("Not yet implemented")
     }
 
 

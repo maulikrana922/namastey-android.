@@ -113,6 +113,17 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             albumBean.id = videoBean.album_id
             tvTitlePostVideo.text = getString(R.string.edit_post)
             edtVideoDesc.setText(videoBean.description)
+            edtVideoDesc.mentionColor = ContextCompat.getColor(this@PostVideoActivity, R.color.colorBlueLight)
+            edtVideoDesc.setOnMentionClickListener { view, text ->
+                Log.e("PostVideoActivity", "setOnMentionClickListener: $text")
+                Log.e("PostVideoActivity", "setOnMentionClickListener: ${view.mentions}")
+                val intent = Intent(this@PostVideoActivity, ProfileViewActivity::class.java)
+                intent.putExtra(Constants.USERNAME, text.toString())
+                startActivity(intent)
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+
+
             btnPostVideo.text = getString(R.string.update)
 //            videoFile = File(Uri.parse(videoBean.video_url).path)
             GlideLib.loadImage(this, ivSelectCover, videoBean.cover_image_url)
@@ -492,27 +503,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         }
     }
 
-    /* private fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
-         val bytes = ByteArrayOutputStream()
-         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-         val path =
-             Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-         return Uri.parse(path)
-     }
-     private fun getRealPathFromURI(uri: Uri?): String? {
-         var path = ""
-         if (contentResolver != null) {
-             val cursor =
-                 contentResolver.query(uri, null, null, null, null)
-             if (cursor != null) {
-                 cursor.moveToFirst()
-                 val idx = cursor.getColumnIndex(Images.ImageColumns.DATA)
-                 path = cursor.getString(idx)
-                 cursor.close()
-             }
-         }
-         return path
-     }*/
 
     private fun selectImage() {
         bottomSheetDialog = BottomSheetDialog(this@PostVideoActivity, R.style.dialogStyle)

@@ -129,11 +129,6 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
 
     private fun openUrlInBrowser() {
         val url = "http://www.google.com"  // Todo: Change url
-        /* val i = Intent(Intent.ACTION_VIEW)
-         i.data = Uri.parse(url)
-         startActivity(i)*/
-
-
         try {
             val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(myIntent)

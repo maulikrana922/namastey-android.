@@ -73,9 +73,6 @@ class FollowRequestFragment : BaseFragment<FragmentFollowRequestBinding>(), Foll
             fragmentManager!!.popBackStack()
         }
 
-        /*  followRequestAdapter = FollowRequestAdapter(requireActivity())
-          rvFollowRequest.adapter = followRequestAdapter*/
-
     }
 
 

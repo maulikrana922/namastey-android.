@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.tasks.Task
-import com.google.firebase.database.*
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,9 +25,7 @@ import com.namastey.uiView.MatchesProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
 import com.namastey.viewModel.MatchesProfileViewModel
-import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
 import kotlinx.android.synthetic.main.view_matches_messages_list.*
@@ -96,10 +91,6 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     }
 
     private fun initUI() {
-        /* messagesAdapter = MessagesAdapter(matchesListBean, requireActivity(), this)
-         rvMessagesList.adapter = messagesAdapter*/
-        /*   messagesAdapter = MessagesAdapter(requireActivity(), this)
-         rvMessagesList.adapter = messagesAdapter*/
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {

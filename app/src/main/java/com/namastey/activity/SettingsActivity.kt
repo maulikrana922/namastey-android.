@@ -323,12 +323,6 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
     fun onClickAccountSettings(view: View) {
         openActivity(this@SettingsActivity, AccountSettingsActivity())
-
-        //For Testing
-        /* val intent = Intent(this@SettingsActivity, MatchesScreenActivity::class.java)
-         intent.putExtra("username", "Demo");
-         intent.putExtra("profile_url", "");
-         openActivity(intent)*/
     }
 
     fun onClickMyCurrentLocation(view: View) {

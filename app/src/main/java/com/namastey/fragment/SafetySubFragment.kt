@@ -218,23 +218,6 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
     override fun onSuccessYourFollowerResponse(safetyBean: SafetyBean) {
         Log.e("SafetySubFragment", "onSuccessResponse  safetyBean: \t ${safetyBean.is_followers}")
         sessionManager.setIntegerValue(safetyBean.is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
-
-        /* if (safetyBean.is_followers == 0) {
-             sessionManager.setStringValue(
-                 getString(R.string.everyone),
-                 Constants.KEY_IS_YOUR_FOLLOWERS
-             )
-         } else if (safetyBean.is_followers == 1) {
-             sessionManager.setStringValue(
-                 getString(R.string.friends),
-                 Constants.KEY_IS_YOUR_FOLLOWERS
-             )
-         } else if (safetyBean.is_followers == 2) {
-             sessionManager.setStringValue(
-                 getString(R.string.no_one),
-                 Constants.KEY_IS_YOUR_FOLLOWERS
-             )
-         }*/
     }
 
     override fun onSuccessWhoCanCommentYourVideoResponse(safetyBean: SafetyBean) {
@@ -247,23 +230,6 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
             safetyBean.who_can_comment,
             Constants.KEY_CAN_COMMENT_YOUR_VIDEO
         )
-
-        /*  if (safetyBean.who_can_comment == 0) {
-              sessionManager.setStringValue(
-                  getString(R.string.everyone),
-                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
-              )
-          } else if (safetyBean.who_can_comment == 1) {
-              sessionManager.setStringValue(
-                  getString(R.string.friends),
-                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
-              )
-          } else if (safetyBean.who_can_comment == 2) {
-              sessionManager.setStringValue(
-                  getString(R.string.no_one),
-                  Constants.KEY_CAN_COMMENT_YOUR_VIDEO
-              )
-          }*/
     }
 
     override fun onSuccessWhoCanSendYouDirectMessageResponse(safetyBean: SafetyBean) {
@@ -276,23 +242,6 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
             safetyBean.who_can_send_message,
             Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
         )
-
-        /* if (safetyBean.who_can_send_message == 0) {
-             sessionManager.setStringValue(
-                 getString(R.string.everyone),
-                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
-             )
-         } else if (safetyBean.who_can_send_message == 1) {
-             sessionManager.setStringValue(
-                 getString(R.string.friends),
-                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
-             )
-         } else if (safetyBean.who_can_send_message == 2) {
-             sessionManager.setStringValue(
-                 getString(R.string.no_one),
-                 Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
-             )
-         }*/
     }
 
 }

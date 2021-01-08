@@ -56,7 +56,6 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     private var albumBean = AlbumBean()
     private var fromAlbumList = false
     private var createBlankAlbum = false
-//    private var selectedVideo: Uri = TODO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
