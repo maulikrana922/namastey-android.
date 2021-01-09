@@ -83,6 +83,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     override fun onSuccessUniqueName(msg: String) {
         //super.onSuccess(msg)
         tvUniqueNameError.visibility = View.GONE
+        editProfileApiCall()
         Log.e(TAG, "onSuccess: Error: \t $msg")
     }
 
@@ -90,7 +91,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         Utils.hideKeyboard(requireActivity())
         Log.d("Success : ", msg)
         isEditTagLine = false
-        //isEditUsername = false
+        isEditUsername = false
         sessionManager.setStringValue(
             edtProfileCasualName.text.toString().trim(),
             Constants.KEY_CASUAL_NAME
@@ -99,7 +100,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             edtProfileTagline.text.toString().trim(),
             Constants.KEY_TAGLINE
         )
-        if (isEditUsername) {
+        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_edit_gray,
+            0
+        )
+       /* if (isEditUsername) {
             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -107,13 +114,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 0
             )
         } else {
+            isEditUsername = false
+            sessionManager.setStringValue(
+                edtProfileCasualName.text.toString().trim(),
+                Constants.KEY_CASUAL_NAME
+            )
             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
                 R.drawable.ic_edit_gray,
                 0
             )
-        }
+        }*/
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 
     }
@@ -188,7 +200,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             if (edtProfileCasualName.text.toString()
                                     .trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
                             ) {
-                                editProfileApiCall()
+                                //editProfileApiCall()
                                 profileBasicViewModel.checkUniqueUsername(
                                     edtProfileCasualName.text.toString().trim()
                                 )
