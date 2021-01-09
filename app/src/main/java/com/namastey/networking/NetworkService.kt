@@ -67,7 +67,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetUserDetailAsync().await()
         }
 
-    suspend fun requestToGetUserFullProfile(userId: String, username: String): AppResponse<ProfileBean> =
+    suspend fun requestToGetUserFullProfile(
+        userId: String,
+        username: String
+    ): AppResponse<ProfileBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetUserFullProfileAsync(userId, username).await()
         }
@@ -465,5 +468,15 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToCheckUniqueUsernameAsync(username).await()
         }
+
+    suspend fun requestToAddUserLocation(
+        address: String,
+        lat: String,
+        lng: String
+    ): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToAddUserLocationAsync(address, lat, lng).await()
+        }
+
 
 }

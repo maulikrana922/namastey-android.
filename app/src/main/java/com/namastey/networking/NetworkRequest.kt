@@ -422,4 +422,12 @@ interface NetworkRequest {
         @Field(Constants.USER_NAME) username: String
     ): Deferred<ErrorAppResponse<ErrorBean>>
 
+    @FormUrlEncoded
+    @POST(Constants.ADD_USER_LOCATION)
+    fun requestToAddUserLocationAsync(
+        @Field(Constants.ADDRESS) address: String,
+        @Field(Constants.LAT) lat: String,
+        @Field(Constants.LNG) lng: String
+    ): Deferred<AppResponse<Any>>
+
 }

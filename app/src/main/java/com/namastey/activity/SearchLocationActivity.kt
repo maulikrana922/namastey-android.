@@ -18,7 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
@@ -37,27 +37,45 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.GlideApp
+import com.namastey.dagger.module.ViewModelFactory
+import com.namastey.databinding.ActivitySearchLocationBinding
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
 import com.namastey.roomDB.entity.RecentLocations
+import com.namastey.uiView.LocationView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
+import com.namastey.viewModel.LocationViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_search_location.*
 import kotlinx.android.synthetic.main.view_search_location_marker.view.*
 import org.jetbrains.anko.doAsync
 import java.util.*
+import javax.inject.Inject
 
-class SearchLocationActivity : FragmentActivity(),
+class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
     OnMapReadyCallback,
     LocationListener,
     GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener {
+    GoogleApiClient.OnConnectionFailedListener, LocationView {
+/*class SearchLocationActivity : FragmentActivity(),
+    OnMapReadyCallback,
+    LocationListener,
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {*/
+
     private val TAG: String = SearchLocationActivity::class.java.simpleName
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private lateinit var sessionManager: SessionManager
+    private lateinit var activitySearchLocationBinding: ActivitySearchLocationBinding
+    private lateinit var locationViewModel: LocationViewModel
+
     private var mMap: GoogleMap? = null
     private var mLastLocation: Location? = null
     private var mCurrLocationMarker: Marker? = null
@@ -78,9 +96,22 @@ class SearchLocationActivity : FragmentActivity(),
     private var isFromSearchLocationActivity = false
     private var isFromLocationActivity = false
 
+    override fun getViewModel() = locationViewModel
+
+    override fun getLayoutId() = R.layout.activity_search_location
+
+    override fun getBindingVariable() = BR.viewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_location)
+        //setContentView(R.layout.activity_search_location)
+        getActivityComponent().inject(this)
+
+        locationViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(LocationViewModel::class.java)
+        locationViewModel.setViewInterface(this)
+        activitySearchLocationBinding = bindViewData()
+        activitySearchLocationBinding.viewModel = locationViewModel
 
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
@@ -224,7 +255,11 @@ class SearchLocationActivity : FragmentActivity(),
             addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
         city = addresses[0].locality
-        state = addresses[0].adminArea
+        state = if (addresses[0].adminArea != null && addresses[0].adminArea != "") {
+            addresses[0].adminArea
+        } else {
+            ""
+        }
         val country: String = addresses[0].countryName
         val postalCode = if (addresses[0].postalCode != null && addresses[0].postalCode != "") {
             addresses[0].postalCode
@@ -263,6 +298,8 @@ class SearchLocationActivity : FragmentActivity(),
         doAsync {
             dbHelper.addRecentLocation(recentLocation)
         }
+
+        locationViewModel.addUserLocation(address, latitude.toString(), longitude.toString())
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -441,14 +478,14 @@ class SearchLocationActivity : FragmentActivity(),
         if (recentLocation.city != "" && recentLocation.city != null) {
             marker.tvMyCurrentAddress1.text =
                 getString(R.string.go_to).plus(" ").plus(recentLocation.city)
-        } else if (city != "")  {
+        } else if (city != "") {
             marker.tvMyCurrentAddress1.text =
                 getString(R.string.go_to).plus(" ").plus(city)
         }
 
         if (recentLocation.state != "" && recentLocation.state != null) {
             marker.tvMyCurrentAddress2.text = recentLocation.state
-        } else if (state != "")  {
+        } else if (state != "") {
             marker.tvMyCurrentAddress2.text = state
         }
 
@@ -506,6 +543,15 @@ class SearchLocationActivity : FragmentActivity(),
 
     fun onClickSearchLocationBack(view: View) {
         onBackPressed()
+    }
+
+    override fun onSuccessAddLocation(msg: String) {
+        Log.e("SearchLocationActivity", "onSuccessAddLocation: \t msg: \t $msg")
+    }
+
+    override fun onDestroy() {
+        locationViewModel.onDestroy()
+        super.onDestroy()
     }
 
 }

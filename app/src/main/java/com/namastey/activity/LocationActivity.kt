@@ -45,7 +45,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
 
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
-    private lateinit var activityProfileViewBinding: ActivityLocationBinding
+    private lateinit var activityLocationBinding: ActivityLocationBinding
     private lateinit var locationViewModel: LocationViewModel
     private lateinit var currentLocationAdapter: CurrentLocationAdapter
     private lateinit var appLocationService: AppLocationService
@@ -75,8 +75,8 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
         locationViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(LocationViewModel::class.java)
         locationViewModel.setViewInterface(this)
-        activityProfileViewBinding = bindViewData()
-        activityProfileViewBinding.viewModel = locationViewModel
+        activityLocationBinding = bindViewData()
+        activityLocationBinding.viewModel = locationViewModel
 
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
@@ -299,5 +299,10 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
        /* doAsync {
             dbHelper.updateRecentLocations(recentLocation)
         }*/
+    }
+
+
+    override fun onSuccessAddLocation(msg: String) {
+        TODO("Not yet implemented")
     }
 }
