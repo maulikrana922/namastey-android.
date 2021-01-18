@@ -118,16 +118,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var mbLoading = true
     private lateinit var appLocationService: AppLocationService
 
-    var lastWindowIndex = 0
-    private var dashboardBean: DashboardBean = DashboardBean()
-
-    // private lateinit var playerView: PlayerView
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
-
 
     override fun getViewModel() = dashboardViewModel
 

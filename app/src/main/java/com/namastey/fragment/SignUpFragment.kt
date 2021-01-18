@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
+import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -38,6 +35,7 @@ import com.snapchat.kit.sdk.login.models.UserDataResponse
 import com.snapchat.kit.sdk.login.networking.FetchUserDataCallback
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import org.json.JSONException
+import java.util.*
 import javax.inject.Inject
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
@@ -72,10 +70,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
-        if (user.is_completly_signup == 1) {
-            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        if (user.is_register == 1) {
+            openActivity(requireActivity(), DashboardActivity())
         } else {
-            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
         }
         fragmentManager!!.popBackStack()
         if (isFromDashboard)
@@ -125,6 +122,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
 
     private fun initializeGoogleApi() {
         SnapLogin.getLoginStateController(requireActivity()).addOnLoginStateChangedListener(this)
+        FacebookSdk.sdkInitialize(requireContext())
 
         //For facebook used initializer
         callbackManager =
@@ -216,6 +214,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     private fun facebookLogin() {
         LoginManager.getInstance().logOut()
         loginManager = LoginManager.getInstance()
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
 
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -270,9 +270,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                     }
                 }
             })
+
         loginManager.logInWithReadPermissions(
             requireActivity(),
-            listOf("email", "public_profile")
+            listOf("email")
         )
     }
 
@@ -310,6 +311,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                 sessionManager.getUserUniqueId()
             )
         } catch (e: ApiException) {
+            e.printStackTrace()
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("SignUpFragment", "signInResult:failed code=" + e.statusCode)

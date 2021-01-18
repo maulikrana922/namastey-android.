@@ -16,10 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
+import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -47,6 +44,7 @@ import com.snapchat.kit.sdk.login.models.UserDataResponse
 import com.snapchat.kit.sdk.login.networking.FetchUserDataCallback
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import org.json.JSONException
+import java.util.*
 import javax.inject.Inject
 
 
@@ -111,6 +109,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
 
     private fun initializeGoogleApi() {
         SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
+        FacebookSdk.sdkInitialize(applicationContext)
 
         //For facebook used initializer
         callbackManager = CallbackManager.Factory.create()
@@ -254,8 +253,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         loginManager = LoginManager.getInstance()
 
         LoginManager.getInstance()
+            .logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
+
+        LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
+                    Log.e("SignUpActivity", "accessToken: ${loginResult.accessToken}")
+
                     val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
                     { jsonObj, _ ->
                         if (jsonObj != null) {
@@ -285,8 +289,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                             }
                         }
                     }
+
                     val parameters = Bundle()
-                    parameters.putString("fields", "id,name,email")
+                    parameters.putString("fields", "id,name,link")
                     graphRequest.parameters = parameters
                     graphRequest.executeAsync()
                 }
@@ -295,6 +300,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                 }
 
                 override fun onError(error: FacebookException) {
+                    error.printStackTrace()
+                    Log.e("SignUpActivity", "onError: ${error.message}")
+                    Log.e("SignUpActivity", "onError: $error")
+
                     var msg = ""
                     if (error is java.net.UnknownHostException) {
                         msg = getString(R.string.no_internet)
@@ -306,10 +315,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                     }
                 }
             })
+
         loginManager.logInWithReadPermissions(
             this@SignUpActivity,
-            listOf("email", "public_profile")
+            listOf("email")
         )
+
     }
 
     /**
@@ -319,7 +330,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         tvSkipSignUp.visibility = View.INVISIBLE
         addFragment(
             SignupWithPhoneFragment.getInstance(
-                false, false
+                false,
+                isFromDashboard = false
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
         )
@@ -484,6 +496,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     }
 
     override fun onSuccessResponse(user: User) {
+        Log.e("SignUpActivity", "user: ${user.token}")
         tvSkipSignUp.visibility = View.INVISIBLE
         sessionManager.setGuestUser(false)
         sessionManager.setAccessToken(user.token)
@@ -491,17 +504,17 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         sessionManager.setUserPhone(user.mobile)
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
-        if (user.is_completly_signup == 1) {
-            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        if (user.is_register == 1) {
+            openActivity(this, DashboardActivity())
         } else {
-            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+            addFragment(
+                SelectGenderFragment.getInstance(
+                    "user"
+                ),
+                Constants.SELECT_GENDER_FRAGMENT
+            )
         }
-        addFragment(
-            SelectGenderFragment.getInstance(
-                "user"
-            ),
-            Constants.SELECT_GENDER_FRAGMENT
-        )
+
     }
 
     override fun onBackPressed() {

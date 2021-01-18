@@ -173,7 +173,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
 
         val dialog = Dialog(requireActivity(), android.R.style.Theme_Light)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_admin_block_user)
+        dialog.setContentView(R.layout.fragment_admin_block_user)
         dialog.show()
     }
 
@@ -187,7 +187,11 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         Log.e("OTPFragment", "onFailed: msg \t $msg")
         Log.e("OTPFragment", "onFailed: error \t $error")
         if (status == Constants.ADMIN_BLOCK_USER_CODE) {
-            dialogAdminBlockUser()
+            //dialogAdminBlockUser()
+            addFragment(
+                AdminBlockUserFragment(),
+                Constants.ACCOUNT_SETTINGS_FRAGMENT
+            )
         } else {
             showMsg(msg.toString())
         }

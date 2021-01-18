@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.facebook.FacebookSdk
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -45,6 +46,9 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
+
+        if(!FacebookSdk.isInitialized())
+            FacebookSdk.sdkInitialize(this@ProfileInterestActivity)
 
         profileInterestViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ProfileInterestViewModel::class.java)
