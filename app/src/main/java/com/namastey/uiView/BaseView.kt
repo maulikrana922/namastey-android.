@@ -9,6 +9,8 @@ interface BaseView {
 
     fun showMsg(msg: String)
 
+    fun showMsgLog(msg: String)
+
     fun hideKeyboard()
 
     fun onHandleException(e: Throwable)

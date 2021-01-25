@@ -127,6 +127,7 @@ object Constants {
     const val LIKED_USER_COUNT = "liked-user-count"
     const val POST_SHARE = "post-share"
     const val ADD_USER_LOCATION = "add-user-location"
+    const val ADD_USER_ACTIVE_TIME = "add-user-active-time"
 
     //    api response error code
     const val OK = 200
@@ -216,6 +217,7 @@ object Constants {
     const val KEY_BOOST_ME = "KEY_BOOST_ME"
     const val KEY_SET_RECENT_LOCATION = "KEY_SET_RECENT_LOCATION"
     const val KEY_RECENT_LOCATION = "KEY_RECENT_LOCATION"
+    const val KEY_SPEND_APP_TIME = "KEY_SPEND_APP_TIME"
 
 
     //    field key
@@ -307,6 +309,7 @@ object Constants {
     const val DEVICE_TOKEN = "device_token"
     const val USER_NAME = "user_name"
     const val ADDRESS = "address"
+    const val TOTAL_TIME = "total_time"
     //const val POST_ID = "post_id"
 
 

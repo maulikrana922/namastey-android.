@@ -3,6 +3,7 @@ package com.namastey.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -287,6 +288,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             (activity!! as ProfileViewActivity).onHandleException(e)
         else if (activity != null && activity!! is SettingsActivity)
             (activity!! as SettingsActivity).onHandleException(e)
+    }
+
+    override fun showMsgLog(msg: String) {
+        Log.e("BaseActivity", "msg:  \t $msg")
     }
 
     override fun isInternetAvailable() =

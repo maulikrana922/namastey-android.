@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
@@ -37,7 +34,8 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.fragment_add_links.*
-import org.json.JSONException
+import org.json.JSONObject
+import java.util.*
 import javax.inject.Inject
 
 class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInterestView,
@@ -52,6 +50,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private lateinit var callbackManager: CallbackManager
     private lateinit var auth: FirebaseAuth
     lateinit var mTwitterAuthClient: TwitterAuthClient
+    private lateinit var mProfileTracker: ProfileTracker
 
     override fun getLayoutId() = R.layout.fragment_add_links
 
@@ -125,8 +124,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
         mTwitterAuthClient = TwitterAuthClient()
         //For facebook used initializer
-        callbackManager =
-            CallbackManager.Factory.create()
+        callbackManager = CallbackManager.Factory.create()
 
         if (arguments!!.containsKey("socialAccountList")) {
             val data: ArrayList<SocialAccountBean> =
@@ -179,7 +177,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
             override fun success(result: Result<User?>?) {
                 val user: User = result!!.data!!
-                Log.d(
+                Log.e(
                     "Twitter url : ",
                     Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
                 )
@@ -231,29 +229,34 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 //        jsonArray.add(jsonObjectInner)
 
         jsonObject.add("social_links_details", jsonArray)
-        Log.d("AddLinkRequest : ", jsonObject.toString())
+        Log.e("AddLinkRequest : ", jsonObject.toString())
         profileInterestViewModel.addSocialLink(jsonObject)
     }
 
-    private fun connectFacebook() {
+    private fun connectFacebook1() {
 
         LoginManager.getInstance().logOut()
 //        FirebaseAuth.getInstance().signOut()
         loginManager = LoginManager.getInstance()
-
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, Arrays.asList("user_link"))
         loginManager
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
                     val credential =
                         FacebookAuthProvider.getCredential(loginResult.accessToken.token)
+                    Log.e(
+                        "AddLinksFragment",
+                        "FaceBookLogin credential: \t ${credential.signInMethod}"
+                    )
                     auth = FirebaseAuth.getInstance()
                     auth.signInWithCredential(credential)
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
                                 val user = auth.currentUser
-                                Log.e("TAG", "signInWithCredential:success")
-                                Log.d("AddLinksFragment", "FaceBookLogin user: \t $user")
+                                Log.e("AddLinksFragment", "signInWithCredential:success")
+                                Log.e("AddLinksFragment", "FaceBookLogin user: \t $user")
 //                                val graphRequest = GraphRequest(
 //                                    loginResult.accessToken,
 //                                    "/user",
@@ -280,36 +283,67 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                             // ...
                         }
 
-
-                    val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
-                    { jsonObj, _ ->
-                        if (jsonObj != null) {
-                            try {
-//                               var providerId = jsonObj.getString("id")
-
-                                Log.d("Facebook resposne : ", jsonObj.toString())
-//                                if (jsonObj.has("id")){
-//                                    edtFacebook.setText("fb://profile/".plus(jsonObj.getInt("id")))
-////                                    edtFacebook.setText("https://www.facebook.com/".plus(jsonObj.getInt("id")))
-//                                }
-                                if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
-                                    val userLink = jsonObj.getString("link")
-                                    edtFacebook.setText(userLink)
-                                }
-                            } catch (e: JSONException) {
-                                e.printStackTrace()
-                                Toast.makeText(
-                                    activity,
-                                    "" + e.printStackTrace(),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                    Log.e("AddLinksFragment", "Facebook accessToken : ${loginResult.accessToken}")
+                    val request: GraphRequest = GraphRequest.newGraphPathRequest(
+                        loginResult.accessToken,
+                        "",
+                        object : GraphRequest.GraphJSONObjectCallback, GraphRequest.Callback {
+                            override fun onCompleted(
+                                `object`: JSONObject?,
+                                response: GraphResponse?
+                            ) {
+                                Log.e(
+                                    "AddLinksFragment",
+                                    "Facebook onCompleted1 : ${response.toString()}"
+                                )
                             }
-                        }
-                    }
+
+                            override fun onCompleted(response: GraphResponse?) {
+                                Log.e(
+                                    "AddLinksFragment",
+                                    "Facebook onCompleted2 : ${response.toString()}"
+                                )
+                            }
+                        })
+
                     val parameters = Bundle()
-                    parameters.putString("fields", "id,link")
-                    graphRequest.parameters = parameters
-                    graphRequest.executeAsync()
+                    parameters.putString("fields", "link,birthday,email,hometown")
+                    request.parameters = parameters
+                    request.executeAsync()
+
+                    /* val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
+                     { jsonObj, _ ->
+                         if (jsonObj != null) {
+                             try {
+ //                               var providerId = jsonObj.getString("id")
+
+                                 Log.e("AddLinksFragment", "Facebook jsonObj : ${ jsonObj.toString()}")
+                                 Log.d("Facebook resposne : ", jsonObj.toString())
+ //                                if (jsonObj.has("id")){
+ //                                    edtFacebook.setText("fb://profile/".plus(jsonObj.getInt("id")))
+ ////                                    edtFacebook.setText("https://www.facebook.com/".plus(jsonObj.getInt("id")))
+ //                                }
+                                 if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
+                                     val userLink = jsonObj.getString("link")
+                                     Log.e("AddLinksFragment", "Facebook userLink : $userLink")
+                                     edtFacebook.setText(userLink)
+                                 }
+                             } catch (e: JSONException) {
+                                 Log.e("AddLinksFragment", "Facebook JSONException : ${e.message}")
+                                 Log.e("AddLinksFragment", "Facebook JSONException : ${e.printStackTrace()}")
+                                 e.printStackTrace()
+                                 Toast.makeText(
+                                     activity,
+                                     "" + e.printStackTrace(),
+                                     Toast.LENGTH_SHORT
+                                 ).show()
+                             }
+                         }
+                     }
+                     val parameters = Bundle()
+                     parameters.putString("fields", "id,link")
+                     graphRequest.parameters = parameters
+                     graphRequest.executeAsync()*/
                 }
 
                 override fun onCancel() {
@@ -333,10 +367,285 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         )
     }
 
+    private fun connectFacebook() {
+
+        LoginManager.getInstance().logOut()
+        loginManager = LoginManager.getInstance()
+
+        LoginManager.getInstance()
+            .logInWithReadPermissions(
+                this,
+                Arrays.asList("email", "public_profile", "user_link", "email")
+            )
+        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_link"))
+
+
+        val mcallbackLogin: FacebookCallback<LoginResult?> =
+            object : FacebookCallback<LoginResult?> {
+                override fun onSuccess(loginResult: LoginResult?) {
+                    if (loginResult!!.accessToken != null) {
+                        Log.e(
+                            "AddLinksFragment",
+                            "LoginButton FacebookCallback onSuccess token : " + loginResult.accessToken
+                                .token
+                        )
+                        Log.e(
+                            "AddLinksFragment",
+                            "LoginButton FacebookCallback onSuccess userId : " + loginResult.accessToken
+                                .userId
+                        )
+//                        GraphRequest.newMeRequest(
+//                            AccessToken.getCurrentAccessToken(),
+//                            object : GraphRequest.GraphJSONObjectCallback {
+//                                override fun onCompleted(
+//                                    `object`: JSONObject?,
+//                                    response: GraphResponse?
+//                                ) {
+//                                    if (null != `object`) {
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            "FaceBookLogin object: \t $`object`"
+//                                        )
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            "FaceBookLogin response: \t $response"
+//                                        )
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            `object`.optString("name") +
+//                                                    `object`.optString("first_name") +
+//                                                    `object`.optString("email")
+//                                        )
+//                                    }
+//                                }
+//                            }).executeAsync()
+
+                        val request = GraphRequest.newMeRequest(
+                            AccessToken.getCurrentAccessToken(),
+                            object : GraphRequest.GraphJSONObjectCallback {
+                                override fun onCompleted(
+                                    `object`: JSONObject?,
+                                    response: GraphResponse?
+                                ) {
+                                    if (null != `object`) {
+                                        Log.e(
+                                            "AddLinksFragment",
+                                            "FaceBookLogin object: \t $`object`"
+                                        )
+                                        Log.e(
+                                            "AddLinksFragment",
+                                            "FaceBookLogin response: \t $response"
+                                        )
+                                        Log.e(
+                                            "AddLinksFragment",
+                                            `object`.optString("name") +
+                                                    `object`.optString("first_name") +
+                                                    `object`.optString("email")
+                                        )
+
+
+                                        if (`object`.has("id")) {
+                                            val id = `object`.getString("id")
+                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $id")
+                                            val url = "https://www.facebook.com/$id"
+                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
+                                        }
+
+                                        if (`object`.has("name")) {
+                                            val name = `object`.getString("name")
+                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $name")
+                                            val url = "https://www.facebook.com/$name"
+                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
+                                        }
+                                    }
+                                }
+                            })
+
+                        val parameters = Bundle()
+                        parameters.putString("fields", "id,name,link")
+                        parameters.putString("fields", "link")
+                        request.parameters = parameters
+                        request.executeAsync()
+                    }
+                }
+
+                override fun onCancel() {
+                    Log.e("AddLinksFragment", "LoginButton FacebookCallback onCancel")
+                }
+
+                override fun onError(exception: FacebookException) {
+                    exception.printStackTrace()
+                    Log.e("AddLinksFragment", "Exception:: " + exception.message)
+                    Log.e("AddLinksFragment", "Exception:: " + exception.stackTrace)
+                }
+            }
+        LoginManager.getInstance().registerCallback(callbackManager, mcallbackLogin)
+
+//        LoginManager.getInstance()
+//            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+//                override fun onSuccess(loginResult: LoginResult) {
+//                    val credential =
+//                        FacebookAuthProvider.getCredential(loginResult.accessToken.token)
+//                    Log.e(
+//                        "AddLinksFragment",
+//                        "FaceBookLogin credential: \t ${credential.signInMethod}"
+//                    )
+//                    auth = FirebaseAuth.getInstance()
+//
+//                    val graphRequest = GraphRequest(
+//                        loginResult.accessToken,
+//                        "/user",
+//                        null,
+//                        HttpMethod.GET,
+//                        GraphRequest.Callback { /* handle the result */ response: GraphResponse? ->
+//                            Log.e("Facebook Response ", response.toString())
+//
+//                        }
+//                    )
+//                    val parameters = Bundle()
+//                    parameters.putString("fields", "id,user_link, link")
+//                    graphRequest.parameters = parameters
+//                    graphRequest.executeAsync()
+//
+//                    /*auth.signInWithCredential(credential)
+//                        .addOnCompleteListener(requireActivity()) { task ->
+//                            if (task.isSuccessful) {
+//                                // Sign in success, update UI with the signed-in user's information
+//                                val user = auth.currentUser
+//                                Log.e("AddLinksFragment", "signInWithCredential:success")
+//                                Log.e("AddLinksFragment", "FaceBookLogin user: \t $user")
+//                                val graphRequest = GraphRequest(
+//                                    loginResult.accessToken,
+//                                    "/user",
+//                                    null,
+//                                    HttpMethod.GET,
+//                                    GraphRequest.Callback { *//* handle the result *//* response: GraphResponse? ->
+//                                        Log.e("Facebook Response ", response.toString())
+//
+//                                    }
+//                                )
+//                                val parameters = Bundle()
+//                                parameters.putString("fields", "id,user_link, link")
+//                                graphRequest.parameters = parameters
+//                                graphRequest.executeAsync()
+//                            } else {
+//                                // If sign in fails, display a message to the user.
+//                                Log.e("TAG", "signInWithCredential:failure", task.exception)
+//                                Toast.makeText(
+//                                    requireActivity(), "Authentication failed.",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }*/
+//
+//                    /*Log.e("AddLinksFragment", "Facebook accessToken : ${loginResult.accessToken}")
+//                    val request: GraphRequest = GraphRequest.newGraphPathRequest(
+//                        loginResult.accessToken,
+//                        "",
+//                        object : GraphRequest.GraphJSONObjectCallback, GraphRequest.Callback {
+//                            override fun onCompleted(
+//                                `object`: JSONObject?,
+//                                response: GraphResponse?
+//                            ) {
+//                                Log.e(
+//                                    "AddLinksFragment",
+//                                    "Facebook onCompleted1 : ${response.toString()}"
+//                                )
+//                            }
+//
+//                            override fun onCompleted(response: GraphResponse?) {
+//                                Log.e(
+//                                    "AddLinksFragment",
+//                                    "Facebook onCompleted2 : ${response.toString()}"
+//                                )
+//                            }
+//                        })
+//
+//                    val parameters = Bundle()
+//                    parameters.putString("fields", "link,birthday,email,hometown")
+//                    request.parameters = parameters
+//                    request.executeAsync()*/
+//
+//                    /* val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken)
+//                     { jsonObj, _ ->
+//                         if (jsonObj != null) {
+//                             try {
+// //                               var providerId = jsonObj.getString("id")
+//
+//                                 Log.e("AddLinksFragment", "Facebook jsonObj : ${ jsonObj.toString()}")
+//                                 Log.d("Facebook resposne : ", jsonObj.toString())
+// //                                if (jsonObj.has("id")){
+// //                                    edtFacebook.setText("fb://profile/".plus(jsonObj.getInt("id")))
+// ////                                    edtFacebook.setText("https://www.facebook.com/".plus(jsonObj.getInt("id")))
+// //                                }
+//                                 if (jsonObj.has("link") && !TextUtils.isEmpty(jsonObj.getString("link"))) {
+//                                     val userLink = jsonObj.getString("link")
+//                                     Log.e("AddLinksFragment", "Facebook userLink : $userLink")
+//                                     edtFacebook.setText(userLink)
+//                                 }
+//                             } catch (e: JSONException) {
+//                                 Log.e("AddLinksFragment", "Facebook JSONException : ${e.message}")
+//                                 Log.e("AddLinksFragment", "Facebook JSONException : ${e.printStackTrace()}")
+//                                 e.printStackTrace()
+//                                 Toast.makeText(
+//                                     activity,
+//                                     "" + e.printStackTrace(),
+//                                     Toast.LENGTH_SHORT
+//                                 ).show()
+//                             }
+//                         }
+//                     }
+//                     val parameters = Bundle()
+//                     parameters.putString("fields", "id,link")
+//                     graphRequest.parameters = parameters
+//                     graphRequest.executeAsync()*/
+//                }
+//
+//                override fun onCancel() {
+//                }
+//
+//                override fun onError(error: FacebookException) {
+//                    error.printStackTrace()
+//                    Log.e("AddLinksFragment", "onError: ${error.message}")
+//                    Log.e("AddLinksFragment", "onError: $error")
+//                    var msg = ""
+//                    if (error is java.net.UnknownHostException) {
+//                        msg = getString(R.string.no_internet)
+//                    } else if (error is java.net.SocketTimeoutException || error is java.net.ConnectException) {
+//                        msg = getString(R.string.slow_internet)
+//                    }
+//                    if (!TextUtils.isEmpty(msg)) {
+//                        showMsg(error.message!!)
+//                    }
+//                }
+//            })
+        /* loginManager.logInWithReadPermissions(
+             this,
+             listOf("email", "public_profile", "link")
+         )*/
+    }
+
+    private fun fetchProfile() {
+        val request = GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken(),
+            object : GraphRequest.GraphJSONObjectCallback {
+                override fun onCompleted(
+                    `object`: JSONObject,
+                    response: GraphResponse?
+                ) {
+                    Log.e("fetched info", `object`.toString())
+                }
+            })
+        val parameters = Bundle()
+        parameters.putString("fields", "id,name,link") //write the fields you need
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
     private fun twitterLogin() {
 
         if (getTwitterSession() == null) {
-            mTwitterAuthClient!!.authorize(requireActivity(), object : Callback<TwitterSession>() {
+            mTwitterAuthClient.authorize(requireActivity(), object : Callback<TwitterSession>() {
                 override fun success(twitterSessionResult: Result<TwitterSession>) {
                     Toast.makeText(requireActivity(), "Success", Toast.LENGTH_SHORT).show()
                     val twitterSession = twitterSessionResult.data
@@ -402,6 +711,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             }
             edtFacebook -> {
                 connectFacebook()
+                //getProfileFromFB()
             }
             edtTwitter -> {
                 twitterLogin()
@@ -445,9 +755,12 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        Log.e("AddLinksFragment", "requestCode: \t $requestCode")
+        Log.e("AddLinksFragment", "resultCode: \t $resultCode")
+        Log.e("AddLinksFragment", "data: \t ${data!!.data} ")
 
         if (mTwitterAuthClient != null) {
-            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
+            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data)
         }
 
         if (requestCode == Constants.REQUEST_SPOTIFY) {
@@ -455,18 +768,17 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 AuthenticationClient.getResponse(resultCode, data)
             when (response.type) {
                 AuthenticationResponse.Type.TOKEN -> {
-                    Log.d("Social Login", response.accessToken)
+                    Log.e("Social Login", response.accessToken)
                     profileInterestViewModel.getSpotifyLink(response.accessToken)
                 }
                 AuthenticationResponse.Type.ERROR -> {
-                    Log.d("Social Login", response.error)
+                    Log.e("Social Login", response.error)
                 }
                 else -> {
-                    Log.d("Social Login", response.toString())
+                    Log.e("Social Login", response.toString())
                 }
             }
         }
-
     }
 
     override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
@@ -488,7 +800,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     }
 
     override fun onSuccessSpotify(spotifyUrl: String) {
-        Log.d("Spotify URL : ", spotifyUrl)
+        Log.e("Spotify URL : ", spotifyUrl)
         edtSpotify.setText(spotifyUrl)
     }
 

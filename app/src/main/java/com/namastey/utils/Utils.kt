@@ -10,9 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.os.Build
-import android.os.CountDownTimer
-import android.os.Environment
+import android.os.*
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.Html
@@ -422,5 +420,48 @@ object Utils {
                 cancel()
             }
         }.start()
+    }
+
+    private var mStartTime = 0L
+    private val mHandler = Handler()
+    private lateinit var mUpdateTimeTask: Runnable
+
+    fun startAppCountTimer(context: Context) {
+        mUpdateTimeTask = object : Runnable {
+            override fun run() {
+                val start = mStartTime
+                val millis = SystemClock.uptimeMillis() - start
+                var seconds = (millis / 1000).toInt()
+                val minutes = seconds / 60
+                seconds %= 60
+
+                val timeInFormat = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millis),
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    TimeUnit.MILLISECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                )
+
+                Log.e("Utils", "timeInFormat:  \t $timeInFormat")
+
+                mHandler.postDelayed(this, 1000)
+                SessionManager(context).setStringValue(timeInFormat, Constants.KEY_SPEND_APP_TIME)
+                //mHandler.postDelayed(this, 60000)
+            }
+        }
+
+        if (mStartTime == 0L) {
+            mStartTime = SystemClock.uptimeMillis()
+            mHandler.removeCallbacks(mUpdateTimeTask)
+            mHandler.postDelayed(mUpdateTimeTask, 1000)
+        }
+    }
+
+    fun stopAppCountTimer(context: Context){
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacks(mUpdateTimeTask)
+        SessionManager(context).setStringValue("", Constants.KEY_SPEND_APP_TIME)
     }
 }

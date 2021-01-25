@@ -2,11 +2,13 @@ package com.namastey.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySplashBinding
+import com.namastey.receivers.AppCloseService
 import com.namastey.uiView.SplashNavigatorView
 import com.namastey.utils.SessionManager
 import com.namastey.utils.SplashView.ISplashListener
@@ -39,7 +41,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             }
         })
 //        Handler().postDelayed({
-
 //        }, 1000)
 //        openActivity(this,SignUpActivity())
 
@@ -80,6 +81,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
+
+        var mServiceIntent: Intent? = null
+        mServiceIntent = Intent(this, AppCloseService()::class.java)
+        if (!isMyServiceRunning(AppCloseService()::class.java)) {
+            Log.e("SplashActivity", "onCreate In isMyServiceRunning")
+            startService(mServiceIntent)
+
+           /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(mServiceIntent)
+            } else {
+                startService(mServiceIntent)
+            }*/
+        }
 
         splashViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel::class.java)

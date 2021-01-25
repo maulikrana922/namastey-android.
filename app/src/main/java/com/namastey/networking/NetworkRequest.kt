@@ -430,4 +430,10 @@ interface NetworkRequest {
         @Field(Constants.LNG) lng: String
     ): Deferred<AppResponse<Any>>
 
+    @FormUrlEncoded
+    @POST(Constants.ADD_USER_ACTIVE_TIME)
+    fun requestToAddUserActiveTimeAsync(
+        @Field(Constants.TOTAL_TIME) totalTime: String
+    ): Deferred<AppResponse<Any>>
+
 }

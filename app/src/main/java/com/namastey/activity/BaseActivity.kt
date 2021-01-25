@@ -1,9 +1,6 @@
 package com.namastey.activity
 
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +9,7 @@ import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -49,8 +47,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     private lateinit var onInteractionWithFragment: OnInteractionWithFragment
 
     protected fun getActivityComponent(): ActivityComponent {
-        return NamasteyApplication.appComponent()
-            .activityComponent(ViewModule(this))
+        return NamasteyApplication.appComponent().activityComponent(ViewModule(this))
     }
 
     protected fun bindViewData(): T {
@@ -106,6 +103,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
 
     override fun onSuccess(msg: String) {
         showMsg(msg)
+    }
+
+    override fun showMsgLog(msg: String) {
+        Log.e("BaseActivity", "msg:  \t $msg")
     }
 
     override fun onFailed(msg: String, error: Int, status: Int) {
@@ -384,5 +385,56 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         }.show()
     }
 
+    var mServiceIntent: Intent? = null
+    private var SPEND_APP_TIME = ""
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("BaseActivity", "onCreate BrandName: \t ${Build.BRAND}")
+
+        /*mServiceIntent = Intent(this, AppCloseService()::class.java)
+        if (!isMyServiceRunning(AppCloseService()::class.java)) {
+            Log.e("BaseActivity", "onCreate In isMyServiceRunning")
+            startService(mServiceIntent)
+        }*/
+        //Utils.startAppCountTimer(this)
+        SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
+        Log.e("BaseActivity", "onCreate KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
+        Log.e("BaseActivity", "onResume KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+        if (SPEND_APP_TIME == "") {
+            Log.e("BaseActivity", "onResume In")
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
+        Log.e("BaseActivity", "onPause KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
+        Log.e("BaseActivity", "onStop KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+    }
+
+    fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager =
+            getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                Log.e("BaseActivity", "Service status Running")
+                Log.e("BaseActivity", "Service name: \t ${serviceClass.name}")
+                Log.e("BaseActivity", "Service className: \t ${service.service.className}")
+                return true
+            }
+        }
+        Log.e("BaseActivity", "Service status Not running")
+        return false
+    }
 
 }

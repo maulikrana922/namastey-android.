@@ -478,5 +478,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToAddUserLocationAsync(address, lat, lng).await()
         }
 
+    suspend fun requestToAddUserActiveTime(
+        totalTime: String
+    ): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToAddUserActiveTimeAsync(totalTime).await()
+        }
 
 }

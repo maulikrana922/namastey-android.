@@ -1,8 +1,11 @@
 package com.namastey.activity
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.usage.UsageStats
+import android.app.usage.UsageStatsManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -61,8 +64,8 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -124,11 +127,60 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
 
+    private var package_Name = "com.namastey"
+
     override fun getViewModel() = dashboardViewModel
 
     override fun getLayoutId() = R.layout.activity_dashboard
 
     override fun getBindingVariable() = BR.viewModel
+
+    private fun check() {
+        val actvityManager: ActivityManager =
+            this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val procInfos: List<ActivityManager.RunningAppProcessInfo> =
+            actvityManager.runningAppProcesses
+        for (i in 0 until procInfos.size) {
+            if (procInfos[i].processName.equals(package_Name)) {
+
+                //Log.e("DashboardActivity", "check: \t ${procInfos[i].processName} ")
+                //Log.e("DashboardActivity", "check: \t ${procInfos[i].uid} ")
+            }
+        }
+
+        val mUsageStatsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        } else {
+            TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
+        }
+
+       // val cal = Calendar.getInstance()
+        //cal.add(Calendar.YEAR, -1)
+        //cal.add(Calendar.DATE, -1)
+        val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone("Asia/Calcutta");
+        calendar[Calendar.HOUR_OF_DAY] = 0
+        calendar[Calendar.MINUTE] = 1
+        calendar[Calendar.SECOND] = 0
+        calendar[Calendar.MILLISECOND] = 0
+        Log.e("DashboardActivity", "check: timeInMillis \t ${calendar.timeInMillis} ")
+        Log.e("DashboardActivity", "check: System.timeInMillis \t ${System.currentTimeMillis()} ")
+        val queryUsageStats: List<UsageStats> = mUsageStatsManager
+            .queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY, calendar.timeInMillis,
+                System.currentTimeMillis()
+            )
+
+        for (us in queryUsageStats) {
+          //  Log.e("DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground)
+            if (us.packageName == package_Name) {
+                //Log.e("DashboardActivity", "check: \t ${us.packageName} ")
+                Log.e(
+                    "DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground
+                )
+            }
+        }
+    }
 
     private fun startMaxLikeService() {
         val calendar = Calendar.getInstance()
