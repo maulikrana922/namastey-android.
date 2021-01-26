@@ -135,6 +135,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 llChatBox.visibility = View.GONE
                 hideChatMoreButton(true)
                 ivChatMore.visibility = View.GONE
+                tvUserName.setOnClickListener(null)
                 ivProfileUser.setOnClickListener(null)
                 chatViewModel.getAdminMsgList()
                 /* chatAdapter =
