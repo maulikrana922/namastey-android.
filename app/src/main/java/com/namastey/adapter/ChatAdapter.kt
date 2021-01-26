@@ -1,9 +1,9 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +13,19 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.FacebookSdk.getApplicationContext
 import com.namastey.R
+import com.namastey.listeners.OnChatMessageClick
 import com.namastey.model.ChatMessage
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message_received.view.*
 import kotlinx.android.synthetic.main.row_message_send.view.*
-import java.util.concurrent.TimeUnit
 
 class ChatAdapter(
     var activity: Activity,
-    var userId : Long,
-    var chatMsgList: ArrayList<ChatMessage>
+    var userId: Long,
+    var chatMsgList: ArrayList<ChatMessage>,
+    var onChatMessageClick: OnChatMessageClick
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val RIGHT_CHAT = 1
@@ -44,13 +45,11 @@ class ChatAdapter(
         }
     }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(chatMsgList[position].sender == userId) {
+        if (chatMsgList[position].sender == userId) {
             val messageSendProfileViewHolder = holder as MessageSendProfileViewHolder
             messageSendProfileViewHolder.bindSend(position)
-
-        }else{
+        } else {
             val messageReceiveViewHolder = holder as MessageReceiveViewHolder
             messageReceiveViewHolder.bindReceived(position)
         }
@@ -63,27 +62,50 @@ class ChatAdapter(
         } else {
             LEFT_CHAT
         }
-
     }
 
-    inner class MessageReceiveViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class MessageReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindReceived(position: Int) = with(itemView){
+        fun bindReceived(position: Int) = with(itemView) {
 
             val chatMessage = chatMsgList[position]
-            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
-                visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,flImageReceived)
-                GlideLib.loadImage(activity,ivImageReceived,chatMessage.url)
+            Log.e("ChatAdapter", "MessageReceiveViewHolder: ReceiverId: \t ${chatMessage.receiver}")
+            Log.e("ChatAdapter", "MessageReceiveViewHolder: SenderId: \t ${chatMessage.sender}")
+
+            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()) {
+                visibleReceiveMessage(
+                    flImageReceived,
+                    llMessageReceived,
+                    llRecordingReceived,
+                    flImageReceived
+                )
+                GlideLib.loadImage(activity, ivImageReceived, chatMessage.url)
                 tvImageReceivedTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-            }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
-                visibleReceiveMessage(flImageReceived,llMessageReceived,llRecordingReceived,llRecordingReceived)
-                tvRecordingTimeReceived.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+            } else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()) {
+                visibleReceiveMessage(
+                    flImageReceived,
+                    llMessageReceived,
+                    llRecordingReceived,
+                    llRecordingReceived
+                )
+                tvRecordingTimeReceived.text =
+                    Utils.convertTimestampToChatFormat(chatMessage.timestamp)
                 tvRecordedDurationReceived.text = Utils.getMediaDuration(chatMessage.url)
-            }else {
-                visibleSendMessage(flImageReceived,llMessageReceived,llRecordingReceived,llMessageReceived)
-                tvMessageReceived.text = chatMessage.message
-                tvMessageReceivedTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+            } else {
+                visibleSendMessage(
+                    flImageReceived,
+                    llMessageReceived,
+                    llRecordingReceived,
+                    llMessageReceived
+                )
+                // tvMessageReceived.text = chatMessage.message
+                Utils.setHtmlText(tvMessageReceived, chatMessage.message)
+                tvMessageReceived.setOnClickListener {
+                    onChatMessageClick.onChatMessageClick(chatMessage.message, position)
+                }
+                tvMessageReceivedTime.text =
+                    Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+
             }
 
             if (currentPlayingPosition != -1) {
@@ -105,7 +127,7 @@ class ChatAdapter(
                         mediaPlayer!!.release()
                     }
                     ivRecordReceived.setImageResource(R.drawable.ic_pause)
-                    startMediaPlayer(chatMessage.url,adapterPosition,ivRecordReceived)
+                    startMediaPlayer(chatMessage.url, adapterPosition, ivRecordReceived)
                 } else {
                     if (mediaPlayer != null) {
                         if (mediaPlayer!!.isPlaying) {
@@ -119,22 +141,26 @@ class ChatAdapter(
         }
     }
 
-    inner class MessageSendProfileViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class MessageSendProfileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindSend(position: Int) = with(itemView){
+        fun bindSend(position: Int) = with(itemView) {
 
             val chatMessage = chatMsgList[position]
-            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()){
-                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,flImageSend)
-                GlideLib.loadImage(activity,ivImageSend,chatMessage.url)
+            Log.e(
+                "ChatAdapter",
+                "MessageSendProfileViewHolder: ReceiverId: \t ${chatMessage.receiver}"
+            )
+            Log.e("ChatAdapter", "MessageSendProfileViewHolder: SenderId: \t ${chatMessage.sender}")
+            if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()) {
+                visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, flImageSend)
+                GlideLib.loadImage(activity, ivImageSend, chatMessage.url)
                 tvImageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-            }else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()){
-                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llRecordingSend)
+            } else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()) {
+                visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llRecordingSend)
                 tvRecordingTimeSend.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
                 tvRecordedDurationSend.text = Utils.getMediaDuration(chatMessage.url)
-            }else {
-                visibleSendMessage(flImageSend,llMessageSend,llRecordingSend,llMessageSend)
+            } else {
+                visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llMessageSend)
                 tvMessageSend.text = chatMessage.message
                 tvMessageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
             }
@@ -158,7 +184,7 @@ class ChatAdapter(
                         mediaPlayer!!.release()
                     }
                     ivRecordSend.setImageResource(R.drawable.ic_pause)
-                    startMediaPlayer(chatMessage.url,adapterPosition,ivRecordSend)
+                    startMediaPlayer(chatMessage.url, adapterPosition, ivRecordSend)
                 } else {
                     if (mediaPlayer != null) {
                         if (mediaPlayer!!.isPlaying) {
@@ -179,14 +205,20 @@ class ChatAdapter(
     ) {
         val audioUri = Uri.parse(audioUrl)
         mediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri)
-        mediaPlayer!!.setOnCompletionListener { releaseMediaPlayer(currentPlayingPosition,ivRecordSend) }
+        mediaPlayer!!.setOnCompletionListener {
+            releaseMediaPlayer(
+                currentPlayingPosition,
+                ivRecordSend
+            )
+        }
         mediaPlayer!!.start()
     }
+
     private fun releaseMediaPlayer(
         adapterPosition: Int,
         ivRecord: ImageView
     ) {
-            updateNonPlayingView(ivRecord)
+        updateNonPlayingView(ivRecord)
 
         mediaPlayer!!.release()
         mediaPlayer = null
@@ -196,6 +228,7 @@ class ChatAdapter(
     private fun updateNonPlayingView(ivRecord: ImageView) {
         ivRecord.setImageResource(R.drawable.ic_play)
     }
+
     private fun updatePlayingView(ivRecord: ImageView) {
         if (mediaPlayer!!.isPlaying) {
             ivRecord.setImageResource(R.drawable.ic_pause)
@@ -203,6 +236,7 @@ class ChatAdapter(
             ivRecord.setImageResource(R.drawable.ic_play)
         }
     }
+
     /**
      * Visible particular view of send message type
      */
@@ -234,7 +268,6 @@ class ChatAdapter(
 
         view.visibility = View.VISIBLE
     }
+
     override fun getItemCount() = chatMsgList.size
-
-
 }

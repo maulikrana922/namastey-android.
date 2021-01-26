@@ -28,7 +28,11 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessReport(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -46,7 +50,11 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessBlockUser(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -64,7 +72,11 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessDeleteMatches(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -82,7 +94,11 @@ class ChatViewModel constructor(
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccessDeleteMatches(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 setIsLoading(false)
@@ -94,11 +110,15 @@ class ChatViewModel constructor(
     fun readMatches(matchesUserId: Long, isRead: Int) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToReadMatches(matchesUserId,isRead).let { appResponse ->
+                networkService.requestToReadMatches(matchesUserId, isRead).let { appResponse ->
                     if (appResponse.status == Constants.OK)
                         chatBasicView.onSuccess(appResponse.message)
                     else
-                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
                 }
             } catch (t: Throwable) {
                 chatBasicView.onHandleException(t)
@@ -120,6 +140,51 @@ class ChatViewModel constructor(
             }
         }
     }
+
+    fun getAdminMsgList() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToGetAdminMessageList().let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        chatBasicView.onSuccessAdminMessage(appResponse.data!!)
+                    else
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
+                }
+            } catch (t: Throwable) {
+//                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
+    fun muteParticularUserNotification(
+        senderId: Long,
+        isNotification: Int
+    ) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToMuteParticularUserNotification(senderId, isNotification).let { appResponse ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK)
+                        chatBasicView.onSuccessMuteNotification(appResponse.message)
+                    else
+                        chatBasicView.onFailed(
+                            appResponse.message,
+                            appResponse.error,
+                            appResponse.status
+                        )
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized) {

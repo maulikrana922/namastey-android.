@@ -100,6 +100,8 @@ object Constants {
     const val HIDE_ALBUM = "hide-album"
     const val GET_NEW_FEED_LIST = "new-feed-list"
     const val COMPARE_USERNAME = "compare-username"
+    const val ADMIN_MESSAGE_LIST = "admin-message-list"
+    const val PARTICULAR_CHAT_NOTIFICATION = "perticular-chat-notification"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -218,6 +220,7 @@ object Constants {
     const val KEY_SET_RECENT_LOCATION = "KEY_SET_RECENT_LOCATION"
     const val KEY_RECENT_LOCATION = "KEY_RECENT_LOCATION"
     const val KEY_SPEND_APP_TIME = "KEY_SPEND_APP_TIME"
+    const val KEY_MUTE_PARTICULAR_USER = "KEY_MUTE_PARTICULAR_USER"
 
 
     //    field key
@@ -310,6 +313,8 @@ object Constants {
     const val USER_NAME = "user_name"
     const val ADDRESS = "address"
     const val TOTAL_TIME = "total_time"
+    const val SENDER_ID = "sender_id"
+    const val IS_NOTIFICATION = "is_notification"
     //const val POST_ID = "post_id"
 
 

@@ -47,11 +47,13 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
     private lateinit var messagesAdapter: MessagesAdapter
     private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
     private var messageList: ArrayList<MatchesListBean> = ArrayList()
-//    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private var likeUserCount = 0
     private var lastUserProfile = ""
-//    private lateinit var messageListListener: ValueEventListener
+
+    //    private lateinit var messageListListener: ValueEventListener
 //    private lateinit var getMessageListQuery: Query
     private val db = Firebase.firestore
     private lateinit var docReference: DocumentReference
@@ -100,7 +102,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             openActivity(intent)
         }
 
-        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this,sessionManager)
+        messagesAdapter = MessagesAdapter(messageList, requireActivity(), this, sessionManager)
         rvMessagesList.adapter = messagesAdapter
     }
 
@@ -115,10 +117,22 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         if (::listenerRegistration.isInitialized)
             listenerRegistration.remove()
     }
-    override fun onMatchesItemClick(position: Int, matchesBean: MatchesListBean, fromMessage: Boolean) {
+
+    override fun onMatchesItemClick(
+        position: Int,
+        matchesListBean: MatchesListBean,
+        fromMessage: Boolean
+    ) {
+
         val intent = Intent(requireActivity(), ChatActivity::class.java)
         intent.putExtra("isFromMessage", fromMessage)
-        intent.putExtra("matchesListBean", matchesBean)
+        intent.putExtra("matchesListBean", matchesListBean)
+        Log.e("MatchesProfileFragment", "matchesListBean.id: ${matchesListBean.id}")
+        if (matchesListBean.id == 0L) {
+            intent.putExtra("isFromAdmin", true)
+        } else {
+            intent.putExtra("isFromAdmin", false)
+        }
         openActivity(intent)
     }
 
@@ -149,7 +163,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 
         removeListeners()
 
-        for (i in 0 until messageList.size){
+        for (i in 0 until messageList.size) {
             getMessageFromFirebase(messageList[i].id, i)
         }
     }
@@ -158,12 +172,12 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 //        if (::messageListListener.isInitialized && ::getMessageListQuery.isInitialized){
 //            getMessageListQuery.removeEventListener(messageListListener)
 
-            if (::listenerRegistration.isInitialized)
-                listenerRegistration.remove()
+        if (::listenerRegistration.isInitialized)
+            listenerRegistration.remove()
 //        }
     }
 
-    private fun getMessageFromFirebase(messageUserId: Long, position: Int){
+    private fun getMessageFromFirebase(messageUserId: Long, position: Int) {
 
         val chatId = if (sessionManager.getUserId() < messageUserId)
             sessionManager.getUserId().toString().plus("_").plus(messageUserId)
@@ -178,23 +192,23 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
             .document(chatId)
 
         listenerRegistration = docRef.addSnapshotListener { document, error ->
-                if (document != null) {
-                    Log.d("Success", "DocumentSnapshot data: ${document.data}")
-                    val chatMessage = document.toObject(ChatMessage::class.java)
+            if (document != null) {
+                Log.d("Success", "DocumentSnapshot data: ${document.data}")
+                val chatMessage = document.toObject(ChatMessage::class.java)
 
-                    if (chatMessage != null) {
-                        messageList[position].chatMessage = chatMessage
+                if (chatMessage != null) {
+                    messageList[position].chatMessage = chatMessage
 //                        messageList[position].timestamp =
 //                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
 //                        messageList[position].message = chatMessage.message
 //                        messageList[position].url = chatMessage.url
-                    }
-//                    messageList.sortByDescending { it.timestamp }
-                    messagesAdapter.notifyItemChanged(position)
-                } else {
-                    Log.d("TAG", "No such document")
                 }
+//                    messageList.sortByDescending { it.timestamp }
+                messagesAdapter.notifyItemChanged(position)
+            } else {
+                Log.d("TAG", "No such document")
             }
+        }
 //            .addOnFailureListener { exception ->
 //                Log.d("TAG", "get failed with ", exception)
 //            }
@@ -220,6 +234,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
 //            }
 //        })
     }
+
     override fun onSuccessLikeUserCount(likedUserCountBean: LikedUserCountBean) {
         this.likeUserCount = likedUserCountBean.like_count
         this.lastUserProfile = likedUserCountBean.profile_pic

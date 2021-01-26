@@ -485,4 +485,17 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToAddUserActiveTimeAsync(totalTime).await()
         }
 
+    suspend fun requestToGetAdminMessageList(): AppResponse<ArrayList<ChatMessage>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetAdminMessageListAsync().await()
+        }
+
+    suspend fun requestToMuteParticularUserNotification(
+        senderId: Long,
+        isNotification: Int
+    ): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToMuteParticularUserNotificationAsync(senderId, isNotification)
+                .await()
+        }
 }

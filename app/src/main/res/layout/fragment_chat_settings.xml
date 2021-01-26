@@ -10,14 +10,16 @@
             name="viewModel"
             type="com.namastey.viewModel.ChatViewModel" />
     </data>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@color/colorWhite"
+            android:orientation="vertical"
             android:padding="@dimen/_15sdp">
 
             <LinearLayout
@@ -48,17 +50,16 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvMatchDelete"
                 style="@style/tvWrapWhiteStyle"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:drawableEnd="@drawable/ic_arrow_right"
                 android:gravity="start|center"
                 android:text="@string/match_delete"
                 android:textColor="@color/colorBlack"
+                android:visibility="gone"
                 app:typeface="MULI_EXTRA_BOLD" />
 
             <com.namastey.customViews.CustomTextView
-                android:visibility="gone"
                 android:id="@+id/tvDeleteChat"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_width="match_parent"
@@ -67,6 +68,7 @@
                 android:gravity="start|center"
                 android:text="@string/delete_chat"
                 android:textColor="@color/colorBlack"
+                android:visibility="gone"
                 app:typeface="MULI_EXTRA_BOLD" />
 
             <com.namastey.customViews.CustomTextView
@@ -92,13 +94,13 @@
                 app:typeface="MULI_EXTRA_BOLD" />
 
         </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-        />
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
+
+    </FrameLayout>
 </layout>

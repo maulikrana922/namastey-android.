@@ -389,7 +389,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     private var SPEND_APP_TIME = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("BaseActivity", "onCreate BrandName: \t ${Build.BRAND}")
+     //   Log.e("BaseActivity", "onCreate BrandName: \t ${Build.BRAND}")
 
         /*mServiceIntent = Intent(this, AppCloseService()::class.java)
         if (!isMyServiceRunning(AppCloseService()::class.java)) {
@@ -398,22 +398,22 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         }*/
         //Utils.startAppCountTimer(this)
         SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
-        Log.e("BaseActivity", "onCreate KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+      //  Log.e("BaseActivity", "onCreate KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
     }
 
     override fun onResume() {
         super.onResume()
         SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
-        Log.e("BaseActivity", "onResume KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+       // Log.e("BaseActivity", "onResume KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
         if (SPEND_APP_TIME == "") {
-            Log.e("BaseActivity", "onResume In")
+       //     Log.e("BaseActivity", "onResume In")
         }
     }
 
     override fun onPause() {
         super.onPause()
         SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
-        Log.e("BaseActivity", "onPause KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+       // Log.e("BaseActivity", "onPause KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
     }
 
     override fun onStop() {
@@ -427,9 +427,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
             getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
             if (serviceClass.name == service.service.className) {
-                Log.e("BaseActivity", "Service status Running")
-                Log.e("BaseActivity", "Service name: \t ${serviceClass.name}")
-                Log.e("BaseActivity", "Service className: \t ${service.service.className}")
+                //Log.e("BaseActivity", "Service status Running")
+                //Log.e("BaseActivity", "Service name: \t ${serviceClass.name}")
+               // Log.e("BaseActivity", "Service className: \t ${service.service.className}")
                 return true
             }
         }

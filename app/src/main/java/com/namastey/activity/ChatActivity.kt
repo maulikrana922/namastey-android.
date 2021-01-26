@@ -28,6 +28,7 @@ import com.namastey.adapter.ChatAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityChatBinding
 import com.namastey.fragment.ChatSettingsFragment
+import com.namastey.listeners.OnChatMessageClick
 import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.ChatBasicView
@@ -43,7 +44,7 @@ import javax.inject.Inject
 
 
 class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
-    ChatSettingsFragment.onDataPassToActivity {
+    ChatSettingsFragment.onDataPassToActivity, OnChatMessageClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -80,10 +81,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var isFollowMe = false
     private var characterCount: Int = 0
 
-    companion object{
+    companion object {
         var isChatActivityOpen = false
         var userId: Long = 0L
     }
+
     override fun getViewModel() = chatViewModel
 
     override fun getLayoutId() = R.layout.activity_chat
@@ -110,59 +112,92 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
-
-            if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")) {
-                whoCanSendMessage = intent.getIntExtra("whoCanSendMessage", 2)
-                isFromProfile = intent.getBooleanExtra("isFromProfile", false)
-                isFollowMe = intent.getBooleanExtra("isFollowMe", false)
-                Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
+            val isFromAdmin = intent.getBooleanExtra("isFromAdmin", false)
+            Log.e("ChatActivity", "isFromAdmin: $isFromAdmin")
+            if (intent.hasExtra("isFromAdmin") && intent.getBooleanExtra("isFromAdmin", false)) {
+                if (matchesListBean.profile_pic != "") {
+                    GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)
+                } else {
+                    Glide
+                        .with(this)
+                        .load(ContextCompat.getDrawable(this, R.drawable.default_placeholder))
+                        .into(ivProfileUser)
+                }
+                if (matchesListBean.username != "") {
+                    tvUserName.text = matchesListBean.username
+                }
+                chatToolbar.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorWhite
+                    )
+                )
+                llChatBox.visibility = View.GONE
+                hideChatMoreButton(true)
+                ivChatMore.visibility = View.GONE
+                ivProfileUser.setOnClickListener(null)
+                chatViewModel.getAdminMsgList()
+                /* chatAdapter =
+                                   ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)
+                               rvChat.adapter = chatAdapter*/
+            } else {
+                if (intent.hasExtra("isFromProfile") && intent.hasExtra("whoCanSendMessage")) {
+                    whoCanSendMessage = intent.getIntExtra("whoCanSendMessage", 2)
+                    isFromProfile = intent.getBooleanExtra("isFromProfile", false)
+                    isFollowMe = intent.getBooleanExtra("isFollowMe", false)
+                    Log.e("ChatActivity", "isFromProfile: \t $isFromProfile")
 //                if (matchesListBean.is_match == 1)
 //                    chatToolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.colorWhite))
 //                else
 //                    viewBuyNow.visibility = View.VISIBLE
-            }
-            if (intent.hasExtra("isFromMessage")) {
-                isFromMessage = intent.getBooleanExtra("isFromMessage", false)
-                when (matchesListBean.is_follow_me) {
-                    1 -> isFollowMe = true
-                    else -> isFollowMe = false
                 }
-            }
-            if (intent.hasExtra("chatNotification"))
-                chatNotification = intent.getBooleanExtra("chatNotification", false)
+                if (intent.hasExtra("isFromMessage")) {
+                    isFromMessage = intent.getBooleanExtra("isFromMessage", false)
+                    when (matchesListBean.is_follow_me) {
+                        1 -> isFollowMe = true
+                        else -> isFollowMe = false
+                    }
+                }
+                if (intent.hasExtra("chatNotification"))
+                    chatNotification = intent.getBooleanExtra("chatNotification", false)
 
-            if (matchesListBean.is_match == 1 || whoCanSendMessage == 0 || isFromMessage)
-                chatToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
-            else {
-                if (isFollowMe)
+                if (matchesListBean.is_match == 1 || whoCanSendMessage == 0 || isFromMessage)
                     chatToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite))
-                else
-                    viewBuyNow.visibility = View.VISIBLE
-            }
+                else {
+                    if (isFollowMe)
+                        chatToolbar.setBackgroundColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.colorWhite
+                            )
+                        )
+                    else
+                        viewBuyNow.visibility = View.VISIBLE
+                }
 
-            voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
+                voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
 //            Call api if matches already not read
-            if (matchesListBean.is_read == 0) {
-                chatViewModel.readMatches(matchesListBean.id, 1)
-            }
-            userId = matchesListBean.id
-            chatViewModel.setIsLoading(true)
+                if (matchesListBean.is_read == 0) {
+                    chatViewModel.readMatches(matchesListBean.id, 1)
+                }
+                userId = matchesListBean.id
+                chatViewModel.setIsLoading(true)
 //            myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
 
-            val chatId = if (sessionManager.getUserId() < matchesListBean.id)
-                sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
-            else
-                matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
-            db.clearPersistence()
+                val chatId = if (sessionManager.getUserId() < matchesListBean.id)
+                    sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
+                else
+                    matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
+                db.clearPersistence()
 
 //            This part for isRead message or not
-            val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
-                .document(chatId)
-                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
+                    .document(chatId)
+                    .collection(Constants.FirebaseConstant.LAST_MESSAGE)
 
 
-            listenerRegistration = docRef.addSnapshotListener { document, error ->
+                listenerRegistration = docRef.addSnapshotListener { document, error ->
                     if (document != null) {
                         Log.d("Success", "DocumentSnapshot data: ")
                         for (messageDocument in document.documents) {
@@ -235,9 +270,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //            })
 
 //            Firestore part
-            chatAdapter =
-                ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)
-            rvChat.adapter = chatAdapter
+                chatAdapter =
+                    ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList, this)
+                rvChat.adapter = chatAdapter
 
 //            val messageCollection = db.collection(Constants.FirebaseConstant.MESSAGES)
 //                .document(chatId).collection(Constants.FirebaseConstant.CHATS)
@@ -260,15 +295,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //                }
 //            }
 
-            db.collection(Constants.FirebaseConstant.MESSAGES)
-                .document(chatId)
-                .collection(Constants.FirebaseConstant.CHATS)
-                .addSnapshotListener { messageSnapshot, exception ->
-                    if (messageSnapshot == null || messageSnapshot.isEmpty) {
-                        chatViewModel.setIsLoading(false)
-                        return@addSnapshotListener
-                    }
-                    chatMsgList.clear()
+                db.collection(Constants.FirebaseConstant.MESSAGES)
+                    .document(chatId)
+                    .collection(Constants.FirebaseConstant.CHATS)
+                    .addSnapshotListener { messageSnapshot, exception ->
+                        if (messageSnapshot == null || messageSnapshot.isEmpty) {
+                            chatViewModel.setIsLoading(false)
+                            return@addSnapshotListener
+                        }
+                        chatMsgList.clear()
 //
 //                    for (dc in messageSnapshot.documentChanges) {
 //                        when (dc.type) {
@@ -294,30 +329,30 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //                        }
 //                    }
 //                    chatAdapter.notifyDataSetChanged()
-                    for (messageDocument in messageSnapshot.documents) {
-                        val chatMessage = messageDocument.toObject(ChatMessage::class.java)
+                        for (messageDocument in messageSnapshot.documents) {
+                            val chatMessage = messageDocument.toObject(ChatMessage::class.java)
 
-                        if (chatMessage != null) {
-                            if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
-                                chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
-                            ) {
-                                chatMsgList.add(chatMessage)
+                            if (chatMessage != null) {
+                                if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
+                                    chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
+                                ) {
+                                    chatMsgList.add(chatMessage)
+                                }
                             }
                         }
-                    }
 //                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
 //                        if (isFromProfile)
 //                            chatViewModel.startChat(matchesListBean.id, 1)
 //                        else if (!isFromMessage)
 //                            chatViewModel.startChat(matchesListBean.id, 1)
 //                    }
-                    chatViewModel.setIsLoading(false)
+                        chatViewModel.setIsLoading(false)
 
-                    chatMsgList.sortBy { it.timestamp }
-                    chatAdapter.notifyDataSetChanged()
-                    rvChat.smoothScrollToPosition(chatAdapter.itemCount)
+                        chatMsgList.sortBy { it.timestamp }
+                        chatAdapter.notifyDataSetChanged()
+                        rvChat.smoothScrollToPosition(chatAdapter.itemCount)
 
-                }
+                    }
 
 //            query.get()
 //                .addOnCompleteListener { task: Task<QuerySnapshot> ->
@@ -411,46 +446,48 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 //            Firestore part
 
 
-            if (matchesListBean.profile_pic != "") {
-                GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)
-            } else {
-                Glide
-                    .with(this)
-                    .load(ContextCompat.getDrawable(this, R.drawable.default_placeholder))
-                    .into(ivProfileUser)
-            }
-
-            if (matchesListBean.username != "") {
-                tvUserName.text = matchesListBean.username
-            }
-
-            ivMic.setOnTouchListener(object : View.OnTouchListener {
-                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    when (event?.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            if (matchesListBean.is_block == 0) {
-                                if (matchesListBean.is_match == 1) {
-                                    isAudioPermissionGranted()
-                                    ivMic.setPadding(7, 7, 7, 7)
-                                }
-                            }
-                            return true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            Log.d(TAG, "Call stop record....")
-                            if (matchesListBean.is_block == 0) {
-                                if (matchesListBean.is_match == 1) {
-                                    ivMic.setPadding(0, 0, 0, 0)
-                                    stopRecording()
-                                }
-                            }
-                        }
-                    }
-
-                    return v?.onTouchEvent(event) ?: true
+                if (matchesListBean.profile_pic != "") {
+                    GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)
+                } else {
+                    Glide
+                        .with(this)
+                        .load(ContextCompat.getDrawable(this, R.drawable.default_placeholder))
+                        .into(ivProfileUser)
                 }
-            })
-            hideChatMoreButton(false)
+
+                if (matchesListBean.username != "") {
+                    tvUserName.text = matchesListBean.username
+                }
+
+                ivMic.setOnTouchListener(object : View.OnTouchListener {
+                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                        when (event?.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                if (matchesListBean.is_block == 0) {
+                                    if (matchesListBean.is_match == 1) {
+                                        isAudioPermissionGranted()
+                                        ivMic.setPadding(7, 7, 7, 7)
+                                    }
+                                }
+                                return true
+                            }
+                            MotionEvent.ACTION_UP -> {
+                                Log.d(TAG, "Call stop record....")
+                                if (matchesListBean.is_block == 0) {
+                                    if (matchesListBean.is_match == 1) {
+                                        ivMic.setPadding(0, 0, 0, 0)
+                                        stopRecording()
+                                    }
+                                }
+                            }
+                        }
+
+                        return v?.onTouchEvent(event) ?: true
+                    }
+                })
+                hideChatMoreButton(false)
+            }
+
         }
     }
 
@@ -464,14 +501,20 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     fun onClickChatSettings(view: View) {
         addFragment(
-            ChatSettingsFragment.getInstance(matchesListBean!!),
+            ChatSettingsFragment.getInstance(
+                matchesListBean, matchesListBean.id
+            ),
             Constants.CHAT_SETTINGS_FRAGMENT
         )
     }
 
     override fun onResume() {
         super.onResume()
-        hideChatMoreButton(false)
+        if (intent.hasExtra("isFromAdmin") && intent.getBooleanExtra("isFromAdmin", false)) {
+            hideChatMoreButton(true)
+        } else {
+            hideChatMoreButton(false)
+        }
     }
 
     fun onClickChatBack(view: View) {
@@ -500,6 +543,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         finishActivity()
     }
 
+    override fun onSuccessAdminMessage(data: ArrayList<ChatMessage>) {
+        Log.e("ChatActivity", "onSuccessAdminMessage: \t ${data.size}")
+        this.chatMsgList = data
+        chatAdapter = ChatAdapter(this@ChatActivity, sessionManager.getUserId(), data, this)
+        rvChat.adapter = chatAdapter
+    }
+
+    override fun onSuccessMuteNotification(message: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSuccess(msg: String) {
 
     }
@@ -516,9 +570,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     fun onClickSendMessage(view: View) {
         if (edtMessage.text.trim().isNotEmpty()) {
             characterCount += edtMessage.text.length
-            if (chatNotification || isFromMessage){
+            if (chatNotification || isFromMessage) {
                 sendMessage(edtMessage.text.toString(), "")
-            }else if (matchesListBean.is_match == 1 || isFollowMe)
+            } else if (matchesListBean.is_match == 1 || isFollowMe)
                 sendMessage(edtMessage.text.toString(), "")
             else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER) {   // your can send 280 character with public account else purchase plan
                 Log.d("ChatActivity : ", "Count  $characterCount")
@@ -537,7 +591,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             matchesListBean.id,
             imageUrl,
             System.currentTimeMillis(),
-            0,0
+            0, 0
         )
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
             sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
@@ -703,7 +757,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
                 intent.type = "image/*"
-                startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE);
+                startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
             }
         }
     }
@@ -779,5 +833,22 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     override fun chatSettingData(isBlock: Int) {
         Log.d("Block user:", isBlock.toString())
         matchesListBean.is_block = isBlock
+    }
+
+    override fun onChatMessageClick(message: String, position: Int) {
+        when {
+            message.contains("Edit your bio") -> {
+                openActivity(this@ChatActivity, EditProfileActivity())
+            }
+            message.contains("Add More Video") -> {
+                val intent = Intent(this@ChatActivity, CreateAlbumActivity::class.java)
+                intent.putExtra("fromAlbumList", false)
+                openActivity(intent)
+            }
+            message.contains("Edit your profile") -> {
+                openActivity(this@ChatActivity, EditProfileActivity())
+
+            }
+        }
     }
 }

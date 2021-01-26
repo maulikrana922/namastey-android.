@@ -61,11 +61,11 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
                 tabMatchesProfile.getTabAt(0)?.select()
             else
                 tabMatchesProfile.getTabAt(1)?.select()
-        }else if (intent.hasExtra("chatNotification")){
+        } else if (intent.hasExtra("chatNotification")) {
             val intentChat = Intent(this@MatchesActivity, ChatActivity::class.java)
             intentChat.putExtra("isFromMessage", true)
             intentChat.putExtra("chatNotification", true)
-            Log.d("Chat notification :","8 pass")
+            Log.d("Chat notification :", "8 pass")
             val matchesListBean = intent.getParcelableExtra<MatchesListBean>("matchesListBean")
             intentChat.putExtra("matchesListBean", matchesListBean)
             openActivity(intentChat)

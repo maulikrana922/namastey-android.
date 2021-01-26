@@ -436,4 +436,14 @@ interface NetworkRequest {
         @Field(Constants.TOTAL_TIME) totalTime: String
     ): Deferred<AppResponse<Any>>
 
+    @GET(Constants.ADMIN_MESSAGE_LIST)
+    fun requestToGetAdminMessageListAsync(): Deferred<AppResponse<ArrayList<ChatMessage>>>
+
+    @FormUrlEncoded
+    @POST(Constants.PARTICULAR_CHAT_NOTIFICATION)
+    fun requestToMuteParticularUserNotificationAsync(
+        @Field(Constants.SENDER_ID) senderId: Long,
+        @Field(Constants.IS_NOTIFICATION) isNotification: Int
+    ): Deferred<AppResponse<Any>>
+
 }

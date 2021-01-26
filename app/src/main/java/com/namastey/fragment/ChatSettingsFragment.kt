@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.namastey.BR
@@ -14,6 +12,7 @@ import com.namastey.R
 import com.namastey.activity.ChatActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChatSettingsBinding
+import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.ChatBasicView
 import com.namastey.utils.Constants
@@ -24,6 +23,7 @@ import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.fragment_chat_settings.*
+import java.util.*
 import javax.inject.Inject
 
 class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBasicView {
@@ -38,7 +38,10 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     private var matchesListBean: MatchesListBean = MatchesListBean()
     private lateinit var bottomSheetDialogReport: BottomSheetDialog
     private lateinit var onDataPassActivity: onDataPassToActivity
-//    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    private var senderId = 0L
+
+    //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private val db = Firebase.firestore
 
@@ -49,10 +52,11 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(matchesListBean: MatchesListBean) =
+        fun getInstance(matchesListBean: MatchesListBean, senderId: Long) =
             ChatSettingsFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable("matchesListBean", matchesListBean)
+                    putLong("senderId", senderId)
                 }
             }
     }
@@ -83,6 +87,20 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
             tvMatchDelete.visibility = View.VISIBLE
         else
             tvDeleteChat.visibility = View.VISIBLE
+        senderId = arguments!!.getLong("senderId")
+        Log.e("ChatSettingFragment", "senderId: \t $senderId")
+
+        setMuteNotification()
+        switchMuteNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                isChecked -> {
+                    chatViewModel.muteParticularUserNotification(senderId, 1)
+                }
+                else -> {
+                    chatViewModel.muteParticularUserNotification(senderId, 0)
+                }
+            }
+        }
 
         tvMatchDelete.setOnClickListener {
             dialogMatchDeleteUser()
@@ -108,12 +126,21 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
             tvBlock.text = getString(R.string.block)
     }
 
+    private fun setMuteNotification() {
+        if (matchesListBean.is_notification == 1) {
+            switchMuteNotification.isChecked = true
+
+        } else {
+            switchMuteNotification.isChecked = false
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         (activity as ChatActivity).hideChatMoreButton(true)
     }
 
-    private fun dialogUnblockUser(){
+    private fun dialogUnblockUser() {
         object : CustomCommonAlertDialog(
             requireActivity(),
             matchesListBean.username,
@@ -131,6 +158,7 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
             }
         }.show()
     }
+
     private fun dialogBlockUser() {
         object : CustomCommonAlertDialog(
             requireActivity(),
@@ -270,10 +298,10 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         ) {
             override fun onBtnClick(id: Int) {
                 dismiss()
-                if (matchesListBean.is_block == 1){
+                if (matchesListBean.is_block == 1) {
                     matchesListBean.is_block == 0
                     onDataPassActivity.chatSettingData(0)
-                }else{
+                } else {
                     matchesListBean.is_block == 1
                     onDataPassActivity.chatSettingData(1)
                 }
@@ -308,9 +336,24 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
         }.show()
     }
 
-    interface onDataPassToActivity{
+    override fun onSuccessAdminMessage(data: ArrayList<ChatMessage>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSuccessMuteNotification(message: String) {
+        Log.e("ChatSettingFragment", "onSuccessMuteNotification: \t $message")
+
+        if (matchesListBean.is_notification == 1) {
+            matchesListBean.is_notification = 0
+        } else {
+            matchesListBean.is_notification = 1
+        }
+    }
+
+    interface onDataPassToActivity {
         fun chatSettingData(isBlock: Int)
     }
+
     override fun onDestroy() {
         chatViewModel.onDestroy()
         super.onDestroy()
