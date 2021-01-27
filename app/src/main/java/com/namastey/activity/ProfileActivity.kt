@@ -69,6 +69,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var isCameraOpen = false
     private val PERMISSION_REQUEST_CODE = 99
     private var boostProfileList = ArrayList<BoostPriceBean>()
+    private var fromBuyBoost = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +98,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         // Temp set UI
         setMembershipList()
         profileViewModel.getBoostPriceList()
+
+        if (intent.hasExtra("fromBuyBoost")) {
+            fromBuyBoost = intent.getBooleanExtra("fromBuyBoost", false)
+            Log.e("ProfileActivity", "fromBuyBoost: \t $fromBuyBoost")
+        }
     }
 
     override fun getViewModel() = profileViewModel
@@ -318,7 +324,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private fun startBoostService() {
         val calendar = Calendar.getInstance()
         // calendar[Calendar.HOUR_OF_DAY] = 23
-       // calendar[Calendar.MINUTE] = 29
+        // calendar[Calendar.MINUTE] = 29
         calendar[Calendar.MINUTE] = 29
         calendar[Calendar.SECOND] = 59
         calendar[Calendar.MILLISECOND] = 59
@@ -1000,6 +1006,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
         this.boostProfileList = boostPriceBean
+        if (fromBuyBoost) {
+            showBoostDialog(R.layout.dialog_boosts)
+        }
     }
 
 }

@@ -848,7 +848,19 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
             message.contains("Edit your profile") -> {
                 openActivity(this@ChatActivity, EditProfileActivity())
-
+            }
+            message.contains("Add Social links") -> {
+                val intent = Intent(this@ChatActivity, EditProfileActivity::class.java)
+                intent.putExtra("fromAddSocialLink", true)
+                openActivity(intent)
+            }
+            message.contains("Buy Boost") -> {
+                val intent = Intent(this@ChatActivity, ProfileActivity::class.java)
+                intent.putExtra("fromBuyBoost", true)
+                openActivity(intent)
+            }
+            message.contains("Try our membership") -> {
+                openActivity(this@ChatActivity, MembershipActivity())
             }
         }
     }

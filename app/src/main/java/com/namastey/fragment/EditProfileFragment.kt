@@ -53,6 +53,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     private var isEditTagLine = false
     private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
     private var subCategoryIdList: ArrayList<Int> = ArrayList()
+    private var fromAddSocialLink = false
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
         fillValue(profileBean)
@@ -139,7 +140,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     companion object {
         fun getInstance() =
             EditProfileFragment().apply {
-
+                /*arguments = Bundle().apply {
+                    putBoolean("fromAddSocialLink", fromAddSocialLink)
+                }*/
             }
     }
 
@@ -156,6 +159,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
     private fun initData() {
 
+        Log.e("EditProfileFragment", "FromAddSocialLink: \t $fromAddSocialLink")
         (activity as EditProfileActivity).setListenerOfInteractionWithFragment(this)
 
 //        rangeProfileAge.apply()
@@ -186,6 +190,15 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
         edtProfileTagline.compoundDrawablePadding = 25
+
+        if (fromAddSocialLink){
+            val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
+            addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
+            (activity as EditProfileActivity).addFragment(
+                addLinksFragment,
+                Constants.ADD_LINKS_FRAGMENT
+            )
+        }
 
         edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
@@ -269,6 +282,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
+        fromAddSocialLink = arguments!!.getBoolean("fromAddSocialLink", false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

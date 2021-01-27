@@ -444,7 +444,7 @@ object Utils {
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
                 )
 
-                Log.e("Utils", "timeInFormat:  \t $timeInFormat")
+                //Log.e("Utils", "timeInFormat:  \t $timeInFormat")
 
                 mHandler.postDelayed(this, 1000)
                 SessionManager(context).setStringValue(timeInFormat, Constants.KEY_SPEND_APP_TIME)

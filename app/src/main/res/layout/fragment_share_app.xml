@@ -126,8 +126,8 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:textColor="@color/colorBlack"
                     android:text="@string/recent"
+                    android:textColor="@color/colorBlack"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:typeface="MULI_EXTRA_BOLD" />
@@ -138,8 +138,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="vertical"
                     android:layout_marginEnd="@dimen/_15sdp"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -148,10 +148,11 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSuggested"
                     style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/following"
                     android:textColor="@color/colorBlack"
-                    app:layout_constraintStart_toStartOf="@id/rvRecentUser"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rvRecentUser"
                     app:typeface="MULI_EXTRA_BOLD" />
 

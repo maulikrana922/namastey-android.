@@ -100,7 +100,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
     private lateinit var commentAdapter: CommentAdapter
-    private lateinit var mentionListAdapter: MentionListAdapter
     private lateinit var mentionArrayAdapter: ArrayAdapter<Mention>
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
@@ -127,7 +126,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
 
-    private var package_Name = "com.namastey"
+    private var myPackageName = "com.namastey"
 
     override fun getViewModel() = dashboardViewModel
 
@@ -136,15 +135,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun getBindingVariable() = BR.viewModel
 
     private fun check() {
-        val actvityManager: ActivityManager =
+        val activityManager: ActivityManager =
             this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val procInfos: List<ActivityManager.RunningAppProcessInfo> =
-            actvityManager.runningAppProcesses
-        for (i in 0 until procInfos.size) {
-            if (procInfos[i].processName.equals(package_Name)) {
-
-                //Log.e("DashboardActivity", "check: \t ${procInfos[i].processName} ")
-                //Log.e("DashboardActivity", "check: \t ${procInfos[i].uid} ")
+        val processInfo: List<ActivityManager.RunningAppProcessInfo> =
+            activityManager.runningAppProcesses
+        for (i in processInfo.indices) {
+            if (processInfo[i].processName == myPackageName) {
+                Log.e("DashboardActivity", "check: \t ${processInfo[i].processName} ")
+                Log.e("DashboardActivity", "check: \t ${processInfo[i].uid} ")
             }
         }
 
@@ -154,11 +152,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
         }
 
-       // val cal = Calendar.getInstance()
+        // val cal = Calendar.getInstance()
         //cal.add(Calendar.YEAR, -1)
         //cal.add(Calendar.DATE, -1)
         val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("Asia/Calcutta");
+        calendar.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
         calendar[Calendar.HOUR_OF_DAY] = 0
         calendar[Calendar.MINUTE] = 1
         calendar[Calendar.SECOND] = 0
@@ -172,11 +170,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             )
 
         for (us in queryUsageStats) {
-          //  Log.e("DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground)
-            if (us.packageName == package_Name) {
+            //  Log.e("DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground)
+            if (us.packageName == myPackageName) {
                 //Log.e("DashboardActivity", "check: \t ${us.packageName} ")
                 Log.e(
-                    "DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground
+                    "DashboardActivity",
+                    "check " + us.packageName + " = " + us.totalTimeInForeground
                 )
             }
         }
@@ -350,9 +349,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 builder.setMessage(getString(R.string.location_permission_message))
                     .setTitle(getString(R.string.permission_required))
 
-                builder.setPositiveButton(
-                    getString(R.string.ok)
-                ) { dialog, id ->
+                builder.setPositiveButton(getString(R.string.ok)) { dialog, id ->
                     makeRequest()
                 }
 
@@ -1451,9 +1448,9 @@ private fun prepareAnimation(animation: Animation): Animation? {
         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
                 strMention, "${
-                mentionArrayAdapter.getItem(
-                    i
-                ).toString()
+                    mentionArrayAdapter.getItem(
+                        i
+                    ).toString()
                 }"
             )
             bottomSheetDialogComment.edtComment.setText(strName)
@@ -1488,7 +1485,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-                showBoostPendingDialog()
+                if (!isFinishing)
+                    showBoostPendingDialog()
             } else {
                 //showBoostSuccessDialog()
             }
@@ -1561,7 +1559,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
         c[Calendar.MINUTE] = 29
         c[Calendar.SECOND] = 59
         c[Calendar.MILLISECOND] = 59
-        val millis = c.timeInMillis - System.currentTimeMillis()
+        // val millis = c.timeInMillis - System.currentTimeMillis()
+        val millis = 1800000
         val interval = 1000L
         Log.e("DashboardActivity", "millis: $millis")
         Log.e("DashboardActivity", "timeInMillis: ${c.timeInMillis}")
@@ -1572,7 +1571,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
 
         val t: CountDownTimer
-        t = object : CountDownTimer(millis, interval) {
+        t = object : CountDownTimer(millis.toLong(), interval) {
             override fun onTick(millisUntilFinished: Long) {
                 val timer = String.format(
                     "%02d:%02d:%02d",
@@ -1950,19 +1949,19 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessProfileLike(data: DashboardBean) {
-        val dashboardBean = feedList[position]
-        dashboardBean.is_match = data.is_match
-        dashboardBean.is_like = data.is_like
+        val feedItems = feedList[position]
+        feedItems.is_match = data.is_match
+        feedItems.is_like = data.is_like
 
         /*if (dashboardBean.is_like == 1) {
             animationLike.visibility = View.VISIBLE
             Handler().postDelayed({ animationLike.visibility = View.GONE }, 2000)
         }*/
 
-        if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
+        if (feedItems.is_match == 1 && feedItems.is_like == 1) {
 
-            Log.e("DashboardActivity", "userName: \t ${dashboardBean.username}")
-            Log.e("DashboardActivity", "userName:   \t ${dashboardBean.profile_url}")
+            Log.e("DashboardActivity", "userName: \t ${feedItems.username}")
+            Log.e("DashboardActivity", "userName:   \t ${feedItems.profile_url}")
             Log.e(
                 "DashboardActivity",
                 "userName: \t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
@@ -1972,12 +1971,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 "userName: \t ${sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)}"
             )
             val intent = Intent(this@DashboardActivity, MatchesScreenActivity::class.java)
-            intent.putExtra("username", dashboardBean.username)
-            intent.putExtra("profile_url", dashboardBean.profile_url)
+            intent.putExtra("username", feedItems.username)
+            intent.putExtra("profile_url", feedItems.profile_url)
             openActivity(intent)
         }
 
-        feedList[position] = dashboardBean
+        feedList[position] = feedItems
         feedAdapter.notifyItemChanged(position)
 
         Handler(Looper.getMainLooper()).postDelayed({

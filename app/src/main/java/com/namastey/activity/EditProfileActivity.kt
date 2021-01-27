@@ -38,6 +38,7 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
 
     private lateinit var tabOne: TextView
     private lateinit var tabTwo: TextView
+    private var fromAddSocialLink = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,11 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     private fun initData() {
+        if (intent.hasExtra("fromAddSocialLink")) {
+            fromAddSocialLink = intent.getBooleanExtra("fromAddSocialLink", false)
+            Log.e("EditProfileActivity", "FromAddSocialLink: \t $fromAddSocialLink")
+        }
+
         setupViewPager()
         tabEditProfile.setupWithViewPager(viewpagerEditProfile)
         setupTabIcons()
@@ -80,8 +86,12 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
 
     private fun setupViewPager() {
 
+        val editProfileFragment = EditProfileFragment()
+        val bundle = Bundle()
+        bundle.putBoolean("fromAddSocialLink", fromAddSocialLink)
+        editProfileFragment.arguments = bundle
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFrag(EditProfileFragment(), resources.getString(R.string.basic_info))
+        adapter.addFrag(editProfileFragment, resources.getString(R.string.basic_info))
         adapter.addFrag(AlbumFragment(), resources.getString(R.string.albums))
         viewpagerEditProfile.adapter = adapter
 
@@ -195,6 +205,6 @@ class EditProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileB
     }
 
     fun onClickMore(view: View) {
-        openActivity(this@EditProfileActivity,AccountSettingsActivity())
+        openActivity(this@EditProfileActivity, AccountSettingsActivity())
     }
 }
