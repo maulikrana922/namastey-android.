@@ -517,7 +517,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         }
-        if (!sessionManager.isGuestUser()) {
+        if (!sessionManager.isGuestUser() && sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
             intent.putExtra("isMyProfile", isMyProfile)
@@ -530,7 +530,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             completeSignUpDialog()
         }
 
-        if (!sessionManager.isGuestUser()) {
+        if (!sessionManager.isGuestUser() && sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             if (profileBean.is_follow == 1) {
                 profileViewModel.followUser(profileBean.user_id, 0)
             } else if (profileBean.is_follow == 0) {
@@ -952,6 +952,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLogoutSuccess(msg: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLogoutFailed(msg: String, error: Int) {
         TODO("Not yet implemented")
     }
 }

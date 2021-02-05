@@ -1,6 +1,7 @@
 package com.namastey.viewModel
 
 import com.namastey.R
+import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -242,6 +243,33 @@ class ProfileViewModel constructor(
             }
         }
     }
+
+    fun logOut() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToLogout()
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                profileView.onLogoutSuccess(appResponse.message)
+                            } else {
+                                profileView.onLogoutFailed(appResponse.message, appResponse.error)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(exception)
+            }
+        }
+
+    }
+
 
     fun onDestroy() {
         if (::job.isInitialized) {

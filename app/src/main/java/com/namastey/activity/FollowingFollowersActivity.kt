@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 
 class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBinding>(),
-    FolloFollowersView, OnItemClick,OnSelectUserItemClick {
+    FolloFollowersView, OnItemClick, OnSelectUserItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -63,7 +63,11 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
 
         if (intent.hasExtra("isMyProfile"))
-            isMyProfile = intent.getBooleanExtra("isMyProfile",false)
+            isMyProfile = intent.getBooleanExtra("isMyProfile", false)
+
+        if (!isMyProfile){
+            ivFollowFind.visibility = View.GONE
+        }
 
         if (profileBean.profileUrl.isNotEmpty()) {
             GlideLib.loadImage(
@@ -101,7 +105,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFrag(
-            FollowingFragment.getInstance(profileBean.user_id,isMyProfile),
+            FollowingFragment.getInstance(profileBean.user_id, isMyProfile),
             resources.getString(R.string.following)
         )
         adapter.addFrag(
@@ -176,7 +180,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     override fun onSuccessSearchList(userList: ArrayList<DashboardBean>) {
         this.userList = userList
         userSearchAdapter =
-            UserSearchAdapter(this.userList, this@FollowingFollowersActivity, false, this,this)
+            UserSearchAdapter(this.userList, this@FollowingFollowersActivity, false, this, this)
         rvSearchUser.adapter = userSearchAdapter
 
     }

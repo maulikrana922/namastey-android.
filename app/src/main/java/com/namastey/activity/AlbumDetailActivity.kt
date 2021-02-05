@@ -91,6 +91,11 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
         Log.e("AlbumDetailActivity ", "isShowMenu:: $isShowMenu")
 
+        if (!isShowMenu) {
+            ivMore.visibility = View.GONE
+        }
+
+
         if (intent.hasExtra("albumId")) {
             albumId = intent.getLongExtra("albumId", 0)
 
@@ -327,8 +332,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     fun onClickAlbumDetailMore(view: View) {
-        if (isShowMenu)
+        if (isShowMenu) {
             createPopUpMenu()
+        }
     }
 
     private fun createPopUpMenu() {

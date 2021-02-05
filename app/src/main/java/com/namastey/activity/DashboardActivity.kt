@@ -1359,11 +1359,26 @@ private fun prepareAnimation(animation: Animation): Animation? {
     return animation
 }*/
     fun onClickDiscover(view: View) {
-        feedList.clear()
+
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            feedList.clear()
+            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+            intent.putExtra("categoryList", categoryBeanList)
+            openActivityForResult(intent, Constants.FILTER_OK)
+        }
+       /* feedList.clear()
         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
-        openActivityForResult(intent, Constants.FILTER_OK)
+        openActivityForResult(intent, Constants.FILTER_OK)*/
     }
 
     /**

@@ -13,6 +13,8 @@ interface ProfileView: BaseView {
     fun onSuccessBlockUser(msg: String)
     fun onSuccessSavePost(msg: String)
     fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>)
+    fun onLogoutSuccess(msg: String)
+    fun onLogoutFailed(msg: String, error: Int)
 
 //    fun onSuccessProfileResponse(user: User)
 }

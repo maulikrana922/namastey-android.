@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -37,15 +38,16 @@ import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
 import com.namastey.receivers.BoostService
 import com.namastey.uiView.ProfileView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import java.io.File
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -209,12 +211,69 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickProfileMore(view: View) {
-        if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1)
+        if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1) {
             openActivity(this@ProfileActivity, SettingsActivity())
+        } else {
+            createPopUpMenu()
+
+        }
     }
+
 
     fun onClickPassport(view: View) {
         addLocationPermission()
+    }
+
+
+    private fun createPopUpMenu() {
+        val popupMenu = PopupMenu(this, ivProfileMore)
+        popupMenu.menuInflater.inflate(R.menu.menu_logout, popupMenu.menu)
+        val menuLogout = popupMenu.menu.findItem(R.id.action_logout)
+
+
+        try {
+            val fields: Array<Field> = PopupMenu::class.java.declaredFields
+            for (field in fields) {
+                if ("mPopup" == field.name) {
+                    field.isAccessible = true
+                    val menuPopupHelper: Any = field.get(popupMenu)
+                    val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
+                    val setForceIcons: Method = classPopupHelper.getMethod(
+                        "setForceShowIcon",
+                        Boolean::class.javaPrimitiveType
+                    )
+                    setForceIcons.invoke(menuPopupHelper, true)
+                    break
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_logout -> {
+                    object : CustomAlertDialog(
+                        this@ProfileActivity,
+                        resources.getString(R.string.msg_logout),
+                        getString(R.string.logout),
+                        getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    profileViewModel.logOut()
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
+                }
+            }
+            true
+        }
+        popupMenu.show()
     }
 
     private fun setMembershipList() {
@@ -420,7 +479,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-           // openActivity(this@ProfileActivity, InAppPurchaseActivity())
+            // openActivity(this@ProfileActivity, InAppPurchaseActivity())
 
         }
 
@@ -1020,4 +1079,16 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
+
+
+    override fun onLogoutSuccess(msg: String) {
+        sessionManager.logout()
+        val intent = Intent(this@ProfileActivity, SignUpActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
+    }
+
+    override fun onLogoutFailed(msg: String, error: Int) {
+    }
 }

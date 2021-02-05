@@ -116,7 +116,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/_14sdp"
-                android:text="@string/save"
+                android:text="@string/send"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp"
                 app:typeface="MULI_SEMIBOLD" />
