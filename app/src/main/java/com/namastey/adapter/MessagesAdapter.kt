@@ -40,6 +40,9 @@ class MessagesAdapter(
 
         fun bind(position: Int) = with(itemView) {
             val matchesListBean = matchesList[position]
+
+            Log.e("MessageAdapter", "MatchesBean: Id: \t ${matchesListBean.id}")
+
             llMessageView.setOnClickListener {
                 onMatchesItemClick.onMatchesItemClick(position, matchesListBean, true)
             }
@@ -62,6 +65,12 @@ class MessagesAdapter(
             } else {
 //                tvCategory.visibility = View.GONE
                 mainCategoryView.visibility = View.GONE
+            }
+
+            if (matchesListBean.id == 0L) {
+                tvLastTime.visibility = View.GONE
+            } else {
+                tvLastTime.visibility = View.VISIBLE
             }
 
             tvUsername.text = matchesListBean.username

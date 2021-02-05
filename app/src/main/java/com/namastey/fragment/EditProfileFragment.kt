@@ -57,6 +57,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
         fillValue(profileBean)
+        if (fromAddSocialLink){
+            val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
+            addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
+            (activity as EditProfileActivity).addFragment(
+                addLinksFragment,
+                Constants.ADD_LINKS_FRAGMENT
+            )
+        }
     }
 
     override fun onSuccessSocialAccount(data: ArrayList<SocialAccountBean>) {
@@ -191,14 +199,25 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
         edtProfileTagline.compoundDrawablePadding = 25
 
-        if (fromAddSocialLink){
+        /*if (fromAddSocialLink){
+            Log.e("EditProfileFragment", "socialAccountList: ${socialAccountList.size}")
             val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
             addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
             (activity as EditProfileActivity).addFragment(
                 addLinksFragment,
                 Constants.ADD_LINKS_FRAGMENT
             )
-        }
+        }*/
+
+        /*if (fromAddSocialLink){
+            Log.e("EditProfileFragment", "socialAccountList: ${socialAccountList.size}")
+            val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
+            addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
+            (activity as EditProfileActivity).addFragment(
+                addLinksFragment,
+                Constants.ADD_LINKS_FRAGMENT
+            )
+        }*/
 
         edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {

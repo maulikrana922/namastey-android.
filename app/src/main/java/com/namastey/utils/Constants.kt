@@ -221,6 +221,7 @@ object Constants {
     const val KEY_RECENT_LOCATION = "KEY_RECENT_LOCATION"
     const val KEY_SPEND_APP_TIME = "KEY_SPEND_APP_TIME"
     const val KEY_MUTE_PARTICULAR_USER = "KEY_MUTE_PARTICULAR_USER"
+    const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
 
 
     //    field key

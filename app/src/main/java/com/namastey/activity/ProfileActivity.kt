@@ -11,9 +11,7 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -108,6 +106,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     override fun getViewModel() = profileViewModel
 
     override fun getLayoutId() = R.layout.activity_profile
+    // var timer = ""
 
     override fun getBindingVariable() = BR.viewModel
 
@@ -289,6 +288,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
      * show dialog of boost
      */
     private fun showBoostDialog(layout: Int) {
+
+        var isFromProfile = true
+
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProfileActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val view: View = LayoutInflater.from(this).inflate(layout, viewGroup, false)
@@ -302,8 +304,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         view.btnBoost.setOnClickListener {
             Handler().postDelayed(Runnable {
                 sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
+                //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
                 startBoostService()
             }, 1800000)
+            sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
             sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
             //startBoostService()
             // showBoostSuccessDialog()
@@ -313,12 +317,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             val intent = Intent(this@ProfileActivity, DashboardActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.putExtra("isFromProfile", isFromProfile)
             startActivity(intent)
             overridePendingTransition(R.anim.enter, R.anim.exit);
         }
         view.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
-        }
+        }    // var timer = ""
+
     }
 
     private fun startBoostService() {
@@ -413,6 +419,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     R.color.colorDarkGray
                 )
             )
+
+           // openActivity(this@ProfileActivity, InAppPurchaseActivity())
+
         }
 
         view.constMedium.setOnClickListener {

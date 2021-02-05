@@ -247,6 +247,16 @@ class SessionManager(context: Context) {
         return mPrefs.getInt(key, 0)!!
     }
 
+    fun setLongValue(value: Long, key: String) {
+        val e = mPrefs.edit()
+        e.putLong(key, value)
+        e.apply()
+    }
+
+    fun getLongValue(key: String): Long {
+        return mPrefs.getLong(key, 0)!!
+    }
+
     fun setBooleanValue(value: Boolean, key: String) {
         val e = mPrefs.edit()
         e.putBoolean(key, value)

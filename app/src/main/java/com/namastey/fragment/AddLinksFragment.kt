@@ -127,8 +127,8 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         callbackManager = CallbackManager.Factory.create()
 
         if (arguments!!.containsKey("socialAccountList")) {
-            val data: ArrayList<SocialAccountBean> =
-                arguments!!.getSerializable("socialAccountList") as ArrayList<SocialAccountBean>
+            val data: ArrayList<SocialAccountBean> = arguments!!.getSerializable("socialAccountList") as ArrayList<SocialAccountBean>
+            Log.e("AddLinksFragment", "socialAccountList: ${data.size}")
             if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }) {
                 mainFacebook.visibility = View.VISIBLE
                 edtFacebook.setText(data.single { s -> s.name == getString(R.string.facebook) }.link)

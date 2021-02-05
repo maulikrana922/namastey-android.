@@ -32,6 +32,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,6 +57,7 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
+import com.namastey.receivers.BroadcastService
 import com.namastey.receivers.MaxLikeReceiver
 import com.namastey.receivers.MaxLikeService
 import com.namastey.roomDB.AppDB
@@ -85,6 +87,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
     OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick {
@@ -125,8 +128,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
+    private var mIntent: IntentFilter? = null
 
-    private var myPackageName = "com.namastey"
+    var timer = 0L
+    var isFromProfile = false
 
     override fun getViewModel() = dashboardViewModel
 
@@ -140,7 +145,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val processInfo: List<ActivityManager.RunningAppProcessInfo> =
             activityManager.runningAppProcesses
         for (i in processInfo.indices) {
-            if (processInfo[i].processName == myPackageName) {
+            if (processInfo[i].processName == packageName) {
                 Log.e("DashboardActivity", "check: \t ${processInfo[i].processName} ")
                 Log.e("DashboardActivity", "check: \t ${processInfo[i].uid} ")
             }
@@ -171,7 +176,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         for (us in queryUsageStats) {
             //  Log.e("DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground)
-            if (us.packageName == myPackageName) {
+            if (us.packageName == packageName) {
                 //Log.e("DashboardActivity", "check: \t ${us.packageName} ")
                 Log.e(
                     "DashboardActivity",
@@ -234,6 +239,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
 
+        /* if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
+             startService(Intent(this, BroadcastService::class.java))
+         }*/
         startMaxLikeService()
         //scheduleAlarm()
 
@@ -262,6 +270,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             ivUser.setImageResource(R.drawable.ic_female_user)
         else
             ivUser.setImageResource(R.drawable.ic_top_profile)
+
+
+        if (intent.hasExtra("isFromProfile")) {
+            isFromProfile = intent.getBooleanExtra("isFromProfile", false)
+            Log.e("DashboardActivity", "isFromProfile: \t $isFromProfile")
+        }
 
         dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
@@ -1457,7 +1471,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
             bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
         }
-
     }
 
     override fun onUserProfileClick(dashboardBean: DashboardBean) {
@@ -1484,12 +1497,36 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-                if (!isFinishing)
-                    showBoostPendingDialog()
-            } else {
-                //showBoostSuccessDialog()
+            if (!isFinishing) {
+                if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
+                    /*startService(Intent(this, BroadcastService ::class.java))
+                    showBoostPendingDialog()*/
+                    if (isFromProfile) {
+                        startService(Intent(this, BroadcastService::class.java))
+                        showBoostPendingDialog(timer)
+                    } else {
+                        startBoostTimer()
+                    }
+                } else {
+                    //showBoostSuccessDialog()
+                }
             }
+        }
+    }
+
+    private fun startBoostTimer() {
+        val currentTime = System.currentTimeMillis()
+        val storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+        Log.e("DashboardActivity", "currentTime: $currentTime")
+        Log.e("DashboardActivity", "storedTime: $storedTime")
+        val remainingTime = currentTime - storedTime
+        if (remainingTime < 1800000L) {
+            timer -= remainingTime
+            Log.e("DashboardActivity", "timer: $timer")
+            Log.e("DashboardActivity", "remainingTime: $remainingTime")
+            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+            startService(Intent(this, BroadcastService::class.java))
+            showBoostPendingDialog(timer)
         }
     }
 
@@ -1544,7 +1581,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
     }
 
-    private fun showBoostPendingDialog() {
+    private fun showBoostPendingDialog(myTimer: Long) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val view: View =
@@ -1560,20 +1597,19 @@ private fun prepareAnimation(animation: Animation): Animation? {
         c[Calendar.SECOND] = 59
         c[Calendar.MILLISECOND] = 59
         // val millis = c.timeInMillis - System.currentTimeMillis()
-        val millis = 1800000
-        val interval = 1000L
-        Log.e("DashboardActivity", "millis: $millis")
-        Log.e("DashboardActivity", "timeInMillis: ${c.timeInMillis}")
-        Log.e("DashboardActivity", "currentTimeMillis: ${System.currentTimeMillis()}")
+        val millis = 1800000L
 
-        if (millis.toString().contains("-")) {
+        val interval = 1000L
+        Log.e("DashboardActivity", "myTimer: $myTimer")
+
+        if (myTimer.toString().contains("-")) {
             alertDialog.dismiss()
         }
 
         val t: CountDownTimer
-        t = object : CountDownTimer(millis.toLong(), interval) {
+        t = object : CountDownTimer(myTimer, interval) {
             override fun onTick(millisUntilFinished: Long) {
-                val timer = String.format(
+                val time = String.format(
                     "%02d:%02d:%02d",
                     TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
                     TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
@@ -1588,19 +1624,20 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     )
                 )
                 // Log.e("DashboardActivity", "timer: $timer")
+                Log.e("DashboardActivity", "Time: $time")
 
                 view.tvTimeRemaining.text =
-                    timer.plus(" ").plus(resources.getString(R.string.remaining))
+                    time.plus(" ").plus(resources.getString(R.string.remaining))
             }
 
             override fun onFinish() {
                 alertDialog.dismiss()
+                //sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
                 showBoostSuccessDialog()
                 cancel()
             }
         }.start()
 
-        //view.tvTimeRemaining.text = ""
 
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
@@ -1749,6 +1786,21 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
     }
 
+    private val myBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val bundle = intent.extras
+            //timer = bundle!!.getString("timerCount")!!
+            timer = bundle!!.getLong("timerCount")
+            //Log.e("MyBroadcastReceiver", "timer: $timer")
+
+
+            /*val dashboardIntent = Intent(context, DashboardActivity::class.java)
+            dashboardIntent.putExtra("timer", timer)
+            dashboardIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // adding this flag starts the new Activity in a new Task
+            context!!.startActivity(dashboardIntent)*/
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         registerReceiver(
@@ -1756,11 +1808,22 @@ private fun prepareAnimation(animation: Animation): Animation? {
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
         )
 
+        LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
+            myBroadcastReceiver, IntentFilter("countDown")
+        )
+
         if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
             dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
         }
-        // if (Util.SDK_INT <= 23) initializePlayer(dashboardBean.video_url, playerView)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mIntent != null) {
+            unregisterReceiver(myBroadcastReceiver)
+            mIntent = null
+        }
     }
 
     override fun onRestart() {
@@ -1948,10 +2011,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         isUpdateComment = true
     }
 
-    override fun onSuccessProfileLike(data: DashboardBean) {
+    override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         val feedItems = feedList[position]
-        feedItems.is_match = data.is_match
-        feedItems.is_like = data.is_like
+        feedItems.is_match = dashboardBean.is_match
+        feedItems.is_like = dashboardBean.is_like
 
         /*if (dashboardBean.is_like == 1) {
             animationLike.visibility = View.VISIBLE
@@ -1983,6 +2046,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
             if (position < feedList.size)
                 viewpagerFeed.currentItem = position + 1
         }, 1000)
+
+       // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
     }
 
     override fun onSuccessFollow(msg: String) {

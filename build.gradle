@@ -20,7 +20,7 @@ buildscript {
     ext.libraryName = "dateandtimepicker"
     ext.github = "2.2.5"
     ext.libraryVersion = "2.2.5"
-    ext.billing_version = "3.0.0"
+    ext.billing_version = "3.0.2"
 
     repositories {
         jcenter()

@@ -70,4 +70,5 @@ interface ActivityComponent {
     fun inject(fragment: LikedUserPostFragment)
     fun inject(activity: ImageSliderActivity)
     fun inject(activity: SearchLocationActivity)
+    //fun inject(activity: InAppPurchaseActivity)
 }

@@ -17,7 +17,7 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -37,6 +37,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
+        <activity android:name=".activity.InAppPurchaseActivity"></activity>
         <activity
             android:name=".activity.ImageSliderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -193,8 +194,7 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>
-        <!-- <activity -->
+        </activity> <!-- <activity -->
         <!-- android:name="com.facebook.FacebookActivity" -->
         <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
         <!-- android:label="@string/app_name" /> -->
@@ -273,12 +273,18 @@
         <service
             android:name=".receivers.MaxLikeService"
             android:enabled="true" />
+
         <receiver android:name=".receivers.MaxLikeReceiver" />
+
         <service
             android:name=".receivers.BoostService"
             android:enabled="true" />
+
         <receiver android:name=".receivers.BoostReceiver" />
 
+        <service
+            android:name=".receivers.BroadcastService"
+            android:enabled="true" />
         <service
             android:name=".receivers.AppCloseService"
             android:enabled="true"
