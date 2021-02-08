@@ -1367,6 +1367,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
+        }else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)){
+            completeSignUpDialog()
         } else {
             feedList.clear()
             dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
