@@ -11,12 +11,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.activity.DashboardActivity
 import com.namastey.activity.ProfileActivity
+import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.utils.*
+import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.dialog_alert.*
-import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
 import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
@@ -156,7 +160,7 @@ class FeedAdapter(
                 ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)
             }
             // Need to change as per api response
-            ivFeedFollow.setOnClickListener {
+            /*ivFeedFollow.setOnClickListener {
                 if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     var isFollow = 0
                     val msg: String
@@ -215,6 +219,102 @@ class FeedAdapter(
                         }
                     }.show()
                 }
+            }*/
+
+            ivFeedFollow.setOnClickListener {
+
+                if (sessionManager.isGuestUser()) {
+                    (activity as DashboardActivity).addFragment(
+                        SignUpFragment.getInstance(
+                            true
+                        ),
+                        Constants.SIGNUP_FRAGMENT
+                    )
+                } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    (activity as DashboardActivity).completeSignUpDialog()
+                } else {
+                    object : CustomAlertDialog(
+                        activity,
+                        activity.getString(R.string.complete_profile),
+                        activity.getString(R.string.ok),
+                        activity.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    activity.startActivity(
+                                        Intent(
+                                            activity,
+                                            ProfileActivity::class.java
+                                        )
+                                    )
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
+                }
+
+                /*if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    var isFollow = 0
+                    val msg: String
+                    val btnText: String
+                    if (dashboardBean.is_follow == 1) {
+                        isFollow = 0
+                        msg = resources.getString(R.string.msg_remove_post)
+                        btnText = resources.getString(R.string.remove)
+                    } else {
+                        isFollow = 1
+                        msg = resources.getString(R.string.msg_send_follow_request)
+                        btnText = resources.getString(R.string.send)
+                    }
+                    object : CustomCommonAlertDialog(
+                        activity,
+                        dashboardBean.username,
+                        msg,
+                        dashboardBean.profile_url,
+                        btnText,
+                        resources.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnAlertOk.id -> {
+                                    onFeedItemClick.onClickFollow(
+                                        position,
+                                        dashboardBean,
+                                        isFollow
+                                    )
+                                }
+                            }
+                        }
+                    }.show()
+                } else {
+
+                    object : CustomAlertDialog(
+                        activity,
+                        activity.getString(R.string.complete_profile),
+                        activity.getString(R.string.ok),
+                        activity.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnPos.id -> {
+                                    activity.startActivity(
+                                        Intent(
+                                            activity,
+                                            ProfileActivity::class.java
+                                        )
+                                    )
+                                }
+                                btnNeg.id -> {
+                                    dismiss()
+                                }
+                            }
+                        }
+                    }.show()
+                }*/
             }
 
             tvFeedShare.text = dashboardBean.share.toString()

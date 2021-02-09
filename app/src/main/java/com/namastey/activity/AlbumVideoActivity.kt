@@ -47,8 +47,8 @@ import com.namastey.model.VideoBean
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.*
 import com.namastey.viewModel.AlbumViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_album_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
@@ -477,7 +477,14 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onShareClick(position: Int, videoBean: VideoBean) {
         if (sessionManager.isGuestUser()) {
-            // Need to add data
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            completeSignUpDialog()
         } else {
             openShareOptionDialog(videoBean)
         }

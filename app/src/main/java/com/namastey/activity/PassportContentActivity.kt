@@ -183,7 +183,7 @@ open class PassportContentActivity : FragmentActivity(),
             mCurrLocationMarker!!.remove()
         }
         //Place current location marker
-        if (sessionManager.getRecentLocationFromList() != null) {
+        if (sessionManager.getRecentLocationFromList() != null && sessionManager.getRecentLocationFromList()!!.latitude != 0.0) {
             latitude = sessionManager.getRecentLocationFromList()!!.latitude
             longitude = sessionManager.getRecentLocationFromList()!!.longitude
             Log.e("PassportContentActivity", "sessionManager latitude:\t $latitude")
@@ -204,6 +204,9 @@ open class PassportContentActivity : FragmentActivity(),
                 latitude = location.latitude
                 longitude = location.longitude
             }
+
+        Log.e("PassportContentActivity", "latitude:\t $latitude")
+        Log.e("PassportContentActivity", "longitude:\t $longitude")
 
         val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions()

@@ -1296,20 +1296,20 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onItemClick(position: Int, dashboardBean: DashboardBean) {
-        if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
+        this.position = position
+
+       // if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
+        if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
                     true
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
+        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            completeSignUpDialog()
         } else {
-            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                this.position = position
-                openShareOptionDialog(dashboardBean)
-            } else {
-                completeSignUpDialog()
-            }
+            openShareOptionDialog(dashboardBean)
         }
     }
 
@@ -1359,7 +1359,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
     return animation
 }*/
     fun onClickDiscover(view: View) {
-
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -1367,7 +1366,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 ),
                 Constants.SIGNUP_FRAGMENT
             )
-        }else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)){
+        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         } else {
             feedList.clear()
@@ -1376,11 +1375,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
             intent.putExtra("categoryList", categoryBeanList)
             openActivityForResult(intent, Constants.FILTER_OK)
         }
-       /* feedList.clear()
-        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-        val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
-        intent.putExtra("categoryList", categoryBeanList)
-        openActivityForResult(intent, Constants.FILTER_OK)*/
+
+        /* feedList.clear()
+         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+         intent.putExtra("categoryList", categoryBeanList)
+         openActivityForResult(intent, Constants.FILTER_OK)*/
     }
 
     /**
@@ -2064,7 +2064,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 viewpagerFeed.currentItem = position + 1
         }, 1000)
 
-       // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
+        // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
     }
 
     override fun onSuccessFollow(msg: String) {

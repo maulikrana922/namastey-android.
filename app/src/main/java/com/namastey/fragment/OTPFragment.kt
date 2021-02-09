@@ -79,16 +79,37 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
                 isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
             }
             if (isFromDashboard)   // Open dashboard activity
+            {
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    openActivity(requireActivity(), ProfileBasicInfoActivity())
+                } else {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startActivity(Intent(activity, DashboardActivity::class.java))
+                        activity!!.finish()
+                    }, 1000)
+                }
+            }
+            /*if (isFromDashboard)   // Open dashboard activity
                 openActivity(requireActivity(), DashboardActivity())
             else
-                openActivity(requireActivity(), ProfileBasicInfoActivity())
+                openActivity(requireActivity(), ProfileBasicInfoActivity())*/
         } else {
             if (isRegister == 1) {
                 ivSplashBackground.visibility = View.VISIBLE
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(activity, DashboardActivity::class.java))
-                    activity!!.finish()
-                }, 1000)
+
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    openActivity(requireActivity(), ProfileBasicInfoActivity())
+                } else {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startActivity(Intent(activity, DashboardActivity::class.java))
+                        activity!!.finish()
+                    }, 1000)
+                }
+
+                /* Handler(Looper.getMainLooper()).postDelayed({
+                     startActivity(Intent(activity, DashboardActivity::class.java))
+                     activity!!.finish()
+                 }, 1000)*/
             } else {
                 (activity as SignUpActivity).addFragment(
                     SelectGenderFragment.getInstance(
