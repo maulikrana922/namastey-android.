@@ -19,12 +19,23 @@
         android:background="@drawable/video_cards_tint"
         tools:context=".activity.DashboardActivity">
 
-        <androidx.viewpager2.widget.ViewPager2
+        <com.namastey.customViews.ExoPlayerRecyclerView
             android:id="@+id/viewpagerFeed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="@dimen/_38sdp"
+            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_38sdp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/svCategory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

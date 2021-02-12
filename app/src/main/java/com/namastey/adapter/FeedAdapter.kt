@@ -2,14 +2,21 @@ package com.namastey.adapter
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
 import com.namastey.activity.ProfileActivity
@@ -31,12 +38,12 @@ class FeedAdapter(
     val activity: Activity,
     var onFeedItemClick: OnFeedItemClick,
     var sessionManager: SessionManager
-) : RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private val TAG = "FeedAdapter"
 
     val handlerVideo = Handler(activity.mainLooper)
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_feed, parent, false
         )
@@ -44,46 +51,129 @@ class FeedAdapter(
 
     override fun getItemCount() = feedList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(position)
+    override fun onBindViewHolder(holderFeed: FeedViewHolder, position: Int) {
+        holderFeed.bind(position, activity)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(position: Int) = with(itemView) {
+    inner class FeedViewHolder(@param:NonNull private val parent: View) :
+        RecyclerView.ViewHolder(parent) {
+        lateinit var mediaContainer: FrameLayout
+
+        lateinit var mediaCoverImage: ImageView
+        lateinit var ivCommentFirst: ImageView
+        lateinit var ivCommentSecond: ImageView
+        lateinit var ivCommentThird: ImageView
+        lateinit var ivFeedProfile: ImageView
+        lateinit var ivFeedFollow: ImageView
+        lateinit var ivFeedBoost: ImageView
+
+        lateinit var tvCommentFeed: TextView
+        lateinit var tvFeedName: TextView
+        lateinit var tvFeedLike: TextView
+        lateinit var tvFeedJob: TextView
+        lateinit var tvFeedDesc: SocialTextView
+        lateinit var tvFeedView: TextView
+        lateinit var tvFeedShare: TextView
+        lateinit var tvFeedBoost: TextView
+
+        lateinit var animationVideoLike: LottieAnimationView
+        lateinit var animationBoost: LottieAnimationView
+
+        lateinit var circularSeekBar: CircularSeekBar
+
+        init {
+            mediaContainer = parent.findViewById(R.id.mediaContainer)
+
+            mediaCoverImage = parent.findViewById(R.id.ivMediaCoverImage)
+            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
+            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
+            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
+            ivFeedProfile = parent.findViewById(R.id.ivFeedProfile)
+            ivFeedFollow = parent.findViewById(R.id.ivFeedFollow)
+            ivFeedBoost = parent.findViewById(R.id.ivFeedBoost)
+
+            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
+            tvFeedName = parent.findViewById(R.id.tvFeedName)
+            tvFeedLike = parent.findViewById(R.id.tvFeedLike)
+            tvFeedJob = parent.findViewById(R.id.tvFeedJob)
+            tvFeedDesc = parent.findViewById(R.id.tvFeedDesc)
+            tvFeedView = parent.findViewById(R.id.tvFeedView)
+            tvFeedShare = parent.findViewById(R.id.tvFeedShare)
+            tvFeedBoost = parent.findViewById(R.id.tvFeedBoost)
+
+            animationVideoLike = parent.findViewById(R.id.animationVideoLike)
+            animationBoost = parent.findViewById(R.id.animationBoost)
+
+            circularSeekBar = parent.findViewById(R.id.circularSeekBar)
+        }
+
+        fun bind(position: Int, context: Context) /*= with(itemView)*/ {
+
+            parent!!.tag = this
             val dashboardBean = feedList[position]
 
             handlerVideo.removeCallbacksAndMessages(null)
 
+            /* if (!dashboardBean.video_url.isNullOrEmpty()) {
+ //                postVideo.setVideoPath(dashboardBean.video_url)
+ //                val uri = Uri.parse("https://testyourapp.online/namasteyapp/public/uploads/post_video/c24de581af92c8a9e32a47a84a255d45.mp4")
+ //            val mediaController = MediaController(activity)
+ //            mediaController.setAnchorView(postVideo)
+ //            postVideo.setMediaController(mediaController)
+ //                var uri = Uri.parse("android.resource://" + activity.packageName + "/" + R.raw.signupvideo);
+ //            postVideo.setVideoURI(Uri.parse("http://testyourapp.online/namasteyapp/public/uploads/post_video/c24de581af92c8a9e32a47a84a255d45.mp4"))
+ //                postVideo.setVideoURI(Uri.parse(dashboardBean.video_url))
+
+
+                 Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
+
+                 postVideo.setVideoPath(dashboardBean.video_url)
+                 postVideo.requestFocus()
+                 postVideo.start()
+                 postVideo.setOnPreparedListener { mp ->
+                     //Start Playback
+                     postVideo.start()
+
+                     handlerVideo.postDelayed({
+                         onFeedItemClick.onPostViewer(dashboardBean.id)
+                     }, 5000)
+
+                     //Loop Video
+                     mp!!.isLooping = true
+                 }
+
+
+                 // initializePlayer(itemView, dashboardBean.video_url, position)
+             }*/
             if (!dashboardBean.video_url.isNullOrEmpty()) {
-//                postVideo.setVideoPath(dashboardBean.video_url)
-//                val uri = Uri.parse("https://testyourapp.online/namasteyapp/public/uploads/post_video/c24de581af92c8a9e32a47a84a255d45.mp4")
-//            val mediaController = MediaController(activity)
-//            mediaController.setAnchorView(postVideo)
-//            postVideo.setMediaController(mediaController)
-//                var uri = Uri.parse("android.resource://" + activity.packageName + "/" + R.raw.signupvideo);
-//            postVideo.setVideoURI(Uri.parse("http://testyourapp.online/namasteyapp/public/uploads/post_video/c24de581af92c8a9e32a47a84a255d45.mp4"))
-//                postVideo.setVideoURI(Uri.parse(dashboardBean.video_url))
 
-
-                Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
-
-                postVideo.setVideoPath(dashboardBean.video_url)
-                postVideo.requestFocus()
-                postVideo.start()
-                postVideo.setOnPreparedListener { mp ->
-                    //Start Playback
-                    postVideo.start()
-
-                    handlerVideo.postDelayed({
-                        onFeedItemClick.onPostViewer(dashboardBean.id)
-                    }, 5000)
-
-                    //Loop Video
-                    mp!!.isLooping = true
+                if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
+                    GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
                 }
 
+                Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
+                Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
 
-                // initializePlayer(itemView, dashboardBean.video_url, position)
+                handlerVideo.postDelayed({
+                    onFeedItemClick.onPostViewer(dashboardBean.id)
+                }, 5000)
+
+
+                /*  postVideo.setVideoPath(dashboardBean.video_url)
+                  postVideo.requestFocus()
+                  postVideo.start()
+                  postVideo.setOnPreparedListener { mp ->
+                      //Start Playback
+                      postVideo.start()
+
+                      handlerVideo.postDelayed({
+                          onFeedItemClick.onPostViewer(dashboardBean.id)
+                      }, 5000)
+
+                      //Loop Video
+                      mp!!.isLooping = true
+                  }*/
+
             }
 
             if (dashboardBean.is_comment == 1) {
@@ -377,12 +467,12 @@ class FeedAdapter(
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
                 tvFeedBoost.visibility = View.VISIBLE
-                ivFeedBoost.setImageDrawable(resources.getDrawable(R.drawable.ic_boost_brown))
+                ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
                 tvFeedBoost.visibility = View.VISIBLE
-                ivFeedBoost.setImageDrawable(resources.getDrawable(R.drawable.ic_boost))
+                ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
 
             boostAnimationProgress(itemView)

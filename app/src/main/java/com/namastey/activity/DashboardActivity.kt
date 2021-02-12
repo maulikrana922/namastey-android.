@@ -24,6 +24,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +39,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -48,6 +48,7 @@ import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.*
+import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fcm.MyFirebaseMessagingService
@@ -132,6 +133,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
     var timer = 0L
     var isFromProfile = false
+    var mRecyclerView: ExoPlayerRecyclerView? = null
+    var mLayoutManager: LinearLayoutManager? = null
+    private var firstTime = true
 
     override fun getViewModel() = dashboardViewModel
 
@@ -259,6 +263,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
         currentLocationFromDB = dbHelper.getLastRecentLocations()
+        mRecyclerView = findViewById(R.id.viewpagerFeed)
 
         Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
@@ -281,8 +286,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardViewModel.getCategoryList()
         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
 
-        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
-        viewpagerFeed.adapter = feedAdapter
+        /*feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
+        viewpagerFeed.adapter = feedAdapter*/
+
+        getVideoUrl()
+
 
 //        setDashboardList()
 
@@ -293,6 +301,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         // dashboardViewModel.getFeedList(0)
 
         mentionArrayAdapter = MentionArrayAdapter(this)
+    }
+
+    private fun getVideoUrl() {
+       /* mRecyclerView!!.layoutManager =
+            LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
+        mLayoutManager = LinearLayoutManager(this,  LinearLayout.VERTICAL, false)
+        mRecyclerView!!.layoutManager = mLayoutManager
+
+        //set data object
+        mRecyclerView!!.setDashboardBeans(feedList)
+        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
+        mRecyclerView!!.adapter = feedAdapter
+
+        if (firstTime) {
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false) }
+            firstTime = false
+        }
     }
 
     private fun addLocationPermission() {
@@ -316,35 +341,51 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
-    private fun startPagination() {
+     private fun startPagination() {
 
-        viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
-                // println(state)
-            }
+         mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                 super.onScrolled(recyclerView, dx, dy)
+                 val visibleItemCount: Int = mLayoutManager!!.childCount
+                 val totalItemCount: Int = mLayoutManager!!.itemCount
+                 val firstVisibleItemPosition: Int =  mLayoutManager!!.findFirstVisibleItemPosition()
+                 if (!mbLoading && mbNext) {
+                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
+                         currentPage += 1
+                          //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+                     }
+                 }
+             }
+         })
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                val visibleItemCount: Int = viewpagerFeed.childCount
-                val totalItemCount: Int = feedAdapter.itemCount
-                val firstVisibleItemPosition: Int = position
+         /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+          override fun onPageScrollStateChanged(state: Int) {
+              //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
+              // println(state)
+          }
 
-                if (!mbLoading && mbNext) {
-                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
-                        currentPage += 1
-                        //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-                    }
-                }
-            }
+          override fun onPageScrolled(
+              position: Int,
+              positionOffset: Float,
+              positionOffsetPixels: Int
+          ) {
+              super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+              val visibleItemCount: Int = viewpagerFeed.childCount
+              val totalItemCount: Int = feedAdapter.itemCount
+              val firstVisibleItemPosition: Int = position
 
-        })
-    }
+              if (!mbLoading && mbNext) {
+                  if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                      currentPage += 1
+                      //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                      dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+                  }
+              }
+          }
+
+      })*/
+     }
 
     private fun setupPermissions() {
         val locationPermission = ContextCompat.checkSelfPermission(
@@ -1070,6 +1111,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
 
         feedList.addAll(dashboardList)
+
+        //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
 
         mbNext = dashboardList.size != 0
@@ -1110,6 +1153,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         if (::bottomSheetDialogComment.isInitialized)
             bottomSheetDialogComment.dismiss()
+
+        if (mRecyclerView != null) {
+            mRecyclerView!!.releasePlayer()
+        }
 
         super.onDestroy()
         unregisterReceiver(notificationBroadcast)
@@ -1298,7 +1345,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     override fun onItemClick(position: Int, dashboardBean: DashboardBean) {
         this.position = position
 
-       // if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
+        // if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -1820,6 +1867,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onResume() {
         super.onResume()
+        Log.e("DashboardActivity", "onResume")
         registerReceiver(
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
@@ -1833,22 +1881,36 @@ private fun prepareAnimation(animation: Animation): Animation? {
             dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
         }
+
+        mRecyclerView!!.onRestartPlayer()
     }
 
     override fun onPause() {
         super.onPause()
+        Log.e("DashboardActivity", "onPause")
         if (mIntent != null) {
             unregisterReceiver(myBroadcastReceiver)
             mIntent = null
         }
+
+        mRecyclerView!!.onPausePlayer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mRecyclerView!!.onPausePlayer()
+        Log.e("DashboardActivity", "onStop")
+
     }
 
     override fun onRestart() {
         super.onRestart()
+        Log.e("DashboardActivity", "onRestart")
         if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
             dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
         }
+       // mRecyclerView!!.onRestartPlayer()
     }
 
     private fun addFragmentWithoutCurrentFrag(fragment: Fragment, tag: String) {
@@ -2059,10 +2121,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedList[position] = feedItems
         feedAdapter.notifyItemChanged(position)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (position < feedList.size)
-                viewpagerFeed.currentItem = position + 1
-        }, 1000)
+         Handler(Looper.getMainLooper()).postDelayed({
+             if (position < feedList.size)
+             // viewpagerFeed.currentItem = position + 1
+                 mRecyclerView!!.getLayoutManager()!!.scrollToPosition(position + 1)
+
+         }, 1000)
 
         // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
     }
