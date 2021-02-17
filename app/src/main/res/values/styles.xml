@@ -8,15 +8,17 @@
         <item name="colorAccent">#F30C45</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowTranslucentStatus">true</item>
-<!--        <item name="android:windowTranslucentNavigation">true</item>-->
+        <!--        <item name="android:windowTranslucentNavigation">true</item>-->
     </style>
+
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@android:color/transparent</item>
     </style>
-<!--    Used for rounded corner -->
+    <!--    Used for rounded corner -->
     <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
     </style>
+
     <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
         <item name="cardBackgroundColor">@android:color/transparent</item>
         <item name="cornerSizeTopRight">@dimen/_20sdp</item>
@@ -27,8 +29,10 @@
     </style>
 
     <style name="CustomCardViewTopCornerStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_top_corners</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_top_corners
+        </item>
     </style>
+
     <style name="ShapeAppearanceOverlay_card_custom_top_corners" parent="">
         <item name="cardBackgroundColor">@color/colorWhite</item>
         <item name="cornerSizeTopRight">@dimen/_20sdp</item>
@@ -39,8 +43,10 @@
     </style>
 
     <style name="CustomCardViewAllCornerStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_all_corners</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_all_corners
+        </item>
     </style>
+
     <style name="ShapeAppearanceOverlay_card_custom_all_corners" parent="">
         <item name="cardBackgroundColor">@color/colorWhite</item>
         <item name="cornerSizeTopRight">@dimen/_20sdp</item>
@@ -142,7 +148,7 @@
         <item name="android:ellipsize">end</item>
         <item name="typeface">MULI_SEMIBOLD</item>
     </style>
-    
+
     <style name="searchViewStyle" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -150,9 +156,9 @@
         <item name="android:textColorHint">@color/colorBlack</item>
     </style>
 
-    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"/>
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem" />
 
-    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem"/>
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem" />
 
     <style name="FullScreenDialogTheme" parent="android:Theme.Dialog">
 
@@ -163,5 +169,14 @@
         <item name="android:windowBackground">@color/colorWhite</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 </resources>

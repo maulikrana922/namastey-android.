@@ -41,8 +41,10 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.namastey.R;
+import com.namastey.adapter.AlbumVideoAdapter;
 import com.namastey.adapter.FeedAdapter;
 import com.namastey.model.DashboardBean;
+import com.namastey.model.VideoBean;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -66,6 +68,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
      */
     // Media List
     private ArrayList<DashboardBean> dashboardBeans = new ArrayList<>();
+    private ArrayList<VideoBean> videoBeans = new ArrayList<>();
     private int videoSurfaceDefaultHeight = 0;
     private int screenDefaultHeight = 0;
     private Context context;
@@ -271,7 +274,11 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 targetPosition = startPosition;
             }
         } else {
-            targetPosition = dashboardBeans.size() - 1;
+            if (dashboardBeans.size() != 0) {
+                targetPosition = dashboardBeans.size() - 1;
+            } else {
+                targetPosition = videoBeans.size() - 1;
+            }
         }
 
         Log.d(TAG, "playVideo: target position: " + targetPosition);
@@ -301,25 +308,39 @@ public class ExoPlayerRecyclerView extends RecyclerView {
         }
 
         //FeedAdapter.FeedViewHolder holder = (FeedAdapter.FeedViewHolder) child.getTag();
-        FeedAdapter.FeedViewHolder holder = (FeedAdapter.FeedViewHolder) child.getTag();
-        if (holder == null) {
-            playPosition = -1;
-            return;
-        }
-        viewHolderParent = holder.itemView;
-        mediaCoverImage = holder.mediaCoverImage;
-        // requestManager = holder.requestManager;
-        mediaContainer = holder.mediaContainer;
-        //progressBar = holder.progressBar;
-        //volumeControl = holder.volumeControl;
 
+        if (dashboardBeans.size() != 0) {
+            FeedAdapter.FeedViewHolder holder = (FeedAdapter.FeedViewHolder) child.getTag();
+            if (holder == null) {
+                playPosition = -1;
+                return;
+            }
+            viewHolderParent = holder.itemView;
+            mediaCoverImage = holder.mediaCoverImage;
+            mediaContainer = holder.mediaContainer;
+        } else {
+            AlbumVideoAdapter.ViewHolder holder = (AlbumVideoAdapter.ViewHolder) child.getTag();
+            if (holder == null) {
+                playPosition = -1;
+                return;
+            }
+            viewHolderParent = holder.itemView;
+            mediaCoverImage = holder.mediaCoverImage;
+            mediaContainer = holder.mediaContainer;
+        }
 
         videoSurfaceView.setPlayer(videoPlayer);
         viewHolderParent.setOnClickListener(videoViewClickListener);
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(
                 context, Util.getUserAgent(context, AppName));
-        String mediaUrl = dashboardBeans.get(targetPosition).getVideo_url();
+        String mediaUrl = "";
+
+        if (dashboardBeans.size() != 0) {
+            mediaUrl = dashboardBeans.get(targetPosition).getVideo_url();
+        } else {
+            mediaUrl = videoBeans.get(targetPosition).getVideo_url();
+        }
 
         Log.e("ExoPlayerView", "mediaUrl: " + mediaUrl);
         if (mediaUrl != null) {
@@ -390,8 +411,8 @@ public class ExoPlayerRecyclerView extends RecyclerView {
         }
     }
 
-    public void playWhenUnlock(){
-        if(videoPlayer.getPlaybackState() == Player.STATE_READY ){
+    public void playWhenUnlock() {
+        if (videoPlayer.getPlaybackState() == Player.STATE_READY) {
         }
     }
 
@@ -423,7 +444,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
 
     public void onRestartPlayer() {
         if (videoPlayer != null) {
-            videoPlayer.setPlayWhenReady(true);
+            //videoPlayer.setPlayWhenReady(true);
             playVideo(true);
         }
     }
@@ -461,6 +482,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
 
     public void setDashboardBeans(ArrayList<DashboardBean> dashboardBeans) {
         this.dashboardBeans = dashboardBeans;
+    }
+
+    public void setVideoBeans(ArrayList<VideoBean> videoBeans) {
+        this.videoBeans = videoBeans;
     }
 
     /**

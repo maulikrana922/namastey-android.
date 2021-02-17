@@ -57,6 +57,7 @@ class FeedAdapter(
 
     inner class FeedViewHolder(@param:NonNull private val parent: View) :
         RecyclerView.ViewHolder(parent) {
+
         lateinit var mediaContainer: FrameLayout
 
         lateinit var mediaCoverImage: ImageView
@@ -109,7 +110,7 @@ class FeedAdapter(
 
         fun bind(position: Int, context: Context) /*= with(itemView)*/ {
 
-            parent!!.tag = this
+            parent.tag = this
             val dashboardBean = feedList[position]
 
             handlerVideo.removeCallbacksAndMessages(null)
@@ -145,35 +146,26 @@ class FeedAdapter(
 
                  // initializePlayer(itemView, dashboardBean.video_url, position)
              }*/
-            if (!dashboardBean.video_url.isNullOrEmpty()) {
+            if (!dashboardBean.video_url.isNullOrEmpty())   {
 
                 if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
                     GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
+                    Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
+
+                    /*val contentUri = Uri.parse(dashboardBean.cover_image_url)
+                    Log.e("FeedAdapter", "contentUri: \t $contentUri")
+                    GlideLib.loadImage(
+                        activity, mediaCoverImage,
+                        Utils.getPath( activity, contentUri)!!
+                    )*/
+
                 }
 
-                Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
                 Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
 
                 handlerVideo.postDelayed({
                     onFeedItemClick.onPostViewer(dashboardBean.id)
                 }, 5000)
-
-
-                /*  postVideo.setVideoPath(dashboardBean.video_url)
-                  postVideo.requestFocus()
-                  postVideo.start()
-                  postVideo.setOnPreparedListener { mp ->
-                      //Start Playback
-                      postVideo.start()
-
-                      handlerVideo.postDelayed({
-                          onFeedItemClick.onPostViewer(dashboardBean.id)
-                      }, 5000)
-
-                      //Loop Video
-                      mp!!.isLooping = true
-                  }*/
-
             }
 
             if (dashboardBean.is_comment == 1) {

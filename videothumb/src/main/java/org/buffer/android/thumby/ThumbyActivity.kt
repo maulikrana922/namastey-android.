@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_thumby.*
 import org.buffer.android.thumby.listener.SeekListener
 
+
 class ThumbyActivity : AppCompatActivity() {
 
     companion object {
@@ -62,10 +63,23 @@ class ThumbyActivity : AppCompatActivity() {
     }
 
     private fun setupVideoContent() {
+        /*val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
+
+        Log.e("ThumbyActivity", "displayMetrics width: \t ${(width * 2) / 3}")
+        Log.e("ThumbyActivity", "displayMetrics height: \t ${(height * 2) / 3}")
+
+        view_thumbnail.layoutParams = LinearLayout.LayoutParams(
+            width, (height * 2) / 3
+        )*/
+
         view_thumbnail.setDataSource(this, videoUri)
         thumbs.seekListener = seekListener
         thumbs.currentSeekPosition = intent.getLongExtra(EXTRA_THUMBNAIL_POSITION, 0).toFloat()
-        thumbs.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        thumbs.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 thumbs.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 thumbs.uri = videoUri
@@ -75,14 +89,16 @@ class ThumbyActivity : AppCompatActivity() {
 
     private fun finishWithData() {
         val intent = Intent()
-        intent.putExtra(EXTRA_THUMBNAIL_POSITION,
-            ((view_thumbnail.getDuration() / 100) * thumbs.currentProgress).toLong() * 1000)
+        intent.putExtra(
+            EXTRA_THUMBNAIL_POSITION,
+            ((view_thumbnail.getDuration() / 100) * thumbs.currentProgress).toLong() * 1000
+        )
         intent.putExtra(EXTRA_URI, videoUri)
         setResult(RESULT_OK, intent)
         finish()
     }
 
-    private val seekListener = object  : SeekListener {
+    private val seekListener = object : SeekListener {
         override fun onVideoSeeked(percentage: Double) {
             val duration = view_thumbnail.getDuration()
             view_thumbnail.seekTo((percentage.toInt() * view_thumbnail.getDuration()) / 100)

@@ -479,7 +479,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-            // openActivity(this@ProfileActivity, InAppPurchaseActivity())
+             openActivity(this@ProfileActivity, InAppPurchaseActivity())
 
         }
 

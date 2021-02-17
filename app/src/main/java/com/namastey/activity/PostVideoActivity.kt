@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,8 +43,8 @@ import com.namastey.model.VideoBean
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.*
 import com.namastey.viewModel.PostVideoViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.coroutines.CoroutineScope
@@ -113,14 +114,17 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             albumBean.id = videoBean.album_id
             tvTitlePostVideo.text = getString(R.string.edit_post)
             edtVideoDesc.setText(videoBean.description)
-            edtVideoDesc.mentionColor = ContextCompat.getColor(this@PostVideoActivity, R.color.colorBlueLight)
+            edtVideoDesc.mentionColor = ContextCompat.getColor(
+                this@PostVideoActivity,
+                R.color.colorBlueLight
+            )
             edtVideoDesc.setOnMentionClickListener { view, text ->
                 Log.e("PostVideoActivity", "setOnMentionClickListener: $text")
                 Log.e("PostVideoActivity", "setOnMentionClickListener: ${view.mentions}")
                 val intent = Intent(this@PostVideoActivity, ProfileViewActivity::class.java)
                 intent.putExtra(Constants.USERNAME, text.toString())
                 startActivity(intent)
-                overridePendingTransition(R.anim.enter, R.anim.exit);
+                overridePendingTransition(R.anim.enter, R.anim.exit)
             }
 
 
@@ -218,7 +222,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                         when (it) {
                             is DownloadResult.Success -> {
                                 if (videoDownload) {
-                                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                                     postVideoViewModel.setIsLoading(false)
                                 }
                             }
@@ -275,7 +279,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     override fun onSuccessPostCoverImage(videoBean: VideoBean) {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         Log.d("PostVideoActivity", videoBean.toString())
         val intent = Intent()
         if (isFromEditPost) {
@@ -403,7 +407,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     Utils.getCameraFile(this@PostVideoActivity)
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
 
                 // Continue only if the File was successfully created
@@ -490,14 +494,22 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //                }
             } else if (requestCode == Constants.RESULT_CODE_PICK_THUMBNAIL) {
                 if (data != null) {
-                    val imageUri = data?.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
+                    val imageUri = data.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
                     val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
-                    val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 250, 250)
-                    Log.d("Image ", "done")
+                    Log.e("PostVideoActivity ", "imageUri: \t $imageUri")
+                    Log.e("PostVideoActivity ", "location: \t $location")
+
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true
+
+                    val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 1000, 1000)
+                    //val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 1000, 1000)
+                    Log.e("PostVideoActivity ", "bitmap: \t $bitmap")
                     GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, bitmap)
 //                    val tempUri = Utils.getImageUri(applicationContext, bitmap)
 //                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
                     pictureFile = Utils.bitmapToFile(this@PostVideoActivity, bitmap)
+                    Log.e("PostVideoActivity ", "pictureFile: \t $pictureFile")
                 }
             }
         }
@@ -655,7 +667,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
         val strDesc = StringBuilder().append(edtVideoDesc.text.toString() + username + " ")
         edtVideoDesc.setText(strDesc)
-        edtVideoDesc.setSelection(edtVideoDesc.text!!.length);
+        edtVideoDesc.setSelection(edtVideoDesc.text!!.length)
         rvMentionList.visibility = View.GONE
     }
 

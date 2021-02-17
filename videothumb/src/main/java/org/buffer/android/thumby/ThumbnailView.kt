@@ -11,7 +11,8 @@ class ThumbnailView @JvmOverloads constructor(
 ) : ImageView(context, attrs) {
 
     init {
-        scaleType = ScaleType.CENTER_CROP
+        //scaleType = ScaleType.CENTER_CROP
+        scaleType = ScaleType.FIT_XY
         alpha = 0.4f
         val dimension = resources.getDimensionPixelSize(R.dimen.frames_video_height)
         layoutParams = LinearLayout.LayoutParams(dimension, dimension).apply { weight = 1f }

@@ -34,10 +34,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -306,8 +303,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun getVideoUrl() {
        /* mRecyclerView!!.layoutManager =
             LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
-        mLayoutManager = LinearLayoutManager(this,  LinearLayout.VERTICAL, false)
+        mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
+
+       /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
+        linearSnapHelper.attachToRecyclerView(mRecyclerView)*/
+
+        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(mRecyclerView)
 
         //set data object
         mRecyclerView!!.setDashboardBeans(feedList)
@@ -348,11 +351,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                  super.onScrolled(recyclerView, dx, dy)
                  val visibleItemCount: Int = mLayoutManager!!.childCount
                  val totalItemCount: Int = mLayoutManager!!.itemCount
-                 val firstVisibleItemPosition: Int =  mLayoutManager!!.findFirstVisibleItemPosition()
+                 val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
                  if (!mbLoading && mbNext) {
                      if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
                          currentPage += 1
-                          //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                         //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
                          dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
                      }
                  }
@@ -1910,7 +1913,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
         }
-       // mRecyclerView!!.onRestartPlayer()
+        mRecyclerView!!.onRestartPlayer()
     }
 
     private fun addFragmentWithoutCurrentFrag(fragment: Fragment, tag: String) {

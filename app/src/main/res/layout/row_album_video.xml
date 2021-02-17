@@ -18,7 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:visibility="visible" />
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/mediaContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/black">
+
+            <ImageView
+                android:id="@+id/ivMediaCoverImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                android:scaleType="fitXY" />
+
+
+        </FrameLayout>
+
 
         <ImageView
             android:id="@+id/ivVideoThumb"

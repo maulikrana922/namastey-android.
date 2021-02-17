@@ -32,11 +32,12 @@ class CenterCropVideoView @JvmOverloads constructor(
         surface: SurfaceTexture?,
         width: Int,
         height: Int
-    ) { }
+    ) {
+    }
 
-    override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) { }
+    override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {}
 
-    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean  = false
+    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean = false
 
     override fun onSurfaceTextureAvailable(
         surface: SurfaceTexture?,
@@ -64,14 +65,14 @@ class CenterCropVideoView @JvmOverloads constructor(
     private fun prepare() {
         mediaPlayer?.setOnVideoSizeChangedListener { _, width, height ->
             videoWidth = width.toFloat() / videoSizeDivisor
-            videoHeight = height.toFloat()  / videoSizeDivisor
+            videoHeight = height.toFloat() / videoSizeDivisor
             updateTextureViewSize()
             seekTo(0)
         }
         mediaPlayer?.prepareAsync()
     }
 
-    private fun updateTextureViewSize() {
+    private fun updateTextureViewSizeTemp() {
         var scaleX = 1.0f
         var scaleY = 1.0f
 
@@ -93,6 +94,23 @@ class CenterCropVideoView @JvmOverloads constructor(
             setScale(scaleX, scaleY, (width / 2).toFloat(), (height / 2).toFloat())
         }
 
+        setTransform(matrix)
+    }
+
+    private fun updateTextureViewSize() {
+        var scaleX = 1.0f
+        var scaleY = 1.0f
+        if (videoWidth != videoHeight) {
+            if (videoWidth > videoHeight) {
+                scaleY = videoHeight / videoWidth
+            } else {
+                scaleX = (videoWidth / videoHeight);
+            }
+        }
+
+        val matrix = Matrix().apply {
+            setScale(scaleX, scaleY, (width / 2).toFloat(), (height / 2).toFloat())
+        }
         setTransform(matrix)
     }
 

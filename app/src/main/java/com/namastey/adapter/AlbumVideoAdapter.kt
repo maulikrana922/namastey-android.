@@ -1,14 +1,21 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnVideoClick
@@ -16,7 +23,6 @@ import com.namastey.model.VideoBean
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
-import kotlinx.android.synthetic.main.row_album_video.view.*
 
 
 class AlbumVideoAdapter(
@@ -38,17 +44,58 @@ class AlbumVideoAdapter(
     override fun getItemCount() = videoList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(position, activity)
     }
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(@param:NonNull private val parent: View) :
+        RecyclerView.ViewHolder(parent) {
 
-        fun bind(position: Int) = with(itemView) {
+        /* inner class ViewHolder(itemView: View) :
+             RecyclerView.ViewHolder(itemView) {*/
+
+        lateinit var viewDetailsVideo: ConstraintLayout
+        lateinit var mainViewHolder: ConstraintLayout
+        lateinit var mediaContainer: FrameLayout
+
+        lateinit var mediaCoverImage: ImageView
+        lateinit var ivCommentFirst: ImageView
+        lateinit var ivCommentSecond: ImageView
+        lateinit var ivCommentThird: ImageView
+
+        lateinit var tvFeedLike: TextView
+        lateinit var tvFeedShare: TextView
+        lateinit var tvFeedDesc: SocialTextView
+        lateinit var tvFeedView: TextView
+        lateinit var tvCommentFeed: TextView
+        lateinit var tvVideoUpNext: TextView
+
+
+        init {
+            viewDetailsVideo = parent.findViewById(R.id.viewDetailsVideo)
+            mainViewHolder = parent.findViewById(R.id.mainViewHolder)
+            mediaContainer = parent.findViewById(R.id.mediaContainer)
+
+            mediaCoverImage = parent.findViewById(R.id.ivMediaCoverImage)
+            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
+            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
+            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
+
+            tvFeedLike = parent.findViewById(R.id.tvFeedLike)
+            tvFeedShare = parent.findViewById(R.id.tvFeedShare)
+            tvFeedDesc = parent.findViewById(R.id.tvFeedDesc)
+            tvFeedView = parent.findViewById(R.id.tvFeedView)
+            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
+            tvVideoUpNext = parent.findViewById(R.id.tvVideoUpNext)
+
+        }
+
+        fun bind(position: Int, context: Context) /*= with(itemView) */ {
+            parent!!.tag = this
+
             val videoBean = videoList[position]
             handlerVideo.removeCallbacksAndMessages(null)
 
-            if (!videoBean.video_url.isNullOrEmpty()) {
+           /* if (!videoBean.video_url.isNullOrEmpty()) {
 
                 postVideo.setVideoPath(videoBean.video_url)
                 postVideo.requestFocus()
@@ -68,6 +115,20 @@ class AlbumVideoAdapter(
                     //Loop Video
                     mp!!.isLooping = true
                 }
+            }*/
+
+            if (!videoBean.video_url.isNullOrEmpty()) {
+
+                if (videoBean.cover_image_url != null && videoBean.cover_image_url != "") {
+                    GlideLib.loadImage(activity, mediaCoverImage, videoBean.cover_image_url)
+                }
+
+                Log.e("AlbumVideoAdapter", "CoverImageUrl: \t ${videoBean.cover_image_url}")
+                Log.e("AlbumVideoAdapter", "VideoUrl: \t ${videoBean.video_url}")
+
+                handlerVideo.postDelayed({
+                    onVideoClick.onPostViewer(videoBean.id)
+                }, 5000)
             }
 
             if (isDisplayDetails)
@@ -147,7 +208,7 @@ class AlbumVideoAdapter(
                 if (sessionManager.getUserId() == videoBean.user_id) {
                     onVideoClick.onPostEdit(position, videoBean)
                 } else {
-                  //  onVideoClick.onClickLike(position, videoBean)
+                    //  onVideoClick.onClickLike(position, videoBean)
                     if (videoBean.is_like == 1)
                         onVideoClick.onClickLike(position, videoBean, 0)
                     else

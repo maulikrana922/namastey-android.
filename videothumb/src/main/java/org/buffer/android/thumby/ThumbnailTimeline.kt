@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.view_timeline.view.*
 import org.buffer.android.thumby.listener.SeekListener
@@ -64,6 +65,26 @@ class ThumbnailTimeline @JvmOverloads constructor(
         currentSeekPosition = (Math.round(event.x) - (seekViewWidth / 2)).toFloat()
 
         val availableWidth = container_thumbnails.width -
+                (layoutParams as RelativeLayout.LayoutParams).marginEnd -
+                (layoutParams as RelativeLayout.LayoutParams).marginStart
+        if (currentSeekPosition + seekViewWidth > container_thumbnails.right) {
+            currentSeekPosition = (container_thumbnails.right - seekViewWidth).toFloat()
+        } else if (currentSeekPosition < container_thumbnails.left) {
+            currentSeekPosition = paddingStart.toFloat()
+        }
+
+        currentProgress = (currentSeekPosition.toDouble() / availableWidth.toDouble()) * 100
+        container_seek_bar.translationX = currentSeekPosition
+        view_seek_bar.seekTo(((currentProgress * view_seek_bar.getDuration()) / 100).toInt())
+
+        seekListener?.onVideoSeeked(currentProgress)
+    }
+
+    private fun handleTouchEventTemp(event: MotionEvent) {
+        val seekViewWidth = context.resources.getDimensionPixelSize(R.dimen.frames_video_height)
+        currentSeekPosition = (Math.round(event.x) - (seekViewWidth / 2)).toFloat()
+
+        val availableWidth = container_thumbnails.width -
                 (layoutParams as LinearLayout.LayoutParams).marginEnd -
                 (layoutParams as LinearLayout.LayoutParams).marginStart
         if (currentSeekPosition + seekViewWidth > container_thumbnails.right) {
@@ -84,7 +105,8 @@ class ThumbnailTimeline @JvmOverloads constructor(
         metaDataSource.setDataSource(context, uri)
 
         val videoLength = (metaDataSource.extractMetadata(
-            MediaMetadataRetriever.METADATA_KEY_DURATION).toInt() * 1000).toLong()
+            MediaMetadataRetriever.METADATA_KEY_DURATION
+        ).toInt() * 1000).toLong()
 
         val thumbnailCount = 7
 
@@ -93,7 +115,8 @@ class ThumbnailTimeline @JvmOverloads constructor(
         for (i in 0 until thumbnailCount - 1) {
             val frameTime = i * interval
 //            var bitmap = metaDataSource.getFrameAtTime(frameTime)
-            var bitmap = metaDataSource.getFrameAtTime(frameTime, MediaMetadataRetriever.OPTION_CLOSEST)
+            var bitmap =
+                metaDataSource.getFrameAtTime(frameTime, MediaMetadataRetriever.OPTION_CLOSEST)
             try {
                 val targetWidth: Int
                 val targetHeight: Int
@@ -107,6 +130,7 @@ class ThumbnailTimeline @JvmOverloads constructor(
                     targetHeight = (bitmap.height * percentage).toInt()
                 }
                 bitmap = Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false)
+                // bitmap = scaleBitmapDown(bitmap, 1200)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -115,4 +139,33 @@ class ThumbnailTimeline @JvmOverloads constructor(
         }
         metaDataSource.release()
     }
+
+    fun scaleBitmapDown(
+        bitmap: Bitmap,
+        maxDimension: Int
+    ): Bitmap? {
+        val originalWidth = bitmap.width
+        val originalHeight = bitmap.height
+        var resizedWidth = maxDimension
+        var resizedHeight = maxDimension
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension
+            resizedWidth =
+                (resizedHeight * originalWidth.toFloat() / originalHeight.toFloat()).toInt()
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension
+            resizedHeight =
+                (resizedWidth * originalHeight.toFloat() / originalWidth.toFloat()).toInt()
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension
+            resizedWidth = maxDimension
+        }
+        return Bitmap.createScaledBitmap(
+            bitmap,
+            resizedWidth,
+            resizedHeight,
+            false
+        )
+    }
+
 }

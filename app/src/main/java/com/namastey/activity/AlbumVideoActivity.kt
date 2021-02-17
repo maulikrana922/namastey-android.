@@ -14,17 +14,18 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.namastey.BR
 import com.namastey.BuildConfig
@@ -32,6 +33,7 @@ import com.namastey.R
 import com.namastey.adapter.AlbumVideoAdapter
 import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.UpnextVideoAdapter
+import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
 import com.namastey.fragment.ShareAppFragment
@@ -64,6 +66,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
     OnItemClick, OnSelectUserItemClick, OnSocialTextViewClick {
 
@@ -86,6 +89,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private var position = -1
     private var editPost = false
+
+    var mRecyclerView: ExoPlayerRecyclerView? = null
+    var mLayoutManager: LinearLayoutManager? = null
+    private var firstTime = true
 
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
     }
@@ -295,13 +302,45 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private fun initData() {
         videoList =
             intent.getParcelableArrayListExtra<VideoBean>(Constants.VIDEO_LIST) as ArrayList<VideoBean>
+        mRecyclerView = findViewById(R.id.viewpagerAlbum)
+
+        Log.e("AlbumVideoActivity", "videoList: \t ${videoList.size}")
+
 
         val position = intent.getIntExtra("position", 0)
+        /* albumVideoAdapter =
+             AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
+         viewpagerAlbum.adapter = albumVideoAdapter*/
+
+        getVideoUrl()
+        mLayoutManager!!.scrollToPositionWithOffset(position, 0);
+
+        //viewpagerAlbum.currentItem = position
+
+    }
+
+    private fun getVideoUrl() {
+        /* mRecyclerView!!.layoutManager =
+             LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
+        mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        mRecyclerView!!.layoutManager = mLayoutManager
+
+        /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
+         linearSnapHelper.attachToRecyclerView(mRecyclerView)*/
+
+        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(mRecyclerView)
+
+        //set data object
+        mRecyclerView!!.setVideoBeans(videoList)
         albumVideoAdapter =
             AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
-        viewpagerAlbum.adapter = albumVideoAdapter
+        mRecyclerView!!.adapter = albumVideoAdapter
 
-        viewpagerAlbum.currentItem = position
+        if (firstTime) {
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false) }
+            firstTime = false
+        }
     }
 
     override fun onBackPressed() {
@@ -358,8 +397,14 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
+    private fun getCurrentItem(): Int {
+        return mLayoutManager!!.findFirstVisibleItemPosition()
+    }
+
     override fun onItemClick(id: Long, position: Int) {
-        viewpagerAlbum.currentItem = position
+        //viewpagerAlbum.currentItem = position
+        mLayoutManager!!.scrollToPositionWithOffset(position, 0);
+
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
         groupUpnext.visibility = View.GONE
@@ -867,13 +912,41 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         albumVideoAdapter.notifyDataSetChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mRecyclerView!!.onRestartPlayer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mRecyclerView!!.onPausePlayer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mRecyclerView!!.onPausePlayer()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.e("DashboardActivity", "onRestart")
+        mRecyclerView!!.onRestartPlayer()
+    }
+
+
     override fun onDestroy() {
-        super.onDestroy()
+        albumViewModel.onDestroy()
+
         if (::bottomSheetDialogComment.isInitialized)
             bottomSheetDialogComment.dismiss()
 
         if (::bottomSheetDialogShare.isInitialized)
             bottomSheetDialogShare.dismiss()
-        albumViewModel.onDestroy()
+
+        if (mRecyclerView != null) {
+            mRecyclerView!!.releasePlayer()
+        }
+
+        super.onDestroy()
     }
 }

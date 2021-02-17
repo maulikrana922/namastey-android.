@@ -12,8 +12,8 @@ class InAppPurchaseActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private val TAG = "InAppPurchaseActivity"
 
     private lateinit var billingClient: BillingClient
-    //private val skuList = listOf("000010")
-    private val skuList = listOf("android.test.purchased")
+    private val skuList = listOf("000010")
+    //private val skuList = listOf("android.test.purchased")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,46 +120,49 @@ class InAppPurchaseActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     Log.e(TAG, "loadAllSKUs ${skuDetails.description}")
                     Log.e(TAG, "loadAllSKUs $skuDetails")
 
-                    if (skuDetails.sku == "000010")
-                        buttonBuyProduct.setOnClickListener {
+                    if (skuDetails.sku == "000010") {
                             val billingFlowParams = BillingFlowParams
                                 .newBuilder()
                                 .setSkuDetails(skuDetails)
                                 .build()
                             billingClient.launchBillingFlow(this, billingFlowParams)
-                        }
+                    }
                 }
-            }
-
-            if (billingResult.responseCode == 1) {
-                //user cancel
-                return@querySkuDetailsAsync
-            }
-            if (billingResult.responseCode == 2) {
-                Toast.makeText(this, "Internet required for purchase", Toast.LENGTH_LONG).show()
-                return@querySkuDetailsAsync
-            }
-            if (billingResult.responseCode == 3) {
-                Toast.makeText(
-                    this,
-                    "Incompatible Google Play Billing Version",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@querySkuDetailsAsync
-            }
-            if (billingResult.responseCode == 7) {
-                Toast.makeText(this, "you already own Premium", Toast.LENGTH_LONG)
-                    .show()
-                return@querySkuDetailsAsync
-            }
-            Toast.makeText(this, "no skuDetails sorry", Toast.LENGTH_LONG).show()
+            } else
+                if (billingResult.responseCode == 1) {
+                    //user cancel
+                    return@querySkuDetailsAsync
+                } else
+                    if (billingResult.responseCode == 2) {
+                        Toast.makeText(this, "Internet required for purchase", Toast.LENGTH_LONG)
+                            .show()
+                        return@querySkuDetailsAsync
+                    } else
+                        if (billingResult.responseCode == 3) {
+                            Toast.makeText(
+                                this,
+                                "Incompatible Google Play Billing Version",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@querySkuDetailsAsync
+                        } else
+                            if (billingResult.responseCode == 7) {
+                                Toast.makeText(this, "you already own Premium", Toast.LENGTH_LONG)
+                                    .show()
+                                return@querySkuDetailsAsync
+                            } else
+                                Toast.makeText(this, "no skuDetails sorry", Toast.LENGTH_LONG)
+                                    .show()
         }
 
     } else {
         println("Billing Client not ready")
     }
 
-    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult,
+        purchases: MutableList<Purchase>?
+    ) {
         Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
         if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
