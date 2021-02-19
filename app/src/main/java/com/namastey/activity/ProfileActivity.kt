@@ -188,7 +188,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     /**
      * click on Edit info open edit profile activity
-      */
+     */
     fun onClickEditProfile(view: View) {
         openActivity(this@ProfileActivity, EditProfileActivity())
     }
@@ -219,9 +219,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-
     fun onClickPassport(view: View) {
-        addLocationPermission()
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+            addLocationPermission()
+        else
+            openActivity(this@ProfileActivity, InAppPurchaseActivity())
     }
 
 
@@ -479,8 +481,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-             openActivity(this@ProfileActivity, InAppPurchaseActivity())
-
+             //openActivity(this@ProfileActivity, InAppPurchaseActivity())
         }
 
         view.constMedium.setOnClickListener {
@@ -1078,7 +1079,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             showBoostDialog(R.layout.dialog_boosts)
         }
     }
-
 
 
     override fun onLogoutSuccess(msg: String) {

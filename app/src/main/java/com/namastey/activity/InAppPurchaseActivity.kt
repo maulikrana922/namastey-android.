@@ -21,7 +21,6 @@ class InAppPurchaseActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         setupBillingClient()
 
-
         /* billingClient = BillingClient
              .newBuilder(this)
              .enablePendingPurchases()

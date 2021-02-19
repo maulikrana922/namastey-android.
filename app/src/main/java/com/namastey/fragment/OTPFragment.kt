@@ -57,6 +57,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
         sessionManager.setGuestUser(false)
+        sessionManager.setIntegerValue(user.purchase, Constants.KEY_IS_PURCHASE)
         // sessionManager.setIntegerValue(user.is_completly_signup, Constants.KEY_IS_COMPLETE_PROFILE)
         if (user.is_completly_signup == 1) {
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)

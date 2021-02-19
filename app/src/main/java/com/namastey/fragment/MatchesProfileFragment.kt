@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
+import com.namastey.activity.InAppPurchaseActivity
 import com.namastey.activity.LikeProfileActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
@@ -96,10 +97,14 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
-            val intent = Intent(requireActivity(), LikeProfileActivity::class.java)
-            intent.putExtra("likeUserCount", likeUserCount)
-            intent.putExtra("lastUserProfile", lastUserProfile)
-            openActivity(intent)
+            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+                val intent = Intent(requireActivity(), LikeProfileActivity::class.java)
+                intent.putExtra("likeUserCount", likeUserCount)
+                intent.putExtra("lastUserProfile", lastUserProfile)
+                openActivity(intent)
+            } else
+                openActivity(requireActivity(), InAppPurchaseActivity())
+
         }
 
         messagesAdapter = MessagesAdapter(messageList, requireActivity(), this, sessionManager)

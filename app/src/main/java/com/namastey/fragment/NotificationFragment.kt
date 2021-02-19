@@ -200,12 +200,33 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
         customLayout.llLikes.setOnClickListener {
             dialog.dismiss()
-            showMembershipDialog(4)
+            //showMembershipDialog(4)
+            /*
+            * TODO: Change condition when like profile issue resolve from api side
+            * Add condition sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0
+            * */
+
+            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0) {
+                hideDoneImageView(customLayout.ivLikesSelected, customLayout)
+                setSelectedTextColor(customLayout.tvLikes, customLayout)
+                setImageViewColor(customLayout.ivLikes, R.drawable.heart, customLayout)
+                isActivityList = 1
+                notificationViewModel.getActivityList(isActivityList)
+                sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)
+                sessionManager.setStringValue(
+                    resources.getString(R.string.likes),
+                    Constants.KEY_ALL_ACTIVITY_TITLE
+                )
+                customLayout.tvAllActivityTitle.text = resources.getString(R.string.likes)
+                tvAllActivityMain.text = resources.getString(R.string.likes)
+            } else {
+                showMembershipDialog(4)
+            }
 
             //Todo: Display dialog based on condition
-            /* hideDoneImageView(ivLikesSelected)
-             setSelectedTextColor(tvLikes)
-             setImageViewColor(ivLikes, R.drawable.heart)
+            /* hideDoneImageView(customLayout.ivLikesSelected, customLayout)
+             setSelectedTextColor(customLayout.tvLikes, customLayout)
+             setImageViewColor(customLayout.ivLikes, R.drawable.heart, customLayout)
              isActivityList = 1
              notificationViewModel.getActivityList(isActivityList)
              sessionManager.setIntegerValue(isActivityList, Constants.KEY_ALL_ACTIVITY)

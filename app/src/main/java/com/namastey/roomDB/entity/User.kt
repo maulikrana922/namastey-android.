@@ -1,5 +1,6 @@
 package com.namastey.roomDB.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -9,7 +10,7 @@ data class User(
     @PrimaryKey
     var userId: Long,
     var user_id: Long,
-    var user_uniqueId : String,
+    var user_uniqueId: String,
     var status: String,
     var name: String,
     var email: String,
@@ -17,12 +18,30 @@ data class User(
     var token: String,
     @Ignore
     var is_verified: Int,
-    var user_type : Int,
+    var user_type: Int,
     var username: String,
     @Ignore
     var is_register: Int,
     @Ignore
-    var is_completly_signup: Int
+    var is_completly_signup: Int,
+    @ColumnInfo(name = "is_purchase") var purchase: Int = 0
+
+    //var is_purchase: Int = 0
 ) {
-    constructor() : this(0,0,"","", "", "", "","",0,0,"",0, 0)
+    constructor() : this(
+        0,
+        0,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+        0,
+        "",
+        0,
+        0,
+        0
+    )
 }

@@ -326,6 +326,15 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     }
 
     fun onClickMyCurrentLocation(view: View) {
+        //startSearchLocationScreen()
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+            startSearchLocationScreen()
+        else
+            openActivity(this@SettingsActivity, InAppPurchaseActivity())
+    }
+
+    private fun startSearchLocationScreen() {
         val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
         intent.putExtra("latitude", latitude)
         intent.putExtra("longitude", longitude)
