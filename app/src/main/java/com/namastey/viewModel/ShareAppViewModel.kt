@@ -9,6 +9,7 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ShareAppViewModel constructor(
     private val networkService: NetworkService,
