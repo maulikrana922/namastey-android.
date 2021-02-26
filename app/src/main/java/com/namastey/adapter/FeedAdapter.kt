@@ -467,7 +467,7 @@ class FeedAdapter(
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 1)
             }
             if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) != 0)
-                tvFeedBoost.setText(sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST))
+                tvFeedBoost.text = sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString()
             else
                 tvFeedBoost.text = "0"
 
