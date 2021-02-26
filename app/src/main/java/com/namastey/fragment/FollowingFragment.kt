@@ -160,6 +160,10 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         }
     }
 
+    override fun onSuccessStartChat(msg: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onUserItemClick(userId: Long) {
         val intent = Intent(requireActivity(), ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, userId)

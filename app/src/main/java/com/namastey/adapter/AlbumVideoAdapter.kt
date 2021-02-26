@@ -131,6 +131,7 @@ class AlbumVideoAdapter(
                 }, 5000)
             }
 
+            Log.e("AlbumVideoAdapter", "isDisplayDetails: \t $isDisplayDetails")
             if (isDisplayDetails)
                 viewDetailsVideo.visibility = View.VISIBLE
             else
@@ -161,8 +162,6 @@ class AlbumVideoAdapter(
                 context.startActivity(intent)
                 activity.overridePendingTransition(R.anim.enter, R.anim.exit);
             }
-
-
 
             tvFeedView.text = videoBean.viewers.toString()
             if (videoBean.is_comment == 1) {

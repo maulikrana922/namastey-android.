@@ -3,7 +3,6 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,15 +18,14 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.activity.ProfileActivity
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.utils.Constants
-import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
-import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
 import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
@@ -146,10 +144,10 @@ class FeedAdapter(
 
                  // initializePlayer(itemView, dashboardBean.video_url, position)
              }*/
-            if (!dashboardBean.video_url.isNullOrEmpty())   {
+            if (!dashboardBean.video_url.isNullOrEmpty()) {
 
                 if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
-                    GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
+                    // GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
                     Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
 
                     /*val contentUri = Uri.parse(dashboardBean.cover_image_url)
@@ -315,7 +313,39 @@ class FeedAdapter(
                 } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     (activity as DashboardActivity).completeSignUpDialog()
                 } else {
-                    object : CustomAlertDialog(
+                    var isFollow = 0
+                    val msg: String
+                    val btnText: String
+                    if (dashboardBean.is_follow == 1) {
+                        isFollow = 0
+                        msg = context.resources.getString(R.string.msg_remove_post)
+                        btnText = context.resources.getString(R.string.remove)
+                    } else {
+                        isFollow = 1
+                        msg = context.resources.getString(R.string.msg_send_follow_request)
+                        btnText = context.resources.getString(R.string.send)
+                    }
+                    object : CustomCommonAlertDialog(
+                        activity,
+                        dashboardBean.username,
+                        msg,
+                        dashboardBean.profile_url,
+                        btnText,
+                        context.resources.getString(R.string.cancel)
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            when (id) {
+                                btnAlertOk.id -> {
+                                    onFeedItemClick.onClickFollow(
+                                        position,
+                                        dashboardBean,
+                                        isFollow
+                                    )
+                                }
+                            }
+                        }
+                    }.show()
+                    /*object : CustomAlertDialog(
                         activity,
                         activity.getString(R.string.complete_profile),
                         activity.getString(R.string.ok),
@@ -336,7 +366,7 @@ class FeedAdapter(
                                 }
                             }
                         }
-                    }.show()
+                    }.show()*/
                 }
 
                 /*if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
@@ -436,6 +466,11 @@ class FeedAdapter(
                 else
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 1)
             }
+            if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) != 0)
+                tvFeedBoost.setText(sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST))
+            else
+                tvFeedBoost.text = "0"
+
             tvFeedBoost.setOnClickListener {
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }

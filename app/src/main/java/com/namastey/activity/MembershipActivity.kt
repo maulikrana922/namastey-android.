@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,6 +42,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
     private var selectedMonths = 1
+    private var isFromAirport = false
 
     override fun getViewModel() = membershipViewModel
 
@@ -62,6 +64,24 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     }
 
     private fun initData() {
+
+        if (intent.hasExtra("isFromAirport"))
+            isFromAirport = intent.getBooleanExtra("isFromAirport", false)
+
+        setSliderData()
+
+        vpSlide.adapter =
+            MembershipSliderAdapter(this@MembershipActivity, membershipSliderArrayList)
+        tlIndicator.setupWithViewPager(vpSlide, true)
+        val timer = Timer()
+        timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
+
+        if (isFromAirport){
+            vpSlide.currentItem = 2
+        }
+    }
+
+    private fun setSliderData() {
         membershipSliderArrayList = ArrayList()
         membershipSliderArrayList.clear()
         membershipSliderArrayList.add(
@@ -109,12 +129,6 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
             )
         )
-
-        vpSlide.adapter =
-            MembershipSliderAdapter(this@MembershipActivity, membershipSliderArrayList)
-        tlIndicator.setupWithViewPager(vpSlide, true)
-        val timer = Timer()
-        timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
     }
 
     private fun showCustomDialog(position: Int) {
@@ -235,6 +249,10 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
+            openActivity(intent)
         }
 
         constMedium.setOnClickListener {
@@ -289,6 +307,10 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
+            openActivity(intent)
         }
 
         constHigh.setOnClickListener {
@@ -338,14 +360,22 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
+            openActivity(intent)
         }
     }
 
-    fun onClickContinue(view: View){
+    fun onClickContinue(view: View) {
         Log.d("Membership :", "Selected month ".plus(selectedMonths))
-        Log.d("Membership :", "Selected month Price ".plus(membershipViewList[selectedMonths].price))
+        Log.d(
+            "Membership :",
+            "Selected month Price ".plus(membershipViewList[selectedMonths].price)
+        )
 
     }
+
     fun onClickMembershipBack(view: View) {
         onBackPressed()
     }
@@ -400,5 +430,4 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
             })
         }
     }
-
 }

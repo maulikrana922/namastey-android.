@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AlbumVideoActivity
+import com.namastey.activity.InAppPurchaseActivity
 import com.namastey.activity.MatchesActivity
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.adapter.MembershipDialogSliderAdapter
@@ -206,7 +207,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             * Add condition sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0
             * */
 
-            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0) {
+            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
                 hideDoneImageView(customLayout.ivLikesSelected, customLayout)
                 setSelectedTextColor(customLayout.tvLikes, customLayout)
                 setImageViewColor(customLayout.ivLikes, R.drawable.heart, customLayout)
@@ -627,6 +628,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
+            openActivity(intent)
         }
 
         constMedium.setOnClickListener {
@@ -710,6 +715,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
+            openActivity(intent)
         }
 
         constHigh.setOnClickListener {
@@ -793,6 +802,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
+            openActivity(intent)
         }
     }
 

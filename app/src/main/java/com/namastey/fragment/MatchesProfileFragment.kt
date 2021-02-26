@@ -12,8 +12,8 @@ import com.google.firebase.ktx.Firebase
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
-import com.namastey.activity.InAppPurchaseActivity
 import com.namastey.activity.LikeProfileActivity
+import com.namastey.activity.MembershipActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
@@ -102,8 +102,10 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                 intent.putExtra("likeUserCount", likeUserCount)
                 intent.putExtra("lastUserProfile", lastUserProfile)
                 openActivity(intent)
-            } else
-                openActivity(requireActivity(), InAppPurchaseActivity())
+            } else{
+                val intent = Intent(requireActivity(), MembershipActivity::class.java)
+                openActivity(intent)
+            }
 
         }
 

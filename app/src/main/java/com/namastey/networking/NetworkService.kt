@@ -498,4 +498,23 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToMuteParticularUserNotificationAsync(senderId, isNotification)
                 .await()
         }
+
+    suspend fun requestToGetFollowingShareList(): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetFollowingShareListAsync().await()
+        }
+
+    suspend fun requestToGetPurchaseStatus(): AppResponse<PurchaseBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetPurchaseStatusAsync().await()
+        }
+
+    suspend fun requestPurchaseReceiptVerify(jsonObject: JsonObject): AppResponse<PurchaseBean> =
+        withContext(Dispatchers.IO) { networkRequest.requestPurchaseReceiptVerifyAsync(jsonObject).await() }
+
+    suspend fun requestToBoostUse(): AppResponse<BoostBean> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToBoostUseAsync().await()
+        }
+
 }

@@ -682,7 +682,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             addFragment(
                 ShareAppFragment.getInstance(
                     sessionManager.getUserId(),
-                    profileBean.profileUrl
+                    profileBean.profileUrl,
+                    ""
                 ), //Todo:Change resposne
                 Constants.SHARE_APP_FRAGMENT
             )

@@ -179,6 +179,10 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         }
     }
 
+    override fun onSuccessStartChat(msg: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         followersList = list
         if (followersList.size == 0) {

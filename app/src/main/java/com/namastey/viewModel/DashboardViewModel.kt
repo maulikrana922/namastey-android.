@@ -11,7 +11,6 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class DashboardViewModel constructor(
     private val networkService: NetworkService,
@@ -353,6 +352,47 @@ class DashboardViewModel constructor(
                         }
                 } else {
                     setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+    fun getPurchaseStatus() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetPurchaseStatus().let { appResponse ->
+                        //                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessPurchaseStatus(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                    }
+                } else {
+//                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+    fun boostUse() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToBoostUse().let { appResponse ->
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccessBoostUse(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                    }
+                } else {
+//                    setIsLoading(false)
                     dashboardView.showMsg(R.string.no_internet)
                 }
             } catch (t: Throwable) {

@@ -222,8 +222,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     fun onClickPassport(view: View) {
         if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
             addLocationPermission()
-        else
-            openActivity(this@ProfileActivity, InAppPurchaseActivity())
+        else {
+            // openActivity(this@ProfileActivity, InAppPurchaseActivity())
+            val intent = Intent(this@ProfileActivity, MembershipActivity::class.java)
+            intent.putExtra("isFromAirport", true)
+            openActivity(intent)
+        }
     }
 
 
@@ -481,7 +485,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-             //openActivity(this@ProfileActivity, InAppPurchaseActivity())
+            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00100")
+            openActivity(intent)
+            //openActivity(this@ProfileActivity, InAppPurchaseActivity())
         }
 
         view.constMedium.setOnClickListener {
@@ -525,6 +532,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
+            openActivity(intent)
         }
 
         view.constHigh.setOnClickListener {
@@ -568,6 +579,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                     R.color.colorDarkGray
                 )
             )
+
+            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
+            openActivity(intent)
         }
     }
 

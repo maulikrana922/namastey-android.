@@ -330,8 +330,12 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
         if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
             startSearchLocationScreen()
-        else
-            openActivity(this@SettingsActivity, InAppPurchaseActivity())
+        else{
+            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
+            intent.putExtra("isFromAirport", true)
+            openActivity(intent)
+        }
+            //openActivity(this@SettingsActivity, InAppPurchaseActivity())
     }
 
     private fun startSearchLocationScreen() {

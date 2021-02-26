@@ -446,4 +446,15 @@ interface NetworkRequest {
         @Field(Constants.IS_NOTIFICATION) isNotification: Int
     ): Deferred<AppResponse<Any>>
 
+    @GET(Constants.FOLLOWING_SHARE_LIST)
+    fun requestToGetFollowingShareListAsync(): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
+    @GET(Constants.GET_PURCHASE_STATUS)
+    fun requestToGetPurchaseStatusAsync(): Deferred<AppResponse<PurchaseBean>>
+
+    @POST(Constants.RECEIPT_VERIFICATION)
+    fun requestPurchaseReceiptVerifyAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<PurchaseBean>>
+
+    @GET(Constants.BOOST_USE)
+    fun requestToBoostUseAsync(): Deferred<AppResponse<BoostBean>>
 }

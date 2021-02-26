@@ -214,4 +214,5 @@ dependencies {
 
 //    For in-app purchase
     implementation "com.android.billingclient:billing-ktx:$billing_version"
+
 }

@@ -19,7 +19,6 @@ import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.uiView.FindFriendView
 import com.namastey.utils.Constants
-import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FindFriendViewModel
 import kotlinx.android.synthetic.main.fragment_add_friend.*
@@ -57,15 +56,18 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
     }
 
     override fun onSuccess(msg: String) {
-        object : CustomAlertDialog(
-            requireActivity(),
-            msg, getString(R.string.ok), ""
-        ) {
-            override fun onBtnClick(id: Int) {
-                dismiss()
-                fragmentManager!!.popBackStack()
-            }
-        }.show()
+        //Log.e("AddFriendFragment", "onSuccess: msg: \t $msg")
+        fragmentManager!!.popBackStack()
+
+        /* object : CustomAlertDialog(
+             requireActivity(),
+             msg, getString(R.string.ok), ""
+         ) {
+             override fun onBtnClick(id: Int) {
+                 dismiss()
+                 fragmentManager!!.popBackStack()
+             }
+         }.show()*/
     }
 
     override fun getViewModel() = findFriendViewModel
@@ -174,4 +176,5 @@ class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendVi
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
     }
+
 }

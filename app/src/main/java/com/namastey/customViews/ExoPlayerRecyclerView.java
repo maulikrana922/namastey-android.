@@ -130,7 +130,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (mediaCoverImage != null) {
                         // show the old thumbnail
-                        mediaCoverImage.setVisibility(VISIBLE);
+                        //mediaCoverImage.setVisibility(VISIBLE);
                     }
 
                     // There's a special case when the end of the list has been reached.
@@ -407,7 +407,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             removeVideoView(videoSurfaceView);
             playPosition = -1;
             videoSurfaceView.setVisibility(INVISIBLE);
-            mediaCoverImage.setVisibility(VISIBLE);
+            //mediaCoverImage.setVisibility(VISIBLE);
         }
     }
 

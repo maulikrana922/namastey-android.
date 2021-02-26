@@ -23,6 +23,21 @@ object Constants {
         var MSG_TYPE_IMAGE = "MsgTypeImage"
         var MSG_TYPE_VOICE = "MsgTypeVoice"
     }
+
+    object InAppPurchaseConstants{
+        var PACKAGE_NAME = "package_name"
+        var PRODUCT_ID = "product_id"
+        var PURCHASE_TOKEN = "purchase_token"
+        var TITLE = "title"
+        var DESCRIPTION = "description"
+        var SUBSCRIPTION_PERIOD = "subscriptionPeriod"
+        var PURCHASE_TIME= "purchaseTime"
+        var PRICE = "price"
+        var PRICE_CURRENCY_CODE = "price_currency_code"
+        var PURCHASE_STATE = "purchaseState"
+        var PURCHASE_TYPE = "purchase_type"
+        var NO_OF_BOOST = "no_of_boost"
+    }
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
@@ -102,6 +117,9 @@ object Constants {
     const val COMPARE_USERNAME = "compare-username"
     const val ADMIN_MESSAGE_LIST = "admin-message-list"
     const val PARTICULAR_CHAT_NOTIFICATION = "perticular-chat-notification"
+    const val GET_PURCHASE_STATUS = "get-purchase-status"
+    const val RECEIPT_VERIFICATION = "receipt-varification"
+    const val BOOST_USE = "boost-use"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -130,6 +148,7 @@ object Constants {
     const val POST_SHARE = "post-share"
     const val ADD_USER_LOCATION = "add-user-location"
     const val ADD_USER_ACTIVE_TIME = "add-user-active-time"
+    const val FOLLOWING_SHARE_LIST = "following-share-list"
 
     //    api response error code
     const val OK = 200
@@ -223,6 +242,7 @@ object Constants {
     const val KEY_MUTE_PARTICULAR_USER = "KEY_MUTE_PARTICULAR_USER"
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
+    const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
 
 
     //    field key
@@ -259,6 +279,7 @@ object Constants {
     const val IS_COMMENT = "is_comment"
     const val VIDEO_POST_ID = "video_post_id"
     const val COVER_IMAGE = "cover_image"
+    const val VIDEO_URL = "video_url"
     const val TAG_POST_VIDEO = "post_video"
     const val POST_VIDEO_ID = "post_video_id"
     const val FILE_TYPE = "file_type"
@@ -317,6 +338,9 @@ object Constants {
     const val TOTAL_TIME = "total_time"
     const val SENDER_ID = "sender_id"
     const val IS_NOTIFICATION = "is_notification"
+    const val SUBSCRIPTION_TYPE = "subscriptionType"
+    const val SUBSCRIPTION_ID = "subscriptionId"
+    const val IN_APP_PRODUCT_ID = "IN_APP_PRODUCT_ID"
     //const val POST_ID = "post_id"
 
 

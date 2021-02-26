@@ -17,4 +17,7 @@ interface DashboardView : BaseView {
     fun onFailedMaxLike(msg: String, error: Int)
     fun onSuccessPostShare(msg: String)
     fun onSuccessMembershipList(membershipView:  ArrayList<MembershipPriceBean>)
+    fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean)
+    fun onSuccessBoostUse(boostBean: BoostBean)
+
 }

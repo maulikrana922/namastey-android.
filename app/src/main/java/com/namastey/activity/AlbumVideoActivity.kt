@@ -408,6 +408,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
         groupUpnext.visibility = View.GONE
+        albumVideoAdapter.isDisplayDetails = true
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
@@ -638,7 +639,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     private fun shareWithInApp(videoBean: VideoBean) {
         addFragment(
-            ShareAppFragment.getInstance(sessionManager.getUserId(), videoBean.cover_image_url),
+            ShareAppFragment.getInstance(sessionManager.getUserId(), videoBean.cover_image_url, videoBean.video_url),
             Constants.SHARE_APP_FRAGMENT
         )
     }
@@ -932,7 +933,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         Log.e("DashboardActivity", "onRestart")
         mRecyclerView!!.onRestartPlayer()
     }
-
 
     override fun onDestroy() {
         albumViewModel.onDestroy()

@@ -592,7 +592,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             matchesListBean.id,
             imageUrl,
             System.currentTimeMillis(),
-            0, 0
+            0,
+            0
         )
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
             sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)

@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.RecentUserAdapter
@@ -17,6 +22,7 @@ import com.namastey.databinding.FragmentShareAppBinding
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnRecentUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
+import com.namastey.model.ChatMessage
 import com.namastey.model.DashboardBean
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
@@ -39,6 +45,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     OnSelectUserItemClick,
     OnRecentUserItemClick,
     View.OnClickListener {
+    private val TAG = "ShareAppFragment"
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -59,8 +66,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     private lateinit var recentUserAdapter: RecentUserAdapter
     private var userId: Long = -1
     private var coverImgUrl: String = ""
+    private var videoUrl: String = ""
     private var recentList: ArrayList<RecentUser> = ArrayList()
     private var selectUserIdList: ArrayList<Long> = ArrayList()
+    private val db = Firebase.firestore
+    private var storage = Firebase.storage
+    private var storageRef = storage.reference
 
     override fun getViewModel() = shareAppViewModel
 
@@ -69,11 +80,12 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(userId: Long, coverImage: String) =
+        fun getInstance(userId: Long, coverImage: String, videoUrl: String) =
             ShareAppFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
                     putString(Constants.COVER_IMAGE, coverImage)
+                    putString(Constants.VIDEO_URL, videoUrl)
                 }
             }
     }
@@ -108,7 +120,9 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         tvFindMultiple.setOnClickListener(this)
         userId = arguments!!.getLong(Constants.USER_ID)
         coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE)!!
-        shareAppViewModel.getFollowingList(userId)
+        videoUrl = arguments!!.getString(Constants.VIDEO_URL)!!
+        //shareAppViewModel.getFollowingList(userId)
+        shareAppViewModel.getFollowingShareList()
 
         doAsync {
             getRecentUserList()
@@ -147,7 +161,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
 
                 } else {
                     filter("")
-                    shareAppViewModel.getFollowingList(userId)
+                    //shareAppViewModel.getFollowingList(userId)
+                    shareAppViewModel.getFollowingShareList()
                 }
 
                 return true
@@ -156,7 +171,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
 
         searchFriend.setOnCloseListener {
             filter("")
-            shareAppViewModel.getFollowingList(userId)
+            shareAppViewModel.getFollowingShareList()
+            //shareAppViewModel.getFollowingList(userId)
 
             false
         }
@@ -200,48 +216,231 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         dialogView.tvSave.setOnClickListener {
             Log.e("ShareFragment", "user_id: \t ${dashboardBean.id}")
 
-            doAsync {
-                if (dbHelper.getExistingRecentUser(dashboardBean.id.toInt())) {
-                    dbHelper.deleteExistingUser(dashboardBean.id.toInt())
-                    Log.e("ShareFragment", "Exist user_id: \t ${dashboardBean.id}")
-                } else {
-                    Log.e("ShareFragment", "Not Exist user_id: \t ${dashboardBean.id}")
-                }
-            }
+            setRecentUserInDB(dashboardBean)
 
-            val currentTime = System.currentTimeMillis()
+            val chatId = if (sessionManager.getUserId() < dashboardBean.id)
+                sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
+            else
+                dashboardBean.id.toString().plus("_").plus(sessionManager.getUserId())
+            db.clearPersistence()
 
-            val recentUser = RecentUser(
-                dashboardBean.id,
-                dashboardBean.user_id,
-                dashboardBean.album_id,
-                dashboardBean.viewers,
-                dashboardBean.description,
-                dashboardBean.username,
-                dashboardBean.profile_url,
-                dashboardBean.cover_image_url,
-                dashboardBean.video_url,
-                dashboardBean.job,
-                dashboardBean.is_comment,
-                dashboardBean.share_with,
-                dashboardBean.is_download,
-                dashboardBean.comments,
-                dashboardBean.is_follow,
-                dashboardBean.is_like,
-                dashboardBean.isChecked,
-                dashboardBean.is_match,
-                dashboardBean.user_profile_type,
-                dashboardBean.is_liked_you,
-                currentTime
+//            This part for isRead message or not
+            val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+
+            val photoUri = Uri.parse(Uri.decode(dashboardBean.profile_url))
+            Log.e(TAG, "photoUri: \t $photoUri")
+
+            /*uploadFile(
+                dashboardBean,
+                dialogView.edtLeaveMessage.text.toString().trim(),
+                photoUri ,
+                true
+            )*/
+
+            val msg = dialogView.edtLeaveMessage.text.toString().trim() + "\n" + videoUrl
+            Log.e(TAG, "photoUri: \t $msg")
+            sendMessage(
+                dashboardBean,
+                dialogView.edtLeaveMessage.text.toString().trim(),
+                // msg,
+                ""
             )
 
-            doAsync {
-                dbHelper.addRecentUser(recentUser)
-            }
+            sendMessage(
+                dashboardBean,
+                videoUrl,
+                ""
+            )
 
             getRecentUserList()
             alertDialog.dismiss()
         }
+    }
+
+    private fun uploadFile(
+        dashboardBean: DashboardBean,
+        message: String,
+        photoUri: Uri,
+        isImageUpload: Boolean
+    ) {
+        shareAppViewModel.setIsLoading(true)
+
+        Log.e(TAG, "Upload file started....")
+        val fileStorage: StorageReference = if (isImageUpload) {
+            storageRef.child(
+                Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
+            )
+        } else {
+            storageRef.child(
+                Constants.FirebaseConstant.VOICE.plus("/").plus(System.currentTimeMillis())
+            )
+        }
+
+//        val imagesRef = storageRef.child(Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis()))
+
+        fileStorage.putFile(photoUri)
+            .addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                    val imageUrl = it.toString()
+                    shareAppViewModel.setIsLoading(false)
+                    Log.e(TAG, "File upload success....")
+                    if (isImageUpload)
+                        sendMessage(dashboardBean, message, imageUrl)
+                    //sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_IMAGE, imageUrl)
+                    else
+                        sendMessage(dashboardBean, message, imageUrl)
+                    //sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_VOICE, imageUrl)
+                }
+            }
+
+            .addOnFailureListener { e ->
+                print(e.message)
+                shareAppViewModel.setIsLoading(false)
+                Log.e("Firebase : ", "Image uplaod issue")
+            }
+    }
+
+
+    private fun sendMessage(dashboardBean: DashboardBean, message: String, imageUrl: String) {
+
+        shareAppViewModel.startChat(dashboardBean.id, 1)
+
+        val chatMessage = ChatMessage(
+            message,
+            sessionManager.getUserId(),
+            dashboardBean.id,
+            imageUrl,
+            System.currentTimeMillis(),
+            0,
+            0
+        )
+        val chatId = if (sessionManager.getUserId() < dashboardBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
+        else
+            dashboardBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.CHATS)
+            .add(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+//            Added last message
+        // chatMessage.unreadCount = ++unreadCount
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId).set(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+    }
+
+    private fun sendMessageToMultiple() {
+
+        for (userId in selectUserIdList) {
+            Log.e(TAG, "userId: \t $userId")
+            shareAppViewModel.startChat(userId, 1)
+
+            val chatMessage = ChatMessage(
+                videoUrl,
+                sessionManager.getUserId(),
+                userId,
+                "",
+                System.currentTimeMillis(),
+                0,
+                0
+            )
+            val chatId = if (sessionManager.getUserId() < userId)
+                sessionManager.getUserId().toString().plus("_").plus(userId)
+            else
+                userId.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.CHATS)
+                .add(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+
+//            Added last message
+            // chatMessage.unreadCount = ++unreadCount
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                .document(chatId).set(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+        }
+    }
+
+
+    private fun setRecentUserInDB(dashboardBean: DashboardBean) {
+        doAsync {
+            if (dbHelper.getExistingRecentUser(dashboardBean.id.toInt())) {
+                dbHelper.deleteExistingUser(dashboardBean.id.toInt())
+                Log.e("ShareFragment", "Exist user_id: \t ${dashboardBean.id}")
+            } else {
+                Log.e("ShareFragment", "Not Exist user_id: \t ${dashboardBean.id}")
+            }
+        }
+
+        val currentTime = System.currentTimeMillis()
+
+        val recentUser = RecentUser(
+            dashboardBean.id,
+            dashboardBean.user_id,
+            dashboardBean.album_id,
+            dashboardBean.viewers,
+            dashboardBean.description,
+            dashboardBean.username,
+            dashboardBean.profile_url,
+            dashboardBean.cover_image_url,
+            dashboardBean.video_url,
+            dashboardBean.job,
+            dashboardBean.is_comment,
+            dashboardBean.share_with,
+            dashboardBean.is_download,
+            dashboardBean.comments,
+            dashboardBean.is_follow,
+            dashboardBean.is_like,
+            dashboardBean.isChecked,
+            dashboardBean.is_match,
+            dashboardBean.user_profile_type,
+            dashboardBean.is_liked_you,
+            currentTime
+        )
+
+        doAsync {
+            dbHelper.addRecentUser(recentUser)
+        }
+
     }
 
     private fun showRecentUserDialog(recentUser: RecentUser) {
@@ -285,6 +484,10 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         }
     }
 
+    override fun onSuccessStartChat(msg: String) {
+        Log.e(TAG, "onSuccessStartChat: msg: $msg")
+    }
+
     override fun onItemClick(value: Long, position: Int) {
     }
 
@@ -298,7 +501,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         else
             selectUserIdList.add(userId)
 
-        Log.d("User ID : ", selectUserIdList.joinToString())
+        Log.e(TAG, "selectedId:\t $selectUserIdList")
     }
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
@@ -317,8 +520,10 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
                     if (::followingAdapter.isInitialized)
                         followingAdapter.displayRadioButton()
                 } else if (tvFindMultiple.text == resources.getString(R.string.done)) {
-                    if (selectUserIdList.size > 0)
-                    else
+                    if (selectUserIdList.size > 0) {
+                        sendMessageToMultiple()
+                        fragmentManager!!.popBackStack()
+                    } else
                         fragmentManager!!.popBackStack()
                 }
             }

@@ -419,7 +419,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     override fun onStop() {
         super.onStop()
         SPEND_APP_TIME = SessionManager(this).getStringValue(Constants.KEY_SPEND_APP_TIME)
-        Log.e("BaseActivity", "onStop KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
+       // Log.e("BaseActivity", "onStop KEY_SPEND_APP_TIME:  \t $SPEND_APP_TIME")
     }
 
     fun isMyServiceRunning(serviceClass: Class<*>): Boolean {

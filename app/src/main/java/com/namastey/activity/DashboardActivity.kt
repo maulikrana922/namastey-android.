@@ -279,6 +279,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             Log.e("DashboardActivity", "isFromProfile: \t $isFromProfile")
         }
 
+        dashboardViewModel.getPurchaseStatus()
         dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
@@ -530,7 +531,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         addFragment(
             ShareAppFragment.getInstance(
                 sessionManager.getUserId(),
-                dashboardBean.cover_image_url
+                dashboardBean.cover_image_url,
+                dashboardBean.video_url
             ),
             Constants.SHARE_APP_FRAGMENT
         )
@@ -1699,6 +1701,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
             override fun onFinish() {
                 alertDialog.dismiss()
+                dashboardViewModel.boostUse()
                 //sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
                 showBoostSuccessDialog()
                 cancel()
@@ -2127,7 +2130,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
          Handler(Looper.getMainLooper()).postDelayed({
              if (position < feedList.size)
              // viewpagerFeed.currentItem = position + 1
-                 mRecyclerView!!.getLayoutManager()!!.scrollToPosition(position + 1)
+                 mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
 
          }, 1000)
 
@@ -2201,6 +2204,15 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
         this.membershipViewList = membershipView
+    }
+
+    override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
+        sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
+        sessionManager.setIntegerValue(purchaseBean.number_of_boost_available, Constants.KEY_NO_OF_BOOST)
+    }
+
+    override fun onSuccessBoostUse(boostBean: BoostBean) {
+        sessionManager.setIntegerValue(boostBean.number_of_boost_available, Constants.KEY_NO_OF_BOOST)
     }
 
     override fun onSuccessPostShare(msg: String) {

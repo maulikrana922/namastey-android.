@@ -1,9 +1,11 @@
 package com.namastey.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
@@ -18,7 +20,7 @@ class UserSearchAdapter(
     var isDisplayCkb: Boolean,
     var onItemClick: OnItemClick,
     var onSelectUserItemClick: OnSelectUserItemClick
-) : androidx.recyclerview.widget.RecyclerView.Adapter<UserSearchAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<UserSearchAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
@@ -38,11 +40,11 @@ class UserSearchAdapter(
     }
 
 
-    inner class ViewHolder(itemView: View) :
-        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(position: Int) = with(itemView) {
             val dashboardBean = userList[position]
+
             tvFindUser.text = dashboardBean.username
             tvUserJob.text = dashboardBean.job
 
@@ -55,15 +57,17 @@ class UserSearchAdapter(
                 ckbFindUser.visibility = View.GONE
             }
 
-            ckbFindUser.setOnClickListener{
-                if (userList[position].isChecked == 1){
+            ckbFindUser.setOnClickListener {
+                Log.e("UserSearchAdapter", "dashboardBean.user_id:\t ${dashboardBean.user_id}")
+                Log.e("UserSearchAdapter", "dashboardBean.id:\t ${dashboardBean.id}")
+                if (userList[position].isChecked == 1) {
                     ckbFindUser.isChecked = false
                     userList[position].isChecked = 0
-                }else{
+                } else {
                     ckbFindUser.isChecked = true
                     userList[position].isChecked = 1
                 }
-                onSelectUserItemClick.onSelectItemClick(dashboardBean.user_id,position)
+                onSelectUserItemClick.onSelectItemClick(dashboardBean.id, position)
 
             }
 //            ckbFindUser.setOnCheckedChangeListener { compoundButton, b ->
@@ -74,15 +78,15 @@ class UserSearchAdapter(
 //                }
 //                onSelectUserItemClick.onSelectItemClick(dashboardBean.user_id,position)
 //            }
-            viewSearchUser.setOnClickListener{
-                onItemClick.onItemClick(dashboardBean.user_id,position)
+            viewSearchUser.setOnClickListener {
+                onItemClick.onItemClick(dashboardBean.user_id, position)
                 onItemClick.onItemFollowingClick(dashboardBean)
             }
         }
 
     }
 
-    fun displayRadioButton(){
+    fun displayRadioButton() {
         isDisplayCkb = true
         notifyDataSetChanged()
     }
