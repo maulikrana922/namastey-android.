@@ -538,6 +538,10 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
-        sessionManager.setIntegerValue(purchaseBean.number_of_boost_available, Constants.KEY_NO_OF_BOOST)
+        sessionManager.setIntegerValue(
+            purchaseBean.number_of_boost_available,
+            Constants.KEY_NO_OF_BOOST
+        )
     }
+}
 
