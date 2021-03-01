@@ -8,7 +8,9 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.http.*
+import java.util.*
 
 interface NetworkRequest {
 
@@ -414,6 +416,22 @@ interface NetworkRequest {
         @Field(Constants.SUB_CAT_ID) subCatId: Int,
         @Field(Constants.LAT) lat: Double,
         @Field(Constants.LNG) lng: Double
+    ): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
+    @FormUrlEncoded
+    @POST(Constants.FEED_LIST_V2)
+    fun requestToGetNewFeedListV2Async(
+        @Field("ids") ids: ArrayList<Long>,
+        @Field(Constants.PAGE) page: Int,
+        @Field(Constants.SUB_CAT_ID) subCatId: Int,
+        @Field(Constants.LAT) lat: Double,
+        @Field(Constants.LNG) lng: Double
+    ): Deferred<AppResponse<ArrayList<DashboardBean>>>
+
+   // @FormUrlEncoded
+    @POST(Constants.FEED_LIST_V2)
+    fun requestToGetNewFeedListV2Async(
+       @Body  jsonObject: JSONObject
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @FormUrlEncoded

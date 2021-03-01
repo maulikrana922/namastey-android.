@@ -2,6 +2,7 @@ package com.namastey.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
@@ -12,6 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.util.*
 
 class DashboardViewModel constructor(
     private val networkService: NetworkService,
@@ -39,7 +42,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessCategory(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
 //                    setIsLoading(false)
@@ -61,7 +68,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK) {
                             dashboardView.onSuccessFeed(appResponse.data!!)
                         } else {
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                         }
                     }
                 } else {
@@ -84,7 +95,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessGetComment(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -105,7 +120,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessAddComment(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)
@@ -124,7 +143,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccess(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)
@@ -171,7 +194,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessFollow(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     dashboardView.showMsg(R.string.no_internet)
@@ -192,7 +219,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessReport(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -215,7 +246,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessBlockUser(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -238,7 +273,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessSavePost(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -279,7 +318,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessMention(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -302,7 +345,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessPostShare(appResponse.message)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -325,7 +372,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessMembershipList(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
                     setIsLoading(false)
@@ -337,7 +388,7 @@ class DashboardViewModel constructor(
         }
     }
 
-    fun getNewFeedList(page: Int, subCatId: Int, lat: Double, lng: Double) {
+   fun getNewFeedList(page: Int, subCatId: Int, lat: Double, lng: Double) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -348,7 +399,68 @@ class DashboardViewModel constructor(
                             if (appResponse.status == Constants.OK) {
                                 dashboardView.onSuccessFeed(appResponse.data!!)
                             } else {
-                                dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                                dashboardView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+     fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: ArrayList<Long>) {
+    //fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: Array<Long>) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetNewFeedV2(1, subCatId, lat, lng, ids)
+                        .let { appResponse ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                dashboardView.onSuccessFeed(appResponse.data!!)
+                            } else {
+                                dashboardView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
+            }
+        }
+    }
+
+     fun getNewFeedListV2(jsonObject: JSONObject) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetNewFeedV2(jsonObject)
+                        .let { appResponse ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                dashboardView.onSuccessFeed(appResponse.data!!)
+                            } else {
+                                dashboardView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
                             }
                         }
                 } else {
@@ -370,7 +482,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessPurchaseStatus(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
 //                    setIsLoading(false)
@@ -390,7 +506,11 @@ class DashboardViewModel constructor(
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessBoostUse(appResponse.data!!)
                         else
-                            dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                     }
                 } else {
 //                    setIsLoading(false)
@@ -407,5 +527,6 @@ class DashboardViewModel constructor(
             job.cancel()
         }
     }
+
 
 }

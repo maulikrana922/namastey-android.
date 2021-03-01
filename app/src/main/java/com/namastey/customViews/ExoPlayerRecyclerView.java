@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -37,6 +39,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -77,6 +80,17 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     private RequestManager requestManager;
     // controlling volume state
     private VolumeState volumeState;
+
+    //Minimum Video you want to buffer while Playing
+    private int MIN_BUFFER_DURATION = 2000;
+    //Max Video you want to buffer during PlayBack
+    private int MAX_BUFFER_DURATION = 5000;
+    //Min Video you want to buffer before start Playing it
+    private int MIN_PLAYBACK_START_BUFFER = 1500;
+    //Min video You want to buffer when user resumes video
+    private int MIN_PLAYBACK_RESUME_BUFFER = 2000;
+
+
     private View.OnClickListener videoViewClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -110,11 +124,20 @@ public class ExoPlayerRecyclerView extends RecyclerView {
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector =
-                new DefaultTrackSelector(videoTrackSelectionFactory);
+        //TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+        LoadControl loadControl = new DefaultLoadControl.Builder()
+                .setAllocator(new DefaultAllocator(true, 16))
+                .setBufferDurationsMs(MIN_BUFFER_DURATION,
+                        MAX_BUFFER_DURATION,
+                        MIN_PLAYBACK_START_BUFFER,
+                        MIN_PLAYBACK_RESUME_BUFFER)
+                .setTargetBufferBytes(-1)
+                .setPrioritizeTimeOverSizeThresholds(true).createDefaultLoadControl();
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
         //Create the player using ExoPlayerFactory
-        videoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+        videoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
         // Disable Player Control
         videoSurfaceView.setUseController(false);
         // Bind the player to the view.

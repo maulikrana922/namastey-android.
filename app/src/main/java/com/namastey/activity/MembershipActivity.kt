@@ -43,6 +43,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     private var membershipViewList = ArrayList<MembershipPriceBean>()
     private var selectedMonths = 1
     private var isFromAirport = false
+    private var subscriptionId = "000020"
 
     override fun getViewModel() = membershipViewModel
 
@@ -76,7 +77,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
-        if (isFromAirport){
+        if (isFromAirport) {
             vpSlide.currentItem = 2
         }
     }
@@ -150,6 +151,13 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
             MembershipDialogSliderAdapter(this@MembershipActivity, membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)
         viewpager.currentItem = position
+        dialogView.btnContinue.setOnClickListener {
+            // alertDialog.dismiss()
+            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
+            openActivity(intent)
+        }
+
         dialogView.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
         }
@@ -250,9 +258,10 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                 )
             )
 
-            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
-            openActivity(intent)
+            subscriptionId = "000010"
+            /*   val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+               intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
+               openActivity(intent)*/
         }
 
         constMedium.setOnClickListener {
@@ -307,10 +316,11 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                     R.color.colorDarkGray
                 )
             )
+            subscriptionId = "000020"
 
-            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
-            openActivity(intent)
+            /* val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
+             openActivity(intent)*/
         }
 
         constHigh.setOnClickListener {
@@ -360,10 +370,11 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
                     R.color.colorDarkGray
                 )
             )
+            subscriptionId = "000030"
 
-            val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
-            openActivity(intent)
+            /* val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
+             openActivity(intent)*/
         }
     }
 

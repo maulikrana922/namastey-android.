@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
 import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
+import java.util.*
 
 
 class FeedAdapter(
@@ -110,6 +111,10 @@ class FeedAdapter(
 
             parent.tag = this
             val dashboardBean = feedList[position]
+
+            if (position == itemCount - 1 && feedList.size >= 10) {
+                (context as DashboardActivity).getFeedListApi(0)
+            }
 
             handlerVideo.removeCallbacksAndMessages(null)
 
@@ -467,7 +472,8 @@ class FeedAdapter(
                     onFeedItemClick.onProfileLikeClick(position, dashboardBean, 1)
             }
             if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) != 0)
-                tvFeedBoost.text = sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString()
+                tvFeedBoost.text =
+                    sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString()
             else
                 tvFeedBoost.text = "0"
 
@@ -490,6 +496,8 @@ class FeedAdapter(
                 "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}"
             )
 
+
+            //Todo: Change boost animation time- when start boost
             if (SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE

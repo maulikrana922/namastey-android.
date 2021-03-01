@@ -71,6 +71,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     private var boostProfileList = ArrayList<BoostPriceBean>()
     private var fromBuyBoost = false
 
+    private var inAppProductId = "b00200"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -230,7 +232,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
     }
 
-
     private fun createPopUpMenu() {
         val popupMenu = PopupMenu(this, ivProfileMore)
         popupMenu.menuInflater.inflate(R.menu.menu_logout, popupMenu.menu)
@@ -367,29 +368,36 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         view.llRecurringTextView.visibility = View.GONE
         manageVisibility(view)
         view.btnBoost.setOnClickListener {
-            Handler().postDelayed(Runnable {
-                sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
-                //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-                startBoostService()
-            }, 1800000)
-            sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-            sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-            //startBoostService()
-            // showBoostSuccessDialog()
-            //startBoostService()
-            alertDialog.dismiss()
+           // alertDialog.dismiss()
 
-            val intent = Intent(this@ProfileActivity, DashboardActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.putExtra("isFromProfile", isFromProfile)
-            startActivity(intent)
-            overridePendingTransition(R.anim.enter, R.anim.exit);
+            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.IN_APP_PRODUCT_ID, inAppProductId)
+            openActivity(intent)
         }
         view.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
         }    // var timer = ""
 
+    }
+
+    private fun startBoost() {
+        Handler().postDelayed(Runnable {
+            sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
+            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+            startBoostService()
+        }, 1800000)
+        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+        sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
+        //startBoostService()
+        // showBoostSuccessDialog()
+        //startBoostService()
+
+        val intent = Intent(this@ProfileActivity, DashboardActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.putExtra("isFromProfile", true)
+        startActivity(intent)
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     private fun startBoostService() {
@@ -485,9 +493,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00100")
-            openActivity(intent)
+            inAppProductId = "b00100"
+
             //openActivity(this@ProfileActivity, InAppPurchaseActivity())
         }
 
@@ -533,9 +540,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            inAppProductId = "b00200"
+           /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
-            openActivity(intent)
+            openActivity(intent)*/
         }
 
         view.constHigh.setOnClickListener {
@@ -580,9 +588,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
                 )
             )
 
-            val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+            inAppProductId = "b00300"
+           /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
-            openActivity(intent)
+            openActivity(intent)*/
         }
     }
 

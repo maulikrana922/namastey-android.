@@ -57,6 +57,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private var position = -1
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
+    private var subscriptionId = "000020"
 
     /*private lateinit var tvAllActivityTitle: TextView
     private lateinit var llAllActivity: LinearLayout
@@ -326,6 +327,13 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             MembershipDialogSliderAdapter(requireActivity(), membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)
         viewpager.currentItem = position
+
+        dialogView.btnContinue.setOnClickListener {
+            // alertDialog.dismiss()
+            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
+            openActivity(intent)
+        }
         dialogView.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
         }
@@ -628,10 +636,11 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                     R.color.colorDarkGray
                 )
             )
+            subscriptionId = "000010"
 
-            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+           /* val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
-            openActivity(intent)
+            openActivity(intent)*/
         }
 
         constMedium.setOnClickListener {
@@ -716,9 +725,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 )
             )
 
-            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            subscriptionId = "000020"
+            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
-            openActivity(intent)
+            openActivity(intent)*/
         }
 
         constHigh.setOnClickListener {
@@ -803,9 +813,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 )
             )
 
-            val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            subscriptionId = "000030"
+            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
-            openActivity(intent)
+            openActivity(intent)*/
         }
     }
 

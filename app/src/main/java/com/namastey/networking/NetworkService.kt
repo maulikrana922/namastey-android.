@@ -1,5 +1,6 @@
 package com.namastey.networking
 
+import android.util.Log
 import com.google.gson.JsonObject
 import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
@@ -9,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
+import java.util.*
 
 class NetworkService(private val networkRequest: NetworkRequest) {
 
@@ -464,6 +467,25 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetNewFeedListAsync(page, subCatId, lat, lng).await()
         }
 
+    suspend fun requestToGetNewFeedV2(
+        page: Int,
+        subCatId: Int,
+        lat: Double,
+        lng: Double,
+        ids: ArrayList<Long>
+    ): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+          //  Log.e("NetworkService", "ids: \t $ids")
+            networkRequest.requestToGetNewFeedListV2Async(ids, page, subCatId, lat, lng ).await()
+        }
+
+    suspend fun requestToGetNewFeedV2(
+       jsonObject: JSONObject
+    ): AppResponse<ArrayList<DashboardBean>> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetNewFeedListV2Async(jsonObject).await()
+        }
+
     suspend fun requestToCheckUniqueUsername(username: String): ErrorAppResponse<ErrorBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToCheckUniqueUsernameAsync(username).await()
@@ -510,7 +532,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         }
 
     suspend fun requestPurchaseReceiptVerify(jsonObject: JsonObject): AppResponse<PurchaseBean> =
-        withContext(Dispatchers.IO) { networkRequest.requestPurchaseReceiptVerifyAsync(jsonObject).await() }
+        withContext(Dispatchers.IO) {
+            networkRequest.requestPurchaseReceiptVerifyAsync(jsonObject).await()
+        }
 
     suspend fun requestToBoostUse(): AppResponse<BoostBean> =
         withContext(Dispatchers.IO) {

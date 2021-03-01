@@ -55,9 +55,7 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
-import com.namastey.receivers.BroadcastService
-import com.namastey.receivers.MaxLikeReceiver
-import com.namastey.receivers.MaxLikeService
+import com.namastey.receivers.*
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
 import com.namastey.roomDB.entity.RecentLocations
@@ -80,11 +78,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
@@ -97,6 +96,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     lateinit var sessionManager: SessionManager
     private lateinit var activityDashboardBinding: ActivityDashboardBinding
     private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var appLocationService: AppLocationService
     private var feedList: ArrayList<DashboardBean> = ArrayList()
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
@@ -119,7 +119,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var currentPage = 1
     private var mbNext = true
     private var mbLoading = true
-    private lateinit var appLocationService: AppLocationService
 
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -133,6 +132,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     var mRecyclerView: ExoPlayerRecyclerView? = null
     var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
+
+    private var videoIdList: ArrayList<Long> = ArrayList()
+    private var noOfCall = 0
 
     override fun getViewModel() = dashboardViewModel
 
@@ -282,7 +284,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         dashboardViewModel.getPurchaseStatus()
         dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
-        dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+        // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+        // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
+        getFeedListApi(0)
 
         /*feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
         viewpagerFeed.adapter = feedAdapter*/
@@ -294,7 +298,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         setupPermissions()
         setSliderData()
-        startPagination()
+        //startPagination()
 
         // dashboardViewModel.getFeedList(0)
 
@@ -302,13 +306,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     private fun getVideoUrl() {
-       /* mRecyclerView!!.layoutManager =
-            LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
+        /* mRecyclerView!!.layoutManager =
+             LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
         mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
 
-       /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
-        linearSnapHelper.attachToRecyclerView(mRecyclerView)*/
+        /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
+         linearSnapHelper.attachToRecyclerView(mRecyclerView)*/
 
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(mRecyclerView)
@@ -345,51 +349,140 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
     }
 
-     private fun startPagination() {
+    private fun startPaginationTemp() {
 
-         mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                 super.onScrolled(recyclerView, dx, dy)
-                 val visibleItemCount: Int = mLayoutManager!!.childCount
-                 val totalItemCount: Int = mLayoutManager!!.itemCount
-                 val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
-                 if (!mbLoading && mbNext) {
-                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
-                         currentPage += 1
-                         //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-                     }
+        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount: Int = mLayoutManager!!.childCount
+                val totalItemCount: Int = mLayoutManager!!.itemCount
+                val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
+                if (!mbLoading && mbNext) {
+                    // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
+
+                    Log.e("DashboardActivity", "videoIdList\t  $videoIdList")
+                    Log.e("DashboardActivity", "totalItemCount\t  $totalItemCount")
+
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && videoIdList.size >= 9) {
+                        //     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= (10 * noOfCall)) {
+                        currentPage += 1
+                        //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                        //dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+
+                        getFeedListApi(0)
+
+                        /* dashboardViewModel.getNewFeedListV2(
+                            currentPage,
+                            0,
+                            latitude,
+                            longitude,
+                            videoIdList
+                        )*/
+                    }
+                }
+            }
+        })
+
+        /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+         override fun onPageScrollStateChanged(state: Int) {
+             //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
+             // println(state)
+         }
+
+         override fun onPageScrolled(
+             position: Int,
+             positionOffset: Float,
+             positionOffsetPixels: Int
+         ) {
+             super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+             val visibleItemCount: Int = viewpagerFeed.childCount
+             val totalItemCount: Int = feedAdapter.itemCount
+             val firstVisibleItemPosition: Int = position
+
+             if (!mbLoading && mbNext) {
+                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                     currentPage += 1
+                     //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                     dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
                  }
              }
-         })
+         }
 
-         /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-          override fun onPageScrollStateChanged(state: Int) {
-              //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
-              // println(state)
-          }
+     })*/
+    }
 
-          override fun onPageScrolled(
-              position: Int,
-              positionOffset: Float,
-              positionOffsetPixels: Int
-          ) {
-              super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-              val visibleItemCount: Int = viewpagerFeed.childCount
-              val totalItemCount: Int = feedAdapter.itemCount
-              val firstVisibleItemPosition: Int = position
+    private fun startPagination() {
 
-              if (!mbLoading && mbNext) {
-                  if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
-                      currentPage += 1
-                      //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                      dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-                  }
-              }
-          }
+        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount: Int = mLayoutManager!!.childCount
+                val totalItemCount: Int = mLayoutManager!!.itemCount
+                val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
+                // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
 
-      })*/
-     }
+                //Log.e("noOfCall", "noOfCall: $noOfCall")
+                //if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                if (!mbLoading && mbNext) {
+                    if (firstVisibleItemPosition >= 9) {
+                        //     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= (10 * noOfCall)) {
+
+
+                        // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
+                        mbLoading = true
+
+                        Log.e("DashboardActivity", "videoIdList\t  $videoIdList")
+                        Log.e("DashboardActivity", "totalItemCount\t  $totalItemCount")
+                        Log.e("DashboardActivity", "noOfCall\t  $noOfCall")
+                        getFeedListApi(0)
+                    }
+                }
+            }
+        })
+
+        /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+         override fun onPageScrollStateChanged(state: Int) {
+             //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
+             // println(state)
+         }
+
+         override fun onPageScrolled(
+             position: Int,
+             positionOffset: Float,
+             positionOffsetPixels: Int
+         ) {
+             super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+             val visibleItemCount: Int = viewpagerFeed.childCount
+             val totalItemCount: Int = feedAdapter.itemCount
+             val firstVisibleItemPosition: Int = position
+
+             if (!mbLoading && mbNext) {
+                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                     currentPage += 1
+                     //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
+                     dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+                 }
+             }
+         }
+
+     })*/
+    }
+
+    fun getFeedListApi(subCat: Int) {
+        val jsonObject = JSONObject()
+
+        val jsonArray = JSONArray(videoIdList)
+
+        jsonObject.put("ids", jsonArray)
+        jsonObject.put("page", 1)
+        jsonObject.put("sub_cat_id", subCat)
+        jsonObject.put("lat", latitude)
+        jsonObject.put("lng", longitude)
+
+        Log.e("DashboadActivity", "jsonObject: \t $jsonObject")
+
+        dashboardViewModel.getNewFeedListV2(jsonObject)
+    }
 
     private fun setupPermissions() {
         val locationPermission = ContextCompat.checkSelfPermission(
@@ -1125,6 +1218,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         if (mbNext) {
             mbLoading = false
         }
+
+        // noOfCall += 1
+        for (ids in dashboardList) {
+            if (!videoIdList.contains(ids.id)) {
+                videoIdList.add(ids.id)
+            }
+        }
     }
 
     // Temp open this activity
@@ -1177,13 +1277,26 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 data.hasExtra("fromSubCategory") -> {
                     with(dashboardViewModel) {
                         feedList.clear()
-                        currentPage = 1
+
+                        videoIdList.clear()
+                        /* dashboardViewModel.getNewFeedListV2(
+                             currentPage,
+                             data.getIntExtra("subCategoryId", 0),
+                             latitude,
+                             longitude,
+                             videoIdList
+                         )*/
+
+                        getFeedListApi(data.getIntExtra("subCategoryId", 0))
+
+
+                        /*currentPage = 1
                         getNewFeedList(
                             currentPage,
                             data.getIntExtra("subCategoryId", 0),
                             latitude,
                             longitude
-                        )
+                        )*/
                     }
                 }
             }
@@ -1199,12 +1312,25 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 with(dashboardViewModel) {
                     feedList.clear()
                     currentPage = 1
-                    getNewFeedList(
+
+                    videoIdList.clear()
+                    /* dashboardViewModel.getNewFeedListV2(
+                         currentPage,
+                         0,
+                         latitude,
+                         longitude,
+                         videoIdList
+                     )*/
+
+                    getFeedListApi(data.getIntExtra("subCategoryId", 0))
+
+
+                    /*getNewFeedList(
                         currentPage,
                         data.getIntExtra("subCategoryId", 0),
                         latitude,
                         longitude
-                    )
+                    )*/
                 }
             } else {
                 supportFragmentManager.popBackStack()
@@ -1422,7 +1548,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
             completeSignUpDialog()
         } else {
             feedList.clear()
-            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            videoIdList.clear()
+            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
+            getFeedListApi(0)
             val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
             intent.putExtra("categoryList", categoryBeanList)
             openActivityForResult(intent, Constants.FILTER_OK)
@@ -1566,10 +1695,40 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (!isFinishing) {
+            if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                Log.e(
+                    "DashboardActivity",
+                    "isMyServiceRunning: \t ${isMyServiceRunning(BroadcastService()::class.java)}"
+                )
+                if (!isMyServiceRunning(BroadcastService()::class.java)) {
+                    // dashboardViewModel.boostUse()
+                    //startBoostService()
+                    sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
+                    // if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
+                    startService(Intent(this, BroadcastService::class.java))
+                    showBoostPendingDialog(timer)
+                    // }
+                } else {
+                    Log.e("DashboardActivity", "Nothing")
+                    showBoostPendingDialog(timer)
+                }
+            } else {
+                object : CustomAlertDialog(
+                    this@DashboardActivity,
+                    getString(R.string.string_buy_boost),
+                    getString(R.string.ok), ""
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        dismiss()
+                    }
+                }.show()
+            }
+
+
+            /*if (!isFinishing) {
                 if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-                    /*startService(Intent(this, BroadcastService ::class.java))
-                    showBoostPendingDialog()*/
+                    *//*startService(Intent(this, BroadcastService ::class.java))
+                    showBoostPendingDialog()*//*
                     if (isFromProfile) {
                         startService(Intent(this, BroadcastService::class.java))
                         showBoostPendingDialog(timer)
@@ -1579,8 +1738,43 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 } else {
                     //showBoostSuccessDialog()
                 }
-            }
+            }*/
         }
+    }
+
+    private fun startBoost() {
+        Handler().postDelayed(Runnable {
+            sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
+            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+            startBoostService()
+        }, 1800000)
+        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+        sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
+        //startBoostService()
+        // showBoostSuccessDialog()
+        //startBoostService()
+    }
+
+    private fun startBoostService() {
+        val calendar = Calendar.getInstance()
+        // calendar[Calendar.HOUR_OF_DAY] = 23
+        // calendar[Calendar.MINUTE] = 29
+        calendar[Calendar.MINUTE] = 29
+        calendar[Calendar.SECOND] = 59
+        calendar[Calendar.MILLISECOND] = 59
+        val pendingIntent = PendingIntent.getService(
+            this,
+            0,
+            Intent(this, BoostService::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            pendingIntent
+        )
     }
 
     private fun startBoostTimer() {
@@ -1701,7 +1895,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
             override fun onFinish() {
                 alertDialog.dismiss()
-                dashboardViewModel.boostUse()
                 //sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
                 showBoostSuccessDialog()
                 cancel()
@@ -1861,7 +2054,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             val bundle = intent.extras
             //timer = bundle!!.getString("timerCount")!!
             timer = bundle!!.getLong("timerCount")
-            //Log.e("MyBroadcastReceiver", "timer: $timer")
+            Log.e("MyBroadcastReceiver", "timer: $timer")
 
 
             /*val dashboardIntent = Intent(context, DashboardActivity::class.java)
@@ -1883,10 +2076,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
             myBroadcastReceiver, IntentFilter("countDown")
         )
 
-        if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
-            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+        /*if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
+            //dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
+            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            getFeedListApi(0)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
-        }
+        }*/
 
         mRecyclerView!!.onRestartPlayer()
     }
@@ -1912,10 +2107,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onRestart() {
         super.onRestart()
         Log.e("DashboardActivity", "onRestart")
-        if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
-            dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+        /*if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
+            //dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
+            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+            getFeedListApi(0)
             sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
-        }
+        }*/
         mRecyclerView!!.onRestartPlayer()
     }
 
@@ -2127,12 +2324,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedList[position] = feedItems
         feedAdapter.notifyItemChanged(position)
 
-         Handler(Looper.getMainLooper()).postDelayed({
-             if (position < feedList.size)
-             // viewpagerFeed.currentItem = position + 1
-                 mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (position < feedList.size)
+            // viewpagerFeed.currentItem = position + 1
+                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
 
-         }, 1000)
+        }, 1000)
 
         // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
     }
@@ -2208,11 +2405,17 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
-        sessionManager.setIntegerValue(purchaseBean.number_of_boost_available, Constants.KEY_NO_OF_BOOST)
+        sessionManager.setIntegerValue(
+            purchaseBean.number_of_boost_available,
+            Constants.KEY_NO_OF_BOOST
+        )
     }
 
     override fun onSuccessBoostUse(boostBean: BoostBean) {
-        sessionManager.setIntegerValue(boostBean.number_of_boost_available, Constants.KEY_NO_OF_BOOST)
+        sessionManager.setIntegerValue(
+            boostBean.number_of_boost_available,
+            Constants.KEY_NO_OF_BOOST
+        )
     }
 
     override fun onSuccessPostShare(msg: String) {
@@ -2229,7 +2432,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
             override fun onBtnClick(id: Int) {
                 dismiss()
                 feedList.clear()
-                dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
+                videoIdList.clear()
+                /*dashboardViewModel.getNewFeedListV2(
+                    currentPage,
+                    0,
+                    latitude,
+                    longitude,
+                    videoIdList
+                )*/
+
+                getFeedListApi(0)
+
+                //dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             }
         }.show()
     }

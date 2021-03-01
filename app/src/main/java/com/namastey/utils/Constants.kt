@@ -120,6 +120,7 @@ object Constants {
     const val GET_PURCHASE_STATUS = "get-purchase-status"
     const val RECEIPT_VERIFICATION = "receipt-varification"
     const val BOOST_USE = "boost-use"
+    const val FEED_LIST_V2 = "feed-list-v2"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -340,7 +341,7 @@ object Constants {
     const val IS_NOTIFICATION = "is_notification"
     const val SUBSCRIPTION_TYPE = "subscriptionType"
     const val SUBSCRIPTION_ID = "subscriptionId"
-    const val IN_APP_PRODUCT_ID = "IN_APP_PRODUCT_ID"
+    const val IN_APP_PRODUCT_ID = "inAppProductId"
     //const val POST_ID = "post_id"
 
 
