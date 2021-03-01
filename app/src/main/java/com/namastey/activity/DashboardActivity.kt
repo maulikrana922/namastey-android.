@@ -39,12 +39,17 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.hendraanggrian.appcompat.widget.Mention
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
-import com.namastey.adapter.*
+import com.namastey.adapter.CategoryAdapter
+import com.namastey.adapter.CommentAdapter
+import com.namastey.adapter.FeedAdapter
+import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
@@ -55,15 +60,18 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
-import com.namastey.receivers.*
+import com.namastey.receivers.BoostService
+import com.namastey.receivers.BroadcastService
+import com.namastey.receivers.MaxLikeReceiver
+import com.namastey.receivers.MaxLikeService
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
 import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -479,9 +487,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         jsonObject.put("lat", latitude)
         jsonObject.put("lng", longitude)
 
+//        val feedVideoRequest = FeedVideoRequest(jsonArray,1,subCat, latitude, longitude)
         Log.e("DashboadActivity", "jsonObject: \t $jsonObject")
 
-        dashboardViewModel.getNewFeedListV2(jsonObject)
+        val jsonParser = JsonParser()
+        val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
+        dashboardViewModel.getNewFeedListV2(gsonObject)
     }
 
     private fun setupPermissions() {

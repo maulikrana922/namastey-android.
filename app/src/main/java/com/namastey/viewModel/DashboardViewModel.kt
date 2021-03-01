@@ -445,7 +445,7 @@ class DashboardViewModel constructor(
         }
     }
 
-     fun getNewFeedListV2(jsonObject: JSONObject) {
+     fun getNewFeedListV2(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {

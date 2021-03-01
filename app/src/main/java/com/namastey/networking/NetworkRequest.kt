@@ -431,7 +431,7 @@ interface NetworkRequest {
    // @FormUrlEncoded
     @POST(Constants.FEED_LIST_V2)
     fun requestToGetNewFeedListV2Async(
-       @Body  jsonObject: JSONObject
+       @Body  jsonObject: JsonObject
     ): Deferred<AppResponse<ArrayList<DashboardBean>>>
 
     @FormUrlEncoded

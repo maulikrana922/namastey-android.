@@ -480,7 +480,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         }
 
     suspend fun requestToGetNewFeedV2(
-       jsonObject: JSONObject
+       jsonObject: JsonObject
     ): AppResponse<ArrayList<DashboardBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetNewFeedListV2Async(jsonObject).await()
