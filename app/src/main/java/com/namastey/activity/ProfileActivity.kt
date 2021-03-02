@@ -50,7 +50,6 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
@@ -222,13 +221,27 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
     }
 
     fun onClickPassport(view: View) {
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
-            addLocationPermission()
-        else {
-            // openActivity(this@ProfileActivity, InAppPurchaseActivity())
-            val intent = Intent(this@ProfileActivity, MembershipActivity::class.java)
-            intent.putExtra("isFromAirport", true)
-            openActivity(intent)
+
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    false
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                completeSignUpDialog()
+            } else {
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+                    addLocationPermission()
+                else {
+                    // openActivity(this@ProfileActivity, InAppPurchaseActivity())
+                    val intent = Intent(this@ProfileActivity, MembershipActivity::class.java)
+                    intent.putExtra("isFromAirport", true)
+                    openActivity(intent)
+                }
+            }
         }
     }
 
@@ -368,7 +381,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         view.llRecurringTextView.visibility = View.GONE
         manageVisibility(view)
         view.btnBoost.setOnClickListener {
-           // alertDialog.dismiss()
+            // alertDialog.dismiss()
 
             val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.IN_APP_PRODUCT_ID, inAppProductId)
@@ -541,9 +554,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             )
 
             inAppProductId = "b00200"
-           /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
-            openActivity(intent)*/
+            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
+             openActivity(intent)*/
         }
 
         view.constHigh.setOnClickListener {
@@ -589,9 +602,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             )
 
             inAppProductId = "b00300"
-           /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
-            openActivity(intent)*/
+            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
+             openActivity(intent)*/
         }
     }
 

@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_membership.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShipView {
@@ -61,10 +60,10 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         activityMembershipBinding.viewModel = membershipViewModel
         initData()
 
-        membershipViewModel.getMembershipPriceList()
     }
 
     private fun initData() {
+        membershipViewModel.getMembershipPriceList()
 
         if (intent.hasExtra("isFromAirport"))
             isFromAirport = intent.getBooleanExtra("isFromAirport", false)
@@ -79,6 +78,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
 
         if (isFromAirport) {
             vpSlide.currentItem = 2
+//            if (membershipViewList.size != 0)
+//                showCustomDialog(2)
         }
     }
 
@@ -423,6 +424,9 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
 
     override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
         this.membershipViewList = membershipView
+
+        if (membershipViewList.size != 0)
+            showCustomDialog(2)
     }
 
     override fun onDestroy() {
