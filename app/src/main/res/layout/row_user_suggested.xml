@@ -27,6 +27,7 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         app:cornerRadius="@dimen/_8sdp"
+        android:background="@drawable/rounded_white_solid_black_border"
         app:roundedCorners="topRight|bottomLeft"
         android:layout_marginStart="@dimen/_2sdp"
         android:src="@drawable/default_placeholder"

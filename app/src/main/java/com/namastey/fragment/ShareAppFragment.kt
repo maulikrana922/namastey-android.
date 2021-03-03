@@ -36,6 +36,7 @@ import com.namastey.viewModel.ShareAppViewModel
 import kotlinx.android.synthetic.main.dialog_following_user.view.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
 import org.jetbrains.anko.doAsync
+import java.util.*
 import javax.inject.Inject
 
 
@@ -119,7 +120,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         ivAddFriendClose.setOnClickListener(this)
         tvFindMultiple.setOnClickListener(this)
         userId = arguments!!.getLong(Constants.USER_ID)
-        coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE)!!
+        coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE, "")!!
         videoUrl = arguments!!.getString(Constants.VIDEO_URL)!!
         //shareAppViewModel.getFollowingList(userId)
         shareAppViewModel.getFollowingShareList()

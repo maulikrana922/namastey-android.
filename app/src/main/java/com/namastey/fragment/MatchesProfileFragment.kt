@@ -30,6 +30,7 @@ import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.row_matches_profile_first.*
 import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
 import kotlinx.android.synthetic.main.view_matches_messages_list.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -104,6 +105,7 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
                 openActivity(intent)
             } else{
                 val intent = Intent(requireActivity(), MembershipActivity::class.java)
+                intent.putExtra("isFromMatchProfile", true)
                 openActivity(intent)
             }
 
@@ -157,11 +159,11 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         messageList.addAll(chatMessageList)
 
         if (messageList.isEmpty()) {
-            ivNoMatch.visibility = View.VISIBLE
+            llNoMatch.visibility = View.VISIBLE
             tvMessages.visibility = View.GONE
             rvMessagesList.visibility = View.GONE
         } else {
-            ivNoMatch.visibility = View.GONE
+            llNoMatch.visibility = View.GONE
             tvMessages.visibility = View.VISIBLE
             rvMessagesList.visibility = View.VISIBLE
         }

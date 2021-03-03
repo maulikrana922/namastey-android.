@@ -45,17 +45,43 @@
          app:layout_constraintTop_toBottomOf="@id/tvMessages"
          tools:ignore="ContentDescription" />-->
 
-    <ImageView
-        android:id="@+id/ivNoMatch"
-        android:layout_width="@dimen/_200sdp"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_gravity="center"
-        android:src="@drawable/no_match"
+    <LinearLayout
+        android:id="@+id/llNoMatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivNoMatch"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/empty_male_female"
+            tools:ignore="ContentDescription" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvNoMatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:text="@string/no_matches_yet"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/rvMessagesList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_EXTRA_BOLD" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

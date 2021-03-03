@@ -42,6 +42,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     private var membershipViewList = ArrayList<MembershipPriceBean>()
     private var selectedMonths = 1
     private var isFromAirport = false
+    private var isFromMatchProfile = false
     private var subscriptionId = "000020"
 
     override fun getViewModel() = membershipViewModel
@@ -68,6 +69,9 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         if (intent.hasExtra("isFromAirport"))
             isFromAirport = intent.getBooleanExtra("isFromAirport", false)
 
+        if (intent.hasExtra("isFromMatchProfile"))
+            isFromMatchProfile = intent.getBooleanExtra("isFromMatchProfile", false)
+
         setSliderData()
 
         vpSlide.adapter =
@@ -76,11 +80,12 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
-        if (isFromAirport) {
+        if (isFromAirport)
             vpSlide.currentItem = 2
-//            if (membershipViewList.size != 0)
-//                showCustomDialog(2)
-        }
+
+        if (isFromMatchProfile)
+            vpSlide.currentItem = 4
+
     }
 
     private fun setSliderData() {
@@ -88,7 +93,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.clear()
         membershipSliderArrayList.add(
             MembershipSlide(
-                resources.getString(R.string._1_boost_each_month),
+                resources.getString(R.string.boost_your_love_life),
+                //resources.getString(R.string._1_boost_each_month),
                 getString(R.string.skip_the_line_to_get_more_matches),
                 R.drawable.ic_cards_boots,
                 R.drawable.dialog_offread_gradiant,
@@ -97,7 +103,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-                resources.getString(R.string.out_of_likes),
+               // resources.getString(R.string.out_of_likes),
+                resources.getString(R.string.do_not_want_to_wait_slider),
                 getString(R.string.do_not_want_to_wait_slider),
                 R.drawable.ic_cards_outoflike,
                 R.drawable.dialog_gradiant_two,
@@ -106,7 +113,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-                resources.getString(R.string.swipe_around_the_world),
+                //resources.getString(R.string.swipe_around_the_world),
+                resources.getString(R.string.around_the_world_in_80_seconds),
                 getString(R.string.passport_to_anywhere),
                 R.drawable.ic_cards_passport,
                 R.drawable.dialog_gradiant_three,
@@ -115,7 +123,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-                resources.getString(R.string._5_free_super_message),
+                //resources.getString(R.string._5_free_super_message),
+                resources.getString(R.string.express_your_feelings),
                 getString(R.string.your_3x_more_likes),
                 R.drawable.ic_cards_super_message,
                 R.drawable.dialog_gradiant_five,
@@ -124,7 +133,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-                resources.getString(R.string.see_who_like_you),
+                // resources.getString(R.string.see_who_like_you),
+                resources.getString(R.string.your_crush_is_waiting),
                 getString(R.string.month_with_them_instantly),
                 R.drawable.ic_cards_super_like,
                 R.drawable.dialog_gradiant_six,
@@ -425,8 +435,11 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
     override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
         this.membershipViewList = membershipView
 
-        if (membershipViewList.size != 0)
-            showCustomDialog(2)
+        if (isFromAirport) {
+            vpSlide.currentItem = 2
+            if (membershipViewList.size != 0)
+                showCustomDialog(2)
+        }
     }
 
     override fun onDestroy() {

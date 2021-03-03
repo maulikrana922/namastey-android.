@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/holderComment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/holderComment"
     android:paddingTop="@dimen/_5sdp"
     android:paddingBottom="@dimen/_5sdp">
 
@@ -25,14 +25,15 @@
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_3sdp"
         android:paddingStart="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_3sdp"
         android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toTopOf="@id/guidlineComment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivCommentUser"
         app:layout_constraintTop_toTopOf="@id/ivCommentUser"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:typeface="MULI_EXTRA_BOLD" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidlineComment"
@@ -45,16 +46,16 @@
         android:id="@+id/tvComment"
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
-        android:paddingEnd="@dimen/_3sdp"
         android:paddingStart="@dimen/_3sdp"
-        android:textColor="@color/colorDarkGray"
-        app:socialFlags="mention"
+        android:paddingEnd="@dimen/_3sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/ivCommentUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvUsername"
         app:layout_constraintTop_toBottomOf="@id/guidlineComment"
-        app:layout_constraintVertical_chainStyle="packed" />
-
+        app:layout_constraintVertical_chainStyle="packed"
+        app:socialFlags="mention" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvDuration"

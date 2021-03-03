@@ -174,7 +174,8 @@
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
     <string name="age_message">Your age between</string>
-    <string name="age_message_value">Your age between %1$s and %2$s</string>
+   <!-- <string name="age_message_value">Your age between %1$s and %2$s</string>-->
+    <string name="age_message_value">%1$s - %2$s</string>
     <string name="albums">Albums</string>
     <string name="edit_info">Edit Info</string>
 
@@ -251,6 +252,7 @@
     <string name="account_settings">Account Settings</string>
     <string name="setting_interest_in">I\'m Interested In…</string>
     <string name="distance_msg">Up to %1$s kilometers away</string>
+    <string name="distance_msg_1">%1$s Kms</string>
     <string name="logout">Logout</string>
     <string name="msg_logout">Are you sure you want to logout?</string>
     <string name="private_account">Private Account</string>
@@ -341,7 +343,7 @@
     <string name="delete_account"><u>Delete Account</u></string>
     <string name="all_your_profile_data_will_be_deleted_permanently_within_30_days">All your profile data will be deleted permanently within 30 Days</string>
     <string name="suggest_your_account_to_others">Suggest your account to others</string>
-    <string name="suggest_your_account_text">Choose whetever your profile can be suggested to users interested in accounts like you.</string>
+    <string name="suggest_your_account_text">Choose whether your profile can be suggested to users in Trending.</string>
     <string name="allow_your_video_to_download">Allow your videos to be download</string>
     <string name="who_can_send_you_direct_msg">Who can send you direct messages</string>
     <string name="allow_your_to_share_your_profile">Allow users to share your profile</string>
@@ -361,7 +363,7 @@
 
     <!--Chat Screen-->
     <string name="mute_notification">Mute Notification</string>
-    <string name="match_delete">Match Delete</string>
+    <string name="match_delete">Delete Match</string>
     <string name="delete_chat">Delete Chat</string>
     <string name="msg_delete_user">Do you wish to delete following user?</string>
     <string name="delete_user">Delete User</string>
@@ -409,7 +411,7 @@
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
     <string name="do_not_want_to_wait">"11:59:55 \nDon't want to wait? Go Unlimited "</string>
-    <string name="do_not_want_to_wait_slider">"Don't want to wait? Go Unlimited "</string>
+    <string name="do_not_want_to_wait_slider">"Don't want to wait? Go Unlimited! "</string>
     <!--<string name="do_not_want_to_wait_slider">"11:59:55 Don't want to wait? Go Unlimited "</string>-->
     <string name="swipe_around_the_world">Swipe Around The World</string>
     <string name="passport_to_anywhere">Passport to anywhere</string>
@@ -463,11 +465,21 @@
     <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best result.</string>
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
-    <string name="buy_boost">BUY boost</string>
+    <string name="buy_boost">BUY Boost</string>
     <string name="text_ban_account">Your account has been banned.</string>
     <string name="text_violation">Your Namastey profile has been banned for activity that violets our  <a href="http://www.google.com"> Terms of use.</a></string>
     <string name="text_violation1">Your Namastey profile has been banned for activity that violets our <a href="http://www.google.com"> <![CDATA[<u><font color=#000000>Terms of use.</font></u>]]> </a></string>
     <string name="text_admin_block_note">"Please note that if you are subscribed to any premium services through the Play store, you will need to cancel your subscription with the appropriate provider."</string>
     <string name="action_logout">Logout</string>
     <string name="string_buy_boost">Please buy boost.</string>
+    <string name="your_crush_is_waiting">Your Crush is Waiting</string>
+    <string name="express_your_feelings">Express your feelings</string>
+    <string name="around_the_world_in_80_seconds">Around the world in 80 seconds</string>
+    <string name="get_boost">GET BOOST</string>
+    <string name="hide_profile_msg_1">You won\'t be visible to other users. Your existing matches will remain accessible. </string>
+    <string name="location">Location</string>
+    <string name="age_range">Age Range</string>
+    <string name="no_matches_yet">No Matches Yet!</string>
+    <string name="boost_your_love_life">Boost your love life</string>
+    <string name="privacy_options">Privacy Options</string>
 </resources>

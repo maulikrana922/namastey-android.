@@ -17,7 +17,6 @@
         android:background="@color/colorWhite"
         android:fillViewport="true">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +63,6 @@
                 app:typeface="MULI_SEMIBOLD" />
 
         </LinearLayout>
-
 
     </androidx.core.widget.NestedScrollView>
 

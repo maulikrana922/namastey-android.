@@ -70,8 +70,8 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -135,10 +135,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var currentLocationFromDB: RecentLocations? = null
     private var mIntent: IntentFilter? = null
 
-    var timer = 0L
-    var isFromProfile = false
-    var mRecyclerView: ExoPlayerRecyclerView? = null
-    var mLayoutManager: LinearLayoutManager? = null
+    private var timer = 0L
+    private var isFromProfile = false
+    private var mRecyclerView: ExoPlayerRecyclerView? = null
+    private var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
 
     private var videoIdList: ArrayList<Long> = ArrayList()
@@ -632,10 +632,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     private fun shareWithInApp(dashboardBean: DashboardBean) {
+        Log.e("DashboardActivity", "cover_image_url: \t ${dashboardBean?.cover_image_url}")
+        var coverImage = ""
+        if (dashboardBean.cover_image_url !=null && dashboardBean.cover_image_url != ""){
+            coverImage =  dashboardBean.cover_image_url
+        }else{
+            coverImage = ""
+        }
         addFragment(
             ShareAppFragment.getInstance(
                 sessionManager.getUserId(),
-                dashboardBean.cover_image_url,
+               // dashboardBean?.cover_image_url,
+                coverImage,
                 dashboardBean.video_url
             ),
             Constants.SHARE_APP_FRAGMENT
@@ -1724,15 +1732,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     showBoostPendingDialog(timer)
                 }
             } else {
-                object : CustomAlertDialog(
-                    this@DashboardActivity,
-                    getString(R.string.string_buy_boost),
-                    getString(R.string.ok), ""
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        dismiss()
-                    }
-                }.show()
+                val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
+                intent.putExtra("fromBuyBoost", true)
+                openActivity(intent)
+                /* object : CustomAlertDialog(
+                     this@DashboardActivity,
+                     getString(R.string.string_buy_boost),
+                     getString(R.string.ok), ""
+                 ) {
+                     override fun onBtnClick(id: Int) {
+                         dismiss()
+                     }
+                 }.show()*/
             }
 
 

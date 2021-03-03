@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_12sdp"
             android:text="@string/send_to"
-            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_17sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,10 +30,10 @@
 
         <ImageView
             android:id="@+id/ivFollwing"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="@dimen/_20sdp"
-            android:background="@drawable/squer_white_border_transparent_solid"
+            android:background="@drawable/square_black_border_transparent_solid"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_female"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +60,11 @@
             android:layout_height="@dimen/_150sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:background="@drawable/squer_white_border_transparent_solid"
+            android:contentDescription="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_female"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:contentDescription="@null"
             app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
 
         <com.namastey.customViews.CustomEditText
@@ -71,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_margin="@dimen/_16sdp"
-            android:background="@drawable/rounded_white_solid"
+            android:background="@drawable/rounded_white_solid_red_border"
             android:elevation="@dimen/_4sdp"
             android:hint="@string/leave_a_message"
             android:paddingStart="@dimen/_24sdp"
