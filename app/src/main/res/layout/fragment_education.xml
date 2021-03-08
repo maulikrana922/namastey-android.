@@ -113,8 +113,18 @@
             app:layout_constraintStart_toStartOf="@id/edtCollegeName"
             app:layout_constraintEnd_toEndOf="@id/edtCollegeName"/>
 
-        <ImageButton
+        <com.namastey.customViews.CustomButton
             android:id="@+id/btnEducationRemove"
+            style="@style/btnRedStyle"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:maxLength="35"
+            android:text="@string/remove_education"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btnEducationDone"
+            app:layout_constraintEnd_toEndOf="@id/edtCollegeName"
+            app:layout_constraintStart_toStartOf="@id/edtCollegeName" />
+
+        <com.namastey.customViews.CustomTextView
             style="@style/btnRedStyle"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_delete_white"

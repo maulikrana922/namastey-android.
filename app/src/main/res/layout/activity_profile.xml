@@ -190,10 +190,11 @@
                     android:id="@+id/viewFirst"
                     android:layout_width="@dimen/_1sdp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/colorGray"
+                    android:background="@color/colorBlack"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                     app:layout_constraintEnd_toStartOf="@id/tvFollowers"
                     app:layout_constraintStart_toEndOf="@id/tvViews"
@@ -203,9 +204,11 @@
                     android:id="@+id/viewSecond"
                     android:layout_width="@dimen/_1sdp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/colorGray"
+                    android:background="@color/colorBlack"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                     app:layout_constraintEnd_toStartOf="@id/tvFollowing"
                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
@@ -371,18 +374,9 @@
                     android:layout_margin="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvGetMore" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/indicator"
@@ -396,6 +390,18 @@
                     app:tabBackground="@drawable/indicator_selector"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp" />
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

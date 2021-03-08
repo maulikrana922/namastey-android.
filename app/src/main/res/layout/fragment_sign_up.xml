@@ -57,14 +57,14 @@
                     android:src="@drawable/ic_close"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="ContentDescription,RtlSymmetry" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/ivLogoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/signup_with_app"
+                    android:text="@string/namastey"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -206,7 +206,7 @@
 
                 <!--            </LinearLayout>-->
 
-                <com.namastey.customViews.CustomTextView
+                <!--<com.namastey.customViews.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -218,8 +218,37 @@
                     android:textColor="@color/colorDarkGray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />-->
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvNeverPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@string/we_never_post_to_other_social_media"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_11sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
 
+                <com.namastey.customViews.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_25sdp"
+                    android:gravity="center"
+                    android:text="@{Html.fromHtml(@string/tv_term_condition_message)}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNeverPost" />
                 <ProgressBar
                     android:id="@+id/progressBar"
                     android:layout_width="wrap_content"

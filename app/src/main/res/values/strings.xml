@@ -31,15 +31,17 @@
     <string name="permission_denied_message">You have denied location permission Allow permission at setting</string>
     <string name="permission_denied_storage_message">You have denied storage permission Allow permission at setting</string>
     <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
-    <string name="location_permission_message">Namastey uses your location for features like Filters,Search, Matches advertising and more.</string>
+    <!--<string name="location_permission_message">Namastey uses your location for features like Filters,Search, Matches advertising and more.</string>-->
+    <string name="location_permission_message">Namastey uses your location for features like Matches,Filters,Search and more.</string>
 
     <string name="tv_skip">Skip</string>
     <string name="tv_the_video_profile">The Video Profile</string>
-    <string name="tv_term_condition_message">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
+    <string name="tv_term_condition_message_temp">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
+    <string name="tv_term_condition_message"><![CDATA[<u><font color=#000000>Terms of service</font></u> | <u><font color=#000000>Privacy Policy </font></u>.]]></string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
-    <string name="btn_signup_phone_mail">Signup with phone/mail</string>
+    <string name="btn_signup_phone_mail">Signup with Phone / Mail</string>
     <string name="btn_signup_snapchat">Continue with Snapchat</string>
     <string name="btn_signup_tiktok">Continue with Tik Tok</string>
     <string name="btn_signup">Sign up</string>
@@ -64,9 +66,9 @@
 
     <!--    select gender fragment-->
     <string name="select_gender">Select Gender</string>
-    <string name="select_gender_message">Gender can\'t be changed once you saved</string>
-    <string name="date_of_birth">Select date of birth</string>
-    <string name="date_of_birth_message">You must be at least 18+ years old to join namastey app</string>
+    <string name="select_gender_message">Gender cannot be changed later.</string>
+    <string name="date_of_birth">Birthday</string>
+    <string name="date_of_birth_message">You must be at least 18 years old to join namastey.</string>
 
     <!--    select video language fragment-->
     <string name="select_video_language">Select Video Language</string>
@@ -149,7 +151,7 @@
     <string name="done">Done</string>
 
     <!--    Filter screen-->
-    <string name="trandings">Trandings</string>
+    <string name="trending">Trending</string>
     <string name="filters">Filters</string>
     <string name="search_user">Search users</string>
 
@@ -181,7 +183,7 @@
 
     <string name="choose_minimum_category">Choose a minimum of 03</string>
     <string name="select_interest">Select Interest</string>
-    <string name="im_interest_in">I\'m Interest In</string>
+    <string name="im_interest_in">Interest In</string>
     <string name="men">Men</string>
     <string name="women">Women</string>
     <string name="everyone">Everyone</string>
@@ -379,7 +381,7 @@
     <string name="msg_block_user_chat">To send a message please unblock this user</string>
 
     <!--Private account-->
-    <string name="this_account_is_private">This account is private</string>
+    <string name="this_account_is_private">Private Account</string>
     <string name="message_follow_private_account">Follow this account to see their photos and videos.</string>
 
     <!--Passport location screen-->
@@ -410,8 +412,9 @@
     <string name="continues">Continue</string>
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
+    <string name="out_of_likes1">Out of Likes?</string>
     <string name="do_not_want_to_wait">"11:59:55 \nDon't want to wait? Go Unlimited "</string>
-    <string name="do_not_want_to_wait_slider">"Don't want to wait? Go Unlimited! "</string>
+    <string name="do_not_want_to_wait_slider">Don’t want to wait? Go Unlimited!</string>
     <!--<string name="do_not_want_to_wait_slider">"11:59:55 Don't want to wait? Go Unlimited "</string>-->
     <string name="swipe_around_the_world">Swipe Around The World</string>
     <string name="passport_to_anywhere">Passport to anywhere</string>
@@ -482,4 +485,16 @@
     <string name="no_matches_yet">No Matches Yet!</string>
     <string name="boost_your_love_life">Boost your love life</string>
     <string name="privacy_options">Privacy Options</string>
+    <string name="namastey">Namastey</string>
+    <string name="we_never_post_to_other_social_media">We never post to other social media</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="enter_your_email_address">Enter Your Email Address</string>
+    <string name="get_otp">Get OTP</string>
+    <string name="check_message_for_4_digit_code">Check Message For 4 Digit Code</string>
+    <string name="choose_all_the_language_you_speak">Choose all the languages you speak</string>
+    <string name="selected">Selected</string>
+    <string name="_0">0</string>
+    <string name="explore_the_globe">Explore The Globe</string>
+    <string name="super_message">Super Message</string>
+    <string name="see_who_like_you1">See Who Likes You</string>
 </resources>

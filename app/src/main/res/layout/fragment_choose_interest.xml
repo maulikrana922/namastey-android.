@@ -109,13 +109,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/ivSplashBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/splash"
+            android:visibility="gone" />-->
+
+        <com.namastey.utils.SplashView
+            android:id="@+id/ivSplashBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:duration="1000"
+            app:holeFillColor="@color/colorWhite"
+            app:icon="@drawable/ic_spash_w_img"
+            app:iconColor="@color/colorButtonRed"
+            app:removeFromParentOnEnd="true"
             android:visibility="gone" />
 
 

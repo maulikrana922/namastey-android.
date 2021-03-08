@@ -34,6 +34,7 @@ import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.view_profile_basic_info.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
+import java.util.*
 import javax.inject.Inject
 
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileBasicView,
@@ -57,7 +58,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
     override fun onSuccessProfileDetails(profileBean: ProfileBean) {
         fillValue(profileBean)
-        if (fromAddSocialLink){
+        if (fromAddSocialLink) {
             val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
             addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
             (activity as EditProfileActivity).addFragment(
@@ -115,26 +116,26 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             R.drawable.ic_edit_gray,
             0
         )
-       /* if (isEditUsername) {
-            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_done_red,
-                0
-            )
-        } else {
-            isEditUsername = false
-            sessionManager.setStringValue(
-                edtProfileCasualName.text.toString().trim(),
-                Constants.KEY_CASUAL_NAME
-            )
-            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_edit_gray,
-                0
-            )
-        }*/
+        /* if (isEditUsername) {
+             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                 0,
+                 0,
+                 R.drawable.ic_done_red,
+                 0
+             )
+         } else {
+             isEditUsername = false
+             sessionManager.setStringValue(
+                 edtProfileCasualName.text.toString().trim(),
+                 Constants.KEY_CASUAL_NAME
+             )
+             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                 0,
+                 0,
+                 R.drawable.ic_edit_gray,
+                 0
+             )
+         }*/
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 
     }
@@ -172,7 +173,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
 //        rangeProfileAge.apply()
         rangeProfileAge.setOnRangeSeekbarChangeListener(OnRangeSeekbarChangeListener { minValue, maxValue ->
-            tvProfileAgeValue.text = "$minValue and $maxValue"
+            tvProfileAgeValue.text = "$minValue - $maxValue"
         })
 
         rangeProfileAge.setOnRangeSeekbarFinalValueListener { minValue, maxValue ->
@@ -346,7 +347,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                     tvSubCategory.text = subCategoryBean.name.toString()
                     tvSubCategory.setPadding(40, 20, 40, 20)
                     tvSubCategory.setTextColor(Color.BLACK)
-                    tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
+                    tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
 
                     view.chipProfileTag.addView(tvSubCategory)
 
@@ -361,7 +362,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
                         if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
                                 requireActivity(),
-                                R.drawable.rounded_white_solid_all_corner
+                                R.drawable.rounded_white_solid_white_corner
                             )?.constantState
                         ) {
                             subCategoryIdList.add(subCategoryBean.id)
@@ -375,7 +376,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             subCategoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
                             tvSubCategory.setTextColor(Color.BLACK)
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
+                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
 
                             editProfileApiCall()
                         }
@@ -570,7 +571,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
         if (sessionManager.getCategoryList().size >= 3) {
             tvProfileSelectCategory.text = sessionManager.getCategoryList().get(0).name
-            llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
+            llCategory.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
     }
 

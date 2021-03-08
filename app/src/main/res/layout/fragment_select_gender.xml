@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,12 +24,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_18sdp"
-            android:onClick="@{() -> viewModel.closeFragment()}"
             android:background="@drawable/circle_white_solid"
+            android:onClick="@{() -> viewModel.closeFragment()}"
             android:padding="@dimen/_2sdp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
 
         <com.google.android.material.card.MaterialCardView
@@ -36,8 +38,8 @@
             style="@style/CustomCardViewTopCornerStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:cardBackgroundColor="@color/colorWhite"
             android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -51,11 +53,11 @@
                 <View
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:background="@color/colorDarkGray"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/_4sdp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvGenderLabel"
@@ -64,14 +66,14 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:text="@string/select_gender"
+                    android:text="@string/gender"
                     android:textColor="@color/colorBlack"
                     android:textSize="20sp"
-                    app:typeface="MULI_SEMIBOLD"
                     app:layout_constraintBottom_toTopOf="@id/tvGenderMessage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_SEMIBOLD" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvGenderMessage"
@@ -83,56 +85,57 @@
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/cvMale"
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvGenderLabel" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvMale"
-                    android:layout_width="0dp"
                     style="@style/CustomCardViewTopCornerStyle"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    android:theme="@style/Theme.MaterialComponents"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/_110sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cardBackgroundColor="@color/colorWhite"
                     app:cardElevation="0dp"
                     app:layout_constraintBottom_toTopOf="@id/tvDateOfBirth"
                     app:layout_constraintEnd_toStartOf="@id/cvFemale"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
-                    app:layout_constraintTop_toBottomOf="@id/tvGenderMessage" >
+                    app:layout_constraintTop_toBottomOf="@id/tvGenderMessage">
 
                     <ImageView
                         android:id="@+id/ivMale"
                         android:layout_width="match_parent"
-                        android:background="@drawable/rounded_white_solid"
                         android:layout_height="match_parent"
+                        android:background="@drawable/rounded_white_solid_black_border"
                         android:padding="@dimen/_15sdp"
-                        android:src="@drawable/ic_male" />
+                        android:src="@drawable/ic_male"
+                        tools:ignore="ContentDescription" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cvFemale"
-                    android:layout_width="0dp"
                     style="@style/CustomCardViewTopCornerStyle"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    android:theme="@style/Theme.MaterialComponents"
+                    android:layout_width="0dp"
                     android:layout_height="@dimen/_110sdp"
-                    app:cardElevation="0dp"
                     android:layout_marginStart="@dimen/_6sdp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toEndOf="@id/cvMale"
-                    app:layout_constraintTop_toTopOf="@id/cvMale" >
+                    app:layout_constraintTop_toTopOf="@id/cvMale">
 
                     <ImageView
                         android:id="@+id/ivFemale"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_white_solid"
+                        android:background="@drawable/rounded_white_solid_black_border"
                         android:padding="@dimen/_13sdp"
                         android:src="@drawable/ic_female"
-                       />
+                        tools:ignore="ContentDescription" />
                 </com.google.android.material.card.MaterialCardView>
-
 
 
                 <com.namastey.customViews.CustomTextView
@@ -143,11 +146,11 @@
                     android:text="@string/date_of_birth"
                     android:textColor="@color/colorBlack"
                     android:textSize="20sp"
-                    app:typeface="MULI_SEMIBOLD"
                     app:layout_constraintBottom_toTopOf="@id/tvDOBMessage"
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
-                    app:layout_constraintTop_toBottomOf="@id/cvMale" />
+                    app:layout_constraintTop_toBottomOf="@id/cvMale"
+                    app:typeface="MULI_SEMIBOLD" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvDOBMessage"
@@ -169,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/rounded_white_solid"
-                    android:drawableLeft="@drawable/ic_calendar"
+                    android:drawableStart="@drawable/ic_calendar"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center_vertical"
                     android:padding="@dimen/_10sdp"
@@ -189,34 +192,34 @@
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@drawable/rounded_red_solid"
-                    android:text="@string/next"
                     android:onClick="@{() -> viewModel.onNextClick()}"
+                    android:text="@string/next"
                     android:textAllCaps="false"
-                    android:textStyle="bold"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/tvGenderLabel"
                     app:layout_constraintStart_toStartOf="@id/tvGenderLabel"
                     app:layout_constraintTop_toBottomOf="@id/tvDOB" />
 
-<!--                <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker-->
-<!--                    android:id="@+id/dobPicker"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    app:picker_curved="true"-->
-<!--                    app:picker_cyclic="true"-->
-<!--                    android:visibility="gone"-->
-<!--                    app:picker_displayHours="false"-->
-<!--                    android:textAlignment="textStart"-->
-<!--                    app:picker_visibleItemCount="7"-->
-<!--                    app:picker_itemSpacing="@dimen/_5sdp"-->
-<!--                    android:background="@color/colorWhite"-->
-<!--                    app:picker_selectorColor="@android:color/transparent"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    />-->
+                <!--                <com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker-->
+                <!--                    android:id="@+id/dobPicker"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:picker_curved="true"-->
+                <!--                    app:picker_cyclic="true"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    app:picker_displayHours="false"-->
+                <!--                    android:textAlignment="textStart"-->
+                <!--                    app:picker_visibleItemCount="7"-->
+                <!--                    app:picker_itemSpacing="@dimen/_5sdp"-->
+                <!--                    android:background="@color/colorWhite"-->
+                <!--                    app:picker_selectorColor="@android:color/transparent"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

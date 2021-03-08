@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
@@ -277,7 +276,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         tvCountrySelected.visibility = View.VISIBLE
         viewDivider.visibility = View.VISIBLE
         edtEmailPhone.hint = resources.getString(R.string.hint_phone)
-        tvLabel.text = resources.getString(R.string.phone)
+        tvLabel.text = resources.getString(R.string.enter_your_phone_number)
         tvPhoneSignup.background =
             ContextCompat.getDrawable(activity!!, R.drawable.rounded_bottom_left_red_solid)
         tvPhoneSignup.setTextColor(ContextCompat.getColor(activity!!, R.color.colorWhite))
@@ -294,7 +293,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
         tvCountrySelected.visibility = View.GONE
         viewDivider.visibility = View.GONE
         edtEmailPhone.hint = resources.getString(R.string.hint_email)
-        tvLabel.text = resources.getString(R.string.email)
+        tvLabel.text = resources.getString(R.string.enter_your_email_address)
         tvEmailSignup.background =
             ContextCompat.getDrawable(activity!!, R.drawable.rounded_top_right_red_solid)
         tvEmailSignup.setTextColor(ContextCompat.getColor(activity!!, R.color.colorWhite))

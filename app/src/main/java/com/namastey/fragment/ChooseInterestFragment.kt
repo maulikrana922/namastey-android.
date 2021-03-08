@@ -24,6 +24,7 @@ import com.namastey.uiView.ChooseInterestView
 import com.namastey.utils.*
 import com.namastey.viewModel.ChooseInterestViewModel
 import kotlinx.android.synthetic.main.fragment_choose_interest.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -106,7 +107,15 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
      * click on any item then display top select count and store id list
      */
     override fun onImageItemClick(interestBeanInterest: InterestSubCategoryBean) {
-        tvSelectLabel.text = resources.getString(R.string.tv_select).plus(" ").plus(noOfSelectedImage)
+        // tvSelectLabel.text = resources.getString(R.string.tv_select).plus(" ").plus(noOfSelectedImage)
+        if (noOfSelectedImage > 9)
+            tvSelectLabel.text =
+                noOfSelectedImage.toString().plus(" ").plus(resources.getString(R.string.selected))
+        else
+            tvSelectLabel.text = resources.getString(R.string._0)
+                .plus(noOfSelectedImage.toString())
+                .plus(" ")
+                .plus(resources.getString(R.string.selected))
 
         if (selectInterestIdList.contains(interestBeanInterest.id)) {
             selectCategoryId.remove(interestBeanInterest.category_id)

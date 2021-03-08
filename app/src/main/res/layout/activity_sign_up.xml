@@ -16,6 +16,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,10 +29,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/video_tint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/video_tint"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,17 +65,19 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSkipSignUp"
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_36sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:drawableEnd="@drawable/ic_skip_arrow"
                     android:drawablePadding="@dimen/_8sdp"
                     android:onClick="@{() -> viewModel.onSkipLogin()}"
                     android:padding="@dimen/_3sdp"
                     android:text="@string/tv_skip"
+                    android:textSize="@dimen/_18sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_EXTRA_BOLD" />
 
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/ivLogoNamastey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,7 +86,22 @@
                     android:src="@drawable/videoscreen_logo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSkipSignUp" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvSkipSignUp" />-->
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/ivLogoNamastey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:contentDescription="@string/app_name"
+                    android:text="@string/namastey"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_32sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSkipSignUp"
+                    app:typeface="MULI_BLACK" />
+
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvVideoSignUp"
@@ -86,147 +113,167 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivLogoNamastey" />
 
-
                 <LinearLayout
-                    android:id="@+id/llSignupWithFacebook"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_30sdp"
-                    android:layout_marginTop="@dimen/_40sdp"
-                    android:layout_marginEnd="@dimen/_30sdp"
-                    android:background="@drawable/rounded_blue_solid"
-                    android:gravity="center"
-                    android:onClick="onLoginClick"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvVideoSignUp">
+                    app:layout_constraintVertical_bias="1">
+
+
+                    <LinearLayout
+                        android:id="@+id/llSignupWithFacebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_40sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@drawable/rounded_blue_solid"
+                        android:gravity="center"
+                        android:onClick="onLoginClick"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            style="@style/tvWrapWhiteStyle"
+                            android:drawableStart="@drawable/ic_facebook"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:gravity="center_vertical"
+                            android:text="@string/btn_sign_facebook"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSignupWithGoogle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@drawable/rounded_red_solid"
+                        android:gravity="center"
+                        android:onClick="onLoginClick"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            style="@style/tvWrapWhiteStyle"
+                            android:drawableStart="@drawable/ic_google"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:gravity="center_vertical"
+                            android:text="@string/btn_signup_google"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSignupWithPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@drawable/rounded_white_solid"
+                        android:gravity="center"
+                        android:onClick="onLoginClick"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            style="@style/tvWrapWhiteStyle"
+                            android:gravity="center_vertical"
+                            android:text="@string/btn_signup_phone_mail"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSignupWithSnapchat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@drawable/rounded_yellow_solid"
+                        android:gravity="center"
+                        android:onClick="onLoginClick"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            style="@style/tvWrapWhiteStyle"
+                            android:drawableStart="@drawable/ic_snapchat"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:gravity="center_vertical"
+                            android:text="@string/btn_signup_snapchat"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--                <LinearLayout-->
+                    <!--                    android:visibility="invisible"-->
+                    <!--                    android:id="@+id/llSignupWithTiktok"-->
+                    <!--                    android:layout_width="0dp"-->
+                    <!--                    android:layout_height="@dimen/_35sdp"-->
+                    <!--                    android:layout_marginTop="@dimen/_15sdp"-->
+                    <!--                    android:background="@drawable/rounded_black_solid"-->
+                    <!--                    android:gravity="center"-->
+                    <!--                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"-->
+                    <!--                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"-->
+                    <!--                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat">-->
+
+                    <!--                    <com.namastey.customViews.CustomTextView-->
+                    <!--                        style="@style/tvWrapWhiteStyle"-->
+                    <!--                        android:drawableStart="@drawable/ic_tiktok"-->
+                    <!--                        android:drawablePadding="@dimen/_5sdp"-->
+                    <!--                        android:gravity="center_vertical"-->
+                    <!--                        android:text="@string/btn_signup_tiktok"-->
+                    <!--                        android:textAllCaps="false"-->
+                    <!--                        android:textColor="@color/colorWhite"-->
+                    <!--                        android:textStyle="bold" />-->
+
+                    <!--                </LinearLayout>-->
 
                     <com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:drawableStart="@drawable/ic_facebook"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:gravity="center_vertical"
-                        android:text="@string/btn_sign_facebook"
-                        android:textAllCaps="false"
+                        android:id="@+id/tvNeverPost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:text="@string/we_never_post_to_other_social_media"
                         android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llSignupWithGoogle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_red_solid"
-                    android:gravity="center"
-                    android:onClick="onLoginClick"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
-                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithFacebook">
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
 
                     <com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:drawableStart="@drawable/ic_google"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:gravity="center_vertical"
-                        android:text="@string/btn_signup_google"
-                        android:textAllCaps="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_25sdp"
+                        android:gravity="center"
+                        android:text="@{Html.fromHtml(@string/tv_term_condition_message)}"
                         android:textColor="@color/colorWhite"
-                        android:textStyle="bold" />
-
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNeverPost" />
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llSignupWithPhone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_white_solid"
-                    android:gravity="center"
-                    android:onClick="onLoginClick"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
-                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithGoogle">
-
-                    <com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:gravity="center_vertical"
-                        android:text="@string/btn_signup_phone_mail"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llSignupWithSnapchat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_yellow_solid"
-                    android:gravity="center"
-                    android:onClick="onLoginClick"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
-                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithPhone">
-
-                    <com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:drawableStart="@drawable/ic_snapchat"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:gravity="center_vertical"
-                        android:text="@string/btn_signup_snapchat"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <!--                <LinearLayout-->
-                <!--                    android:visibility="invisible"-->
-                <!--                    android:id="@+id/llSignupWithTiktok"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="@dimen/_35sdp"-->
-                <!--                    android:layout_marginTop="@dimen/_15sdp"-->
-                <!--                    android:background="@drawable/rounded_black_solid"-->
-                <!--                    android:gravity="center"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"-->
-                <!--                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat">-->
-
-                <!--                    <com.namastey.customViews.CustomTextView-->
-                <!--                        style="@style/tvWrapWhiteStyle"-->
-                <!--                        android:drawableStart="@drawable/ic_tiktok"-->
-                <!--                        android:drawablePadding="@dimen/_5sdp"-->
-                <!--                        android:gravity="center_vertical"-->
-                <!--                        android:text="@string/btn_signup_tiktok"-->
-                <!--                        android:textAllCaps="false"-->
-                <!--                        android:textColor="@color/colorWhite"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                </LinearLayout>-->
-
-                <com.namastey.customViews.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:text="@{Html.fromHtml(@string/tv_term_condition_message)}"
-                    android:textColor="@color/colorWhite"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

@@ -177,7 +177,7 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
 //                ivMale.alpha = 0.6f
 //                ivFemale.alpha = 1f
                 ivMale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
-                ivFemale.setBackgroundResource(R.drawable.rounded_white_solid)
+                ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
                 sessionManager.setUserGender(Constants.Gender.male.name)
             }
 
@@ -185,7 +185,7 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
 //                ivMale.alpha = 1f
 //                ivFemale.alpha = 0.6f
                 ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
-                ivMale.setBackgroundResource(R.drawable.rounded_white_solid)
+                ivMale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
                 sessionManager.setUserGender(Constants.Gender.female.name)
             }
         }

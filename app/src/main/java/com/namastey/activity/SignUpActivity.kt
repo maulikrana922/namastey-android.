@@ -8,10 +8,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -92,6 +95,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     }
 
     private fun initData() {
+        //constraintMain.setBackground(ContextCompat.getDrawable(this, R.drawable.video_tint))
+
         val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo)
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()

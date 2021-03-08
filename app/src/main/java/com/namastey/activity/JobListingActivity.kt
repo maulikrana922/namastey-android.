@@ -18,6 +18,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.JobViewModel
 import kotlinx.android.synthetic.main.activity_job_listing.*
+import java.util.*
 import javax.inject.Inject
 
 class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView, OnJobItemClick {

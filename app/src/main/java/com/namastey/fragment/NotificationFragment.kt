@@ -35,6 +35,7 @@ import com.namastey.viewModel.NotificationViewModel
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.dialog_notification_all_activity.view.*
 import kotlinx.android.synthetic.main.fragment_notification.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -458,7 +459,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
 
     }
 
-    private fun setSliderData() {
+    private fun setSliderDataTemp() {
         membershipSliderArrayList = ArrayList()
         membershipSliderArrayList.clear()
         membershipSliderArrayList.add(
@@ -507,6 +508,61 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
         )
     }
+
+    private fun setSliderData() {
+        membershipSliderArrayList = ArrayList()
+        membershipSliderArrayList.clear()
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.boost_your_love_life),
+                //resources.getString(R.string._1_boost_each_month),
+                getString(R.string.skip_the_line_to_get_more_matches),
+                R.drawable.ic_cards_boots,
+                R.drawable.dialog_offread_gradiant,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.out_of_likes1),
+                resources.getString(R.string.do_not_want_to_wait_slider),
+                R.drawable.ic_cards_outoflike,
+                R.drawable.dialog_gradiant_two,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                //resources.getString(R.string.swipe_around_the_world),
+                resources. getString(R.string.explore_the_globe),
+                resources.getString(R.string.around_the_world_in_80_seconds),
+                R.drawable.ic_cards_passport,
+                R.drawable.dialog_gradiant_three,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                resources.getString(R.string.super_message),
+                resources.getString(R.string.express_your_feelings),
+                //getString(R.string.your_3x_more_likes),
+                R.drawable.ic_cards_super_message,
+                R.drawable.dialog_gradiant_five,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+        membershipSliderArrayList.add(
+            MembershipSlide(
+                // resources.getString(R.string.see_who_like_you),
+                getString(R.string.see_who_like_you1),
+                resources.getString(R.string.your_crush_is_waiting),
+                R.drawable.ic_cards_super_like,
+                R.drawable.dialog_gradiant_six,
+                sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+            )
+        )
+    }
+
 
     private fun manageVisibility(view: View) {
         val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)

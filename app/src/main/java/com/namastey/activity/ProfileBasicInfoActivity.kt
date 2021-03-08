@@ -19,6 +19,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.view_profile_basic_info.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -116,21 +117,21 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
                 3 -> tvProfileInterestIn.text = getString(R.string.everyone)
             }
 
-            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
+            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
 
         if (sessionManager.getCategoryList().size >= 3) {
             tvProfileSelectCategory.text = sessionManager.getCategoryList().get(0).name
-            llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
+            llCategory.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
 
         if (sessionManager.getEducationBean().course.isNotEmpty()) {
             tvProfileEducation.text = sessionManager.getEducationBean().course
-            llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
+            llEducation.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
         if (sessionManager.getJobBean().title.isNotEmpty()) {
             tvProfileJobs.text = sessionManager.getJobBean().title
-            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
+            llJob.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
     }
 
@@ -165,37 +166,37 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
             isValid = false
         } else
-            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid)
+            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 
         if (sessionManager.getCategoryList().size < 3) {
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
             isValid = false
         } else
-            llCategory.setBackgroundResource(R.drawable.rounded_white_solid)
+            llCategory.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 
         if (sessionManager.getInterestIn() == 0) {
             llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
             isValid = false
         } else
-            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid)
+            llInterestIn.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 
 //        if (sessionManager.getEducationBean().college.isEmpty()) {
 //            llEducation.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
 //            isValid = false
 //        } else
-//            llEducation.setBackgroundResource(R.drawable.rounded_white_solid)
+//            llEducation.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 //
 //        if (sessionManager.getJobBean().title.isEmpty()) {
 //            llJob.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
 //            isValid = false
 //        } else
-//            llJob.setBackgroundResource(R.drawable.rounded_white_solid)
+//            llJob.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 //
 //        if (edtProfileTagline.text!!.trim().isEmpty()) {
 //            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
 //            isValid = false
 //        } else
-//            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid)
+//            edtProfileTagline.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 
 
         return isValid

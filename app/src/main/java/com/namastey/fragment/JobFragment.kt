@@ -17,6 +17,7 @@ import com.namastey.utils.*
 import com.namastey.viewModel.JobViewModel
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_job.*
+import java.util.*
 import javax.inject.Inject
 
 class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
@@ -114,6 +115,7 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
             requireActivity().onBackPressed()
         }
     }
+
     override fun onSuccessJobList(jobList: ArrayList<JobBean>) {
     }
 
@@ -147,7 +149,7 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
                         if (isFromJobListing) {
-                            if (jobBean.company_name.isNotEmpty()){
+                            if (jobBean.company_name.isNotEmpty()) {
                                 jsonObject.addProperty(
                                     Constants.JOB_ID,
                                     jobBean.id

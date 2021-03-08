@@ -163,6 +163,7 @@
             android:name=".activity.SignUpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
+            android:theme="@style/FullScreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activity.SplashActivity"

@@ -103,9 +103,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-               // resources.getString(R.string.out_of_likes),
+                resources.getString(R.string.out_of_likes1),
                 resources.getString(R.string.do_not_want_to_wait_slider),
-                getString(R.string.do_not_want_to_wait_slider),
                 R.drawable.ic_cards_outoflike,
                 R.drawable.dialog_gradiant_two,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
@@ -114,8 +113,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.add(
             MembershipSlide(
                 //resources.getString(R.string.swipe_around_the_world),
+                resources. getString(R.string.explore_the_globe),
                 resources.getString(R.string.around_the_world_in_80_seconds),
-                getString(R.string.passport_to_anywhere),
                 R.drawable.ic_cards_passport,
                 R.drawable.dialog_gradiant_three,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
@@ -123,9 +122,9 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         )
         membershipSliderArrayList.add(
             MembershipSlide(
-                //resources.getString(R.string._5_free_super_message),
+                resources.getString(R.string.super_message),
                 resources.getString(R.string.express_your_feelings),
-                getString(R.string.your_3x_more_likes),
+                //getString(R.string.your_3x_more_likes),
                 R.drawable.ic_cards_super_message,
                 R.drawable.dialog_gradiant_five,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
@@ -134,8 +133,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
         membershipSliderArrayList.add(
             MembershipSlide(
                 // resources.getString(R.string.see_who_like_you),
+                getString(R.string.see_who_like_you1),
                 resources.getString(R.string.your_crush_is_waiting),
-                getString(R.string.month_with_them_instantly),
                 R.drawable.ic_cards_super_like,
                 R.drawable.dialog_gradiant_six,
                 sessionManager.getStringValue(Constants.KEY_PROFILE_URL)

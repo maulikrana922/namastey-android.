@@ -71,7 +71,7 @@
                 android:id="@+id/tvDescJob"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:text="@string/education_message"
+                android:text="@string/job_message"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
