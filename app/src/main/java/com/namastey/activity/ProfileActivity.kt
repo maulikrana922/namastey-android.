@@ -758,8 +758,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onResume() {
         super.onResume()
-        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
-            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+        if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty()) {
+            tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
             if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
                 tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
         }
@@ -997,7 +997,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
-        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(profileBean.username, Constants.KEY_MAIN_USER_NAME)
         sessionManager.setUserGender(profileBean.gender)
         sessionManager.setUserId(profileBean.user_id)
 

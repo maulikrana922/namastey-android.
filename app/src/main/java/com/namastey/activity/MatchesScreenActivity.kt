@@ -54,7 +54,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
             userName1 = intent.extras!!.getString("username", "")
             val userProfile1 = intent.extras!!.getString("profile_url", "")
 
-            val userName2 = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+            val userName2 = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
             val userProfile2 = sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
 
             if (userProfile1 != null && userProfile1.isNotEmpty()) {

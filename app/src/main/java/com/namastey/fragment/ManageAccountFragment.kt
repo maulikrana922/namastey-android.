@@ -8,12 +8,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
-import com.namastey.activity.JobListingActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentManageAccountBinding
-import com.namastey.model.JobBean
-import com.namastey.uiView.JobView
 import com.namastey.uiView.ManageAccountView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
@@ -71,7 +68,7 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
 
     private fun initUI() {
 
-        tvUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+        tvUsername.text = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
         tvAge.text = sessionManager.getIntegerValue(Constants.KEY_AGE).toString()
 
         if (sessionManager.getUserGender() != "") {

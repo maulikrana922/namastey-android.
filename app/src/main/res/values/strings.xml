@@ -41,7 +41,7 @@
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
-    <string name="btn_signup_phone_mail">Signup with Phone / Mail</string>
+    <string name="btn_signup_phone_mail">Phone / Mail</string>
     <string name="btn_signup_snapchat">Continue with Snapchat</string>
     <string name="btn_signup_tiktok">Continue with Tik Tok</string>
     <string name="btn_signup">Sign up</string>
@@ -57,7 +57,7 @@
     <string name="cancel">Cancel</string>
     <string name="finish">Finish</string>
 
-    <string name="tv_veryfi_otp">Veryfi OTP</string>
+    <string name="tv_veryfi_otp">Verify OTP</string>
     <string name="tv_sent_otp">We have sent you an OTP</string>
 
     <string name="hint_email">Enter email address</string>
@@ -171,7 +171,7 @@
     <string name="hint_casual_name">Casual Name</string>
     <string name="hint_tagline">Tagline</string>
     <string name="select_category">Select Category</string>
-    <string name="interest_in">Interest In</string>
+    <string name="interest_in">Interested In</string>
     <string name="education">Education</string>
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
@@ -249,7 +249,7 @@
     <string name="discovery_settings">Discovery Settings</string>
     <string name="swiping_in">Swiping in</string>
     <string name="my_current_location">My Current Location</string>
-    <string name="discovery_location_msg">Change your swipe location to see namastey members in other cities.</string>
+    <string name="discovery_location_msg">Change you location to see namastey members in other cities.</string>
     <string name="distance">Distance</string>
     <string name="account_settings">Account Settings</string>
     <string name="setting_interest_in">I\'m Interested In…</string>
@@ -468,7 +468,7 @@
     <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best result.</string>
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
-    <string name="buy_boost">BUY Boost</string>
+    <string name="buy_boost">Buy Boost</string>
     <string name="text_ban_account">Your account has been banned.</string>
     <string name="text_violation">Your Namastey profile has been banned for activity that violets our  <a href="http://www.google.com"> Terms of use.</a></string>
     <string name="text_violation1">Your Namastey profile has been banned for activity that violets our <a href="http://www.google.com"> <![CDATA[<u><font color=#000000>Terms of use.</font></u>]]> </a></string>
@@ -487,14 +487,15 @@
     <string name="privacy_options">Privacy Options</string>
     <string name="namastey">Namastey</string>
     <string name="we_never_post_to_other_social_media">We never post to other social media</string>
-    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="enter_your_phone_number">Enter Your \nPhone Number</string>
     <string name="enter_your_email_address">Enter Your Email Address</string>
     <string name="get_otp">Get OTP</string>
-    <string name="check_message_for_4_digit_code">Check Message For 4 Digit Code</string>
+    <string name="check_message_for_4_digit_code">Check Message For 6 Digit Code</string>
     <string name="choose_all_the_language_you_speak">Choose all the languages you speak</string>
     <string name="selected">Selected</string>
     <string name="_0">0</string>
     <string name="explore_the_globe">Explore The Globe</string>
     <string name="super_message">Super Message</string>
     <string name="see_who_like_you1">See Who Likes You</string>
+    <string name="hint_user_name">Username</string>
 </resources>

@@ -3,6 +3,7 @@ package com.namastey.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 
 class ProfileBean() : Parcelable {
@@ -11,6 +12,7 @@ class ProfileBean() : Parcelable {
     var email: String = ""
     var name: String = ""
     var username: String = ""
+    var casual_name: String = ""
 
     @SerializedName("profile_url")
     var profileUrl: String = ""
@@ -57,6 +59,7 @@ class ProfileBean() : Parcelable {
         email = parcel.readString() ?: ""
         name = parcel.readString() ?: ""
         username = parcel.readString() ?: ""
+        casual_name = parcel.readString() ?: ""
         profileUrl = parcel.readString() ?: ""
         about_me = parcel.readString() ?: ""
         is_completly_signup = parcel.readInt() ?: 0
@@ -94,6 +97,7 @@ class ProfileBean() : Parcelable {
         parcel.writeString(email)
         parcel.writeString(name)
         parcel.writeString(username)
+        parcel.writeString(casual_name)
         parcel.writeString(profileUrl)
         parcel.writeString(about_me)
         parcel.writeInt(is_completly_signup)

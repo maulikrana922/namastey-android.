@@ -52,6 +52,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     private lateinit var profileBasicViewModel: ProfileBasicViewModel
     private var isEditUsername = false
     private var isEditTagLine = false
+    private var isEditCasualName = false
     private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
     private var subCategoryIdList: ArrayList<Int> = ArrayList()
     private var fromAddSocialLink = false
@@ -78,9 +79,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     override fun onFailedUniqueName(error: ErrorBean?) {
         Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
         isEditUsername = true
-        edtProfileCasualName.requestFocus()
-        edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
-        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+        edtProfileUserName.requestFocus()
+        edtProfileUserName.inputType = InputType.TYPE_CLASS_TEXT
+        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
             R.drawable.ic_done_red,
@@ -102,6 +103,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         Log.d("Success : ", msg)
         isEditTagLine = false
         isEditUsername = false
+        isEditCasualName = false
+        sessionManager.setStringValue(
+            edtProfileUserName.text.toString().trim(),
+            Constants.KEY_MAIN_USER_NAME
+        )
         sessionManager.setStringValue(
             edtProfileCasualName.text.toString().trim(),
             Constants.KEY_CASUAL_NAME
@@ -110,32 +116,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             edtProfileTagline.text.toString().trim(),
             Constants.KEY_TAGLINE
         )
+        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_edit_gray,
+            0
+        )
         edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
             R.drawable.ic_edit_gray,
             0
         )
-        /* if (isEditUsername) {
-             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                 0,
-                 0,
-                 R.drawable.ic_done_red,
-                 0
-             )
-         } else {
-             isEditUsername = false
-             sessionManager.setStringValue(
-                 edtProfileCasualName.text.toString().trim(),
-                 Constants.KEY_CASUAL_NAME
-             )
-             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                 0,
-                 0,
-                 R.drawable.ic_edit_gray,
-                 0
-             )
-         }*/
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 
     }
@@ -182,6 +174,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             sessionManager.setStringValue(minValue.toString(), Constants.KEY_AGE_MIN)
             editProfileApiCall()
         }
+        edtProfileUserName.inputType = InputType.TYPE_NULL
         edtProfileCasualName.inputType = InputType.TYPE_NULL
         edtProfileTagline.inputType = InputType.TYPE_NULL
         edtProfileTagline.minLines = 5
@@ -189,6 +182,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
         profileBasicViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
 //        generateProfileTagUI()
+        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+            0,
+            0,
+            R.drawable.ic_edit_gray,
+            0
+        )
+        edtProfileUserName.compoundDrawablePadding = 25
+
         edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -200,45 +201,25 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
         edtProfileTagline.compoundDrawablePadding = 25
 
-        /*if (fromAddSocialLink){
-            Log.e("EditProfileFragment", "socialAccountList: ${socialAccountList.size}")
-            val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
-            addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
-            (activity as EditProfileActivity).addFragment(
-                addLinksFragment,
-                Constants.ADD_LINKS_FRAGMENT
-            )
-        }*/
-
-        /*if (fromAddSocialLink){
-            Log.e("EditProfileFragment", "socialAccountList: ${socialAccountList.size}")
-            val addLinksFragment = AddLinksFragment.getInstance(true, socialAccountList)
-            addLinksFragment.setTargetFragment(this, Constants.REQUEST_CODE)
-            (activity as EditProfileActivity).addFragment(
-                addLinksFragment,
-                Constants.ADD_LINKS_FRAGMENT
-            )
-        }*/
-
-        edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
+        edtProfileUserName.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
                 if (event.action === MotionEvent.ACTION_UP) {
-                    if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
+                    if (event.rawX >= edtProfileUserName.right - (edtProfileUserName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
                     ) {
                         if (isEditUsername) {
                             isEditUsername = false
-                            edtProfileCasualName.inputType = InputType.TYPE_NULL
-                            edtProfileCasualName.clearFocus()
-                            if (edtProfileCasualName.text.toString()
-                                    .trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            edtProfileUserName.inputType = InputType.TYPE_NULL
+                            edtProfileUserName.clearFocus()
+                            if (edtProfileUserName.text.toString()
+                                    .trim() != sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                             ) {
                                 //editProfileApiCall()
                                 profileBasicViewModel.checkUniqueUsername(
-                                    edtProfileCasualName.text.toString().trim()
+                                    edtProfileUserName.text.toString().trim()
                                 )
                             }
-                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                            edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
                                 0,
                                 0,
                                 R.drawable.ic_edit_gray,
@@ -246,8 +227,86 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                             )
                         } else {
                             isEditUsername = true
-                            edtProfileCasualName.requestFocus()
+                            edtProfileUserName.requestFocus()
+                            edtProfileUserName.inputType = InputType.TYPE_CLASS_TEXT
+                            edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_done_red,
+                                0
+                            )
+                        }
+
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+
+        /* edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
+             override fun onTouch(v: View?, event: MotionEvent): Boolean {
+                 val DRAWABLE_RIGHT = 2
+                 if (event.action === MotionEvent.ACTION_UP) {
+                     if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
+                     ) {
+                         if (isEditCasualName) {
+                             isEditCasualName = false
+                             edtProfileCasualName.inputType = InputType.TYPE_NULL
+                             edtProfileCasualName.clearFocus()
+                             Log.e("EditProfileFragment", "KEY_CASUAL_NAME: ${sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)}")
+
+                             if (edtProfileCasualName.text.toString()
+                                     .trim() != sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                             ) {
+                                 editProfileApiCall()
+                             }
+                             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                                 0,
+                                 0,
+                                 R.drawable.ic_edit_gray,
+                                 0
+                             )
+                         } else {
+                             isEditCasualName = true
+                             edtProfileCasualName.requestFocus()
+                             edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
+                             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                                 0,
+                                 0,
+                                 R.drawable.ic_done_red,
+                                 0
+                             )
+                         }
+
+                         return true
+                     }
+                 }
+                 return false
+             }
+         })*/
+
+        edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent): Boolean {
+                val DRAWABLE_RIGHT = 2
+                if (event.action === MotionEvent.ACTION_UP) {
+                    if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
+                    ) {
+                        if (isEditCasualName) {
+                            isEditCasualName = false
+                            edtProfileCasualName.inputType = InputType.TYPE_NULL
+                            edtProfileCasualName.clearFocus()
+                            editProfileApiCall()
+                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_edit_gray,
+                                0
+                            )
+                        } else {
+                            isEditCasualName = true
                             edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
+                            edtProfileCasualName.requestFocus()
                             edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
                                 0,
                                 0,
@@ -262,6 +321,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                 return false
             }
         })
+
+
         edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
@@ -530,15 +591,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
     }
 
     private fun fillValue(profileBean: ProfileBean) {
+        Log.e("EditProfileFragment", "casual_name:\t ${profileBean.casual_name}")
 
         sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
         sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
         sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
         sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
-        sessionManager.setStringValue(profileBean.username, Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(profileBean.username, Constants.KEY_MAIN_USER_NAME)
+        if (profileBean.casual_name != null && profileBean.casual_name != "")
+            sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
         sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
-        edtProfileCasualName.setText(profileBean.username)
+        edtProfileUserName.setText(profileBean.username)
         edtProfileTagline.setText(profileBean.about_me)
         sessionManager.setCategoryList(profileBean.category)
         generateProfileTagUI()
@@ -581,6 +645,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
 
         jsonObject.addProperty(
             Constants.USERNAME,
+            edtProfileUserName.text.toString().trim()
+        )
+
+        jsonObject.addProperty(
+            Constants.CASUAL_NAME,
             edtProfileCasualName.text.toString().trim()
         )
 
@@ -625,7 +694,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
-        Log.d("CreateProfile Request:", jsonObject.toString())
+        Log.e("EditProfileFragment", "CreateProfile Request:\t $jsonObject")
 
         profileBasicViewModel.editProfile(jsonObject)
     }

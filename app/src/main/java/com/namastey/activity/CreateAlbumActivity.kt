@@ -193,7 +193,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
             jsonObject.addProperty(
                 Constants.USERNAME,
-                sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
             )
             jsonObject.addProperty(
                 Constants.MIN_AGE,

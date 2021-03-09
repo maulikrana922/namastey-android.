@@ -13,6 +13,7 @@ class DashboardBean() : Parcelable {
     var viewers: Long = 0
     var description: String = ""
     var username: String = ""
+    var casual_name: String = ""
     var profile_url: String = ""
     var cover_image_url: String = ""
     var video_url: String = ""
@@ -41,6 +42,7 @@ class DashboardBean() : Parcelable {
         parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
+        parcel.readString() ?: ""
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
@@ -62,6 +64,7 @@ class DashboardBean() : Parcelable {
         parcel.writeLong(viewers)
         parcel.writeString(description)
         parcel.writeString(username)
+        parcel.writeString(casual_name)
         parcel.writeString(profile_url)
         parcel.writeString(cover_image_url)
         parcel.writeString(video_url)

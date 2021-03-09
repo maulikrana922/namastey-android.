@@ -10,6 +10,7 @@ class MentionListBean() : Parcelable {
     var email: String = ""
     var profile_url: String = ""
     var username: String = ""
+    var casual_name: String = ""
     var mobile: String = ""
     var is_completly_signup: Int = 0
     var is_verified: Int = 0
@@ -19,6 +20,7 @@ class MentionListBean() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
+        parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
         parcel.readString() ?: ""
@@ -34,6 +36,7 @@ class MentionListBean() : Parcelable {
         parcel.writeString(email)
         parcel.writeString(profile_url)
         parcel.writeString(username)
+        parcel.writeString(casual_name)
         parcel.writeInt(is_completly_signup)
         parcel.writeInt(is_verified)
         parcel.writeString(verified_at)

@@ -38,6 +38,7 @@ object Constants {
         var PURCHASE_TYPE = "purchase_type"
         var NO_OF_BOOST = "no_of_boost"
     }
+
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
@@ -212,7 +213,7 @@ object Constants {
     const val KEY_EDUCATION = "KEY_EDUCATION"
     const val KEY_JOB = "KEY_JOB"
     const val KEY_INTEREST_IN = "KEY_INTEREST_IN"
-    const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
+    const val KEY_MAIN_USER_NAME = "KEY_MAIN_USER_NAME"
     const val KEY_TAGLINE = "KEY_TAGLINE"
     const val KEY_AGE_MIN = "KEY_AGE_MIN"
     const val KEY_PROFILE_URL = "KEY_PROFILE_URL"
@@ -244,6 +245,7 @@ object Constants {
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
+    const  val KEY_CASUAL_NAME="KEY_CASUAL_NAME"
 
 
     //    field key
@@ -252,6 +254,7 @@ object Constants {
     const val EMAIL = "email"
     const val IS_GUEST = "isGuest"
     const val USERNAME = "username"
+    const val CASUAL_NAME = "casual_name"
     const val USER_UNIQUE_ID = "user_uniqueId"
     const val OTP = "otp"
     const val FACEBOOK = "facebook"

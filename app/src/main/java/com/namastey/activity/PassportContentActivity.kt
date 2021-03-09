@@ -131,7 +131,7 @@ open class PassportContentActivity : FragmentActivity(),
                         createCustomMarker(
                             this@PassportContentActivity,
                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                         )
                     )
                 )
@@ -218,7 +218,7 @@ open class PassportContentActivity : FragmentActivity(),
                 createCustomMarker(
                     this@PassportContentActivity,
                     sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-                    sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                    sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                 )
             )
         )

@@ -491,8 +491,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
         if (profileBean.user_id == sessionManager.getUserId()) {
-            if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty()) {
-                tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+            if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty()) {
+                tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                 if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
                     tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
                 else
@@ -799,6 +799,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         val matchesListBean = MatchesListBean()
         matchesListBean.id = profileBean.user_id
         matchesListBean.username = profileBean.username
+        matchesListBean.casual_name = profileBean.casual_name
         matchesListBean.profile_pic = profileBean.profileUrl
         matchesListBean.is_match = profileBean.is_match
         matchesListBean.is_block = profileBean.is_block
@@ -848,7 +849,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun displayReportUserDialog(dashboardBean: ProfileBean) {
         object : CustomCommonAlertDialog(
             this@ProfileViewActivity,
-            dashboardBean.username,
+            dashboardBean.casual_name,
             getString(R.string.msg_report_user),
             dashboardBean.profileUrl,
             getString(R.string.report_user),
@@ -869,7 +870,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun displayBlockUserDialog(dashboardBean: ProfileBean) {
         object : CustomCommonAlertDialog(
             this@ProfileViewActivity,
-            dashboardBean.username,
+            dashboardBean.casual_name,
             getString(R.string.msg_block_user),
             dashboardBean.profileUrl,
             getString(R.string.block_user),

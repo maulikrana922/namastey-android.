@@ -59,13 +59,14 @@
 
                 <include
                     android:id="@+id/viewBasicInfo"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
                     layout="@layout/view_profile_basic_info"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    app:layout_constraintTop_toBottomOf="@id/imgTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="52dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/imgTop" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileFirstNext"

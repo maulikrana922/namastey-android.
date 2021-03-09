@@ -2,6 +2,7 @@ package com.namastey.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
 
 
 class FollowRequestBean() : Parcelable {

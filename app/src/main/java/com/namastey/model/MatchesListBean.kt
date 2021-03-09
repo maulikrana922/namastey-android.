@@ -2,12 +2,14 @@ package com.namastey.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
 
 
 class MatchesListBean() : Parcelable {
 
     var id: Long = 0
     var username: String = ""
+    var casual_name: String = ""
     var email: String = ""
     var mobile: String = ""
     var gender: String = ""
@@ -26,6 +28,7 @@ class MatchesListBean() : Parcelable {
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
         username = parcel.readString() ?: ""
+        casual_name = parcel.readString() ?: ""
         email = parcel.readString() ?: ""
         mobile = parcel.readString() ?: ""
         gender = parcel.readString() ?: ""
@@ -45,6 +48,7 @@ class MatchesListBean() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(username)
+        parcel.writeString(casual_name)
         parcel.writeString(email)
         parcel.writeString(mobile)
         parcel.writeString(gender)

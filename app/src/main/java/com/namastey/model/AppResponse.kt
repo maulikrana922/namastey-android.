@@ -12,6 +12,8 @@ class AppResponse<T> {
 
     var message: String = ""
 
+    var total: Int = 0
+
     var data: T? = null
 
     var errors: T? = null

@@ -142,7 +142,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var firstTime = true
 
     private var videoIdList: ArrayList<Long> = ArrayList()
+    private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
+    private var totalCount = 0
 
     override fun getViewModel() = dashboardViewModel
 
@@ -479,9 +481,19 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     fun getFeedListApi(subCat: Int) {
         val jsonObject = JSONObject()
 
-        val jsonArray = JSONArray(videoIdList)
+        val videoListJsonArray = JSONArray(videoIdList)
+        var userListJsonArray = JSONArray(userIdList)
+        // var userListJsonArray
 
-        jsonObject.put("ids", jsonArray)
+        Log.e("DashboadActivity", "totalCount: \t $totalCount")
+        if (totalCount >= 10) {
+            userListJsonArray = JSONArray(userIdList)
+        } else {
+            userListJsonArray = JSONArray(ArrayList<Long?>())
+        }
+
+        jsonObject.put("ids", videoListJsonArray)
+        jsonObject.put("user_ids", userListJsonArray)
         jsonObject.put("page", 1)
         jsonObject.put("sub_cat_id", subCat)
         jsonObject.put("lat", latitude)
@@ -493,6 +505,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val jsonParser = JsonParser()
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
         dashboardViewModel.getNewFeedListV2(gsonObject)
+
+        userIdList.clear()
     }
 
     private fun setupPermissions() {
@@ -634,15 +648,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun shareWithInApp(dashboardBean: DashboardBean) {
         Log.e("DashboardActivity", "cover_image_url: \t ${dashboardBean?.cover_image_url}")
         var coverImage = ""
-        if (dashboardBean.cover_image_url !=null && dashboardBean.cover_image_url != ""){
-            coverImage =  dashboardBean.cover_image_url
-        }else{
+        if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
+            coverImage = dashboardBean.cover_image_url
+        } else {
             coverImage = ""
         }
         addFragment(
             ShareAppFragment.getInstance(
                 sessionManager.getUserId(),
-               // dashboardBean?.cover_image_url,
+                // dashboardBean?.cover_image_url,
                 coverImage,
                 dashboardBean.video_url
             ),
@@ -759,7 +773,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun displayReportUserDialog(dashboardBean: DashboardBean) {
         object : CustomCommonAlertDialog(
             this@DashboardActivity,
-            dashboardBean.username,
+            dashboardBean.casual_name,
             getString(R.string.msg_report_user),
             dashboardBean.profile_url,
             getString(R.string.report_user),
@@ -816,7 +830,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private fun displayBlockUserDialog(dashboardBean: DashboardBean) {
         object : CustomCommonAlertDialog(
             this@DashboardActivity,
-            dashboardBean.username,
+            dashboardBean.casual_name,
             getString(R.string.msg_block_user),
             dashboardBean.profile_url,
             getString(R.string.block_user),
@@ -883,7 +897,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         membershipSliderArrayList.add(
             MembershipSlide(
                 //resources.getString(R.string.swipe_around_the_world),
-                resources. getString(R.string.explore_the_globe),
+                resources.getString(R.string.explore_the_globe),
                 resources.getString(R.string.around_the_world_in_80_seconds),
                 R.drawable.ic_cards_passport,
                 R.drawable.dialog_gradiant_three,
@@ -1279,8 +1293,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     }
 
     override fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>) {
-        Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
+        TODO("Not yet implemented")
+    }
 
+    override fun onSuccessFeedFinal(dashboardList: ArrayList<DashboardBean>, total: Int) {
+        Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
+        Log.e("DashboardActivity", "onSuccessNewFeed: total\t $total")
+        totalCount = total
         feedList.addAll(dashboardList)
 
         //getVideoUrl()
@@ -1297,7 +1316,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             if (!videoIdList.contains(ids.id)) {
                 videoIdList.add(ids.id)
             }
+            userIdList.add(ids.user_id)
         }
+        Log.e("DashboardActivity", "onSuccessNewFeed: userIdList\t $userIdList")
     }
 
     // Temp open this activity
@@ -2038,7 +2059,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         val profileBean: ProfileBean = ProfileBean()
                         profileBean.user_id = sessionManager.getUserId()
                         profileBean.username =
-                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                         profileBean.profileUrl =
                             sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
                         profileBean.gender = sessionManager.getStringValue(Constants.GENDER)
@@ -2380,17 +2401,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }*/
 
         if (feedItems.is_match == 1 && feedItems.is_like == 1) {
-
-            Log.e("DashboardActivity", "userName: \t ${feedItems.username}")
-            Log.e("DashboardActivity", "userName:   \t ${feedItems.profile_url}")
-            Log.e(
-                "DashboardActivity",
-                "userName: \t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"
-            )
-            Log.e(
-                "DashboardActivity",
-                "userName: \t ${sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)}"
-            )
             val intent = Intent(this@DashboardActivity, MatchesScreenActivity::class.java)
             intent.putExtra("username", feedItems.username)
             intent.putExtra("profile_url", feedItems.profile_url)

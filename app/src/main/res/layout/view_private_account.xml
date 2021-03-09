@@ -11,7 +11,6 @@
         android:id="@+id/ivPrivateAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/circle_grey_hollow"
         android:padding="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_18sdp"
         android:src="@drawable/ic_lock"
@@ -40,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/ivPrivateAccount"
         app:typeface="MULI_SEMIBOLD" />
 
-    <com.namastey.customViews.CustomTextView
+    <!--<com.namastey.customViews.CustomTextView
         android:id="@+id/tvFollowPrivateAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,5 +51,5 @@
         app:layout_constraintEnd_toEndOf="@id/tvPrivateAccount"
         app:layout_constraintStart_toStartOf="@id/tvPrivateAccount"
         app:layout_constraintTop_toBottomOf="@id/tvPrivateAccount"
-        app:typeface="MULI_SEMIBOLD" />
+        app:typeface="MULI_SEMIBOLD" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

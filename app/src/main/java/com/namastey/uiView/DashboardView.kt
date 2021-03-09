@@ -1,11 +1,13 @@
 package com.namastey.uiView
 
 import com.namastey.model.*
+import java.util.*
 
 interface DashboardView : BaseView {
 
     fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>)
     fun onSuccessFeed(dashboardList: ArrayList<DashboardBean>)
+    fun onSuccessFeedFinal(dashboardList: ArrayList<DashboardBean>, total: Int)
     fun onSuccessAddComment(commentBean: CommentBean)
     fun onSuccessGetComment(data: ArrayList<CommentBean>)
     fun onSuccessProfileLike(dashboardBean: DashboardBean)

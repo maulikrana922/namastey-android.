@@ -380,7 +380,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSettingDistanceMessage"
                 app:left_thumb_color="@color/colorButtonRed"
                 app:left_thumb_color_pressed="@color/colorButtonRed"
-                app:max_value="161"
+                app:max_value="160"
                 app:min_value="0" />
 
             <com.namastey.customViews.CustomTextView

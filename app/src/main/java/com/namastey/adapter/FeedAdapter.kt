@@ -214,8 +214,8 @@ class FeedAdapter(
                     ivCommentThird.visibility = View.GONE
                 }
             }
-            if (dashboardBean.username.isNotEmpty())
-                tvFeedName.text = dashboardBean.username
+           // if (dashboardBean.casual_name != "")
+                tvFeedName.text = dashboardBean.casual_name
 
 //            if (dashboardBean.profile_url.isNotEmpty())
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
@@ -244,67 +244,6 @@ class FeedAdapter(
             } else {
                 ivFeedFollow.setImageResource(R.drawable.ic_add_follow_from_profile)
             }
-            // Need to change as per api response
-            /*ivFeedFollow.setOnClickListener {
-                if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    var isFollow = 0
-                    val msg: String
-                    val btnText: String
-                    if (dashboardBean.is_follow == 1) {
-                        isFollow = 0
-                        msg = resources.getString(R.string.msg_remove_post)
-                        btnText = resources.getString(R.string.remove)
-                    } else {
-                        isFollow = 1
-                        msg = resources.getString(R.string.msg_send_follow_request)
-                        btnText = resources.getString(R.string.send)
-                    }
-                    object : CustomCommonAlertDialog(
-                        activity,
-                        dashboardBean.username,
-                        msg,
-                        dashboardBean.profile_url,
-                        btnText,
-                        resources.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnAlertOk.id -> {
-                                    onFeedItemClick.onClickFollow(
-                                        position,
-                                        dashboardBean,
-                                        isFollow
-                                    )
-                                }
-                            }
-                        }
-                    }.show()
-                } else {
-
-                    object : CustomAlertDialog(
-                        activity,
-                        activity.getString(R.string.complete_profile),
-                        activity.getString(R.string.ok),
-                        activity.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnPos.id -> {
-                                    activity.startActivity(
-                                        Intent(
-                                            activity,
-                                            ProfileActivity::class.java
-                                        )
-                                    )
-                                }
-                                btnNeg.id -> {
-                                    dismiss()
-                                }
-                            }
-                        }
-                    }.show()
-                }
-            }*/
 
             ivFeedFollow.setOnClickListener {
 
@@ -332,7 +271,7 @@ class FeedAdapter(
                     }
                     object : CustomCommonAlertDialog(
                         activity,
-                        dashboardBean.username,
+                        dashboardBean.casual_name,
                         msg,
                         dashboardBean.profile_url,
                         btnText,
@@ -350,88 +289,7 @@ class FeedAdapter(
                             }
                         }
                     }.show()
-                    /*object : CustomAlertDialog(
-                        activity,
-                        activity.getString(R.string.complete_profile),
-                        activity.getString(R.string.ok),
-                        activity.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnPos.id -> {
-                                    activity.startActivity(
-                                        Intent(
-                                            activity,
-                                            ProfileActivity::class.java
-                                        )
-                                    )
-                                }
-                                btnNeg.id -> {
-                                    dismiss()
-                                }
-                            }
-                        }
-                    }.show()*/
                 }
-
-                /*if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    var isFollow = 0
-                    val msg: String
-                    val btnText: String
-                    if (dashboardBean.is_follow == 1) {
-                        isFollow = 0
-                        msg = resources.getString(R.string.msg_remove_post)
-                        btnText = resources.getString(R.string.remove)
-                    } else {
-                        isFollow = 1
-                        msg = resources.getString(R.string.msg_send_follow_request)
-                        btnText = resources.getString(R.string.send)
-                    }
-                    object : CustomCommonAlertDialog(
-                        activity,
-                        dashboardBean.username,
-                        msg,
-                        dashboardBean.profile_url,
-                        btnText,
-                        resources.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnAlertOk.id -> {
-                                    onFeedItemClick.onClickFollow(
-                                        position,
-                                        dashboardBean,
-                                        isFollow
-                                    )
-                                }
-                            }
-                        }
-                    }.show()
-                } else {
-
-                    object : CustomAlertDialog(
-                        activity,
-                        activity.getString(R.string.complete_profile),
-                        activity.getString(R.string.ok),
-                        activity.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnPos.id -> {
-                                    activity.startActivity(
-                                        Intent(
-                                            activity,
-                                            ProfileActivity::class.java
-                                        )
-                                    )
-                                }
-                                btnNeg.id -> {
-                                    dismiss()
-                                }
-                            }
-                        }
-                    }.show()
-                }*/
             }
 
             tvFeedShare.text = dashboardBean.share.toString()
@@ -511,8 +369,6 @@ class FeedAdapter(
             }
 
             boostAnimationProgress(itemView)
-
-
         }
     }
 

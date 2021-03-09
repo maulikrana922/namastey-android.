@@ -40,6 +40,7 @@ import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.io.File
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 
 

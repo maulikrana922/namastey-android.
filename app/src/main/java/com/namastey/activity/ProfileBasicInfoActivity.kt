@@ -104,8 +104,8 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     private fun initValue() {
 
-        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty())
-            edtProfileCasualName.setText(sessionManager.getStringValue(Constants.KEY_CASUAL_NAME))
+        if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty())
+            edtProfileUserName.setText(sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
 
         if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
             edtProfileTagline.setText(sessionManager.getStringValue(Constants.KEY_TAGLINE))
@@ -137,16 +137,16 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     fun onClickProfileNext(view: View) {
 
-//        if (edtProfileCasualName.text!!.trim().isEmpty()){
-//            edtProfileCasualName.error = "casual name required"
+//        if (edtProfileUserName.text!!.trim().isEmpty()){
+//            edtProfileUserName.error = "casual name required"
 //        }
 
-        profileBasicViewModel.checkUniqueUsername(edtProfileCasualName.text.toString().trim())
+        profileBasicViewModel.checkUniqueUsername(edtProfileUserName.text.toString().trim())
 
         if (validation()) {
             sessionManager.setStringValue(
-                edtProfileCasualName.text.toString().trim(),
-                Constants.KEY_CASUAL_NAME
+                edtProfileUserName.text.toString().trim(),
+                Constants.KEY_MAIN_USER_NAME
             )
             sessionManager.setStringValue(
                 edtProfileTagline.text.toString().trim(),
@@ -162,11 +162,11 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     private fun validation(): Boolean {
         var isValid = true
 
-        if (edtProfileCasualName.text!!.trim().isEmpty()) {
-            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+        if (edtProfileUserName.text!!.trim().isEmpty()) {
+            edtProfileUserName.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
             isValid = false
         } else
-            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
+            edtProfileUserName.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
 
         if (sessionManager.getCategoryList().size < 3) {
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid_red_border)

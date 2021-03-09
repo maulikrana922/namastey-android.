@@ -25,6 +25,7 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
+import java.util.*
 import javax.inject.Inject
 
 class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
@@ -32,13 +33,14 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
 
     private lateinit var profileInterestViewModel: ProfileInterestViewModel
     private lateinit var activityProfileInterestBinding: ActivityProfileInterestBinding
 
-    companion object{
+    companion object {
         var categoryIdList: ArrayList<Int> = ArrayList()
         var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
     }
@@ -47,7 +49,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
 
-        if(!FacebookSdk.isInitialized())
+        if (!FacebookSdk.isInitialized())
             FacebookSdk.sdkInitialize(this@ProfileInterestActivity)
 
         profileInterestViewModel =
@@ -59,8 +61,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     }
 
     private fun initData() {
-        categoryIdList  = ArrayList()
-        socialAccountList  = ArrayList()
+        categoryIdList = ArrayList()
+        socialAccountList = ArrayList()
 //        Log.d("TAG", sessionManager.getCategoryList().toString())
         getSocialLinkAPI()
         generateProfileTagUI()
@@ -108,7 +110,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                     tvCategory.text = subCategoryBean.name.toString()
                     tvCategory.setPadding(40, 20, 40, 20)
                     tvCategory.setTextColor(Color.BLACK)
-                    tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
+                    tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
 
                     view.chipProfileTag.addView(tvCategory)
 
@@ -116,7 +118,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
                         if (tvCategory.background.constantState == ContextCompat.getDrawable(
                                 this@ProfileInterestActivity,
-                                R.drawable.rounded_white_solid_all_corner
+                                R.drawable.rounded_white_solid_white_corner
                             )?.constantState
                         ) {
                             categoryIdList.add(subCategoryBean.id)
@@ -128,7 +130,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                             categoryIdList.remove(subCategoryBean.id)
                             --profileTagCount
                             tvCategory.setTextColor(Color.BLACK)
-                            tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_all_corner)
+                            tvCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
                         }
                         tvCountProfileTag.text = profileTagCount.toString()
                     }
@@ -147,8 +149,8 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
                             0
                         )
                     } else {
-                        val count = llProfileTag.childCount -1
-                        for (index in 0..count){
+                        val count = llProfileTag.childCount - 1
+                        for (index in 0..count) {
                             val viewCategory = llProfileTag.getChildAt(index)
                             viewCategory.chipProfileTag.visibility = View.GONE
                             viewCategory.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -174,19 +176,19 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     override fun onSuccessResponse(data: ArrayList<SocialAccountBean>) {
         socialAccountList = data
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }) {
             mainFacebook.visibility = View.VISIBLE
             tvFacebookLink.text = data.single { s -> s.name == getString(R.string.facebook) }
                 .link
-        }else{
+        } else {
             mainFacebook.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }) {
             mainInstagram.visibility = View.VISIBLE
             tvInstagramLink.text = data.single { s -> s.name == getString(R.string.instagram) }
                 .link
-        }else{
+        } else {
             mainInstagram.visibility = View.GONE
         }
 
@@ -205,19 +207,19 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 //        }else{
 //            mainTikTok.visibility = View.GONE
 //        }
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }) {
             mainSpotify.visibility = View.VISIBLE
             tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
                 .link
-        }else{
+        } else {
             mainSpotify.visibility = View.GONE
         }
 
-        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }){
+        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }) {
             mainTwitter.visibility = View.VISIBLE
             tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.twitter) }
                 .link
-        }else{
+        } else {
             mainTwitter.visibility = View.GONE
         }
 //        if (data.any{ socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }){
@@ -249,28 +251,34 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
         super.onActivityReenter(resultCode, data)
-        if (resultCode == Constants.ADD_LINK){
+        if (resultCode == Constants.ADD_LINK) {
             profileInterestViewModel.getSocialLink()
         }
     }
-    fun onClickSelectInterest(view: View){
-        when(view){
-            ivAddLink ->{
-                addFragment(AddLinksFragment.getInstance(false,socialAccountList), Constants.ADD_LINKS_FRAGMENT)
+
+    fun onClickSelectInterest(view: View) {
+        when (view) {
+            ivAddLink -> {
+                addFragment(
+                    AddLinksFragment.getInstance(false, socialAccountList),
+                    Constants.ADD_LINKS_FRAGMENT
+                )
             }
         }
     }
+
     /**
      * click on next button open create album screen
      */
     fun onClickNextInterest(view: View) {
 //        Log.d("Profile: ",categoryIdList.toString())
-        Log.d("CAtegpru od ",categoryIdList.toString())
+        Log.d("CAtegpru od ", categoryIdList.toString())
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 
     override fun onSuccessSpotify(sporifyUrl: String) {
     }
+
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()

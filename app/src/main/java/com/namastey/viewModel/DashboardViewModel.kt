@@ -388,7 +388,7 @@ class DashboardViewModel constructor(
         }
     }
 
-   fun getNewFeedList(page: Int, subCatId: Int, lat: Double, lng: Double) {
+    fun getNewFeedList(page: Int, subCatId: Int, lat: Double, lng: Double) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -416,8 +416,8 @@ class DashboardViewModel constructor(
         }
     }
 
-     fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: ArrayList<Long>) {
-    //fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: Array<Long>) {
+    fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: ArrayList<Long>) {
+        //fun getNewFeedListV2(page: Int, subCatId: Int, lat: Double, lng: Double, ids: Array<Long>) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -445,7 +445,7 @@ class DashboardViewModel constructor(
         }
     }
 
-     fun getNewFeedListV2(jsonObject: JsonObject) {
+    fun getNewFeedListV2(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -454,7 +454,10 @@ class DashboardViewModel constructor(
                         .let { appResponse ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK) {
-                                dashboardView.onSuccessFeed(appResponse.data!!)
+                                dashboardView.onSuccessFeedFinal(
+                                    appResponse.data!!,
+                                    appResponse.total
+                                )
                             } else {
                                 dashboardView.onFailed(
                                     appResponse.message,

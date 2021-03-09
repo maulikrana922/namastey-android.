@@ -223,7 +223,7 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
 //                            createCustomMarker(
 //                                this@SearchLocationActivity,
 //                                sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-//                                sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                                sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
 //                            )
                         )
                     ).title(place.name.toString())
@@ -326,7 +326,7 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
 //                        createCustomMarker(
 //                            this@SearchLocationActivity,
 //                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-//                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                            sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
 //                        )
                         searchLocationMarker(this@SearchLocationActivity)
                     )
@@ -406,7 +406,7 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
 //                createCustomMarker(
 //                    this@SearchLocationActivity,
 //                    sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-//                    sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+//                    sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
 //                )
                 searchLocationMarker(this@SearchLocationActivity)
             )

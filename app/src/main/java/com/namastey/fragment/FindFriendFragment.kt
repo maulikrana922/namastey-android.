@@ -99,7 +99,7 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
                     "sms_body",
                     String.format(
                         getString(R.string.invite_message),
-                        sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                        sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                     )
                 )
                 startActivity(sendIntent)
@@ -113,7 +113,7 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
                     Intent.EXTRA_TEXT,
                     String.format(
                         getString(R.string.invite_message),
-                        sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                        sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                     )
                 )
                 sendIntent.type = "text/plain"
@@ -134,7 +134,7 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
                         Intent.EXTRA_TEXT,
                         String.format(
                             getString(R.string.invite_message),
-                            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME)
+                            sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
                         )
                     )
                     startActivity(sendIntent)
