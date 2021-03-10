@@ -79,7 +79,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         rangeProfileAge.setMaxStartValue(45f)
         rangeProfileAge.apply()
         rangeProfileAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            tvProfileAgeValue.text = "$minValue and $maxValue"
+            tvProfileAgeValue.text = "$minValue - $maxValue"
             sessionManager.setStringValue(minValue.toString(), Constants.KEY_AGE_MIN)
             sessionManager.setStringValue(maxValue.toString(), Constants.KEY_AGE_MAX)
         }

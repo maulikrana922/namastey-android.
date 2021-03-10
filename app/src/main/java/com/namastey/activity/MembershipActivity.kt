@@ -439,6 +439,12 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(), MemberShip
             if (membershipViewList.size != 0)
                 showCustomDialog(2)
         }
+
+        if (isFromMatchProfile) {
+            vpSlide.currentItem =4
+            if (membershipViewList.size != 0)
+                showCustomDialog(4)
+        }
     }
 
     override fun onDestroy() {

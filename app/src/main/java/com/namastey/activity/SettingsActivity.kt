@@ -116,7 +116,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         }
 
         seekbarSettingDistance.setOnSeekbarChangeListener { value ->
-            tvSettingDistanceMessage.text = String.format(getString(R.string.distance_msg), value)
+            tvSettingDistanceMessage.text = String.format(getString(R.string.distance_msg_1), value)
         }
 
         seekbarSettingDistance.setOnSeekbarFinalValueListener { value ->

@@ -485,7 +485,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         var userListJsonArray = JSONArray(userIdList)
         // var userListJsonArray
 
-        Log.e("DashboadActivity", "totalCount: \t $totalCount")
+        Log.e("DashboardActivity", "totalCount: \t $totalCount")
+        Log.e("DashboardActivity", "userIdList: \t ${userIdList.size}")
         if (totalCount >= 10) {
             userListJsonArray = JSONArray(userIdList)
         } else {
@@ -500,13 +501,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         jsonObject.put("lng", longitude)
 
 //        val feedVideoRequest = FeedVideoRequest(jsonArray,1,subCat, latitude, longitude)
-        Log.e("DashboadActivity", "jsonObject: \t $jsonObject")
+        Log.e("DashboardActivity", "jsonObject: \t $jsonObject")
 
         val jsonParser = JsonParser()
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
         dashboardViewModel.getNewFeedListV2(gsonObject)
 
-        userIdList.clear()
+       // userIdList.clear()
     }
 
     private fun setupPermissions() {
@@ -788,7 +789,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                 }
             }
         }.show()
-
     }
 
     /**

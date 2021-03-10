@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
@@ -322,8 +323,30 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         membershipBean5.description = getString(R.string.month_with_them_instantly)
         membershipList.add(membershipBean5)
 
+
+
         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
         indicator.setupWithViewPager(viewpagerMembership, true)
+        if (indicator.getTabAt(0)!!.isSelected) {
+            indicator.setSelectedTabIndicatorColor(Color.parseColor("#F30C45"))
+           // indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorRed))
+        } else if (indicator.getTabAt(1)!!.isSelected) {
+            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorBlueChat))
+        } else if (indicator.getTabAt(2)!!.isSelected) {
+            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorOrange))
+        } else if (indicator.getTabAt(3)!!.isSelected) {
+            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent))
+        } else if (indicator.getTabAt(4)!!.isSelected) {
+            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorPitch))
+        }
+
+        /*indicator.getTabAt(0)!!.isSelected//.setIcon(R.drawable.tab_color_grey);
+        indicator.getTabAt(0).setIcon(R.drawable.tab_color_grey);
+        indicator.getTabAt(1).setIcon(R.drawable.tab_color_black);
+        indicator.getTabAt(2).setIcon(R.drawable.tab_color_black);
+        indicator.getTabAt(3).setIcon(R.drawable.tab_color_black);
+        indicator.getTabAt(4).setIcon(R.drawable.tab_color_gold);*/
+
 
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)

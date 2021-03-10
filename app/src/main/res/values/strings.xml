@@ -183,7 +183,7 @@
 
     <string name="choose_minimum_category">Choose a minimum of 03</string>
     <string name="select_interest">Select Interest</string>
-    <string name="im_interest_in">Interest In</string>
+    <string name="im_interest_in">Interested In</string>
     <string name="men">Men</string>
     <string name="women">Women</string>
     <string name="everyone">Everyone</string>
@@ -488,7 +488,7 @@
     <string name="namastey">Namastey</string>
     <string name="we_never_post_to_other_social_media">We never post to other social media</string>
     <string name="enter_your_phone_number">Enter Your \nPhone Number</string>
-    <string name="enter_your_email_address">Enter Your Email Address</string>
+    <string name="enter_your_email_address">Enter Your \nEmail Address</string>
     <string name="get_otp">Get OTP</string>
     <string name="check_message_for_4_digit_code">Check Message For 6 Digit Code</string>
     <string name="choose_all_the_language_you_speak">Choose all the languages you speak</string>
