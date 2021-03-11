@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -298,6 +299,55 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.instagram) -> {
                     ivSocialIcon.setImageResource(R.drawable.profile_link_instagram)
+
+                    ivSocialIcon.setOnClickListener {
+                        Log.e("ProfileViewActivity", "Instagram Click: \t ${socialBean.link}")
+                        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+                            if (profileBean.user_profile_type == 0) {
+                                val uri = Uri.parse(socialBean.link)
+                                val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+                                likeIng.setPackage("com.instagram.android")
+
+                                try {
+                                    startActivity(likeIng)
+                                } catch (e: ActivityNotFoundException) {
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            // Uri.parse("http://instagram.com/xxx")
+                                            Uri.parse(socialBean.link)
+                                        )
+                                    )
+                                }
+                            } else if (profileBean.user_profile_type == 1) {
+                                //Do Nothing
+                            }
+                        } else {
+                            val uri = Uri.parse(socialBean.link)
+                            val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+                            likeIng.setPackage("com.instagram.android")
+
+                            try {
+                                startActivity(likeIng)
+                            } catch (e: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        // Uri.parse("http://instagram.com/xxx")
+                                        Uri.parse(socialBean.link)
+                                    )
+                                )
+                            }
+                        }
+
+//                        else{
+//                            intent = Intent(Intent.ACTION_VIEW)
+//                            intent.data = Uri.parse("market://details?id=com.spotify.music")
+//                            startActivity(intent)
+//                        }
+                    }
                 }
                 getString(R.string.snapchat) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_snapchat)
@@ -578,7 +628,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickProfileLike(view: View) {
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
-        }else {
+        } else {
             if (!sessionManager.isGuestUser()) {
                 if (profileBean.is_like == 1) {
                     profileViewModel.likeUserProfile(profileBean.user_id, 0)

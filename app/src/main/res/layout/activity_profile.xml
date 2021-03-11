@@ -387,7 +387,6 @@
                     app:layout_constraintEnd_toEndOf="@id/viewpagerMembership"
                     app:layout_constraintStart_toStartOf="@id/viewpagerMembership"
                     app:layout_constraintTop_toBottomOf="@id/viewpagerMembership"
-                    app:tabBackground="@drawable/indicator_selector"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp" />
 

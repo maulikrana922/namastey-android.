@@ -487,11 +487,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         Log.e("DashboardActivity", "totalCount: \t $totalCount")
         Log.e("DashboardActivity", "userIdList: \t ${userIdList.size}")
-        if (totalCount >= 10) {
+        if (totalCount >= userIdList.size) {
             userListJsonArray = JSONArray(userIdList)
         } else {
             userListJsonArray = JSONArray(ArrayList<Long?>())
         }
+        Log.e("DashboardActivity", "userListJsonArray: \t ${userListJsonArray}")
 
         jsonObject.put("ids", videoListJsonArray)
         jsonObject.put("user_ids", userListJsonArray)
@@ -507,7 +508,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
         dashboardViewModel.getNewFeedListV2(gsonObject)
 
-       // userIdList.clear()
+        // userIdList.clear()
     }
 
     private fun setupPermissions() {

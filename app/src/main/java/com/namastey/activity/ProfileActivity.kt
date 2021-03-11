@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
@@ -26,6 +25,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.SliderAdapter
@@ -51,6 +52,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Inject
+
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
@@ -323,34 +325,298 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         membershipBean5.description = getString(R.string.month_with_them_instantly)
         membershipList.add(membershipBean5)
 
-
-
         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)
         indicator.setupWithViewPager(viewpagerMembership, true)
-        if (indicator.getTabAt(0)!!.isSelected) {
-            indicator.setSelectedTabIndicatorColor(Color.parseColor("#F30C45"))
-           // indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorRed))
-        } else if (indicator.getTabAt(1)!!.isSelected) {
-            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorBlueChat))
-        } else if (indicator.getTabAt(2)!!.isSelected) {
-            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorOrange))
-        } else if (indicator.getTabAt(3)!!.isSelected) {
-            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorAccent))
-        } else if (indicator.getTabAt(4)!!.isSelected) {
-            indicator.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorPitch))
-        }
 
-        /*indicator.getTabAt(0)!!.isSelected//.setIcon(R.drawable.tab_color_grey);
-        indicator.getTabAt(0).setIcon(R.drawable.tab_color_grey);
-        indicator.getTabAt(1).setIcon(R.drawable.tab_color_black);
-        indicator.getTabAt(2).setIcon(R.drawable.tab_color_black);
-        indicator.getTabAt(3).setIcon(R.drawable.tab_color_black);
-        indicator.getTabAt(4).setIcon(R.drawable.tab_color_gold);*/
+        setTabIndicatorFirstPosition()
 
+        indicator.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                if (indicator.getTabAt(0)!!.isSelected) {
+                    setTabIndicatorFirstPosition()
+                } else if (indicator.getTabAt(1)!!.isSelected) {
+                    setTabIndicatorSecondPosition()
+                } else if (indicator.getTabAt(2)!!.isSelected) {
+                    setTabIndicatorThirdPosition()
+                } else if (indicator.getTabAt(3)!!.isSelected) {
+                    setTabIndicatorFourthPosition()
+                } else if (indicator.getTabAt(4)!!.isSelected) {
+                    setTabIndicatorFifthPosition()
+                } else {
+                    indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                        this@ProfileActivity,
+                        R.drawable.default_black_indicator
+                    )
+                    indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                        this@ProfileActivity,
+                        R.drawable.default_black_indicator
+                    )
+                    indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                        this@ProfileActivity,
+                        R.drawable.default_black_indicator
+                    )
+                    indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                        this@ProfileActivity,
+                        R.drawable.default_black_indicator
+                    )
+                    indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                        this@ProfileActivity,
+                        R.drawable.default_black_indicator
+                    )
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        /* if (indicator.getTabAt(0)!!.isSelected) {
+
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.selected_red_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+         } else if (indicator.getTabAt(1)!!.isSelected) {
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.selected_blue_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+         } else if (indicator.getTabAt(2)!!.isSelected) {
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.selected_orange_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+         } else if (indicator.getTabAt(3)!!.isSelected) {
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.selected_green_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+         } else if (indicator.getTabAt(4)!!.isSelected) {
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.selected_pitch_indicator
+             )
+         } else {
+             indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+             indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+                 this,
+                 R.drawable.default_black_indicator
+             )
+         }*/
 
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
+    }
+
+    private fun setTabIndicatorFirstPosition() {
+        indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.selected_red_indicator
+        )
+        indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_blue_indicator
+        )
+        indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_orange_indicator
+        )
+        indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_green_indicator
+        )
+        indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_pitch_indicator
+        )
+    }
+
+    private fun setTabIndicatorSecondPosition() {
+        indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_red_indicator
+        )
+        indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.selected_blue_indicator
+        )
+        indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_orange_indicator
+        )
+        indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_green_indicator
+        )
+        indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_pitch_indicator
+        )
+    }
+
+    private fun setTabIndicatorThirdPosition() {
+        indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_red_indicator
+        )
+        indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_blue_indicator
+        )
+        indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.selected_orange_indicator
+        )
+        indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_green_indicator
+        )
+        indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_pitch_indicator
+        )
+    }
+
+    private fun setTabIndicatorFourthPosition() {
+        indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_red_indicator
+        )
+        indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_blue_indicator
+        )
+        indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_orange_indicator
+        )
+        indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.selected_green_indicator
+        )
+        indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_pitch_indicator
+        )
+    }
+
+    private fun setTabIndicatorFifthPosition() {
+        indicator.getTabAt(0)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_red_indicator
+        )
+        indicator.getTabAt(1)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_blue_indicator
+        )
+        indicator.getTabAt(2)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_orange_indicator
+        )
+        indicator.getTabAt(3)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.unselected_green_indicator
+        )
+        indicator.getTabAt(4)!!.icon = ContextCompat.getDrawable(
+            this@ProfileActivity,
+            R.drawable.selected_pitch_indicator
+        )
     }
 
     inner class SliderTimer : TimerTask() {
