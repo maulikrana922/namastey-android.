@@ -639,6 +639,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
+
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
 //        isLike = dashboardBean.is_like

@@ -112,6 +112,9 @@ class FeedAdapter(
             parent.tag = this
             val dashboardBean = feedList[position]
 
+            Log.e("FeedAdapter", "itemCount: \t $itemCount")
+            Log.e("FeedAdapter", "position: \t $position")
+
             if (position == itemCount - 1 && feedList.size >= 10) {
                 (context as DashboardActivity).getFeedListApi(0)
             }
@@ -153,7 +156,7 @@ class FeedAdapter(
 
                 if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
                     // GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
-                    Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
+                    // Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
 
                     /*val contentUri = Uri.parse(dashboardBean.cover_image_url)
                     Log.e("FeedAdapter", "contentUri: \t $contentUri")
@@ -164,7 +167,7 @@ class FeedAdapter(
 
                 }
 
-                Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
+                // Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
 
                 handlerVideo.postDelayed({
                     onFeedItemClick.onPostViewer(dashboardBean.id)
@@ -214,8 +217,8 @@ class FeedAdapter(
                     ivCommentThird.visibility = View.GONE
                 }
             }
-           // if (dashboardBean.casual_name != "")
-                tvFeedName.text = dashboardBean.casual_name
+            // if (dashboardBean.casual_name != "")
+            tvFeedName.text = dashboardBean.casual_name
 
 //            if (dashboardBean.profile_url.isNotEmpty())
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
@@ -231,8 +234,8 @@ class FeedAdapter(
             tvFeedDesc.mentionColor = ContextCompat.getColor(context, R.color.colorBlueLight)
             tvFeedDesc.setOnMentionClickListener { view, text ->
 
-                Log.e("FeedAdapter", "setOnMentionClickListener: $text")
-                Log.e("FeedAdapter", "setOnMentionClickListener: ${view.mentions}")
+                //Log.e("FeedAdapter", "setOnMentionClickListener: $text")
+                //  Log.e("FeedAdapter", "setOnMentionClickListener: ${view.mentions}")
 
                 onFeedItemClick.onDescriptionClick(text.toString())
             }
@@ -349,10 +352,10 @@ class FeedAdapter(
                 animationVideoLike.visibility = View.GONE
             }
 
-            Log.e(
-                "FeedAdapter",
-                "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}"
-            )
+            /* Log.e(
+                 "FeedAdapter",
+                 "KEY_BOOST_ME: \t ${SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)}"
+             )*/
 
 
             //Todo: Change boost animation time- when start boost
@@ -388,18 +391,18 @@ class FeedAdapter(
                 )
                 var p = progress
                 p /= 100
-                Log.e("FeedAdapter", message)
-                Log.e("FeedAdapter", "progress: \t$progress")
-                Log.e("FeedAdapter", "p: \t$p")
-                Log.e("FeedAdapter", "fromUser: \t$fromUser")
+                //Log.e("FeedAdapter", message)
+                // Log.e("FeedAdapter", "progress: \t$progress")
+                //  Log.e("FeedAdapter", "p: \t$p")
+                //  Log.e("FeedAdapter", "fromUser: \t$fromUser")
             }
 
             override fun onStopTrackingTouch(seekBar: CircularSeekBar) {
-                Log.e("FeedAdapter", "onStopTrackingTouch")
+                //  Log.e("FeedAdapter", "onStopTrackingTouch")
             }
 
             override fun onStartTrackingTouch(seekBar: CircularSeekBar) {
-                Log.e("FeedAdapter", "onStartTrackingTouch")
+                //  Log.e("FeedAdapter", "onStartTrackingTouch")
             }
         })
     }

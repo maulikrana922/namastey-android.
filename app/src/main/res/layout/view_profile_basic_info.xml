@@ -64,10 +64,20 @@
             android:textColor="@color/colorRed"
             android:textColorHint="@color/colorDarkGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@id/edtProfileUserName"
-            app:layout_constraintStart_toStartOf="@id/edtProfileUserName"
-            app:layout_constraintTop_toBottomOf="@id/edtProfileUserName"
             app:typeface="MULI_EXTRA_BOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvCasualNameError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:singleLine="true"
+            android:textColor="@color/colorRed"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:typeface="MULI_EXTRA_BOLD" />
+
 
         <LinearLayout
             android:id="@+id/llCategory"

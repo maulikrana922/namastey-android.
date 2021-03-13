@@ -112,6 +112,7 @@
     <string name="privacy">Privacy</string>
     <string name="block">Block</string>
     <string name="report">Report</string>
+    <string name="delete">Delete</string>
     <string name="send">Send</string>
     <string name="hint_add_comments">Add Comments</string>
     <string name="msg_send_follow_request">Send follow request?</string>
@@ -267,6 +268,8 @@
     <string name="select_cover">Select cover</string>
     <string name="hint_video_desc">Describe your video</string>
     <string name="add_to">Add to</string>
+    <string name="add_to_album">Add to album</string>
+    <string name="album">Album</string>
     <string name="shared_with">Shared with</string>
     <string name="friends">Friends</string>
     <string name="no_one">No one</string>
@@ -498,4 +501,5 @@
     <string name="super_message">Super Message</string>
     <string name="see_who_like_you1">See Who Likes You</string>
     <string name="hint_user_name">Username</string>
+    <string name="please_enter_casual_name">Please enter casual name</string>
 </resources>

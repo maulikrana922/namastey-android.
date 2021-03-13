@@ -144,7 +144,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var videoIdList: ArrayList<Long> = ArrayList()
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
-    private var totalCount = 0
+    private var totalCount = 1
 
     override fun getViewModel() = dashboardViewModel
 
@@ -487,12 +487,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         Log.e("DashboardActivity", "totalCount: \t $totalCount")
         Log.e("DashboardActivity", "userIdList: \t ${userIdList.size}")
-        if (totalCount >= userIdList.size) {
+
+        if (totalCount >= 10) {
             userListJsonArray = JSONArray(userIdList)
         } else {
             userListJsonArray = JSONArray(ArrayList<Long?>())
+            userIdList.clear()
         }
-        Log.e("DashboardActivity", "userListJsonArray: \t ${userListJsonArray}")
+
+        Log.e("DashboardActivity", "userListJsonArray: \t $userListJsonArray")
 
         jsonObject.put("ids", videoListJsonArray)
         jsonObject.put("user_ids", userListJsonArray)
@@ -506,7 +509,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
 
         val jsonParser = JsonParser()
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
-        dashboardViewModel.getNewFeedListV2(gsonObject)
+
+        if (totalCount != 0)
+            dashboardViewModel.getNewFeedListV2(gsonObject)
 
         // userIdList.clear()
     }
@@ -1660,7 +1665,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     /**
-     * Click on commnet count display list of comment and add comment dialog
+     * Click on comment count display list of comment and add comment dialog
      */
     override fun onCommentClick(position: Int, postId: Long) {
         this.position = position
@@ -2164,7 +2169,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onResume() {
         super.onResume()
-        Log.e("DashboardActivity", "onResume")
+        //Log.e("DashboardActivity", "onResume")
         registerReceiver(
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
@@ -2174,19 +2179,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
             myBroadcastReceiver, IntentFilter("countDown")
         )
 
-        /*if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
-            //dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
-            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-            getFeedListApi(0)
-            sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
-        }*/
-
         mRecyclerView!!.onRestartPlayer()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("DashboardActivity", "onPause")
         if (mIntent != null) {
             unregisterReceiver(myBroadcastReceiver)
             mIntent = null
@@ -2198,19 +2195,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onStop() {
         super.onStop()
         mRecyclerView!!.onPausePlayer()
-        Log.e("DashboardActivity", "onStop")
 
     }
 
     override fun onRestart() {
         super.onRestart()
-        Log.e("DashboardActivity", "onRestart")
-        /*if (sessionManager.getBooleanValue(Constants.KEY_SET_RECENT_LOCATION)) {
-            //dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
-            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-            getFeedListApi(0)
-            sessionManager.setBooleanValue(false, Constants.KEY_SET_RECENT_LOCATION)
-        }*/
         mRecyclerView!!.onRestartPlayer()
     }
 

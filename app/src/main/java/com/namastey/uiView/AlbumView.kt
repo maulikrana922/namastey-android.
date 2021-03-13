@@ -14,4 +14,6 @@ interface AlbumView: BaseView {
     fun onSuccessBlockUser(msg: String)
     fun onSuccessProfileLike(dashboardBean: DashboardBean)
     fun onSuccessPostShare(msg: String)
+    fun onSuccessDeletePost()
+
 }

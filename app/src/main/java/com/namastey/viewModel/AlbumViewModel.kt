@@ -1,7 +1,9 @@
 package com.namastey.viewModel
 
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
 import com.namastey.R
+import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.AlbumView
@@ -238,6 +240,37 @@ class AlbumViewModel constructor(
                 albumView.onHandleException(t)
             }
         }
+    }
+
+    fun removePostVideo(postId: Long) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (albumView.isInternetAvailable()) {
+                    var jsonObject = JsonObject()
+                    jsonObject.addProperty(Constants.POST_ID, postId)
+                    networkService.requestToDeletePost(jsonObject)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                albumView.onSuccessDeletePost()
+                            } else {
+                                albumView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    albumView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                albumView.onHandleException(exception)
+            }
+        }
+
     }
 
     fun onDestroy() {

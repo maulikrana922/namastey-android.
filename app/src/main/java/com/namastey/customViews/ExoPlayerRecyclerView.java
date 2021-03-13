@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,21 +207,21 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 switch (playbackState) {
 
                     case Player.STATE_BUFFERING:
-                        Log.e(TAG, "onPlayerStateChanged: Buffering video.");
+                       // Log.e(TAG, "onPlayerStateChanged: Buffering video.");
                         /*if (progressBar != null) {
                             progressBar.setVisibility(VISIBLE);
                         }*/
 
                         break;
                     case Player.STATE_ENDED:
-                        Log.d(TAG, "onPlayerStateChanged: Video ended.");
+                      //  Log.d(TAG, "onPlayerStateChanged: Video ended.");
                         videoPlayer.seekTo(0);
                         break;
                     case Player.STATE_IDLE:
 
                         break;
                     case Player.STATE_READY:
-                        Log.e(TAG, "onPlayerStateChanged: Ready to play.");
+                       // Log.e(TAG, "onPlayerStateChanged: Ready to play.");
                         /*if (progressBar != null) {
                             progressBar.setVisibility(GONE);
                         }*/
@@ -304,7 +303,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             }
         }
 
-        Log.d(TAG, "playVideo: target position: " + targetPosition);
+       // Log.d(TAG, "playVideo: target position: " + targetPosition);
 
         // video is already playing so return
         if (targetPosition == playPosition) {
@@ -365,7 +364,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             mediaUrl = videoBeans.get(targetPosition).getVideo_url();
         }
 
-        Log.e("ExoPlayerView", "mediaUrl: " + mediaUrl);
+       // Log.e("ExoPlayerView", "mediaUrl: " + mediaUrl);
         if (mediaUrl != null) {
             MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(mediaUrl));
@@ -384,7 +383,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     private int getVisibleVideoSurfaceHeight(int playPosition) {
         int at = playPosition - ((LinearLayoutManager) Objects.requireNonNull(
                 getLayoutManager())).findFirstVisibleItemPosition();
-        Log.d(TAG, "getVisibleVideoSurfaceHeight: at: " + at);
+      //  Log.d(TAG, "getVisibleVideoSurfaceHeight: at: " + at);
 
         View child = getChildAt(at);
         if (child == null) {
@@ -456,10 +455,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     private void toggleVolume() {
         if (videoPlayer != null) {
             if (volumeState == VolumeState.OFF) {
-                Log.d(TAG, "togglePlaybackState: enabling volume.");
+               // Log.d(TAG, "togglePlaybackState: enabling volume.");
                 setVolumeControl(VolumeState.ON);
             } else if (volumeState == VolumeState.ON) {
-                Log.d(TAG, "togglePlaybackState: disabling volume.");
+              //  Log.d(TAG, "togglePlaybackState: disabling volume.");
                 setVolumeControl(VolumeState.OFF);
             }
         }

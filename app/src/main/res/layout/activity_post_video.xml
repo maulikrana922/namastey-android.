@@ -57,22 +57,22 @@
                     app:layout_constraintStart_toEndOf="@id/ivPostVideo"
                     app:layout_constraintTop_toTopOf="@id/ivPostVideo" />
 
-               <!-- <com.namastey.customViews.CustomEditText
-                    android:id="@+id/edtVideoDesc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@android:color/transparent"
-                    android:gravity="top"
-                    android:hint="@string/hint_video_desc"
-                    android:maxLines="4"
-                    android:minLines="4"
-                    android:padding="@dimen/_5sdp"
-                    app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgTop"
-                    app:typeface="MULI_SEMIBOLD" />-->
+                <!-- <com.namastey.customViews.CustomEditText
+                     android:id="@+id/edtVideoDesc"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="@dimen/_15sdp"
+                     android:layout_marginTop="@dimen/_20sdp"
+                     android:background="@android:color/transparent"
+                     android:gravity="top"
+                     android:hint="@string/hint_video_desc"
+                     android:maxLines="4"
+                     android:minLines="4"
+                     android:padding="@dimen/_5sdp"
+                     app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/imgTop"
+                     app:typeface="MULI_SEMIBOLD" />-->
 
                 <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                     android:id="@+id/edtVideoDesc"
@@ -127,7 +127,7 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginTop="@dimen/_25sdp"
                     android:paddingEnd="@dimen/_3sdp"
-                    android:text="@string/add_to"
+                    android:text="@string/album"
                     android:textColor="@color/colorBlack"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/ivSelectCover" />
@@ -139,7 +139,6 @@
                     android:background="@drawable/rounded_gray_solid_all_corner"
                     android:drawableRight="@drawable/ic_arrow_down_gray"
                     android:drawablePadding="@dimen/_3sdp"
-                    android:drawableTint="@color/colorWhite"
                     android:onClick="onClickSelectAlbum"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_3sdp"
@@ -229,6 +228,7 @@
                     android:layout_marginTop="@dimen/_25sdp"
                     android:text="@string/automatically_share"
                     android:textColor="@color/colorDarkGray"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/tvCommentOff"
                     app:layout_constraintTop_toBottomOf="@id/tvCommentOff" />
 
@@ -239,6 +239,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:onClick="onClickFacebook"
                     android:src="@drawable/ic_link_facebook"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/tvAutoshareMsg"
                     app:layout_constraintTop_toBottomOf="@id/tvAutoshareMsg" />
 
@@ -248,8 +249,21 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:src="@drawable/ic_link_instagram"
+                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
                     app:layout_constraintTop_toTopOf="@id/ivShareFacebook" />
+
+                <!-- <com.namastey.customViews.CustomButton
+                     android:id="@+id/btnPostVideo"
+                     style="@style/btnRedStyle"
+                     android:layout_marginTop="@dimen/_15sdp"
+                     android:layout_marginBottom="@dimen/_20sdp"
+                     android:onClick="onClickPostVideo"
+                     android:text="@string/post"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
+                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
+                     app:layout_constraintTop_toBottomOf="@id/ivShareFacebook" />-->
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnPostVideo"
@@ -261,7 +275,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
-                    app:layout_constraintTop_toBottomOf="@id/ivShareFacebook" />
+                    app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
+                    app:layout_constraintVertical_bias="1" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

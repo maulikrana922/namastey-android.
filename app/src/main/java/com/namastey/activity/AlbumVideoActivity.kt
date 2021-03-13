@@ -52,6 +52,7 @@ import com.namastey.viewModel.AlbumViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_album_video.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
@@ -64,7 +65,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView, OnVideoClick,
@@ -100,7 +100,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onSuccess(msg: String) {
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
-
     }
 
     override fun onSuccessAddComment(commentBean: CommentBean) {
@@ -532,7 +531,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         } else {
-            openShareOptionDialog(videoBean)
+            openShareOptionDialog(videoBean, position)
         }
     }
 
@@ -544,7 +543,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Share option with video
      * Need to reduce this code
      */
-    private fun openShareOptionDialog(videoBean: VideoBean) {
+    private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
+
+        this.position = position
+
         bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
@@ -587,6 +589,19 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             shareOther(videoBean)
         }
 
+
+        if (sessionManager.getUserId() == videoBean.user_id) {
+            bottomSheetDialogShare.ivShareReport.visibility = View.GONE
+            bottomSheetDialogShare.tvShareReport.visibility = View.GONE
+            bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
+        } else {
+            bottomSheetDialogShare.ivShareReport.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareReport.visibility = View.VISIBLE
+            bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
+            bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
+        }
+
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -603,6 +618,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
         bottomSheetDialogShare.ivShareBlock.setOnClickListener {
             displayBlockUserDialog(videoBean)
+        }
+        bottomSheetDialogShare.ivShareDelete.setOnClickListener {
+            displayDeletePostDialog(videoBean)
+        }
+        bottomSheetDialogShare.tvShareDelete.setOnClickListener {
+            displayDeletePostDialog(videoBean)
         }
 
         bottomSheetDialogShare.show()
@@ -639,7 +660,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     private fun shareWithInApp(videoBean: VideoBean) {
         addFragment(
-            ShareAppFragment.getInstance(sessionManager.getUserId(), videoBean.cover_image_url, videoBean.video_url),
+            ShareAppFragment.getInstance(
+                sessionManager.getUserId(),
+                videoBean.cover_image_url,
+                videoBean.video_url
+            ),
             Constants.SHARE_APP_FRAGMENT
         )
     }
@@ -858,6 +883,28 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }.show()
     }
 
+    private fun displayDeletePostDialog(videoBean: VideoBean) {
+        object : CustomAlertDialog(
+            this@AlbumVideoActivity,
+            getString(R.string.msg_remove_post),
+            getString(R.string.delete),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        bottomSheetDialogShare.dismiss()
+                        albumViewModel.removePostVideo(videoBean.id)
+                    }
+
+                    btnNeg.id ->{
+                        bottomSheetDialogShare.dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
+
     /**
      * Display dialog with option (Reason)
      */
@@ -911,6 +958,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
         videoList[position].share = videoList[position].share + 1
         albumVideoAdapter.notifyDataSetChanged()
+    }
+
+    override fun onSuccessDeletePost() {
+        videoList.removeAt(position)
+        albumVideoAdapter.notifyItemRemoved(position)
+        albumVideoAdapter.notifyItemRangeChanged(position, albumVideoAdapter.itemCount)
     }
 
     override fun onResume() {

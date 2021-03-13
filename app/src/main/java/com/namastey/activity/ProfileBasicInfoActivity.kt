@@ -45,7 +45,7 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
     override fun onFailedUniqueName(error: ErrorBean?) {
         Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
         tvUniqueNameError.visibility = View.VISIBLE
-        tvUniqueNameError.text = error!!.user_name
+        tvUniqueNameError.text = error.user_name
     }
 
     override fun onSuccessUniqueName(msg: String) {
@@ -167,6 +167,16 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             isValid = false
         } else
             edtProfileUserName.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
+
+        if (edtProfileCasualName.text!!.trim().isEmpty()) {
+            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+            tvCasualNameError.visibility = View.VISIBLE
+            tvCasualNameError.text = resources.getString(R.string.please_enter_casual_name)
+            isValid = false
+        } else {
+            tvCasualNameError.visibility = View.GONE
+            edtProfileCasualName.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
+        }
 
         if (sessionManager.getCategoryList().size < 3) {
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid_red_border)

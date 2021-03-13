@@ -58,6 +58,10 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     override fun onSuccessPostShare(msg: String) {
     }
 
+    override fun onSuccessDeletePost() {
+        TODO("Not yet implemented")
+    }
+
     override fun getViewModel() = albumViewModel
 
     override fun getLayoutId() = R.layout.fragment_album

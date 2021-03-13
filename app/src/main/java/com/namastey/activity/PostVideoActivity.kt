@@ -55,8 +55,8 @@ import kotlinx.coroutines.withContext
 import org.buffer.android.thumby.ThumbyActivity
 import org.buffer.android.thumby.util.ThumbyUtils
 import java.io.File
+import java.util.*
 import javax.inject.Inject
-
 
 class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoView,
     OnMentionUserItemClick {
@@ -132,6 +132,12 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //            videoFile = File(Uri.parse(videoBean.video_url).path)
             GlideLib.loadImage(this, ivSelectCover, videoBean.cover_image_url)
             tvAlbumName.isEnabled = false
+            tvAlbumName.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_lock,
+                0
+            )
 
             val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
             pictureFile = File(folder, Constants.FILE_NAME)
