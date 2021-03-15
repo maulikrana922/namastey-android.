@@ -391,6 +391,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                     }
                 }
 
+                Log.e("EditProfileFragment", "categoryBean: Name: \t ${ categoryBean.name.toString()}")
+                Log.e("EditProfileFragment", "categoryBean: startColor: \t ${ categoryBean.startColor}")
+                Log.e("EditProfileFragment", "categoryBean: endColor: \t ${ categoryBean.endColor}")
+
                 Utils.rectangleShapeGradient(
                     view, intArrayOf(
                         Color.parseColor(categoryBean.startColor),

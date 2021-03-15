@@ -177,7 +177,7 @@
     <string name="jobs">Jobs</string>
     <string name="age">Age</string>
     <string name="age_message">Your age between</string>
-   <!-- <string name="age_message_value">Your age between %1$s and %2$s</string>-->
+    <!-- <string name="age_message_value">Your age between %1$s and %2$s</string>-->
     <string name="age_message_value">%1$s - %2$s</string>
     <string name="albums">Albums</string>
     <string name="edit_info">Edit Info</string>
@@ -397,7 +397,7 @@
 
     <!--Membership screen-->
     <string name="back_to_profile">Back to Profile</string>
-    <string name="_5_super_message_every_day">5 Super message every day</string>
+    <string name="_5_super_message_every_day">5 Super message</string>
     <string name="_1_boost_each_month">1 Boost each month</string>
     <string name="get_content_from_any_place">Get content from any place</string>
     <string name="enter_destination">Enter Destination</string>
@@ -502,4 +502,6 @@
     <string name="see_who_like_you1">See Who Likes You</string>
     <string name="hint_user_name">Username</string>
     <string name="please_enter_casual_name">Please enter casual name</string>
+    <string name="no_messages">No Messages</string>
+    <string name="travel_around_the_world">Travel around the world</string>
 </resources>

@@ -5,13 +5,14 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_select_category.view.*
+import java.util.*
 
 
 class SelectCategoryAdapter(
@@ -60,92 +61,93 @@ class SelectCategoryAdapter(
                 } else {
                     tvSelectCategory.setTextColor(Color.BLACK)
                 }
-                when {
-                    position % 6 == 0 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_one_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_one_end
-                            )
-                        )
-                    }
-                    position % 6 == 1 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_two_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_two_end
-                            )
-                        )
-                    }
-                    position % 6 == 2 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_three_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_three_end
-                            )
-                        )
-                    }
-                    position % 6 == 3 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_four_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_four_end
-                            )
-                        )
-                    }
-                    position % 6 == 4 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_five_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_five_end
-                            )
-                        )
-                    }
-                    position % 6 == 5 -> {
-                        categoryList[position].startColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_six_start
-                            )
-                        )
-                        categoryList[position].endColor = "#" + Integer.toHexString(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.gradient_six_end
-                            )
-                        )
-                    }
-                }
+
+                /* when {
+                     position % 6 == 0 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_one_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_one_end
+                             )
+                         )
+                     }
+                     position % 6 == 1 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_two_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_two_end
+                             )
+                         )
+                     }
+                     position % 6 == 2 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_three_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_three_end
+                             )
+                         )
+                     }
+                     position % 6 == 3 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_four_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_four_end
+                             )
+                         )
+                     }
+                     position % 6 == 4 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_five_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_five_end
+                             )
+                         )
+                     }
+                     position % 6 == 5 -> {
+                         categoryList[position].startColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_six_start
+                             )
+                         )
+                         categoryList[position].endColor = "#" + Integer.toHexString(
+                             ContextCompat.getColor(
+                                 context,
+                                 R.color.gradient_six_end
+                             )
+                         )
+                     }
+                 }*/
                 onCategoryItemClick.onCategoryItemClick(categoryList[position])
             }
         }

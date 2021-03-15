@@ -21,6 +21,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowingViewModel
 import kotlinx.android.synthetic.main.fragment_following.*
+import java.util.*
 import javax.inject.Inject
 
 class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingView,

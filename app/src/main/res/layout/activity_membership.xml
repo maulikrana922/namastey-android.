@@ -193,7 +193,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/_8sdp"
                         android:onClick="onClickPassport"
-                        android:text="@string/passport_to_swipe_around_the_world"
+                        android:text="@string/travel_around_the_world"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintStart_toEndOf="@+id/ivMessage"
@@ -230,7 +230,6 @@
                         app:layout_constraintStart_toEndOf="@+id/ivMessage"
                         app:layout_constraintTop_toBottomOf="@+id/tvLikes" />
                 </LinearLayout>
-
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnCreateAlbumNext"

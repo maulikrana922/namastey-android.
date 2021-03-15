@@ -274,12 +274,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         currentLocationFromDB = dbHelper.getLastRecentLocations()
         mRecyclerView = findViewById(R.id.viewpagerFeed)
 
-        Utils.rectangleShapeGradient(
+        /*Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
                 ContextCompat.getColor(this, R.color.color_spotify),
                 ContextCompat.getColor(this, R.color.color_instagram)
             )
-        )
+        )*/
         if (sessionManager.getUserGender() == Constants.Gender.female.name)
             ivUser.setImageResource(R.drawable.ic_female_user)
         else

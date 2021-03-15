@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llMainSelectCategory"
+    style="@style/CustomCardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/Theme.MaterialComponents"
-    style="@style/CustomCardViewStyle"
-    app:cardPreventCornerOverlap="false"
-    app:strokeWidth="0dp"
-    android:elevation="@dimen/_10sdp"
-    app:cardMaxElevation="@dimen/_15sdp"
-    app:cardBackgroundColor="@color/colorWhite"
-    app:rippleColor="@android:color/transparent"
     android:layout_marginTop="@dimen/_7sdp"
     android:layout_marginBottom="@dimen/_7sdp"
-    android:id="@+id/llMainSelectCategory">
+    android:elevation="@dimen/_10sdp"
+    android:theme="@style/Theme.MaterialComponents"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardMaxElevation="@dimen/_15sdp"
+    app:cardPreventCornerOverlap="false"
+    app:rippleColor="@android:color/transparent"
+    app:strokeWidth="0dp">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvSelectCategory"
-            style="@style/tvRoundCornerStyle"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            app:typeface="MULI_EXTRA_BOLD"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvSelectCategory"
+        style="@style/tvRoundCornerStyle"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:typeface="MULI_EXTRA_BOLD" />
 
 
 </com.google.android.material.card.MaterialCardView>

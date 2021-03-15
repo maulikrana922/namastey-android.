@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.04" />
+            app:layout_constraintGuide_percent="0.08" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"

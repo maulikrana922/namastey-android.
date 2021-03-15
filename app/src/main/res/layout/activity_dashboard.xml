@@ -135,6 +135,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="@dimen/_3sdp"
+                    android:background="@drawable/rounded_white_hollow"
                     android:drawableTint="@color/colorWhite"
                     android:onClick="onClickDiscover"
                     android:paddingStart="@dimen/_12sdp"

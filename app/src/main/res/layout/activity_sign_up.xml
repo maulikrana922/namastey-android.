@@ -174,28 +174,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llSignupWithPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_marginEnd="@dimen/_30sdp"
-                        android:background="@drawable/rounded_white_solid"
-                        android:gravity="center"
-                        android:onClick="onLoginClick"
-                        android:paddingTop="@dimen/_8sdp"
-                        android:paddingBottom="@dimen/_8sdp">
-
-                        <com.namastey.customViews.CustomTextView
-                            style="@style/tvWrapWhiteStyle"
-                            android:gravity="center_vertical"
-                            android:text="@string/btn_signup_phone_mail"
-                            android:textAllCaps="false"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/llSignupWithSnapchat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -219,6 +197,29 @@
                             android:textStyle="bold" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSignupWithPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:background="@drawable/rounded_white_solid"
+                        android:gravity="center"
+                        android:onClick="onLoginClick"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            style="@style/tvWrapWhiteStyle"
+                            android:gravity="center_vertical"
+                            android:text="@string/btn_signup_phone_mail"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
 
                     <!--                <LinearLayout-->
                     <!--                    android:visibility="invisible"-->

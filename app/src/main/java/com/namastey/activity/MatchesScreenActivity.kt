@@ -93,7 +93,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
         sendIntent.action = Intent.ACTION_SEND
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
         sendIntent.putExtra(
-            Intent.EXTRA_TEXT, String.format(getString(R.string.msg_matches),userName1)
+            Intent.EXTRA_TEXT, String.format(getString(R.string.msg_matches), userName1)
         )
         sendIntent.type = "text/plain"
         startActivity(sendIntent)
@@ -101,6 +101,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
 
     fun onClickOpenChat(view: View) {
         val intent = Intent(this@MatchesScreenActivity, MatchesActivity::class.java)
+        intent.putExtra("userName", userName1)
         intent.putExtra("onClickMatches", true)
         openActivity(intent)
     }

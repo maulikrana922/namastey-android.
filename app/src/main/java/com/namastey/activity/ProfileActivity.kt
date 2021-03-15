@@ -301,28 +301,29 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     private fun setMembershipList() {
         val membershipBean1 = MembershipBean()
-        membershipBean1.name = resources.getString(R.string._1_boost_each_month)
+
+        membershipBean1.name = resources.getString(R.string.boost_your_love_life)
         membershipBean1.description = getString(R.string.skip_the_line_to_get_more_matches)
         membershipList.add(membershipBean1)
 
         val membershipBean2 = MembershipBean()
-        membershipBean2.name = resources.getString(R.string.out_of_likes)
+        membershipBean2.name = resources.getString(R.string.out_of_likes1)
         membershipBean2.description = getString(R.string.do_not_want_to_wait_slider)
         membershipList.add(membershipBean2)
 
         val membershipBean3 = MembershipBean()
-        membershipBean3.name = resources.getString(R.string.swipe_around_the_world)
-        membershipBean3.description = getString(R.string.passport_to_anywhere)
+        membershipBean3.name = resources.getString(R.string.explore_the_globe)
+        membershipBean3.description = getString(R.string.around_the_world_in_80_seconds)
         membershipList.add(membershipBean3)
 
         val membershipBean4 = MembershipBean()
-        membershipBean4.name = resources.getString(R.string._5_free_super_message)
-        membershipBean4.description = getString(R.string.your_3x_more_likes)
+        membershipBean4.name = resources.getString(R.string.super_message)
+        membershipBean4.description = getString(R.string.express_your_feelings)
         membershipList.add(membershipBean4)
 
         val membershipBean5 = MembershipBean()
-        membershipBean5.name = resources.getString(R.string.see_who_like_you)
-        membershipBean5.description = getString(R.string.month_with_them_instantly)
+        membershipBean5.name = resources.getString(R.string.see_who_like_you1)
+        membershipBean5.description = getString(R.string.your_crush_is_waiting)
         membershipList.add(membershipBean5)
 
         viewpagerMembership.adapter = SliderAdapter(this@ProfileActivity, membershipList)

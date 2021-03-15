@@ -591,11 +591,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
 
         if (sessionManager.getUserId() == videoBean.user_id) {
+            bottomSheetDialogShare.ivShareBlock.visibility = View.GONE
+            bottomSheetDialogShare.tvShareBlock.visibility = View.GONE
             bottomSheetDialogShare.ivShareReport.visibility = View.GONE
             bottomSheetDialogShare.tvShareReport.visibility = View.GONE
             bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
         } else {
+            bottomSheetDialogShare.ivShareBlock.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.ivShareReport.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareReport.visibility = View.VISIBLE
             bottomSheetDialogShare.ivShareDelete.visibility = View.GONE

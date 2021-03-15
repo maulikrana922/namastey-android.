@@ -13,10 +13,11 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_18sdp"
-        android:src="@drawable/ic_lock"
+        android:src="@drawable/ic_private_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
 
     <com.namastey.customViews.CustomTextView
@@ -27,7 +28,7 @@
         android:layout_marginEnd="@dimen/_25sdp"
         android:gravity="center"
         android:paddingStart="@dimen/_15sdp"
-        android:paddingTop="@dimen/_13sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_2sdp"
         android:singleLine="true"

@@ -50,6 +50,7 @@
             app:layout_constraintTop_toTopOf="@id/cardView" />
 
         <com.namastey.customViews.CustomTextView
+            android:id="@+id/customTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -83,7 +84,6 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/rounded_white_solid_black_border"
-            android:elevation="@dimen/_20sdp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +111,7 @@
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

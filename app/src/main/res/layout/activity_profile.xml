@@ -194,7 +194,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                     app:layout_constraintEnd_toStartOf="@id/tvFollowers"
                     app:layout_constraintStart_toEndOf="@id/tvViews"
@@ -208,7 +208,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:background="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfileCamera"
                     app:layout_constraintEnd_toStartOf="@id/tvFollowing"
                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
@@ -404,7 +404,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
 
         <FrameLayout
             android:id="@+id/flContainer"

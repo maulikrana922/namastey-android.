@@ -39,6 +39,9 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
     private lateinit var tabOne: TextView
     private lateinit var tabTwo: TextView
 
+    private var onClickMatches = false
+    private var userName = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -56,7 +59,8 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
         tabMatchesProfile.setupWithViewPager(viewPagerMatchesProfile)
         setupTabIcons()
         if (intent.hasExtra("onClickMatches")) {
-            val onClickMatches = intent.getBooleanExtra("onClickMatches", false)
+            onClickMatches = intent.getBooleanExtra("onClickMatches", false)
+            userName = intent.getStringExtra("userName")!!
             if (onClickMatches)
                 tabMatchesProfile.getTabAt(0)?.select()
             else
@@ -156,7 +160,16 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
         } else {
-            finishActivity()
+            if (onClickMatches) {
+                val intent = Intent(this@MatchesActivity, ProfileViewActivity::class.java)
+                intent.putExtra(Constants.USERNAME, userName)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                openActivity(intent)
+            } else {
+                finishActivity()
+
+            }
         }
     }
 

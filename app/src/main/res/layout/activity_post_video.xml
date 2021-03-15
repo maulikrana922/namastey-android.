@@ -137,7 +137,7 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="wrap_content"
                     android:background="@drawable/rounded_gray_solid_all_corner"
-                    android:drawableRight="@drawable/ic_arrow_down_gray"
+                    android:drawableEnd="@drawable/ic_arrow_down_white_hollow"
                     android:drawablePadding="@dimen/_3sdp"
                     android:onClick="onClickSelectAlbum"
                     android:paddingStart="@dimen/_10sdp"
@@ -161,7 +161,7 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvShare"
                     style="@style/tvWrapWhiteStyle"
-                    android:drawableRight="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_arrow_right"
                     android:gravity="center"
                     android:onClick="onClickShareWith"
                     android:text="@string/everyone"

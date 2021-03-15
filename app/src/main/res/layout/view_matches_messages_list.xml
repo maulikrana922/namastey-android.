@@ -74,7 +74,7 @@
             android:paddingTop="@dimen/_8sdp"
             android:paddingEnd="@dimen/_8sdp"
             android:paddingBottom="@dimen/_4sdp"
-            android:text="@string/no_matches_yet"
+            android:text="@string/no_messages"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/rvMessagesList"

@@ -66,7 +66,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/namastey"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp"
+                    android:textSize="21sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ivSignupClose"
@@ -136,28 +136,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llSignupWithPhone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_white_solid"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
-                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithGoogle">
-
-                    <com.namastey.customViews.CustomTextView
-                        style="@style/tvWrapWhiteStyle"
-                        android:gravity="center_vertical"
-                        android:text="@string/btn_signup_phone_mail"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/llSignupWithSnapchat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -168,7 +146,7 @@
                     android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
                     app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithPhone">
+                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithGoogle">
 
                     <com.namastey.customViews.CustomTextView
                         style="@style/tvWrapWhiteStyle"
@@ -180,6 +158,28 @@
                         android:textColor="@color/colorBlack"
                         android:textStyle="bold" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSignupWithPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/rounded_white_solid"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
+                    app:layout_constraintStart_toStartOf="@id/llSignupWithFacebook"
+                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapWhiteStyle"
+                        android:gravity="center_vertical"
+                        android:text="@string/btn_signup_phone_mail"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!--            <LinearLayout-->

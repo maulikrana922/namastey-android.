@@ -78,7 +78,6 @@
             android:visibility="gone"
             app:typeface="MULI_EXTRA_BOLD" />
 
-
         <LinearLayout
             android:id="@+id/llCategory"
             style="@style/tvRoundCornerStyle"
