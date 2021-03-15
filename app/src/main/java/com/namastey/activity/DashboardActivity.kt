@@ -291,7 +291,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             Log.e("DashboardActivity", "isFromProfile: \t $isFromProfile")
         }
 
-
         dashboardViewModel.getPurchaseStatus()
         dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
