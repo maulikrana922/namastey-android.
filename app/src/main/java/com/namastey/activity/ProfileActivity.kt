@@ -18,12 +18,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import com.android.billingclient.api.*
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -53,8 +55,9 @@ import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Inject
 
-
-class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
+class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdatedListener,
+    ProfileView {
+    private val TAG = "ProfileActivity"
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -75,6 +78,16 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     private var inAppProductId = "b00200"
 
+    //In App Product Price
+    private lateinit var billingClient: BillingClient
+    private val subscriptionSkuList = listOf("b00100", "b00200", "b00300")
+
+    override fun getViewModel() = profileViewModel
+
+    override fun getLayoutId() = R.layout.activity_profile
+
+    override fun getBindingVariable() = BR.viewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -83,6 +96,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
         activityProfileBinding = bindViewData()
         activityProfileBinding.viewModel = profileViewModel
+
 
         initData()
     }
@@ -101,20 +115,335 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         }
         // Temp set UI
         setMembershipList()
-        profileViewModel.getBoostPriceList()
+        //profileViewModel.getBoostPriceList()
 
         if (intent.hasExtra("fromBuyBoost")) {
             fromBuyBoost = intent.getBooleanExtra("fromBuyBoost", false)
             Log.e("ProfileActivity", "fromBuyBoost: \t $fromBuyBoost")
         }
+
+        Log.e("ProfileActivity", "fromBuyBoost: \t $fromBuyBoost")
+        if (fromBuyBoost) {
+            showBoostDialog(R.layout.dialog_boosts)
+        }
     }
 
-    override fun getViewModel() = profileViewModel
+    private fun setupBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
 
-    override fun getLayoutId() = R.layout.activity_profile
-    // var timer = ""
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
 
-    override fun getBindingVariable() = BR.viewModel
+            }
+        })
+    }
+
+    private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
+        val params = SkuDetailsParams
+            .newBuilder()
+            .setSkusList(subscriptionSkuList)
+            .setType(BillingClient.SkuType.INAPP)
+            .build()
+
+        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+            // Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
+            // Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
+                for (i in skuDetailsList.indices) {
+
+                    val skuDetails = skuDetailsList[i]
+                    // Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
+
+                    if (skuDetails.sku == "b00100") {
+                       // val price = skuDetails.price
+                        val price = splitString( skuDetails.price, 3)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
+                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                    }
+
+                    if (skuDetails.sku == "b00200") {
+                        val price = splitString( skuDetails.price, 10)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
+                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                    }
+
+                    if (skuDetails.sku == "b00300") {
+                        val price = splitString( skuDetails.price, 20)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
+                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                    }
+
+                    manageVisibility(view)
+                }
+            } else if (billingResult.responseCode == 1) {
+                //user cancel
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 2) {
+                Toast.makeText(this, "Internet required for purchase", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 3) {
+                Toast.makeText(
+                    this,
+                    "Incompatible Google Play Billing Version",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 7) {
+                Toast.makeText(this, "you already own Premium", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else
+                Toast.makeText(this, "no skuDetails sorry", Toast.LENGTH_LONG)
+                    .show()
+        }
+    } else {
+        println("Billing Client not ready")
+    }
+
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult,
+        purchases: MutableList<Purchase>?
+    ) {
+        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
+        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
+        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
+        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+                Log.e(TAG, "purchase: \t $purchase")
+
+                //acknowledgeSubsPurchase(purchase.purchaseToken)
+
+                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
+                Log.e(TAG, "purchaseToken: \t $purchase")
+
+                finish()
+            }
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.e(TAG, "onPurchasesUpdated User Cancelled")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Service Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Item Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+            Log.e(TAG, "onPurchasesUpdated Developer Error")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
+            Log.e(TAG, "onPurchasesUpdated  Error")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item already owned")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item not owned")
+            finish()
+        } else {
+            Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
+            finish()
+        }
+    }
+
+    private fun manageVisibility(view: View) {
+        /* for (data in boostProfileList) {
+             val numberOfBoost = data.number_of_boost
+             val price = data.price
+
+             Log.e("ProfileActivity", "numberOfBoost: \t $numberOfBoost")
+             Log.e("ProfileActivity", "price: \t $price")
+
+             if (numberOfBoost == 1) {
+                 // view.tvOnemonth.text = numberOfBoost.toString()
+                 view.tvTextLowEachBoost.text =
+                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+             }
+
+             if (numberOfBoost == 5) {
+                 // view.tvFivemonth.text = numberOfBoost.toString()
+                 view.tvTextMediumEachBoost.text =
+                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+             }
+
+             if (numberOfBoost == 10) {
+                 // view.tvTwel.text = numberOfBoost.toString()
+                 view.tvTextHighEachBoost.text =
+                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+             }
+         }*/
+
+        view.constLow.setOnClickListener {
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgLow.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            //  view.tvOfferLow.visibility = View.VISIBLE
+            view.viewSelectedLow.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+
+            inAppProductId = "b00100"
+
+            //openActivity(this@ProfileActivity, InAppPurchaseActivity())
+        }
+
+        view.constMedium.setOnClickListener {
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgMedium.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvOfferMedium.visibility = View.VISIBLE
+            view.viewSelectedMedium.visibility = View.VISIBLE
+
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+
+            inAppProductId = "b00200"
+            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
+             openActivity(intent)*/
+        }
+
+        view.constHigh.setOnClickListener {
+            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+            view.viewBgHigh.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+            view.tvOfferHigh.visibility = View.VISIBLE
+            view.viewSelectedHigh.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.colorDarkGray
+                )
+            )
+
+            inAppProductId = "b00300"
+            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
+             openActivity(intent)*/
+        }
+    }
+
+    private fun splitString(price: String, noOfBoost: Int): String {
+        var finalPrice = price.replace("[^\\d.]".toRegex(), "").toFloat()
+        finalPrice /= noOfBoost
+
+        Log.e(TAG, "finalPrice: \t $finalPrice")
+        return finalPrice.toString()
+    }
 
     fun onClickProfileBack(view: View) {
         onBackPressed()
@@ -184,8 +513,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
-                if (boostProfileList.size != 0)
-                    showBoostDialog(R.layout.dialog_boosts)
+                //if (boostProfileList.size != 0)
+                showBoostDialog(R.layout.dialog_boosts)
             }
         }
     }
@@ -669,9 +998,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
         alertDialog.show()
 
         view.llRecurringTextView.visibility = View.GONE
-        manageVisibility(view)
+        //manageVisibility(view)
+        setupBillingClient(view)
+
         view.btnBoost.setOnClickListener {
-            // alertDialog.dismiss()
+            alertDialog.dismiss()
 
             val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.IN_APP_PRODUCT_ID, inAppProductId)
@@ -727,7 +1058,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     /**
      * manage visibility of boost dialog*/
-    private fun manageVisibility(view: View) {
+    private fun manageVisibilityTemp(view: View) {
         for (data in boostProfileList) {
             val numberOfBoost = data.number_of_boost
             val price = data.price
@@ -897,6 +1228,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
              openActivity(intent)*/
         }
     }
+
 
     /**
      * show dialog of boost success
@@ -1402,9 +1734,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), ProfileView {
 
     override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
         this.boostProfileList = boostPriceBean
-        if (fromBuyBoost) {
-            showBoostDialog(R.layout.dialog_boosts)
-        }
+
     }
 
 

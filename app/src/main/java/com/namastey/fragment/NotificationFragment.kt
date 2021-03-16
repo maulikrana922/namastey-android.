@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.android.billingclient.api.*
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
@@ -40,7 +42,9 @@ import javax.inject.Inject
 
 
 class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), NotificationView,
-    FragmentRefreshListener, OnNotificationClick {
+    FragmentRefreshListener, PurchasesUpdatedListener, OnNotificationClick {
+
+    private val TAG = "NotificationFragment"
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -59,6 +63,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
     private var isActivityList = 0
     private lateinit var dialog: AlertDialog
     private var subscriptionId = "000020"
+
+    //In App Product Price
+    private lateinit var billingClient: BillingClient
+    private val subscriptionSkuList = listOf("000010", "000020", "000030")
 
     /*private lateinit var tvAllActivityTitle: TextView
     private lateinit var llAllActivity: LinearLayout
@@ -323,7 +331,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
         val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
-        manageVisibility(dialogView)
+        setupBillingClient(dialogView)
         viewpager.adapter =
             MembershipDialogSliderAdapter(requireActivity(), membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)
@@ -337,6 +345,455 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         }
         dialogView.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
+        }
+    }
+
+    private fun setupBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(requireActivity())
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
+
+            }
+        })
+    }
+
+    private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
+        val params = SkuDetailsParams
+            .newBuilder()
+            .setSkusList(subscriptionSkuList)
+            .setType(BillingClient.SkuType.SUBS)
+            .build()
+
+        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+            // Process the result.
+            Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
+            Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
+                for (i in skuDetailsList.indices) {
+
+                    val skuDetails = skuDetailsList[i]
+                    Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
+
+                    if (skuDetails.sku == "000010") {
+                        val price = skuDetails.price
+                        view.tvTextLowEachBoost.text =
+                            price.plus(resources.getString(R.string.per_month))
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    if (skuDetails.sku == "000020") {
+                        val price = skuDetails.price
+                        view.tvTextMediumEachBoost.text = price
+                            .plus(resources.getString(R.string.per_month))
+                        /*.plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))*/
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    if (skuDetails.sku == "000030") {
+                        val price = skuDetails.price
+                        view.tvTextHighEachBoost.text = price
+                            .plus(resources.getString(R.string.per_month))
+                        /*.plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))*/
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    manageVisibility(view)
+                }
+            } else if (billingResult.responseCode == 1) {
+                //user cancel
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 2) {
+                Toast.makeText(requireActivity(), "Internet required for purchase", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 3) {
+                Toast.makeText(
+                    requireActivity(),
+                    "Incompatible Google Play Billing Version",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 7) {
+                Toast.makeText(requireActivity(), "you already own Premium", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else
+                Toast.makeText(requireActivity(), "no skuDetails sorry", Toast.LENGTH_LONG)
+                    .show()
+        }
+    } else {
+        println("Billing Client not ready")
+    }
+
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult,
+        purchases: MutableList<Purchase>?
+    ) {
+        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
+        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
+        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
+        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+                Log.e(TAG, "purchase: \t $purchase")
+
+                //acknowledgeSubsPurchase(purchase.purchaseToken)
+
+                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
+                Log.e(TAG, "purchaseToken: \t $purchase")
+            }
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.e(TAG, "onPurchasesUpdated User Cancelled")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Service Unavailable")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Item Unavailable")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+            Log.e(TAG, "onPurchasesUpdated Developer Error")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
+            Log.e(TAG, "onPurchasesUpdated  Error")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item already owned")
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item not owned")
+        } else {
+            Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
+        }
+    }
+
+    private fun manageVisibility(view: View) {
+        val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)
+        val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
+        val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
+
+        /*for (data in membershipViewList) {
+            val membershipType = data.membership_type
+            val price = data.price
+            val discount = data.discount_pr
+
+            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
+            Log.e("MembershipActivity", "price: \t $price")
+            Log.e("MembershipActivity", "discount: \t $discount")
+
+            if (membershipType == 0) {
+                view.tvTextLowEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+            }
+
+            if (membershipType == 1) {
+                view.tvTextMediumEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))
+
+            }
+
+            if (membershipType == 2) {
+                view.tvTextHighEachBoost.text =
+                    resources.getString(R.string.dollars)
+                        .plus(price)
+                        .plus(resources.getString(R.string.per_month))
+                        .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))
+            }
+        }*/
+
+        constLow.setOnClickListener {
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            //  view.tvOfferLow.visibility = View.VISIBLE
+            view.viewSelectedLow.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            subscriptionId = "000010"
+
+            /* val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
+             openActivity(intent)*/
+        }
+
+        constMedium.setOnClickListener {
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            view.tvOfferMedium.visibility = View.VISIBLE
+            view.viewSelectedMedium.visibility = View.VISIBLE
+
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferHigh.visibility = View.INVISIBLE
+            view.viewSelectedHigh.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+
+            subscriptionId = "000020"
+            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
+            openActivity(intent)*/
+        }
+
+        constHigh.setOnClickListener {
+            view.tvTextHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextBoostHigh.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.tvTextHighEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorBlueLight
+                )
+            )
+            view.viewBgHigh.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
+            view.tvOfferHigh.visibility = View.VISIBLE
+            view.viewSelectedHigh.visibility = View.VISIBLE
+
+            view.viewBgMedium.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferMedium.visibility = View.INVISIBLE
+            view.viewSelectedMedium.visibility = View.INVISIBLE
+            view.viewBgLow.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorLightPink
+                )
+            )
+            view.tvOfferLow.visibility = View.INVISIBLE
+            view.viewSelectedLow.visibility = View.INVISIBLE
+
+            view.tvTextLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostLow.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextLowEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextBoostMedium.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+            view.tvTextMediumEachBoost.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.colorDarkGray
+                )
+            )
+
+            subscriptionId = "000030"
+            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
+            openActivity(intent)*/
         }
     }
 
@@ -563,318 +1020,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         )
     }
 
-
-    private fun manageVisibility(view: View) {
-        val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)
-        val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
-        val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
-
-        for (data in membershipViewList) {
-            val membershipType = data.membership_type
-            val price = data.price
-            val discount = data.discount_pr
-
-            Log.e("MembershipActivity", "numberOfBoost: \t $membershipType")
-            Log.e("MembershipActivity", "price: \t $price")
-            Log.e("MembershipActivity", "discount: \t $discount")
-
-            if (membershipType == 0) {
-                view.tvTextLowEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-            }
-
-            if (membershipType == 1) {
-                view.tvTextMediumEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-                        .plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))
-
-            }
-
-            if (membershipType == 2) {
-                view.tvTextHighEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-                        .plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))
-            }
-        }
-
-        constLow.setOnClickListener {
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.white
-                )
-            )
-            //  view.tvOfferLow.visibility = View.VISIBLE
-            view.viewSelectedLow.visibility = View.VISIBLE
-
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
-
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            subscriptionId = "000010"
-
-           /* val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
-            openActivity(intent)*/
-        }
-
-        constMedium.setOnClickListener {
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.white
-                )
-            )
-            view.tvOfferMedium.visibility = View.VISIBLE
-            view.viewSelectedMedium.visibility = View.VISIBLE
-
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
-
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-
-            subscriptionId = "000020"
-            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
-            openActivity(intent)*/
-        }
-
-        constHigh.setOnClickListener {
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.white
-                )
-            )
-            view.tvOfferHigh.visibility = View.VISIBLE
-            view.viewSelectedHigh.visibility = View.VISIBLE
-
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
-
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.colorDarkGray
-                )
-            )
-
-            subscriptionId = "000030"
-            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
-            openActivity(intent)*/
-        }
-    }
 
     override fun onRefresh(activityListBean: ActivityListBean?) {
         if (activityListBean != null) {

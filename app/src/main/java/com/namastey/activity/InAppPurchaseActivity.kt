@@ -443,7 +443,7 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-            finish()
+           finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
             finish()

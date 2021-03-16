@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.*
 import androidx.viewpager.widget.ViewPager
+import com.android.billingclient.api.*
 import com.google.android.gms.location.LocationListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -76,11 +77,31 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
+import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.dialog_membership.view.tvNothanks
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHighEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLowEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMediumEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgLow
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedLow
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedMedium
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -94,8 +115,9 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardView, OnFeedItemClick,
+class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener, DashboardView, OnFeedItemClick,
     OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick {
+    private val TAG = "DashboardActivity"
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -145,6 +167,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
     private var totalCount = 1
+
+    //In App Product Price
+    private lateinit var billingClient: BillingClient
+    private val subscriptionSkuList = listOf("000010", "000020", "000030")
 
     override fun getViewModel() = dashboardViewModel
 
@@ -292,7 +318,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         }
 
         dashboardViewModel.getPurchaseStatus()
-        dashboardViewModel.getMembershipPriceList()
+        //dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList()
         // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
         // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
@@ -868,7 +894,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
         val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
-        manageVisibility(dialogView)
+        //manageVisibility(dialogView)
+        setupBillingClient(dialogView)
         viewpager.adapter =
             MembershipDialogSliderAdapter(this@DashboardActivity, membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)
@@ -877,6 +904,150 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
             alertDialog.dismiss()
         }
     }
+
+    private fun setupBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
+
+            }
+        })
+    }
+
+    private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
+        val params = SkuDetailsParams
+            .newBuilder()
+            .setSkusList(subscriptionSkuList)
+            .setType(BillingClient.SkuType.SUBS)
+            .build()
+
+        billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+            // Process the result.
+            Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
+            Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
+                for (i in skuDetailsList.indices) {
+
+                    val skuDetails = skuDetailsList[i]
+                    Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
+
+                    if (skuDetails.sku == "000010") {
+                        val price = skuDetails.price
+                        view.tvTextLowEachBoost.text =
+                            price.plus(resources.getString(R.string.per_month))
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    if (skuDetails.sku == "000020") {
+                        val price = skuDetails.price
+                        view.tvTextMediumEachBoost.text = price
+                            .plus(resources.getString(R.string.per_month))
+                        /*.plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))*/
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    if (skuDetails.sku == "000030") {
+                        val price = skuDetails.price
+                        view.tvTextHighEachBoost.text = price
+                            .plus(resources.getString(R.string.per_month))
+                        /*.plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))*/
+                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                    }
+
+                    manageVisibility(view)
+                }
+            } else if (billingResult.responseCode == 1) {
+                //user cancel
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 2) {
+                Toast.makeText(this, "Internet required for purchase", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 3) {
+                Toast.makeText(
+                    this,
+                    "Incompatible Google Play Billing Version",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@querySkuDetailsAsync
+            } else if (billingResult.responseCode == 7) {
+                Toast.makeText(this, "you already own Premium", Toast.LENGTH_LONG)
+                    .show()
+                return@querySkuDetailsAsync
+            } else
+                Toast.makeText(this, "no skuDetails sorry", Toast.LENGTH_LONG)
+                    .show()
+        }
+    } else {
+        println("Billing Client not ready")
+    }
+
+    override fun onPurchasesUpdated(
+        billingResult: BillingResult,
+        purchases: MutableList<Purchase>?
+    ) {
+        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
+        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (purchase in purchases) {
+                Log.e(TAG, "purchase: \t $purchase")
+                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
+                Log.e(TAG, "purchaseToken: \t $purchase")
+
+                finish()
+            }
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.e(TAG, "onPurchasesUpdated User Cancelled")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Service Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+            Log.e(TAG, "onPurchasesUpdated Item Unavailable")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+            Log.e(TAG, "onPurchasesUpdated Developer Error")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
+            Log.e(TAG, "onPurchasesUpdated  Error")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item already owned")
+            finish()
+        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
+            Log.e(TAG, "onPurchasesUpdated Item not owned")
+            finish()
+        } else {
+            Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
+            finish()
+        }
+    }
+
 
     private fun setSliderData() {
         membershipSliderArrayList = ArrayList()
@@ -987,7 +1158,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
         val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
 
-        for (data in membershipViewList) {
+        /*for (data in membershipViewList) {
             val membershipType = data.membership_type
             val price = data.price
             val discount = data.discount_pr
@@ -1027,7 +1198,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
                         .plus(discount)
                         .plus(resources.getString(R.string.percentage))
             }
-        }
+        }*/
 
         constLow.setOnClickListener {
             view.tvTextLow.setTextColor(
@@ -1343,7 +1514,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), DashboardVie
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
-                intent.putExtra("onClickMatches", true)
+                intent.putExtra("isFromDashboard", true)
                 openActivity(intent)
             } else {
                 completeSignUpDialog()

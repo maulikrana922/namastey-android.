@@ -3,6 +3,7 @@ package com.namastey.uiView
 import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.ProfileBean
+import java.util.*
 
 interface ProfileView: BaseView {
 

@@ -614,6 +614,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickMatches(view: View) {
         val intent = Intent(this@ProfileViewActivity, MatchesActivity::class.java)
+        intent.putExtra("userName", username)
         intent.putExtra("onClickMatches", true)
         openActivity(intent)
     }
