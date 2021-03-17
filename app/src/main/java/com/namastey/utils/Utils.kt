@@ -459,9 +459,17 @@ object Utils {
         }
     }
 
-    fun stopAppCountTimer(context: Context){
+    fun stopAppCountTimer(context: Context) {
         mHandler.removeCallbacksAndMessages(null);
         mHandler.removeCallbacks(mUpdateTimeTask)
         SessionManager(context).setStringValue("", Constants.KEY_SPEND_APP_TIME)
+    }
+
+    fun splitString(price: String, number: Int): String {
+        var finalPrice = price.replace("[^\\d.]".toRegex(), "").toFloat()
+        finalPrice /= number
+
+        Log.e("Utils", "finalPrice: \t ${finalPrice.toString()}")
+        return finalPrice.toString()
     }
 }

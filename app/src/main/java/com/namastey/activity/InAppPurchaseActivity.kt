@@ -339,13 +339,13 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
             Log.e(TAG, "product_id: \t  ${product_id}")
             when (product_id) {
                 "b00100" -> {
-                    noOfBoost = "1"
+                    noOfBoost = "3"
                 }
                 "b00200" -> {
-                    noOfBoost = "5"
+                    noOfBoost = "10"
                 }
                 "b00300" -> {
-                    noOfBoost = "10"
+                    noOfBoost = "20"
                 }
             }
             jsonObject.addProperty(Constants.InAppPurchaseConstants.NO_OF_BOOST, noOfBoost)

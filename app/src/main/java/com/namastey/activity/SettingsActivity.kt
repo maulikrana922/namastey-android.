@@ -335,7 +335,6 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             intent.putExtra("isFromAirport", true)
             openActivity(intent)
         }
-        //openActivity(this@SettingsActivity, InAppPurchaseActivity())
     }
 
     private fun startSearchLocationScreen() {
@@ -344,7 +343,6 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         intent.putExtra("longitude", longitude)
         intent.putExtra("isFromSearch", true)
         openActivity(intent)
-        // openActivity(this, PassportContentActivity())
     }
 
     private fun getLocation() {

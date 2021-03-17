@@ -30,11 +30,29 @@ import com.namastey.listeners.FragmentRefreshListener
 import com.namastey.listeners.OnNotificationClick
 import com.namastey.model.*
 import com.namastey.uiView.NotificationView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import com.namastey.viewModel.NotificationViewModel
+import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.dialog_membership.view.tvNothanks
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHighEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLow
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLowEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMediumEachBoost
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgLow
+import kotlinx.android.synthetic.main.dialog_membership.view.viewBgMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedHigh
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedLow
+import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedMedium
 import kotlinx.android.synthetic.main.dialog_notification_all_activity.view.*
 import kotlinx.android.synthetic.main.fragment_notification.*
 import java.util.*
@@ -386,37 +404,45 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 for (i in skuDetailsList.indices) {
 
                     val skuDetails = skuDetailsList[i]
-                    Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
 
                     if (skuDetails.sku == "000010") {
-                        val price = skuDetails.price
+                        val price = Utils.splitString(skuDetails.price, 1)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         view.tvTextLowEachBoost.text =
-                            price.plus(resources.getString(R.string.per_month))
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
 
                     if (skuDetails.sku == "000020") {
-                        val price = skuDetails.price
-                        view.tvTextMediumEachBoost.text = price
-                            .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                        val price = Utils.splitString(skuDetails.price, 6)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextMediumEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+
+                        /* view.tvTextMediumEachBoost.text = price
+                             .plus(resources.getString(R.string.per_month))
+                         .plus("\n")
+                         .plus(resources.getString(R.string.save))
+                         .plus(" ")
+                         .plus(discount)
+                         .plus(resources.getString(R.string.percentage))*/
                     }
 
                     if (skuDetails.sku == "000030") {
-                        val price = skuDetails.price
+                        val price = Utils.splitString(skuDetails.price, 12)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextHighEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+
+                        /* val price = skuDetails.price
                         view.tvTextHighEachBoost.text = price
                             .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
+                       .plus("\n")
                         .plus(resources.getString(R.string.save))
                         .plus(" ")
                         .plus(discount)
                         .plus(resources.getString(R.string.percentage))*/
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
                     }
 
                     manageVisibility(view)
@@ -614,10 +640,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
                 )
             )
             subscriptionId = "000010"
-
-            /* val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-             intent.putExtra(Constants.SUBSCRIPTION_ID, "000010")
-             openActivity(intent)*/
         }
 
         constMedium.setOnClickListener {
@@ -703,9 +725,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
 
             subscriptionId = "000020"
-            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000020")
-            openActivity(intent)*/
         }
 
         constHigh.setOnClickListener {
@@ -791,9 +810,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
             )
 
             subscriptionId = "000030"
-            /*val intent = Intent(requireActivity(), InAppPurchaseActivity::class.java)
-            intent.putExtra(Constants.SUBSCRIPTION_ID, "000030")
-            openActivity(intent)*/
         }
     }
 

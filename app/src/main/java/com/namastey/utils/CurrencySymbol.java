@@ -25,7 +25,6 @@ public class CurrencySymbol {
         }
     }
 
-
     public static String getCurrencySymbol(String currencyCode) {
         Currency currency = Currency.getInstance(currencyCode);
         System.out.println(currencyCode + ":-" + currency.getSymbol(currencyLocaleMap.get(currency)));

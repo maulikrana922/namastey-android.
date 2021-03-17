@@ -24,7 +24,9 @@ import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
 import com.namastey.uiView.MemberShipView
 import com.namastey.utils.Constants
+import com.namastey.utils.CurrencySymbol
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_membership.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
@@ -250,16 +252,52 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
             .build()
 
         billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-            // Process the result.
-            Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
-            Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
                 for (i in skuDetailsList.indices) {
 
                     val skuDetails = skuDetailsList[i]
-                    Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
 
                     if (skuDetails.sku == "000010") {
+                        val price = Utils.splitString(skuDetails.price, 1)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextLowEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+                    }
+
+                    if (skuDetails.sku == "000020") {
+                        val price = Utils.splitString(skuDetails.price, 6)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextMediumEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+
+                        /* view.tvTextMediumEachBoost.text = price
+                             .plus(resources.getString(R.string.per_month))
+                         .plus("\n")
+                         .plus(resources.getString(R.string.save))
+                         .plus(" ")
+                         .plus(discount)
+                         .plus(resources.getString(R.string.percentage))*/
+                    }
+
+                    if (skuDetails.sku == "000030") {
+                        val price = Utils.splitString(skuDetails.price, 12)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextHighEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+
+                        /* val price = skuDetails.price
+                        view.tvTextHighEachBoost.text = price
+                            .plus(resources.getString(R.string.per_month))
+                       .plus("\n")
+                        .plus(resources.getString(R.string.save))
+                        .plus(" ")
+                        .plus(discount)
+                        .plus(resources.getString(R.string.percentage))*/
+                    }
+
+                   /* if (skuDetails.sku == "000010") {
                         val price = skuDetails.price
                         view.tvTextLowEachBoost.text =
                             price.plus(resources.getString(R.string.per_month))
@@ -270,11 +308,11 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
                         val price = skuDetails.price
                         view.tvTextMediumEachBoost.text = price
                             .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
+                        *//*.plus("\n")
                         .plus(resources.getString(R.string.save))
                         .plus(" ")
                         .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
+                        .plus(resources.getString(R.string.percentage))*//*
                         Log.e(TAG, "loadAllSubsSKUs: price $price")
                     }
 
@@ -282,13 +320,13 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
                         val price = skuDetails.price
                         view.tvTextHighEachBoost.text = price
                             .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
+                        *//*.plus("\n")
                         .plus(resources.getString(R.string.save))
                         .plus(" ")
                         .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
+                        .plus(resources.getString(R.string.percentage))*//*
                         Log.e(TAG, "loadAllSubsSKUs: price $price")
-                    }
+                    }*/
 
                     manageVisibility(view)
                 }
@@ -459,9 +497,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
             )
 
             subscriptionId = "000010"
-            /*   val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
-               intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
-               openActivity(intent)*/
+
         }
 
         constMedium.setOnClickListener {

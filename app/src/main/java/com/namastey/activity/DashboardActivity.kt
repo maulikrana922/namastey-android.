@@ -941,41 +941,29 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
                 for (i in skuDetailsList.indices) {
-
                     val skuDetails = skuDetailsList[i]
-                    Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
-
                     if (skuDetails.sku == "000010") {
-                        val price = skuDetails.price
+                        val price = Utils.splitString(skuDetails.price, 1)
+                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         view.tvTextLowEachBoost.text =
-                            price.plus(resources.getString(R.string.per_month))
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
 
                     if (skuDetails.sku == "000020") {
-                        val price = skuDetails.price
-                        view.tvTextMediumEachBoost.text = price
-                            .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                        val price = Utils.splitString(skuDetails.price, 6)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextMediumEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
 
                     if (skuDetails.sku == "000030") {
-                        val price = skuDetails.price
-                        view.tvTextHighEachBoost.text = price
-                            .plus(resources.getString(R.string.per_month))
-                        /*.plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
+                        val price = Utils.splitString(skuDetails.price, 12)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        view.tvTextHighEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
-
                     manageVisibility(view)
                 }
             } else if (billingResult.responseCode == 1) {

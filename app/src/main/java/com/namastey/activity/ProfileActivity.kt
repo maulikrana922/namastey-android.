@@ -43,12 +43,36 @@ import com.namastey.model.ProfileBean
 import com.namastey.receivers.BoostService
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
+import com.namastey.utils.Utils.splitString
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boosts.view.*
+import kotlinx.android.synthetic.main.dialog_boosts.view.constHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.constLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.constMedium
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvNothanks
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvOfferHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvOfferLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvOfferMedium
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextBoostHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextBoostLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextBoostMedium
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextHighEachBoost
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextLowEachBoost
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextMedium
+import kotlinx.android.synthetic.main.dialog_boosts.view.tvTextMediumEachBoost
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewBgHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewBgLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewBgMedium
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewSelectedHigh
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewSelectedLow
+import kotlinx.android.synthetic.main.dialog_boosts.view.viewSelectedMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.*
 import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -159,8 +183,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             .build()
 
         billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-            // Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
-            // Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
                 for (i in skuDetailsList.indices) {
 
@@ -168,25 +190,30 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                     // Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
 
                     if (skuDetails.sku == "b00100") {
-                       // val price = skuDetails.price
-                        val price = splitString( skuDetails.price, 3)
-                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        val price = splitString(skuDetails.price, 3)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
-                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                        view.tvTextLowEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
                     if (skuDetails.sku == "b00200") {
-                        val price = splitString( skuDetails.price, 10)
-                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        val price = splitString(skuDetails.price, 10)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
-                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                        view.tvTextMediumEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
                     if (skuDetails.sku == "b00300") {
-                        val price = splitString( skuDetails.price, 20)
-                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        val price = splitString(skuDetails.price, 20)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
-                        view.tvTextLowEachBoost.text = currencySymbol.plus(price).plus(resources.getString(R.string.each))
+                        view.tvTextHighEachBoost.text =
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
                     manageVisibility(view)
@@ -336,8 +363,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00100"
-
-            //openActivity(this@ProfileActivity, InAppPurchaseActivity())
         }
 
         view.constMedium.setOnClickListener {
@@ -383,9 +408,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00200"
-            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
-             openActivity(intent)*/
         }
 
         view.constHigh.setOnClickListener {
@@ -431,18 +453,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00300"
-            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
-             openActivity(intent)*/
+
         }
-    }
-
-    private fun splitString(price: String, noOfBoost: Int): String {
-        var finalPrice = price.replace("[^\\d.]".toRegex(), "").toFloat()
-        finalPrice /= noOfBoost
-
-        Log.e(TAG, "finalPrice: \t $finalPrice")
-        return finalPrice.toString()
     }
 
     fun onClickProfileBack(view: View) {
@@ -568,7 +580,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                 if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
                     addLocationPermission()
                 else {
-                    // openActivity(this@ProfileActivity, InAppPurchaseActivity())
                     val intent = Intent(this@ProfileActivity, MembershipActivity::class.java)
                     intent.putExtra("isFromAirport", true)
                     openActivity(intent)
@@ -1128,8 +1139,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00100"
-
-            //openActivity(this@ProfileActivity, InAppPurchaseActivity())
         }
 
         view.constMedium.setOnClickListener {
@@ -1175,9 +1184,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00200"
-            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00200")
-             openActivity(intent)*/
+
         }
 
         view.constHigh.setOnClickListener {
@@ -1223,12 +1230,9 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             )
 
             inAppProductId = "b00300"
-            /* val intent = Intent(this@ProfileActivity, InAppPurchaseActivity::class.java)
-             intent.putExtra(Constants.IN_APP_PRODUCT_ID, "b00300")
-             openActivity(intent)*/
+
         }
     }
-
 
     /**
      * show dialog of boost success
@@ -1736,7 +1740,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         this.boostProfileList = boostPriceBean
 
     }
-
 
     override fun onLogoutSuccess(msg: String) {
         sessionManager.logout()
