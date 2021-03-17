@@ -57,7 +57,7 @@ class AlbumDetailAdapter(
                     tvUsername.visibility = View.VISIBLE
                     ivUserProfile.visibility = View.VISIBLE
                     tvVideoViewers.visibility = View.GONE
-                    tvUsername.text = videoBean.username
+                    tvUsername.text = videoBean.casual_name
                 } else {
                     tvUsername.visibility = View.GONE
                     ivUserProfile.visibility = View.GONE

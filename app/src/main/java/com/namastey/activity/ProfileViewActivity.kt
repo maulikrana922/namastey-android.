@@ -305,11 +305,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
                             if (profileBean.user_profile_type == 0) {
                                 val uri = Uri.parse(socialBean.link)
-                                val likeIng = Intent(Intent.ACTION_VIEW, uri)
-
-                                likeIng.setPackage("com.instagram.android")
-
-                                try {
+                               /* try {
                                     startActivity(likeIng)
                                 } catch (e: ActivityNotFoundException) {
                                     startActivity(
@@ -319,19 +315,50 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                             Uri.parse(socialBean.link)
                                         )
                                     )
+                                }*/
+
+                                try { //first try to open in instagram app
+                                    val appIntent =
+                                        packageManager.getLaunchIntentForPackage("com.instagram.android")
+                                    if (appIntent != null) {
+                                        appIntent.action = Intent.ACTION_VIEW
+                                        appIntent.data = uri
+                                        startActivity(appIntent)
+                                    }
+                                } catch (e: ActivityNotFoundException) {
+                                    val browserIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(socialBean.link)
+                                    )
+                                    startActivity(browserIntent)
                                 }
+
                             } else if (profileBean.user_profile_type == 1) {
                                 //Do Nothing
                             }
                         } else {
                             val uri = Uri.parse(socialBean.link)
-                            val likeIng = Intent(Intent.ACTION_VIEW, uri)
 
-                            likeIng.setPackage("com.instagram.android")
+                            try { //first try to open in instagram app
+                                val appIntent =
+                                    packageManager.getLaunchIntentForPackage("com.instagram.android")
+                                if (appIntent != null) {
+                                    appIntent.action = Intent.ACTION_VIEW
+                                    appIntent.data = uri
+                                    startActivity(appIntent)
+                                }
+                            } catch (e: ActivityNotFoundException) {
+                                val browserIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(socialBean.link)
+                                )
+                                startActivity(browserIntent)
+                            }
 
-                            try {
+                            /*try {
                                 startActivity(likeIng)
                             } catch (e: ActivityNotFoundException) {
+                                e.printStackTrace()
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
@@ -339,7 +366,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                         Uri.parse(socialBean.link)
                                     )
                                 )
-                            }
+                            }*/
                         }
 
 //                        else{
@@ -639,7 +666,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
     }
-
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")

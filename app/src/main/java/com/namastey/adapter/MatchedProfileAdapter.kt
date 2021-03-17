@@ -10,6 +10,7 @@ import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.MatchesListBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_matches_profile.view.*
+import java.util.*
 
 
 class MatchedProfileAdapter(
@@ -39,7 +40,7 @@ class MatchedProfileAdapter(
                 llProfileImage.background =
                     activity.getDrawable(R.drawable.dashed_circle_pink_hollow)
 
-            tvProfileName.text = matchesListBean.username
+            tvProfileName.text = matchesListBean.casual_name
 
             GlideLib.loadImage(activity, ivProfileImage, matchesListBean.profile_pic)
 

@@ -198,8 +198,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
 
-        if( !isFinishing)
-         alertDialog.show()
+        alertDialog.show()
 
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
@@ -210,7 +209,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
         tabview.setupWithViewPager(viewpager, true)
         viewpager.currentItem = position
         dialogView.btnContinue.setOnClickListener {
-            // alertDialog.dismiss()
+            alertDialog.dismiss()
             val intent = Intent(this@MembershipActivity, InAppPurchaseActivity::class.java)
             intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
             openActivity(intent)
@@ -259,7 +258,8 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
 
                     if (skuDetails.sku == "000010") {
                         val price = Utils.splitString(skuDetails.price, 1)
-                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         view.tvTextLowEachBoost.text =
                             currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
@@ -297,18 +297,18 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
                         .plus(resources.getString(R.string.percentage))*/
                     }
 
-                   /* if (skuDetails.sku == "000010") {
-                        val price = skuDetails.price
-                        view.tvTextLowEachBoost.text =
-                            price.plus(resources.getString(R.string.per_month))
-                        Log.e(TAG, "loadAllSubsSKUs: price $price")
-                    }
+                    /* if (skuDetails.sku == "000010") {
+                         val price = skuDetails.price
+                         view.tvTextLowEachBoost.text =
+                             price.plus(resources.getString(R.string.per_month))
+                         Log.e(TAG, "loadAllSubsSKUs: price $price")
+                     }
 
-                    if (skuDetails.sku == "000020") {
-                        val price = skuDetails.price
-                        view.tvTextMediumEachBoost.text = price
-                            .plus(resources.getString(R.string.per_month))
-                        *//*.plus("\n")
+                     if (skuDetails.sku == "000020") {
+                         val price = skuDetails.price
+                         view.tvTextMediumEachBoost.text = price
+                             .plus(resources.getString(R.string.per_month))
+                         *//*.plus("\n")
                         .plus(resources.getString(R.string.save))
                         .plus(" ")
                         .plus(discount)
@@ -360,48 +360,28 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
         billingResult: BillingResult,
         purchases: MutableList<Purchase>?
     ) {
-        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
-        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
-        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
-        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
-                Log.e(TAG, "purchase: \t $purchase")
-
-                //acknowledgeSubsPurchase(purchase.purchaseToken)
-
-                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
-                Log.e(TAG, "purchaseToken: \t $purchase")
-
                 finish()
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Item Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
             Log.e(TAG, "onPurchasesUpdated Developer Error")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
             Log.e(TAG, "onPurchasesUpdated  Error")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item already owned")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item not owned")
-            finish()
         } else {
             Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
-            finish()
         }
     }
 

@@ -1,6 +1,5 @@
 package com.namastey.activity
 
-//import com.video.trimmer.interfaces.OnTrimVideoListener
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -47,7 +46,6 @@ import javax.inject.Inject
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
     OnItemClick, OnPostImageClick, OnSelectUserItemClick {
-    //    OnTrimVideoListener
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 

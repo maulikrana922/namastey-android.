@@ -14,7 +14,7 @@ object Constants {
         var CALLBACK_URL = "twittersdk://"
     }
 
-    object FirebaseConstant{
+    object FirebaseConstant {
         var MESSAGES = "Messages"
         var CHATS = "Chats"
         var LAST_MESSAGE = "Last_message"
@@ -24,14 +24,14 @@ object Constants {
         var MSG_TYPE_VOICE = "MsgTypeVoice"
     }
 
-    object InAppPurchaseConstants{
+    object InAppPurchaseConstants {
         var PACKAGE_NAME = "package_name"
         var PRODUCT_ID = "product_id"
         var PURCHASE_TOKEN = "purchase_token"
         var TITLE = "title"
         var DESCRIPTION = "description"
         var SUBSCRIPTION_PERIOD = "subscriptionPeriod"
-        var PURCHASE_TIME= "purchaseTime"
+        var PURCHASE_TIME = "purchaseTime"
         var PRICE = "price"
         var PRICE_CURRENCY_CODE = "price_currency_code"
         var PURCHASE_STATE = "purchaseState"
@@ -245,7 +245,7 @@ object Constants {
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
-    const  val KEY_CASUAL_NAME="KEY_CASUAL_NAME"
+    const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
 
 
     //    field key

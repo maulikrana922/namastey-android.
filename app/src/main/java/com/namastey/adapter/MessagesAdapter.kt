@@ -16,6 +16,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message.view.*
+import java.util.*
 
 class MessagesAdapter(
     var matchesList: ArrayList<MatchesListBean>,
@@ -73,7 +74,7 @@ class MessagesAdapter(
                 tvLastTime.visibility = View.VISIBLE
             }
 
-            tvUsername.text = matchesListBean.username
+            tvUsername.text = matchesListBean.casual_name
             if (matchesListBean.chatMessage.timestamp != -1L) {
                 tvLastTime.text =
                     Utils.convertTimestampToChatFormat(matchesListBean.chatMessage.timestamp)

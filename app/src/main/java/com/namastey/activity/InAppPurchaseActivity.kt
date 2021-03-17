@@ -417,10 +417,6 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
         billingResult: BillingResult,
         purchases: MutableList<Purchase>?
     ) {
-        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
-        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
-        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
-        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 Log.e(TAG, "purchase: \t $purchase")
@@ -443,7 +439,7 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-           finish()
+            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
             finish()

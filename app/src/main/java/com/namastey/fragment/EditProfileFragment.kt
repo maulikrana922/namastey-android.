@@ -322,7 +322,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
             }
         })
 
-
         edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent): Boolean {
                 val DRAWABLE_RIGHT = 2
@@ -390,10 +389,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
                         categoryBean.endColor = "#28BAD3"
                     }
                 }
-
-                Log.e("EditProfileFragment", "categoryBean: Name: \t ${ categoryBean.name.toString()}")
-                Log.e("EditProfileFragment", "categoryBean: startColor: \t ${ categoryBean.startColor}")
-                Log.e("EditProfileFragment", "categoryBean: endColor: \t ${ categoryBean.endColor}")
 
                 Utils.rectangleShapeGradient(
                     view, intArrayOf(
@@ -602,11 +597,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
         sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
         sessionManager.setStringValue(profileBean.username, Constants.KEY_MAIN_USER_NAME)
-        if (profileBean.casual_name != null && profileBean.casual_name != "")
-            sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
         sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
         edtProfileUserName.setText(profileBean.username)
+        edtProfileCasualName.setText(profileBean.casual_name)
         edtProfileTagline.setText(profileBean.about_me)
         sessionManager.setCategoryList(profileBean.category)
         generateProfileTagUI()

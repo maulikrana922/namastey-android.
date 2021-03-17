@@ -248,48 +248,28 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         billingResult: BillingResult,
         purchases: MutableList<Purchase>?
     ) {
-        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
-        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
-        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
-        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 Log.e(TAG, "purchase: \t $purchase")
-
-                //acknowledgeSubsPurchase(purchase.purchaseToken)
-
-                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
-                Log.e(TAG, "purchaseToken: \t $purchase")
-
-                finish()
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Item Unavailable")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
             Log.e(TAG, "onPurchasesUpdated Developer Error")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
             Log.e(TAG, "onPurchasesUpdated  Error")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item already owned")
-            finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item not owned")
-            finish()
         } else {
             Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
-            finish()
         }
     }
 

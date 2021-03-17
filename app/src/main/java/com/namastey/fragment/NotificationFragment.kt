@@ -477,18 +477,9 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         billingResult: BillingResult,
         purchases: MutableList<Purchase>?
     ) {
-        Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
-        Log.e(TAG, "onPurchasesUpdated: responseCode ${billingResult.responseCode}")
-        //Log.e(TAG, "onPurchasesUpdated: purchases $purchases")
-        //Log.e(TAG, "onPurchasesUpdated: purchases ${purchases!!.size}")
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             for (purchase in purchases) {
                 Log.e(TAG, "purchase: \t $purchase")
-
-                //acknowledgeSubsPurchase(purchase.purchaseToken)
-
-                Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
-                Log.e(TAG, "purchaseToken: \t $purchase")
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
