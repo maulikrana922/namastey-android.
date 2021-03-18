@@ -165,7 +165,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_white_solid"
+                    android:background="@drawable/rounded_white_solid_white_corner"
                     android:gravity="center"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_8sdp"

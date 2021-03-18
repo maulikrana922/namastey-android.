@@ -127,8 +127,10 @@
 
     <!--    Follow screen-->
     <string name="search">Search</string>
-    <string name="msg_empty_following">When People follow you. you\'ll see them here </string>
-    <string name="msg_empty_followers">When you follow people. you\'ll see them here</string>
+    <string name="msg_empty_following_temp">When People follow you. you\'ll see them here </string>
+    <string name="msg_empty_following">%1$s has no followers.</string>
+    <string name="msg_empty_followers_temp">When you follow people. you\'ll see them here</string>
+    <string name="msg_empty_followers">%1$s is not following anyone.</string>
     <string name="msg_unfollow_user">Are you sure you want to Unfollow?</string>
     <string name="msg_remove_followers">Are you sure you want to remove follower?</string>
 
@@ -506,4 +508,5 @@
     <string name="travel_around_the_world">Travel around the world</string>
     <string name="_3">3</string>
     <string name="_20">20</string>
+    <string name="not_active">Not Active</string>
 </resources>

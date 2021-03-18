@@ -205,7 +205,7 @@
                         android:layout_marginStart="@dimen/_30sdp"
                         android:layout_marginTop="@dimen/_15sdp"
                         android:layout_marginEnd="@dimen/_30sdp"
-                        android:background="@drawable/rounded_white_solid"
+                        android:background="@drawable/rounded_white_solid_white_corner"
                         android:gravity="center"
                         android:onClick="onLoginClick"
                         android:paddingTop="@dimen/_8sdp"

@@ -40,14 +40,16 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var position = -1
     private var userId: Long = -1
     private var isMyProfile = false
+    private var userName = ""
 
 
     companion object {
-        fun getInstance(userId: Long, isMyProfile: Boolean) =
+        fun getInstance(userId: Long, isMyProfile: Boolean, userName: String) =
             FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
                     putBoolean("isMyProfile", isMyProfile)
+                    putString("userName", userName)
                 }
             }
     }
@@ -73,6 +75,7 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private fun initUI() {
         userId = arguments!!.getLong(Constants.USER_ID)
         isMyProfile = arguments!!.getBoolean("isMyProfile")
+        userName = arguments!!.getString("userName", "")
         followingViewModel.getFollowingList(userId)
         searchFollowers()
     }
@@ -155,7 +158,11 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
         if (followingList.size == 0) {
             tvEmptyFollow.text = getString(R.string.following)
-            tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            //tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_followers),
+                userName
+            )
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         }
@@ -184,7 +191,12 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         followingList = list
         if (followingList.size == 0) {
             tvEmptyFollow.text = getString(R.string.following)
-            tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            //tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_followers),
+                userName
+            )
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         } else {

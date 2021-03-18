@@ -40,6 +40,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var position = -1
     private var userId: Long = -1
     private var isMyProfile = false
+    private var userName = ""
 
 
     override fun getViewModel() = followersViewModel
@@ -50,11 +51,12 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
 
     companion object {
-        fun getInstance(userId: Long, isMyProfile: Boolean) =
+        fun getInstance(userId: Long, isMyProfile: Boolean, userName: String) =
             FollowersFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
                     putBoolean("isMyProfile", isMyProfile)
+                    putString("userName", userName)
                 }
             }
     }
@@ -84,6 +86,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private fun initUI() {
         userId = arguments!!.getLong(Constants.USER_ID)
         isMyProfile = arguments!!.getBoolean("isMyProfile")
+        userName = arguments!!.getString("userName", "")
 
         followersViewModel.getFollowersList(userId)
         searchFollowers()
@@ -99,7 +102,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText!!.isNotEmpty()) {
                     Log.e("FollowersFragment", "onQueryTextChange: $newText")
-                   // rvSearchUser.visibility = View.VISIBLE
+                    // rvSearchUser.visibility = View.VISIBLE
                     filter(newText.toString().trim())
                     // followingAdapter.filter!!.filter(newText.toString().trim())
                 } else {
@@ -132,7 +135,6 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
         followingAdapter.filterList(filteredName)
     }
-
 
     override fun onDestroy() {
         followersViewModel.onDestroy()
@@ -174,7 +176,11 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
         if (followersList.size == 0) {
             tvEmptyFollow.text = getString(R.string.followers)
-            tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
+            // tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_following),
+                userName
+            )
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         }
@@ -188,7 +194,11 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         followersList = list
         if (followersList.size == 0) {
             tvEmptyFollow.text = getString(R.string.followers)
-            tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
+            //tvEmptyFollowMsg.text = getString(R.string.msg_empty_following)
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_following),
+                userName
+            )
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         } else {

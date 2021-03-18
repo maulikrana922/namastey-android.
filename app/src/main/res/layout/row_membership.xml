@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_180sdp"
     app:cardCornerRadius="@dimen/_12sdp">
@@ -20,13 +21,14 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:src="@drawable/ic_cards_boots"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get Namastey Gold"
+            android:text="@string/get_namastey_gold"
             android:textColor="@color/white"
             android:textSize="@dimen/_16sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:text="1 Boot A Month"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:text="Skip the line to get more matches "
+            android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintEnd_toStartOf="@+id/ivBoost"
@@ -79,7 +80,7 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_14sdp"
             android:gravity="center_vertical"
-            android:text="Not Active"
+            android:text="@string/not_active"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintBottom_toBottomOf="parent"

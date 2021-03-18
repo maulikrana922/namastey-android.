@@ -466,10 +466,13 @@ object Utils {
     }
 
     fun splitString(price: String, number: Int): String {
-        var finalPrice = price.replace("[^\\d.]".toRegex(), "").toFloat()
-        finalPrice /= number
+        var decimalPrice = price.replace("[^\\d.]".toRegex(), "").toFloat()
+        decimalPrice /= number
 
-        Log.e("Utils", "finalPrice: \t ${finalPrice.toString()}")
+        val finalPrice = String.format("%.2f", decimalPrice)
+
+        Log.e("Utils", "finalPrice: \t ${decimalPrice.toString()}")
+        Log.e("Utils", "twoDigitPrice: \t $finalPrice")
         return finalPrice.toString()
     }
 }

@@ -66,7 +66,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
         if (intent.hasExtra("isMyProfile"))
             isMyProfile = intent.getBooleanExtra("isMyProfile", false)
 
-        if (!isMyProfile){
+        if (!isMyProfile) {
             ivFollowFind.visibility = View.GONE
         }
 
@@ -106,11 +106,11 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFrag(
-            FollowingFragment.getInstance(profileBean.user_id, isMyProfile),
+            FollowingFragment.getInstance(profileBean.user_id, isMyProfile, profileBean.username),
             resources.getString(R.string.following)
         )
         adapter.addFrag(
-            FollowersFragment.getInstance(profileBean.user_id, isMyProfile),
+            FollowersFragment.getInstance(profileBean.user_id, isMyProfile, profileBean.username),
             resources.getString(R.string.followers)
         )
         viewpagerFollow.adapter = adapter
