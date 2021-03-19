@@ -16,6 +16,7 @@ import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.row_child_video_album.view.*
+import java.util.*
 
 class VideoListAdapter(
     var videoList: ArrayList<VideoBean>,

@@ -22,6 +22,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FindFriendViewModel
 import kotlinx.android.synthetic.main.fragment_add_friend.*
+import java.util.*
 import javax.inject.Inject
 
 class AddFriendFragment : BaseFragment<FragmentAddFriendBinding>(), FindFriendView,

@@ -11,6 +11,7 @@ import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.model.CategoryBean
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_filter_category.view.*
+import java.util.*
 
 class FilterCategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,

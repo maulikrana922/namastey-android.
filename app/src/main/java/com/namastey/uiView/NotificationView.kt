@@ -1,6 +1,7 @@
 package com.namastey.uiView
 
 import com.namastey.model.*
+import java.util.*
 
 interface NotificationView: BaseView {
     fun onSuccessFollowRequest(data: ArrayList<FollowRequestBean>)

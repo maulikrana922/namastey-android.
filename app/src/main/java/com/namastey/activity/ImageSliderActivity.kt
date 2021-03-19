@@ -16,6 +16,7 @@ import com.namastey.databinding.ActivityImageSliderBinding
 import com.namastey.utils.Utils
 import com.namastey.viewModel.BaseViewModel
 import kotlinx.android.synthetic.main.activity_image_slider.*
+import java.util.*
 
 class ImageSliderActivity : BaseActivity<ActivityImageSliderBinding>() {
 

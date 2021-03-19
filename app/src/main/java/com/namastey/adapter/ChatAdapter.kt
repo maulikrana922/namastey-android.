@@ -20,6 +20,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message_received.view.*
 import kotlinx.android.synthetic.main.row_message_send.view.*
+import java.util.*
 
 class ChatAdapter(
     var activity: Activity,

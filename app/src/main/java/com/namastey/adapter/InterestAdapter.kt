@@ -10,6 +10,7 @@ import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_choose_interest.view.*
+import java.util.*
 
 class InterestAdapter(
     //var interestList: ArrayList<InterestBean>,

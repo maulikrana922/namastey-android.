@@ -1,15 +1,10 @@
 package com.namastey.viewModel
 
-import android.util.Log
-import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.MatchesBasicView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class MatchesBasicViewModel constructor(
     private val networkService: NetworkService,

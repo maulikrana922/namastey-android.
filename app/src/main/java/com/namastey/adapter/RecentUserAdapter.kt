@@ -12,6 +12,7 @@ import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.roomDB.entity.RecentUser
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_user_suggested.view.*
+import java.util.*
 
 
 class RecentUserAdapter(

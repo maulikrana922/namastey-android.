@@ -3,6 +3,7 @@ package com.namastey.uiView
 import com.namastey.model.InterestBean
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.roomDB.entity.User
+import java.util.*
 
 interface ChooseInterestView : BaseView {
 

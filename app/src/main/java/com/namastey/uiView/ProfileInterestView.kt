@@ -1,6 +1,7 @@
 package com.namastey.uiView
 
 import com.namastey.model.SocialAccountBean
+import java.util.*
 
 interface ProfileInterestView : BaseView {
 

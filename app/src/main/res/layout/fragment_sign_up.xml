@@ -165,8 +165,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/rounded_white_solid_white_corner"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:gravity="center"
+                    android:background="@drawable/rounded_white_solid"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="@id/llSignupWithFacebook"
@@ -249,6 +250,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvNeverPost" />
+
                 <ProgressBar
                     android:id="@+id/progressBar"
                     android:layout_width="wrap_content"

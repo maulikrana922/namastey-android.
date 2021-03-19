@@ -1,6 +1,5 @@
 package com.namastey.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import com.namastey.listeners.OnEducationItemClick
 import com.namastey.model.EducationBean
 import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_education.view.*
+import java.util.*
 
 class EducationAdapter(
     var educationList: ArrayList<EducationBean>,

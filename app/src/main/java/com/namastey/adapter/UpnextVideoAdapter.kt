@@ -9,6 +9,7 @@ import com.namastey.listeners.OnItemClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_child_video_album.view.*
+import java.util.*
 
 class UpnextVideoAdapter(
     var videoList: ArrayList<VideoBean>,

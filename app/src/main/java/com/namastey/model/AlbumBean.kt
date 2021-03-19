@@ -3,7 +3,7 @@ package com.namastey.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-
+import java.util.*
 
 class AlbumBean() : Parcelable {
 

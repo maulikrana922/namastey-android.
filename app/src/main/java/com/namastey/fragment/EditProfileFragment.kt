@@ -110,6 +110,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         )
         sessionManager.setStringValue(
             edtProfileCasualName.text.toString().trim(),
+
             Constants.KEY_CASUAL_NAME
         )
         sessionManager.setStringValue(

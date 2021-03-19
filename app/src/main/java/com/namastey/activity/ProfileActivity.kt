@@ -1366,6 +1366,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         super.onResume()
         if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty()) {
             tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
+
             if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
                 tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
         }
@@ -1613,6 +1614,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
             sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+            sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
             sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
             sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
             sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)

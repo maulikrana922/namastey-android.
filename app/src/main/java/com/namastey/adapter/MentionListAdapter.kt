@@ -10,6 +10,7 @@ import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.model.MentionListBean
 import com.namastey.utils.GlideLib
 import kotlinx.android.synthetic.main.row_mention.view.*
+import java.util.*
 
 class MentionListAdapter(
     var mentionList: ArrayList<MentionListBean>,

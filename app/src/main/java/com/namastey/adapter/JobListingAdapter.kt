@@ -10,6 +10,7 @@ import com.namastey.listeners.OnJobItemClick
 import com.namastey.model.JobBean
 import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_education.view.*
+import java.util.*
 
 class JobListingAdapter(
     var jobListing: ArrayList<JobBean>,

@@ -11,6 +11,7 @@ import com.namastey.R
 import com.namastey.listeners.OnRecentLocationClick
 import com.namastey.roomDB.entity.RecentLocations
 import kotlinx.android.synthetic.main.row_current_location.view.*
+import java.util.*
 
 class CurrentLocationAdapter(
     var activity: Activity,

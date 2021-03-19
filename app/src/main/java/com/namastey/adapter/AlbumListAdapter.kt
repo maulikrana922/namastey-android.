@@ -9,6 +9,7 @@ import com.namastey.R
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
 import kotlinx.android.synthetic.main.row_album_list.view.*
+import java.util.*
 
 class AlbumListAdapter(
     var albumList: ArrayList<AlbumBean>,

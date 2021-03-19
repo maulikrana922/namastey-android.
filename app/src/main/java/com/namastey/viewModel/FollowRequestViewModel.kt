@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
 
 class FollowRequestViewModel constructor(
     private val networkService: NetworkService,
@@ -41,7 +42,6 @@ class FollowRequestViewModel constructor(
         }
     }
 
-
     fun followRequest(userId: Long, isAllow: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
@@ -60,7 +60,6 @@ class FollowRequestViewModel constructor(
             }
         }
     }
-
 
     fun onDestroy() {
         if (::job.isInitialized)

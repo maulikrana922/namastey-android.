@@ -107,6 +107,9 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty())
             edtProfileUserName.setText(sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
 
+        if (sessionManager.getStringValue(Constants.KEY_CASUAL_NAME).isNotEmpty())
+            edtProfileCasualName.setText(sessionManager.getStringValue(Constants.KEY_CASUAL_NAME))
+
         if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
             edtProfileTagline.setText(sessionManager.getStringValue(Constants.KEY_TAGLINE))
 
@@ -147,6 +150,10 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             sessionManager.setStringValue(
                 edtProfileUserName.text.toString().trim(),
                 Constants.KEY_MAIN_USER_NAME
+            )
+            sessionManager.setStringValue(
+                edtProfileCasualName.text.toString().trim(),
+                Constants.KEY_CASUAL_NAME
             )
             sessionManager.setStringValue(
                 edtProfileTagline.text.toString().trim(),
