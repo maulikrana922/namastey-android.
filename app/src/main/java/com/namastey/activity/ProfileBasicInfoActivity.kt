@@ -52,7 +52,9 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         //super.onSuccess(msg)
         tvUniqueNameError.visibility = View.GONE
         Log.e(TAG, "onSuccess: Error: \t $msg")
-        openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
+
+        if (validation())
+            openActivity(this@ProfileBasicInfoActivity, ProfileInterestActivity())
 
     }
 
