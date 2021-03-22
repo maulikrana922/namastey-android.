@@ -165,7 +165,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
                     android:gravity="center"
                     android:background="@drawable/rounded_white_solid"
                     android:paddingTop="@dimen/_8sdp"
@@ -226,15 +225,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:gravity="center"
                     android:text="@string/we_never_post_to_other_social_media"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/_11sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
+                    app:layout_constraintTop_toBottomOf="@+id/llSignupWithPhone" />
 
                 <com.namastey.customViews.CustomTextView
                     android:layout_width="match_parent"
