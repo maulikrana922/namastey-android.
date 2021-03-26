@@ -40,7 +40,6 @@ import com.namastey.model.BoostPriceBean
 import com.namastey.model.DashboardBean
 import com.namastey.model.MembershipBean
 import com.namastey.model.ProfileBean
-import com.namastey.receivers.BoostService
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.utils.Utils.splitString
@@ -989,6 +988,18 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         alertDialog.show()
 
         view.llRecurringTextView.visibility = View.GONE
+        when {
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0 -> {
+                view.tvOutOfBoost.text = getString(R.string.need_more_boosts)
+                view.tvBoostDayRemaining.visibility = View.GONE
+                view.tvNextFreeBoost.visibility = View.GONE
+            }
+            else -> {
+                view.tvOutOfBoost.text = getString(R.string.out_of_boosts)
+                view.tvBoostDayRemaining.visibility = View.VISIBLE
+                view.tvNextFreeBoost.visibility = View.VISIBLE
+            }
+        }
         //manageVisibility(view)
         setupBillingClient(view)
 
@@ -1003,48 +1014,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             alertDialog.dismiss()
         }    // var timer = ""
 
-    }
-
-    private fun startBoost() {
-        Handler().postDelayed(Runnable {
-            sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
-            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-            startBoostService()
-        }, 1800000)
-        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-        sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-        //startBoostService()
-        // showBoostSuccessDialog()
-        //startBoostService()
-
-        val intent = Intent(this@ProfileActivity, DashboardActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        intent.putExtra("isFromProfile", true)
-        startActivity(intent)
-        overridePendingTransition(R.anim.enter, R.anim.exit);
-    }
-
-    private fun startBoostService() {
-        val calendar = Calendar.getInstance()
-        // calendar[Calendar.HOUR_OF_DAY] = 23
-        // calendar[Calendar.MINUTE] = 29
-        calendar[Calendar.MINUTE] = 29
-        calendar[Calendar.SECOND] = 59
-        calendar[Calendar.MILLISECOND] = 59
-        val pendingIntent = PendingIntent.getService(
-            this,
-            0,
-            Intent(this, BoostService::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_HALF_HOUR,
-            pendingIntent
-        )
     }
 
     /**
@@ -1473,7 +1442,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                                 builder.setPositiveButton(
                                     getString(R.string.go_to_settings)
                                 ) { dialog, id ->
-                                    var intent = Intent(
+                                    val intent = Intent(
                                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                         Uri.fromParts("package", packageName, null)
                                     )
@@ -1621,6 +1590,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
             sessionManager.setInterestIn(profileBean.interest_in_gender)
             sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+            sessionManager.setIntegerValue(profileBean.is_global, Constants.KEY_GLOBAL)
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
 
             sessionManager.setIntegerValue(

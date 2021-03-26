@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -546,6 +547,11 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
             purchaseBean.number_of_boost_available,
             Constants.KEY_NO_OF_BOOST
         )
+
+        val intent = Intent(this@InAppPurchaseActivity, DashboardActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
     }
 }
 

@@ -359,7 +359,7 @@ class FeedAdapter(
 
 
             //Todo: Change boost animation time- when start boost
-            if (SessionManager(context).getBooleanValue(Constants.KEY_BOOST_ME)) {
+            if (SessionManager(context).getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
                 tvFeedBoost.visibility = View.VISIBLE

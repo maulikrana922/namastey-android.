@@ -279,16 +279,6 @@
             android:enabled="true" />
 
         <receiver android:name=".receivers.MaxLikeReceiver" />
-
-        <service
-            android:name=".receivers.BoostService"
-            android:enabled="true" />
-
-        <receiver android:name=".receivers.BoostReceiver" />
-
-        <service
-            android:name=".receivers.BroadcastService"
-            android:enabled="true" />
         <service
             android:name=".receivers.AppCloseService"
             android:enabled="true"

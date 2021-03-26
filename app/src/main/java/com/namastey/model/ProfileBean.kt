@@ -30,6 +30,7 @@ class ProfileBean() : Parcelable {
     var is_follow_me: Int = 0  // This is for that particular user follow login user or not
     var is_hide: Int = 0
     var user_profile_type: Int = 0
+    var is_global: Int = 0
     var distance: String = ""
     var gender: String = ""
     var category: ArrayList<CategoryBean> = ArrayList()
@@ -73,6 +74,7 @@ class ProfileBean() : Parcelable {
         is_follow_me = parcel.readInt() ?: 0
         is_hide = parcel.readInt() ?: 0
         user_profile_type = parcel.readInt() ?: 0
+        is_global = parcel.readInt() ?: 0
         distance = parcel.readString() ?: ""
         gender = parcel.readString() ?: ""
         category = parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
@@ -111,6 +113,7 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(is_follow_me)
         parcel.writeInt(is_hide)
         parcel.writeInt(user_profile_type)
+        parcel.writeInt(is_global)
         parcel.writeString(distance)
         parcel.writeString(gender)
         parcel.writeTypedList(category)

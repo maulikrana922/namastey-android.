@@ -381,7 +381,40 @@
                 app:left_thumb_color="@color/colorButtonRed"
                 app:left_thumb_color_pressed="@color/colorButtonRed"
                 app:max_value="160"
-                app:min_value="0" />
+                app:min_value="1" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvGlobal"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/tv_global"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchGlobal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvGlobal"
+                app:layout_constraintBottom_toBottomOf="@id/tvGlobal"/>
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvGlobalMessage"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:maxLines="3"
+                android:text="@string/msg_global"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@id/switchGlobal"
+                app:layout_constraintStart_toStartOf="@id/tvGlobal"
+                app:layout_constraintTop_toBottomOf="@id/switchGlobal" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvAccountSettings"
@@ -396,7 +429,7 @@
                 android:textColor="@color/colorDarkGray"
                 app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
                 app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
+                app:layout_constraintTop_toBottomOf="@id/tvGlobalMessage"
                 app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView

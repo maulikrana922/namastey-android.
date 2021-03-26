@@ -107,7 +107,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
         setSliderData()
 
         vpSlide.adapter =
-            MembershipSliderAdapter(this@MembershipActivity, membershipSliderArrayList)
+            MembershipSliderAdapter(this@MembershipActivity, membershipSliderArrayList,sessionManager)
         tlIndicator.setupWithViewPager(vpSlide, true)
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)

@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit
 
 class MembershipSliderAdapter(
     private val context: Context,
-    private val membershipList: ArrayList<MembershipSlide>
+    private val membershipList: ArrayList<MembershipSlide>,
+    private val sessionManager: SessionManager
 ) : PagerAdapter() {
     override fun getCount(): Int {
         return membershipList.size
@@ -45,11 +46,17 @@ class MembershipSliderAdapter(
         val tvDescription =
             view.findViewById<View>(R.id.tvDescription) as CustomTextView
         val tvDescription1 = view.findViewById<View>(R.id.tvDescription1) as CustomTextView
+        val tvStatus = view.findViewById<View>(R.id.tvStatus) as CustomTextView
 
         view.conBachground.setBackgroundResource(membershipList[position].background)
         tvDescription.text = membershipList[position].title
         tvDescription1.text = membershipList[position].description
         view.ivBoost.setImageResource(membershipList[position].profile_url)
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+            tvStatus.text = context.getString(R.string.active)
+        else
+            tvStatus.text = context.getString(R.string.not_active)
         //view.ivProfile.setImageResource(membershipList[position].profilePicture)
 
         GlideLib.loadImage(context, view.ivProfile, membershipList[position].profilePicture)

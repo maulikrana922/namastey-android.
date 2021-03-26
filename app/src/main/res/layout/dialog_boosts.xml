@@ -57,7 +57,7 @@
 
 
                 <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvText1"
+                    android:id="@+id/tvOutOfBoost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -69,27 +69,27 @@
                     app:typeface="MULI_EXTRA_BOLD" />
 
                 <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvText2"
+                    android:id="@+id/tvBoostDayRemaining"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/_6_day_remaining"
+                    android:text="@string/boost_day_remaining"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     app:fontFamily="Muli-SemiBold"
-                    app:layout_constraintTop_toBottomOf="@+id/tvText1" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvOutOfBoost" />
 
                 <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvText3"
+                    android:id="@+id/tvNextFreeBoost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:gravity="center"
-                    android:text="Until your next free Boost"
+                    android:text="@string/boost_next_free_boost"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"
                     app:fontFamily="Muli-SemiBold"
-                    app:layout_constraintTop_toBottomOf="@+id/tvText2" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvBoostDayRemaining" />
 
 
             </LinearLayout>

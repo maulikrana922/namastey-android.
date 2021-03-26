@@ -261,6 +261,8 @@
     <string name="logout">Logout</string>
     <string name="msg_logout">Are you sure you want to logout?</string>
     <string name="private_account">Private Account</string>
+    <string name="tv_global">Global</string>
+    <string name="msg_global">Going global will allow you to see people nearby and from around the world.</string>
 
 
     <!--    Post video screen-->
@@ -403,7 +405,6 @@
     <string name="_1_boost_each_month">1 Boost each month</string>
     <string name="get_content_from_any_place">Get content from any place</string>
     <string name="enter_destination">Enter Destination</string>
-    <string name="_4_58_mo">$4.58/Mo</string>
     <string name="months">months</string>
     <string name="_12">12</string>
     <string name="_6">6</string>
@@ -427,7 +428,9 @@
     <string name="your_3x_more_likes">You\'re 3x more likely to get a match!</string>
     <string name="month_with_them_instantly">"Match with them instantly "</string>
     <string name="out_of_boosts">Out of Boosts!</string>
-    <string name="_6_day_remaining">6 Day remaining</string>
+    <string name="need_more_boosts">Need more Boosts?</string>
+    <string name="boost_day_remaining">Day remaining</string>
+    <string name="boost_next_free_boost">Until your next free Boost</string>
     <string name="_10_00_ea">$10.00/ea</string>
     <string name="boosts">Boosts</string>
     <string name="_5">5</string>
@@ -442,6 +445,9 @@
     <string name="your_boost_was_a_success">Your boost was a success!</string>
     <string name="complete_profile">Your profile is not complete, please complete your profile.</string>
     <string name="forward_to">Forward to</string>
+    <string name="msg_boost_start">Do you wish to use boost now?</string>
+    <string name="msg_boost_left">Boost left ! </string>
+    <string name="use_boost">Use Boost </string>
     <string name="send_to">Send to</string>
     <string name="leave_a_message">Leave a message</string>
 
@@ -509,4 +515,5 @@
     <string name="_3">3</string>
     <string name="_20">20</string>
     <string name="not_active">Not Active</string>
+    <string name="active">Active</string>
 </resources>

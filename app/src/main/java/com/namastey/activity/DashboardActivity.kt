@@ -61,8 +61,6 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
-import com.namastey.receivers.BoostService
-import com.namastey.receivers.BroadcastService
 import com.namastey.receivers.MaxLikeReceiver
 import com.namastey.receivers.MaxLikeService
 import com.namastey.roomDB.AppDB
@@ -74,6 +72,7 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
@@ -110,6 +109,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -300,6 +300,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         currentLocationFromDB = dbHelper.getLastRecentLocations()
         mRecyclerView = findViewById(R.id.viewpagerFeed)
 
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)){
+
+            val currentStamp = Timestamp(System.currentTimeMillis())
+            val storeTime = Timestamp(sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME))
+            val diff = currentStamp.time - storeTime.time
+
+            if (diff > 1800000L){
+                sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+            }
+        }
         /*Utils.rectangleShapeGradient(
             tvDiscover, intArrayOf(
                 ContextCompat.getColor(this, R.color.color_spotify),
@@ -1954,105 +1964,47 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-                Log.e(
-                    "DashboardActivity",
-                    "isMyServiceRunning: \t ${isMyServiceRunning(BroadcastService()::class.java)}"
-                )
-                if (!isMyServiceRunning(BroadcastService()::class.java)) {
-                    // dashboardViewModel.boostUse()
-                    //startBoostService()
-                    sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-                    // if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-                    startService(Intent(this, BroadcastService::class.java))
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)){
+                    val currentTime = System.currentTimeMillis()
+                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+                    Log.e("DashboardActivity", "currentTime: $currentTime")
+                    Log.e("DashboardActivity", "storedTime: $storedTime")
+                    storedTime += TimeUnit.MINUTES.toMillis(2)
+                    timer = storedTime - currentTime
+
                     showBoostPendingDialog(timer)
-                    // }
+
+            }else{
+                if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                    showBoostStartConfirmationDialog()
                 } else {
-                    Log.e("DashboardActivity", "Nothing")
-                    showBoostPendingDialog(timer)
+                    val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
+                    intent.putExtra("fromBuyBoost", true)
+                    openActivity(intent)
                 }
-            } else {
-                val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
-                intent.putExtra("fromBuyBoost", true)
-                openActivity(intent)
-                /* object : CustomAlertDialog(
-                     this@DashboardActivity,
-                     getString(R.string.string_buy_boost),
-                     getString(R.string.ok), ""
-                 ) {
-                     override fun onBtnClick(id: Int) {
-                         dismiss()
-                     }
-                 }.show()*/
             }
+        }
+    }
 
-
-            /*if (!isFinishing) {
-                if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-                    *//*startService(Intent(this, BroadcastService ::class.java))
-                    showBoostPendingDialog()*//*
-                    if (isFromProfile) {
-                        startService(Intent(this, BroadcastService::class.java))
-                        showBoostPendingDialog(timer)
-                    } else {
-                        startBoostTimer()
+    private fun showBoostStartConfirmationDialog(){
+        object : CustomCommonAlertDialog(
+            this@DashboardActivity,
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString().plus(" ").plus(getString(R.string.msg_boost_left)),
+            getString(R.string.msg_boost_start),
+            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
+            getString(R.string.use_boost),
+            resources.getString(R.string.no_thanks)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
+                        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+                        dashboardViewModel.boostUse()
                     }
-                } else {
-                    //showBoostSuccessDialog()
                 }
-            }*/
-        }
-    }
-
-    private fun startBoost() {
-        Handler().postDelayed(Runnable {
-            sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
-            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-            startBoostService()
-        }, 1800000)
-        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-        sessionManager.setBooleanValue(true, Constants.KEY_BOOST_ME)
-        //startBoostService()
-        // showBoostSuccessDialog()
-        //startBoostService()
-    }
-
-    private fun startBoostService() {
-        val calendar = Calendar.getInstance()
-        // calendar[Calendar.HOUR_OF_DAY] = 23
-        // calendar[Calendar.MINUTE] = 29
-        calendar[Calendar.MINUTE] = 29
-        calendar[Calendar.SECOND] = 59
-        calendar[Calendar.MILLISECOND] = 59
-        val pendingIntent = PendingIntent.getService(
-            this,
-            0,
-            Intent(this, BoostService::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_HALF_HOUR,
-            pendingIntent
-        )
-    }
-
-    private fun startBoostTimer() {
-        val currentTime = System.currentTimeMillis()
-        val storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-        Log.e("DashboardActivity", "currentTime: $currentTime")
-        Log.e("DashboardActivity", "storedTime: $storedTime")
-        val remainingTime = currentTime - storedTime
-        if (remainingTime < 1800000L) {
-            timer -= remainingTime
-            Log.e("DashboardActivity", "timer: $timer")
-            Log.e("DashboardActivity", "remainingTime: $remainingTime")
-            //sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
-            startService(Intent(this, BroadcastService::class.java))
-            showBoostPendingDialog(timer)
-        }
+            }
+        }.show()
     }
 
     override fun onDescriptionClick(userName: String) {
@@ -2099,6 +2051,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
+            showBoostStartConfirmationDialog()
         }
 
         view.tvNoThanks.setOnClickListener {
@@ -2115,14 +2068,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.show()
-
-        val c = Calendar.getInstance()
-        // c[Calendar.HOUR_OF_DAY] = System.currentTimeMillis() +
-        c[Calendar.MINUTE] = 29
-        c[Calendar.SECOND] = 59
-        c[Calendar.MILLISECOND] = 59
-        // val millis = c.timeInMillis - System.currentTimeMillis()
-        val millis = 1800000L
 
         val interval = 1000L
         Log.e("DashboardActivity", "myTimer: $myTimer")
@@ -2148,8 +2093,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         )
                     )
                 )
-                // Log.e("DashboardActivity", "timer: $timer")
-                Log.e("DashboardActivity", "Time: $time")
+//                Log.e("DashboardActivity", "Time: $time")
 
                 view.tvTimeRemaining.text =
                     time.plus(" ").plus(resources.getString(R.string.remaining))
@@ -2157,7 +2101,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
             override fun onFinish() {
                 alertDialog.dismiss()
-                //sessionManager.setBooleanValue(false, Constants.KEY_BOOST_ME)
+                sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+                feedAdapter.notifyDataSetChanged()
                 showBoostSuccessDialog()
                 cancel()
             }
@@ -2315,7 +2260,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         override fun onReceive(context: Context?, intent: Intent) {
             val bundle = intent.extras
             //timer = bundle!!.getString("timerCount")!!
-            timer = bundle!!.getLong("timerCount")
+//            timer = bundle!!.getLong("timerCount")
             Log.e("MyBroadcastReceiver", "timer: $timer")
 
 
@@ -2651,6 +2596,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             boostBean.number_of_boost_available,
             Constants.KEY_NO_OF_BOOST
         )
+        feedAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccessPostShare(msg: String) {

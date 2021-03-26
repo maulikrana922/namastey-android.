@@ -135,6 +135,7 @@ object Constants {
     const val ALBUM_BEAN = "albumBean"
     const val VIDEO_LIST = "videoList"
     const val DISTANCE = "distance"
+    const val IS_GLOBAL = "is_global"
     const val MATCHES_LIST = "matches-list"
     const val FOLLOW_REQUEST_LIST = "follow-request-list"
     const val FOLLOW_REQUEST = "follow-request"
@@ -218,6 +219,7 @@ object Constants {
     const val KEY_AGE_MIN = "KEY_AGE_MIN"
     const val KEY_PROFILE_URL = "KEY_PROFILE_URL"
     const val KEY_AGE_MAX = "KEY_AGE_MAX"
+    const val KEY_GLOBAL = "KEY_GLOBAL"
     const val KEY_IS_COMPLETE_PROFILE = "KEY_IS_COMPLETE_PROFILE"
     const val KEY_AGE = "KEY_AGE"
     const val KEY_IS_MATCHES = "KEY_IS_MATCHES"
@@ -246,6 +248,7 @@ object Constants {
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
     const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
+    const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"
 
 
     //    field key

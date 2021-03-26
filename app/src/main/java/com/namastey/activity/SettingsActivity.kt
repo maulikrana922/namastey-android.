@@ -97,6 +97,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
         switchHideProfile.isChecked = sessionManager.getIntegerValue(Constants.IS_HIDE) == 1
         switchPrivateAccount.isChecked = sessionManager.getIntegerValue(Constants.PROFILE_TYPE) == 1
+        switchGlobal.isChecked = sessionManager.getIntegerValue(Constants.KEY_GLOBAL) == 1
 
         minAge = sessionManager.getStringValue(Constants.KEY_AGE_MIN)
         maxAge = sessionManager.getStringValue(Constants.KEY_AGE_MAX)
@@ -150,6 +151,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             isTouched = true
             false
         }
+        switchGlobal.setOnTouchListener { view, motionEvent ->
+            isTouched = true
+            false
+        }
 
         switchHideProfile.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isTouched) {
@@ -175,6 +180,24 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                     }
                     else -> {
                         settingsViewModel.privateProfile(0)
+                    }
+                }
+
+            }
+        }
+
+        switchGlobal.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isTouched) {
+                isTouched = false
+                val jsonObject = JsonObject()
+                when {
+                    isChecked -> {
+                        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+                        settingsViewModel.editProfile(jsonObject)
+                    }
+                    else -> {
+                        jsonObject.addProperty(Constants.IS_GLOBAL, 0)
+                        settingsViewModel.editProfile(jsonObject)
                     }
                 }
 
@@ -272,7 +295,10 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
         sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)
         sessionManager.setStringValue(distance, Constants.DISTANCE)
-
+        if (switchGlobal.isChecked)
+            sessionManager.setIntegerValue(1, Constants.KEY_GLOBAL)
+        else
+            sessionManager.setIntegerValue(0, Constants.KEY_GLOBAL)
     }
 
     override fun onSuccessHideProfile(message: String) {
