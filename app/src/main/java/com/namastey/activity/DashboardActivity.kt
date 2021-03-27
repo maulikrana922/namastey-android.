@@ -245,30 +245,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             pendingIntent
         )
     }
-
-    private fun scheduleAlarm() {
-        val cal: Calendar = Calendar.getInstance()
-        cal[Calendar.HOUR_OF_DAY] = 11
-        cal[Calendar.MINUTE] = 0
-        cal[Calendar.SECOND] = 0
-        cal[Calendar.MILLISECOND] = 0
-        //cal.add(Calendar.DAY_OF_MONTH, 1)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            Intent(this, MaxLikeReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            cal.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            //1000 * 60 * 60 * 24.toLong(),
-            pendingIntent
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -278,11 +254,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
 
-        /* if (sessionManager.getBooleanValue(Constants.KEY_BOOST_ME)) {
-             startService(Intent(this, BroadcastService::class.java))
-         }*/
         startMaxLikeService()
-        //scheduleAlarm()
 
         //addLocationPermission()
 
@@ -1798,7 +1770,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     animation.setDuration(700)
     animation.setFillAfter(true)
     view.startAnimation(animation)
-}
+}p
 
 private fun prepareAnimation(animation: Animation): Animation? {
     animation.setRepeatCount(1)

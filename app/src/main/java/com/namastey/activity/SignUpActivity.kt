@@ -198,7 +198,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
      */
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
-            var account = task.getResult(ApiException::class.java)
+            val account = task.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
             providerId = account?.id!!

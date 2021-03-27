@@ -1183,27 +1183,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         }
     }
 
-    /**
-     * show dialog of boost success
-     */
-    private fun showBoostSuccessDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this@ProfileActivity)
-        val viewGroup: ViewGroup = findViewById(android.R.id.content)
-        val view: View =
-            LayoutInflater.from(this).inflate(R.layout.dialog_boost_success, viewGroup, false)
-        builder.setView(view)
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
-
-        view.btnAlertOk.setOnClickListener {
-            alertDialog.dismiss()
-        }
-
-        view.tvNoThanks.setOnClickListener {
-            alertDialog.dismiss()
-        }
-    }
 
     private fun selectImage() {
 
@@ -1547,7 +1526,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                         builder.setPositiveButton(
                             getString(R.string.go_to_settings)
                         ) { dialog, id ->
-                            var intent = Intent(
+                            val intent = Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                 Uri.fromParts("package", packageName, null)
                             )
