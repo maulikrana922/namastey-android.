@@ -8,6 +8,7 @@ class PurchaseBean() : Parcelable {
 
     var is_purchase: Int = 0
     var number_of_boost_available: Int = 0
+    var purchase_date: Long = 0
     var acknowledgementState: Int = 0
     var autoRenewing: Boolean = false
     //var autoResumeTimeMillis: Long = 0
@@ -38,6 +39,7 @@ class PurchaseBean() : Parcelable {
     constructor(parcel: Parcel) : this() {
         is_purchase = parcel.readInt()
         number_of_boost_available = parcel.readInt()
+        purchase_date = parcel.readLong()
         acknowledgementState = parcel.readInt()
         cancelReason = parcel.readInt()
         countryCode = parcel.readString()?: ""
@@ -56,6 +58,7 @@ class PurchaseBean() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(is_purchase)
         parcel.writeInt(number_of_boost_available)
+        parcel.writeLong(purchase_date)
         parcel.writeInt(acknowledgementState)
         parcel.writeInt(cancelReason)
         parcel.writeString(countryCode)

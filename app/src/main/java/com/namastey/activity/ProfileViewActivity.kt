@@ -126,7 +126,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
-        GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
+        if (profileBean.profileUrl.isNotEmpty())
+            GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
         if (profileBean.education.size > 0) {
             tvEducation.text = profileBean.education[0].course
@@ -169,50 +170,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     /**
      * Generate dynamic choose interest view
      */
-    private fun generateChooseInterestUITemp(interestList: ArrayList<InterestBean>) {
-//        for (interestBean in interestList) {
-//            val tvInterest = TextView(this@ProfileViewActivity)
-//            tvInterest.layoutParams = LinearLayout.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//            )
-//            tvInterest.text = interestBean.interest_name
-//            tvInterest.setPadding(40, 18, 40, 18)
-//            tvInterest.setTextColor(Color.WHITE)
-//            tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
-//
-//            chipProfileInterest.addView(tvInterest)
-//        }
-
-        chipProfileInterest.removeAllViews()
-        val tvInterest = TextView(this@ProfileViewActivity)
-        tvInterest.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        tvInterest.text = interestList[0].interest_name
-        tvInterest.setPadding(40, 18, 40, 18)
-        tvInterest.setTextColor(Color.WHITE)
-        tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
-
-        chipProfileInterest.addView(tvInterest)
-
-        if (interestList.size >= 2) {
-            val tvInterestSecond = TextView(this@ProfileViewActivity)
-            tvInterestSecond.layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            tvInterestSecond.text = interestList[1].interest_name
-            tvInterestSecond.setPadding(40, 18, 40, 18)
-            tvInterestSecond.setTextColor(Color.WHITE)
-            tvInterestSecond.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
-
-            chipProfileInterest.addView(tvInterestSecond)
-        }
-
-    }
-
     private fun generateChooseInterestUI(interestSubCategoryList: ArrayList<InterestSubCategoryBean>) {
         chipProfileInterest.removeAllViews()
         val tvInterest = TextView(this@ProfileViewActivity)

@@ -33,8 +33,8 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
     private lateinit var fragmentSelectGenderBinding: FragmentSelectGenderBinding
     private lateinit var selectGenderViewModel: SelectGenderViewModel
     private lateinit var layoutView: View
-    private var year = 0;
-    var month = 0;
+    private var year = 0
+    var month = 0
     var day = 0
     private lateinit var calendar: Calendar
     override fun onClose() {
@@ -143,11 +143,11 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
         }
 
         datePickerDialog!!.displayListener { picker ->
-            var view = picker?.rootView
+            val view = picker?.rootView
             if (view != null) {
                 val buttonOk =
                     view.findViewById(com.github.florent37.singledateandtimepicker.R.id.buttonOk) as TextView
-                buttonOk.text = "Done"
+                buttonOk.text = getString(R.string.done)
             }
         }
         datePickerDialog!!.listener { date: Date? ->

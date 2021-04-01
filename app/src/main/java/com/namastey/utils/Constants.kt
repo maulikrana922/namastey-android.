@@ -166,7 +166,7 @@ object Constants {
     const val MULI_BLACK = 3
     const val MULI_EXTRA_BOLD = 4
 
-    const val INVALID_SESSION_ERROR_CODE = 201
+    const val INVALID_SESSION_ERROR_CODE = 401
 
     //    Fragment tag
     const val SIGNUP_WITH_PHONE_FRAGMENT = "SignupWithPhoneFragment"
@@ -246,6 +246,7 @@ object Constants {
     const val KEY_MUTE_PARTICULAR_USER = "KEY_MUTE_PARTICULAR_USER"
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
+    const val KEY_PURCHASE_DATE= "KEY_PURCHASE_DATE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
     const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
     const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"

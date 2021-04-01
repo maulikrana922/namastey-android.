@@ -1,11 +1,9 @@
 package com.namastey.activity
 
 import android.Manifest
-import android.app.ActivityManager
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.app.usage.UsageStats
-import android.app.usage.UsageStatsManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -61,7 +59,6 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
-import com.namastey.receivers.MaxLikeReceiver
 import com.namastey.receivers.MaxLikeService
 import com.namastey.roomDB.AppDB
 import com.namastey.roomDB.DBHelper
@@ -69,38 +66,17 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
-import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
-import kotlinx.android.synthetic.main.dialog_membership.view.tvNothanks
-import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferHigh
-import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferLow
-import kotlinx.android.synthetic.main.dialog_membership.view.tvOfferMedium
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostHigh
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostLow
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextBoostMedium
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHigh
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextHighEachBoost
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLow
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextLowEachBoost
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMedium
-import kotlinx.android.synthetic.main.dialog_membership.view.tvTextMediumEachBoost
-import kotlinx.android.synthetic.main.dialog_membership.view.viewBgHigh
-import kotlinx.android.synthetic.main.dialog_membership.view.viewBgLow
-import kotlinx.android.synthetic.main.dialog_membership.view.viewBgMedium
-import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedHigh
-import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedLow
-import kotlinx.android.synthetic.main.dialog_membership.view.viewSelectedMedium
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -167,7 +143,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
     private var totalCount = 1
-
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -177,54 +152,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     override fun getLayoutId() = R.layout.activity_dashboard
 
     override fun getBindingVariable() = BR.viewModel
-
-    private fun check() {
-        val activityManager: ActivityManager =
-            this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val processInfo: List<ActivityManager.RunningAppProcessInfo> =
-            activityManager.runningAppProcesses
-        for (i in processInfo.indices) {
-            if (processInfo[i].processName == packageName) {
-                Log.e("DashboardActivity", "check: \t ${processInfo[i].processName} ")
-                Log.e("DashboardActivity", "check: \t ${processInfo[i].uid} ")
-            }
-        }
-
-        val mUsageStatsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        } else {
-            TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
-        }
-
-        // val cal = Calendar.getInstance()
-        //cal.add(Calendar.YEAR, -1)
-        //cal.add(Calendar.DATE, -1)
-        val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("Asia/Calcutta")
-        calendar[Calendar.HOUR_OF_DAY] = 0
-        calendar[Calendar.MINUTE] = 1
-        calendar[Calendar.SECOND] = 0
-        calendar[Calendar.MILLISECOND] = 0
-        Log.e("DashboardActivity", "check: timeInMillis \t ${calendar.timeInMillis} ")
-        Log.e("DashboardActivity", "check: System.timeInMillis \t ${System.currentTimeMillis()} ")
-        val queryUsageStats: List<UsageStats> = mUsageStatsManager
-            .queryUsageStats(
-                UsageStatsManager.INTERVAL_DAILY, calendar.timeInMillis,
-                System.currentTimeMillis()
-            )
-
-        for (us in queryUsageStats) {
-            //  Log.e("DashboardActivity", "check " + us.packageName + " = " + us.totalTimeInForeground)
-            if (us.packageName == packageName) {
-                //Log.e("DashboardActivity", "check: \t ${us.packageName} ")
-                Log.e(
-                    "DashboardActivity",
-                    "check " + us.packageName + " = " + us.totalTimeInForeground
-                )
-            }
-        }
-    }
-
     private fun startMaxLikeService() {
         val calendar = Calendar.getInstance()
         calendar[Calendar.HOUR_OF_DAY] = 23
@@ -277,8 +204,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             val currentStamp = Timestamp(System.currentTimeMillis())
             val storeTime = Timestamp(sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME))
             val diff = currentStamp.time - storeTime.time
+            val seconds = diff / 1000
+            val minutes = seconds / 60
+            val hours = minutes / 60
+            val days = hours / 24
 
-            if (diff > 1800000L){
+            Log.d("Days second : ", seconds.toString())
+            Log.d("Days minutes : ", minutes.toString())
+            Log.d("Days hours : ", hours.toString())
+            Log.d("Days days : ", days.toString())
+            Log.d("current time : ", Utils.convertTimestampToChatFormat(System.currentTimeMillis()).toString())
+            if (minutes > 30){
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
             }
         }
@@ -1941,7 +1877,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
                     Log.e("DashboardActivity", "currentTime: $currentTime")
                     Log.e("DashboardActivity", "storedTime: $storedTime")
-                    storedTime += TimeUnit.MINUTES.toMillis(2)
+                    storedTime += TimeUnit.MINUTES.toMillis(30)
                     timer = storedTime - currentTime
 
                     showBoostPendingDialog(timer)
@@ -2019,7 +1955,9 @@ private fun prepareAnimation(animation: Animation): Animation? {
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
+        if (!(this@DashboardActivity as Activity).isFinishing()) {
+            alertDialog.show()
+        }
 
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
@@ -2047,7 +1985,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         if (myTimer.toString().contains("-")) {
             alertDialog.dismiss()
         }
-
         val t: CountDownTimer
         t = object : CountDownTimer(myTimer, interval) {
             override fun onTick(millisUntilFinished: Long) {
@@ -2557,6 +2494,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
+        sessionManager.setLongValue(purchaseBean.purchase_date, Constants.KEY_PURCHASE_DATE)
         sessionManager.setIntegerValue(
             purchaseBean.number_of_boost_available,
             Constants.KEY_NO_OF_BOOST

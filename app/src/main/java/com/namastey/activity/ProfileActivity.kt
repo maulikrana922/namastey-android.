@@ -75,7 +75,9 @@ import kotlinx.android.synthetic.main.dialog_membership.view.*
 import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Method
+import java.sql.Timestamp
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdatedListener,
@@ -996,8 +998,35 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
             }
             else -> {
                 view.tvOutOfBoost.text = getString(R.string.out_of_boosts)
-                view.tvBoostDayRemaining.visibility = View.VISIBLE
-                view.tvNextFreeBoost.visibility = View.VISIBLE
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1){
+                    val purchaseTimeStamp = Timestamp(sessionManager.getLongValue(Constants.KEY_PURCHASE_DATE))
+                    Log.d("purchase time : ", purchaseTimeStamp.time.toString())
+
+                    val date = Date(purchaseTimeStamp.time)
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date
+                    calendar.add(Calendar.DATE, 30)
+                    Log.d("expire time : ", calendar.time.toString())
+
+                    val currentDate = Calendar.getInstance()
+                    val diff: Long = calendar.timeInMillis - currentDate.timeInMillis
+                    val seconds = diff / 1000
+                    val minutes = seconds / 60
+                    val hours = minutes / 60
+                    val days = hours / 24
+
+                    Log.d("Days remaining : ", days.toString())
+                    Log.d("Days remaining : ", hours.toString())
+                    Log.d("Days remaining : ", minutes.toString())
+                    Log.d("current time : ", currentDate.time.toString())
+
+                    view.tvBoostDayRemaining.text = days.toString().plus(" ").plus(getString(R.string.boost_day_remaining))
+                    view.tvBoostDayRemaining.visibility = View.VISIBLE
+                    view.tvNextFreeBoost.visibility = View.VISIBLE
+                }else{
+                    view.tvBoostDayRemaining.visibility = View.GONE
+                    view.tvNextFreeBoost.visibility = View.GONE
+                }
             }
         }
         //manageVisibility(view)
@@ -1194,7 +1223,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
 
         val builder = android.app.AlertDialog.Builder(this)
         builder.setTitle(
-            getString(R.string.upload_profile_pictuare)
+            getString(R.string.upload_profile_picture)
         )
         builder.setItems(options) { dialog, item ->
             when (item) {

@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -9,6 +10,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.DashboardActivity
 import com.namastey.activity.FilterActivity
 import com.namastey.adapter.SubCategoryAdapter
 import com.namastey.dagger.module.ViewModelFactory
@@ -112,14 +114,25 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
     override fun onClick(v: View?) {
         when (v) {
             ivSelectFilter -> {
-                val intent = Intent(requireActivity(), FilterActivity::class.java)
-                if (arguments!!.containsKey("categoryList")) {
-                    intent.putExtra(
-                        "categoryList",
-                        arguments!!.getSerializable("categoryList") as ArrayList<*>
+                if (sessionManager.isGuestUser()) {
+                    addFragment(
+                        SignUpFragment.getInstance(
+                            true
+                        ),
+                        Constants.SIGNUP_FRAGMENT
                     )
+                } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    (activity as DashboardActivity).completeSignUpDialog()
+                }else {
+                    val intent = Intent(requireActivity(), FilterActivity::class.java)
+                    if (arguments!!.containsKey("categoryList")) {
+                        intent.putExtra(
+                            "categoryList",
+                            arguments!!.getSerializable("categoryList") as ArrayList<*>
+                        )
+                    }
+                    openActivityForResult(requireActivity(), intent, Constants.FILTER_OK)
                 }
-                openActivityForResult(requireActivity(), intent, Constants.FILTER_OK)
             }
             mainSelectFilterView -> {
                 requireActivity().supportFragmentManager.popBackStack()

@@ -113,21 +113,34 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         Log.e("BaseActivity", "onFailed  error: $error")
         Log.e("BaseActivity", "onFailed  msg: $msg")
         when (status) {
-            INVALID_SESSION_ERROR_CODE -> {
-                // logout from app and go to launch screen
+            INVALID_SESSION_ERROR_CODE ->{
+                runOnUiThread {
+                    object : CustomAlertDialog(
+                        this,
+                        msg, getString(R.string.ok), ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            logoutAndRedirectSignUp()
+                        }
+                    }.show()
+                }
             }
             ADMIN_BLOCK_USER_CODE -> {
                 // logout from app and go to launch screen
-                SessionManager(this@BaseActivity).logout()
-                val intent = Intent(this@BaseActivity, SignUpActivity::class.java)
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                openActivity(intent)
+                logoutAndRedirectSignUp()
             }
             else -> {
                 showMsg(msg)
             }
         }
+    }
+
+    private fun logoutAndRedirectSignUp(){
+        SessionManager(this@BaseActivity).logout()
+        val intent = Intent(this@BaseActivity, SignUpActivity::class.java)
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        openActivity(intent)
     }
 
     private fun setUpSnackBar() {
