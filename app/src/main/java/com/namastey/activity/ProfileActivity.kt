@@ -539,9 +539,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
     fun onClickProfileMore(view: View) {
         if (!sessionManager.isGuestUser() && sessionManager.getUserId() == profileBean.user_id && profileBean.is_completly_signup == 1) {
             openActivity(this@ProfileActivity, SettingsActivity())
-        } else {
+        } else if (profileBean.user_id != 0L){
             createPopUpMenu()
-
         }
     }
 

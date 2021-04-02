@@ -807,7 +807,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         builder.setView(dialogView)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
+        if (!(this@DashboardActivity as Activity).isFinishing()) {
+            alertDialog.show()
+        }
 
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
@@ -1955,7 +1957,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        if (!(this@DashboardActivity as Activity).isFinishing()) {
+        if (!(this@DashboardActivity as Activity).isFinishing) {
             alertDialog.show()
         }
 
@@ -1977,7 +1979,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
+
+        if (!(this@DashboardActivity as Activity).isFinishing()) {
+            alertDialog.show()
+        }
 
         val interval = 1000L
         Log.e("DashboardActivity", "myTimer: $myTimer")

@@ -230,7 +230,10 @@ class SessionManager(context: Context) {
 
     fun setStringValue(value: String, key: String) {
         val e = mPrefs.edit()
-        e.putString(key, value)
+        if (TextUtils.isEmpty(value))
+            e.putString(key,"")
+        else
+            e.putString(key, value)
         e.apply()
     }
 
