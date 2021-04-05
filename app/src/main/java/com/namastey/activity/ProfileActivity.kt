@@ -190,7 +190,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                     val skuDetails = skuDetailsList[i]
                     // Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
 
-                    if (skuDetails.sku == "b00100") {
+                    if (skuDetails.sku == subscriptionSkuList[0]) {
                         val price = splitString(skuDetails.price, 3)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
@@ -199,7 +199,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                             currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
-                    if (skuDetails.sku == "b00200") {
+                    if (skuDetails.sku == subscriptionSkuList[1]) {
                         val price = splitString(skuDetails.price, 10)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
@@ -208,7 +208,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                             currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
-                    if (skuDetails.sku == "b00300") {
+                    if (skuDetails.sku == subscriptionSkuList[2]) {
                         val price = splitString(skuDetails.price, 20)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
@@ -216,6 +216,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                         view.tvTextHighEachBoost.text =
                             currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
+                    profileViewModel.setIsLoading(false)
 
                     manageVisibility(view)
                 }
@@ -275,31 +276,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
     }
 
     private fun manageVisibility(view: View) {
-        /* for (data in boostProfileList) {
-             val numberOfBoost = data.number_of_boost
-             val price = data.price
-
-             Log.e("ProfileActivity", "numberOfBoost: \t $numberOfBoost")
-             Log.e("ProfileActivity", "price: \t $price")
-
-             if (numberOfBoost == 1) {
-                 // view.tvOnemonth.text = numberOfBoost.toString()
-                 view.tvTextLowEachBoost.text =
-                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-             }
-
-             if (numberOfBoost == 5) {
-                 // view.tvFivemonth.text = numberOfBoost.toString()
-                 view.tvTextMediumEachBoost.text =
-                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-             }
-
-             if (numberOfBoost == 10) {
-                 // view.tvTwel.text = numberOfBoost.toString()
-                 view.tvTextHighEachBoost.text =
-                     resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-             }
-         }*/
 
         view.constLow.setOnClickListener {
             view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
@@ -343,7 +319,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                 )
             )
 
-            inAppProductId = "b00100"
+            inAppProductId = subscriptionSkuList[0]
         }
 
         view.constMedium.setOnClickListener {
@@ -388,7 +364,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                 )
             )
 
-            inAppProductId = "b00200"
+            inAppProductId = subscriptionSkuList[1]
         }
 
         view.constHigh.setOnClickListener {
@@ -433,7 +409,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                 )
             )
 
-            inAppProductId = "b00300"
+            inAppProductId = subscriptionSkuList[2]
 
         }
     }
@@ -986,6 +962,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        profileViewModel.setIsLoading(true)
         alertDialog.show()
 
         view.llRecurringTextView.visibility = View.GONE
@@ -1046,170 +1023,170 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
 
     /**
      * manage visibility of boost dialog*/
-    private fun manageVisibilityTemp(view: View) {
-        for (data in boostProfileList) {
-            val numberOfBoost = data.number_of_boost
-            val price = data.price
-
-            Log.e("ProfileActivity", "numberOfBoost: \t $numberOfBoost")
-            Log.e("ProfileActivity", "price: \t $price")
-
-            if (numberOfBoost == 1) {
-                // view.tvOnemonth.text = numberOfBoost.toString()
-                view.tvTextLowEachBoost.text =
-                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-            }
-
-            if (numberOfBoost == 5) {
-                // view.tvFivemonth.text = numberOfBoost.toString()
-                view.tvTextMediumEachBoost.text =
-                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-            }
-
-            if (numberOfBoost == 10) {
-                // view.tvTwel.text = numberOfBoost.toString()
-                view.tvTextHighEachBoost.text =
-                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
-            }
-        }
-
-        view.constLow.setOnClickListener {
-            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.viewBgLow.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            //  view.tvOfferLow.visibility = View.VISIBLE
-            view.viewSelectedLow.visibility = View.VISIBLE
-
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
-
-            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-
-            inAppProductId = "b00100"
-        }
-
-        view.constMedium.setOnClickListener {
-            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.viewBgMedium.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvOfferMedium.visibility = View.VISIBLE
-            view.viewSelectedMedium.visibility = View.VISIBLE
-
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
-
-            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-
-            inAppProductId = "b00200"
-
-        }
-
-        view.constHigh.setOnClickListener {
-            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
-            view.viewBgHigh.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            view.tvOfferHigh.visibility = View.VISIBLE
-            view.viewSelectedHigh.visibility = View.VISIBLE
-
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
-
-            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorDarkGray
-                )
-            )
-
-            inAppProductId = "b00300"
-
-        }
-    }
+//    private fun manageVisibilityTemp(view: View) {
+//        for (data in boostProfileList) {
+//            val numberOfBoost = data.number_of_boost
+//            val price = data.price
+//
+//            Log.e("ProfileActivity", "numberOfBoost: \t $numberOfBoost")
+//            Log.e("ProfileActivity", "price: \t $price")
+//
+//            if (numberOfBoost == 1) {
+//                // view.tvOnemonth.text = numberOfBoost.toString()
+//                view.tvTextLowEachBoost.text =
+//                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+//            }
+//
+//            if (numberOfBoost == 5) {
+//                // view.tvFivemonth.text = numberOfBoost.toString()
+//                view.tvTextMediumEachBoost.text =
+//                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+//            }
+//
+//            if (numberOfBoost == 10) {
+//                // view.tvTwel.text = numberOfBoost.toString()
+//                view.tvTextHighEachBoost.text =
+//                    resources.getString(R.string.dollars) + price + resources.getString(R.string.each)
+//            }
+//        }
+//
+//        view.constLow.setOnClickListener {
+//            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextLowEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.viewBgLow.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+//            //  view.tvOfferLow.visibility = View.VISIBLE
+//            view.viewSelectedLow.visibility = View.VISIBLE
+//
+//            view.viewBgMedium.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferMedium.visibility = View.INVISIBLE
+//            view.viewSelectedMedium.visibility = View.INVISIBLE
+//            view.viewBgHigh.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferHigh.visibility = View.INVISIBLE
+//            view.viewSelectedHigh.visibility = View.INVISIBLE
+//
+//            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextMediumEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextHighEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//
+//            inAppProductId = "b00100"
+//        }
+//
+//        view.constMedium.setOnClickListener {
+//            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextMediumEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.viewBgMedium.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+//            view.tvOfferMedium.visibility = View.VISIBLE
+//            view.viewSelectedMedium.visibility = View.VISIBLE
+//
+//            view.viewBgLow.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferLow.visibility = View.INVISIBLE
+//            view.viewSelectedLow.visibility = View.INVISIBLE
+//            view.viewBgHigh.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferHigh.visibility = View.INVISIBLE
+//            view.viewSelectedHigh.visibility = View.INVISIBLE
+//
+//            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextLowEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextHighEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//
+//            inAppProductId = "b00200"
+//
+//        }
+//
+//        view.constHigh.setOnClickListener {
+//            view.tvTextHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextBoostHigh.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.tvTextHighEachBoost.setTextColor(ContextCompat.getColor(this, R.color.colorRed))
+//            view.viewBgHigh.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+//            view.tvOfferHigh.visibility = View.VISIBLE
+//            view.viewSelectedHigh.visibility = View.VISIBLE
+//
+//            view.viewBgMedium.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferMedium.visibility = View.INVISIBLE
+//            view.viewSelectedMedium.visibility = View.INVISIBLE
+//            view.viewBgLow.setBackgroundColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorLightPink
+//                )
+//            )
+//            view.tvOfferLow.visibility = View.INVISIBLE
+//            view.viewSelectedLow.visibility = View.INVISIBLE
+//
+//            view.tvTextLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostLow.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextLowEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//            view.tvTextMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextBoostMedium.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray))
+//            view.tvTextMediumEachBoost.setTextColor(
+//                ContextCompat.getColor(
+//                    this,
+//                    R.color.colorDarkGray
+//                )
+//            )
+//
+//            inAppProductId = "b00300"
+//
+//        }
+//    }
 
 
     private fun selectImage() {

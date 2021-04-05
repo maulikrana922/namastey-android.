@@ -14,6 +14,7 @@ import com.google.android.gms.location.LocationListener
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySettingsBinding
 import com.namastey.location.AppLocationService
@@ -291,6 +292,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     }
 
     override fun onSuccess(msg: String) {
+        NamasteyApplication.instance.setIsUpdateProfile(true)
         sessionManager.setInterestIn(interestIn)
         sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
         sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)

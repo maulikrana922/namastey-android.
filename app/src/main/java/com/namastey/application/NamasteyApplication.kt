@@ -21,6 +21,7 @@ class NamasteyApplication : Application(), HasActivityInjector {
     @Inject
     internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
+    private var isUpdateProfile : Boolean = false
     override fun activityInjector(): AndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
     }
@@ -28,12 +29,14 @@ class NamasteyApplication : Application(), HasActivityInjector {
     companion object {
         private lateinit var appComponent: AppComponent
         fun appComponent() = appComponent
+        lateinit var instance: NamasteyApplication
     }
 
     override fun onCreate() {
         super.onCreate()
         AppEventsLogger.activateApp(this);
         buildAppComponent()
+        instance = this
         InternetConnectionMonitor(this).enable()
     }
 
@@ -44,4 +47,10 @@ class NamasteyApplication : Application(), HasActivityInjector {
             .networkModule(NetworkModule())
             .build()
     }
+
+    fun setIsUpdateProfile(isUpdateProfile: Boolean) {
+        this.isUpdateProfile = isUpdateProfile
+    }
+
+    fun isUpdateProfile(): Boolean = isUpdateProfile
 }

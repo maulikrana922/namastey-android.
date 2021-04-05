@@ -96,7 +96,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
     }
 
     private fun initData() {
-        membershipViewModel.getMembershipPriceList()
+//        membershipViewModel.getMembershipPriceList()
 
         if (intent.hasExtra("isFromAirport"))
             isFromAirport = intent.getBooleanExtra("isFromAirport", false)
@@ -198,6 +198,7 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
 
+        membershipViewModel.setIsLoading(true)
         alertDialog.show()
 
         /*Show dialog slider*/
@@ -256,47 +257,43 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
 
                     val skuDetails = skuDetailsList[i]
 
-                    if (skuDetails.sku == "000010") {
-                        val price = Utils.splitString(skuDetails.price, 1)
-                        val currencySymbol =
-                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
-                        view.tvTextLowEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
-                    }
+                    if (subscriptionSkuList.size >= 2) {
+                        if (skuDetails.sku == subscriptionSkuList[0]) {
+                            val price = Utils.splitString(skuDetails.price, 1)
+                            val currencySymbol =
+                                CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                            view.tvTextLowEachBoost.text =
+                                currencySymbol.plus(price)
+                                    .plus(resources.getString(R.string.per_month))
+                        }
 
-                    if (skuDetails.sku == "000020") {
-                        val price = Utils.splitString(skuDetails.price, 6)
-                        val currencySymbol =
-                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
-                        view.tvTextMediumEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+                        if (skuDetails.sku == subscriptionSkuList[1]) {
+                            val price = Utils.splitString(skuDetails.price, 6)
+                            val currencySymbol =
+                                CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                            view.tvTextMediumEachBoost.text =
+                                currencySymbol.plus(price)
+                                    .plus(resources.getString(R.string.per_month))
 
-                        /* view.tvTextMediumEachBoost.text = price
+                            /* view.tvTextMediumEachBoost.text = price
                              .plus(resources.getString(R.string.per_month))
                          .plus("\n")
                          .plus(resources.getString(R.string.save))
                          .plus(" ")
                          .plus(discount)
                          .plus(resources.getString(R.string.percentage))*/
+                        }
+
+                        if (skuDetails.sku == subscriptionSkuList[2]) {
+                            val price = Utils.splitString(skuDetails.price, 12)
+                            val currencySymbol =
+                                CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                            view.tvTextHighEachBoost.text =
+                                currencySymbol.plus(price)
+                                    .plus(resources.getString(R.string.per_month))
+                        }
+                        membershipViewModel.setIsLoading(false)
                     }
-
-                    if (skuDetails.sku == "000030") {
-                        val price = Utils.splitString(skuDetails.price, 12)
-                        val currencySymbol =
-                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
-                        view.tvTextHighEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
-
-                        /* val price = skuDetails.price
-                        view.tvTextHighEachBoost.text = price
-                            .plus(resources.getString(R.string.per_month))
-                       .plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))*/
-                    }
-
                     /* if (skuDetails.sku == "000010") {
                          val price = skuDetails.price
                          view.tvTextLowEachBoost.text =
@@ -585,15 +582,6 @@ class MembershipActivity : BaseActivity<ActivityMembershipBinding>(),
             )
             subscriptionId = "000030"
         }
-    }
-
-    fun onClickContinue(view: View) {
-        Log.d("Membership :", "Selected month ".plus(selectedMonths))
-        Log.d(
-            "Membership :",
-            "Selected month Price ".plus(membershipViewList[selectedMonths].price)
-        )
-
     }
 
     fun onClickMembershipBack(view: View) {

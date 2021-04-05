@@ -49,6 +49,7 @@ import com.namastey.adapter.CategoryAdapter
 import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.MembershipDialogSliderAdapter
+import com.namastey.application.NamasteyApplication
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
@@ -1382,6 +1383,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     override fun onSuccessFeedFinal(dashboardList: ArrayList<DashboardBean>, total: Int) {
+        NamasteyApplication.instance.setIsUpdateProfile(false)
         Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
         Log.e("DashboardActivity", "onSuccessNewFeed: total\t $total")
         totalCount = total
@@ -2188,6 +2190,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
+        if (NamasteyApplication.instance.isUpdateProfile()){
+            feedList.clear()
+            currentPage = 1
+            videoIdList.clear()
+            getFeedListApi(0)
+        }
         registerReceiver(
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
@@ -2196,7 +2204,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
             myBroadcastReceiver, IntentFilter("countDown")
         )
-
         mRecyclerView!!.onRestartPlayer()
     }
 
