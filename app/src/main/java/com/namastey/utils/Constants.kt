@@ -42,8 +42,11 @@ object Constants {
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
-    //    Live url
+    //    Test url
     const val BASE = "https://testyourapp.online/namasteyapp/api/"
+
+//    Live url
+//    const val BASE = "https://app.namasteyapp.com/api/"
 
     //  const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"

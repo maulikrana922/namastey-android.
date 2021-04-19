@@ -144,8 +144,8 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 //    Login with SnapChat
     implementation([
-            "com.snapchat.kit.sdk:login:$snapchatVersion",
-            "com.snapchat.kit.sdk:core:$snapchatVersion"
+            "com.snapchat.kit.sdk:login:1.4.0",
+            "com.snapchat.kit.sdk:core:1.4.0"
     ])
     implementation project(path: ':dateandtimepicker')
 

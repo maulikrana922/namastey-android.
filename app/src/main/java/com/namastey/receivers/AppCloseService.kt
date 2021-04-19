@@ -45,7 +45,7 @@ class AppCloseService : Service() {
 
         val client = OkHttpClient()
         val urlBuilder =
-            HttpUrl.parse("https://testyourapp.online/namasteyapp/api/add-user-active-time")!!.newBuilder()
+            HttpUrl.parse(Constants.BASE.plus("add-user-active-time"))!!.newBuilder()
         urlBuilder.addQueryParameter("total_time", SPEND_APP_TIME)
         val url = urlBuilder.build().toString()
         Log.e("AppCloseService", "url: $url")

@@ -237,8 +237,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
      * Click on login with SnapChat
      */
     private fun loginWithSnapchat() {
-//        SnapLogin.getAuthTokenManager(this).clearToken()
-        SnapLogin.getAuthTokenManager(this).startTokenGrant()
+        SnapLogin.getAuthTokenManager(this).clearToken()
+        SnapLogin.getAuthTokenManager(this@SignUpActivity).startTokenGrant()
     }
 
     /**

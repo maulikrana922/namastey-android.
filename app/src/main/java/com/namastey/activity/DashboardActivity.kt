@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -35,7 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.*
 import androidx.viewpager.widget.ViewPager
 import com.android.billingclient.api.*
-import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.JsonObject
@@ -70,6 +71,7 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
@@ -127,6 +129,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var mbNext = true
     private var mbLoading = true
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -183,14 +186,48 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         activityDashboardBinding.viewModel = dashboardViewModel
 
         startMaxLikeService()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
 
         //addLocationPermission()
 
-        getLocation()
+//        getLocation()
         initData()
         getDataFromIntent(intent!!)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val mLocationRequest: LocationRequest = LocationRequest.create()
+        mLocationRequest.interval = 60000
+        mLocationRequest.fastestInterval = 5000
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        val mLocationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult == null) {
+                    return
+                }
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        //TODO: UI updates.
+                        latitude = location.latitude
+                        longitude = location.longitude
+                    }
+                }
+            }
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        LocationServices.getFusedLocationProviderClient(this@DashboardActivity).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+
+    }
     private fun initData() {
         sessionManager.setLoginUser(true)
         Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
@@ -241,7 +278,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         dashboardViewModel.getCategoryList()
         // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
         // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
-        getFeedListApi(0)
+//        getFeedListApi(0)
 
         /*feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
         viewpagerFeed.adapter = feedAdapter*/
@@ -251,7 +288,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
 //        setDashboardList()
 
-        setupPermissions()
+//        setupPermissions()
         setSliderData()
         //startPagination()
 
@@ -486,6 +523,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 dialog.show()
             } else
                 makeRequest()
+        }else{
+            getLastKnownLocation()
+//            getLocation()
         }
 
     }
@@ -1627,6 +1667,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         dialog.show()
                     }
 
+                }else{
+                    getLastKnownLocation()
+//                    getLocation()
                 }
             }
         }
@@ -2190,12 +2233,15 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
-        if (NamasteyApplication.instance.isUpdateProfile()){
+//        if (NamasteyApplication.instance.isUpdateProfile()){
+//        if (latitude != 0.0) {
             feedList.clear()
             currentPage = 1
             videoIdList.clear()
-            getFeedListApi(0)
-        }
+//            getFeedListApi(0)
+            setupPermissions()
+//        }
+//        }
         registerReceiver(
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
@@ -2556,50 +2602,112 @@ private fun prepareAnimation(animation: Animation): Animation? {
         bottomSheetDialogComment.rvMentionList.visibility = View.GONE
     }
 
-    private fun getLocation() {
-        appLocationService = AppLocationService(this)
+//    private fun getLocation() {
+//        appLocationService = AppLocationService(this)
+//
+//        val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
+//        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//        var gps_enabled = false
+//        var network_enabled = false
+//
+//        try {
+//            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+//
+//        } catch (ex: java.lang.Exception) {
+//        }
+//
+//        if (!gps_enabled && !network_enabled) {
+//            // notify user
+//            displayGPSDialog()
+//        }
+//        if (gpsLocation != null) {
+//
+//            if (currentLocationFromDB != null) {
+//                latitude = currentLocationFromDB!!.latitude
+//                longitude = currentLocationFromDB!!.longitude
+//            } else {
+//                latitude = gpsLocation.latitude
+//                longitude = gpsLocation.longitude
+//            }
+//            getFeedListApi(0)
+//            Log.e("DashboardActivity", "latitude: $latitude")
+//            Log.e("DashboardActivity", "longitude: $longitude")
+//        } else {
+////            turnGPSOn()
+//            displayGPSDialog()
+//            //showSettingsAlert()
+//        }
+//    }
 
-        val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
-        if (gpsLocation != null) {
-
-            if (currentLocationFromDB != null) {
-                latitude = currentLocationFromDB!!.latitude
-                longitude = currentLocationFromDB!!.longitude
-            } else {
-                latitude = gpsLocation.latitude
-                longitude = gpsLocation.longitude
+    private fun displayGPSDialog(){
+        object : CustomAlertDialog(
+                this@DashboardActivity,
+                resources.getString(R.string.gps_disable_message),
+                getString(R.string.go_to_settings),
+                getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        val intent =
+                                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        context.startActivity(intent)
+                    }
+                    btnNeg.id -> {
+                        dismiss()
+                    }
+                }
             }
+        }.show()
 
-            Log.e("DashboardActivity", "latitude: $latitude")
-            Log.e("DashboardActivity", "longitude: $longitude")
-        } else {
-            turnGPSOn()
-
-            //showSettingsAlert()
-        }
     }
+//    private fun turnGPSOn() {
+//        val provider =
+//            Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
+//        Log.e("Dashboard", "provider: $provider")
+//        if (!provider.contains("gps")) { //if gps is disabled
+//            val poke = Intent()
+//            poke.setClassName(
+//                "com.android.settings",
+//                "com.android.settings.widget.SettingsAppWidgetProvider"
+//            )
+//            poke.addCategory(Intent.CATEGORY_ALTERNATIVE)
+//            poke.data = Uri.parse("3")
+//            this.sendBroadcast(poke)
+//        }
+//    }
+    @SuppressLint("MissingPermission")
+    fun getLastKnownLocation() {
+        fusedLocationClient.lastLocation
+                .addOnSuccessListener { location->
+                    if (location != null) {
+                        if (currentLocationFromDB != null) {
+                            latitude = currentLocationFromDB!!.latitude
+                            longitude = currentLocationFromDB!!.longitude
+                        }else {
+                            latitude = location.latitude
+                            longitude = location.longitude
+                        }
+                        getFeedListApi(0)
+                        // use your location object
+                        // get latitude , longitude and other info from this
+                    }else{
+                        displayGPSDialog()
+                    }
 
-    private fun turnGPSOn() {
-        val provider =
-            Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
-        Log.e("Dashboard", "provider: $provider")
-        if (!provider.contains("gps")) { //if gps is disabled
-            val poke = Intent()
-            poke.setClassName(
-                "com.android.settings",
-                "com.android.settings.widget.SettingsAppWidgetProvider"
-            )
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE)
-            poke.data = Uri.parse("3")
-            this.sendBroadcast(poke)
-        }
+                }
+
     }
-
     override fun onLocationChanged(location: Location) {
         latitude = location.latitude
         longitude = location.longitude
         Log.e("DashboardActivity", "latitude: $latitude")
         Log.e("DashboardActivity", "longitude: $longitude")
+
+        if (feedList.size == 0){
+            getFeedListApi(0)
+        }
     }
 
     override fun onFailed(msg: String, error: Int, status: Int) {
