@@ -36,6 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.*
 import androidx.viewpager.widget.ViewPager
 import com.android.billingclient.api.*
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -52,6 +53,7 @@ import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.application.NamasteyApplication
 import com.namastey.customViews.ExoPlayerRecyclerView
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fcm.MyFirebaseMessagingService
@@ -71,6 +73,7 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -130,6 +133,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var mbLoading = true
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var isFromSetting = false       // GPS enable and reload data
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -262,10 +266,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 ContextCompat.getColor(this, R.color.color_instagram)
             )
         )*/
-        if (sessionManager.getUserGender() == Constants.Gender.female.name)
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
             ivUser.setImageResource(R.drawable.ic_female_user)
-        else
+            GlideApp.with(this).load(R.drawable.ic_female)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                    .fitCenter().into(ivProfile)
+        }else {
             ivUser.setImageResource(R.drawable.ic_top_profile)
+            GlideApp.with(this).load(R.drawable.ic_male)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                    .fitCenter().into(ivProfile)
+        }
 
 
         if (intent.hasExtra("isFromProfile")) {
@@ -288,7 +299,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
 //        setDashboardList()
 
-//        setupPermissions()
+        setupPermissions()
         setSliderData()
         //startPagination()
 
@@ -340,126 +351,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             openActivity(this, PassportContentActivity())
         }
     }
-
-    private fun startPaginationTemp() {
-
-        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val visibleItemCount: Int = mLayoutManager!!.childCount
-                val totalItemCount: Int = mLayoutManager!!.itemCount
-                val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
-                if (!mbLoading && mbNext) {
-                    // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
-
-                    Log.e("DashboardActivity", "videoIdList\t  $videoIdList")
-                    Log.e("DashboardActivity", "totalItemCount\t  $totalItemCount")
-
-                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && videoIdList.size >= 9) {
-                        //     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= (10 * noOfCall)) {
-                        currentPage += 1
-                        //  Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                        //dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-
-                        getFeedListApi(0)
-
-                        /* dashboardViewModel.getNewFeedListV2(
-                            currentPage,
-                            0,
-                            latitude,
-                            longitude,
-                            videoIdList
-                        )*/
-                    }
-                }
-            }
-        })
-
-        /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-         override fun onPageScrollStateChanged(state: Int) {
-             //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
-             // println(state)
-         }
-
-         override fun onPageScrolled(
-             position: Int,
-             positionOffset: Float,
-             positionOffsetPixels: Int
-         ) {
-             super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-             val visibleItemCount: Int = viewpagerFeed.childCount
-             val totalItemCount: Int = feedAdapter.itemCount
-             val firstVisibleItemPosition: Int = position
-
-             if (!mbLoading && mbNext) {
-                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
-                     currentPage += 1
-                     //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                     dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-                 }
-             }
-         }
-
-     })*/
-    }
-
-    private fun startPagination() {
-
-        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val visibleItemCount: Int = mLayoutManager!!.childCount
-                val totalItemCount: Int = mLayoutManager!!.itemCount
-                val firstVisibleItemPosition: Int = mLayoutManager!!.findFirstVisibleItemPosition()
-                // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
-
-                //Log.e("noOfCall", "noOfCall: $noOfCall")
-                //if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
-                if (!mbLoading && mbNext) {
-                    if (firstVisibleItemPosition >= 9) {
-                        //     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= (10 * noOfCall)) {
-
-
-                        // if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 9) {
-                        mbLoading = true
-
-                        Log.e("DashboardActivity", "videoIdList\t  $videoIdList")
-                        Log.e("DashboardActivity", "totalItemCount\t  $totalItemCount")
-                        Log.e("DashboardActivity", "noOfCall\t  $noOfCall")
-                        getFeedListApi(0)
-                    }
-                }
-            }
-        })
-
-        /*viewpagerFeed.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-         override fun onPageScrollStateChanged(state: Int) {
-             //Log.e("DashboardActivity", "onPageScrollStateChanged: state:\t $state")
-             // println(state)
-         }
-
-         override fun onPageScrolled(
-             position: Int,
-             positionOffset: Float,
-             positionOffsetPixels: Int
-         ) {
-             super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-             val visibleItemCount: Int = viewpagerFeed.childCount
-             val totalItemCount: Int = feedAdapter.itemCount
-             val firstVisibleItemPosition: Int = position
-
-             if (!mbLoading && mbNext) {
-                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
-                     currentPage += 1
-                     //   Log.e("DashboardActivity", "onPageScrolled: miCurrentPage:\t $currentPage")
-                     dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-                 }
-             }
-         }
-
-     })*/
-    }
-
     fun getFeedListApi(subCat: Int) {
         val jsonObject = JSONObject()
 
@@ -1429,6 +1320,19 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         totalCount = total
         feedList.addAll(dashboardList)
 
+        if (feedList.size == 0){
+            mRecyclerView!!.visibility = View.GONE
+            groupNoOne.visibility = View.VISIBLE
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+                GlideLib.loadImage(this, ivProfile, sessionManager.getStringValue(
+                        Constants.KEY_PROFILE_URL
+                ))
+            }
+
+        }else{
+            mRecyclerView!!.visibility = View.VISIBLE
+            groupNoOne.visibility = View.GONE
+        }
         //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
 
@@ -1498,7 +1402,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 data.hasExtra("fromSubCategory") -> {
                     with(dashboardViewModel) {
                         feedList.clear()
-
+                        currentPage = 1
+                        totalCount = 1
                         videoIdList.clear()
                         /* dashboardViewModel.getNewFeedListV2(
                              currentPage,
@@ -1533,7 +1438,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 with(dashboardViewModel) {
                     feedList.clear()
                     currentPage = 1
-
+                    totalCount = 1
                     videoIdList.clear()
                     /* dashboardViewModel.getNewFeedListV2(
                          currentPage,
@@ -1773,6 +1678,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
         } else {
             feedList.clear()
             videoIdList.clear()
+            currentPage = 1
+            totalCount = 1
             // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
             getFeedListApi(0)
@@ -2233,15 +2140,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
-//        if (NamasteyApplication.instance.isUpdateProfile()){
-//        if (latitude != 0.0) {
+        if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting){
+            isFromSetting = false
             feedList.clear()
             currentPage = 1
             videoIdList.clear()
+            totalCount = 1
 //            getFeedListApi(0)
-            setupPermissions()
-//        }
-//        }
+            Handler(Looper.getMainLooper()).postDelayed({
+                setupPermissions()
+            }, 2000)
+
+        }
         registerReceiver(
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
@@ -2582,6 +2492,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 dismiss()
                 feedList.clear()
                 videoIdList.clear()
+                currentPage = 1
+                totalCount = 1
                 /*dashboardViewModel.getNewFeedListV2(
                     currentPage,
                     0,
@@ -2650,6 +2562,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
+                        isFromSetting = true;
                         val intent =
                                 Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                         context.startActivity(intent)
