@@ -299,7 +299,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
 //        setDashboardList()
 
-        setupPermissions()
+        Handler(Looper.getMainLooper()).postDelayed({
+            setupPermissions()
+        }, 2000)
         setSliderData()
         //startPagination()
 
@@ -1826,7 +1828,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)){
+            if(sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                     val currentTime = System.currentTimeMillis()
                     var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
                     Log.e("DashboardActivity", "currentTime: $currentTime")
@@ -1836,14 +1839,17 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
                     showBoostPendingDialog(timer)
 
-            }else{
-                if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-                    showBoostStartConfirmationDialog()
                 } else {
-                    val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
-                    intent.putExtra("fromBuyBoost", true)
-                    openActivity(intent)
+                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                        showBoostStartConfirmationDialog()
+                    } else {
+                        val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
+                        intent.putExtra("fromBuyBoost", true)
+                        openActivity(intent)
+                    }
                 }
+            }else{
+                completeSignUpDialog()
             }
         }
     }

@@ -248,7 +248,8 @@
                             android:onClick="onClickSendMessage"
                             android:padding="@dimen/_4sdp"
                             android:src="@drawable/ic_send"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription"
+                            app:tint="@color/colorButtonRed" />
 
                     </LinearLayout>
                 </LinearLayout>

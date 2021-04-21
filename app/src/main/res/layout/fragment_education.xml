@@ -105,7 +105,7 @@
             android:id="@+id/edtEducationCourse"
             style="@style/edtRoundCornerStyle"
             android:layout_marginTop="@dimen/_15sdp"
-            android:hint="@string/hint_enter_cource_title"
+            android:hint="@string/hint_enter_course_title"
             android:singleLine="true"
             android:maxLength="35"
             android:textColor="@color/colorBlack"

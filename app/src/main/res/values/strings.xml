@@ -199,7 +199,7 @@
     <string name="edit_education">Edit Education</string>
     <string name="remove_education">Remove Education</string>
     <string name="hint_enter_name">Enter college name</string>
-    <string name="hint_enter_cource_title">Enter cource title</string>
+    <string name="hint_enter_course_title">Enter course title</string>
     <string name="hint_enter_year">Enter year</string>
     <string name="msg_empty_college_name">Please enter college name</string>
     <string name="msg_empty_year">Please enter passing year</string>
