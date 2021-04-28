@@ -14,7 +14,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
-import android.location.LocationManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -52,6 +51,7 @@ import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.FeedAdapter
 import com.namastey.adapter.MembershipDialogSliderAdapter
 import com.namastey.application.NamasteyApplication
+import com.namastey.customViews.CacheDataSourceFactory
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
@@ -73,7 +73,6 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk

@@ -70,7 +70,7 @@
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_share_instagram"
+                    android:src="@drawable/ic_instagram_logo"
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 

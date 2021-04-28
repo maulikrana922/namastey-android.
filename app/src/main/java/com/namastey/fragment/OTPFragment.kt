@@ -13,6 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
+import com.namastey.activity.ProfileActivity
 import com.namastey.activity.ProfileBasicInfoActivity
 import com.namastey.activity.SignUpActivity
 import com.namastey.dagger.module.ViewModelFactory
@@ -79,15 +80,17 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             if (arguments != null && arguments!!.containsKey("isFromDashboard")) {
                 isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
             }
-            if (isFromDashboard)   // Open dashboard activity
-            {
-                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    openActivity(requireActivity(), ProfileBasicInfoActivity())
-                } else {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                openActivity(requireActivity(), ProfileBasicInfoActivity())
+            }else {
+                if (isFromDashboard)   // Open dashboard activity
+                {
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(Intent(activity, DashboardActivity::class.java))
                         activity!!.finish()
                     }, 1000)
+                }else{
+                    openActivity(requireActivity(), ProfileActivity())
                 }
             }
             /*if (isFromDashboard)   // Open dashboard activity
