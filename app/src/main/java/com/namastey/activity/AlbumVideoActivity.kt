@@ -337,7 +337,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         mRecyclerView!!.adapter = albumVideoAdapter
 
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,true) }
             firstTime = false
         }
     }

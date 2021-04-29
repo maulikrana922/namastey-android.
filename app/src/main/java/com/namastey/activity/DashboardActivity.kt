@@ -326,10 +326,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
         mRecyclerView!!.adapter = feedAdapter
 
-        if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false) }
-            firstTime = false
-        }
+//        if (firstTime) {
+//            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false) }
+//            firstTime = false
+//        }
     }
 
     private fun addLocationPermission() {
@@ -1321,6 +1321,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         totalCount = total
         feedList.addAll(dashboardList)
 
+
         if (feedList.size == 0){
             mRecyclerView!!.visibility = View.GONE
             groupNoOne.visibility = View.VISIBLE
@@ -1336,7 +1337,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
         //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
-
+        if (firstTime) {
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,true) }
+            firstTime = false
+        }
         mbNext = dashboardList.size != 0
 
         if (mbNext) {
@@ -1385,6 +1389,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (::bottomSheetDialogComment.isInitialized)
             bottomSheetDialogComment.dismiss()
 
+//        if (CacheDataSourceFactory.getInstance(this@DashboardActivity) != null){
+//            CacheDataSourceFactory.getInstance(this@DashboardActivity).release()
+//        }
         if (mRecyclerView != null) {
             mRecyclerView!!.releasePlayer()
         }

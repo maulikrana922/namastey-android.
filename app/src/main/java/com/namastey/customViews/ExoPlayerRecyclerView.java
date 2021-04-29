@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ import com.namastey.model.DashboardBean;
 import com.namastey.model.VideoBean;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class ExoPlayerRecyclerView extends RecyclerView {
@@ -86,7 +88,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     //Max Video you want to buffer during PlayBack
     private int MAX_BUFFER_DURATION = 5000;
     //Min Video you want to buffer before start Playing it
-    private int MIN_PLAYBACK_START_BUFFER = 1500;
+    private int MIN_PLAYBACK_START_BUFFER = 1000;
     //Min video You want to buffer when user resumes video
     private int MIN_PLAYBACK_RESUME_BUFFER = 2000;
 
@@ -109,6 +111,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     }
 
     private void init(Context context) {
+        Log.e(TAG, "INIT " + Calendar.getInstance().getTime().toString());
         this.context = context.getApplicationContext();
         Display display = ((WindowManager) Objects.requireNonNull(
                 getContext().getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay();
@@ -159,9 +162,9 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                     // There's a special case when the end of the list has been reached.
                     // Need to handle that with this bit of logic
                     if (!recyclerView.canScrollVertically(1)) {
-                        playVideo(true);
+                        playVideo(true,false);
                     } else {
-                        playVideo(false);
+                        playVideo(false,false);
                     }
                 }
             }
@@ -208,21 +211,23 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 switch (playbackState) {
 
                     case Player.STATE_BUFFERING:
-                       // Log.e(TAG, "onPlayerStateChanged: Buffering video.");
+                        Log.e(TAG, "STATE_BUFFERING : " + Calendar.getInstance().getTime().toString());
                         /*if (progressBar != null) {
                             progressBar.setVisibility(VISIBLE);
                         }*/
 
                         break;
                     case Player.STATE_ENDED:
-                      //  Log.d(TAG, "onPlayerStateChanged: Video ended.");
+                        Log.e(TAG, "STATE_ENDED : " + Calendar.getInstance().getTime().toString());
+                        //  Log.d(TAG, "onPlayerStateChanged: Video ended.");
                         videoPlayer.seekTo(0);
                         break;
                     case Player.STATE_IDLE:
-
+                        Log.e(TAG, "STATE_IDLE : " + Calendar.getInstance().getTime().toString());
                         break;
                     case Player.STATE_READY:
-                       // Log.e(TAG, "onPlayerStateChanged: Ready to play.");
+                        Log.e(TAG, "STATE_READY : " + Calendar.getInstance().getTime().toString());
+                        // Log.e(TAG, "onPlayerStateChanged: Ready to play.");
                         /*if (progressBar != null) {
                             progressBar.setVisibility(GONE);
                         }*/
@@ -267,7 +272,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
         });
     }
 
-    public void playVideo(boolean isEndOfList) {
+    public void playVideo(boolean isEndOfList, boolean isFirstTime) {
 
         int targetPosition;
 
@@ -281,6 +286,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 endPosition = startPosition + 1;
             }
 
+            if (isFirstTime) {
+                startPosition = 1;
+                endPosition = 1;
+            }
             // something is wrong. return.
             if (startPosition < 0 || endPosition < 0) {
                 return;
@@ -325,6 +334,11 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 targetPosition - ((LinearLayoutManager) Objects.requireNonNull(
                         getLayoutManager())).findFirstVisibleItemPosition();
 
+        if (isFirstTime) {
+            currentPosition = 0;
+            targetPosition = 0;
+            playPosition = 0;
+        }
         View child = getChildAt(currentPosition);
         if (child == null) {
             return;
@@ -471,7 +485,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     public void onRestartPlayer() {
         if (videoPlayer != null) {
             //videoPlayer.setPlayWhenReady(true);
-            playVideo(true);
+            playVideo(true,false);
         }
     }
 

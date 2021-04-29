@@ -18,6 +18,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
+import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
@@ -153,7 +154,10 @@ class FeedAdapter(
                  // initializePlayer(itemView, dashboardBean.video_url, position)
              }*/
             if (!dashboardBean.video_url.isNullOrEmpty()) {
-
+                Log.e(
+                    "ExoPlayerRecyclerView",
+                    "Video URL : " + dashboardBean.video_url
+                )
                 if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
                     // GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
                     // Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
@@ -372,6 +376,10 @@ class FeedAdapter(
             }
 
             boostAnimationProgress(itemView)
+            Log.e(
+                "ExoPlayerRecyclerView",
+                "Bind : " + Calendar.getInstance().time.toString()
+            )
         }
     }
 
