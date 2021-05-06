@@ -102,8 +102,9 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
     fun onClickOpenChat(view: View) {
         val intent = Intent(this@MatchesScreenActivity, MatchesActivity::class.java)
         intent.putExtra("userName", userName1)
-        intent.putExtra("onClickMatches", true)
+//        intent.putExtra("onClickMatches", true)
         openActivity(intent)
+        finish()
     }
 
     override fun onBackPressed() {

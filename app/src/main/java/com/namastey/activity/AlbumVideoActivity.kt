@@ -336,8 +336,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
         mRecyclerView!!.adapter = albumVideoAdapter
 
+        albumVideoAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,true) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false) }
             firstTime = false
         }
     }

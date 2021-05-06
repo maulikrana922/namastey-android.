@@ -20,7 +20,10 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
+import com.gowtham.library.utils.CompressOption
+import com.gowtham.library.utils.TrimType
 import com.gowtham.library.utils.TrimVideo
+import com.gowtham.library.utils.TrimmerUtils
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumDetailAdapter
@@ -479,6 +482,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
 
                     TrimVideo.activity(selectedVideo.toString())
+                        .setCompressOption(CompressOption(30,"1M",460,320))
+                        .setTrimType(TrimType.MIN_MAX_DURATION)
+                        .setMinToMax(10,30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
                         .start(this)
 
@@ -508,9 +514,28 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
 //                    videoFile = File(videoPath)
 
-                    TrimVideo.activity(selectedVideo.toString())
+                    val wAndh = TrimmerUtils.getVideoWidthHeight(this,Uri.parse(selectedVideo.toString()))
+                    var width = wAndh[0]
+                    val height = wAndh[1]
+                    if(wAndh[0]>800){
+                        width/=2
+                        width/=2
+                        TrimVideo.activity(selectedVideo.toString())
+                            .setCompressOption(CompressOption(30,"1M",width,height))
+                            .setTrimType(TrimType.MIN_MAX_DURATION)
+                            .setMinToMax(10,30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
-                        .start(this)
+                            .start(this)
+
+                    }else{
+
+                        TrimVideo.activity(selectedVideo.toString())
+                            .setCompressOption(CompressOption(30,"400k",width,height))
+                            .setTrimType(TrimType.MIN_MAX_DURATION)
+                            .setMinToMax(10,30)
+//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+                            .start(this)
+                    }
 
 //                    trimmerView.visibility = View.VISIBLE
 //                    videoTrimmer.setOnTrimVideoListener(this)

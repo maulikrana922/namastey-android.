@@ -1338,7 +1338,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,true) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false) }
             firstTime = false
         }
         mbNext = dashboardList.size != 0

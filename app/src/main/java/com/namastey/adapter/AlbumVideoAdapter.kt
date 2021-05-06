@@ -120,9 +120,9 @@ class AlbumVideoAdapter(
 
             if (!videoBean.video_url.isNullOrEmpty()) {
 
-                if (videoBean.cover_image_url != null && videoBean.cover_image_url != "") {
-                    GlideLib.loadImage(activity, mediaCoverImage, videoBean.cover_image_url)
-                }
+//                if (videoBean.cover_image_url != null && videoBean.cover_image_url != "") {
+//                    GlideLib.loadImage(activity, mediaCoverImage, videoBean.cover_image_url)
+//                }
 
                 Log.e("AlbumVideoAdapter", "CoverImageUrl: \t ${videoBean.cover_image_url}")
                 Log.e("AlbumVideoAdapter", "VideoUrl: \t ${videoBean.video_url}")

@@ -254,7 +254,7 @@
     <string name="discovery_settings">Discovery Settings</string>
     <string name="swiping_in">Swiping in</string>
     <string name="my_current_location">My Current Location</string>
-    <string name="discovery_location_msg">Change you location to see namastey members in other cities.</string>
+    <string name="discovery_location_msg">Change your location to see namastey members in other cities.</string>
     <string name="distance">Distance</string>
     <string name="account_settings">Account Settings</string>
     <string name="setting_interest_in">I\'m Interested In…</string>

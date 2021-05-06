@@ -286,10 +286,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 endPosition = startPosition + 1;
             }
 
-            if (isFirstTime) {
-                startPosition = 1;
-                endPosition = 1;
-            }
+//            if (isFirstTime) {
+//                startPosition = 1;
+//                endPosition = 1;
+//            }
             // something is wrong. return.
             if (startPosition < 0 || endPosition < 0) {
                 return;
@@ -316,6 +316,9 @@ public class ExoPlayerRecyclerView extends RecyclerView {
        // Log.d(TAG, "playVideo: target position: " + targetPosition);
 
         // video is already playing so return
+        if (isFirstTime)
+            playPosition = -1;
+
         if (targetPosition == playPosition) {
             return;
         }
@@ -334,11 +337,11 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                 targetPosition - ((LinearLayoutManager) Objects.requireNonNull(
                         getLayoutManager())).findFirstVisibleItemPosition();
 
-        if (isFirstTime) {
-            currentPosition = 0;
-            targetPosition = 0;
-            playPosition = 0;
-        }
+//        if (isFirstTime) {
+//            currentPosition = 0;
+//            targetPosition = 0;
+//            playPosition = 0;
+//        }
         View child = getChildAt(currentPosition);
         if (child == null) {
             return;
@@ -485,7 +488,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     public void onRestartPlayer() {
         if (videoPlayer != null) {
             //videoPlayer.setPlayWhenReady(true);
-            playVideo(true,false);
+            playVideo(false,true);
         }
     }
 
