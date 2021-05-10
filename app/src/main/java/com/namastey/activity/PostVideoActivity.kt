@@ -26,6 +26,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import com.abedelazizshe.lightcompressorlibrary.CompressionListener
+import com.abedelazizshe.lightcompressorlibrary.VideoCompressor
+import com.abedelazizshe.lightcompressorlibrary.VideoQuality
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.hendraanggrian.appcompat.widget.Mention
@@ -188,6 +191,53 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 videoFile = intent.getSerializableExtra("videoFile") as File?
 //            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
                 Log.d("TAG", videoFile!!.name.toString())
+
+
+                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                val fileName = "namasteyvideo.mp4"
+                val file = File(folder, fileName)
+
+                VideoCompressor.start(
+                    context = null, // => This is required if srcUri is provided. If not, it can be ignored or null.
+                    srcUri = null, // => Source can be provided as content uri, it requires context.
+                    srcPath = videoFile!!.path, // => This could be ignored or null if srcUri and context are provided.
+                    destPath = file.path,
+                    listener = object : CompressionListener {
+                        override fun onProgress(percent: Float) {
+                            // Update UI with progress value
+                            runOnUiThread {
+                                // update a text view
+//                            progress.text = "${percent.toLong()}%"
+                                // update a progress bar
+//                            Log.d("Compression: ", percent.toString())
+                                progressBar.progress = percent.toInt()
+                            }
+                        }
+
+                        override fun onStart() {
+                            // Compression start
+                            Log.d("Compression: ", "onStart")
+                        }
+
+                        override fun onSuccess() {
+                            // On Compression success
+                            Log.d("Compression: ", "onSuccess")
+                            videoFile = File(file.path)
+                        }
+
+                        override fun onFailure(failureMessage: String) {
+                            // On Failure
+                            Log.d("Compression: ", "onFailure")
+                        }
+
+                        override fun onCancelled() {
+                            // On Cancelled
+                            Log.d("Compression: ", "onCancelled")
+                        }
+
+                    }, quality = VideoQuality.MEDIUM,
+                    isMinBitRateEnabled = false,
+                    keepOriginalResolution = false)
 
 //            val thumb: Bitmap =
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
