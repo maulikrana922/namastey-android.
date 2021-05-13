@@ -158,11 +158,16 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
 
         if (followingList.size == 0) {
             tvEmptyFollow.text = getString(R.string.following)
-            //tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
-            tvEmptyFollowMsg.text = String.format(
-                getString(R.string.msg_empty_followers),
-                userName
-            )
+            if (isMyProfile){
+                tvEmptyFollowMsg.text = String.format(
+                    getString(R.string.msg_empty_followers_temp))
+            }else{
+                tvEmptyFollowMsg.text = String.format(
+                    getString(R.string.msg_empty_followers),
+                    userName
+                )
+            }
+
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         }
@@ -191,12 +196,16 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
         followingList = list
         if (followingList.size == 0) {
             tvEmptyFollow.text = getString(R.string.following)
-            //tvEmptyFollowMsg.text = getString(R.string.msg_empty_followers)
+            if (isMyProfile){
+                tvEmptyFollowMsg.text = String.format(
+                    getString(R.string.msg_empty_followers_temp))
+            }else{
+                tvEmptyFollowMsg.text = String.format(
+                    getString(R.string.msg_empty_followers),
+                    userName
+                )
+            }
 
-            tvEmptyFollowMsg.text = String.format(
-                getString(R.string.msg_empty_followers),
-                userName
-            )
             llEmpty.visibility = View.VISIBLE
             rvFollowing.visibility = View.GONE
         } else {

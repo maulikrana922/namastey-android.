@@ -426,7 +426,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     Log.d("Path", videoPath.toString())
 
                     TrimVideo.activity(selectedVideo.toString())
-                        .setCompressOption(CompressOption(30,"1M",460,320))
+//                        .setCompressOption(CompressOption(30,"1M",460,320))
                         .setTrimType(TrimType.MIN_MAX_DURATION)
                         .setMinToMax(10,30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
@@ -453,28 +453,28 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                     val videoPath = Utils.getPath(this, selectedVideo)
                     Log.d("Path", videoPath.toString())
 
-                    val wAndh = TrimmerUtils.getVideoWidthHeight(this,Uri.parse(selectedVideo.toString()))
-                    var width = wAndh[0]
-                    val height = wAndh[1]
-                    if(wAndh[0]>800){
-                        width/=2
-                        width/=2
+//                    val wAndh = TrimmerUtils.getVideoWidthHeight(this,Uri.parse(selectedVideo.toString()))
+//                    var width = wAndh[0]
+//                    val height = wAndh[1]
+//                    if(wAndh[0]>800){
+//                        width/=2
+//                        width/=2
                         TrimVideo.activity(selectedVideo.toString())
-                            .setCompressOption(CompressOption(30,"1M",width,height))
+//                            .setCompressOption(CompressOption(30,"1M",width,height))
                             .setTrimType(TrimType.MIN_MAX_DURATION)
                             .setMinToMax(10,30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
                             .start(this)
 
-                    }else{
-
-                        TrimVideo.activity(selectedVideo.toString())
-                            .setCompressOption(CompressOption(30,"400k",width,height))
-                            .setTrimType(TrimType.MIN_MAX_DURATION)
-                            .setMinToMax(10,30)
-//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
-                            .start(this)
-                    }
+//                    }else{
+//
+//                        TrimVideo.activity(selectedVideo.toString())
+////                            .setCompressOption(CompressOption(30,"400k",width,height))
+//                            .setTrimType(TrimType.MIN_MAX_DURATION)
+//                            .setMinToMax(10,30)
+////                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+//                            .start(this)
+//                    }
 
 
 
@@ -626,7 +626,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
      * Click on post video delete button remove video from album
      */
     override fun onItemClick(id: Long, position: Int) {
-        createAlbumViewModel.removePostVideo(id)
+        createAlbumViewModel.removePostVideo(id,0)
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {

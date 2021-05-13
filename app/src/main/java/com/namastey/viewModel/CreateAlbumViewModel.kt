@@ -137,12 +137,13 @@ class CreateAlbumViewModel constructor(
         }
     }
 
-    fun removePostVideo(postId: Long) {
+    fun removePostVideo(postId: Long, isSaved: Int) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (createAlbumView.isInternetAvailable()) {
-                    var jsonObject = JsonObject()
+                    val jsonObject = JsonObject()
                     jsonObject.addProperty(Constants.POST_ID, postId)
+                    jsonObject.addProperty(Constants.IS_SAVED, isSaved)
                     networkService.requestToDeletePost(jsonObject)
                         .let { appResponse: AppResponse<Any> ->
                             setIsLoading(false)

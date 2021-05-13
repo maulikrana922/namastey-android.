@@ -2162,6 +2162,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 setupPermissions()
             }, 2000)
 
+        }else{
+            mRecyclerView!!.onRestartPlayer()
         }
         registerReceiver(
             notificationBroadcast,
@@ -2171,7 +2173,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
             myBroadcastReceiver, IntentFilter("countDown")
         )
-        mRecyclerView!!.onRestartPlayer()
     }
 
     override fun onPause() {
@@ -2190,10 +2191,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        mRecyclerView!!.onRestartPlayer()
-    }
+//    override fun onRestart() {
+//        super.onRestart()
+//        mRecyclerView!!.onRestartPlayer()
+//    }
 
     private fun addFragmentWithoutCurrentFrag(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().addToBackStack(tag)

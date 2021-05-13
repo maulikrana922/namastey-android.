@@ -236,7 +236,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                         }
 
                     }, quality = VideoQuality.MEDIUM,
-                    isMinBitRateEnabled = false,
+                    isMinBitRateEnabled = true,
                     keepOriginalResolution = false)
 
 //            val thumb: Bitmap =

@@ -585,7 +585,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             selectVideo()
         } else {
             this.position = position
-            albumViewModel.removePostVideo(userId)
+            if (isSavedAlbum)
+                albumViewModel.removePostVideo(userId,1)
+            else
+                albumViewModel.removePostVideo(userId,0)
         }
     }
 

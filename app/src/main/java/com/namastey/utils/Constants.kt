@@ -304,6 +304,7 @@ object Constants {
     const val JOBS = "jobs"
     const val CATEGORY_ID = "category_id"
     const val POST_ID = "post_id"
+    const val IS_SAVED = "is_saved"
     const val COMMENT = "comment"
     const val COMMENT_ID = "comment_id"
     const val LIKED_USER_ID = "liked_user_id"

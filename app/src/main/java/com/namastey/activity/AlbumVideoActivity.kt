@@ -899,7 +899,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 when (id) {
                     btnPos.id -> {
                         bottomSheetDialogShare.dismiss()
-                        albumViewModel.removePostVideo(videoBean.id)
+                        if (videoBean.album_name == getString(R.string.saved))
+                            albumViewModel.removePostVideo(videoBean.id, 1)
+                        else
+                            albumViewModel.removePostVideo(videoBean.id, 0)
                     }
 
                     btnNeg.id ->{
