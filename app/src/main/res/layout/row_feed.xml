@@ -20,6 +20,16 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
+<!--        <com.namastey.player.InstaLikePlayerView-->
+<!--            android:id="@+id/feedPlayerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            tools:background="@color/gradient_five_end"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
         <FrameLayout
             android:id="@+id/mediaContainer"
             android:layout_width="match_parent"

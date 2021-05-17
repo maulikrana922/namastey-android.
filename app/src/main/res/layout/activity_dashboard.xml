@@ -19,6 +19,16 @@
         android:background="@drawable/video_cards_tint"
         tools:context=".activity.DashboardActivity">
 
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvFeed"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:paddingBottom="@dimen/_38sdp"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/svCategory"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"/>-->
         <com.namastey.customViews.ExoPlayerRecyclerView
             android:id="@+id/viewpagerFeed"
             android:layout_width="match_parent"
@@ -141,14 +151,14 @@
         <!--        app:layout_constraintStart_toStartOf="parent"-->
         <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-        <View
-            android:id="@+id/viewDivider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorBlackTransparent"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+<!--        <View-->
+<!--            android:id="@+id/viewDivider"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:background="@color/colorBlackTransparent"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/svCategory"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
         <FrameLayout
             android:id="@+id/flContainerCategory"

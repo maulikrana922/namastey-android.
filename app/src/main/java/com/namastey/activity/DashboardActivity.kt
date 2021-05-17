@@ -142,6 +142,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var timer = 0L
     private var isFromProfile = false
     private var mRecyclerView: ExoPlayerRecyclerView? = null
+//    private lateinit var videoAutoPlayHelper: VideoAutoPlayHelper
     private var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
 
@@ -289,9 +290,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
 //        getFeedListApi(0)
 
-        /*feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
-        viewpagerFeed.adapter = feedAdapter*/
+//        val snapHelper: SnapHelper = PagerSnapHelper()
+//        snapHelper.attachToRecyclerView(rvFeed)
 
+//        feedAdapter = FeedAdapter(feedList, this@DashboardActivity, this, sessionManager)
+//        rvFeed.adapter = feedAdapter
+//
+//        /*Helper class to provide AutoPlay feature inside cell*/
+//        videoAutoPlayHelper =
+//            VideoAutoPlayHelper(rvFeed)
+//        videoAutoPlayHelper.startObserving();
         getVideoUrl()
 
 
@@ -1394,6 +1402,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (mRecyclerView != null) {
             mRecyclerView!!.releasePlayer()
         }
+//        if (::videoAutoPlayHelper.isInitialized)
+//            videoAutoPlayHelper.removePlayer()
 
         super.onDestroy()
         unregisterReceiver(notificationBroadcast)
@@ -2163,6 +2173,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
             }, 2000)
 
         }else{
+//            if (::videoAutoPlayHelper.isInitialized)
+//                videoAutoPlayHelper.reset()
             mRecyclerView!!.onRestartPlayer()
         }
         registerReceiver(
@@ -2181,13 +2193,16 @@ private fun prepareAnimation(animation: Animation): Animation? {
             unregisterReceiver(myBroadcastReceiver)
             mIntent = null
         }
-
+//        if (::videoAutoPlayHelper.isInitialized)
+//            videoAutoPlayHelper.removePlayer()
         mRecyclerView!!.onPausePlayer()
     }
 
     override fun onStop() {
         super.onStop()
         mRecyclerView!!.onPausePlayer()
+//        if (::videoAutoPlayHelper.isInitialized)
+//            videoAutoPlayHelper.removePlayer()
 
     }
 

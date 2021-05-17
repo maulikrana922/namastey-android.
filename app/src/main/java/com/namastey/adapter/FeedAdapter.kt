@@ -3,6 +3,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -158,6 +159,9 @@ class FeedAdapter(
                     "ExoPlayerRecyclerView",
                     "Video URL : " + dashboardBean.video_url
                 )
+//                customPlayerView.reset()
+//                customPlayerView.id = View.generateViewId()
+//                customPlayerView.setVideoUri(Uri.parse(dashboardBean.video_url))
                 if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
                     // GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
                     // Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")

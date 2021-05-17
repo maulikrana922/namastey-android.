@@ -358,7 +358,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             viewHolderParent = holder.itemView;
             mediaCoverImage = holder.mediaCoverImage;
             mediaContainer = holder.mediaContainer;
-        } else {
+        } else if (videoBeans.size() != 0){
             AlbumVideoAdapter.ViewHolder holder = (AlbumVideoAdapter.ViewHolder) child.getTag();
             if (holder == null) {
                 playPosition = -1;
@@ -367,6 +367,8 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             viewHolderParent = holder.itemView;
             mediaCoverImage = holder.mediaCoverImage;
             mediaContainer = holder.mediaContainer;
+        }else{
+            return;
         }
 
         videoSurfaceView.setPlayer(videoPlayer);
