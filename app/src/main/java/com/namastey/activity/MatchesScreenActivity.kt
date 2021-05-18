@@ -83,7 +83,9 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
 
 
             tvItsMatch.text =
-                "Its a match! \n" + userName2 + " and " + userName1 + "liked each other."
+                getString(R.string.str_its_match).plus(userName2).plus(" ").plus(
+                    getString(R.string.and)).plus(" ").plus(userName1).plus(" ")
+                        .plus(getString(R.string.str_liked_each_other))
         }
 
     }

@@ -142,10 +142,13 @@ class AlbumDetailAdapter(
             }
             ivVideoImage.setOnClickListener {
                 if (fromEdit) {
-                    val videoListTemp = ArrayList(videoList)
-                    videoListTemp.removeAt(0)  // Remove first position plus element
-                    onPostImageClick.onItemPostImageClick(position - 1, videoListTemp)
-
+                    if (videoList[position].album_name == activity.getString(R.string.saved)) {
+                        onPostImageClick.onItemPostImageClick(position, videoList)
+                    }else{
+                        val videoListTemp = ArrayList(videoList)
+                        videoListTemp.removeAt(0)  // Remove first position plus element
+                        onPostImageClick.onItemPostImageClick(position - 1, videoListTemp)
+                    }
                 } else {
                     onPostImageClick.onItemPostImageClick(position, videoList)
 

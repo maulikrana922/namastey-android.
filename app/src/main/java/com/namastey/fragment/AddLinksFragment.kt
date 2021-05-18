@@ -420,52 +420,56 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 //                                }
 //                            }).executeAsync()
 
-                        val request = GraphRequest.newMeRequest(
-                            AccessToken.getCurrentAccessToken(),
-                            object : GraphRequest.GraphJSONObjectCallback {
-                                override fun onCompleted(
-                                    `object`: JSONObject?,
-                                    response: GraphResponse?
-                                ) {
-                                    if (null != `object`) {
-                                        Log.e(
-                                            "AddLinksFragment",
-                                            "FaceBookLogin object: \t $`object`"
-                                        )
-                                        Log.e(
-                                            "AddLinksFragment",
-                                            "FaceBookLogin response: \t $response"
-                                        )
-                                        Log.e(
-                                            "AddLinksFragment",
-                                            `object`.optString("name") +
-                                                    `object`.optString("first_name") +
-                                                    `object`.optString("email")
-                                        )
+                        val profile = Profile.getCurrentProfile()
+                        Log.d("Facebook profile :", profile.linkUri.toString())
+                        edtFacebook.setText(profile.linkUri.toString())
 
+//                        val request = GraphRequest.newMeRequest(
+//                            AccessToken.getCurrentAccessToken(),
+//                            object : GraphRequest.GraphJSONObjectCallback {
+//                                override fun onCompleted(
+//                                    `object`: JSONObject?,
+//                                    response: GraphResponse?
+//                                ) {
+//                                    if (null != `object`) {
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            "FaceBookLogin object: \t $`object`"
+//                                        )
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            "FaceBookLogin response: \t $response"
+//                                        )
+//                                        Log.e(
+//                                            "AddLinksFragment",
+//                                            `object`.optString("name") +
+//                                                    `object`.optString("first_name") +
+//                                                    `object`.optString("email")
+//                                        )
+//
+//
+//                                        if (`object`.has("id")) {
+//                                            val id = `object`.getString("id")
+//                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $id")
+//                                            val url = "https://www.facebook.com/$id"
+//                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
+//                                        }
+//
+//                                        if (`object`.has("name")) {
+//                                            val name = `object`.getString("name")
+//                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $name")
+//                                            val url = "https://www.facebook.com/$name"
+//                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
+//                                        }
+//                                    }
+//                                }
+//                            })
 
-                                        if (`object`.has("id")) {
-                                            val id = `object`.getString("id")
-                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $id")
-                                            val url = "https://www.facebook.com/$id"
-                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
-                                        }
-
-                                        if (`object`.has("name")) {
-                                            val name = `object`.getString("name")
-                                            Log.e("AddLinksFragment", "FaceBookLogin id: \t $name")
-                                            val url = "https://www.facebook.com/$name"
-                                            Log.e("AddLinksFragment", "FaceBookLogin url: \t $url")
-                                        }
-                                    }
-                                }
-                            })
-
-                        val parameters = Bundle()
-                        parameters.putString("fields", "id,name,link")
-                        parameters.putString("fields", "link")
-                        request.parameters = parameters
-                        request.executeAsync()
+//                        val parameters = Bundle()
+//                        parameters.putString("fields", "id,name,link")
+//                        parameters.putString("fields", "link")
+//                        request.parameters = parameters
+//                        request.executeAsync()
                     }
                 }
 

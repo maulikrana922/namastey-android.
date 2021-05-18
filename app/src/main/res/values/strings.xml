@@ -314,6 +314,9 @@
     <string name="msg_matches">Matched found with %1$s</string>
     <string name="image">Image</string>
     <string name="voice_message">Voice message</string>
+    <string name="str_its_match">Its a match! \n</string>
+    <string name="and">and</string>
+    <string name="str_liked_each_other">liked each other.</string>
 
 
     <!--Account Settings screen-->
