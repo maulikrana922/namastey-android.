@@ -8,7 +8,6 @@ import com.namastey.utils.Constants
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.http.*
 import java.util.*
 
@@ -247,6 +246,22 @@ interface NetworkRequest {
         @Url baseUrl: String,
         @Header("Authorization") authHeader: String
     ): Deferred<AppResponseSpotify<SpotifyBean>>
+
+    @POST     // Call Spotify base url
+    fun requestToGetInstagramAsync(
+        @Url baseUrl: String
+    ): Deferred<Any>
+
+    @FormUrlEncoded
+    @POST     // Call Spotify base url
+    fun requestToGetInstagramTokenAsync(
+        @Url baseUrl: String,
+        @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("code") token: String,
+        @Field("grant_type") authorizationCode: String,
+        @Field("redirect_uri") redirectUrl: String
+    ): Deferred<Any>
 
     @GET(Constants.GET_TREDING_VIDEOS)
     fun requestToGetTredingListAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>

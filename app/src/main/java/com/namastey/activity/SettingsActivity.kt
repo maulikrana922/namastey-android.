@@ -106,11 +106,12 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
         rangeSettingAge.setMaxStartValue(
             sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
-        )
+        ).apply()
+
         rangeSettingAge.setMinStartValue(
             sessionManager.getStringValue(Constants.KEY_AGE_MIN).toFloat()
-        )
-        rangeSettingAge.apply()
+        ).apply()
+//        rangeSettingAge.apply()
 
         if (distance.isNotEmpty()) {
             seekbarSettingDistance.minStartValue = distance.toFloat()

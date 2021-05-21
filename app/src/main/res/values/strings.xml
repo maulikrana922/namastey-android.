@@ -3,7 +3,13 @@
 
     <string name="facebook_app_id">242557967197480</string>
     <string name="fb_login_protocol_scheme">fb242557967197480</string>
-
+    <string name="instagram_app_id">943839639712239</string>
+    <string name="client_id">943839639712239</string>
+    <string name="instagram_client_secret">c6586ca4c71cab48d25db85f78cb4898</string>
+    <string name="callback_url">https://www.namasteyapp.com/</string>
+<!--    <string name="callback_url">https://www.instagram.com/</string>-->
+    <string name="base_url">https://api.instagram.com/</string>
+    <string name="get_user_info_url">https://api.instagram.com/v1/users/self/?access_token=</string>
     <!--<string name="facebook_app_id">2945790898848622</string>
     <string name="fb_login_protocol_scheme">fb2945790898848622</string>-->
     <string name="snapchat_client_id">c079e951-7fab-47a2-9b4b-ee3e0c4925cc</string>
@@ -37,7 +43,12 @@
     <string name="tv_skip">Skip</string>
     <string name="tv_the_video_profile">The Video Profile</string>
     <string name="tv_term_condition_message_temp">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
-    <string name="tv_term_condition_message"><![CDATA[<u><font color=#000000>Terms of service</font></u> | <u><font color=#000000>Privacy Policy </font></u>.]]></string>
+    <string name="tv_term_condition_message1"><![CDATA[<u><font color=#000000>Terms of service</font></u> | <u><font color=#000000>Privacy Policy </font></u>.]]></string>
+    <string name="tv_term_condition_message">Terms of service | Privacy Policy</string>
+    <string name="tv_terms">Terms of service</string>
+    <string name="tv_policy">Privacy Policy</string>
+    <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use-1</string>
+    <string name="tv_policy_link">https://www.namasteyapp.com/privacy-policy</string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>

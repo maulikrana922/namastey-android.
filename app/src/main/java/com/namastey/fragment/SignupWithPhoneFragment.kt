@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
@@ -106,6 +107,7 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
 
     override fun onClickNext() {
         var countryCode = ""
+        var isCountyCodeSelected = false
         if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
@@ -115,7 +117,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 jsonObject.addProperty(Constants.EMAIL, edtEmailPhone.text.toString().trim())
 //                signupWithPhoneModel.sendOTP("", edtEmailPhone.text.toString().trim(), false)
             else {
-                if (country != null) {
+                if (::country.isInitialized) {
+                    isCountyCodeSelected = true
                     countryCode =
                         country.phonecode.toString()
 //                countryCode =
@@ -136,7 +139,12 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
                 jsonObject.addProperty(Constants.IS_GUEST, 1)
                 jsonObject.addProperty(Constants.USER_UNIQUEID, sessionManager.getUserUniqueId())
             }
-            signupWithPhoneModel.sendOTP(jsonObject)
+            if (sessionManager.getLoginType() == Constants.MOBILE) {
+                if (isCountyCodeSelected)
+                    signupWithPhoneModel.sendOTP(jsonObject)
+            }else{
+                signupWithPhoneModel.sendOTP(jsonObject)
+            }
         }
     }
 

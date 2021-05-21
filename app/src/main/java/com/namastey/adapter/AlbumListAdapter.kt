@@ -47,6 +47,12 @@ class AlbumListAdapter(
                 ivAlbumNormal.visibility = View.GONE
                 tvAlbumName.setTextColor(Color.BLACK)
                 tvPostCount.setTextColor(Color.BLACK)
+            }else{
+                viewUpload.visibility = View.GONE
+                ivSaveAlbum.visibility = View.GONE
+                ivAlbumNormal.visibility = View.VISIBLE
+                tvAlbumName.setTextColor(Color.WHITE)
+                tvPostCount.setTextColor(Color.WHITE)
             }
             itemView.setOnClickListener {
                 onItemClick.onItemClick(albumBean.id, position)

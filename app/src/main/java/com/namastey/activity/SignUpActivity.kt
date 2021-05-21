@@ -4,17 +4,18 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.text.TextUtils
-import android.util.DisplayMetrics
+import android.text.*
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -107,6 +108,21 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             //Loop Video
             mp!!.isLooping = true
         }
+
+        tvTermsConditions.makeLinks(
+            Pair(getString(R.string.tv_terms), View.OnClickListener {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW)
+                browserIntent.data = Uri.parse(getString(R.string.tv_term_link))
+                startActivity(browserIntent)
+            }),
+            Pair(getString(R.string.tv_policy), View.OnClickListener {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW)
+                browserIntent.data = Uri.parse(getString(R.string.tv_policy_link))
+                startActivity(browserIntent)
+            }))
+
         initializeGoogleApi()
 
         setupPermissions()
@@ -552,5 +568,39 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             }
         } else
             super.onBackPressed()
+    }
+
+    /**
+     * To make terms and privacy policy clickable.
+     */
+    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+        val spannableString = SpannableString(this.text)
+        var startIndexOfLink = -1
+        for (link in links) {
+            val clickableSpan = object : ClickableSpan() {
+                override fun updateDrawState(textPaint: TextPaint) {
+                    // use this to change the link color
+                    textPaint.color = Color.BLACK
+                    // toggle below value to enable/disable
+                    // the underline shown below the clickable text
+                    textPaint.isUnderlineText = true
+                }
+
+                override fun onClick(view: View) {
+                    Selection.setSelection((view as TextView).text as Spannable, 0)
+                    view.invalidate()
+                    link.second.onClick(view)
+                }
+            }
+            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
+//      if(startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
+            spannableString.setSpan(
+                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        this.movementMethod =
+            LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 }

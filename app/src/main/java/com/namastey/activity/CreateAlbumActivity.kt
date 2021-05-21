@@ -80,13 +80,14 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         if (intent.hasExtra("fromAlbumList")) {
             fromAlbumList = intent.getBooleanExtra("fromAlbumList", false)
             createBlankAlbum = fromAlbumList
-            createAlbumViewModel.getAlbumList()
-        } else {
-//        Default one album create Saved/ uploads
-            val albumBean = AlbumBean()
-            albumBean.name = getString(R.string.saved)
-            createAlbumApi(albumBean, true)
         }
+        createAlbumViewModel.getAlbumList()
+//        else {
+////        Default one album create Saved/ uploads
+//            val albumBean = AlbumBean()
+//            albumBean.name = getString(R.string.saved)
+//            createAlbumApi(albumBean, true)
+//        }
     }
 
     /**
@@ -96,15 +97,15 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
         albumBean.is_created = 0    // 0 = display edit icons and disable edittext
         // 1 = display done icons and enable edittext
 
-        if (albumBean.name.equals(getString(R.string.saved))) {
-            createAlbumViewModel.getAlbumList()
-        } else {
+//        if (albumBean.name.equals(getString(R.string.saved))) {
+//            createAlbumViewModel.getAlbumList()
+//        } else {
             this.albumBean.name = albumBean.name
             this.albumBean.is_created = 0
             this.albumBean.id = albumBean.id
             albumList[adapterPosition] = this.albumBean
             albumAdapter.notifyItemChanged(adapterPosition)
-        }
+//        }
     }
 
     override fun onSuccess(msg: String) {

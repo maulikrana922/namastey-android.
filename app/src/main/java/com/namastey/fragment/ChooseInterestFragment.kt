@@ -3,6 +3,7 @@ package com.namastey.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -193,7 +194,7 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
         sessionManager.setuserUniqueId(user.user_uniqueId)
 
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(activity, DashboardActivity::class.java))
             activity!!.finish()
         }, 1000)

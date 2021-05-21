@@ -2,10 +2,7 @@ package com.namastey.viewModel
 
 import android.util.Log
 import com.google.gson.JsonObject
-import com.namastey.model.AppResponse
-import com.namastey.model.AppResponseSpotify
-import com.namastey.model.SocialAccountBean
-import com.namastey.model.SpotifyBean
+import com.namastey.model.*
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -62,6 +59,44 @@ class ProfileInterestViewModel constructor(
                         } else {
                             profileInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                         }
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                profileInterestView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getInstagram(baseurl: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                    networkService.requestToGetInstagram(baseurl).let { any : Any ->
+                        Log.d("instagram Response : ", any.toString())
+                        setIsLoading(false)
+                    }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                profileInterestView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getInstagramToken(
+        apidata: String,
+        client_id: String,
+        client_secret: String,
+        token: String,
+        authorization_code: String,
+        redirectUrl: String
+    ) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                    networkService.requestToGetInstagramToken(apidata,client_id,client_secret,
+                    token,authorization_code,redirectUrl).let { any : Any ->
+                        Log.d("instagram Response : ", any.toString())
+                        setIsLoading(false)
                     }
             } catch (exception: Throwable) {
                 setIsLoading(false)

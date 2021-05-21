@@ -36,6 +36,8 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
     private var year = 0
     var month = 0
     var day = 0
+    private var isDateSelected = false
+    private var isGenderSelected = false
     private lateinit var calendar: Calendar
     override fun onClose() {
         activity!!.onBackPressed()
@@ -103,20 +105,37 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
     }
 
     private fun initUI() {
-        val date = System.currentTimeMillis()
-        sessionManager.setUserGender("")
+//        sessionManager.setUserGender("")
 
         val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY)
-        tvDOB.text = sdf.format(date)
 
         tvDOB.setOnClickListener(this)
         ivMale.setOnClickListener(this)
         ivFemale.setOnClickListener(this)
 
+        if (isGenderSelected){
+            if (sessionManager.getUserGender() == Constants.Gender.male.name) {
+                ivMale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+                ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
+            }else{
+                ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
+                ivMale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
+            }
+        }else{
+            sessionManager.setUserGender("")
+        }
         calendar = Calendar.getInstance()
-        year = calendar.get(Calendar.YEAR)
-        month = calendar.get(Calendar.MONTH)
-        day = calendar.get(Calendar.DAY_OF_MONTH)
+        if (isDateSelected){
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, day)
+        }else {
+            year = calendar.get(Calendar.YEAR)
+            month = calendar.get(Calendar.MONTH)
+            day = calendar.get(Calendar.DAY_OF_MONTH)
+        }
+        tvDOB.text = sdf.format(calendar.time)
+
     }
 
     private fun setupViewModel() {
@@ -142,6 +161,9 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
             displayDaysOfMonth(true)
         }
 
+        if (isDateSelected)
+            datePickerDialog!!.defaultDate(calendar.time)
+
         datePickerDialog!!.displayListener { picker ->
             val view = picker?.rootView
             if (view != null) {
@@ -158,6 +180,7 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
             year = calendar.get(Calendar.YEAR)
             month = calendar.get(Calendar.MONTH)
             day = calendar.get(Calendar.DAY_OF_MONTH)
+            isDateSelected = true
             tvDOB.text = sdf.format(date!!.time)
             }
         datePickerDialog!!.display()
@@ -174,16 +197,14 @@ class SelectGenderFragment : BaseFragment<FragmentSelectGenderBinding>(), Select
                 showDatePickerDialog()
             }
             ivMale -> {
-//                ivMale.alpha = 0.6f
-//                ivFemale.alpha = 1f
+                isGenderSelected = true
                 ivMale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
                 ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
                 sessionManager.setUserGender(Constants.Gender.male.name)
             }
 
             ivFemale -> {
-//                ivMale.alpha = 1f
-//                ivFemale.alpha = 0.6f
+                isGenderSelected = true
                 ivFemale.setBackgroundResource(R.drawable.rounded_white_solid_red_border)
                 ivMale.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
                 sessionManager.setUserGender(Constants.Gender.female.name)

@@ -1,6 +1,5 @@
 package com.namastey.networking
 
-import android.util.Log
 import com.google.gson.JsonObject
 import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
@@ -10,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import java.util.*
 
 class NetworkService(private val networkRequest: NetworkRequest) {
@@ -293,6 +291,26 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToGetSpotifyLink(token: String): AppResponseSpotify<SpotifyBean> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetSpotifyLinkAsync(Constants.SPOTIFY_PROFILE_URL, token)
+                .await()
+        }
+
+    suspend fun requestToGetInstagram(baseurl: String): Any =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetInstagramAsync(baseurl)
+                .await()
+        }
+
+    suspend fun requestToGetInstagramToken(
+        apidata: String,
+        clientId: String,
+        clientSecret: String,
+        token: String,
+        authorizationCode: String,
+        redirectUrl: String
+    ): Any =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetInstagramTokenAsync(apidata,clientId,clientSecret,token,
+            authorizationCode,redirectUrl)
                 .await()
         }
 

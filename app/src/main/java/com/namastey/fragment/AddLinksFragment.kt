@@ -20,8 +20,11 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.EditProfileActivity
 import com.namastey.activity.ProfileInterestActivity
+import com.namastey.customViews.AppPreferences
+import com.namastey.customViews.AuthenticationDialog
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddLinksBinding
+import com.namastey.listeners.AuthenticationListener
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
@@ -30,16 +33,21 @@ import com.namastey.viewModel.ProfileInterestViewModel
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.Response
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.fragment_add_links.*
+import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
 class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInterestView,
-    View.OnClickListener {
+    View.OnClickListener, AuthenticationListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -51,6 +59,10 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private lateinit var auth: FirebaseAuth
     lateinit var mTwitterAuthClient: TwitterAuthClient
     private lateinit var mProfileTracker: ProfileTracker
+    private var token: String? = null
+    private var appPreferences: AppPreferences? = null
+    private val client = OkHttpClient()
+    private lateinit var authenticationDialog: AuthenticationDialog
 
     override fun getLayoutId() = R.layout.fragment_add_links
 
@@ -86,6 +98,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
 
         fragmentAddLinksBinding = getViewBinding()
         fragmentAddLinksBinding.viewModel = profileInterestViewModel
+        appPreferences = AppPreferences(activity);
 
         initListener()
         initData()
@@ -97,6 +110,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         tvAddLinkSave.setOnClickListener(this)
 //        tvFacebook.setOnClickListener(this)
         edtFacebook.setOnClickListener(this)
+//        edtInstagram.setOnClickListener(this)
         edtSpotify.setOnClickListener(this)
         edtTwitter.setOnClickListener(this)
 
@@ -717,6 +731,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 connectFacebook()
                 //getProfileFromFB()
             }
+//            edtInstagram ->{
+//                connectToInstagram()
+//            }
             edtTwitter -> {
                 twitterLogin()
             }
@@ -754,6 +771,24 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 ivSpotifyDelete.visibility = View.GONE
             }
         }
+    }
+
+    private fun connectToInstagram() {
+        var instagramUrl = "https://api.instagram.com/oauth/authorize\n" +
+                "  ?client_id="+ getString(R.string.instagram_app_id) +"\n" +
+                "  &redirect_uri=https://www.namasteyapp.com/\n" +
+                "  &scope=user_profile\n" +
+                "  &response_type=code"
+//        profileInterestViewModel.getInstagram(instagramUrl)
+
+        authenticationDialog = AuthenticationDialog(activity as EditProfileActivity, this)
+        authenticationDialog.setCancelable(true)
+//        authenticationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        authenticationDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        token = null
+        authenticationDialog.show()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -812,4 +847,78 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         profileInterestViewModel.onDestroy()
         super.onDestroy()
     }
+    private fun getUserInfoByAccessToken(token: String) {
+        val url = getString(R.string.get_user_info_url).plus(token)
+//        run(url)
+        val url1 = "https://graph.instagram.com/me?fields=id,username&access_token=".plus(token)
+
+        val redirect_url = getString(R.string.callback_url)
+        var request_url = getString(R.string.base_url) +
+                "oauth/access_token/?client_id=" +
+                context!!.resources.getString(R.string.client_id) +
+                "&client_secret=" + getString(R.string.instagram_client_secret) +
+                "&redirect_uri=" + redirect_url +
+                "&grant_type=authorization_code&code=".plus(token)
+//        profileInterestViewModel.getInstagram(request_url)
+        val apidata = "https://api.instagram.com/oauth/access_token"
+        profileInterestViewModel.getInstagramToken(apidata,getString(R.string.client_id),
+            getString(R.string.instagram_client_secret), token, "authorization_code",
+                redirect_url)
+    }
+    fun run(url: String) {
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        client.newCall(request).enqueue(object  : com.squareup.okhttp.Callback{
+            override fun onFailure(request: Request?, e: IOException?) {
+                Log.d("Instagram Errr :", e!!.printStackTrace().toString())
+
+            }
+            override fun onResponse(response: Response){
+                println(response.body()?.string())
+                Log.d("Instagram Response :",response.body().toString())
+                if (response.body() != null) {
+                    try {
+                        val jsonObject = JSONObject(response.body().toString())
+                        val jsonData: JSONObject = jsonObject.getJSONObject("data")
+                        if (jsonData.has("id")) {
+                            appPreferences!!.putString(
+                                AppPreferences.USER_ID,
+                                jsonData.getString("id")
+                            )
+                            appPreferences!!.putString(
+                                AppPreferences.USER_NAME,
+                                jsonData.getString("username")
+                            )
+                            appPreferences!!.putString(
+                                AppPreferences.PROFILE_PIC,
+                                jsonData.getString("profile_picture")
+                            )
+
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    val toast = Toast.makeText(
+                        activity,
+                        "Login error!",
+                        Toast.LENGTH_LONG
+                    )
+                    toast.show()
+                }
+            }
+
+        })
+    }
+
+    override fun onTokenReceived(auth_token: String?) {
+        if (auth_token == null)
+            return;
+        appPreferences!!.putString(AppPreferences.TOKEN, auth_token);
+        token = auth_token;
+        getUserInfoByAccessToken(token!!);
+    }
+
 }

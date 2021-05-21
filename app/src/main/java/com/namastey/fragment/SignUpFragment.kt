@@ -2,10 +2,15 @@ package com.namastey.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
+import android.text.*
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.facebook.*
@@ -117,6 +122,22 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         if (arguments != null && arguments!!.containsKey("isFromDashboard")) {
             isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
         }
+
+        tvTermsConditions.makeLinks(
+            Pair(getString(R.string.tv_terms), View.OnClickListener {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW)
+                browserIntent.data = Uri.parse(getString(R.string.tv_term_link))
+                startActivity(browserIntent)
+            }),
+            Pair(getString(R.string.tv_policy), View.OnClickListener {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW)
+                browserIntent.data = Uri.parse(getString(R.string.tv_policy_link))
+                startActivity(browserIntent)
+            })
+        )
+
         initializeGoogleApi()
     }
 
@@ -360,5 +381,32 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     override fun onDestroy() {
         signUpViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+        val spannableString = SpannableString(this.text)
+        var startIndexOfLink = -1
+        for (link in links) {
+            val clickableSpan = object : ClickableSpan() {
+                override fun updateDrawState(textPaint: TextPaint) {
+                    textPaint.color = Color.BLACK
+                    textPaint.isUnderlineText = true
+                }
+
+                override fun onClick(view: View) {
+                    Selection.setSelection((view as TextView).text as Spannable, 0)
+                    view.invalidate()
+                    link.second.onClick(view)
+                }
+            }
+            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
+            spannableString.setSpan(
+                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        this.movementMethod =
+            LinkMovementMethod.getInstance()
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 }
