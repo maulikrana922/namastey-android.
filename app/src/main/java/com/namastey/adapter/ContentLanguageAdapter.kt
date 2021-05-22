@@ -49,6 +49,8 @@ class ContentLanguageAdapter(
 
             if (selectedLanguageList.contains(languageList[position].id)){
                 ivSelected.visibility = View.VISIBLE
+            }else{
+                ivSelected.visibility = View.GONE
             }
 
             viewContentLanguage.setOnClickListener { v ->

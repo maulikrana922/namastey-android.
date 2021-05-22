@@ -606,8 +606,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     fun onClickProfileMore(view: View) {
         if (sessionManager.getUserId() == profileBean.user_id)
             openActivity(this@ProfileViewActivity, SettingsActivity())
-        else if (profileBean.username.isNotEmpty())
-            openShareOptionDialog(profileBean)
+        else if (profileBean.username.isNotEmpty()) {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                completeSignUpDialog()
+            }else {
+                openShareOptionDialog(profileBean)
+            }
+        }
     }
 
     fun onClickProfileLike(view: View) {

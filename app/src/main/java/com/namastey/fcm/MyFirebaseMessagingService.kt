@@ -4,12 +4,15 @@ import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -243,40 +246,42 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+            val sound: Uri =
+                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE.toString() + "://" + packageName + "/" + R.raw.notification_beap)
+            val attributes: AudioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build()
             // Since android Oreo notification channel is needed.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setupNotificationChannels(channelId, channelName, notificationManager)
+                val channel =
+                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+                channel.enableLights(true)
+                channel.lightColor = Color.BLACK
+                channel.enableVibration(true)
+                channel.setSound(sound,attributes)
+                notificationManager.createNotificationChannel(channel)
             }
 
-            val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                //.setSmallIcon(R.mipmap.ic_launcher)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                //.setSmallIcon(getNotificationIcon(NotificationCompat.Builder(this, channelId)))
                 .setLargeIcon(getBitmapFromURL(postImage))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
-                .setSound(soundUri)
                 .setContentIntent(pendingIntent)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                notificationBuilder.setDefaults(NotificationManager.IMPORTANCE_HIGH)
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                notificationBuilder.setSmallIcon(R.drawable.ic_notification);
+                notificationBuilder.color = Color.RED;
             } else {
-                notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                notificationBuilder.setSound(sound);
             }
 
             notificationManager.notify(getNotification.notificationCount.toInt(), notificationBuilder.build())
         }
-    }
-
-    private fun getNotificationIcon(notificationBuilder: NotificationCompat.Builder): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val color = 0x008000
-            notificationBuilder.color = color
-            return R.mipmap.ic_launcher
-        }
-        return R.mipmap.ic_launcher
     }
 
     private fun getBitmapFromURL(src: String?): Bitmap? {
@@ -307,22 +312,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         return true
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private fun setupNotificationChannels(
-        channelId: String,
-        channelName: String,
-        notificationManager: NotificationManager
-    ) {
-
-        val channel =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW)
-        channel.enableLights(true)
-        channel.lightColor = Color.BLACK
-        channel.enableVibration(true)
-        notificationManager.createNotificationChannel(channel)
-    }
-
     companion object {
         const val KEY_NT = "NT"
         const val KEY_NOTIFICATION = "notification"

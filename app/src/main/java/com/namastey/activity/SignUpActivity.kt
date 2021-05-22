@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -126,6 +127,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         initializeGoogleApi()
 
         setupPermissions()
+
+        if (sessionManager.getFirebaseToken() == "") {
+            val token = FirebaseInstanceId.getInstance().token
+            sessionManager.setFirebaseToken(token.toString())
+        }
+
     }
 
     private fun initializeGoogleApi() {
@@ -240,7 +247,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                 "$firstName $lastName",
                 Constants.GOOGLE,
                 providerId,
-                ""
+                "",
+                sessionManager.getFirebaseToken()
             )
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -298,7 +306,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                                     "$firstName $lastName",
                                     Constants.FACEBOOK,
                                     providerId,
-                                    ""
+                                    "",
+                                    sessionManager.getFirebaseToken()
                                 )
                             } catch (e: JSONException) {
                                 e.printStackTrace()
@@ -414,7 +423,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             name,
             Constants.SNAPCHAT,
             providerId,
-            ""
+            "",
+            sessionManager.getFirebaseToken()
         )
     }
 
@@ -526,7 +536,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
         if (user.is_register == 1) {
-            openActivity(this, DashboardActivity())
+            val intent = Intent(this@SignUpActivity,DashboardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            openActivity(intent)
         } else {
             addFragment(
                 SelectGenderFragment.getInstance(

@@ -115,22 +115,21 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
         }
 
         tvTermsConditions.setOnClickListener {
-            openUrlInBrowser()
+            openUrlInBrowser(getString(R.string.tv_term_link))
         }
 
         tvPrivacyPolicy.setOnClickListener {
-            openUrlInBrowser()
+            openUrlInBrowser(getString(R.string.tv_policy_link))
         }
 
         tvBillingTerms.setOnClickListener {
-            openUrlInBrowser()
+            openUrlInBrowser("http://www.google.com")
         }
     }
 
-    private fun openUrlInBrowser() {
-        val url = "http://www.google.com"  // Todo: Change url
+    private fun openUrlInBrowser(link: String) {
         try {
-            val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(myIntent)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(

@@ -29,7 +29,8 @@ class SignUpViewModel constructor(
         username: String,
         provider: String,
         providerId: String,
-        user_uniqueId: String
+        user_uniqueId: String,
+        firebaseToken: String
     ) {
         setIsLoading(true)
         val jsonObject = JsonObject()
@@ -38,6 +39,7 @@ class SignUpViewModel constructor(
         jsonObject.addProperty(Constants.USERNAME, username)
         jsonObject.addProperty(Constants.PROVIDER, provider)
         jsonObject.addProperty(Constants.PROVIDER_ID, providerId)
+        jsonObject.addProperty(Constants.DEVICE_TOKEN, firebaseToken)
         if (user_uniqueId.isNotEmpty()) {
             jsonObject.addProperty(Constants.IS_GUEST, 1)
             jsonObject.addProperty(Constants.USER_UNIQUEID, user_uniqueId)

@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.iid.FirebaseInstanceId
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -139,6 +140,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         )
 
         initializeGoogleApi()
+
+        if (sessionManager.getFirebaseToken() == "") {
+            val token = FirebaseInstanceId.getInstance().token
+            sessionManager.setFirebaseToken(token.toString())
+        }
     }
 
     private fun initializeGoogleApi() {
@@ -258,7 +264,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                                     "$firstName $lastName",
                                     Constants.FACEBOOK,
                                     providerId,
-                                    sessionManager.getUserUniqueId()
+                                    sessionManager.getUserUniqueId(),
+                                    sessionManager.getFirebaseToken()
                                 )
                             } catch (e: JSONException) {
                                 e.printStackTrace()
@@ -329,7 +336,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                 "$firstName $lastName",
                 Constants.GOOGLE,
                 providerId,
-                sessionManager.getUserUniqueId()
+                sessionManager.getUserUniqueId(),
+                sessionManager.getFirebaseToken()
             )
         } catch (e: ApiException) {
             e.printStackTrace()
@@ -350,7 +358,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
             name,
             Constants.SNAPCHAT,
             providerId,
-            sessionManager.getUserUniqueId()
+            sessionManager.getUserUniqueId(),
+            sessionManager.getFirebaseToken()
         )
     }
 

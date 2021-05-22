@@ -233,7 +233,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
     private fun initData() {
         sessionManager.setLoginUser(true)
-        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
+//        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
 
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
