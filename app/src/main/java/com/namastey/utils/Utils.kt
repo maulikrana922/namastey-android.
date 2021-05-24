@@ -31,6 +31,8 @@ import java.util.concurrent.TimeUnit
 
 object Utils {
 
+    private var mLastClickTime=0L
+
     fun hideKeyboard(context: Activity) {
         // Check if no view has focus
         val view = context.currentFocus
@@ -474,5 +476,16 @@ object Utils {
         Log.e("Utils", "finalPrice: \t ${decimalPrice.toString()}")
         Log.e("Utils", "twoDigitPrice: \t $finalPrice")
         return finalPrice.toString()
+    }
+
+    /**
+     * Prevent rapid click.
+     */
+    fun isOpenRecently():Boolean{
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return true
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
+        return false
     }
 }

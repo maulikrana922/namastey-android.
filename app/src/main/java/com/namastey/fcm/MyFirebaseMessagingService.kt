@@ -100,12 +100,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 getNotification.isRead = isRead
             }
 
-            showNotification(mainJsonObject,
-                getNotification.title,
-                getNotification.message,
-                postImage
-            )
-
+            if (SessionManager(applicationContext).getUserId() != 0L) {
+                showNotification(
+                    mainJsonObject,
+                    getNotification.title,
+                    getNotification.message,
+                    postImage
+                )
+            }
             Log.e("MessageService", "isBackground: ${isBackground()}")
 
         } catch (e: JSONException) {

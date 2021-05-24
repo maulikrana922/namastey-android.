@@ -8,11 +8,13 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.UserSearchAdapter
 import com.namastey.adapter.ViewPagerAdapter
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFollowingFollowersBinding
 import com.namastey.fragment.FindFriendFragment
@@ -68,6 +70,16 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
 
         if (!isMyProfile) {
             ivFollowFind.visibility = View.GONE
+        }
+
+        if (profileBean.gender == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivFollowUser)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivFollowUser)
         }
 
         if (profileBean.profileUrl.isNotEmpty()) {

@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.EditProfileActivity
 import com.namastey.adapter.SelectCategoryAdapter
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSelectCategoryBinding
 import com.namastey.listeners.OnCategoryItemClick
@@ -43,7 +44,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
 
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
 
-        Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")
+//        Log.e("SelectCategoryFragment", "selectedCategoryList: \t $selectedCategoryList")
 
         if (sessionManager.getCategoryList().size == 0) {
             for (category in categoryBeanList) {
@@ -91,6 +92,15 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
     private fun initData() {
         ivCloseCategory.setOnClickListener(this)
         btnSelectCategoryDone.setOnClickListener(this)
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfileImage)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfileImage)
+        }
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideLib.loadImage(
                 requireActivity(),

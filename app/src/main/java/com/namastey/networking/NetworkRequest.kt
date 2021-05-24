@@ -25,6 +25,7 @@ interface NetworkRequest {
         @Field(Constants.MOBILE) phone: String,
         @Field(Constants.EMAIL) email: String,
         @Field(Constants.OTP) otp: String,
+        @Field(Constants.DEVICE_TYPE) deviceType: String,
         @Field(Constants.DEVICE_TOKEN) deviceToken: String
     ): Deferred<AppResponse<User>>
 

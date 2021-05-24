@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>(), ProfileBasicView {
 
     private val TAG: String = ProfileBasicInfoActivity::class.java.simpleName
+    private var isFromRegister = false
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -78,6 +80,9 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
 
     private fun initData() {
 
+        if (intent.hasExtra("fromRegister")){
+            isFromRegister = intent.getBooleanExtra("fromRegister",false)
+        }
         rangeProfileAge.setMaxStartValue(45f)
         rangeProfileAge.apply()
         rangeProfileAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
@@ -99,6 +104,11 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
             initValue()
+        }else if (isFromRegister){
+            val intent = Intent(this@ProfileBasicInfoActivity,DashboardActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            openActivity(intent)
         } else {
             finishActivity()
         }

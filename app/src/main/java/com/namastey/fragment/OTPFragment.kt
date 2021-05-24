@@ -38,6 +38,8 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
     private lateinit var fragmentOtpBinding: FragmentOtpBinding
     private lateinit var otpViewModel: OTPViewModel
     private lateinit var layoutView: View
+    private val mLastClickTime: Long = 0
+
 
     override fun onCloseOtp() {
         activity!!.onBackPressed()
@@ -49,6 +51,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
             sessionManager.getUserPhone(),
             sessionManager.getUserEmail(),
             etOtp.text.toString(),
+            Constants.ANDROID,
             sessionManager.getFirebaseToken()
         )
     }
@@ -102,7 +105,9 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
                 ivSplashBackground.visibility = View.VISIBLE
 
                 if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    openActivity(requireActivity(), ProfileBasicInfoActivity())
+                    val intent = Intent(requireActivity(),ProfileBasicInfoActivity::class.java)
+                    intent.putExtra("fromRegister",true)
+                    openActivity(intent)
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(Intent(activity, DashboardActivity::class.java))

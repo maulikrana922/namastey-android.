@@ -31,10 +31,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         phone: String,
         email: String,
         otp: String,
+        deviceType: String,
         deviceToken: String
     ): AppResponse<User> =
         withContext(Dispatchers.IO) {
-            networkRequest.verifyOTPAsync(phone, email, otp, deviceToken).await()
+            networkRequest.verifyOTPAsync(phone, email, otp,deviceType, deviceToken).await()
         }
 
     suspend fun requestToGetVideoLanguage(locale: String): AppResponse<ArrayList<VideoLanguageBean>> =

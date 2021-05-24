@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.JobListingAdapter
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityJobListingBinding
 import com.namastey.fragment.JobFragment
@@ -66,6 +68,15 @@ class JobListingActivity : BaseActivity<ActivityJobListingBinding>(), JobView, O
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfileImage)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfileImage)
+        }
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideLib.loadImage(
                 this@JobListingActivity,

@@ -5,17 +5,21 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.EducationListActivity
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEducationBinding
 import com.namastey.model.EducationBean
 import com.namastey.uiView.EducationView
 import com.namastey.utils.*
 import com.namastey.viewModel.EducationViewModel
+import kotlinx.android.synthetic.main.activity_job_listing.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_education.*
+import kotlinx.android.synthetic.main.fragment_education.ivProfileImage
 import java.util.*
 import javax.inject.Inject
 
@@ -68,7 +72,15 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     private fun initData() {
 
         isFromListing = arguments!!.getBoolean("isFromListing", false)
-
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfileImage)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfileImage)
+        }
         if (isFromListing) {
             if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
                 GlideLib.loadImage(

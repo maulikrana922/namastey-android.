@@ -131,7 +131,8 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             }
         }
 
-        followingAdapter.filterList(filteredName)
+        if (::followingAdapter.isInitialized)
+            followingAdapter.filterList(filteredName)
     }
 
 

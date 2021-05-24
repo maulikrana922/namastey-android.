@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import android.os.SystemClock
 import android.text.TextUtils
 import com.namastey.R
 import com.namastey.model.AppResponse
@@ -9,6 +10,7 @@ import com.namastey.roomDB.entity.User
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.OTPView
 import com.namastey.utils.Constants
+import com.namastey.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -28,16 +30,17 @@ class OTPViewModel constructor(
     }
 
     fun onConfirmClick() {
+        if(Utils.isOpenRecently()) return
+
         otpView.onConfirm()
     }
-
-    fun verifyOTP(phone: String, email: String, otp: String, deviceToken: String) {
+    fun verifyOTP(phone: String, email: String, otp: String,deviceType: String, deviceToken: String) {
         if (isValidOTP(otp)) {
             setIsLoading(true)
             job = GlobalScope.launch(Dispatchers.Main) {
                 try {
                     if (otpView.isInternetAvailable()) {
-                        networkService.requestVerifyOTP(phone,email,otp, deviceToken).let { appResponse: AppResponse<User> ->
+                        networkService.requestVerifyOTP(phone,email,otp,deviceType, deviceToken).let { appResponse: AppResponse<User> ->
                             setIsLoading(false)
                             if (appResponse.status == Constants.OK) {
                                 otpView.onSuccessResponse(appResponse.data!!)

@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.EducationAdapter
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityEducationListBinding
 import com.namastey.fragment.EducationFragment
@@ -18,6 +20,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.EducationViewModel
 import kotlinx.android.synthetic.main.activity_education_list.*
+import kotlinx.android.synthetic.main.activity_education_list.ivProfileImage
 import java.util.*
 import javax.inject.Inject
 
@@ -66,6 +69,15 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfileImage)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfileImage)
+        }
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideLib.loadImage(
                 this@EducationListActivity,

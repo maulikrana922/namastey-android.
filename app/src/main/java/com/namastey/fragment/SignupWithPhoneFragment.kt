@@ -106,6 +106,8 @@ class SignupWithPhoneFragment : BaseFragment<FragmentSignupWithPhoneBinding>(),
     }
 
     override fun onClickNext() {
+        if(Utils.isOpenRecently()) return
+
         var countryCode = ""
         var isCountyCodeSelected = false
         if (signupWithPhoneModel.isValidPhone(edtEmailPhone.text.toString().trim())) {
