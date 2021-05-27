@@ -246,8 +246,9 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
                 albumId.add(data.id)
             }
             jsonObject.addProperty(Constants.ALBUMS, albumId.joinToString())
+            val androidID = Settings.Secure.getString(this@CreateAlbumActivity.contentResolver, Settings.Secure.ANDROID_ID)
 
-            jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
+            jsonObject.addProperty(Constants.DEVICE_ID, androidID)
             jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
             Log.d("CreateProfile Request:", jsonObject.toString())

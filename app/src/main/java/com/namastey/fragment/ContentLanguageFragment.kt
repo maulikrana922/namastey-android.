@@ -31,10 +31,8 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
     private lateinit var contentLanguageViewModel: ContentLanguageViewModel
     private lateinit var layoutView: View
     private lateinit var notificationAdapter: ContentLanguageAdapter
-    private var selectVideoIdList: ArrayList<Int> = ArrayList()
+    private var selectLanguageIdList: ArrayList<Int> = ArrayList()
     private var selectedLanguageList: ArrayList<VideoLanguageBean> = ArrayList()
-    private var selectedLanguageId: ArrayList<Int> = ArrayList()
-
 
     override fun getViewModel() = contentLanguageViewModel
 
@@ -70,29 +68,29 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
     }
 
     private fun initUI() {
-        var locale = ""
+        var locale = "IN"
         locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             resources.configuration.locales.get(0).country
         } else {
             resources.configuration.locale.country
         }
 
-        selectedLanguageList = sessionManager.getLanguageList()
+        selectLanguageIdList = ArrayList()
 
-        for(languageListId in selectedLanguageList){
-            selectedLanguageId.add(languageListId.id)
+        for(languageListId in sessionManager.getLanguageList()){
+            selectLanguageIdList.add(languageListId.id)
+            selectedLanguageList.add(languageListId)
         }
 
-        Log.e("ContentLanguage", "selectedLanguageList: \t  $selectedLanguageList")
-        Log.e("ContentLanguage", "selectedLanguageId: \t  $selectedLanguageId")
+//        Log.e("ContentLanguage", "selectedLanguageList: \t  $selectedLanguageList")
+//        Log.e("ContentLanguage", "selectedLanguageId: \t  $selectLanguageIdList")
         contentLanguageViewModel.getContentLanguage(locale)
     }
 
     override fun onSuccess(languageList: ArrayList<VideoLanguageBean>) {
-        Log.e("ContentLanguage", "onSuccess: \t languageList: $languageList")
-        selectVideoIdList = ArrayList()
+//        Log.e("ContentLanguage", "onSuccess: \t languageList: $languageList")
 
-        notificationAdapter = ContentLanguageAdapter(requireActivity(), languageList, selectedLanguageId, this)
+        notificationAdapter = ContentLanguageAdapter(requireActivity(), languageList, selectLanguageIdList, this)
         rvContentLanguages.adapter = notificationAdapter
     }
 
@@ -103,16 +101,23 @@ class ContentLanguageFragment : BaseFragment<FragmentContentLanguageBinding>(), 
 
     override fun onDestroy() {
         contentLanguageViewModel.onDestroy()
+        (activity as AccountSettingsActivity).setVisibilitySave(false)
         super.onDestroy()
     }
 
     override fun onLanguageItemClick(videoLanguageBean: VideoLanguageBean) {
-        if (selectVideoIdList.contains(videoLanguageBean.id)) {
-            Log.e("ContentLanguage", "onLanguageItemClick: \t Remove")
-            selectVideoIdList.remove(videoLanguageBean.id)
+        (activity as AccountSettingsActivity).setVisibilitySave(true)
+        if (selectLanguageIdList.contains(videoLanguageBean.id)) {
+//            Log.e("ContentLanguage", "onLanguageItemClick: \t Remove")
+            selectLanguageIdList.remove(videoLanguageBean.id)
+            val position = selectedLanguageList.indexOfFirst { it.id == videoLanguageBean.id }
+            selectedLanguageList.removeAt(position)
+
         } else {
-            Log.e("ContentLanguage", "onLanguageItemClick: \t Add")
-            selectVideoIdList.add(videoLanguageBean.id)
+//            Log.e("ContentLanguage", "onLanguageItemClick: \t Add")
+            selectLanguageIdList.add(videoLanguageBean.id)
+            selectedLanguageList.add(videoLanguageBean)
         }
+        (activity as AccountSettingsActivity).setSelectedLanguage(selectLanguageIdList,selectedLanguageList)
     }
 }

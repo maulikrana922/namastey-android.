@@ -2,6 +2,7 @@ package com.namastey.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -157,7 +158,8 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                             Constants.COMPANY_NAME,
                             edtJobCompany.text.toString().trim()
                         )
-                        jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
+                        val androidID = Settings.Secure.getString(requireActivity().contentResolver, Settings.Secure.ANDROID_ID)
+                        jsonObject.addProperty(Constants.DEVICE_ID, androidID)
                         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
                         if (isFromJobListing) {

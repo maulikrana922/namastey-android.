@@ -3,6 +3,7 @@ package com.namastey.fragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
@@ -690,8 +691,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         )
 
         jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
+        val androidID = Settings.Secure.getString(requireActivity().contentResolver, Settings.Secure.ANDROID_ID)
 
-        jsonObject.addProperty(Constants.DEVICE_ID, "23456789")    // Need to change
+        jsonObject.addProperty(Constants.DEVICE_ID, androidID)
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
 
         Log.e("EditProfileFragment", "CreateProfile Request:\t $jsonObject")

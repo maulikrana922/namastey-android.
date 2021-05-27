@@ -128,7 +128,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
 
         setupPermissions()
 
-        if (sessionManager.getFirebaseToken() == "") {
+        if (sessionManager.getFirebaseToken() == "" || sessionManager.getFirebaseToken() == "null") {
             val token = FirebaseInstanceId.getInstance().token
             sessionManager.setFirebaseToken(token.toString())
         }
@@ -369,7 +369,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
 
     private fun fetchUserData() {
         val query = "{me{bitmoji{avatar},displayName,externalId}}"
-        SnapLogin.fetchUserData(this, query, null, this)
+        SnapLogin.fetchUserData(this@SignUpActivity, query, null, this)
     }
 
     fun onLoginClick(view: View) {
@@ -571,7 +571,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             removeAllFragment()
 
         } else if (signupWithPhoneFragment != null) {
-            var childFm = signupWithPhoneFragment.childFragmentManager
+            val childFm = signupWithPhoneFragment.childFragmentManager
             if (childFm.backStackEntryCount > 0) {
                 childFm.popBackStack()
             } else {

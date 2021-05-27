@@ -12,7 +12,8 @@
     <string name="get_user_info_url">https://api.instagram.com/v1/users/self/?access_token=</string>
     <!--<string name="facebook_app_id">2945790898848622</string>
     <string name="fb_login_protocol_scheme">fb2945790898848622</string>-->
-    <string name="snapchat_client_id">c079e951-7fab-47a2-9b4b-ee3e0c4925cc</string>
+<!--    <string name="snapchat_client_id">c079e951-7fab-47a2-9b4b-ee3e0c4925cc</string>-->
+    <string name="snapchat_client_id">e60139af-eada-4c77-8b04-02ce5d195e7f</string>
 
     <string name="spotify_client_id">6133e980fbe149ed804371dfc1a4d3d1</string>
     <string name="spotify_redirect_uri">http://testyourapp.online/namasteyapp/</string>

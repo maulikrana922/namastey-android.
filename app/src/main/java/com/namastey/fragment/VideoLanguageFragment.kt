@@ -100,7 +100,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
     private fun initUI() {
 
-        var locale = ""
+        var locale = "IN"
         locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             resources.configuration.locales.get(0).country
         } else {
