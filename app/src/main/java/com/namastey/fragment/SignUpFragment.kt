@@ -22,8 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
@@ -142,8 +143,19 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         initializeGoogleApi()
 
         if (sessionManager.getFirebaseToken() == "") {
-            val token = FirebaseInstanceId.getInstance().token
-            sessionManager.setFirebaseToken(token.toString())
+//            val token = FirebaseInstanceId.getInstance().token
+//            sessionManager.setFirebaseToken(token.toString())
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+                sessionManager.setFirebaseToken(token)
+            })
+
         }
     }
 

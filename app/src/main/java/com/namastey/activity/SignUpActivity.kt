@@ -29,8 +29,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -127,11 +128,25 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         initializeGoogleApi()
 
         setupPermissions()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
 
-        if (sessionManager.getFirebaseToken() == "" || sessionManager.getFirebaseToken() == "null") {
-            val token = FirebaseInstanceId.getInstance().token
-            sessionManager.setFirebaseToken(token.toString())
-        }
+            // Get new FCM registration token
+            val token = task.result
+            sessionManager.setFirebaseToken(token)
+        })
+//        if (sessionManager.getFirebaseToken() == "" || sessionManager.getFirebaseToken() == "null") {
+////            val token = FirebaseInstanceId.getInstance().token
+//            FirebaseMessaging.getInstance().token.addOnCompleteListener {
+//                if (it.isComplete){
+//                    val token = it.result.toString()
+//                    sessionManager.setFirebaseToken(token)
+//                }
+//            }
+//        }
 
     }
 

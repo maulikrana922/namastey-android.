@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "949976136000-b2dkpit3tr38fq19jf6og5mj6ar5fcml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.namastey",
+            "certificate_hash": "928ab0c95f043abf365d75d10fea089a61f88b07"
+          }
+        },
+        {
+          "client_id": "949976136000-laf7dg2ugtf93thepqbf9ql7io914l1t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.namastey",
+            "certificate_hash": "d51dfe42bb7a652c5adcc152807f21a564558588"
+          }
+        },
+        {
           "client_id": "949976136000-les45oc48t4bc2l37tsc6kuc4bi8rku5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -54,6 +70,13 @@
             {
               "client_id": "949976136000-ddq2cdt6do3d2vguu093l7t5j8570rd9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "949976136000-8hh1qt6rnmspf0oeaqqqea49lj7jb5sg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.namastey.ios"
+              }
             }
           ]
         }

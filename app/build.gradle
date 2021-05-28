@@ -180,12 +180,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.1'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     //Firebase message service:
-    implementation 'com.google.firebase:firebase-messaging:20.1.5'
-    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
-    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+//    implementation platform('com.google.firebase:firebase-bom:26.2.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //Lottie:- For animation
