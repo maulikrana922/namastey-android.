@@ -116,7 +116,9 @@ class ChatAdapter(
                     updateNonPlayingView(ivRecordReceived)
                 }
             }
-
+            ivImageReceived.setOnClickListener {
+                onChatMessageClick.onChatImageClick(chatMessage.url)
+            }
             ivRecordReceived.setOnClickListener {
                 if (currentPlayingPosition != -1)
                     notifyItemChanged(currentPlayingPosition)
@@ -174,6 +176,9 @@ class ChatAdapter(
                 }
             }
 
+            ivImageSend.setOnClickListener {
+                onChatMessageClick.onChatImageClick(chatMessage.url)
+            }
             ivRecordSend.setOnClickListener {
                 if (currentPlayingPosition != -1)
                     notifyItemChanged(currentPlayingPosition)

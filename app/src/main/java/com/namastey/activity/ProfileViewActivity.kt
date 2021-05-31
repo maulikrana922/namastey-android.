@@ -548,17 +548,26 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      */
     fun onClickFollow(view: View) {
 
+        val whoCanView = profileBean.safetyBean.is_followers
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
-        }
-        if (!sessionManager.isGuestUser() && sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-            val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
-            intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-            intent.putExtra("isMyProfile", isMyProfile)
-            openActivity(intent)
+        }else if (!sessionManager.isGuestUser()){
+            if (sessionManager.getUserId() == profileBean.user_id || whoCanView == 0){
+                openFollowersScreen()
+            }else if (whoCanView == 1){
+                if (profileBean.is_follow_me == 1){
+                    openFollowersScreen()
+                }
+            }
         }
     }
 
+    fun openFollowersScreen(){
+        val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
+        intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+        intent.putExtra("isMyProfile", isMyProfile)
+        openActivity(intent)
+    }
     fun onClickFollowRequest(view: View) {
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
@@ -686,9 +695,15 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send_message)
         if (profileBean.safetyBean.who_can_send_message == 2)
             bottomSheetDialogShare.tvShareReport.text = getString(R.string.message_locked)
-        else
+        else if (profileBean.safetyBean.who_can_send_message == 0){
             bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
-
+        }else {
+            if (profileBean.safetyBean.who_can_send_message == 1 && profileBean.is_follow_me == 1){
+                bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
+            }else{
+                bottomSheetDialogShare.tvShareReport.text = getString(R.string.message_locked)
+            }
+        }
         bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
         }
@@ -824,12 +839,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         //Send Message
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            if (profileBean.safetyBean.who_can_send_message != 2)
+            if (bottomSheetDialogShare.tvShareReport.text == getString(R.string.send_message)){
                 clickSendMessage(profileBean)
+            }
         }
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
-            if (profileBean.safetyBean.who_can_send_message != 2)
+            if (bottomSheetDialogShare.tvShareReport.text == getString(R.string.send_message)){
                 clickSendMessage(profileBean)
+            }
         }
 
         bottomSheetDialogShare.show()

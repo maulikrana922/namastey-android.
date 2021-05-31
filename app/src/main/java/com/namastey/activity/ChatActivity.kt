@@ -838,6 +838,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         matchesListBean.is_block = isBlock
     }
 
+    override fun onChatImageClick(imageUrl: String) {
+        val intent = Intent(this@ChatActivity, ImageDisplayActivity::class.java)
+        intent.putExtra("imageUrl",imageUrl)
+        openActivity(intent)
+    }
     override fun onChatMessageClick(message: String, position: Int) {
         when {
             message.contains("Edit your bio") -> {

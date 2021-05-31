@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.namastey">
-<!--    <queries>-->
-<!--        <package android:name="com.snapchat.android" />-->
-<!--    </queries>-->
+    <!-- <queries> -->
+    <!-- <package android:name="com.snapchat.android" /> -->
+    <!-- </queries> -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -39,10 +39,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
+        <activity android:name=".activity.ImageDisplayActivity"></activity>
         <activity
             android:name=".activity.InAppPurchaseActivity"
-            android:theme="@style/Theme.Transparent"
-        />
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".activity.ImageSliderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -276,6 +276,7 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProviderYOUR_FACEBOOK_APP_ID"
@@ -286,6 +287,7 @@
             android:enabled="true" />
 
         <receiver android:name=".receivers.MaxLikeReceiver" />
+
         <service
             android:name=".receivers.AppCloseService"
             android:enabled="true"
