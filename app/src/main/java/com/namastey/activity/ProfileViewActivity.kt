@@ -96,8 +96,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         // Need to change
         if (profileBean.gender == Constants.Gender.female.name) {
             ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfileUser)
         } else {
             ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfileUser)
         }
         fillValue(profileBean)
     }
@@ -555,7 +561,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (sessionManager.getUserId() == profileBean.user_id || whoCanView == 0){
                 openFollowersScreen()
             }else if (whoCanView == 1){
-                if (profileBean.is_follow_me == 1){
+                if (profileBean.is_follow == 1){
                     openFollowersScreen()
                 }
             }
@@ -683,6 +689,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 null
             )
         )
+        if (profileBean.safetyBean.is_share == 0){
+            bottomSheetDialogShare.svShareOption.alpha = 0.3f
+        }
+
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
@@ -712,114 +722,125 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             getString(R.string.profile_link_msg),
             profileBean.username, profileBean.about_me
         )
-        // Share on Twitter app if install otherwise web link
-        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
-            val tweetUrl =
-                StringBuilder("https://twitter.com/intent/tweet?text=".plus(shareMessage))
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(tweetUrl.toString())
-            )
-            val matches: List<ResolveInfo> =
-                packageManager.queryIntentActivities(intent, 0)
-            for (info in matches) {
-                if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
-                        .startsWith("com.twitter")
-                ) {
-                    intent.setPackage(info.activityInfo.packageName)
-                }
-            }
-            startActivity(intent)
-        }
 
-        bottomSheetDialogShare.ivShareApp.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
-            addFragment(
-                ShareAppFragment.getInstance(
-                    sessionManager.getUserId(),
-                    profileBean.profileUrl,
-                    ""
-                ), //Todo:Change resposne
-                Constants.SHARE_APP_FRAGMENT
-            )
-        }
-
-        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
-            var facebookAppFound = false
-            var shareIntent =
-                Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-
-            val pm: PackageManager = packageManager
-            val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
-            for (app in activityList) {
-                if (app.activityInfo.packageName.contains("com.facebook.katana")) {
-                    val activityInfo: ActivityInfo = app.activityInfo
-                    val name =
-                        ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name)
-                    shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-                    shareIntent.component = name
-                    facebookAppFound = true
-                    break
-                }
-            }
-            if (!facebookAppFound) {
-                val sharerUrl =
-                    "https://www.facebook.com/sharer/sharer.php?u=${shareMessage}"
-                shareIntent = Intent(
+        if (profileBean.safetyBean.is_share == 1) {
+            // Share on Twitter app if install otherwise web link
+            bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+                val tweetUrl =
+                    StringBuilder("https://twitter.com/intent/tweet?text=".plus(shareMessage))
+                val intent = Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(sharerUrl)
+                    Uri.parse(tweetUrl.toString())
+                )
+                val matches: List<ResolveInfo> =
+                    packageManager.queryIntentActivities(intent, 0)
+                for (info in matches) {
+                    if (info.activityInfo.packageName.toLowerCase(Locale.ROOT)
+                            .startsWith("com.twitter")
+                    ) {
+                        intent.setPackage(info.activityInfo.packageName)
+                    }
+                }
+                startActivity(intent)
+            }
+
+            bottomSheetDialogShare.ivShareApp.setOnClickListener {
+                bottomSheetDialogShare.dismiss()
+                val message = String.format(
+                    getString(R.string.profile_link_msg),
+                    profileBean.username, profileBean.about_me
+                ).plus(" \n").plus(String.format(getString(R.string.profile_link),profileBean.username))
+                addFragment(
+                    ShareAppFragment.getInstance(
+                        sessionManager.getUserId(),
+                        "",
+                        "",
+                        message,
+                        true
+                    ),
+                    Constants.SHARE_APP_FRAGMENT
                 )
             }
-            startActivity(shareIntent)
-        }
 
-        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+            bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+                var facebookAppFound = false
+                var shareIntent =
+                    Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
 
-        }
-
-        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
-            try {
                 val pm: PackageManager = packageManager
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                val activityList: List<ResolveInfo> = pm.queryIntentActivities(shareIntent, 0)
+                for (app in activityList) {
+                    if (app.activityInfo.packageName.contains("com.facebook.katana")) {
+                        val activityInfo: ActivityInfo = app.activityInfo
+                        val name =
+                            ComponentName(
+                                activityInfo.applicationInfo.packageName,
+                                activityInfo.name
+                            )
+                        shareIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                        shareIntent.component = name
+                        facebookAppFound = true
+                        break
+                    }
+                }
+                if (!facebookAppFound) {
+                    val sharerUrl =
+                        "https://www.facebook.com/sharer/sharer.php?u=${shareMessage}"
+                    shareIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(sharerUrl)
+                    )
+                }
+                startActivity(shareIntent)
+            }
+
+            bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+
+            }
+
+            bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+                try {
+                    val pm: PackageManager = packageManager
+                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                    val sendIntent = Intent()
+                    sendIntent.action = Intent.ACTION_SEND
+                    sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 //                sendIntent.type = "*/*"
-                sendIntent.type = "text/plain"
-                sendIntent.setPackage("com.whatsapp")
+                    sendIntent.type = "text/plain"
+                    sendIntent.setPackage("com.whatsapp")
 
 //                sendIntent.putExtra(
 //                    Intent.EXTRA_STREAM,
 //                    Uri.parse(dashboardBean.video_url)
 
+                    sendIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        Uri.parse(shareMessage)
+                    )
+                    startActivity(sendIntent)
+                } catch (e: PackageManager.NameNotFoundException) {
+                    Toast.makeText(
+                        this@ProfileViewActivity,
+                        getString(R.string.whatsapp_not_install_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    e.printStackTrace()
+                }
+            }
+
+            bottomSheetDialogShare.ivShareOther.setOnClickListener {
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
                 sendIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Uri.parse(shareMessage)
+                    Intent.EXTRA_TEXT, shareMessage
                 )
+                sendIntent.type = "text/plain"
                 startActivity(sendIntent)
-            } catch (e: PackageManager.NameNotFoundException) {
-                Toast.makeText(
-                    this@ProfileViewActivity,
-                    getString(R.string.whatsapp_not_install_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-                e.printStackTrace()
             }
         }
-
-        bottomSheetDialogShare.ivShareOther.setOnClickListener {
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT, shareMessage
-            )
-            sendIntent.type = "text/plain"
-            startActivity(sendIntent)
-        }
-
         //Privacy Click
         bottomSheetDialogShare.tvShareBlock.setOnClickListener {
             displayBlockUserDialog(profileBean)

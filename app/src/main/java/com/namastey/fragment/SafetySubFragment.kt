@@ -196,17 +196,21 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
 
     override fun onResume() {
         super.onResume()
-        if (fromSafetyValue == 1) {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
-            tvSafetySubMessage.text = getString(R.string.safety_sub_who_can_send_you_direct_msg)
-        } else if (fromSafetyValue == 2) {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
-            tvSafetySubMessage.visibility = View.GONE
-        } else if (fromSafetyValue == 3) {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
-            tvSafetySubMessage.visibility = View.GONE
-//            tvSafetySubMessage.text =
-//                getString(R.string.safety_sub_who_can_comments_on_your_video_msg)
+        when (fromSafetyValue) {
+            1 -> {
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+                tvSafetySubMessage.text = getString(R.string.safety_sub_who_can_send_you_direct_msg)
+            }
+            2 -> {
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
+                tvSafetySubMessage.visibility = View.GONE
+            }
+            3 -> {
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
+                tvSafetySubMessage.visibility = View.GONE
+    //            tvSafetySubMessage.text =
+    //                getString(R.string.safety_sub_who_can_comments_on_your_video_msg)
+            }
         }
     }
 
@@ -221,11 +225,6 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
     }
 
     override fun onSuccessWhoCanCommentYourVideoResponse(safetyBean: SafetyBean) {
-        Log.e(
-            "SafetySubFragment",
-            "onSuccessResponse  safetyBean: \t ${safetyBean.who_can_comment}"
-        )
-
         sessionManager.setIntegerValue(
             safetyBean.who_can_comment,
             Constants.KEY_CAN_COMMENT_YOUR_VIDEO

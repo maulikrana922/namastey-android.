@@ -123,7 +123,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
         }
 
         tvBillingTerms.setOnClickListener {
-            openUrlInBrowser("http://www.google.com")
+            openUrlInBrowser(getString(R.string.tv_billing_link))
         }
     }
 

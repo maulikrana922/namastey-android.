@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -17,6 +18,7 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.RecentUserAdapter
 import com.namastey.adapter.UserSearchAdapter
+import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentShareAppBinding
 import com.namastey.listeners.OnItemClick
@@ -34,6 +36,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ShareAppViewModel
 import kotlinx.android.synthetic.main.dialog_following_user.view.*
+import kotlinx.android.synthetic.main.fragment_education.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
 import org.jetbrains.anko.doAsync
 import java.util.*
@@ -68,6 +71,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     private var userId: Long = -1
     private var coverImgUrl: String = ""
     private var videoUrl: String = ""
+    private var shareMessage: String = ""
+    private var fromProfile: Boolean = false
     private var recentList: ArrayList<RecentUser> = ArrayList()
     private var selectUserIdList: ArrayList<Long> = ArrayList()
     private val db = Firebase.firestore
@@ -81,12 +86,14 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance(userId: Long, coverImage: String, videoUrl: String) =
+        fun getInstance(userId: Long, coverImage: String, videoUrl: String,shareMessage: String, fromProfile: Boolean) =
             ShareAppFragment().apply {
                 arguments = Bundle().apply {
                     putLong(Constants.USER_ID, userId)
                     putString(Constants.COVER_IMAGE, coverImage)
                     putString(Constants.VIDEO_URL, videoUrl)
+                    putString("shareMessage", shareMessage)
+                    putBoolean("fromProfile", fromProfile)
                 }
             }
     }
@@ -122,6 +129,8 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         userId = arguments!!.getLong(Constants.USER_ID)
         coverImgUrl = arguments!!.getString(Constants.COVER_IMAGE, "")!!
         videoUrl = arguments!!.getString(Constants.VIDEO_URL)!!
+        shareMessage = arguments!!.getString("shareMessage")!!
+        fromProfile = arguments!!.getBoolean("fromProfile")!!
         //shareAppViewModel.getFollowingList(userId)
         shareAppViewModel.getFollowingShareList()
 
@@ -180,7 +189,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
     }
 
     private fun filter(text: String) {
-        Log.e("ShareAppFragment", "filter: text: $text")
+//        Log.e("ShareAppFragment", "filter: text: $text")
         val filteredName: ArrayList<DashboardBean> = ArrayList()
 
         for (following in followingList) {
@@ -203,12 +212,27 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         alertDialog.show()
 
-        GlideLib.loadImageUrlRoundCorner(
-            activity!!,
-            dialogView.ivFollwing,
-            dashboardBean.profile_url
-        )
-        GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivPostImage, coverImgUrl)
+        if (sessionManager.getUserGender() == Constants.Gender.female.name) {
+            GlideApp.with(this).load(R.drawable.ic_female)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(dialogView.ivFollwing)
+        } else {
+            GlideApp.with(this).load(R.drawable.ic_male)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(dialogView.ivFollwing)
+        }
+        if (dashboardBean.profile_url.isNotEmpty()) {
+            GlideLib.loadImageUrlRoundCorner(
+                activity!!,
+                dialogView.ivFollwing,
+                dashboardBean.profile_url
+            )
+        }
+        if (fromProfile)
+            GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivPostImage, dashboardBean.profile_url)
+        else
+            GlideLib.loadImageUrlRoundCorner(activity!!, dialogView.ivPostImage, coverImgUrl)
+
         dialogView.tvFollowing.text = dashboardBean.username
         dialogView.tvCancel.setOnClickListener {
             alertDialog.dismiss()
@@ -240,18 +264,17 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
                 true
             )*/
 
-            val msg = dialogView.edtLeaveMessage.text.toString().trim() + "\n" + videoUrl
-            Log.e(TAG, "photoUri: \t $msg")
-            sendMessage(
-                dashboardBean,
-                dialogView.edtLeaveMessage.text.toString().trim(),
-                // msg,
-                ""
-            )
+            if (dialogView.edtLeaveMessage.text.toString().trim().isNotEmpty()) {
+                sendMessage(
+                    dashboardBean,
+                    dialogView.edtLeaveMessage.text.toString().trim(),
+                    ""
+                )
+            }
 
             sendMessage(
                 dashboardBean,
-                videoUrl,
+                shareMessage,
                 ""
             )
 
@@ -358,7 +381,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
             shareAppViewModel.startChat(userId, 1)
 
             val chatMessage = ChatMessage(
-                videoUrl,
+                shareMessage,
                 sessionManager.getUserId(),
                 userId,
                 "",

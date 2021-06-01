@@ -96,27 +96,27 @@ class AlbumVideoAdapter(
             val videoBean = videoList[position]
             handlerVideo.removeCallbacksAndMessages(null)
 
-           /* if (!videoBean.video_url.isNullOrEmpty()) {
+            /* if (!videoBean.video_url.isNullOrEmpty()) {
 
-                postVideo.setVideoPath(videoBean.video_url)
-                postVideo.requestFocus()
-                postVideo.start()
+                 postVideo.setVideoPath(videoBean.video_url)
+                 postVideo.requestFocus()
+                 postVideo.start()
 
-//                postVideo.seekTo(1)
+ //                postVideo.seekTo(1)
 
-                postVideo.setOnPreparedListener { mp ->
-                    //Start Playback
-//                    ivVideoThumb.visibility = View.GONE
+                 postVideo.setOnPreparedListener { mp ->
+                     //Start Playback
+ //                    ivVideoThumb.visibility = View.GONE
 
-                    postVideo.start()
-                    handlerVideo.postDelayed({
-                        onVideoClick.onPostViewer(videoBean.id)
-                    }, 5000)
+                     postVideo.start()
+                     handlerVideo.postDelayed({
+                         onVideoClick.onPostViewer(videoBean.id)
+                     }, 5000)
 
-                    //Loop Video
-                    mp!!.isLooping = true
-                }
-            }*/
+                     //Loop Video
+                     mp!!.isLooping = true
+                 }
+             }*/
 
             if (!videoBean.video_url.isNullOrEmpty()) {
 
@@ -165,44 +165,62 @@ class AlbumVideoAdapter(
             }
 
             tvFeedView.text = videoBean.viewers.toString()
-            if (videoBean.is_comment == 1) {
+            if (videoBean.who_can_comment == 2) {
                 tvCommentFeed.text = activity.getString(R.string.comments_off)
             } else {
-                tvCommentFeed.text = videoBean.comments.toString().plus(" ")
-                    .plus(activity.getString(R.string.comments))
-                when {
-                    videoBean.profile_pic.size >= 3 -> {
-                        ivCommentFirst.visibility = View.VISIBLE
-                        ivCommentSecond.visibility = View.VISIBLE
-                        ivCommentThird.visibility = View.VISIBLE
-
-                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                        GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
+                if (videoBean.who_can_comment == 1) {
+                    if (videoBean.is_comment == 0 && videoBean.is_follow_me == 1) {
+                        tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                    } else {
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
-                    videoBean.profile_pic.size == 2 -> {
-                        ivCommentFirst.visibility = View.VISIBLE
-                        ivCommentSecond.visibility = View.VISIBLE
-                        ivCommentThird.visibility = View.GONE
-
-                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                        GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                    }
-                    videoBean.profile_pic.size == 1 -> {
-                        ivCommentFirst.visibility = View.VISIBLE
-                        ivCommentSecond.visibility = View.GONE
-                        ivCommentThird.visibility = View.GONE
-                        GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-
-                    }
-                    else -> {
-                        ivCommentFirst.visibility = View.GONE
-                        ivCommentSecond.visibility = View.GONE
-                        ivCommentThird.visibility = View.GONE
+                } else {
+                    if (videoBean.is_comment == 0) {
+                        tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                    } else {
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
                 }
             }
 
+            when {
+                videoBean.is_comment == 1 || videoBean.who_can_comment == 2 -> {
+                    ivCommentFirst.visibility = View.GONE
+                    ivCommentSecond.visibility = View.GONE
+                    ivCommentThird.visibility = View.GONE
+                }
+                videoBean.profile_pic.size >= 3 -> {
+                    ivCommentFirst.visibility = View.VISIBLE
+                    ivCommentSecond.visibility = View.VISIBLE
+                    ivCommentThird.visibility = View.VISIBLE
+
+                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                    GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
+                }
+                videoBean.profile_pic.size == 2 -> {
+                    ivCommentFirst.visibility = View.VISIBLE
+                    ivCommentSecond.visibility = View.VISIBLE
+                    ivCommentThird.visibility = View.GONE
+
+                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                }
+                videoBean.profile_pic.size == 1 -> {
+                    ivCommentFirst.visibility = View.VISIBLE
+                    ivCommentSecond.visibility = View.GONE
+                    ivCommentThird.visibility = View.GONE
+                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+
+                }
+                else -> {
+                    ivCommentFirst.visibility = View.GONE
+                    ivCommentSecond.visibility = View.GONE
+                    ivCommentThird.visibility = View.GONE
+                }
+            }
 
             tvFeedLike.setOnClickListener {
                 if (sessionManager.getUserId() == videoBean.user_id) {
@@ -226,7 +244,7 @@ class AlbumVideoAdapter(
                 onVideoClick.onUpnextClick(position)
             }
 
-            if (videoBean.is_comment == 0) {
+            if (videoBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {
                 tvCommentFeed.setOnClickListener {
                     onVideoClick.onCommentClick(videoBean.id)
                 }

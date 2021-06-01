@@ -14,18 +14,20 @@ class VideoBean() : Parcelable {
     var cover_image_url: String = ""
     var album_id: Long = 0
     var album_name: String = ""
-    var share_with = 0
+    var share_with = 0          // This flag used while user post/edit video
     var is_comment: Int = 0
     var is_like: Int = 0
     var viewers = 0
     var comments = 0
+    var who_can_comment: Int = 0 // Set from account setting to all videos
+    var is_follow_me: Int = 0      // This is for that video user follow login user or not
     var profile_pic: ArrayList<String> = ArrayList()
     var user_id: Long = 0
     var username: String = ""
     var casual_name: String = ""
     var profile_url: String = ""
     var is_download: Int = 0
-    var share: Int = 0
+    var share: Int = 0          // Total Share count
     var job: String = ""
 
     constructor(parcel: Parcel) : this() {
@@ -41,6 +43,8 @@ class VideoBean() : Parcelable {
         is_like = parcel.readInt()
         viewers = parcel.readInt()
         comments = parcel.readInt()
+        who_can_comment = parcel.readInt()
+        is_follow_me = parcel.readInt()
         profile_pic = parcel.createStringArrayList() ?: ArrayList()
         user_id = parcel.readLong()
         username = parcel.readString() ?: ""
@@ -64,6 +68,8 @@ class VideoBean() : Parcelable {
         parcel.writeInt(is_like)
         parcel.writeInt(viewers)
         parcel.writeInt(comments)
+        parcel.writeInt(who_can_comment)
+        parcel.writeInt(is_follow_me)
         parcel.writeStringList(profile_pic)
         parcel.writeLong(user_id)
         parcel.writeString(username)

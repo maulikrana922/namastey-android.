@@ -141,6 +141,34 @@ class AccountSettingsNotificationFragment :
                 }
             }
         }
+
+        switchVideosFromAccountsYouFollow.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
+            when {
+                isChecked -> {
+                    jsonObject.addProperty(Constants.IS_VIDEO_SUGGEST, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
+                }
+                else -> {
+                    jsonObject.addProperty(Constants.IS_VIDEO_SUGGEST, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
+                }
+            }
+        }
+
+        switchDirectMessages.setOnCheckedChangeListener { buttonView, isChecked ->
+            jsonObject = JsonObject()
+            when {
+                isChecked -> {
+                    jsonObject.addProperty(Constants.IS_MESSAGE, 1)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
+                }
+                else -> {
+                    jsonObject.addProperty(Constants.IS_MESSAGE, 0)
+                    accountSettingsNotificationViewModel.onNotificationOnOff(jsonObject)
+                }
+            }
+        }
     }
 
     private fun setSelected() {
@@ -153,6 +181,10 @@ class AccountSettingsNotificationFragment :
         switchNewFollowers.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_NEW_FOLLOWERS) == 1
 
         switchVideosSuggestions.isChecked = sessionManager.getIntegerValue(Constants.KEY_IS_VIDEO_SUGGESTIONS) == 1
+
+        switchVideosFromAccountsYouFollow.isChecked = sessionManager.getIntegerValue(Constants.KEY_VIDEO_FROM_YOU_FOLLOW) == 1
+
+        switchDirectMessages.isChecked = sessionManager.getIntegerValue(Constants.KEY_NOTIFICATION_IS_MESSAGE) == 1
 
     }
 
@@ -204,64 +236,35 @@ class AccountSettingsNotificationFragment :
 
     override fun onSuccessResponse(notificationOnOffBean: NotificationOnOffBean) {
 
-//        if (notificationOnOffBean.is_mentions == 1) {
             sessionManager.setIntegerValue(
                 notificationOnOffBean.is_mentions,
                 Constants.KEY_IS_MENTIONS
             )
-//        } else {
-//            sessionManager.setIntegerValue(
-//                0,
-//                Constants.KEY_IS_MENTIONS
-//            )
-//        }
-
-//        if (notificationOnOffBean.is_matches == 1) {
             sessionManager.setIntegerValue(
                 notificationOnOffBean.is_matches, Constants.KEY_IS_MATCHES
             )
-//        } else {
-//            sessionManager.setIntegerValue(
-//                0,
-//                Constants.KEY_IS_MATCHES
-//            )
-//        }
-
-//        if (notificationOnOffBean.is_follow == 1) {
             sessionManager.setIntegerValue(
                 notificationOnOffBean.is_follow,
                 Constants.KEY_IS_NEW_FOLLOWERS
             )
-//        } else {
-//            sessionManager.setIntegerValue(
-//                0,
-//                Constants.KEY_IS_NEW_FOLLOWERS
-//            )
-//        }
-
-//        if (notificationOnOffBean.is_comment == 1) {
             sessionManager.setIntegerValue(
                 notificationOnOffBean.is_comment,
                 Constants.KEY_IS_COMMENTS
             )
-//        } else {
-//            sessionManager.setIntegerValue(
-//                0,
-//                Constants.KEY_IS_COMMENTS
-//            )
-//        }
 
-//        if (notificationOnOffBean.is_suggest == 1) {
             sessionManager.setIntegerValue(
                 notificationOnOffBean.is_suggest,
                 Constants.KEY_IS_VIDEO_SUGGESTIONS
             )
-//        } else {
-//            sessionManager.setIntegerValue(
-//                0,
-//                Constants.KEY_IS_VIDEO_SUGGESTIONS
-//            )
-//        }
+            sessionManager.setIntegerValue(
+                notificationOnOffBean.is_video_suggest,
+                Constants.KEY_VIDEO_FROM_YOU_FOLLOW
+            )
+            sessionManager.setIntegerValue(
+                notificationOnOffBean.is_message,
+                Constants.KEY_NOTIFICATION_IS_MESSAGE
+            )
+
     }
 
 }

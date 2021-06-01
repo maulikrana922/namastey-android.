@@ -162,18 +162,6 @@ class FeedAdapter(
 //                customPlayerView.reset()
 //                customPlayerView.id = View.generateViewId()
 //                customPlayerView.setVideoUri(Uri.parse(dashboardBean.video_url))
-                if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
-                    // GlideLib.loadImage(activity, mediaCoverImage, dashboardBean.cover_image_url)
-                    // Log.e("FeedAdapter", "CoverImageUrl: \t ${dashboardBean.cover_image_url}")
-
-                    /*val contentUri = Uri.parse(dashboardBean.cover_image_url)
-                    Log.e("FeedAdapter", "contentUri: \t $contentUri")
-                    GlideLib.loadImage(
-                        activity, mediaCoverImage,
-                        Utils.getPath( activity, contentUri)!!
-                    )*/
-
-                }
 
                 // Log.e("FeedAdapter", "VideoUrl: \t ${dashboardBean.video_url}")
 
@@ -182,15 +170,28 @@ class FeedAdapter(
                 }, 5000)
             }
 
-            if (dashboardBean.is_comment == 1) {
+            if (dashboardBean.who_can_comment == 2) {
                 tvCommentFeed.text = activity.getString(R.string.comments_off)
-            } else {
-                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                    .plus(activity.getString(R.string.comments))
+            }else{
+                if (dashboardBean.who_can_comment == 1) {
+                    if (dashboardBean.is_comment == 0 && dashboardBean.is_follow_me == 1) {
+                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                    }else{
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                    }
+                } else {
+                    if (dashboardBean.is_comment == 0) {
+                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                    }else{
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                    }
+                }
             }
 
             when {
-                dashboardBean.is_comment == 1 -> {
+                dashboardBean.is_comment == 1 || dashboardBean.who_can_comment == 2 -> {
                     ivCommentFirst.visibility = View.GONE
                     ivCommentSecond.visibility = View.GONE
                     ivCommentThird.visibility = View.GONE
@@ -310,7 +311,7 @@ class FeedAdapter(
             }
 
             // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
-            if (dashboardBean.is_comment == 0) {// && !sessionManager.isGuestUser()) {
+            if (dashboardBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {// && !sessionManager.isGuestUser()) {
                 tvCommentFeed.setOnClickListener {
                     onFeedItemClick.onCommentClick(position, dashboardBean.id)
                 }

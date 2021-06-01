@@ -869,6 +869,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             message.contains("Try our membership") -> {
                 openActivity(this@ChatActivity, MembershipActivity())
             }
+            message.contains("To visit profile click on username") -> {
+                val value = message.substring(message.indexOf("F30C45") + 7)
+//                Log.d(TAG,"Username : " + value)
+                val username = value.substring(0,value.indexOf("</font>"))
+//                Log.d(TAG,"Username : " + username)
+                val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
+                intent.putExtra(Constants.USERNAME, username)
+                openActivity(intent)
+            }
         }
     }
 }

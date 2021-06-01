@@ -18,10 +18,12 @@ class DashboardBean() : Parcelable {
     var cover_image_url: String = ""
     var video_url: String = ""
     var job: String = ""
-    var is_comment: Int = 0
+    var is_comment: Int = 0     // comment on/off when user post video
+    var who_can_comment: Int = 0 // Set from account setting to all videos
+    var is_follow_me: Int = 0      // This is for that video user follow login user or not
     var share_with: Int = 0
     var is_download: Int = 0
-    var comments: Int = 0
+    var comments: Int = 0       // Total number of comment
     var is_follow: Int = 0
     var is_like: Int = 0
     var profile_pic: ArrayList<String> = ArrayList()
@@ -49,6 +51,8 @@ class DashboardBean() : Parcelable {
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
         parcel.createStringArrayList() ?: ArrayList()
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
@@ -70,6 +74,8 @@ class DashboardBean() : Parcelable {
         parcel.writeString(video_url)
         parcel.writeString(job)
         parcel.writeInt(is_comment)
+        parcel.writeInt(who_can_comment)
+        parcel.writeInt(is_follow_me)
         parcel.writeInt(share_with)
         parcel.writeInt(is_download)
         parcel.writeInt(comments)

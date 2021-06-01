@@ -303,9 +303,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             intent.getParcelableArrayListExtra<VideoBean>(Constants.VIDEO_LIST) as ArrayList<VideoBean>
         mRecyclerView = findViewById(R.id.viewpagerAlbum)
 
-        Log.e("AlbumVideoActivity", "videoList: \t ${videoList.size}")
-
-
         val position = intent.getIntExtra("position", 0)
         /* albumVideoAdapter =
              AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
@@ -607,6 +604,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
         }
 
+        if (videoBean.is_download == 0){
+            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
+        }else{
+            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+        }
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -668,7 +672,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             ShareAppFragment.getInstance(
                 sessionManager.getUserId(),
                 videoBean.cover_image_url,
-                videoBean.video_url
+                videoBean.video_url,
+                "",
+                false
             ),
             Constants.SHARE_APP_FRAGMENT
         )

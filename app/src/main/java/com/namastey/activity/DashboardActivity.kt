@@ -72,13 +72,17 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
+import kotlinx.android.synthetic.main.dialog_bottom_post_comment.rvMentionList
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareFacebook
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareInstagram
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -485,6 +489,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             shareOther(dashboardBean)
         }
 
+        if (dashboardBean.is_download == 0){
+            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
+        }else{
+            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+        }
         //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -549,7 +560,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 sessionManager.getUserId(),
                 // dashboardBean?.cover_image_url,
                 coverImage,
-                dashboardBean.video_url
+                dashboardBean.video_url,
+                "",
+                false
             ),
             Constants.SHARE_APP_FRAGMENT
         )

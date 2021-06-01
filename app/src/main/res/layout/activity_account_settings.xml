@@ -48,9 +48,13 @@
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvHeader"
                 style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:text="@string/account_settings"
                 android:textSize="20sp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
                 app:layout_constraintStart_toEndOf="@id/ivAccountSettingBack"
                 app:layout_constraintTop_toTopOf="@id/ivAccountSettingBack"

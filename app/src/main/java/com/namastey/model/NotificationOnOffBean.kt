@@ -13,10 +13,14 @@ class NotificationOnOffBean() : Parcelable {
     var is_follow: Int = 0
     var is_comment: Int = 0
     var is_suggest: Int = 0
+    var is_message: Int = 0
+    var is_video_suggest: Int = 0
 
     constructor(parcel: Parcel) : this() {
         parcel.readInt() ?: 0
         parcel.readLong()
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
@@ -32,6 +36,8 @@ class NotificationOnOffBean() : Parcelable {
         parcel.writeInt(is_follow)
         parcel.writeInt(is_comment)
         parcel.writeInt(is_suggest)
+        parcel.writeInt(is_message)
+        parcel.writeInt(is_video_suggest)
     }
 
     override fun describeContents(): Int {

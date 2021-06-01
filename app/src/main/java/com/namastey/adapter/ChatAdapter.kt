@@ -165,6 +165,10 @@ class ChatAdapter(
             } else {
                 visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llMessageSend)
                 tvMessageSend.text = chatMessage.message
+                Utils.setHtmlText(tvMessageSend,chatMessage.message)
+                tvMessageSend.setOnClickListener {
+                    onChatMessageClick.onChatMessageClick(chatMessage.message, position)
+                }
                 tvMessageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
             }
 

@@ -1597,6 +1597,14 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
                 profileBean.notificationBean[0].is_suggest,
                 Constants.KEY_IS_VIDEO_SUGGESTIONS
             )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_video_suggest,
+                Constants.KEY_VIDEO_FROM_YOU_FOLLOW
+            )
+            sessionManager.setIntegerValue(
+                profileBean.notificationBean[0].is_message,
+                Constants.KEY_NOTIFICATION_IS_MESSAGE
+            )
 
             /*sessionManager.setIntegerValue(profileBean.safetyBean[0].is_download, Constants.KEY_IS_DOWNLOAD_VIDEO)
             sessionManager.setIntegerValue(profileBean.safetyBean[0].is_followers, Constants.KEY_IS_YOUR_FOLLOWERS)
