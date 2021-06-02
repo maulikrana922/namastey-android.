@@ -1,8 +1,13 @@
 package com.namastey.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
@@ -14,6 +19,8 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.SplashView.ISplashListener
 import com.namastey.viewModel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import javax.inject.Inject
 
 
@@ -88,6 +95,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             Log.e("SplashActivity", "onCreate In isMyServiceRunning")
             startService(mServiceIntent)
 
+//            printHashKey(this@SplashActivity)
            /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(mServiceIntent)
             } else {
@@ -102,4 +110,21 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 
         splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
     }
+
+//    fun printHashKey(pContext: Context) {
+//        try {
+//            val info: PackageInfo = pContext.getPackageManager()
+//                .getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES)
+//            for (signature in info.signatures) {
+//                val md: MessageDigest = MessageDigest.getInstance("SHA")
+//                md.update(signature.toByteArray())
+//                val hashKey = String(Base64.encode(md.digest(), 0))
+//                Log.i("FragmentActivity.TAG", "printHashKey() Hash Key: $hashKey")
+//            }
+//        } catch (e: NoSuchAlgorithmException) {
+//            Log.e("FragmentActivity.TAG", "printHashKey()", e)
+//        } catch (e: Exception) {
+//            Log.e("FragmentActivity.TAG", "printHashKey()", e)
+//        }
+//    }
 }

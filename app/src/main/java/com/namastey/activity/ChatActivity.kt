@@ -214,88 +214,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 }
                             }
                         }
-//                        Log.d("Success", "DocumentSnapshot data: ${document.data}")
-//                        val chatMessage = document.toObject(ChatMessage::class.java)
-
-//                        if (chatMessage != null) {
-//                            unreadCount = chatMessage.unreadCount
-//                            if (chatMessage.sender != sessionManager.getUserId()) {
-//                                docRef.update(
-//                                        "read", true,
-//                                        "unreadCount", 0
-//                                    )
-//                            }
-//                        }
 
                     } else {
                         Log.d("TAG", "No such document")
                     }
                 }
-//                .addOnFailureListener { exception ->
-//                    Log.d("TAG", "get failed with ", exception)
-//                }
-//            This part for isRead message or not
 
-//            myChatRef.child(chatId).addValueEventListener(object : ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    // This method is called once with the initial value and again
-//                    // whenever data at this location is updated.
-//                    chatMsgList.clear()
-//
-//                    for (snapshot in dataSnapshot.children) {
-//                        val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
-////                        Log.d("Firebase :", "Value is: ${chatMessage.message}")
-//
-//                        if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
-//                            chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
-//                        ) {
-//                            chatMsgList.add(chatMessage)
-//                        }
-//                    }
-//                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
-//                        if (isFromProfile)
-//                            chatViewModel.startChat(matchesListBean.id, 1)
-//                        else if (!isFromMessage)
-//                            chatViewModel.startChat(matchesListBean.id, 1)
-//                    }
-//                    chatViewModel.setIsLoading(false)
-//                    chatAdapter =
-//                        ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList)
-//                    rvChat.adapter = chatAdapter
-//
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    // Failed to read value
-//                    Log.w("Firebase :", "Failed to read value.", error.toException())
-//                }
-//            })
-
-//            Firestore part
                 chatAdapter =
                     ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList, this)
                 rvChat.adapter = chatAdapter
-
-//            val messageCollection = db.collection(Constants.FirebaseConstant.MESSAGES)
-//                .document(chatId).collection(Constants.FirebaseConstant.CHATS)
-//            val query =
-//                messageCollection
-//                    .orderBy("timestamp", Query.Direction.DESCENDING).limit(pageLimit)
-//            messageCollection.addSnapshotListener { snapshot, e ->
-//                if (e != null) {
-//                    Log.w(TAG, "Listen failed.", e)
-//                    return@addSnapshotListener
-//                }
-//
-//                if (snapshot != null) {
-////                    Log.d(TAG, "Current data: ${snapshot.data}")
-//                    val chatMessage = snapshot.toObject(ChatMessage::class.java)
-//                    chatMsgList.add(chatMessage!!)
-//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
-//                } else {
-//                    Log.d(TAG, "Current data: null")
-//                }
-//            }
 
                 db.collection(Constants.FirebaseConstant.MESSAGES)
                     .document(chatId)
@@ -306,31 +233,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             return@addSnapshotListener
                         }
                         chatMsgList.clear()
-//
-//                    for (dc in messageSnapshot.documentChanges) {
-//                        when (dc.type) {
-//                            DocumentChange.Type.ADDED -> {
-//                                Log.d(TAG, "New city: ${dc.document.data}")
-//                                val chatMessage = dc.document.toObject(ChatMessage::class.java)
-//
-//                                if (chatMessage != null) {
-//                                    if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
-//                                        chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
-//                                    ) {
-//                                        chatMsgList.add(chatMessage)
-//                                    }
-//                                }
-//                            }
-//                            DocumentChange.Type.MODIFIED -> {
-//                                Log.d(TAG, "Modified city: ${dc.document.data}")
-//                            }
-//                            DocumentChange.Type.REMOVED -> Log.d(
-//                                TAG,
-//                                "Removed city: ${dc.document.data}"
-//                            )
-//                        }
-//                    }
-//                    chatAdapter.notifyDataSetChanged()
+
                         for (messageDocument in messageSnapshot.documents) {
                             val chatMessage = messageDocument.toObject(ChatMessage::class.java)
 
@@ -342,12 +245,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 }
                             }
                         }
-//                    if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
-//                        if (isFromProfile)
-//                            chatViewModel.startChat(matchesListBean.id, 1)
-//                        else if (!isFromMessage)
-//                            chatViewModel.startChat(matchesListBean.id, 1)
-//                    }
                         chatViewModel.setIsLoading(false)
 
                         chatMsgList.sortBy { it.timestamp }
@@ -355,98 +252,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                         rvChat.smoothScrollToPosition(chatAdapter.itemCount)
 
                     }
-
-//            query.get()
-//                .addOnCompleteListener { task: Task<QuerySnapshot> ->
-//                    if (task.isSuccessful) {
-//                        chatMsgList.clear()
-//                        for (messageDocument in task.result) {
-//                            val chatMessage = messageDocument.toObject(ChatMessage::class.java)
-//
-//                            if (chatMessage.receiver == sessionManager.getUserId() && chatMessage.sender == matchesListBean.id ||
-//                                chatMessage.receiver == matchesListBean.id && chatMessage.sender == sessionManager.getUserId()
-//                            ) {
-//                                chatMsgList.add(chatMessage)
-//                            }
-//
-//                        }
-//                        if (chatMsgList.size >= 1) {   // Call api for start chat if any message share bw both
-//                            if (isFromProfile)
-//                                chatViewModel.startChat(matchesListBean.id, 1)
-//                            else if (!isFromMessage)
-//                                chatViewModel.startChat(matchesListBean.id, 1)
-//                        }
-//                        chatViewModel.setIsLoading(false)
-//
-//                        chatMsgList.sortBy { it.timestamp }
-//                        chatAdapter.notifyDataSetChanged()
-//
-//                        if (task.result.documents.size >= 1) {
-//                            lastVisible = task.result.documents[task.result.size() - 1]
-//                        }
-//
-//                        val onScrollListener: RecyclerView.OnScrollListener =
-//                            object : RecyclerView.OnScrollListener() {
-//                                override fun onScrollStateChanged(
-//                                    recyclerView: RecyclerView,
-//                                    newState: Int
-//                                ) {
-//                                    super.onScrollStateChanged(recyclerView, newState)
-//                                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                                        isScrolling = true
-//                                    }
-//                                }
-//
-//                                override fun onScrolled(
-//                                    recyclerView: RecyclerView,
-//                                    dx: Int,
-//                                    dy: Int
-//                                ) {
-//                                    super.onScrolled(recyclerView, dx, dy)
-//                                    val linearLayoutManager: LinearLayoutManager =
-//                                        recyclerView.layoutManager as LinearLayoutManager
-//                                    val firstVisibleItemPosition: Int =
-//                                        linearLayoutManager.findFirstVisibleItemPosition()
-//
-//                                    val visibleItemCount: Int = linearLayoutManager.childCount
-//                                    val totalItemCount: Int = linearLayoutManager.itemCount
-//                                    if (isScrolling && firstVisibleItemPosition + visibleItemCount == totalItemCount && !isLastItemReached) {
-//                                        isScrolling = false
-//
-//                                        if (::lastVisible.isInitialized) {
-//                                            val nextQuery: Query =
-//                                                messageCollection.orderBy(
-//                                                    "timestamp", Query.Direction.DESCENDING
-//                                                ).startAfter(lastVisible).limit(pageLimit)
-//
-//                                            nextQuery.get()
-//                                                .addOnCompleteListener { task: Task<QuerySnapshot> ->
-//                                                    if (task.isSuccessful) {
-//                                                        for (d in task.result) {
-//                                                            val chatMessage: ChatMessage =
-//                                                                d.toObject(ChatMessage::class.java)
-//                                                            chatMsgList.add(0,chatMessage)
-//                                                        }
-//                                                        chatAdapter.notifyDataSetChanged()
-//                                                        if (task.result.size() >= 1)
-//                                                            lastVisible =
-//                                                                task.result.documents[task.result.size() - 1]
-//
-//                                                        if (task.result.size() < pageLimit) {
-//                                                            isLastItemReached = true
-//                                                        }
-//                                                    }
-//                                                }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        rvChat.addOnScrollListener(onScrollListener)
-//                    }
-//                }
-
-//            Firestore part
-
 
                 if (matchesListBean.profile_pic != "") {
                     GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)

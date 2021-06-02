@@ -742,7 +742,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                     AuthenticationRequest.Builder(
                         getString(R.string.spotify_client_id),
                         AuthenticationResponse.Type.TOKEN,
-                        getString(R.string.spotify_redirect_uri)
+                        Constants.SPOTIFY_REDIRECT_URL
                     )
 
                 builder.setScopes(arrayOf("user-read-private", "streaming"))

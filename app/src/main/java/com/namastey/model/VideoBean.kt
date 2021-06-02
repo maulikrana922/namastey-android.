@@ -21,6 +21,7 @@ class VideoBean() : Parcelable {
     var comments = 0
     var who_can_comment: Int = 0 // Set from account setting to all videos
     var is_follow_me: Int = 0      // This is for that video user follow login user or not
+    var is_follow: Int = 0      // This is for login user following video user or not
     var profile_pic: ArrayList<String> = ArrayList()
     var user_id: Long = 0
     var username: String = ""
@@ -45,6 +46,7 @@ class VideoBean() : Parcelable {
         comments = parcel.readInt()
         who_can_comment = parcel.readInt()
         is_follow_me = parcel.readInt()
+        is_follow = parcel.readInt()
         profile_pic = parcel.createStringArrayList() ?: ArrayList()
         user_id = parcel.readLong()
         username = parcel.readString() ?: ""
@@ -70,6 +72,7 @@ class VideoBean() : Parcelable {
         parcel.writeInt(comments)
         parcel.writeInt(who_can_comment)
         parcel.writeInt(is_follow_me)
+        parcel.writeInt(is_follow)
         parcel.writeStringList(profile_pic)
         parcel.writeLong(user_id)
         parcel.writeString(username)

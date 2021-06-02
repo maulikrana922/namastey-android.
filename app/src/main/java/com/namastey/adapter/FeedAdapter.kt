@@ -3,7 +3,6 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +18,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
@@ -174,9 +172,10 @@ class FeedAdapter(
                 tvCommentFeed.text = activity.getString(R.string.comments_off)
             }else{
                 if (dashboardBean.who_can_comment == 1) {
-                    if (dashboardBean.is_comment == 0 && dashboardBean.is_follow_me == 1) {
+                    if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
                         tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
                             .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(dashboardBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
                     }else{
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
@@ -184,48 +183,13 @@ class FeedAdapter(
                     if (dashboardBean.is_comment == 0) {
                         tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
                             .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(dashboardBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
                     }else{
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
                 }
             }
 
-            when {
-                dashboardBean.is_comment == 1 || dashboardBean.who_can_comment == 2 -> {
-                    ivCommentFirst.visibility = View.GONE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                }
-                dashboardBean.profile_pic.size >= 3 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.VISIBLE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, dashboardBean.profile_pic[1])
-                    GlideLib.loadImage(activity, ivCommentThird, dashboardBean.profile_pic[2])
-                }
-                dashboardBean.profile_pic.size == 2 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.GONE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, dashboardBean.profile_pic[1])
-                }
-                dashboardBean.profile_pic.size == 1 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                    GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
-
-                }
-                else -> {
-                    ivCommentFirst.visibility = View.GONE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                }
-            }
             // if (dashboardBean.casual_name != "")
             tvFeedName.text = dashboardBean.casual_name
 
@@ -389,6 +353,49 @@ class FeedAdapter(
         }
     }
 
+    private fun showCommentProfilePic(
+        dashboardBean: DashboardBean,
+        ivCommentFirst: ImageView,
+        ivCommentSecond: ImageView,
+        ivCommentThird: ImageView
+    ) {
+        when {
+            dashboardBean.is_comment == 1 || dashboardBean.who_can_comment == 2 -> {
+                ivCommentFirst.visibility = View.GONE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+            }
+            dashboardBean.profile_pic.size >= 3 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.VISIBLE
+                ivCommentThird.visibility = View.VISIBLE
+
+                GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
+                GlideLib.loadImage(activity, ivCommentSecond, dashboardBean.profile_pic[1])
+                GlideLib.loadImage(activity, ivCommentThird, dashboardBean.profile_pic[2])
+            }
+            dashboardBean.profile_pic.size == 2 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.VISIBLE
+                ivCommentThird.visibility = View.GONE
+
+                GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
+                GlideLib.loadImage(activity, ivCommentSecond, dashboardBean.profile_pic[1])
+            }
+            dashboardBean.profile_pic.size == 1 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+                GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
+
+            }
+            else -> {
+                ivCommentFirst.visibility = View.GONE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+            }
+        }
+    }
     private fun boostAnimationProgress(itemView: View) {
         val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
         itemView.circularSeekBar.setOnSeekBarChangeListener(object :

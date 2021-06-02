@@ -169,9 +169,10 @@ class AlbumVideoAdapter(
                 tvCommentFeed.text = activity.getString(R.string.comments_off)
             } else {
                 if (videoBean.who_can_comment == 1) {
-                    if (videoBean.is_comment == 0 && videoBean.is_follow_me == 1) {
+                    if (videoBean.is_comment == 0 && videoBean.is_follow == 1) {
                         tvCommentFeed.text = videoBean.comments.toString().plus(" ")
                             .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(videoBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
@@ -179,46 +180,10 @@ class AlbumVideoAdapter(
                     if (videoBean.is_comment == 0) {
                         tvCommentFeed.text = videoBean.comments.toString().plus(" ")
                             .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(videoBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
-                }
-            }
-
-            when {
-                videoBean.is_comment == 1 || videoBean.who_can_comment == 2 -> {
-                    ivCommentFirst.visibility = View.GONE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                }
-                videoBean.profile_pic.size >= 3 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.VISIBLE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                    GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
-                }
-                videoBean.profile_pic.size == 2 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.VISIBLE
-                    ivCommentThird.visibility = View.GONE
-
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-                    GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
-                }
-                videoBean.profile_pic.size == 1 -> {
-                    ivCommentFirst.visibility = View.VISIBLE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
-                    GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
-
-                }
-                else -> {
-                    ivCommentFirst.visibility = View.GONE
-                    ivCommentSecond.visibility = View.GONE
-                    ivCommentThird.visibility = View.GONE
                 }
             }
 
@@ -263,6 +228,50 @@ class AlbumVideoAdapter(
                 onVideoClick.onShareClick(position, videoBean)
             }
 
+        }
+
+    }
+    private fun showCommentProfilePic(
+        videoBean: VideoBean,
+        ivCommentFirst: ImageView,
+        ivCommentSecond: ImageView,
+        ivCommentThird: ImageView
+    ) {
+        when {
+            videoBean.is_comment == 1 || videoBean.who_can_comment == 2 -> {
+                ivCommentFirst.visibility = View.GONE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+            }
+            videoBean.profile_pic.size >= 3 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.VISIBLE
+                ivCommentThird.visibility = View.VISIBLE
+
+                GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+                GlideLib.loadImage(activity, ivCommentThird, videoBean.profile_pic[2])
+            }
+            videoBean.profile_pic.size == 2 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.VISIBLE
+                ivCommentThird.visibility = View.GONE
+
+                GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+                GlideLib.loadImage(activity, ivCommentSecond, videoBean.profile_pic[1])
+            }
+            videoBean.profile_pic.size == 1 -> {
+                ivCommentFirst.visibility = View.VISIBLE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+                GlideLib.loadImage(activity, ivCommentFirst, videoBean.profile_pic[0])
+
+            }
+            else -> {
+                ivCommentFirst.visibility = View.GONE
+                ivCommentSecond.visibility = View.GONE
+                ivCommentThird.visibility = View.GONE
+            }
         }
 
     }
