@@ -48,7 +48,7 @@
     <string name="tv_term_condition_message">Terms of service | Privacy Policy</string>
     <string name="tv_terms">Terms of service</string>
     <string name="tv_policy">Privacy Policy</string>
-    <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use-1</string>
+    <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use</string>
     <string name="tv_policy_link">https://www.namasteyapp.com/privacy-policy</string>
     <string name="tv_billing_link">https://www.namasteyapp.com/billingterms</string>
 
@@ -353,6 +353,7 @@
     <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="billing_terms">Billing terms</string>
+    <string name="contact_us_email">contact@namasteyapp.com</string>
     <string name="new_followers">New Followers</string>
     <string name="mentions">Mentions</string>
     <string name="direct_messages">Direct messages</string>

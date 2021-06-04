@@ -2421,12 +2421,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedList[position] = feedItems
         feedAdapter.notifyItemChanged(position)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (position < feedList.size)
-            // viewpagerFeed.currentItem = position + 1
-                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
-
-        }, 1000)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            if (position < feedList.size)
+//            // viewpagerFeed.currentItem = position + 1
+//                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
+//
+//        }, 1000)
 
         // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
     }

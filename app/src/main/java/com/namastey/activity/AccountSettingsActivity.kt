@@ -121,4 +121,10 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
 
         }
     }
+
+    fun onClickInviteFriend(view: View) {
+        if (getOnInteractionWithFragment() != null) {
+            getOnInteractionWithFragment()!!.onClickOfFragmentView(view)
+        }
+    }
 }

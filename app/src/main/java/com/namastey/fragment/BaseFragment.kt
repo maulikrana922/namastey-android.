@@ -367,6 +367,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(), BaseView {
             .commitAllowingStateLoss()
     }
 
+    fun addFragmentFindFriend(fragment: Fragment, tag: String) {
+        activity!!.supportFragmentManager.beginTransaction().addToBackStack(tag)
+            .replace(R.id.flContainerFindFriend, fragment, tag)
+            .commitAllowingStateLoss()
+    }
+
     fun addFragmentChild(childFragmentManager: FragmentManager, fragment: Fragment, tag: String) {
         childFragmentManager.beginTransaction().addToBackStack(tag)
             .add(R.id.flContainer, fragment, tag)

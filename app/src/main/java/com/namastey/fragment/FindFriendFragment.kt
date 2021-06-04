@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.activity.AccountSettingsActivity
 import com.namastey.activity.FollowingFollowersActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFindFriendBinding
@@ -30,6 +31,7 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
 
     @Inject
     lateinit var sessionManager: SessionManager
+    private var fromSetting: Boolean = false
 
     private lateinit var fragmentFindFriendBinding: FragmentFindFriendBinding
     private lateinit var findFriendViewModel: FindFriendViewModel
@@ -48,9 +50,11 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
     override fun getBindingVariable() = BR.viewModel
 
     companion object {
-        fun getInstance() =
+        fun getInstance(fromSetting: Boolean) =
             FindFriendFragment().apply {
-
+                arguments = Bundle().apply {
+                    putBoolean("fromSetting", fromSetting)
+                }
             }
     }
 
@@ -77,7 +81,13 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
     }
 
     private fun initUI() {
-        (activity as FollowingFollowersActivity).setListenerOfInteractionWithFragment(this)
+
+        fromSetting = arguments!!.getBoolean("fromSetting", false)
+
+        if (fromSetting)
+            (activity as AccountSettingsActivity).setListenerOfInteractionWithFragment(this)
+        else
+            (activity as FollowingFollowersActivity).setListenerOfInteractionWithFragment(this)
 
     }
 
@@ -87,11 +97,19 @@ class FindFriendFragment : BaseFragment<FragmentFindFriendBinding>(), FindFriend
                 fragmentManager!!.popBackStack()
             }
             ivInviteFriend, tvInviteFriend -> {
-                (requireActivity() as FollowingFollowersActivity).addFragment(
-                    AddFriendFragment.getInstance(
-                    ),
-                    Constants.ADD_FRIEND_FRAGMENT
-                )
+                if (fromSetting){
+                    addFragmentFindFriend(
+                        AddFriendFragment.getInstance(
+                        ),
+                        Constants.ADD_FRIEND_FRAGMENT
+                    )
+                }else {
+                    addFragment(
+                        AddFriendFragment.getInstance(
+                        ),
+                        Constants.ADD_FRIEND_FRAGMENT
+                    )
+                }
             }
             ivInviteSMS, tvInviteSMS -> {
                 val sendIntent = Intent(Intent.ACTION_VIEW)

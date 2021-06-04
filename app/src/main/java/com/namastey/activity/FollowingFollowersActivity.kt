@@ -218,7 +218,7 @@ class FollowingFollowersActivity : BaseActivity<ActivityFollowingFollowersBindin
     fun onClickFindFriend(view: View) {
         Utils.hideKeyboard(this@FollowingFollowersActivity)
         addFragment(
-            FindFriendFragment.getInstance(
+            FindFriendFragment.getInstance(false
             ),
             Constants.FIND_FRIEND_FRAGMENT
         )

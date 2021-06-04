@@ -105,7 +105,33 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
                 Constants.SAFETY_FRAGMENT
             )
         }
+        tvInviteFriends.setOnClickListener {
+            addFragmentFindFriend(
+                FindFriendFragment.getInstance(true
+                ),
+                Constants.FIND_FRIEND_FRAGMENT
+            )
+        }
+        tvContactUs.setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_SEND)
+            intent.type = "plain/text"
+            intent.putExtra(
+                Intent.EXTRA_EMAIL,
+                arrayOf(getString(R.string.contact_us_email))
+            )
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Namastey Contact us")
+            intent.putExtra(Intent.EXTRA_TEXT, "Hello Namastey Team")
+            startActivity(Intent.createChooser(intent, ""))
+        }
 
+        tvLeaveFeedback.setOnClickListener {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context!!.packageName}")))
+            } catch (e: ActivityNotFoundException) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${context!!.packageName}")))
+            }
+        }
         tvPersonalizeData.setOnClickListener {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.personalize_data))
             (activity as AccountSettingsActivity).addFragment(

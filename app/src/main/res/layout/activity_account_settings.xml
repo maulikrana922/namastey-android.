@@ -12,7 +12,9 @@
             name="viewModel"
             type="com.namastey.viewModel.AccountSettingsViewModel" />
     </data>
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -109,4 +111,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/flContainerFindFriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="horizontal"/>
+
+</FrameLayout>
 </layout>

@@ -78,7 +78,7 @@ class MembershipDialogSliderAdapter(
                             )
                         )
                         view.tvText2.text =
-                            timer.plus(" ").plus(membershipList[position].description)
+                            timer.plus(" \n").plus(membershipList[position].description)
 
                         Log.e("DashboardActivity", "timer: \t $timer ")
                     }
