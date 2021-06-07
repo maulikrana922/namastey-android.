@@ -26,9 +26,9 @@ public class AuthenticationDialog extends Dialog {
 
         WebView webView = findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setDomStorageEnabled(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);
+//        webView.getSettings().setUseWideViewPort(true);
+//        webView.getSettings().setDomStorageEnabled(true);
         webView.loadUrl(request_url);
         webView.setWebViewClient(webViewClient);
     }
@@ -37,7 +37,10 @@ public class AuthenticationDialog extends Dialog {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.startsWith(redirect_url)) {
+            if (url.startsWith("https://httpstat.us/")) {
+                String code = url.toString().substring(url.toString().indexOf("code") + 5);
+                String token = code.substring(0,code.length() -2);
+                listener.onTokenReceived(token);
                 AuthenticationDialog.this.dismiss();
                 return true;
             }
@@ -50,8 +53,8 @@ public class AuthenticationDialog extends Dialog {
             if (url.contains("https://l.instagram.com/")) {
                 Uri uri = Uri.EMPTY.parse(url);
 //                String code = uri.getEncodedFragment();
-                String code = uri.toString().substring(uri.toString().indexOf("code") + 7);
-                listener.onTokenReceived(code);
+//                String code = uri.toString().substring(uri.toString().indexOf("code") + 7);
+//                            listener.onTokenReceived(code);
             }
         }
     };
@@ -65,6 +68,8 @@ public class AuthenticationDialog extends Dialog {
                 context.getResources().getString(R.string.client_id) +
                 "&redirect_uri=" + redirect_url +
                 "&response_type=code&scope=user_profile";
+
+//        this.request_url = "https://api.instagram.com/oauth/authorize?client_id=943839639712239&redirect_uri=https://httpstat.us/200&scope=user_profile,user_media&response_type=code";
     }
 
 }

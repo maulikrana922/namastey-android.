@@ -25,6 +25,7 @@ import com.namastey.customViews.AuthenticationDialog
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAddLinksBinding
 import com.namastey.listeners.AuthenticationListener
+import com.namastey.model.InstagramData
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
@@ -110,7 +111,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         tvAddLinkSave.setOnClickListener(this)
 //        tvFacebook.setOnClickListener(this)
         edtFacebook.setOnClickListener(this)
-//        edtInstagram.setOnClickListener(this)
+        edtInstagram.setOnClickListener(this)
         edtSpotify.setOnClickListener(this)
         edtTwitter.setOnClickListener(this)
 
@@ -731,9 +732,9 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 connectFacebook()
                 //getProfileFromFB()
             }
-//            edtInstagram ->{
-//                connectToInstagram()
-//            }
+            edtInstagram ->{
+                connectToInstagram()
+            }
             edtTwitter -> {
                 twitterLogin()
             }
@@ -776,7 +777,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
     private fun connectToInstagram() {
         var instagramUrl = "https://api.instagram.com/oauth/authorize\n" +
                 "  ?client_id="+ getString(R.string.instagram_app_id) +"\n" +
-                "  &redirect_uri=https://www.namasteyapp.com/\n" +
+                "  &redirect_uri=https://httpstat.us/200\n" +
                 "  &scope=user_profile\n" +
                 "  &response_type=code"
 //        profileInterestViewModel.getInstagram(instagramUrl)
@@ -843,74 +844,21 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         edtSpotify.setText(spotifyUrl)
     }
 
+    override fun onSuccessInstagram(instagramData: InstagramData) {
+        val instagramLink = "http://instagram.com/_u/".plus(instagramData.username)
+        edtInstagram.setText(instagramLink)
+    }
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()
     }
     private fun getUserInfoByAccessToken(token: String) {
-        val url = getString(R.string.get_user_info_url).plus(token)
-//        run(url)
-        val url1 = "https://graph.instagram.com/me?fields=id,username&access_token=".plus(token)
-
         val redirect_url = getString(R.string.callback_url)
-        var request_url = getString(R.string.base_url) +
-                "oauth/access_token/?client_id=" +
-                context!!.resources.getString(R.string.client_id) +
-                "&client_secret=" + getString(R.string.instagram_client_secret) +
-                "&redirect_uri=" + redirect_url +
-                "&grant_type=authorization_code&code=".plus(token)
-//        profileInterestViewModel.getInstagram(request_url)
+
         val apidata = "https://api.instagram.com/oauth/access_token"
         profileInterestViewModel.getInstagramToken(apidata,getString(R.string.client_id),
             getString(R.string.instagram_client_secret), token, "authorization_code",
                 redirect_url)
-    }
-    fun run(url: String) {
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        client.newCall(request).enqueue(object  : com.squareup.okhttp.Callback{
-            override fun onFailure(request: Request?, e: IOException?) {
-                Log.d("Instagram Errr :", e!!.printStackTrace().toString())
-
-            }
-            override fun onResponse(response: Response){
-                println(response.body()?.string())
-                Log.d("Instagram Response :",response.body().toString())
-                if (response.body() != null) {
-                    try {
-                        val jsonObject = JSONObject(response.body().toString())
-                        val jsonData: JSONObject = jsonObject.getJSONObject("data")
-                        if (jsonData.has("id")) {
-                            appPreferences!!.putString(
-                                AppPreferences.USER_ID,
-                                jsonData.getString("id")
-                            )
-                            appPreferences!!.putString(
-                                AppPreferences.USER_NAME,
-                                jsonData.getString("username")
-                            )
-                            appPreferences!!.putString(
-                                AppPreferences.PROFILE_PIC,
-                                jsonData.getString("profile_picture")
-                            )
-
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                } else {
-                    val toast = Toast.makeText(
-                        activity,
-                        "Login error!",
-                        Toast.LENGTH_LONG
-                    )
-                    toast.show()
-                }
-            }
-
-        })
     }
 
     override fun onTokenReceived(auth_token: String?) {

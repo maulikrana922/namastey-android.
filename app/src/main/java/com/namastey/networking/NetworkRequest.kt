@@ -248,7 +248,12 @@ interface NetworkRequest {
         @Header("Authorization") authHeader: String
     ): Deferred<AppResponseSpotify<SpotifyBean>>
 
-    @POST     // Call Spotify base url
+    @GET     // Call instagram long token base url
+    fun requestToGetInstagramLongTokenAsync(
+        @Url baseUrl: String
+    ): Deferred<InstagramData>
+
+    @POST     // Call instagram base url
     fun requestToGetInstagramAsync(
         @Url baseUrl: String
     ): Deferred<Any>
@@ -262,7 +267,7 @@ interface NetworkRequest {
         @Field("code") token: String,
         @Field("grant_type") authorizationCode: String,
         @Field("redirect_uri") redirectUrl: String
-    ): Deferred<Any>
+    ): Deferred<InstagramData>
 
     @GET(Constants.GET_TREDING_VIDEOS)
     fun requestToGetTredingListAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>

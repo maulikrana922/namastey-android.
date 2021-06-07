@@ -215,6 +215,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     matchesListBean.username = jsonObject.getString("username")
                     matchesListBean.profile_pic = jsonObject.getString("profile_pic")
                     matchesListBean.id = jsonObject.getLong("user_id")
+                    if (matchesListBean.id == 0L) {
+                        intent.putExtra("isFromAdmin", true)
+                    } else {
+                        intent.putExtra("isFromAdmin", false)
+                    }
                     matchesListBean.is_match = jsonObject.getInt("is_match")
                     intent.putExtra("isFromMessage", true)
                     intent.putExtra("chatNotification", true)

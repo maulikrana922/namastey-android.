@@ -308,14 +308,14 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
              AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
          viewpagerAlbum.adapter = albumVideoAdapter*/
 
-        getVideoUrl()
+        getVideoUrl(position)
         mLayoutManager!!.scrollToPositionWithOffset(position, 0);
 
         //viewpagerAlbum.currentItem = position
 
     }
 
-    private fun getVideoUrl() {
+    private fun getVideoUrl(position: Int) {
         /* mRecyclerView!!.layoutManager =
              LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
         mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
@@ -335,7 +335,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         albumVideoAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false, position) }
             firstTime = false
         }
     }

@@ -17,6 +17,7 @@ import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileInterestBinding
 import com.namastey.fragment.AddLinksFragment
+import com.namastey.model.InstagramData
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
@@ -279,6 +280,9 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
     override fun onSuccessSpotify(sporifyUrl: String) {
     }
 
+    override fun onSuccessInstagram(instagramData: InstagramData) {
+
+    }
     override fun onDestroy() {
         profileInterestViewModel.onDestroy()
         super.onDestroy()

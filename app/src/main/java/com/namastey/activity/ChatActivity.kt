@@ -113,8 +113,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
 //            Log.e("ChatActivity", "matchesListBean username\t  ${matchesListBean.username}")
-            val isFromAdmin = intent.getBooleanExtra("isFromAdmin", false)
-            Log.e("ChatActivity", "isFromAdmin: $isFromAdmin")
+//            val isFromAdmin = intent.getBooleanExtra("isFromAdmin", false)
+//            Log.e("ChatActivity", "isFromAdmin: $isFromAdmin")
             if (intent.hasExtra("isFromAdmin") && intent.getBooleanExtra("isFromAdmin", false)) {
                 if (matchesListBean.profile_pic != "") {
                     GlideLib.loadImage(this, ivProfileUser, matchesListBean.profile_pic)

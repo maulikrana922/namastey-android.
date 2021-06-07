@@ -162,9 +162,9 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                     // There's a special case when the end of the list has been reached.
                     // Need to handle that with this bit of logic
                     if (!recyclerView.canScrollVertically(1)) {
-                        playVideo(true,false);
+                        playVideo(true,false, -1);
                     } else {
-                        playVideo(false,false);
+                        playVideo(false,false, -1);
                     }
                 }
             }
@@ -272,7 +272,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
         });
     }
 
-    public void playVideo(boolean isEndOfList, boolean isFirstTime) {
+    public void playVideo(boolean isEndOfList, boolean isFirstTime, int nextPosition) {
 
         int targetPosition;
 
@@ -313,6 +313,8 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             }
         }
 
+        if (nextPosition != -1)
+            targetPosition = nextPosition;
        // Log.d(TAG, "playVideo: target position: " + targetPosition);
 
         // video is already playing so return
@@ -490,7 +492,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     public void onRestartPlayer() {
         if (videoPlayer != null) {
             //videoPlayer.setPlayWhenReady(true);
-            playVideo(false,true);
+            playVideo(false,true, -1);
         }
     }
 

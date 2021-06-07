@@ -295,6 +295,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
                 .await()
         }
 
+    suspend fun requestToGetInstagramTokenLink(url: String): InstagramData =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToGetInstagramLongTokenAsync(url)
+                .await()
+        }
+
     suspend fun requestToGetInstagram(baseurl: String): Any =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetInstagramAsync(baseurl)
@@ -308,7 +314,7 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         token: String,
         authorizationCode: String,
         redirectUrl: String
-    ): Any =
+    ): InstagramData =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetInstagramTokenAsync(apidata,clientId,clientSecret,token,
             authorizationCode,redirectUrl)

@@ -1358,7 +1358,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false,0) }
             firstTime = false
         }
         mbNext = dashboardList.size != 0
@@ -2422,10 +2422,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedAdapter.notifyItemChanged(position)
 
 //        Handler(Looper.getMainLooper()).postDelayed({
-//            if (position < feedList.size)
+            if (position < feedList.size) {
 //            // viewpagerFeed.currentItem = position + 1
-//                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
-//
+                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
+                val nextPosition = position + 1
+                mLayoutManager!!.scrollToPositionWithOffset(nextPosition,0)
+                mRecyclerView!!.playVideo(false,false,nextPosition)
+            }
 //        }, 1000)
 
         // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
