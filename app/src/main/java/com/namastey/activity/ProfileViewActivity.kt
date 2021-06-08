@@ -228,13 +228,45 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                 val intent =
                                     packageManager.getLaunchIntentForPackage("com.facebook.katana")
                                 if (intent != null) {
-                                    startActivity(
-                                        Intent(
-                                            Intent.ACTION_VIEW,
-                                            Uri.parse("fb://profile/".plus(socialBean.link))
-//                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+//                                    startActivity(
+//                                        Intent(
+//                                            Intent.ACTION_VIEW,
+//                                            Uri.parse("fb://profile/".plus(socialBean.link))
+////                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+//                                        )
+//                                    )
+                                    try {
+                                        val versionCode = packageManager.getPackageInfo(
+                                            "com.facebook.katana",
+                                            0
+                                        ).versionCode
+                                        if (versionCode >= 3002850) {
+                                            val uri =
+                                                Uri.parse("fb://facewebmodal/f?href=${socialBean.link}")
+                                            startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    uri
+                                                )
+                                            )
+                                        } else {
+                                            // open the Facebook app using the old method (fb://profile/id or fb://page/id)
+                                            startActivity(
+                                                Intent(
+                                                    Intent.ACTION_VIEW,
+                                                    Uri.parse("fb://page/${socialBean.link}")
+                                                )
+                                            )
+                                        }
+                                    } catch (e: PackageManager.NameNotFoundException) {
+                                        // Facebook is not installed. Open the browser
+                                        startActivity(
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(socialBean.link)
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             } else if (profileBean.user_profile_type == 1) {
                                 //Do Nothing
