@@ -454,6 +454,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 null
             )
         )
+
+        if (dashboardBean.is_share == 0){
+            bottomSheetDialogShare.svShareOption.alpha = 0.3f
+        }
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
@@ -462,33 +466,34 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             bottomSheetDialogShare.dismiss()
         }
 
-        // Share on Twitter app if install otherwise web link
-        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
-            postShare(dashboardBean.id.toInt())
-            shareWhatsApp(dashboardBean)
+        if (dashboardBean.is_share == 1) {
+            // Share on Twitter app if install otherwise web link
+            bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+                postShare(dashboardBean.id.toInt())
+                shareWhatsApp(dashboardBean)
+            }
+            bottomSheetDialogShare.ivShareApp.setOnClickListener {
+                bottomSheetDialogShare.dismiss()
+                postShare(dashboardBean.id.toInt())
+                shareWithInApp(dashboardBean)
+            }
+            bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+                postShare(dashboardBean.id.toInt())
+                shareFaceBook(dashboardBean)
+            }
+            bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+                postShare(dashboardBean.id.toInt())
+                shareInstagram(dashboardBean)
+            }
+            bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+                postShare(dashboardBean.id.toInt())
+                shareTwitter(dashboardBean)
+            }
+            bottomSheetDialogShare.ivShareOther.setOnClickListener {
+                postShare(dashboardBean.id.toInt())
+                shareOther(dashboardBean)
+            }
         }
-        bottomSheetDialogShare.ivShareApp.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
-            postShare(dashboardBean.id.toInt())
-            shareWithInApp(dashboardBean)
-        }
-        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
-            postShare(dashboardBean.id.toInt())
-            shareFaceBook(dashboardBean)
-        }
-        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
-            postShare(dashboardBean.id.toInt())
-            shareInstagram(dashboardBean)
-        }
-        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
-            postShare(dashboardBean.id.toInt())
-            shareTwitter(dashboardBean)
-        }
-        bottomSheetDialogShare.ivShareOther.setOnClickListener {
-            postShare(dashboardBean.id.toInt())
-            shareOther(dashboardBean)
-        }
-
         if (dashboardBean.is_download == 0){
             bottomSheetDialogShare.ivShareSave.visibility = View.GONE
             bottomSheetDialogShare.tvShareSave.visibility = View.GONE
@@ -555,13 +560,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         } else {
             coverImage = ""
         }
+        val message = String.format(
+            getString(R.string.profile_link_msg),
+            dashboardBean.username
+        ).plus(" \n").plus(String.format(getString(R.string.profile_link),dashboardBean.username))
+
         addFragment(
             ShareAppFragment.getInstance(
                 sessionManager.getUserId(),
                 // dashboardBean?.cover_image_url,
                 coverImage,
                 dashboardBean.video_url,
-                "",
+                message,
                 false
             ),
             Constants.SHARE_APP_FRAGMENT

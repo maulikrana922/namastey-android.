@@ -247,7 +247,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         if (!openChatActivity) {
             val pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+                PendingIntent.getActivity(this, notificationCount, intent, PendingIntent.FLAG_ONE_SHOT)
             val channelId = getString(R.string.channel_id)
             val channelName = getString(R.string.notifiy)
             val notificationManager =

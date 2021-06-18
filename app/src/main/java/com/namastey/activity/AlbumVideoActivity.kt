@@ -89,6 +89,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private var position = -1
     private var editPost = false
+    private var isMyProfile = false
 
     var mRecyclerView: ExoPlayerRecyclerView? = null
     var mLayoutManager: LinearLayoutManager? = null
@@ -192,13 +193,17 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder
                 ): Int {
-                    if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
-                    return super.getSwipeDirs(recyclerView, viewHolder)
+                    return if (data[viewHolder.adapterPosition].user_id == sessionManager.getUserId() || isMyProfile){
+                        super.getSwipeDirs(recyclerView, viewHolder)
+                    }else{
+                        0
+                    }
+
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDirection: Int) {
 
-                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id) {
+                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id || isMyProfile) {
                         albumViewModel.deleteComment(data[viewHolder.adapterPosition].id)
                         data.removeAt(viewHolder.adapterPosition)
                         commentAdapter.notifyItemRemoved(viewHolder.adapterPosition)
@@ -310,6 +315,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         mRecyclerView = findViewById(R.id.viewpagerAlbum)
 
         val position = intent.getIntExtra("position", 0)
+        if (intent.hasExtra("isMyProfile")){
+            isMyProfile = intent.getBooleanExtra("isMyProfile",false)
+        }
         /* albumVideoAdapter =
              AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
          viewpagerAlbum.adapter = albumVideoAdapter*/
@@ -407,7 +415,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onItemClick(id: Long, position: Int) {
         //viewpagerAlbum.currentItem = position
         mLayoutManager!!.scrollToPositionWithOffset(position, 0);
-
+        mRecyclerView!!.playVideo(false,false, position)
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
         groupUpnext.visibility = View.GONE
@@ -558,6 +566,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 null
             )
         )
+
+        if (videoBean.is_share == 0 ){
+            bottomSheetDialogShare.svShareOption.alpha = 0.3f
+        }
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
@@ -566,33 +578,34 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.dismiss()
         }
 
-        // Share on Twitter app if install otherwise web link
-        bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
-            postShare(videoBean.id.toInt())
-            shareWhatsApp(videoBean)
+        if (videoBean.is_share == 1) {
+            // Share on Twitter app if install otherwise web link
+            bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
+                postShare(videoBean.id.toInt())
+                shareWhatsApp(videoBean)
+            }
+            bottomSheetDialogShare.ivShareApp.setOnClickListener {
+                bottomSheetDialogShare.dismiss()
+                postShare(videoBean.id.toInt())
+                shareWithInApp(videoBean)
+            }
+            bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
+                postShare(videoBean.id.toInt())
+                shareTwitter(videoBean)
+            }
+            bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
+                postShare(videoBean.id.toInt())
+                shareFaceBook(videoBean)
+            }
+            bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
+                postShare(videoBean.id.toInt())
+                shareInstagram(videoBean)
+            }
+            bottomSheetDialogShare.ivShareOther.setOnClickListener {
+                postShare(videoBean.id.toInt())
+                shareOther(videoBean)
+            }
         }
-        bottomSheetDialogShare.ivShareApp.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
-            postShare(videoBean.id.toInt())
-            shareWithInApp(videoBean)
-        }
-        bottomSheetDialogShare.ivShareTwitter.setOnClickListener {
-            postShare(videoBean.id.toInt())
-            shareTwitter(videoBean)
-        }
-        bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
-            postShare(videoBean.id.toInt())
-            shareFaceBook(videoBean)
-        }
-        bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
-            postShare(videoBean.id.toInt())
-            shareInstagram(videoBean)
-        }
-        bottomSheetDialogShare.ivShareOther.setOnClickListener {
-            postShare(videoBean.id.toInt())
-            shareOther(videoBean)
-        }
-
 
         if (sessionManager.getUserId() == videoBean.user_id) {
             bottomSheetDialogShare.ivShareBlock.visibility = View.GONE

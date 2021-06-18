@@ -22,7 +22,8 @@ class VideoListAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
     var onItemClick: OnItemClick,
-    var fromCreate: Boolean
+    var fromCreate: Boolean,
+    var isMyProfile: Boolean
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -72,6 +73,7 @@ class VideoListAdapter(
                     val intent = Intent(activity, AlbumVideoActivity::class.java)
                     intent.putExtra(Constants.VIDEO_LIST, videoList)
                     intent.putExtra("position", position)
+                    intent.putExtra("isMyProfile", isMyProfile)
                     (activity as ProfileViewActivity).openActivity(intent)
                 }
             }

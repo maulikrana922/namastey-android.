@@ -93,11 +93,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
         Log.e("AlbumDetailActivity ", "isShowMenu:: $isShowMenu")
 
-        if (!isShowMenu) {
-            ivMore.visibility = View.GONE
-        }
-
-
         if (intent.hasExtra("albumId")) {
             albumId = intent.getLongExtra("albumId", 0)
 
@@ -344,7 +339,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         popupMenu.menuInflater.inflate(R.menu.menu_album_detail, popupMenu.menu)
         val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide)
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
-
         if (isHide == 1) {
             menuShowHide.title = resources.getString(R.string.action_show_album)
             textHideShow = getString(R.string.action_show_album)
@@ -616,12 +610,16 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
+        if (isShowMenu) {
+            ivMore.visibility = View.VISIBLE
+        }
         if (arrayList.size > 0) {
             albumBean = arrayList[0]
             postList = arrayList[0].post_video_list
             edtAlbumName.setText(arrayList[0].name)
             this.isHide = arrayList[0].is_hide
             if (arrayList[0].name == getString(R.string.saved)) {
+                ivMore.visibility = View.GONE
                 isSavedAlbum = true
                 edtAlbumName.isEnabled = false
                 edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(

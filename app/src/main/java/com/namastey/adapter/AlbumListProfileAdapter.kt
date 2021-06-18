@@ -21,7 +21,8 @@ class AlbumListProfileAdapter(
     var activity: Context,
     var onViewAlbumClick: OnViewAlbumClick,
     var onItemClick: OnItemClick,
-    var gender: String
+    var gender: String,
+    var isMyProfile: Boolean
 ) : RecyclerView.Adapter<AlbumListProfileAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -50,7 +51,7 @@ class AlbumListProfileAdapter(
                 rvChildAlbumPost.visibility = View.VISIBLE
                 rvChildAlbumPost.apply {
                     adapter =
-                        VideoListAdapter(albumBean.post_video_list, activity, onItemClick, false)
+                        VideoListAdapter(albumBean.post_video_list, activity, onItemClick, false,isMyProfile)
                     setRecycledViewPool(viewPool)
                 }
             }else{
@@ -62,6 +63,7 @@ class AlbumListProfileAdapter(
                 intent.putExtra(Constants.ALBUM_BEAN, albumBean)
                 intent.putExtra(Constants.FROM_EDIT, false)
                 intent.putExtra(Constants.GENDER, gender)
+                intent.putExtra("isMyProfile", isMyProfile)
                 (activity as ProfileViewActivity).openActivity(intent)
             }
 

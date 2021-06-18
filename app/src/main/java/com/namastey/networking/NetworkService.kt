@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.util.*
 
 class NetworkService(private val networkRequest: NetworkRequest) {
@@ -321,9 +322,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
                 .await()
         }
 
-    suspend fun requestToGetTredingVideo(): AppResponse<ArrayList<VideoBean>> =
+    suspend fun requestToGetTredingVideo(jsonObject: JsonObject): AppResponse<ArrayList<VideoBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetTredingListAsync().await()
+            networkRequest.requestToGetTredingListAsync(jsonObject).await()
         }
 
     suspend fun requestToPostView(postId: Long): AppResponse<Any> =

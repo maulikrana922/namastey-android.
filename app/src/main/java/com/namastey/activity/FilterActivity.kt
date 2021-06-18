@@ -1,12 +1,12 @@
 package com.namastey.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumDetailAdapter
@@ -30,7 +30,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FilterViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
-import java.util.*
 import javax.inject.Inject
 
 
@@ -90,8 +89,11 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 return true
             }
         })
+        rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
 
-        filterViewModel.getTredingVideoList()
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("sub_cat_id", "")
+        filterViewModel.getTredingVideoList(jsonObject)
         setCategoryList()
 
     }
@@ -104,8 +106,15 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     override fun onSuccessTreding(data: java.util.ArrayList<VideoBean>) {
-        rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
         postList = data
+
+        if (postList.size <= 0) {
+            tvNoFilterVideo.visibility = View.VISIBLE
+            rvFilterTranding.visibility = View.GONE
+        } else {
+            tvNoFilterVideo.visibility = View.GONE
+            rvFilterTranding.visibility = View.VISIBLE
+        }
         albumDetailAdapter =
             AlbumDetailAdapter(
                 postList,
@@ -117,9 +126,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 true,
                 false
             )
-
         rvFilterTranding.adapter = albumDetailAdapter
-
         Log.e("FilterActivity", "onSuccessTreding: ${data[0].is_like}")
     }
 
@@ -227,30 +234,6 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         TODO("Not yet implemented")
     }
 
-    // Temp for ui
-    private fun setUserList() {
-        rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-
-        postList.clear()
-        for (number in 0..5) {
-            val videoBean = VideoBean()
-            videoBean.cover_image_url = ""
-            postList.add(videoBean)
-        }
-
-        albumDetailAdapter =
-            AlbumDetailAdapter(
-                postList,
-                this@FilterActivity,
-                this,
-                this,
-                this,
-                false, true, false
-            )
-
-        rvFilterTranding.adapter = albumDetailAdapter
-    }
-
     override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {
         val intent = Intent(this@FilterActivity, AlbumVideoActivity::class.java)
         intent.putExtra(Constants.VIDEO_LIST, videoList)
@@ -258,8 +241,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         openActivity(intent)
     }
 
-    override fun onSubCategoryItemClick(position: Int) {
-        Log.d("Subcategory : ", position.toString())
+    override fun onSubCategoryItemClick(subCategoryId: Int) {
+        Log.d("Subcategory : ", subCategoryId.toString())
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -268,11 +251,16 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            val intent = Intent()
-            intent.putExtra("fromSubCategory", true)
-            intent.putExtra("subCategoryId", position)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+//            val intent = Intent()
+//            intent.putExtra("fromSubCategory", true)
+//            intent.putExtra("subCategoryId", subCategoryId)
+//            setResult(Activity.RESULT_OK, intent)
+//            finish()
+            postList.clear()
+            postList = ArrayList()
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("sub_cat_id", subCategoryId)
+            filterViewModel.getTredingVideoList(jsonObject)
         }
 
     }

@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class FilterViewModel constructor(
     private val networkService: NetworkService,
@@ -40,12 +42,12 @@ class FilterViewModel constructor(
 
     }
 
-    fun getTredingVideoList() {
+    fun getTredingVideoList(jsonObject: JsonObject) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (filterView.isInternetAvailable()) {
-                    networkService.requestToGetTredingVideo().let { appResponse ->
+                    networkService.requestToGetTredingVideo(jsonObject).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             filterView.onSuccessTreding(appResponse.data!!)

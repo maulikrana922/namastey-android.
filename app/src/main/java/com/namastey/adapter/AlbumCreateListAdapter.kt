@@ -76,7 +76,7 @@ class AlbumCreateListAdapter(
                 onCreateAlbumItemClick.onClickAddVideo(albumBean)
             }
             rvChildAlbumPost.apply {
-                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,true)
+                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,true,false)
                 setRecycledViewPool(viewPool)
             }
 
