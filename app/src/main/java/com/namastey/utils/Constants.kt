@@ -373,6 +373,7 @@ object Constants {
     const val REQUEST_POST_VIDEO = 103
     const val REQUEST_CODE_IMAGE = 104
     const val PERMISSION_STORAGE = 106
+    const val PERMISSION_CONTACTS = 118
     const val PERMISSION_AUDIO = 116
     const val FILTER_OK = 107
     const val ADD_LINK = 108

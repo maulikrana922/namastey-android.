@@ -279,4 +279,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         super.onDestroy()
         filterViewModel.onDestroy()
     }
+
+    fun onClickInvite(view: View) {
+        openActivity(this@FilterActivity, InviteActivity())
+    }
 }

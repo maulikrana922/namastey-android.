@@ -308,6 +308,29 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         }
     }
 
+    fun isPermissionGrantedForContact(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_CONTACTS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_CONTACTS
+                    ),
+                    Constants.PERMISSION_CONTACTS
+                )
+                return false
+            }
+        } else {
+            return true
+        }
+    }
+
     fun showNotification(title: String?, body: String?) {
         val intent = Intent(this, DashboardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

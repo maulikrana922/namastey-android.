@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
         android:layout_marginBottom="@dimen/_8sdp"
-        android:background="@drawable/rounded_pink_solid_all"
+        android:background="@drawable/rounded_pink_solid_all_corner"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"

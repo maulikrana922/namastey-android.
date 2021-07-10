@@ -237,6 +237,11 @@ class ViewModelFactory @Inject constructor(
                 dbHelper,
                 baseView
             ) as T
+            modelClass.isAssignableFrom(InviteViewModel::class.java) -> InviteViewModel(
+                networkService,
+                dbHelper,
+                baseView
+            ) as T
             else -> BaseViewModel(networkService, dbHelper, baseView) as T
 
         }

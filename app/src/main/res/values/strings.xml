@@ -6,7 +6,7 @@
     <string name="instagram_app_id">943839639712239</string>
     <string name="client_id">943839639712239</string>
     <string name="instagram_client_secret">c6586ca4c71cab48d25db85f78cb4898</string>
-<!--    <string name="callback_url">https://www.namasteyapp.com/</string>-->
+    <!--    <string name="callback_url">https://www.namasteyapp.com/</string>-->
     <string name="callback_url">https://httpstat.us/200</string>
     <!--    <string name="callback_url">https://www.instagram.com/</string>-->
     <string name="base_url">https://api.instagram.com/</string>
@@ -39,6 +39,7 @@
     <string name="permission_denied_message">You have denied location permission Allow permission at setting</string>
     <string name="permission_denied_storage_message">You have denied storage permission Allow permission at setting</string>
     <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
+    <string name="permission_denied_contact_message">You have denied contact permission Allow permission at setting</string>
     <!--<string name="location_permission_message">Namastey uses your location for features like Filters,Search, Matches advertising and more.</string>-->
     <string name="location_permission_message">Namastey uses your location for features like Matches,Filters,Search and more.</string>
 
@@ -478,6 +479,15 @@
     <string name="send_message">Send\nMessage</string>
     <string name="message_locked">Message\nLocked</string>
     <string name="private_account_message">This user have private account.</string>
+
+<!--    invite screen-->
+    <string name="tv_invite">Invite</string>
+    <string name="invite_phone">Invite a phone</string>
+    <string name="invite_count">You have %1$s invites</string>
+    <string name="invite_msg">Invite the people who you would like to see on Namastey</string>
+    <string name="tv_lets_connect">Let\'s connect with your friends!</string>
+    <string name="tv_invite_contact_msg">You can invite your contact to Namastey and connect with them.</string>
+    <string name="btn_search_contacts">Search Contacts</string>
 
     <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>
     <string name="recurring_billing_cancel_anytime_detail">By tapping Continue, your payment will be charged to your Google Play account, and your subscription will be automatically renew for the same package length at the same price until you cancel in setting in the Google Play Store. By tapping Continue, you agree our Terms.  </string>

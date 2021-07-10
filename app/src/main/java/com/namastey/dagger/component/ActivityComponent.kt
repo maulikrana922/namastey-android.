@@ -71,4 +71,5 @@ interface ActivityComponent {
     fun inject(activity: ImageSliderActivity)
     fun inject(activity: SearchLocationActivity)
     fun inject(activity: InAppPurchaseActivity)
+    fun inject(activity: InviteActivity)
 }

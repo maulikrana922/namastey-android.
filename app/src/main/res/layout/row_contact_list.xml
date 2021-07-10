@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/holderMention"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center|start"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp">
+
+    <com.namastey.customViews.RoundImageView
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:padding="@dimen/_15sdp"
+        android:background="@drawable/rounded_pink_solid_all"
+        android:src="@drawable/ic_call"
+        app:cornerRadius="@dimen/_10sdp"
+        app:roundedCorners="all" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvContactName"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_weight="1"
+        android:gravity="start|center"
+        android:paddingStart="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_5sdp"/>
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvInvite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:background="@drawable/rounded_btn_red"
+        android:text="@string/tv_invite"/>
+</LinearLayout>

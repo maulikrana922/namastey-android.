@@ -99,6 +99,7 @@ dependencies {
     //Lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     //courotins
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
