@@ -127,6 +127,7 @@ object Constants {
     const val RECEIPT_VERIFICATION = "receipt-varification"
     const val BOOST_USE = "boost-use"
     const val FEED_LIST_V2 = "feed-list-v2"
+    const val INVITE_USER = "invite-user"
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
@@ -332,6 +333,7 @@ object Constants {
     const val PAGE = "page"
     const val LAT = "lat"
     const val LNG = "lng"
+    const val PHONE = "phone"
 
     const val FILE = "file"
     const val IMAGE_TYPE = "image/*"

@@ -499,4 +499,10 @@ interface NetworkRequest {
 
     @GET(Constants.BOOST_USE)
     fun requestToBoostUseAsync(): Deferred<AppResponse<BoostBean>>
+
+    @FormUrlEncoded
+    @POST(Constants.INVITE_USER)
+    fun requestToSendInvitatoinAsync(
+        @Field(Constants.PHONE) number: String
+    ): Deferred<AppResponse<Any>>
 }

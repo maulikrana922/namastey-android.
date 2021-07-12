@@ -1,15 +1,19 @@
 package com.namastey.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
+import com.namastey.listeners.OnInviteClick
 import com.namastey.model.Contact
+import kotlinx.android.synthetic.main.activity_invite.*
 import kotlinx.android.synthetic.main.row_contact_list.view.*
 
-class ContactsAdapter(context: Context) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
+class ContactsAdapter(context: Context,var onInviteClick: OnInviteClick) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
     val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var contactsCopy = ArrayList<Contact>()
     var contacts = ArrayList<Contact>()
@@ -31,6 +35,9 @@ class ContactsAdapter(context: Context) : RecyclerView.Adapter<ContactsAdapter.M
         with(holder.itemView) {
             tvContactName.text = contact.name
 
+            tvInvite.setOnClickListener{
+                onInviteClick.onClickInvite(contact)
+            }
         }
     }
 
@@ -42,7 +49,7 @@ class ContactsAdapter(context: Context) : RecyclerView.Adapter<ContactsAdapter.M
         } else {
             text = text.toLowerCase()
             for (item in contactsCopy) {
-                if (item.name.toLowerCase().contains(text)) {
+                if (item.name.toLowerCase().contains(text) || item.numbers[0].contains(text)) {
                     contacts.add(item)
                 }
             }

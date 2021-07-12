@@ -67,17 +67,17 @@
                 style="@style/tvWrapBlackStyle"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:text="@string/invite_count"
-                app:typeface="MULI_SEMIBOLD"
                 app:layout_constraintStart_toEndOf="@id/ivMail"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvInviteMessage"
                 style="@style/tvWrapBlackStyle"
                 android:layout_width="0dp"
                 android:maxLines="2"
-                android:textSize="14sp"
                 android:text="@string/invite_msg"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvInviteRemaining"
@@ -98,17 +98,28 @@
             app:queryHint="@string/invite_phone"
             app:searchHintIcon="@drawable/ic_search" />
 
+        <include
+            android:id="@+id/viewPhone"
+            layout="@layout/row_contact_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/searchContact"
+            app:layout_constraintStart_toStartOf="@id/searchContact"
+            app:layout_constraintTop_toBottomOf="@id/searchContact" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvCenter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_15sdp"
-            android:theme="@style/Theme.MaterialComponents"
-            app:cardBackgroundColor="@color/colorWhite"
             android:outlineAmbientShadowColor="@color/color_search"
             android:outlineSpotShadowColor="#E30022"
-            app:cardElevation="@dimen/_8sdp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="@dimen/_20sdp"
+            app:cardElevation="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -135,10 +146,10 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center"
-                    android:padding="@dimen/_8sdp"
                     android:maxLines="3"
-                    android:textSize="14sp"
+                    android:padding="@dimen/_8sdp"
                     android:text="@string/tv_invite_contact_msg"
+                    android:textSize="14sp"
                     app:typeface="MULI_SEMIBOLD" />
 
                 <com.namastey.customViews.CustomButton
@@ -146,13 +157,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_15sdp"
                     android:background="@drawable/rounded_btn"
+                    android:onClick="onClickSearchContacts"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_15sdp"
-                    android:textAllCaps="false"
-                    android:onClick="onClickSearchContacts"
-                    app:typeface="MULI_EXTRA_BOLD"
                     android:text="@string/btn_search_contacts"
-                    android:textColor="#F30D46" />
+                    android:textAllCaps="false"
+                    android:textColor="#F30D46"
+                    app:typeface="MULI_EXTRA_BOLD" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -166,6 +177,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchContact" />
+            app:layout_constraintTop_toBottomOf="@id/viewPhone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

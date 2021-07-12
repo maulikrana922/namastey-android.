@@ -567,4 +567,11 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToBoostUseAsync().await()
         }
 
+    suspend fun requestToSendInvitation(
+        number: String
+    ): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToSendInvitatoinAsync(number).await()
+        }
+
 }

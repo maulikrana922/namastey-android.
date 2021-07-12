@@ -6,8 +6,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputFilter
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -18,13 +23,16 @@ import com.namastey.R
 import com.namastey.adapter.ContactsAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityInviteBinding
+import com.namastey.listeners.OnInviteClick
+import com.namastey.model.Contact
 import com.namastey.uiView.InviteView
 import com.namastey.utils.Constants
 import com.namastey.viewModel.InviteViewModel
 import kotlinx.android.synthetic.main.activity_invite.*
+import kotlinx.android.synthetic.main.row_contact_list.*
 import javax.inject.Inject
 
-class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView {
+class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInviteClick {
 
     private lateinit var inviteViewModel: InviteViewModel
     private lateinit var activityInviteBinding: ActivityInviteBinding;
@@ -53,7 +61,10 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView {
 
     private fun initData() {
 
-        adapter = ContactsAdapter(this)
+        tvInviteRemaining.text = String.format(getString(R.string.invite_count), 10)
+        val et: TextView = searchContact.findViewById(R.id.search_src_text) as TextView
+        et.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(15))
+        adapter = ContactsAdapter(this, this)
         rvContact.adapter = adapter
         inviteViewModel.contactsLiveData.observe(this, Observer {
             rvContact.visibility = View.VISIBLE
@@ -69,14 +80,44 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText!!.isNotEmpty()) {
+                    var numeric = true
+                    numeric = newText.matches("-?\\d+(\\.\\d+)?".toRegex())
+                    if (numeric) {
+                        viewPhone.visibility = View.VISIBLE
+                        tvContactName.text = "+91 ".plus(newText)
+                    } else
+                        viewPhone.visibility = View.GONE
                     adapter.filter(newText)
                 } else {
-                    inviteViewModel.fetchContacts()
+                    viewPhone.visibility = View.GONE
+                    if (ActivityCompat.checkSelfPermission(
+                            this@InviteActivity,
+                            android.Manifest.permission.READ_CONTACTS
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        inviteViewModel.fetchContacts()
+                    }
                 }
                 return true
             }
 
         })
+
+        tvInvite.setOnClickListener {
+            val sendIntent = Intent(Intent.ACTION_VIEW)
+            sendIntent.data = Uri.parse("sms:")
+            val number = "+91".plus(searchContact.query)
+            sendIntent.putExtra("address", number)
+            val message = String.format(
+                getString(R.string.invite_sms_send),
+                "",
+                "+91".plus(searchContact.query)).plus(" \n").plus(getString(R.string.namastey_link)
+            )
+
+            inviteUser(number)
+            sendIntent.putExtra("sms_body", message)
+            startActivity(sendIntent)
+        }
         if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.READ_CONTACTS
@@ -149,7 +190,38 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView {
     override fun onBackPressed() {
         finishActivity()
     }
+
     fun onClickInviteBack(view: View) {
         onBackPressed()
+    }
+
+    override fun onClickInvite(contact: Contact) {
+
+        val sendIntent = Intent(Intent.ACTION_VIEW)
+        sendIntent.data = Uri.parse("sms:")
+        if (contact.numbers.size > 0){
+            sendIntent.putExtra("address", contact.numbers[0])
+            var number = contact.numbers[0].replace("-","")
+
+            if (!number.startsWith("+"))        // Manually added +91 country code if number not saved with country code
+                number = "+91 ".plus(number)
+
+            inviteUser(number)
+
+            val message = String.format(
+                getString(R.string.invite_sms_send),
+                contact.name,
+                number.plus(" ")).plus(" \n").plus(getString(R.string.namastey_link)
+            )
+            sendIntent.putExtra("sms_body", message)
+            startActivity(sendIntent)
+        }else{
+            Toast.makeText(this@InviteActivity,getString(R.string.msg_phone_number),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private fun inviteUser(number: String) {
+        inviteViewModel.sendInvitation(number.filter { !it.isWhitespace() })
     }
 }

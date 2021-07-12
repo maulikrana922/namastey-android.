@@ -488,6 +488,9 @@
     <string name="tv_lets_connect">Let\'s connect with your friends!</string>
     <string name="tv_invite_contact_msg">You can invite your contact to Namastey and connect with them.</string>
     <string name="btn_search_contacts">Search Contacts</string>
+    <string name="msg_phone_number">Invalid phone number</string>
+    <string name="namastey_link">https://www.namasteyapp.com/</string>
+    <string name="invite_sms_send">Hey %1$s - I have an invite to Namastey and want you to join. 🙂 I added you using %2$s, so make sure to use that number when you register. Here is the link! </string>
 
     <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>
     <string name="recurring_billing_cancel_anytime_detail">By tapping Continue, your payment will be charged to your Google Play account, and your subscription will be automatically renew for the same package length at the same price until you cancel in setting in the Google Play Store. By tapping Continue, you agree our Terms.  </string>

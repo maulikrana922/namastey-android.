@@ -11,9 +11,7 @@ import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.InviteView
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class InviteViewModel constructor(
     private val networkService: NetworkService,
@@ -43,6 +41,7 @@ class InviteViewModel constructor(
             _contactsLiveData.postValue(contacts)
         }
     }
+
     private fun getPhoneContacts(): ArrayList<Contact> {
         val contactsList = ArrayList<Contact>()
         val contactsCursor = NamasteyApplication.instance.contentResolver?.query(
@@ -50,7 +49,8 @@ class InviteViewModel constructor(
             null,
             null,
             null,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
+        )
         if (contactsCursor != null && contactsCursor.count > 0) {
             val idIndex = contactsCursor.getColumnIndex(ContactsContract.Contacts._ID)
             val nameIndex = contactsCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
@@ -76,8 +76,10 @@ class InviteViewModel constructor(
             null
         )
         if (phoneCursor != null && phoneCursor.count > 0) {
-            val contactIdIndex = phoneCursor!!.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
-            val numberIndex = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+            val contactIdIndex =
+                phoneCursor!!.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)
+            val numberIndex =
+                phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
             while (phoneCursor.moveToNext()) {
                 val contactId = phoneCursor.getString(contactIdIndex)
                 val number: String = phoneCursor.getString(numberIndex)
@@ -93,6 +95,24 @@ class InviteViewModel constructor(
         }
         return contactsNumberMap
     }
+
+    fun sendInvitation(number: String) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToSendInvitation(number).let { appResponse ->
+                    setIsLoading(false)
+                }
+
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                inviteView.onHandleException(t)
+            }
+        }
+
+    }
+
+
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()
