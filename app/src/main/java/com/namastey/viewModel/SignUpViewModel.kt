@@ -1,8 +1,12 @@
 package com.namastey.viewModel
 
+import android.text.TextUtils
 import com.google.gson.JsonObject
+import com.namastey.R
+import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
+import com.namastey.roomDB.entity.User
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
@@ -69,6 +73,51 @@ class SignUpViewModel constructor(
         }
     }
 
+    fun isValidPhone(phone: String): Boolean {
+        var msgId = 0
+        when {
+            TextUtils.isEmpty(phone) -> msgId = R.string.msg_empty_mobile
+        }
+        if (msgId > 0) {
+            signUpView.showMsg(msgId)
+        }
+
+        return msgId == 0
+    }
+
+    fun sendOTP(jsonObject: JsonObject) {
+
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (signUpView.isInternetAvailable()) {
+                    networkService.requestSendOTP(jsonObject)
+                        .let { appResponse: AppResponse<User> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                signUpView.onSuccessResponse(appResponse.data!!)
+                            } else {
+                                signUpView.onFailed(
+                                    appResponse.message, appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    signUpView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                signUpView.onHandleException(exception)
+            }
+        }
+
+    }
+
+    fun onClickContinue(){
+        signUpView.onClickContinue()
+    }
     fun onDestroy() {
         if (::job.isInitialized)
             job.cancel()

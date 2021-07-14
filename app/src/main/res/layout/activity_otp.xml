@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.OTPViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activity.OTPActivity">
+
+        <ImageView
+            android:id="@+id/ivOTPBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickOtpBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvVerifyOTP"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/tv_veryfi_otp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@id/ivOTPBack"
+            app:layout_constraintTop_toBottomOf="@id/ivOTPBack"
+            app:typeface="MULI_EXTRA_BOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvOtpMsg"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/tv_otp_message"
+            app:layout_constraintStart_toStartOf="@id/tvVerifyOTP"
+            app:layout_constraintTop_toBottomOf="@id/tvVerifyOTP" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:orientation="horizontal"
+            android:weightSum="6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvOtpMsg"
+            app:layout_constraintTop_toBottomOf="@id/tvOtpMsg">
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtOne"
+                style="@style/edtOTP"
+                android:background="@drawable/rounded_white_solid_white_corner" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtTwo"
+                style="@style/edtOTP"
+                android:background="@drawable/rounded_white_solid_white_corner" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtThree"
+                style="@style/edtOTP"
+                android:background="@drawable/rounded_white_solid_white_corner" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtFour"
+                style="@style/edtOTP"
+                android:background="@drawable/rounded_white_solid_white_corner" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtFive"
+                style="@style/edtOTP"
+                android:background="@drawable/rounded_white_solid_white_corner" />
+
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtSix"
+                style="@style/edtOTP"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/rounded_white_solid_white_corner"
+                android:imeOptions="actionDone" />
+
+        </LinearLayout>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnOtpContinue"
+            style="@style/btnRedAllCornerStyle"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:text="@string/continues"
+            android:onClick="@{() -> viewModel.onConfirmClick()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

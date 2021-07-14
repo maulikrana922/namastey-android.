@@ -18,6 +18,8 @@ data class User(
     var token: String,
     @Ignore
     var is_verified: Int,
+    @Ignore
+    var is_invited: Int,
     var user_type: Int,
     var username: String,
     @Ignore
@@ -37,6 +39,7 @@ data class User(
         "",
         "",
         "",
+        0,
         0,
         0,
         "",

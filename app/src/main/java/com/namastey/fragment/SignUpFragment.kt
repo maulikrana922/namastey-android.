@@ -70,6 +70,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     override fun skipLogin() {
     }
 
+    override fun onClickContinue() {
+
+    }
+
     override fun onSuccessResponse(user: User) {
         sessionManager.setGuestUser(false)
         sessionManager.setAccessToken(user.token)

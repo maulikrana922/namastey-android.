@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -32,10 +33,12 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySignUpBinding
+import com.namastey.fragment.OTPFragment
 import com.namastey.fragment.SelectGenderFragment
 import com.namastey.fragment.SignupWithPhoneFragment
 import com.namastey.roomDB.entity.User
@@ -43,12 +46,14 @@ import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
 import com.namastey.utils.Constants.RC_SIGN_IN
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.SignUpViewModel
 import com.snapchat.kit.sdk.SnapLogin
 import com.snapchat.kit.sdk.core.controller.LoginStateController
 import com.snapchat.kit.sdk.login.models.UserDataResponse
 import com.snapchat.kit.sdk.login.networking.FetchUserDataCallback
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
 import org.json.JSONException
 import java.util.*
 import javax.inject.Inject
@@ -78,6 +83,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     private var providerId = ""
     private val PERMISSION_REQUEST_CODE = 101
     private var TAG = "SignUpActivity"
+    private var androidId = ""
 
     override fun getViewModel() = signUpViewModel
 
@@ -103,6 +109,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo)
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()
+        androidId =
+            Settings.Secure.getString(this@SignUpActivity.contentResolver, Settings.Secure.ANDROID_ID)
 
         videoViewSignup.setOnPreparedListener { mp ->
             //Start Playback
@@ -541,29 +549,59 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         )
     }
 
+    override fun onClickContinue() {
+        if (signUpViewModel.isValidPhone(edtPhone.text.toString().trim())){
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
+            jsonObject.addProperty(Constants.USER_UNIQUE_ID, androidId)
+            Log.d("country code :", ccp.selectedCountryCodeAsInt.toString())
+            jsonObject.addProperty(
+                Constants.MOBILE,
+                "+".plus(ccp.selectedCountryCodeAsInt.toString()).plus(edtPhone.text.toString().trim())
+            )
+//            signUpViewModel.sendOTP(jsonObject)
+
+            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
+            intent.putExtra(Constants.MOBILE,"sdfsdf")
+            openActivity(intent)
+        }
+    }
+
     override fun onSuccessResponse(user: User) {
-        Log.e("SignUpActivity", "user: ${user.token}")
-        tvSkipSignUp.visibility = View.INVISIBLE
-        sessionManager.setGuestUser(false)
         sessionManager.setAccessToken(user.token)
         sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
-        sessionManager.setVerifiedUser(user.is_verified)
-        sessionManager.setuserUniqueId(user.user_uniqueId)
-        if (user.is_register == 1) {
-            val intent = Intent(this@SignUpActivity,DashboardActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            openActivity(intent)
-        } else {
-            addFragment(
-                SelectGenderFragment.getInstance(
-                    "user"
-                ),
-                Constants.SELECT_GENDER_FRAGMENT
-            )
-        }
+        edtPhone.text!!.clear()
+        Utils.hideKeyboard(this@SignUpActivity)
 
+        val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
+        intent.putExtra(Constants.MOBILE,user.mobile)
+        openActivity(intent)
     }
+
+//    override fun onSuccessResponse(user: User) {
+//        Log.e("SignUpActivity", "user: ${user.token}")
+//        tvSkipSignUp.visibility = View.INVISIBLE
+//        sessionManager.setGuestUser(false)
+//        sessionManager.setAccessToken(user.token)
+//        sessionManager.setUserEmail(user.email)
+//        sessionManager.setUserPhone(user.mobile)
+//        sessionManager.setVerifiedUser(user.is_verified)
+//        sessionManager.setuserUniqueId(user.user_uniqueId)
+//        if (user.is_register == 1) {
+//            val intent = Intent(this@SignUpActivity,DashboardActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//            openActivity(intent)
+//        } else {
+//            addFragment(
+//                SelectGenderFragment.getInstance(
+//                    "user"
+//                ),
+//                Constants.SELECT_GENDER_FRAGMENT
+//            )
+//        }
+//
+//    }
 
     override fun onBackPressed() {
         val selectGenderFragment =
@@ -607,10 +645,11 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             val clickableSpan = object : ClickableSpan() {
                 override fun updateDrawState(textPaint: TextPaint) {
                     // use this to change the link color
-                    textPaint.color = Color.BLACK
+//                    textPaint.color = Color.BLACK
+                    textPaint.typeface = Typeface.create(Typeface.createFromAsset(context.assets, "Muli-ExtraBold.ttf"), Typeface.BOLD)
                     // toggle below value to enable/disable
                     // the underline shown below the clickable text
-                    textPaint.isUnderlineText = true
+//                    textPaint.isUnderlineText = true
                 }
 
                 override fun onClick(view: View) {

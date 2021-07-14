@@ -6,6 +6,8 @@ interface SignUpView: BaseView {
 
     fun skipLogin()
 
+    fun onClickContinue()
+
     fun onSuccessResponse(user: User)
 
 }

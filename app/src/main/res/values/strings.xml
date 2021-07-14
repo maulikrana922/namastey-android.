@@ -47,7 +47,7 @@
     <string name="tv_the_video_profile">The Video Profile</string>
     <string name="tv_term_condition_message_temp">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
     <string name="tv_term_condition_message1"><![CDATA[<u><font color=#000000>Terms of service</font></u> | <u><font color=#000000>Privacy Policy </font></u>.]]></string>
-    <string name="tv_term_condition_message">Terms of service | Privacy Policy</string>
+    <string name="tv_term_condition_message">By creating an account or logging in, you agree to our Terms of service | Privacy Policy</string>
     <string name="tv_terms">Terms of service</string>
     <string name="tv_policy">Privacy Policy</string>
     <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use</string>
@@ -74,10 +74,25 @@
 
     <string name="tv_veryfi_otp">Verify OTP</string>
     <string name="tv_sent_otp">We have sent you an OTP</string>
+    <string name="tv_otp_message">Enter the 6 digit OTP you received</string>
 
     <string name="hint_email">Enter email address</string>
     <string name="hint_phone">Enter phone number</string>
     <string name="hint_otp">Enter OTP</string>
+
+    <!--    sign up screen -->
+    <string name="tv_terms_msg">By creating an account or logging in, you agree to our </string>
+    <string name="tv_login_using_phone">Login using your Phone \nnumber</string>
+    <string name="msg_empty_mobile">Please enter mobile number</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="name">Name</string>
+    <string name="enter_your_name">Enter your full name</string>
+    <string name="choose_username">Choose a username for you</string>
+    <string name="hint_full_name">Full name</string>
+    <string name="msg_gender">Let us know your gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="non_binary">Non- binary</string>
 
     <!--    select gender fragment-->
     <string name="select_gender">Select Gender</string>
@@ -480,7 +495,7 @@
     <string name="message_locked">Message\nLocked</string>
     <string name="private_account_message">This user have private account.</string>
 
-<!--    invite screen-->
+    <!--    invite screen-->
     <string name="tv_invite">Invite</string>
     <string name="invite_phone">Invite a phone</string>
     <string name="invite_count">You have %1$s invites</string>

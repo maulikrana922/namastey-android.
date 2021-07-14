@@ -72,4 +72,6 @@ interface ActivityComponent {
     fun inject(activity: SearchLocationActivity)
     fun inject(activity: InAppPurchaseActivity)
     fun inject(activity: InviteActivity)
+    fun inject(activity: OTPActivity)
+//    fun inject(activity: EmailActivity)
 }

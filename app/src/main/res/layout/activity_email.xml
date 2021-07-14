@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activity.EmailActivity">
+
+        <ImageView
+            android:id="@+id/ivEmailBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickEmailBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvEmail"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/email"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@id/ivEmailBack"
+            app:layout_constraintTop_toBottomOf="@id/ivEmailBack"
+            app:typeface="MULI_EXTRA_BOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvEmailMsg"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/enter_your_email"
+            app:layout_constraintStart_toStartOf="@id/ivEmailBack"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
+
+        <com.namastey.customViews.CustomEditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/_10sdp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionDone"
+            android:hint="@string/email"
+            android:textColor="@color/color_text"
+            android:background="@drawable/rounded_white_solid_white_corner"
+            app:layout_constraintStart_toStartOf="@id/tvEmail"
+            app:layout_constraintTop_toBottomOf="@id/tvEmailMsg"/>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnEmailContinue"
+            style="@style/btnRedAllCornerStyle"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:text="@string/continues"
+            android:onClick="onClickContinue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

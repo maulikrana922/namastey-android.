@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.NameActivity">
+
+    <ImageView
+        android:id="@+id/ivNameBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_45sdp"
+        android:contentDescription="@string/app_name"
+        android:onClick="onClickNameBack"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_back_new"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvName"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/ivNameBack"
+        app:layout_constraintTop_toBottomOf="@id/ivNameBack"
+        app:typeface="MULI_EXTRA_BOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvNameMsg"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/enter_your_name"
+        app:layout_constraintStart_toStartOf="@id/ivNameBack"
+        app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+    <com.namastey.customViews.CustomEditText
+        android:id="@+id/edtFullName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/_10sdp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:hint="@string/hint_full_name"
+        android:textColor="@color/color_text"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvNameMsg"/>
+
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUsername"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:text="@string/user_name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/ivNameBack"
+        app:layout_constraintTop_toBottomOf="@id/edtFullName"
+        app:typeface="MULI_EXTRA_BOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUsernameMsg"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/choose_username"
+        app:layout_constraintStart_toStartOf="@id/ivNameBack"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <com.namastey.customViews.CustomEditText
+        android:id="@+id/edtUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/_10sdp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:hint="@string/user_name"
+        android:textColor="@color/color_text"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvUsernameMsg"/>
+
+    <com.namastey.customViews.CustomButton
+        style="@style/btnRedAllCornerStyle"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:text="@string/continues"
+        android:onClick="onClickContinue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

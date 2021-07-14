@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.GenderActivity">
+    <ImageView
+        android:id="@+id/ivGenderBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_45sdp"
+        android:contentDescription="@string/app_name"
+        android:onClick="onClickGenderBack"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_back_new"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvGender"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/gender"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/ivGenderBack"
+        app:layout_constraintTop_toBottomOf="@id/ivGenderBack"
+        app:typeface="MULI_EXTRA_BOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvGenderMsg"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="@string/msg_gender"
+        app:layout_constraintStart_toStartOf="@id/ivGenderBack"
+        app:layout_constraintTop_toBottomOf="@id/tvGender" />
+
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvMale"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/male"
+        android:textColor="#30B7D6"
+
+        android:padding="@dimen/_3sdp"
+        android:gravity="center"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        android:drawableStart="@drawable/ic_male_sign"
+        android:drawablePadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/tvFemale"
+        app:layout_constraintStart_toStartOf="@id/tvGenderMsg"
+        app:layout_constraintTop_toBottomOf="@id/tvGenderMsg"/>
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFemale"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/female"
+        android:textColor="#EB3EB0"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:gravity="center_vertical"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        android:drawableStart="@drawable/ic_female_sign"
+        android:drawablePadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvMale"
+        app:layout_constraintTop_toTopOf="@id/tvMale"
+        app:layout_constraintBottom_toBottomOf="@id/tvMale"/>
+    <com.namastey.customViews.CustomButton
+        style="@style/btnRedAllCornerStyle"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:text="@string/continues"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

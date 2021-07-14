@@ -15,34 +15,39 @@
             type="com.namastey.viewModel.SignUpViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/constraintMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <VideoView
-            android:id="@+id/videoViewSignup"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-<!--        <ImageView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:background="@drawable/video_tint"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:ignore="ContentDescription" />-->
+            <VideoView
+                android:id="@+id/videoViewSignup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--        <ImageView-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:background="@drawable/video_tint"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:ignore="ContentDescription" />-->
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -261,18 +266,18 @@
                         app:layout_constraintTop_toBottomOf="@+id/llSignupWithSnapchat" />
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvTermsConditions"
+                        android:id="@+id/tvTermsConditionsDummy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_3sdp"
-                        android:paddingBottom="@dimen/_3sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_25sdp"
-                        android:layout_gravity="center"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingBottom="@dimen/_3sdp"
                         android:text="@string/tv_term_condition_message"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_9sdp"/>
+                        android:textSize="@dimen/_9sdp" />
                 </LinearLayout>
 
                 <ProgressBar
@@ -293,7 +298,108 @@
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_signup_logo" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvLoginMsg"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/tv_login_using_phone"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/btnSignupContinue"
+                app:layout_constraintStart_toStartOf="@id/btnSignupContinue"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_35sdp"
+                android:background="@drawable/rounded_white_solid_white_corner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                app:layout_constraintBottom_toTopOf="@id/tvTermsConditions"
+                app:layout_constraintEnd_toEndOf="@id/btnSignupContinue"
+                app:layout_constraintStart_toStartOf="@id/btnSignupContinue"
+                app:layout_constraintTop_toBottomOf="@id/tvLoginMsg">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccpDialog_textColor="@color/color_text"
+                    app:ccp_arrowColor="@color/color_text"
+                    app:ccp_contentColor="@color/color_text"
+                    app:ccp_showFlag="false" />
+
+                <com.namastey.customViews.CustomEditText
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/color_search"
+                    android:hint="@string/hint_phone"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:singleLine="true"
+                    android:textColor="@color/color_text" />
+
+                <View
+                    android:id="@+id/viewDivider"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:background="@color/colorGray" />
+
+            </LinearLayout>
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvTermsConditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:text="@string/tv_term_condition_message"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBottom_toTopOf="@id/btnSignupContinue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnSignupContinue"
+                style="@style/btnRedAllCornerStyle"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:text="@string/continues"
+                android:onClick="@{() -> viewModel.onClickContinue()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

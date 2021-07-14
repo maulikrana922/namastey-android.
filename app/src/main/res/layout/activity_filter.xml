@@ -69,8 +69,9 @@
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_5sdp"
                     android:onClick="onClickInvite"
-                    android:src="@drawable/ic_back"
+                    android:src="@drawable/ic_mail_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
