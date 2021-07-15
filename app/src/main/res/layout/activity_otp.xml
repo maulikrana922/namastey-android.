@@ -39,7 +39,7 @@
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@id/ivOTPBack"
             app:layout_constraintTop_toBottomOf="@id/ivOTPBack"
-            app:typeface="MULI_EXTRA_BOLD" />
+            app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvOtpMsg"

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activity.BirthdayActivity">
+
+        <ImageView
+            android:id="@+id/ivBirthdayBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickBirthdayBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintTop_toBottomOf="@id/ivBirthdayBack">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBirthday"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/date_of_birth"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBirthdayMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/msg_birthday"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvBirthday" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSelectBirthday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/rounded_white_solid_white_corner"
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:padding="@dimen/_8sdp"
+                    android:onClick="onClickSelectDate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvBirthdayMsg" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAgeRage"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/age_range"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvSelectBirthday"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSelectAgeMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/msg_age"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvAgeRage" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAgeMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/you_can_always"
+                    android:textColor="@color/colorGray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvSelectAgeMsg" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/rangeAge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:bar_color="@color/colorDarkGray"
+                    app:bar_highlight_color="@color/colorButtonRed"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:layout_constraintEnd_toStartOf="@id/tvAgeDisplay"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvAgeMsg"
+                    app:left_thumb_color="@color/colorButtonRed"
+                    app:left_thumb_color_pressed="@color/colorButtonRed"
+                    app:max_value="100"
+                    app:min_value="18"
+                    app:right_thumb_color="@color/colorButtonRed"
+                    app:right_thumb_color_pressed="@color/colorButtonRed" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAgeDisplay"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/rangeAge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rangeAge" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDistance"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/distance"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rangeAge"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSelectDistanceMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/select_maximum_distance"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvDistance" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDistanceMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/you_can_always"
+                    android:textColor="@color/colorGray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                    app:layout_constraintTop_toBottomOf="@id/tvSelectDistanceMsg" />
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                android:id="@+id/rangeDistance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:bar_color="@color/colorDarkGray"
+                app:bar_highlight_color="@color/colorButtonRed"
+                app:corner_radius="10"
+                app:data_type="_integer"
+                app:layout_constraintTop_toBottomOf="@id/tvDistanceMsg"
+                app:layout_constraintStart_toStartOf="@id/tvBirthday"
+                app:layout_constraintEnd_toStartOf="@id/tvDistanceDisplay"
+                app:left_thumb_color="@color/colorButtonRed"
+                app:left_thumb_color_pressed="@color/colorButtonRed"
+                app:max_value="160"
+                app:min_value="1" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDistanceDisplay"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/rangeDistance"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rangeDistance" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnContinue"
+            style="@style/btnRedAllCornerStyle"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:text="@string/continues"
+            android:onClick="onClickContinue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

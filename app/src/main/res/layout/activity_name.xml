@@ -5,6 +5,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.NameActivity">
 
     <ImageView
@@ -28,7 +29,7 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
         app:layout_constraintTop_toBottomOf="@id/ivNameBack"
-        app:typeface="MULI_EXTRA_BOLD" />
+        app:typeface="MULI_SEMIBOLD" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvNameMsg"
@@ -64,7 +65,7 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
         app:layout_constraintTop_toBottomOf="@id/edtFullName"
-        app:typeface="MULI_EXTRA_BOLD" />
+        app:typeface="MULI_SEMIBOLD" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUsernameMsg"

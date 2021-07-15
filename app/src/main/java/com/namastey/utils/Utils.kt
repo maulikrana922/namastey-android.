@@ -77,6 +77,17 @@ object Utils {
         v.background = gd
     }
 
+    fun roundedCornerShape(v: View, fillColor: String, color: String) {
+        val gd = GradientDrawable()
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadius = 20f
+
+        gd.setColor(Color.parseColor(fillColor))
+        gd.setStroke(4,Color.parseColor(color))
+        v.background = gd
+    }
+
     fun imageOverlayGradient(v: View, startColor: String, endColor: String) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,

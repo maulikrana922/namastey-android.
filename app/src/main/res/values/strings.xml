@@ -90,9 +90,14 @@
     <string name="choose_username">Choose a username for you</string>
     <string name="hint_full_name">Full name</string>
     <string name="msg_gender">Let us know your gender</string>
-    <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="non_binary">Non- binary</string>
+    <string name="select">Select</string>
+    <string name="msg_interested">Whom are you interested in?</string>
+    <string name="msg_birthday">Help us calculate your age</string>
+    <string name="msg_age">Select your preferred age range</string>
+    <string name="you_can_always">You can always change it later</string>
+    <string name="select_maximum_distance">Select the maximum distance</string>
 
     <!--    select gender fragment-->
     <string name="select_gender">Select Gender</string>
@@ -291,7 +296,7 @@
     <string name="account_settings">Account Settings</string>
     <string name="setting_interest_in">I\'m Interested In…</string>
     <string name="distance_msg">Up to %1$s kilometers away</string>
-    <string name="distance_msg_1">%1$s Kms</string>
+    <string name="distance_msg_1">%1$s Km.</string>
     <string name="logout">Logout</string>
     <string name="msg_logout">Are you sure you want to logout?</string>
     <string name="private_account">Private Account</string>

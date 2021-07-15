@@ -30,7 +30,7 @@
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@id/ivEmailBack"
             app:layout_constraintTop_toBottomOf="@id/ivEmailBack"
-            app:typeface="MULI_EXTRA_BOLD" />
+            app:typeface="MULI_SEMIBOLD" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvEmailMsg"

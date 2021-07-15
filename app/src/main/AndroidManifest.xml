@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.GenderActivity"></activity>
+        <activity android:name=".activity.BirthdayActivity"></activity>
+        <activity android:name=".activity.GenderActivity" />
         <activity
             android:name=".activity.NameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
