@@ -5,11 +5,20 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.namastey.R
 import com.namastey.databinding.ActivityGenderBinding
+import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.BaseViewModel
 import kotlinx.android.synthetic.main.activity_gender.*
+import javax.inject.Inject
 
 class GenderActivity : BaseActivity<ActivityGenderBinding>() {
+
+    private var isGenderSelected = false
+    private var isInterestInSelected = false
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +28,7 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
     }
 
     fun initData() {
-
+        sessionManager = SessionManager(this)
     }
 
     override fun getViewModel(): BaseViewModel {
@@ -52,19 +61,27 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
             }
 
             tvSelectMale -> {
+                isInterestInSelected = true
+                sessionManager.setInterestIn(1)
                 groupSelectInterest.visibility = View.GONE
                 tvSelectInterest.text = getString(R.string.men)
             }
             tvSelectFemale -> {
+                isInterestInSelected = true
+                sessionManager.setInterestIn(2)
                 groupSelectInterest.visibility = View.GONE
                 tvSelectInterest.text = getString(R.string.female)
             }
             tvSelectEveryone -> {
+                isInterestInSelected = true
+                sessionManager.setInterestIn(3)
                 groupSelectInterest.visibility = View.GONE
                 tvSelectInterest.text = getString(R.string.everyone)
             }
 
             flMen -> {
+                isGenderSelected = true
+                sessionManager.setUserGender(Constants.Gender.male.name)
                 Utils.roundedCornerShape(flMen, "#F8F8F8", "#30B7D6")
                 flFemale.background =
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
@@ -72,6 +89,8 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
             }
             flFemale -> {
+                isGenderSelected = true
+                sessionManager.setUserGender(Constants.Gender.female.name)
                 Utils.roundedCornerShape(flFemale, "#F8F8F8", "#EB3EB0")
                 flMen.background =
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
@@ -79,6 +98,8 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
             }
             flNonBinary -> {
+                isGenderSelected = true
+                sessionManager.setUserGender(Constants.Gender.nonbinary.name)
                 Utils.roundedCornerShape(flNonBinary, "#F8F8F8", "#9748FC")
                 flMen.background =
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
@@ -86,8 +107,16 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
                     ContextCompat.getDrawable(this, R.drawable.rounded_white_solid_white_corner)
             }
 
-            btnContinue ->{
-                openActivity(this@GenderActivity, BirthdayActivity())
+            btnContinue -> {
+                if (isGenderSelected) {
+                    if (isInterestInSelected) {
+                        openActivity(this@GenderActivity, BirthdayActivity())
+                    } else {
+                        showMsg(getString(R.string.empty_interest_in))
+                    }
+                } else {
+                    showMsg(getString(R.string.msg_select_gender))
+                }
             }
         }
     }

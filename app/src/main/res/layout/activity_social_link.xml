@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activity.SocialLinkActivity">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/tv_skip"
+            android:onClick="onClickSkip"
+            android:textColor="@color/color_text_red"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivBack" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:paddingBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSocial"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="@string/connect_socials"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSocialMsg"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:maxLines="2"
+                    android:text="@string/msg_connect_socials"
+                    app:layout_constraintStart_toStartOf="@id/tvSocial"
+                    app:layout_constraintTop_toBottomOf="@id/tvSocial" />
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvFacebook"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:drawableStart="@drawable/ic_link_facebook"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/connect_facebook"
+                    android:textColor="@color/color_blue_facebook"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tvSocial"
+                    app:layout_constraintTop_toBottomOf="@id/tvSocialMsg" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvInstagram"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableStart="@drawable/ic_link_instagram"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/connect_instagram"
+                    android:textColor="@color/color_instagram"
+                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
+                    app:layout_constraintStart_toStartOf="@id/tvSocial"
+                    app:layout_constraintTop_toBottomOf="@id/tvFacebook" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvTwitter"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableStart="@drawable/ic_link_twitter"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/connect_twitter"
+                    android:textColor="@color/color_twitter"
+                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
+                    app:layout_constraintStart_toStartOf="@id/tvSocial"
+                    app:layout_constraintTop_toBottomOf="@id/tvInstagram" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSpotify"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableStart="@drawable/ic_link_spotify"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:text="@string/connect_spotify"
+                    android:textColor="@color/color_spotify"
+                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
+                    app:layout_constraintStart_toStartOf="@id/tvSocial"
+                    app:layout_constraintTop_toBottomOf="@id/tvTwitter" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.namastey.customViews.CustomButton
+            android:id="@+id/btnContinue"
+            style="@style/btnRedAllCornerStyle"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:onClick="onClickContinue"
+            android:text="@string/continues"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

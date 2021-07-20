@@ -30,13 +30,12 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestVerifyOTP(
         phone: String,
-        email: String,
         otp: String,
         deviceType: String,
         deviceToken: String
     ): AppResponse<User> =
         withContext(Dispatchers.IO) {
-            networkRequest.verifyOTPAsync(phone, email, otp,deviceType, deviceToken).await()
+            networkRequest.verifyOTPAsync(phone, otp,deviceType, deviceToken).await()
         }
 
     suspend fun requestToGetVideoLanguage(locale: String): AppResponse<ArrayList<VideoLanguageBean>> =
@@ -122,8 +121,8 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToLogout(): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestToLogout().await() }
 
-    suspend fun requestAddEducation(college: String, year: String): AppResponse<EducationBean> =
-        withContext(Dispatchers.IO) { networkRequest.addEducationAsync(college, year).await() }
+    suspend fun requestAddEducation(course: String): AppResponse<EducationBean> =
+        withContext(Dispatchers.IO) { networkRequest.addEducationAsync(course).await() }
 
     suspend fun requestUpdateEducation(
         id: String,
@@ -189,6 +188,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
 
     suspend fun requestCreateProfile(jsonObject: JsonObject): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestCreateProfileAsync(jsonObject).await() }
+
+    suspend fun requestSignupProfile(jsonObject: JsonObject): AppResponse<User> =
+        withContext(Dispatchers.IO) { networkRequest.requestSignupProfileAsync(jsonObject).await() }
 
     suspend fun requestToDeletePost(jsonObject: JsonObject): AppResponse<Any> =
         withContext(Dispatchers.IO) { networkRequest.requestToDeletePostAsync(jsonObject).await() }

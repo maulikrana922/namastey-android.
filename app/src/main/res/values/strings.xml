@@ -61,6 +61,18 @@
     <string name="btn_signup_tiktok">Continue with Tik Tok</string>
     <string name="btn_signup">Sign up</string>
     <string name="btn_complete_profile">Complete Profile</string>
+    <string name="connect_socials">Connect Socials</string>
+    <string name="msg_connect_socials">Connect your social media handles to your profile</string>
+    <string name="connect_facebook">Connect Facebook</string>
+    <string name="connect_instagram">Connect Instagram</string>
+    <string name="connect_twitter">Connect Twitter</string>
+    <string name="connect_spotify">Connect Spotify</string>
+    <string name="add_video">Add Video</string>
+    <string name="msg_add_video_first">Upload atleast one video to match</string>
+    <string name="msg_add_video_second">You will need to upload videos to your albums to match with other namastey members</string>
+    <string name="msg_no_invite">Sorry! But you don’t have an invitation to join Namastey</string>
+    <string name="msg_no_invite_second">To learn more about namastey, you can visit our Website</string>
+    <string name="got_your_invitation">Got your invitation? Sign in</string>
 
     <string name="phone">Phone</string>
     <string name="email">Email</string>
@@ -98,6 +110,20 @@
     <string name="msg_age">Select your preferred age range</string>
     <string name="you_can_always">You can always change it later</string>
     <string name="select_maximum_distance">Select the maximum distance</string>
+    <string name="msg_education">What is your education qualification?</string>
+    <string name="occupation">Occupation</string>
+    <string name="msg_occupation">What do you do for a living?</string>
+    <string name="msg_empty_education">Please enter education</string>
+    <string name="add_profile_pic">Add Profile Picture</string>
+    <string name="interest">Interest</string>
+    <string name="hint_type_here">Type here...</string>
+    <string name="msg_interest">Choose at least 3 topics that interests you</string>
+    <string name="about_you">About you</string>
+    <string name="msg_about_you">Tell people about yourself</string>
+    <string name="empty_full_name">Please enter full name</string>
+    <string name="empty_username">Please enter username</string>
+    <string name="empty_username_minimum">Please enter username minimum 5 character</string>
+    <string name="empty_interest_in">Please select Interested In</string>
 
     <!--    select gender fragment-->
     <string name="select_gender">Select Gender</string>
@@ -240,7 +266,7 @@
     <string name="hint_enter_year">Enter year</string>
     <string name="msg_empty_college_name">Please enter college name</string>
     <string name="msg_empty_year">Please enter passing year</string>
-    <string name="msg_empty_course">Please enter course name</string>
+    <string name="msg_empty_occupation">Please enter occupation</string>
     <string name="msg_selected_education">Your selected education can not be delete</string>
 
     <!--    List education screen-->
@@ -557,7 +583,7 @@
     <string name="enter_your_email_address">Enter Your \nEmail Address</string>
     <string name="get_otp">Get OTP</string>
     <string name="check_message_for_4_digit_code">Check Message For 6 Digit Code</string>
-    <string name="choose_all_the_language_you_speak">Choose all the languages you speak</string>
+    <string name="choose_the_language_you_speak">Choose the languages you speak</string>
     <string name="selected">Selected</string>
     <string name="_0">0</string>
     <string name="explore_the_globe">Explore The Globe</string>

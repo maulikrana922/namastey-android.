@@ -54,11 +54,11 @@ class InterestAdapter(
                     if (ivVideoCheck.visibility == View.VISIBLE){
                         view.alpha = 0.3f
                         ivVideoCheck.visibility = View.GONE
-                        --ChooseInterestFragment.noOfSelectedImage
+//                        --ChooseInterestFragment.noOfSelectedImage
                     }else{
                         view.alpha = 0.5f
                         ivVideoCheck.visibility = View.VISIBLE
-                        ++ChooseInterestFragment.noOfSelectedImage
+//                        ++ChooseInterestFragment.noOfSelectedImage
                     }
                 }
                 onImageItemClick.onImageItemClick(interestList.get(position))

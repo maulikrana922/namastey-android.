@@ -24,7 +24,6 @@ interface NetworkRequest {
     @POST(Constants.VERIFY_OTP)
     fun verifyOTPAsync(
         @Field(Constants.MOBILE) phone: String,
-        @Field(Constants.EMAIL) email: String,
         @Field(Constants.OTP) otp: String,
         @Field(Constants.DEVICE_TYPE) deviceType: String,
         @Field(Constants.DEVICE_TOKEN) deviceToken: String
@@ -82,7 +81,7 @@ interface NetworkRequest {
     @FormUrlEncoded
     @POST(Constants.ADD_EDUCATION)
     fun addEducationAsync(
-        @Field(Constants.COLLEGE) college: String, @Field(Constants.COURSE) course: String
+        @Field(Constants.COURSE) course: String
     ): Deferred<AppResponse<EducationBean>>
 
     @FormUrlEncoded
@@ -144,6 +143,9 @@ interface NetworkRequest {
 
     @PUT(Constants.CREATE_PROFILE)
     fun requestCreateProfileAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>
+
+    @PUT(Constants.CREATE_PROFILE)
+    fun requestSignupProfileAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<User>>
 
     @HTTP(method = "DELETE", path = Constants.POST_DELETE, hasBody = true)
     fun requestToDeletePostAsync(@Body jsonObject: JsonObject): Deferred<AppResponse<Any>>

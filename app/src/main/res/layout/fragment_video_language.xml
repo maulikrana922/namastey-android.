@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
-            android:text="@string/choose_all_the_language_you_speak"
+            android:text="@string/choose_the_language_you_speak"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@id/tvSelectLanguage"

@@ -80,11 +80,12 @@
             android:id="@+id/ivVideoCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_7sdp"
             android:background="@drawable/circle_white_solid"
             android:src="@drawable/ic_done_red"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/tvInterstTitle"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox

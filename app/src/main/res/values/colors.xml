@@ -39,18 +39,20 @@
     <color name="colorTextHint">#ACACAC</color>
     <color name="colorCardShadow">#00000029</color>
 
-    <color name="color_blue_facebook">#4E598F</color>
+    <color name="color_blue_facebook">#3B5999</color>
     <color name="color_tiktok">#0BF3EB</color>
     <color name="color_yellow_snapchat">#FFCA22</color>
-    <color name="color_instagram">#9D5B10</color>
-    <color name="color_spotify">#7AD768</color>
+    <color name="color_instagram">#FF0100</color>
+    <color name="color_spotify">#00D95F</color>
     <color name="color_linkedin">#4376B1</color>
+    <color name="color_twitter">#55ACEE</color>
 
     <color name="color_pink">#FEE7ED</color>
     <color name="color_search">#F8F8F8</color>
     <color name="color_btn">#F2F2F2</color>
     <color name="color_black_text">#272727</color>
     <color name="color_text">#595959</color>
+    <color name="color_text_red">#F30D46</color>
 
     <color name="gradient_one_end">#28BAD3</color>
     <color name="gradient_two_end">#A19FEE</color>

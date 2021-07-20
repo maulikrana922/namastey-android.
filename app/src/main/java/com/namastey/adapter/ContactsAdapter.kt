@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnInviteClick
 import com.namastey.model.Contact
-import kotlinx.android.synthetic.main.activity_invite.*
 import kotlinx.android.synthetic.main.row_contact_list.view.*
 
 class ContactsAdapter(context: Context,var onInviteClick: OnInviteClick) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {

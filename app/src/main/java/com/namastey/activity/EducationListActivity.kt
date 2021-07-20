@@ -14,6 +14,7 @@ import com.namastey.databinding.ActivityEducationListBinding
 import com.namastey.fragment.EducationFragment
 import com.namastey.listeners.OnEducationItemClick
 import com.namastey.model.EducationBean
+import com.namastey.model.JobBean
 import com.namastey.uiView.EducationView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
@@ -60,6 +61,10 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
         educationAdapter =
             EducationAdapter(this.educationList, this@EducationListActivity, sessionManager, this)
         rvEducationList.adapter = educationAdapter
+    }
+
+    override fun onSuccessResponseJob(jobBean: JobBean) {
+        TODO("Not yet implemented")
     }
 
     override fun getViewModel() = educationViewModel

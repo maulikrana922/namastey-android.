@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center"
+    tools:context=".activity.NotInvitedActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_hand_logo"/>
+
+    <com.namastey.customViews.CustomTextView
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/msg_no_invite"
+        android:textSize="22sp"
+        android:maxLines="3"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.CustomTextView
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/msg_no_invite_second"
+        android:textSize="18sp"
+        android:maxLines="3"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvGotInvite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_55sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:text="@string/got_your_invitation"
+        android:textColor="@color/color_text_red"
+        android:gravity="center"
+        app:typeface="MULI_SEMIBOLD"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        android:padding="@dimen/_8sdp"
+        android:onClick="onClickGotInvite" />
+
+</LinearLayout>
+</layout>

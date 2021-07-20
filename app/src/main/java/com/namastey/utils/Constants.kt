@@ -5,7 +5,7 @@ import java.io.File
 
 object Constants {
     enum class Gender {
-        male, female, other
+        male, female, nonbinary
     }
 
     object TwitterConstants {
@@ -257,7 +257,9 @@ object Constants {
     const val KEY_PURCHASE_DATE= "KEY_PURCHASE_DATE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
     const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
+    const val KEY_BIRTH_DAY = "KEY_BIRTH_DAY"
     const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"
+    const val KEY_IS_INVITED = "KEY_IS_INVITED"
 
 
     //    field key
@@ -277,6 +279,7 @@ object Constants {
     const val PROVIDER_ID = "provider_id"
     const val USER_UNIQUEID = "user_uniqueId"
     const val GENDER = "gender"
+    const val INTERESTED_IN_GENDER = "interested_in_gender"
     const val DATE_OF_BIRTH = "date_of_birth"
     const val LANGUAGE = "language"
     const val INTEREST = "interest"

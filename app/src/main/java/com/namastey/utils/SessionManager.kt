@@ -29,7 +29,9 @@ import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_NOTIFICATION_DATA
 import com.namastey.utils.Constants.KEY_RECENT_LOCATION
 import com.namastey.utils.Constants.KEY_SESSION_TOKEN
+import com.namastey.utils.Constants.KEY_TAGLINE
 import com.namastey.utils.Constants.KEY_USER_ID
+import com.namastey.utils.Constants.LANGUAGE
 import com.namastey.utils.Constants.MOBILE
 import com.namastey.utils.Constants.USER_UNIQUEID
 import java.util.*
@@ -301,6 +303,20 @@ class SessionManager(context: Context) {
         ) else ArrayList<Int>()
     }
 
+    fun setVideoLanguageList(tagList: ArrayList<Int>) {
+        val e = mPrefs.edit()
+        e.putString(LANGUAGE, Gson().toJson(tagList))
+        e.apply()
+    }
+
+    fun getVideoLanguageList(): ArrayList<Int> {
+        val str = mPrefs.getString(LANGUAGE, "")!!
+        val listType = object : TypeToken<ArrayList<Int>>() {}.type
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            listType
+        ) else ArrayList<Int>()
+    }
 
     fun setRecentLocationFromList(recentLocations: RecentLocations?) {
         val e = mPrefs.edit()

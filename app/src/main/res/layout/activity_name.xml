@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ProfileBasicViewModel" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -56,7 +67,6 @@
         app:layout_constraintStart_toStartOf="@id/tvName"
         app:layout_constraintTop_toBottomOf="@id/tvNameMsg"/>
 
-
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUsername"
         style="@style/tvWrapBlackStyle"
@@ -91,6 +101,21 @@
         android:background="@drawable/rounded_white_solid_white_corner"
         app:layout_constraintStart_toStartOf="@id/tvName"
         app:layout_constraintTop_toBottomOf="@id/tvUsernameMsg"/>
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvUniqueNameError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:singleLine="true"
+        android:textColor="@color/colorRed"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/edtUsername"
+        app:layout_constraintStart_toStartOf="@id/edtUsername"
+        app:layout_constraintEnd_toEndOf="@id/edtUsername"
+        app:typeface="MULI_EXTRA_BOLD" />
 
     <com.namastey.customViews.CustomButton
         style="@style/btnRedAllCornerStyle"

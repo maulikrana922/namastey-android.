@@ -2,29 +2,37 @@ package com.namastey.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
+import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.databinding.ActivityBirthdayBinding
-import com.namastey.fragment.SelectGenderFragment
-import com.namastey.fragment.VideoLanguageFragment
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.BaseViewModel
 import kotlinx.android.synthetic.main.activity_birthday.*
+import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.fragment_select_gender.*
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     var datePickerDialog: SingleDateAndTimePickerDialog.Builder? = null
     private lateinit var calendar: Calendar
     private var isDateSelected = false
     private var year = 0
     var month = 0
     var day = 0
+    private var distance = ""
+    private var minAge = ""
+    private var maxAge = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +42,15 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
     }
 
     fun initData() {
+        sessionManager = SessionManager(this)
         val sdf = SimpleDateFormat(Constants.DATE_FORMATE_DISPLAY)
 
         calendar = Calendar.getInstance()
-        if (isDateSelected){
+        if (isDateSelected) {
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, day)
-        }else {
+        } else {
             year = calendar.get(Calendar.YEAR)
             month = calendar.get(Calendar.MONTH)
             day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -52,9 +61,22 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
             tvDistanceDisplay.text = String.format(getString(R.string.distance_msg_1), value)
         }
 
+        rangeDistance.setOnSeekbarFinalValueListener { value ->
+            val jsonObject = JsonObject()
+            distance = value.toString()
+            sessionManager.setStringValue(distance, Constants.DISTANCE)
+
+        }
         rangeAge.setOnRangeSeekbarChangeListener { minValue, maxValue ->
             tvAgeDisplay.text =
                 String.format(getString(R.string.age_message_value), minValue, maxValue)
+        }
+
+        rangeAge.setOnRangeSeekbarFinalValueListener { minValue, maxValue ->
+            Log.d("min max:", "$minValue $maxValue")
+            minAge = minValue.toString()
+            maxAge = maxValue.toString()
+
         }
     }
 
@@ -118,6 +140,7 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
     override fun onBackPressed() {
         finishActivity()
     }
+
     fun onClickBirthdayBack(view: View) {
         onBackPressed()
     }
@@ -137,7 +160,13 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
 
     fun onClickContinue(view: View) {
         if (ageDifferent()) {
-// open next activity
+            sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
+            sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(
+                tvSelectBirthday.text.toString().trim(),
+                Constants.KEY_BIRTH_DAY
+            )
+            openActivity(this@BirthdayActivity, EducationActivity())
         } else {
             object : CustomAlertDialog(
                 this@BirthdayActivity,

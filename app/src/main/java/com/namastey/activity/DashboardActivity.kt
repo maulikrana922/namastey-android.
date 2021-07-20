@@ -69,8 +69,8 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.DashboardView
 import com.namastey.utils.*
 import com.namastey.viewModel.DashboardViewModel
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_alert.*
@@ -99,7 +99,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener, DashboardView, OnFeedItemClick,
+class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
+    DashboardView, OnFeedItemClick,
     OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick {
     private val TAG = "DashboardActivity"
 
@@ -146,7 +147,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var timer = 0L
     private var isFromProfile = false
     private var mRecyclerView: ExoPlayerRecyclerView? = null
-//    private lateinit var videoAutoPlayHelper: VideoAutoPlayHelper
+
+    //    private lateinit var videoAutoPlayHelper: VideoAutoPlayHelper
     private var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
 
@@ -154,6 +156,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
     private var totalCount = 1
+
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -183,6 +186,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             pendingIntent
         )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -193,7 +197,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         activityDashboardBinding.viewModel = dashboardViewModel
 
         startMaxLikeService()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
 
         //addLocationPermission()
 
@@ -222,7 +227,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 }
             }
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -232,9 +244,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        LocationServices.getFusedLocationProviderClient(this@DashboardActivity).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+        LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
+            .requestLocationUpdates(mLocationRequest, mLocationCallback, null);
 
     }
+
     private fun initData() {
         sessionManager.setLoginUser(true)
 //        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
@@ -244,7 +258,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         currentLocationFromDB = dbHelper.getLastRecentLocations()
         mRecyclerView = findViewById(R.id.viewpagerFeed)
 
-        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)){
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
 
             val currentStamp = Timestamp(System.currentTimeMillis())
             val storeTime = Timestamp(sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME))
@@ -258,8 +272,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.d("Days minutes : ", minutes.toString())
             Log.d("Days hours : ", hours.toString())
             Log.d("Days days : ", days.toString())
-            Log.d("current time : ", Utils.convertTimestampToChatFormat(System.currentTimeMillis()).toString())
-            if (minutes > 30){
+            Log.d(
+                "current time : ",
+                Utils.convertTimestampToChatFormat(System.currentTimeMillis()).toString()
+            )
+            if (minutes > 30) {
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
             }
         }
@@ -272,13 +289,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
             ivUser.setImageResource(R.drawable.ic_female_user)
             GlideApp.with(this).load(R.drawable.ic_female)
-                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-                    .fitCenter().into(ivProfile)
-        }else {
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                .fitCenter().into(ivProfile)
+        } else {
             ivUser.setImageResource(R.drawable.ic_top_profile)
             GlideApp.with(this).load(R.drawable.ic_male)
-                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-                    .fitCenter().into(ivProfile)
+                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                .fitCenter().into(ivProfile)
         }
 
 
@@ -363,6 +380,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             openActivity(this, PassportContentActivity())
         }
     }
+
     fun getFeedListApi(subCat: Int) {
         val jsonObject = JSONObject()
 
@@ -426,7 +444,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 dialog.show()
             } else
                 makeRequest()
-        }else{
+        } else {
             getLastKnownLocation()
 //            getLocation()
         }
@@ -455,7 +473,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         )
 
-        if (dashboardBean.is_share == 0){
+        if (dashboardBean.is_share == 0) {
             bottomSheetDialogShare.svShareOption.alpha = 0.3f
         }
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -494,10 +512,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 shareOther(dashboardBean)
             }
         }
-        if (dashboardBean.is_download == 0){
+        if (dashboardBean.is_download == 0) {
             bottomSheetDialogShare.ivShareSave.visibility = View.GONE
             bottomSheetDialogShare.tvShareSave.visibility = View.GONE
-        }else{
+        } else {
             bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
         }
@@ -563,7 +581,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         val message = String.format(
             getString(R.string.profile_link_msg),
             dashboardBean.username
-        ).plus(" \n").plus(String.format(getString(R.string.profile_link),dashboardBean.username))
+        ).plus(" \n").plus(String.format(getString(R.string.profile_link), dashboardBean.username))
 
         addFragment(
             ShareAppFragment.getInstance(
@@ -827,7 +845,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     val skuDetails = skuDetailsList[i]
                     if (skuDetails.sku == "000010") {
                         val price = Utils.splitString(skuDetails.price, 1)
-                        val currencySymbol = CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        val currencySymbol =
+                            CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
                         view.tvTextLowEachBoost.text =
                             currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
                     }
@@ -1352,23 +1371,25 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         feedList.addAll(dashboardList)
 
 
-        if (feedList.size == 0){
+        if (feedList.size == 0) {
             mRecyclerView!!.visibility = View.GONE
             groupNoOne.visibility = View.VISIBLE
             if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
-                GlideLib.loadImage(this, ivProfile, sessionManager.getStringValue(
+                GlideLib.loadImage(
+                    this, ivProfile, sessionManager.getStringValue(
                         Constants.KEY_PROFILE_URL
-                ))
+                    )
+                )
             }
 
-        }else{
+        } else {
             mRecyclerView!!.visibility = View.VISIBLE
             groupNoOne.visibility = View.GONE
         }
         //getVideoUrl()
         feedAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false,0) }
+            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false, false, 0) }
             firstTime = false
         }
         mbNext = dashboardList.size != 0
@@ -1612,7 +1633,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         dialog.show()
                     }
 
-                }else{
+                } else {
                     getLastKnownLocation()
 //                    getLocation()
                 }
@@ -1706,27 +1727,25 @@ private fun prepareAnimation(animation: Animation): Animation? {
     return animation
 }*/
     fun onClickDiscover(view: View) {
-        if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-            completeSignUpDialog()
-        } else {
-            feedList.clear()
-            videoIdList.clear()
-            currentPage = 1
-            totalCount = 1
-            // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-            // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
-            getFeedListApi(0)
-            val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
-            intent.putExtra("categoryList", categoryBeanList)
-            openActivityForResult(intent, Constants.FILTER_OK)
-        }
+//        if (sessionManager.isGuestUser()) {
+//            addFragment(
+//                SignUpFragment.getInstance(
+//                    true
+//                ),
+//                Constants.SIGNUP_FRAGMENT
+//            )
+//        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+//            completeSignUpDialog()
+//        } else {
+        feedList.clear()
+        videoIdList.clear()
+        currentPage = 1
+        totalCount = 1
+        getFeedListApi(0)
+        val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
+        intent.putExtra("categoryList", categoryBeanList)
+        openActivityForResult(intent, Constants.FILTER_OK)
+//        }
 
         /* feedList.clear()
          dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
@@ -1866,7 +1885,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            if(sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                     val currentTime = System.currentTimeMillis()
                     var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
@@ -1886,16 +1905,17 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         openActivity(intent)
                     }
                 }
-            }else{
+            } else {
                 completeSignUpDialog()
             }
         }
     }
 
-    private fun showBoostStartConfirmationDialog(){
+    private fun showBoostStartConfirmationDialog() {
         object : CustomCommonAlertDialog(
             this@DashboardActivity,
-            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString().plus(" ").plus(getString(R.string.msg_boost_left)),
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString().plus(" ")
+                .plus(getString(R.string.msg_boost_left)),
             getString(R.string.msg_boost_start),
             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
             getString(R.string.use_boost),
@@ -1905,7 +1925,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 when (id) {
                     btnAlertOk.id -> {
                         sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
-                        sessionManager.setLongValue(System.currentTimeMillis(), Constants.KEY_BOOST_STAR_TIME)
+                        sessionManager.setLongValue(
+                            System.currentTimeMillis(),
+                            Constants.KEY_BOOST_STAR_TIME
+                        )
                         dashboardViewModel.boostUse()
                     }
                 }
@@ -2184,7 +2207,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
-        if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting){
+        if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting) {
             isFromSetting = false
             feedList.clear()
             currentPage = 1
@@ -2195,7 +2218,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 setupPermissions()
             }, 2000)
 
-        }else{
+        } else {
 //            if (::videoAutoPlayHelper.isInitialized)
 //                videoAutoPlayHelper.reset()
             mRecyclerView!!.onRestartPlayer()
@@ -2432,13 +2455,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedAdapter.notifyItemChanged(position)
 
 //        Handler(Looper.getMainLooper()).postDelayed({
-            if (position < feedList.size) {
+        if (position < feedList.size) {
 //            // viewpagerFeed.currentItem = position + 1
-                mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
-                val nextPosition = position + 1
-                mLayoutManager!!.scrollToPositionWithOffset(nextPosition,0)
-                mRecyclerView!!.playVideo(false,false,nextPosition)
-            }
+            mRecyclerView!!.layoutManager!!.scrollToPosition(position + 1)
+            val nextPosition = position + 1
+            mLayoutManager!!.scrollToPositionWithOffset(nextPosition, 0)
+            mRecyclerView!!.playVideo(false, false, nextPosition)
+        }
 //        }, 1000)
 
         // Handler().postDelayed({ mbtn.setEnabled(true) }, 2000)
@@ -2605,19 +2628,19 @@ private fun prepareAnimation(animation: Animation): Animation? {
 //        }
 //    }
 
-    private fun displayGPSDialog(){
+    private fun displayGPSDialog() {
         object : CustomAlertDialog(
-                this@DashboardActivity,
-                resources.getString(R.string.gps_disable_message),
-                getString(R.string.go_to_settings),
-                getString(R.string.cancel)
+            this@DashboardActivity,
+            resources.getString(R.string.gps_disable_message),
+            getString(R.string.go_to_settings),
+            getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
                         isFromSetting = true;
                         val intent =
-                                Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                         context.startActivity(intent)
                     }
                     btnNeg.id -> {
@@ -2628,7 +2651,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }.show()
 
     }
-//    private fun turnGPSOn() {
+
+    //    private fun turnGPSOn() {
 //        val provider =
 //            Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
 //        Log.e("Dashboard", "provider: $provider")
@@ -2646,32 +2670,33 @@ private fun prepareAnimation(animation: Animation): Animation? {
     @SuppressLint("MissingPermission")
     fun getLastKnownLocation() {
         fusedLocationClient.lastLocation
-                .addOnSuccessListener { location->
-                    if (location != null) {
-                        if (currentLocationFromDB != null) {
-                            latitude = currentLocationFromDB!!.latitude
-                            longitude = currentLocationFromDB!!.longitude
-                        }else {
-                            latitude = location.latitude
-                            longitude = location.longitude
-                        }
-                        getFeedListApi(0)
-                        // use your location object
-                        // get latitude , longitude and other info from this
-                    }else{
-                        displayGPSDialog()
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    if (currentLocationFromDB != null) {
+                        latitude = currentLocationFromDB!!.latitude
+                        longitude = currentLocationFromDB!!.longitude
+                    } else {
+                        latitude = location.latitude
+                        longitude = location.longitude
                     }
-
+                    getFeedListApi(0)
+                    // use your location object
+                    // get latitude , longitude and other info from this
+                } else {
+                    displayGPSDialog()
                 }
 
+            }
+
     }
+
     override fun onLocationChanged(location: Location) {
         latitude = location.latitude
         longitude = location.longitude
         Log.e("DashboardActivity", "latitude: $latitude")
         Log.e("DashboardActivity", "longitude: $longitude")
 
-        if (feedList.size == 0){
+        if (feedList.size == 0) {
             getFeedListApi(0)
         }
     }

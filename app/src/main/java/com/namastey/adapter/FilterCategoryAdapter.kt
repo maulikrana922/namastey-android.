@@ -54,7 +54,7 @@ class FilterCategoryAdapter(
                 tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
                 Utils.rectangleShapeBorder(
                     tvFilterCategory,
-                    Color.parseColor(categoryList[position].endColor)
+                    Color.parseColor(categoryList[position].endColor),false
                 )
 
             }
@@ -78,7 +78,7 @@ class FilterCategoryAdapter(
                         tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
                         Utils.rectangleShapeBorder(
                             tvFilterCategory,
-                            Color.parseColor(categoryList[lastSelectedPos].endColor)
+                            Color.parseColor(categoryList[lastSelectedPos].endColor),false
                         )
                         notifyItemChanged(lastSelectedPos)
                     }
@@ -89,7 +89,7 @@ class FilterCategoryAdapter(
                     tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
                     Utils.rectangleShapeBorder(
                         tvFilterCategory,
-                        Color.parseColor(categoryList[position].endColor)
+                        Color.parseColor(categoryList[position].endColor),false
                     )
                 }
                 onCategoryItemClick.onCategoryItemClick(categoryList[position])

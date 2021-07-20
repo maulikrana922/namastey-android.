@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,9 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityOtpBinding
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.OTPView
+import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.OTPViewModel
 import kotlinx.android.synthetic.main.activity_otp.*
 import javax.inject.Inject
@@ -21,6 +25,9 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     private lateinit var activityOtpBinding: ActivityOtpBinding
     private lateinit var otpViewModel: OTPViewModel
@@ -56,11 +63,43 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
     }
 
     override fun onConfirm() {
-        openActivity(this@OTPActivity, EmailActivity())
+        val otp = edtOne.text.toString().plus(edtTwo.text.toString()).plus(edtThree.text.toString())
+            .plus(edtFour.text.toString())
+            .plus(edtFive.text.toString()).plus(edtSix.text.toString())
+        otpViewModel.verifyOTP(
+            sessionManager.getUserPhone(),
+            otp,
+            Constants.ANDROID,
+            sessionManager.getFirebaseToken()
+        )
+//        openActivity(this@OTPActivity, EmailActivity())
     }
 
     override fun onSuccessResponse(user: User) {
-        TODO("Not yet implemented")
+        Utils.hideKeyboard(this)
+        sessionManager.setVerifiedUser(user.is_verified)
+        sessionManager.setuserUniqueId(user.user_uniqueId)
+        sessionManager.setGuestUser(false)
+        sessionManager.setIntegerValue(user.is_invited,Constants.KEY_IS_INVITED)
+        sessionManager.setIntegerValue(user.purchase, Constants.KEY_IS_PURCHASE)
+        if (user.is_completly_signup == 1) {
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        } else {
+            sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+        }
+
+        if (user.is_register == 1) {
+            if (user.is_invited == 1) {
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                openActivity(intent)
+            } else {
+                openActivity(this, NotInvitedActivity())
+            }
+        } else {
+            openActivity(this, EmailActivity())
+        }
     }
 
     override fun getViewModel() = otpViewModel
@@ -86,8 +125,8 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
         override fun beforeTextChanged(arg0: CharSequence?, arg1: Int, arg2: Int, arg3: Int) {}
         override fun onTextChanged(arg0: CharSequence?, arg1: Int, arg2: Int, arg3: Int) {}
     }
-    
-    fun onClickOtpBack(view: View){
+
+    fun onClickOtpBack(view: View) {
         onBackPressed()
     }
 

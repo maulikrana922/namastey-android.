@@ -73,5 +73,10 @@ interface ActivityComponent {
     fun inject(activity: InAppPurchaseActivity)
     fun inject(activity: InviteActivity)
     fun inject(activity: OTPActivity)
+    fun inject(activity: LanguageActivity)
+    fun inject(activity: InterestActivity)
+    fun inject(activity: EducationActivity)
+    fun inject(activity: NameActivity)
+    fun inject(activity: AddVideoActivity)
 //    fun inject(activity: EmailActivity)
 }

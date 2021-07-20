@@ -40,7 +40,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.BirthdayActivity"></activity>
+        <activity android:name=".activity.NotInvitedActivity"></activity>
+        <activity android:name=".activity.AddVideoActivity" />
+        <activity android:name=".activity.SocialLinkActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.InterestActivity" />
+        <activity android:name=".activity.LanguageActivity" />
+        <activity android:name=".activity.ProfilePicActivity" />
+        <activity android:name=".activity.EducationActivity" />
+        <activity android:name=".activity.BirthdayActivity" />
         <activity android:name=".activity.GenderActivity" />
         <activity
             android:name=".activity.NameActivity"

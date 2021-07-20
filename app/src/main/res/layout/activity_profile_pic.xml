@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.ProfilePicActivity">
+
+    <ImageView
+        android:id="@+id/ivProfilePicBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_45sdp"
+        android:contentDescription="@string/app_name"
+        android:onClick="onClickBack"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_back_new"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/tv_skip"
+        android:onClick="onclickSkip"
+        android:textColor="@color/color_text_red"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfilePicBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePicBack" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvProfilePic"
+        style="@style/tvWrapBlackStyle"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/add_profile_pic"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivProfilePicBack"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <com.namastey.customViews.RoundImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        app:roundedCorners="all"
+        app:cornerRadius="@dimen/_10sdp"
+        android:background="@drawable/rounded_white_solid_white_corner"
+        app:layout_constraintTop_toBottomOf="@id/tvProfilePic"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus_red"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePic"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
+        app:layout_constraintStart_toStartOf="@id/ivProfilePic"
+        app:layout_constraintEnd_toEndOf="@id/ivProfilePic"/>
+
+    <com.namastey.customViews.CustomButton
+        android:id="@+id/btnContinue"
+        style="@style/btnRedAllCornerStyle"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:onClick="onClickContinue"
+        android:text="@string/continues"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

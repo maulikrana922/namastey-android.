@@ -106,6 +106,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     private fun initData() {
         //constraintMain.setBackground(ContextCompat.getDrawable(this, R.drawable.video_tint))
 
+        sessionManager.logout()
         val uri = Uri.parse("android.resource://" + packageName + "/" + R.raw.signupvideo)
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()
@@ -550,6 +551,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     }
 
     override fun onClickContinue() {
+        if(Utils.isOpenRecently()) return
+
         if (signUpViewModel.isValidPhone(edtPhone.text.toString().trim())){
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
@@ -559,17 +562,17 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                 Constants.MOBILE,
                 "+".plus(ccp.selectedCountryCodeAsInt.toString()).plus(edtPhone.text.toString().trim())
             )
-//            signUpViewModel.sendOTP(jsonObject)
+            signUpViewModel.sendOTP(jsonObject)
 
-            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
-            intent.putExtra(Constants.MOBILE,"sdfsdf")
-            openActivity(intent)
+//            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
+//            intent.putExtra(Constants.MOBILE,"sdfsdf")
+//            openActivity(intent)
         }
     }
 
     override fun onSuccessResponse(user: User) {
         sessionManager.setAccessToken(user.token)
-        sessionManager.setUserEmail(user.email)
+//        sessionManager.setUserEmail(user.email)
         sessionManager.setUserPhone(user.mobile)
         edtPhone.text!!.clear()
         Utils.hideKeyboard(this@SignUpActivity)

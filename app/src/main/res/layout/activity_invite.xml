@@ -88,7 +88,7 @@
             android:id="@+id/searchContact"
             style="@style/searchViewStyle"
             android:layout_margin="@dimen/_15sdp"
-            android:background="@drawable/rounded_search"
+            android:background="@drawable/rounded_white_solid_white_corner"
             app:defaultQueryHint="@string/search_user"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +162,7 @@
                     android:paddingEnd="@dimen/_15sdp"
                     android:text="@string/btn_search_contacts"
                     android:textAllCaps="false"
-                    android:textColor="#F30D46"
+                    android:textColor="@color/color_text_red"
                     app:typeface="MULI_EXTRA_BOLD" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

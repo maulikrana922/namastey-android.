@@ -13,6 +13,7 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentEducationBinding
 import com.namastey.model.EducationBean
+import com.namastey.model.JobBean
 import com.namastey.uiView.EducationView
 import com.namastey.utils.*
 import com.namastey.viewModel.EducationViewModel
@@ -135,6 +136,10 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
     override fun onSuccessEducationList(educationList: ArrayList<EducationBean>) {
     }
 
+    override fun onSuccessResponseJob(jobBean: JobBean) {
+        TODO("Not yet implemented")
+    }
+
     override fun getViewModel() = educationViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -157,7 +162,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                         showMsg(getString(R.string.msg_empty_college_name))
                     }
                     TextUtils.isEmpty(edtEducationCourse.text.toString()) -> {
-                        showMsg(getString(R.string.msg_empty_course))
+                        showMsg(getString(R.string.msg_empty_occupation))
                     }
                     else -> {
                         if (isFromListing) {
@@ -169,14 +174,12 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                                 )
                             } else {
                                 educationViewModel.addEducation(
-                                    edtCollegeName.text.toString().trim(),
                                     edtEducationCourse.text.toString().trim()
                                 )
                             }
                         } else {
                             if (sessionManager.getEducationBean().college.isEmpty())
                                 educationViewModel.addEducation(
-                                    edtCollegeName.text.toString().trim(),
                                     edtEducationCourse.text.toString().trim()
                                 )
                             else

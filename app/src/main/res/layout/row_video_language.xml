@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipChildren="true"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0.0px"
-    android:elevation="4dp"
-    app:cardCornerRadius="@dimen/_5sdp"
-    app:cardUseCompatPadding="true"
-    card_view:cardElevation="5dp"
-    card_view:cardPreventCornerOverlap="false">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_search">
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvFirstLanguage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:padding="@dimen/_4sdp"
+            android:gravity="center"
+            android:padding="@dimen/_20sdp"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +29,7 @@
             android:paddingBottom="@dimen/_5sdp"
             android:textColor="@color/colorDarkGray"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ckbLanguage"
             app:layout_constraintHorizontal_bias="0.5"
@@ -52,13 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:button="@drawable/custom_checkbox"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/tvSecondLanguage"
-            app:layout_constraintTop_toBottomOf="@+id/tvFirstLanguage" />
+            app:layout_constraintHorizontal_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
