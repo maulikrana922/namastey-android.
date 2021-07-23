@@ -53,10 +53,12 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
     }
 
     private fun initData() {
+/*
         if (sessionManager.getUserGender() == Constants.Gender.male.name)
             llSettingBackground.background = getDrawable(R.drawable.blue_bar)
         else
             llSettingBackground.background = getDrawable(R.drawable.pink_bar)
+*/
 
         addFragment(
             AccountSettingsFragment(),

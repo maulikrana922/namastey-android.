@@ -31,7 +31,8 @@
         app:layout_constraintEnd_toStartOf="@id/tvUnblockLabel"
         app:layout_constraintStart_toEndOf="@id/ivBlockUser"
         app:layout_constraintTop_toTopOf="@id/ivBlockUser"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:typeface="MULI_SEMIBOLD" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidlineBlockUser"
@@ -45,19 +46,19 @@
         style="@style/tvWrapWhiteStyle"
         android:layout_width="0dp"
         android:paddingEnd="@dimen/_3sdp"
-        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="@id/ivBlockUser"
         app:layout_constraintEnd_toEndOf="@+id/tvBlockedUserName"
         app:layout_constraintStart_toStartOf="@id/tvBlockedUserName"
         app:layout_constraintTop_toBottomOf="@id/guidlineBlockUser"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:typeface="MULI_REGULAR" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUnblockLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:background="@drawable/rectangle_white_solid_all_corner_small"
+        android:background="@drawable/rounded_white_solid_white_corner"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"

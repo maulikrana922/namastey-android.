@@ -26,15 +26,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <com.namastey.customViews.CustomTextView
@@ -44,14 +44,14 @@
                         android:gravity="start|center"
                         android:text="@string/general"
                         android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_18sdp"
                         app:typeface="MULI_SEMIBOLD" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -62,7 +62,7 @@
                             android:gravity="start|center"
                             android:text="@string/matches"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -80,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -91,7 +91,7 @@
                             android:gravity="start|center"
                             android:text="@string/comments"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -120,7 +120,7 @@
                             android:gravity="start|center"
                             android:text="@string/new_followers"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -138,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -149,7 +149,7 @@
                             android:gravity="start|center"
                             android:text="@string/mentions"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -169,15 +169,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@color/colorLightGrayView" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/colorWhite" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <com.namastey.customViews.CustomTextView
@@ -187,14 +187,14 @@
                         android:gravity="start|center"
                         android:text="@string/privacy"
                         android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_18sdp"
                         app:typeface="MULI_SEMIBOLD" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -205,7 +205,7 @@
                             android:gravity="start|center"
                             android:text="@string/direct_messages"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -225,15 +225,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@color/colorLightGrayView" />
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/colorWhite" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="vertical">
 
                     <com.namastey.customViews.CustomTextView
@@ -243,14 +243,14 @@
                         android:gravity="start|center"
                         android:text="@string/video_updates"
                         android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_18sdp"
                         app:typeface="MULI_SEMIBOLD" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -261,7 +261,7 @@
                             android:gravity="start|center"
                             android:text="@string/videos_from_accounts_you_follow"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"
@@ -279,7 +279,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -290,7 +290,7 @@
                             android:gravity="start|center"
                             android:text="@string/videos_suggestions"
                             android:textColor="@color/colorBlack"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                         <View
                             android:layout_width="0dp"

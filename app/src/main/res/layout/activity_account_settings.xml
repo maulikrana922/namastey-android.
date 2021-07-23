@@ -12,112 +12,120 @@
             name="viewModel"
             type="com.namastey.viewModel.AccountSettingsViewModel" />
     </data>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <androidx.core.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/llSettingBackground"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/pink_bar"
-                android:contentDescription="@string/app_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/ivAccountSettingBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickAccountSettingsBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/llSettingBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvHeader"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:text="@string/account_settings"
-                android:textSize="20sp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
-                app:layout_constraintStart_toEndOf="@id/ivAccountSettingBack"
-                app:layout_constraintTop_toTopOf="@id/ivAccountSettingBack"
-                app:typeface="MULI_SEMIBOLD" />
+                <ImageView
+                    android:id="@+id/ivAccountSettingBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickAccountSettingsBack"
+                    android:src="@drawable/ic_back_new"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.namastey.customViews.CustomTextView
-                android:visibility="gone"
-                android:id="@+id/tvSaveLanguage"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/save"
-                android:onClick="onClickSaveLanguage"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
-                app:layout_constraintTop_toTopOf="@id/ivAccountSettingBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvHeader"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/account_settings"
+                    android:textSize="@dimen/actionBarTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivAccountSettingBack"
+                    app:layout_constraintTop_toTopOf="@id/ivAccountSettingBack"
+                    app:typeface="MULI_SEMIBOLD" />
 
-           <!-- <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSettingBackground" />-->
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSaveLanguage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:onClick="onClickSaveLanguage"
+                    android:text="@string/save"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ivAccountSettingBack"
+                    app:typeface="MULI_SEMIBOLD" />
 
-
-            <FrameLayout
-                android:id="@+id/flContainer"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:fitsSystemWindows="true"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSettingBackground" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <!-- <FrameLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginBottom="@dimen/_15sdp"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/llSettingBackground" />-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <FrameLayout
+                    android:id="@+id/flContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fitsSystemWindows="true"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivAccountSettingBack" />
 
-    </androidx.core.widget.NestedScrollView>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivAccountSettingBack" />
 
-    <FrameLayout
-        android:id="@+id/flContainerFindFriend"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:orientation="horizontal"/>
 
-</FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/flContainerFindFriend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="horizontal" />
+
+    </LinearLayout>
 </layout>

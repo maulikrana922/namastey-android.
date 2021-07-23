@@ -320,7 +320,7 @@
     <string name="discovery_location_msg">Change your location to see namastey members in other cities.</string>
     <string name="distance">Distance</string>
     <string name="account_settings">Account Settings</string>
-    <string name="setting_interest_in">I\'m Interested In…</string>
+    <string name="setting_interest_in">Interested In</string>
     <string name="distance_msg">Up to %1$s kilometers away</string>
     <string name="distance_msg_1">%1$s Km.</string>
     <string name="logout">Logout</string>

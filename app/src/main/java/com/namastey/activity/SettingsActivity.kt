@@ -26,7 +26,10 @@ import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
+import kotlinx.android.synthetic.main.activity_gender.*
 import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.activity_settings.groupSelectInterest
+import kotlinx.android.synthetic.main.activity_settings.tvSelectInterest
 import kotlinx.android.synthetic.main.dialog_alert.*
 import javax.inject.Inject
 
@@ -78,18 +81,52 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
     private fun initData() {
 
+/*
         if (sessionManager.getUserGender() == Constants.Gender.male.name)
             llSettingBackground.background = getDrawable(R.drawable.blue_bar)
         else
             llSettingBackground.background = getDrawable(R.drawable.pink_bar)
+*/
 
         if (sessionManager.getInterestIn() != 0) {
             interestIn = sessionManager.getInterestIn()
 
             when (interestIn) {
-                1 -> setSelectedTextColor(tvInterestMen, ivMenSelect)
-                2 -> setSelectedTextColor(tvInterestWomen, ivWomenSelect)
-                3 -> setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
+
+                1 -> {
+                    tvSelectInterest.text = getString(R.string.men)
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_male_sign,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
+//                    setSelectedTextColor(tvInterestMen, ivMenSelect)
+                }
+
+                2 -> {
+                    tvSelectInterest.text = getString(R.string.women)
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_female_sign,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
+
+//                    setSelectedTextColor(tvInterestWomen, ivWomenSelect)
+                }
+
+                3 -> {
+                    tvSelectInterest.text = getString(R.string.everyone)
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_female_sign,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
+
+//                    setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
+                }
             }
         }
 
@@ -249,9 +286,11 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         tvInterestWomen.setTextColor(Color.GRAY)
         tvInterestEveryone.setTextColor(Color.GRAY)
 
+/*
         ivMenSelect.visibility = View.GONE
         ivWomenSelect.visibility = View.GONE
         ivEveryoneSelect.visibility = View.GONE
+*/
 
         imageView.visibility = View.VISIBLE
 
@@ -270,17 +309,53 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     fun onClickSettingInterestIn(view: View) {
         val jsonObject = JsonObject()
         when (view) {
+
+            tvSelectInterest -> {
+                if (groupSelectInterest.visibility == View.VISIBLE)
+                    groupSelectInterest.visibility = View.GONE
+                else
+                    groupSelectInterest.visibility = View.VISIBLE
+            }
+
+
             tvInterestMen -> {
                 interestIn = 1
-                setSelectedTextColor(tvInterestMen, ivMenSelect)
+                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_male_sign,
+                    0,
+                    R.drawable.ic_drop_down,
+                    0
+                )
+
+                groupSelectInterest.visibility = View.GONE
+                tvSelectInterest.text = getString(R.string.men)
+//                setSelectedTextColor(tvInterestMen, ivMenSelect)
             }
             tvInterestWomen -> {
                 interestIn = 2
-                setSelectedTextColor(tvInterestWomen, ivWomenSelect)
+                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_female_sign,
+                    0,
+                    R.drawable.ic_drop_down,
+                    0
+                )
+
+                groupSelectInterest.visibility = View.GONE
+                tvSelectInterest.text = getString(R.string.women)
+//                setSelectedTextColor(tvInterestWomen, ivWomenSelect)
             }
             tvInterestEveryone -> {
                 interestIn = 3
-                setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
+                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_female_sign,
+                    0,
+                    R.drawable.ic_drop_down,
+                    0
+                )
+
+                groupSelectInterest.visibility = View.GONE
+                tvSelectInterest.text = getString(R.string.everyone)
+//                setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
             }
 //            1 = Men
 //            2 = Women

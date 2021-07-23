@@ -13,27 +13,32 @@
             type="com.namastey.viewModel.SettingsViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorWhite"
-        android:fillViewport="true">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_15sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/llSettingBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_15sdp">
+            android:background="@drawable/blue_bar"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/llSettingBackground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_bar"
-                android:contentDescription="@string/app_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/llTopLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivSettingBack"
@@ -43,410 +48,434 @@
                 android:layout_marginTop="@dimen/_45sdp"
                 android:contentDescription="@string/app_name"
                 android:onClick="onClickSettingsBack"
-                android:src="@drawable/ic_back"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_new"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.namastey.customViews.CustomTextView
-                style="@style/tvWrapWhiteStyle"
+                android:id="@+id/txtSettingTitle"
+                style="@style/tvWrapBlackStyle"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_45sdp"
                 android:text="@string/Settings"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/ivSettingBack"
+                android:textSize="@dimen/actionBarTitle"
                 app:layout_constraintStart_toEndOf="@id/ivSettingBack"
-                app:layout_constraintTop_toTopOf="@id/ivSettingBack"
-                app:typeface="MULI_SEMIBOLD" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvProfileType"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/private_account"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llSettingBackground"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchPrivateAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_15sdp"
-                app:layout_constraintBottom_toBottomOf="@id/tvProfileType"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvProfileType" />
-
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvHideProfile"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/hide_profile"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileType"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchHideProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_15sdp"
-                app:layout_constraintBottom_toBottomOf="@id/tvHideProfile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvHideProfile" />
-
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvHideProfileMsg"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:maxLines="5"
-                android:text="@string/hide_profile_msg_1"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvHideProfile" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvInterestIn"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/setting_interest_in"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvHideProfileMsg"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/viewInterest"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/rounded_white_solid_black_border"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvInterestIn">
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvInterestMen"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:onClick="onClickSettingInterestIn"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:text="@string/men"
-                    android:textColor="@color/colorDarkGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:typeface="MULI_SEMIBOLD" />
-
-                <ImageView
-                    android:id="@+id/ivMenSelect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_3sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_done_red"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/tvInterestMen"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvInterestMen" />
-
-                <View
-                    android:id="@+id/viewFirst"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/colorBlack"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvInterestMen" />
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvInterestWomen"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:onClick="onClickSettingInterestIn"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:text="@string/women"
-                    android:textColor="@color/colorDarkGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tvInterestMen"
-                    app:layout_constraintTop_toBottomOf="@id/viewFirst"
-                    app:typeface="MULI_SEMIBOLD" />
-
-                <ImageView
-                    android:id="@+id/ivWomenSelect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_3sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_done_red"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/tvInterestWomen"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvInterestWomen" />
-
-                <View
-                    android:id="@+id/viewSecond"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/colorBlack"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvInterestWomen" />
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvInterestEveryone"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:onClick="onClickSettingInterestIn"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_12sdp"
-                    android:text="@string/everyone"
-                    android:textColor="@color/colorDarkGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tvInterestMen"
-                    app:layout_constraintTop_toBottomOf="@id/viewSecond"
-                    app:typeface="MULI_SEMIBOLD" />
-
-                <ImageView
-                    android:id="@+id/ivEveryoneSelect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_3sdp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_done_red"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/tvInterestEveryone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvInterestEveryone" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvDiscoverySettings"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/discovery_settings"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/viewInterest"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <LinearLayout
-                android:id="@+id/llDiscovery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/rounded_white_solid_black_border"
-                android:orientation="horizontal"
-                android:padding="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvDiscoverySettings">
-
-                <com.namastey.customViews.CustomTextView
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:text="@string/location"
-                    android:textColor="@color/colorDarkGray"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:typeface="MULI_SEMIBOLD" />
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvMyCurrentLocation"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:onClick="onClickMyCurrentLocation"
-                    android:text="@string/my_current_location"
-                    android:textColor="@color/colorButtonRed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:typeface="MULI_SEMIBOLD" />
-            </LinearLayout>
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvDiscoverMessage"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:maxLines="3"
-                android:text="@string/discovery_location_msg"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/llDiscovery" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvSettingAge"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/age_range"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvDiscoverMessage"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvSettingAgeMessage"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:maxLines="2"
-                android:text="@string/age_message"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvSettingAge" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvSettingAgeValue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/_5sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/tvSettingAgeMessage"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toEndOf="@id/tvSettingAgeMessage"
-                app:layout_constraintTop_toTopOf="@id/tvSettingAgeMessage" />
-
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-                android:id="@+id/rangeSettingAge"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:bar_color="@color/colorDarkGray"
-                app:bar_highlight_color="@color/colorButtonRed"
-                app:corner_radius="10"
-                app:data_type="_integer"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvSettingAgeMessage"
-                app:left_thumb_color="@color/colorButtonRed"
-                app:left_thumb_color_pressed="@color/colorButtonRed"
-                app:max_value="100"
-                app:min_value="18"
-                app:right_thumb_color="@color/colorButtonRed"
-                app:right_thumb_color_pressed="@color/colorButtonRed" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvSettingDistance"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/distance"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/rangeSettingAge"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvSettingDistanceMessage"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:maxLines="2"
-                android:text="@string/distance_msg_1"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvSettingDistance" />
-
-            <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
-                android:id="@+id/seekbarSettingDistance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
-                app:bar_color="@color/colorDarkGray"
-                app:bar_highlight_color="@color/colorButtonRed"
-                app:corner_radius="10"
-                app:data_type="_integer"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvSettingDistanceMessage"
-                app:left_thumb_color="@color/colorButtonRed"
-                app:left_thumb_color_pressed="@color/colorButtonRed"
-                app:max_value="160"
-                app:min_value="1" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvGlobal"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:text="@string/tv_global"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
-                app:typeface="MULI_EXTRA_BOLD" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchGlobal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvGlobal"
-                app:layout_constraintBottom_toBottomOf="@id/tvGlobal"/>
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvGlobalMessage"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:maxLines="3"
-                android:text="@string/msg_global"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@id/switchGlobal"
-                app:layout_constraintStart_toStartOf="@id/tvGlobal"
-                app:layout_constraintTop_toBottomOf="@id/switchGlobal" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAccountSettings"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/rounded_white_solid_black_border"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:onClick="onClickAccountSettings"
-                android:padding="@dimen/_12sdp"
-                android:text="@string/account_settings"
-                android:textColor="@color/colorDarkGray"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvGlobalMessage"
-                app:typeface="MULI_SEMIBOLD" />
-
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvLogout"
-                style="@style/tvWrapWhiteStyle"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/rounded_white_solid_black_border"
-                android:onClick="onClickLogout"
-                android:padding="@dimen/_12sdp"
-                android:text="@string/logout"
-                android:textColor="@color/colorButtonRed"
-                app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
-                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
-                app:layout_constraintTop_toBottomOf="@id/tvAccountSettings"
+                app:layout_constraintTop_toTopOf="parent"
                 app:typeface="MULI_SEMIBOLD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        <!--
+                    <ImageView
+                        android:id="@+id/ivSettingBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_45sdp"
+                        android:contentDescription="@string/app_name"
+                        android:onClick="onClickSettingsBack"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_back_new"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/txtSettingTitle"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_45sdp"
+                        android:text="@string/Settings"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toEndOf="@id/ivSettingBack"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_SEMIBOLD" />
+        -->
+
+        <!--            TODO: Bottom-->
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:fillViewport="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTopLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/llBottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvProfileType"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/private_account"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchPrivateAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvProfileType"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvProfileType" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvHideProfile"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/hide_profile"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileType"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchHideProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvHideProfile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvHideProfile" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvHideProfileMsg"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLines="5"
+                    android:text="@string/hide_profile_msg_1"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvHideProfile" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvInterestIn"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/setting_interest_in"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvHideProfileMsg"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/newLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/rounded_white_solid_white_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvInterestIn">
+
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvSelectInterest"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="0dp"
+                        android:drawableEnd="@drawable/ic_drop_down"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:onClick="onClickSettingInterestIn"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/select"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="#BBBBBB"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvSelectInterest" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvInterestMen"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:drawableStart="@drawable/ic_male_sign"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:onClick="onClickSettingInterestIn"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/men"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/viewGender" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvInterestWomen"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:drawableStart="@drawable/ic_female_sign"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:onClick="onClickSettingInterestIn"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/female"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvInterestMen" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvInterestEveryone"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:drawableStart="@drawable/ic_female_sign"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:onClick="onClickSettingInterestIn"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/everyone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvInterestWomen" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/groupSelectInterest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="viewGender, tvInterestMen,tvInterestWomen,tvInterestEveryone" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDiscoverySettings"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/discovery_settings"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/newLayout"
+                    app:typeface="MULI_SEMIBOLD" />
+                <!--
+                            <com.namastey.customViews.CustomTextView
+                                android:id="@+id/tvDiscoverySettings"
+                                style="@style/tvWrapWhiteStyle"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:text="@string/discovery_settings"
+                                android:textColor="@color/colorBlack"
+                                app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                                app:layout_constraintTop_toBottomOf="@id/viewInterest"
+                                app:typeface="MULI_EXTRA_BOLD" />
+                -->
+
+                <LinearLayout
+                    android:id="@+id/llDiscovery"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/rounded_white_solid_white_corner"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvDiscoverySettings">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:text="@string/location"
+                        android:textColor="@color/colorDarkGray"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvMyCurrentLocation"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="0dp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:onClick="onClickMyCurrentLocation"
+                        android:text="@string/my_current_location"
+                        android:textColor="@color/colorButtonRed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_SEMIBOLD" />
+                </LinearLayout>
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvDiscoverMessage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLines="3"
+                    android:text="@string/discovery_location_msg"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/llDiscovery" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGlobal"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/tv_global"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvDiscoverMessage"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchGlobal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvGlobal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvGlobal" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGlobalMessage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLines="3"
+                    android:text="@string/msg_global"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/switchGlobal"
+                    app:layout_constraintStart_toStartOf="@id/tvGlobal"
+                    app:layout_constraintTop_toBottomOf="@id/switchGlobal" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSettingAge"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/age_range"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvGlobalMessage"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSettingAgeMessage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLines="2"
+                    android:text="@string/age_message"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvSettingAge" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSettingAgeValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/tvSettingAge"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toEndOf="@id/tvSettingAgeMessage"
+                    app:layout_constraintTop_toTopOf="@id/tvSettingAgeMessage" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/rangeSettingAge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:bar_color="@color/colorDarkGray"
+                    app:bar_highlight_color="@color/colorButtonRed"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:layout_constraintEnd_toStartOf="@id/tvSettingAgeMessage"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvSettingAge"
+                    app:left_thumb_color="@color/colorButtonRed"
+                    app:left_thumb_color_pressed="@color/colorButtonRed"
+                    app:max_value="100"
+                    app:min_value="18"
+                    app:right_thumb_color="@color/colorButtonRed"
+                    app:right_thumb_color_pressed="@color/colorButtonRed" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSettingDistance"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="@string/distance"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/rangeSettingAge"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvSettingDistanceMessage"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLines="2"
+                    android:text="@string/distance_msg_1"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvSettingDistance" />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                    android:id="@+id/seekbarSettingDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:bar_color="@color/colorDarkGray"
+                    app:bar_highlight_color="@color/colorButtonRed"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:layout_constraintEnd_toStartOf="@id/tvSettingDistanceMessage"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvSettingDistance"
+                    app:left_thumb_color="@color/colorButtonRed"
+                    app:left_thumb_color_pressed="@color/colorButtonRed"
+                    app:max_value="160"
+                    app:min_value="1" />
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvAccountSettings"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:drawableEnd="@drawable/ic_arrow_right_red"
+                    android:onClick="onClickAccountSettings"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_12sdp"
+                    android:text="@string/account_settings"
+                    android:textColor="@color/colorRed"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/seekbarSettingDistance"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvLogout"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="0dp"
+                    android:onClick="onClickLogout"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_12sdp"
+                    android:text="@string/logout"
+                    android:textColor="@color/colorButtonRed"
+                    app:layout_constraintEnd_toEndOf="@id/switchHideProfile"
+                    app:layout_constraintStart_toStartOf="@id/tvHideProfile"
+                    app:layout_constraintTop_toBottomOf="@id/tvAccountSettings"
+                    app:typeface="MULI_SEMIBOLD" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
