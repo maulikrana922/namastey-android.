@@ -44,14 +44,15 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_8sdp"
                     android:onClick="onClickPostVideoBack"
-                    android:src="@drawable/ic_back"
+                    android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvTitlePostVideo"
-                    style="@style/tvTitleStyle"
+                    style="@style/tvTitleBlackStyle"
                     android:text="@string/post"
                     app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"
                     app:layout_constraintStart_toEndOf="@id/ivPostVideo"
@@ -86,7 +87,7 @@
                     android:maxLines="4"
                     android:minLines="4"
                     android:padding="@dimen/_5sdp"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/post_video_text"
                     app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgTop"
@@ -124,11 +125,13 @@
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAddto"
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:layout_marginTop="@dimen/_25sdp"
                     android:paddingEnd="@dimen/_3sdp"
                     android:text="@string/album"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/color_text"
+                    android:drawableStart="@drawable/ic_folder"
+                    android:drawablePadding="@dimen/_5sdp"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/ivSelectCover" />
 
@@ -153,19 +156,20 @@
                     android:id="@+id/tvShareWith"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginTop="@dimen/_25sdp"
+                    android:drawableStart="@drawable/ic_unlock"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:text="@string/shared_with"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/color_text"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/tvAddto" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvShare"
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:drawableEnd="@drawable/ic_arrow_right"
                     android:gravity="center"
                     android:onClick="onClickShareWith"
                     android:text="@string/everyone"
-                    android:textColor="@color/colorDarkGray"
                     app:layout_constraintBottom_toBottomOf="@id/tvShareWith"
                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                     app:layout_constraintTop_toTopOf="@id/tvShareWith" />
@@ -175,7 +179,9 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/comments_off"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/color_text"
+                    android:drawableStart="@drawable/ic_comment"
+                    android:drawablePadding="@dimen/_5sdp"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/tvShareWith" />
 
@@ -267,7 +273,7 @@
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnPostVideo"
-                    style="@style/btnRedStyle"
+                    style="@style/btnRedAllCornerStyle"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:onClick="onClickPostVideo"

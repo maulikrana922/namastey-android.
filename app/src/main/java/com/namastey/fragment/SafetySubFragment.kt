@@ -198,15 +198,15 @@ class SafetySubFragment : BaseFragment<FragmentSafetySubBinding>(), SafetySubVie
         super.onResume()
         when (fromSafetyValue) {
             1 -> {
-                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.allow_messages_from))
                 tvSafetySubMessage.text = getString(R.string.safety_sub_who_can_send_you_direct_msg)
             }
             2 -> {
-                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.follower_visibility))
                 tvSafetySubMessage.visibility = View.GONE
             }
             3 -> {
-                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
+                (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.allow_comments_from))
                 tvSafetySubMessage.visibility = View.GONE
     //            tvSafetySubMessage.text =
     //                getString(R.string.safety_sub_who_can_comments_on_your_video_msg)

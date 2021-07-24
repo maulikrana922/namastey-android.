@@ -101,6 +101,17 @@
         <item name="typeface">MULI_EXTRA_BOLD</item>
     </style>
 
+    <style name="tvTitleBlackStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/color_black_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginStart">@dimen/_20sdp</item>
+        <item name="typeface">MULI_EXTRA_BOLD</item>
+    </style>
+
     <style name="edtOTP">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>

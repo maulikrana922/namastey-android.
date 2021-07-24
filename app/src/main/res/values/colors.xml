@@ -67,6 +67,7 @@
     <color name="gradient_four_start">#FFEE84</color>
     <color name="gradient_five_start">#8BC8E6</color>
     <color name="gradient_six_start">#E376E0</color>
+    <color name="post_video_text">#BBBBBB</color>
 
     <array name="gradient_color_end">
         <item>@color/gradient_one_end</item>

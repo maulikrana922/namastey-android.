@@ -67,11 +67,10 @@
                 app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
-                style="@style/tvWrapWhiteStyle"
+                style="@style/tvWrapBlackStyle"
                 android:layout_width="match_parent"
                 android:gravity="start|center"
                 android:text="@string/privacy_options"
-                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_17sdp"
                 app:typeface="MULI_EXTRA_BOLD" />
 
@@ -91,10 +90,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|center"
-                    android:text="@string/allow_your_video_to_download"
-                    android:textColor="@color/colorBlack"
+                    android:text="@string/allow_video_downloads"
+                    android:textColor="@color/color_text"
                     android:textSize="14sp"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_REGULAR" />
 
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -119,10 +118,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|center"
-                    android:text="@string/who_can_send_you_direct_msg"
-                    android:textColor="@color/colorBlack"
+                    android:text="@string/allow_messages_from"
+                    android:textColor="@color/color_text"
                     android:textSize="14sp"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_REGULAR" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvWhoCanSendYouDirectMsgEveryone"
@@ -153,10 +152,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|center"
-                    android:text="@string/allow_your_to_share_your_profile"
-                    android:textColor="@color/colorBlack"
+                    android:text="@string/allow_profile_shares"
+                    android:textColor="@color/color_text"
                     android:textSize="14sp"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_REGULAR" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchAllowYourToShareYourProfile"
@@ -180,10 +179,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|center"
-                    android:text="@string/who_can_see_your_followers"
-                    android:textColor="@color/colorBlack"
+                    android:text="@string/follower_visibility"
+                    android:textColor="@color/color_text"
                     android:textSize="14sp"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_REGULAR" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvWhoCanSeeYourFollowersEveryone"
@@ -214,10 +213,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="start|center"
-                    android:text="@string/who_can_comments_on_your_video"
-                    android:textColor="@color/colorBlack"
+                    android:text="@string/allow_comments_from"
+                    android:textColor="@color/color_text"
                     android:textSize="14sp"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_REGULAR" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvWhoCanCommentsOnYourVideosEveryone"

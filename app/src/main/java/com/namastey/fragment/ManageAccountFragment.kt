@@ -1,5 +1,6 @@
 package com.namastey.fragment
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
 import com.namastey.activity.SignUpActivity
+import com.namastey.customViews.CustomTextView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentManageAccountBinding
 import com.namastey.uiView.ManageAccountView
@@ -20,7 +22,7 @@ import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.fragment_manage_account.*
 import javax.inject.Inject
 
-class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), ManageAccountView{
+class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), ManageAccountView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -121,6 +123,21 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
     }
 
     private fun onDeleteAccountClick() {
+
+        val deleteDialog = Dialog(requireActivity(), R.style.MyDialogTheme)
+        deleteDialog.setContentView(R.layout.dialog_delete)
+        deleteDialog.setCancelable(false)
+        deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        deleteDialog.findViewById<CustomTextView>(R.id.btnPos).setOnClickListener {
+            manageAccountViewModel.removeAccount()
+            deleteDialog.dismiss()
+        }
+        deleteDialog.findViewById<CustomTextView>(R.id.btnNeg).setOnClickListener {
+            deleteDialog.dismiss()
+        }
+        deleteDialog.show()
+
+/*
         object : CustomAlertDialog(
             requireActivity(),
             resources.getString(R.string.msg_delete),
@@ -138,6 +155,7 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
                 }
             }
         }.show()
+*/
     }
 
     override fun onLogoutSuccess(msg: String) {
@@ -152,7 +170,7 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
     }
 
     override fun onSuccess(msg: String) {
-       Log.e("msg",msg)
+        Log.e("msg", msg)
         sessionManager.logout()
         val intent = Intent(requireActivity(), SignUpActivity::class.java)
         intent.flags =

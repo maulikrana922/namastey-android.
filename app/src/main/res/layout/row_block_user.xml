@@ -9,7 +9,7 @@
 
     <com.namastey.customViews.RoundImageView
         android:id="@+id/ivBlockUser"
-        android:layout_width="@dimen/_35sdp"
+        android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
@@ -18,15 +18,15 @@
         app:layout_constraintBottom_toBottomOf="@id/guidlineBlockUser"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidlineBlockUser"
-        app:roundedCorners="topRight|bottomLeft" />
+        app:roundedCorners="all" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvBlockedUserName"
-        style="@style/tvWrapWhiteStyle"
+        style="@style/tvWrapBlackStyle"
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_3sdp"
-        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_16sdp"
         app:layout_constraintBottom_toTopOf="@id/guidlineBlockUser"
         app:layout_constraintEnd_toStartOf="@id/tvUnblockLabel"
         app:layout_constraintStart_toEndOf="@id/ivBlockUser"
@@ -43,9 +43,11 @@
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvBlockedUseJob"
-        style="@style/tvWrapWhiteStyle"
+        style="@style/tvWrapBlackStyle"
         android:layout_width="0dp"
         android:paddingEnd="@dimen/_3sdp"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/color_text"
         app:layout_constraintBottom_toBottomOf="@id/ivBlockUser"
         app:layout_constraintEnd_toEndOf="@+id/tvBlockedUserName"
         app:layout_constraintStart_toStartOf="@id/tvBlockedUserName"
@@ -62,12 +64,12 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingTop="@dimen/_3sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_3sdp"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:text="@string/unblock"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_text_red"
         app:layout_constraintBottom_toBottomOf="@id/guidlineBlockUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidlineBlockUser"

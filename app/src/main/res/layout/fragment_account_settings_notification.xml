@@ -23,300 +23,297 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="vertical">
 
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvGeneral"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/general"
+                    android:textSize="@dimen/_18sdp"
+                    app:typeface="MULI_SEMIBOLD" />
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvGeneral"
+                        android:id="@+id/tvMatches"
                         style="@style/tvWrapWhiteStyle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:gravity="start|center"
-                        android:text="@string/general"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_18sdp"
-                        app:typeface="MULI_SEMIBOLD" />
+                        android:text="@string/matches"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvMatches"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/matches"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchMatches"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvComments"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/comments"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchComments"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvNewFollowers"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/new_followers"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchNewFollowers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvMentions"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/mentions"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchMentions"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchMatches"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="6dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@color/colorWhite" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvMessages"
+                        android:id="@+id/tvComments"
                         style="@style/tvWrapWhiteStyle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:gravity="start|center"
-                        android:text="@string/privacy"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_18sdp"
-                        app:typeface="MULI_SEMIBOLD" />
+                        android:text="@string/comments"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvDirectMessages"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/direct_messages"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchDirectMessages"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchComments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@color/colorWhite" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvNewFollowers"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/new_followers"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchNewFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvVideoUpdates"
+                        android:id="@+id/tvMentions"
                         style="@style/tvWrapWhiteStyle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:gravity="start|center"
-                        android:text="@string/video_updates"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_18sdp"
-                        app:typeface="MULI_SEMIBOLD" />
+                        android:text="@string/mentions"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
 
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvVideosFromAccountsYouFollow"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/videos_from_accounts_you_follow"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchVideosFromAccountsYouFollow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvVideosSuggestions"
-                            style="@style/tvWrapWhiteStyle"
-                            android:layout_width="wrap_content"
-                            android:gravity="start|center"
-                            android:text="@string/videos_suggestions"
-                            android:textColor="@color/colorBlack"
-                            app:typeface="MULI_REGULAR" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchVideosSuggestions"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchMentions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
 
             </LinearLayout>
 
-            <!--<ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/colorWhite" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />-->
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMessages"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/privacy"
+                    android:textSize="@dimen/_18sdp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvDirectMessages"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/direct_messages"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchDirectMessages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/colorWhite" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvVideoUpdates"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="match_parent"
+                    android:gravity="start|center"
+                    android:text="@string/video_updates"
+                    android:textSize="@dimen/_18sdp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvVideosFromAccountsYouFollow"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/videos_from_accounts_you_follow"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchVideosFromAccountsYouFollow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvVideosSuggestions"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:gravity="start|center"
+                        android:text="@string/videos_suggestions"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_REGULAR" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchVideosSuggestions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!--<ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />-->
 
 
         <!--</RelativeLayout>-->

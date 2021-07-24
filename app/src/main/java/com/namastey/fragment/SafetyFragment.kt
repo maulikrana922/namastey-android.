@@ -66,7 +66,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
     private fun initData() {
 
         tvWhoCanSendYouDirectMsgEveryone.setOnClickListener {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_send_you_direct_msg))
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.allow_messages_from))
             (activity as AccountSettingsActivity).addFragment(
                 SafetySubFragment.getInstance(
                     1
@@ -75,7 +75,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         }
 
         tvWhoCanSeeYourFollowersEveryone.setOnClickListener {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_see_your_followers))
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.follower_visibility))
             (activity as AccountSettingsActivity).addFragment(
                 SafetySubFragment.getInstance(
                     2
@@ -84,7 +84,7 @@ class SafetyFragment : BaseFragment<FragmentSafetyBinding>(), SafetyView {
         }
 
         tvWhoCanCommentsOnYourVideosEveryone.setOnClickListener {
-            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.who_can_comments_on_your_video))
+            (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.allow_comments_from))
             (activity as AccountSettingsActivity).addFragment(
                 SafetySubFragment.getInstance(
                     3

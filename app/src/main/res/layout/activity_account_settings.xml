@@ -31,17 +31,6 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/llSettingBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:contentDescription="@string/app_name"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
                     android:id="@+id/ivAccountSettingBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,6 +38,7 @@
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
                     android:onClick="onClickAccountSettingsBack"
+                    android:padding="@dimen/_8sdp"
                     android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +60,7 @@
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSaveLanguage"
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:onClick="onClickSaveLanguage"
@@ -95,7 +85,6 @@
                     android:id="@+id/flContainer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_15sdp"
                     android:fitsSystemWindows="true"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
