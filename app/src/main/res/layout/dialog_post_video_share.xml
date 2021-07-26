@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
+
+
+    <ImageView
+        android:id="@+id/imgClosePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_close" />
+
+    <com.namastey.customViews.CustomTextView
+        style="@style/tvTitleBlackStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/who_can_view_this_video"
+        android:textSize="@dimen/_18sdp"
+        app:typeface="MULI_SEMIBOLD" />
+
+
+    <!--    TODO: EVERYONE-->
+    <LinearLayout
+        android:id="@+id/viewEveryone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvEveryone"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/everyone"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_16sdp"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvEveryoneMsg"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/anyone_on_namastey"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14sdp"
+                app:typeface="MULI_REGULAR" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivEveryoneSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_tick_post_video"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <!--    TODO: FRIENDS-->
+    <LinearLayout
+        android:id="@+id/viewFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFriends"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/friends"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_16sdp"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFriendsMsg"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/followers_that_you_follow_back"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14sdp"
+                app:typeface="MULI_REGULAR" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivFriendsSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_tick_post_video"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <!--    TODO: PRIVATE-->
+    <LinearLayout
+        android:id="@+id/viewPrivate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvPrivate"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/no_one"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_16sdp"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvPrivateMsg"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:maxLines="1"
+                android:text="@string/visible_to_only_me"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14sdp"
+                app:typeface="MULI_REGULAR" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivPrivateSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_tick_post_video"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</LinearLayout>

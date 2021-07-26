@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
+
+
+    <ImageView
+        android:id="@+id/imgClosePostAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_close" />
+
+    <com.namastey.customViews.CustomTextView
+        style="@style/tvTitleBlackStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/choose_album"
+        android:textSize="@dimen/_18sdp"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llAlbumList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerAlbum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/llNewAlbum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/rounded_white_solid_white_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_12sdp">
+
+                <com.namastey.customViews.CustomEditText
+                    android:id="@+id/edtNewAlbum"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_toStartOf="@id/tvNewAlbum"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/create_a_new_album"
+                    android:textColor="@color/color_text"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvNewAlbum"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:gravity="end"
+                    android:text="@string/save"
+                    android:textColor="@color/color_text_red"
+                    app:typeface="MULI_SEMIBOLD" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
