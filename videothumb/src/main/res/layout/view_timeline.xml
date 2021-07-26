@@ -13,7 +13,7 @@
         android:id="@+id/container_seek_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_border">
+        android:background="@drawable/primary_color_border">
 
         <org.buffer.android.thumby.CenterCropVideoView
             android:id="@+id/view_seek_bar"
