@@ -124,6 +124,7 @@
     <string name="empty_username">Please enter username</string>
     <string name="empty_username_minimum">Please enter username minimum 5 character</string>
     <string name="empty_interest_in">Please select Interested In</string>
+    <string name="select_profile_pic">Please select Profile pic</string>
 
     <!--    select gender fragment-->
     <string name="select_gender">Select Gender</string>

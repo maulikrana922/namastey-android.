@@ -2,6 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ProfilePicViewModel" />
+
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,20 +30,6 @@
         android:src="@drawable/ic_back_new"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvSkip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="@string/tv_skip"
-        android:onClick="onclickSkip"
-        android:textColor="@color/color_text_red"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/ivProfilePicBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivProfilePicBack" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvProfilePic"
@@ -55,14 +51,17 @@
         android:layout_marginEnd="@dimen/_15sdp"
         app:roundedCorners="all"
         app:cornerRadius="@dimen/_10sdp"
+        android:scaleType="centerCrop"
         android:background="@drawable/rounded_white_solid_white_corner"
         app:layout_constraintTop_toBottomOf="@id/tvProfilePic"/>
 
     <ImageView
+        android:id="@+id/ivPlus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_plus_red"
         android:contentDescription="@string/app_name"
+        android:onClick="onClickPlus"
         app:layout_constraintTop_toTopOf="@id/ivProfilePic"
         app:layout_constraintBottom_toBottomOf="@id/ivProfilePic"
         app:layout_constraintStart_toStartOf="@id/ivProfilePic"
@@ -77,6 +76,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

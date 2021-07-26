@@ -78,5 +78,5 @@ interface ActivityComponent {
     fun inject(activity: EducationActivity)
     fun inject(activity: NameActivity)
     fun inject(activity: AddVideoActivity)
-//    fun inject(activity: EmailActivity)
+    fun inject(activity: ProfilePicActivity)
 }
