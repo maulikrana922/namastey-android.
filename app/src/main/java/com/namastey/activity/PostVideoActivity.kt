@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,14 +19,14 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.abedelazizshe.lightcompressorlibrary.CompressionListener
 import com.abedelazizshe.lightcompressorlibrary.VideoCompressor
 import com.abedelazizshe.lightcompressorlibrary.VideoQuality
@@ -37,6 +38,8 @@ import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.MentionListAdapter
+import com.namastey.adapter.PostVideoAlbumAdapter
+import com.namastey.customViews.CustomEditText
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityPostVideoBinding
 import com.namastey.listeners.OnMentionUserItemClick
@@ -50,6 +53,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.android.synthetic.main.dialog_post_video_share.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -237,7 +241,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
                     }, quality = VideoQuality.MEDIUM,
                     isMinBitRateEnabled = true,
-                    keepOriginalResolution = false)
+                    keepOriginalResolution = false
+                )
 
 //            val thumb: Bitmap =
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
@@ -416,6 +421,79 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     fun onClickShareWith(view: View) {
+
+        val visibilityDialog = Dialog(this@PostVideoActivity, R.style.FullScreenDialogTheme)
+        visibilityDialog.setContentView(R.layout.dialog_post_video_share)
+
+        val imgClosePost: ImageView = visibilityDialog.findViewById(R.id.imgClosePost)
+        val ivEveryoneSelected: ImageView = visibilityDialog.findViewById(R.id.ivEveryoneSelected)
+        val ivFriendsSelected: ImageView = visibilityDialog.findViewById(R.id.ivFriendsSelected)
+        val ivPrivateSelected: ImageView = visibilityDialog.findViewById(R.id.ivPrivateSelected)
+        val viewEveryone: LinearLayout = visibilityDialog.findViewById(R.id.viewEveryone)
+        val viewFriends: LinearLayout = visibilityDialog.findViewById(R.id.viewFriends)
+        val viewPrivate: LinearLayout = visibilityDialog.findViewById(R.id.viewPrivate)
+
+        when (shareWith) {
+            1 -> {
+                ivEveryoneSelected.visibility = View.VISIBLE
+                ivFriendsSelected.visibility = View.GONE
+                ivPrivateSelected.visibility = View.GONE
+            }
+            2 -> {
+                ivEveryoneSelected.visibility = View.GONE
+                ivFriendsSelected.visibility = View.VISIBLE
+                ivPrivateSelected.visibility = View.GONE
+            }
+            3 -> {
+                ivEveryoneSelected.visibility = View.GONE
+                ivFriendsSelected.visibility = View.GONE
+                ivPrivateSelected.visibility = View.VISIBLE
+            }
+        }
+
+        imgClosePost.setOnClickListener {
+            visibilityDialog.dismiss()
+        }
+
+        visibilityDialog.show()
+
+        viewEveryone.setOnClickListener {
+            ivEveryoneSelected.visibility = View.VISIBLE
+            ivFriendsSelected.visibility = View.GONE
+            ivPrivateSelected.visibility = View.GONE
+
+            tvShare.text = getString(R.string.everyone)
+            shareWith = 1
+
+            visibilityDialog.dismiss()
+
+        }
+
+        viewFriends.setOnClickListener {
+            ivEveryoneSelected.visibility = View.GONE
+            ivFriendsSelected.visibility = View.VISIBLE
+            ivPrivateSelected.visibility = View.GONE
+
+            tvShare.text = getString(R.string.friends)
+            shareWith = 2
+
+            visibilityDialog.dismiss()
+        }
+
+        viewPrivate.setOnClickListener {
+            ivEveryoneSelected.visibility = View.GONE
+            ivFriendsSelected.visibility = View.GONE
+            ivPrivateSelected.visibility = View.VISIBLE
+
+            tvShare.text = getString(R.string.no_one)
+            shareWith = 3
+
+            visibilityDialog.dismiss()
+        }
+
+
+//        TODO: Old Dialog
+/*
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@PostVideoActivity)
         builder.setTitle(getString(R.string.shared_with))
         builder.setItems(items) { dialog, item ->
@@ -438,6 +516,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             }
         }
         builder.show()
+*/
     }
 
     private fun openGalleryForImage() {
@@ -628,6 +707,54 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
      *  click on album name open list of album. select album to add video
      */
     fun onClickSelectAlbum(view: View) {
+
+        val albumDialog = Dialog(this@PostVideoActivity, R.style.FullScreenDialogTheme)
+        albumDialog.setContentView(R.layout.dialog_post_video_album)
+
+        val imgClosePostAlbum: ImageView = albumDialog.findViewById(R.id.imgClosePostAlbum)
+        val edtNewAlbum: CustomEditText = albumDialog.findViewById(R.id.edtNewAlbum)
+        val recyclerAlbum: RecyclerView = albumDialog.findViewById(R.id.recyclerAlbum)
+        val tvNewAlbum: TextView = albumDialog.findViewById(R.id.tvNewAlbum)
+
+        val postVideoAlbumAdapter = PostVideoAlbumAdapter(
+            this@PostVideoActivity,
+            albumList,
+            albumBean.id,
+            object : PostVideoAlbumAdapter.OnItemClick {
+                override fun onAlbumItemClick(tempAlbumBean: AlbumBean) {
+                    albumBean = tempAlbumBean
+                    tvAlbumName.text = tempAlbumBean.name
+                    albumDialog.dismiss()
+                }
+            })
+
+        recyclerAlbum.layoutManager = LinearLayoutManager(this@PostVideoActivity)
+        recyclerAlbum.adapter = postVideoAlbumAdapter
+
+        imgClosePostAlbum.setOnClickListener {
+            albumDialog.dismiss()
+        }
+
+        tvNewAlbum.setOnClickListener {
+            if (edtNewAlbum.text.isNullOrEmpty()) {
+                Toast.makeText(
+                    this@PostVideoActivity,
+                    R.string.err_new_album_name,
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val tempAlbumBean = AlbumBean()
+                tempAlbumBean.name = edtNewAlbum.text.toString()
+                postVideoAlbumAdapter.notifyDataSetChanged()
+                albumList.add(tempAlbumBean)
+                edtNewAlbum.text?.clear()
+            }
+        }
+
+        albumDialog.show()
+
+//        TODO: Old Dialog
+/*
         val albumBuilder =
             AlertDialog.Builder(this@PostVideoActivity)
         albumBuilder.setTitle(getString(R.string.select_album))
@@ -656,6 +783,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
         }
         albumBuilder.show()
+*/
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

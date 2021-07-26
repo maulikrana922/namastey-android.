@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewPostAlbum"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvAlbumName"
+        style="@style/tvWrapBlackStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/ivSelected"
+        android:maxLines="1"
+        android:paddingTop="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_12sdp"
+        android:textSize="14sp"
+        app:typeface="MULI_SEMIBOLD" />
+
+    <ImageView
+        android:id="@+id/ivSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_tick_post_video"
+        android:visibility="visible"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>
+

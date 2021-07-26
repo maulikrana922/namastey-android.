@@ -34,6 +34,7 @@
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/green_bar_three"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,8 +45,8 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
-                    android:padding="@dimen/_8sdp"
                     android:onClick="onClickPostVideoBack"
+                    android:padding="@dimen/_8sdp"
                     android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -90,7 +91,7 @@
                     android:textColor="@color/post_video_text"
                     app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgTop"
+                    app:layout_constraintTop_toBottomOf="@id/ivPostVideo"
                     app:socialFlags="mention"
                     app:typeface="MULI_SEMIBOLD" />
 
@@ -127,11 +128,11 @@
                     android:id="@+id/tvAddto"
                     style="@style/tvWrapBlackStyle"
                     android:layout_marginTop="@dimen/_25sdp"
+                    android:drawableStart="@drawable/ic_folder"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:paddingEnd="@dimen/_3sdp"
                     android:text="@string/album"
                     android:textColor="@color/color_text"
-                    android:drawableStart="@drawable/ic_folder"
-                    android:drawablePadding="@dimen/_5sdp"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/ivSelectCover" />
 
@@ -139,15 +140,12 @@
                     android:id="@+id/tvAlbumName"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/rounded_gray_solid_all_corner"
-                    android:drawableEnd="@drawable/ic_arrow_down_white_hollow"
+                    android:drawableEnd="@drawable/ic_arrow_right_red"
                     android:drawablePadding="@dimen/_3sdp"
                     android:onClick="onClickSelectAlbum"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_3sdp"
-                    android:paddingEnd="@dimen/_7sdp"
-                    android:paddingBottom="@dimen/_3sdp"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/add_to"
+                    android:textColor="@color/color_text_red"
                     app:layout_constraintBottom_toBottomOf="@id/tvAddto"
                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                     app:layout_constraintTop_toTopOf="@id/tvAddto" />
@@ -178,10 +176,10 @@
                     android:id="@+id/tvCommentOff"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@string/comments_off"
-                    android:textColor="@color/color_text"
                     android:drawableStart="@drawable/ic_comment"
                     android:drawablePadding="@dimen/_5sdp"
+                    android:text="@string/comments_off"
+                    android:textColor="@color/color_text"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/tvShareWith" />
 
@@ -276,6 +274,8 @@
                     style="@style/btnRedAllCornerStyle"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="0dp"
                     android:onClick="onClickPostVideo"
                     android:text="@string/post"
                     app:layout_constraintBottom_toBottomOf="parent"

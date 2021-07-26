@@ -599,4 +599,11 @@
     <string name="_20">20</string>
     <string name="not_active">Not Active</string>
     <string name="active">Active</string>
+    <string name="who_can_view_this_video">Who can view this video</string>
+    <string name="visible_to_only_me">Visible to only me</string>
+    <string name="followers_that_you_follow_back">Followers that you follow back</string>
+    <string name="anyone_on_namastey">Anyone on namastey</string>
+    <string name="choose_album">Choose Album</string>
+    <string name="create_a_new_album">Create a new album</string>
+    <string name="err_new_album_name">Enter New Album Name</string>
 </resources>
