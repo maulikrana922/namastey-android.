@@ -9,12 +9,12 @@
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvFilterCategory"
-        style="@style/tvWrapWhiteStyle"
+        style="@style/tvWrapBlackStyle"
         android:paddingStart="@dimen/_10sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
-        android:textColor="@color/colorDarkGray"
+        android:textColor="@color/color_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
