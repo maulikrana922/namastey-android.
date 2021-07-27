@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMatchesScreenBinding
 import com.namastey.uiView.MatchesScreenBasicView
@@ -58,34 +58,41 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
             val userProfile2 = sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
 
             if (userProfile1 != null && userProfile1.isNotEmpty()) {
-                GlideApp
+                Glide
                     .with(this)
                     .load(userProfile1)
                     .into(ivProfile1)
             } else {
-                GlideApp
+                Glide
                     .with(this)
                     .load(getDrawable(R.drawable.default_placeholder))
                     .into(ivProfile1)
             }
 
             if (userProfile2 != null && userProfile2.isNotEmpty()) {
-                GlideApp
+                Glide
                     .with(this)
                     .load(userProfile2)
                     .into(ivProfile2)
             } else {
-                GlideApp
+                Glide
                     .with(this)
                     .load(getDrawable(R.drawable.default_placeholder))
                     .into(ivProfile2)
             }
 
 
+/*
             tvItsMatch.text =
                 getString(R.string.str_its_match).plus(userName2).plus(" ").plus(
                     getString(R.string.and)).plus(" ").plus(userName1).plus(" ")
                         .plus(getString(R.string.str_liked_each_other))
+*/
+            tvItsMatch.text =
+                getString(R.string.you).plus(" ").plus(
+                    getString(R.string.and)
+                ).plus(" ").plus(userName1).plus(" \n have")
+                    .plus(getString(R.string.str_liked_each_other))
         }
 
     }
