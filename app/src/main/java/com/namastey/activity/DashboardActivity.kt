@@ -77,6 +77,7 @@ import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.rvMentionList
@@ -85,6 +86,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareFacebook
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareInstagram
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.fragment_education.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -116,6 +118,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
     private lateinit var feedAdapter: FeedAdapter
     private lateinit var commentAdapter: CommentAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var mentionArrayAdapter: ArrayAdapter<Mention>
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
@@ -287,12 +290,22 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         )*/
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
-            ivUser.setImageResource(R.drawable.ic_female_user)
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+                GlideApp.with(this).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                    .fitCenter().into(ivUser)
+            } else ivUser.setImageResource(R.drawable.ic_female_user)
+
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                 .fitCenter().into(ivProfile)
         } else {
-            ivUser.setImageResource(R.drawable.ic_top_profile)
+            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+                GlideApp.with(this).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                    .fitCenter().into(ivUser)
+            } else ivUser.setImageResource(R.drawable.ic_top_profile)
+
             GlideApp.with(this).load(R.drawable.ic_male)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                 .fitCenter().into(ivProfile)
@@ -1346,14 +1359,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
         this.categoryBeanList = categoryBeanList
         tvDiscover.visibility = View.VISIBLE
-        val categoryAdapter = CategoryAdapter(this.categoryBeanList, this)
-        val horizontalLayout = LinearLayoutManager(
-            this@DashboardActivity,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        rvCategory.layoutManager = horizontalLayout
-        rvCategory.adapter = categoryAdapter
+
+        categoryAdapter = CategoryAdapter(this.categoryBeanList, this)
+
 
 //        setDashboardList()
 
@@ -1859,6 +1867,35 @@ private fun prepareAnimation(animation: Animation): Animation? {
             bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
         }
+    }
+
+    fun onClickCategory(view: View) {
+
+        val bootomSheetCategoryDialog =
+            BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
+        bootomSheetCategoryDialog.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_category,
+                null
+            )
+        )
+        bootomSheetCategoryDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bootomSheetCategoryDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bootomSheetCategoryDialog.setCancelable(true)
+
+        dashboardViewModel.getCommentList(postId)
+
+        val horizontalLayout = LinearLayoutManager(
+            this@DashboardActivity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+
+        bootomSheetCategoryDialog.rvCategory.layoutManager = horizontalLayout
+        bootomSheetCategoryDialog.rvCategory.adapter = categoryAdapter
+
+        bootomSheetCategoryDialog.show()
+
     }
 
     override fun onUserProfileClick(dashboardBean: DashboardBean) {

@@ -38,17 +38,17 @@ class CategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvCategory.text = categoryList[position].name
 
-            Utils.rectangleShapeGradient(
-                mainCategoryView, intArrayOf(
-                    Color.parseColor(categoryList[position].startColor),
-                    Color.parseColor(categoryList[position].endColor)
-                )
-            )
-            mainCategoryView.alpha = 0.6f
+//            Utils.rectangleShapeGradient(
+//                mainCategoryView, intArrayOf(
+//                    Color.parseColor(categoryList[position].startColor),
+//                    Color.parseColor(categoryList[position].endColor)
+//                )
+//            )
+//            mainCategoryView.alpha = 0.6f
             tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_up, 0)
 
 
-            mainCategoryView.setOnClickListener {
+         /*   mainCategoryView.setOnClickListener {
                 val selectFilterFragment =
                     (context as DashboardActivity).supportFragmentManager.findFragmentByTag(
                         Constants.SELECT_FILTER_FRAGMENT
@@ -87,7 +87,7 @@ class CategoryAdapter(
                     }
                 }
 
-            }
+            }*/
 
         }
 
