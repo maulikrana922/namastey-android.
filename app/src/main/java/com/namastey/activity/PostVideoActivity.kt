@@ -525,9 +525,10 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             System.currentTimeMillis().toString() + ".jpeg"
         )
 
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
+        val galleryIntent = Intent()
+        galleryIntent.type = "image/*"
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(galleryIntent, Constants.REQUEST_CODE_IMAGE)
     }
 
     private fun capturePhoto() {

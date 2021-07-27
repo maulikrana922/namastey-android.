@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonObject
 import com.namastey.BR
@@ -30,6 +31,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.FilterViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
+import kotlinx.android.synthetic.main.row_filter_category.view.*
 import javax.inject.Inject
 
 
@@ -45,11 +47,14 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     private lateinit var filterViewModel: FilterViewModel
 
     private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
+    private lateinit var categoryAdapter: FilterCategoryAdapter
     private lateinit var filterSubcategoryAdapter: FilterSubcategoryAdapter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private var userList = ArrayList<DashboardBean>()
     private lateinit var albumDetailAdapter: AlbumDetailAdapter
     private var postList = ArrayList<VideoBean>()
+
+    private var isFollowingSelected: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     private fun initData() {
+        deselectFollowing()
 
         searchFilter.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -157,7 +163,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 intent.getParcelableArrayListExtra<CategoryBean>("categoryList") as ArrayList<CategoryBean>
         }
 
-        val categoryAdapter =
+        categoryAdapter =
             FilterCategoryAdapter(categoryBeanList, this@FilterActivity, this)
         val horizontalLayout = androidx.recyclerview.widget.LinearLayoutManager(
             this@FilterActivity,
@@ -217,6 +223,9 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
      * when user click on filter category item
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
+        isFollowingSelected = false
+
+        deselectFollowing()
         setSubcategoryList(
             categoryBean.sub_category,
             categoryBean.startColor,
@@ -282,5 +291,50 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
     fun onClickInvite(view: View) {
         openActivity(this@FilterActivity, InviteActivity())
+    }
+
+    fun onFollowingClick(view: View) {
+        if (::categoryAdapter.isInitialized) {
+            categoryAdapter.lastSelectedPos = -1
+            categoryAdapter.categoryList.forEach { category ->
+                category.is_selected = 0
+            }
+            categoryAdapter.notifyDataSetChanged()
+        }
+
+        if (isFollowingSelected) {
+            isFollowingSelected = false
+            deselectFollowing()
+        } else {
+            isFollowingSelected = true
+
+            selectFollowing()
+        }
+    }
+
+    private fun selectFollowing() {
+        Utils.rectangleCornerShapeGradient(
+            tvFollowing, intArrayOf(
+                ContextCompat.getColor(this@FilterActivity, R.color.color_text_red),
+                ContextCompat.getColor(this@FilterActivity, R.color.color_text_red)
+            )
+        )
+        tvFollowing.setTextColor(ContextCompat.getColor(this@FilterActivity, R.color.white))
+
+    }
+
+    private fun deselectFollowing() {
+        Utils.rectangleShapeBorder(
+            tvFollowing,
+            ContextCompat.getColor(this@FilterActivity, R.color.color_text_red), true
+        )
+
+        tvFollowing.setTextColor(
+            ContextCompat.getColor(
+                this@FilterActivity,
+                R.color.color_text_red
+            )
+        )
+
     }
 }

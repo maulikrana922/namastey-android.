@@ -43,7 +43,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"
-            app:cornerRadius="@dimen/_20sdp"
+            app:cornerRadius="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,46 +55,44 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:drawableStart="@drawable/ic_view"
-            app:drawableTint="@color/white"
             android:drawablePadding="@dimen/_5sdp"
             android:text="0"
+            app:drawableTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.namastey.customViews.RoundImageView
-            android:id="@+id/ivUserProfile"
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_7sdp"
             android:layout_marginBottom="@dimen/_15sdp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_placeholder"
-            app:cornerRadius="@dimen/_20sdp"
+            android:background="@drawable/round_trending_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:roundedCorners="all" />
+            app:layout_constraintStart_toStartOf="parent">
 
-        <!--<com.namastey.customViews.CustomTextView
-            android:id="@+id/tvUsername"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:visibility="gone"
-            app:typeface="MULI_EXTRA_BOLD"
-            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
-            app:layout_constraintStart_toStartOf="parent" />-->
+            <com.namastey.customViews.RoundImageView
+                android:id="@+id/ivUserProfile"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_placeholder"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:roundedCorners="all" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvUsername"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginStart="@dimen/_7sdp"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/ivUserProfile"
-            app:layout_constraintStart_toEndOf="@id/ivUserProfile"
-            app:layout_constraintTop_toTopOf="@id/ivUserProfile"
-            app:typeface="MULI_EXTRA_BOLD" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvUsername"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:typeface="MULI_EXTRA_BOLD" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/ivRemoveVideo"
@@ -107,7 +105,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ivVideoImage"
             app:layout_constraintTop_toTopOf="@id/ivVideoImage" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.namastey.customViews.RoundImageView
             android:id="@+id/ivCommentFirst"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
@@ -115,53 +113,51 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
             android:visibility="gone"
-            app:civ_border_color="@color/colorWhiteBorder"
-            app:civ_border_width="1dp"
+            app:cornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="@id/tvVideoComment"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvVideoComment" />
+            app:layout_constraintTop_toTopOf="@id/tvVideoComment"
+            app:roundedCorners="all" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.namastey.customViews.RoundImageView
             android:id="@+id/ivCommentSecond"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
             android:visibility="gone"
-            app:civ_border_color="@color/colorWhiteBorder"
-            app:civ_border_width="1dp"
+            app:cornerRadius="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
             app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
-            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst"
+            app:roundedCorners="all" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.namastey.customViews.RoundImageView
             android:id="@+id/ivCommentThird"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/default_placeholder"
             android:visibility="gone"
-            app:civ_border_color="@color/colorWhiteBorder"
-            app:civ_border_width="1dp"
+            app:cornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="@id/ivCommentFirst"
             app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
             app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
-            app:layout_constraintTop_toTopOf="@id/ivCommentFirst" />
+            app:layout_constraintTop_toTopOf="@id/ivCommentFirst"
+            app:roundedCorners="all" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvVideoComment"
-            style="@style/tvWrapWhiteStyle"
+            style="@style/tvWrapBlackStyle"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@string/comments"
-            android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivCommentThird"
             app:layout_constraintTop_toBottomOf="@id/ivVideoImage"
-
             app:typeface="MULI_SEMIBOLD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
