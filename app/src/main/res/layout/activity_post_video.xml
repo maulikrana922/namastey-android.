@@ -175,7 +175,7 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvCommentOff"
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:drawableStart="@drawable/ic_comment"
                     android:drawablePadding="@dimen/_5sdp"
                     android:text="@string/comments_off"
@@ -272,10 +272,10 @@
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnPostVideo"
                     style="@style/btnRedAllCornerStyle"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_marginStart="0dp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:onClick="onClickPostVideo"
                     android:text="@string/post"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/yellow_bar"
                     android:contentDescription="@string/app_name"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -48,15 +49,16 @@
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
                     android:onClick="onClickFilterBack"
-                    android:src="@drawable/ic_back"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:text="@string/search"
-                    android:textSize="20sp"
+                    android:text="@string/discover"
+                    android:textSize="@dimen/actionBarTitle"
                     app:layout_constraintBottom_toBottomOf="@id/ivFilterBack"
                     app:layout_constraintStart_toEndOf="@id/ivFilterBack"
                     app:layout_constraintTop_toTopOf="@id/ivFilterBack"
@@ -66,12 +68,12 @@
                     android:id="@+id/ivInvite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
-                    android:padding="@dimen/_5sdp"
                     android:onClick="onClickInvite"
-                    android:src="@drawable/ic_mail_black"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_mail_new"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,18 +84,18 @@
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_15sdp"
-                    android:background="@drawable/rounded_white_solid_black_border"
+                    android:background="@drawable/rounded_white_solid_white_corner"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llFilterBackground">
+                    app:layout_constraintTop_toBottomOf="@id/ivFilterBack">
 
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/searchFilter"
                         style="@style/searchViewStyle"
-                        app:defaultQueryHint="@string/search_user"
+                        app:defaultQueryHint="@string/search"
                         app:iconifiedByDefault="false"
-                        app:queryHint="@string/search_user"
+                        app:queryHint="@string/search"
                         app:searchHintIcon="@drawable/ic_search" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -110,10 +112,9 @@
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvTranding"
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/trending"
-                    android:textColor="@color/colorBlack"
                     app:layout_constraintStart_toStartOf="@id/llSearchView"
                     app:layout_constraintTop_toBottomOf="@id/rvSubcategory"
                     app:typeface="MULI_SEMIBOLD" />
@@ -123,8 +124,8 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:outlineSpotShadowColor="@color/colorGray"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -133,17 +134,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tvTranding"
                     app:spanCount="2"
                     tools:listitem="@layout/row_album_detail" />
+
                 <com.namastey.customViews.CustomTextView
-                    android:visibility="gone"
                     android:id="@+id/tvNoFilterVideo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="@string/tv_no_video_found"
-                    android:gravity="center"
-                    android:textSize="22sp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@string/tv_no_video_found"
+                    android:textSize="22sp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,19 +161,47 @@
                     app:layout_constraintTop_toBottomOf="@id/llSearchView"
                     app:typeface="MULI_SEMIBOLD" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvFilterCategory"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nestedFilter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
                     android:paddingStart="@dimen/_10sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvFiltes"
-                    tools:listitem="@layout/row_filter_category" />
+                    app:layout_constraintTop_toBottomOf="@id/tvFiltes">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvFollowing"
+                            style="@style/tvWrapWhiteStyle"
+                            android:onClick="onFollowingClick"
+                            android:paddingStart="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:text="@string/following"
+                            android:textColor="@color/color_text_red"
+                            android:textSize="14sp" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFilterCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/row_filter_category" />
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSubcategory"
@@ -184,7 +214,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rvFilterCategory"
+                    app:layout_constraintTop_toBottomOf="@id/nestedFilter"
                     tools:listitem="@layout/row_filter_subcategory" />
                 <!--        <LinearLayout-->
                 <!--            android:orientation="vertical"-->

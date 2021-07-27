@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit
 
 object Utils {
 
-    private var mLastClickTime=0L
+    private var mLastClickTime = 0L
 
     fun hideKeyboard(context: Activity) {
         // Check if no view has focus
@@ -77,6 +77,17 @@ object Utils {
 
         gd.shape = GradientDrawable.RECTANGLE
         gd.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
+        v.background = gd
+    }
+
+    fun rectangleCornerShapeGradient(v: View, intArrayOf: IntArray) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+            intArrayOf
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadius = 20f
         v.background = gd
     }
 
@@ -495,8 +506,8 @@ object Utils {
     /**
      * Prevent rapid click.
      */
-    fun isOpenRecently():Boolean{
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+    fun isOpenRecently(): Boolean {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return true
         }
         mLastClickTime = SystemClock.elapsedRealtime()
