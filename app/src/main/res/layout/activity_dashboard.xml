@@ -189,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.namastey.customViews.CustomTextView
+     <!--           <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvDiscover"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_centerVertical="true"
@@ -206,7 +206,7 @@
                     android:text="@string/discover"
                     android:textSize="14sp"
                     android:visibility="gone"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    app:typeface="MULI_EXTRA_BOLD" />-->
 
        <!--         <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCategory"

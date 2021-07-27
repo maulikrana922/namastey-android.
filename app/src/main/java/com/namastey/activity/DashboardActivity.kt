@@ -1358,7 +1358,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      */
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
         this.categoryBeanList = categoryBeanList
-        tvDiscover.visibility = View.VISIBLE
+       // tvDiscover.visibility = View.VISIBLE
 
         categoryAdapter = CategoryAdapter(this.categoryBeanList, this)
 
