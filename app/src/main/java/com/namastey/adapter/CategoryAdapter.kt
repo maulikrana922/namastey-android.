@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.activity.DashboardActivity
-import com.namastey.fragment.SelectFilterFragment
 import com.namastey.model.CategoryBean
-import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_category.view.*
 import java.util.*
@@ -38,56 +35,56 @@ class CategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvCategory.text = categoryList[position].name
 
-//            Utils.rectangleShapeGradient(
-//                mainCategoryView, intArrayOf(
-//                    Color.parseColor(categoryList[position].startColor),
-//                    Color.parseColor(categoryList[position].endColor)
-//                )
-//            )
-//            mainCategoryView.alpha = 0.6f
-            tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_up, 0)
+            Utils.roundShapeGradient(
+                tvCategory, intArrayOf(
+                    Color.parseColor(categoryList[position].startColor),
+                    Color.parseColor(categoryList[position].endColor)
+                )
+            )
+            tvCategory.alpha = 0.6f
+            // tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_up, 0)
 
 
-         /*   mainCategoryView.setOnClickListener {
-                val selectFilterFragment =
-                    (context as DashboardActivity).supportFragmentManager.findFragmentByTag(
-                        Constants.SELECT_FILTER_FRAGMENT
-                    )
+            /*   mainCategoryView.setOnClickListener {
+                   val selectFilterFragment =
+                       (context as DashboardActivity).supportFragmentManager.findFragmentByTag(
+                           Constants.SELECT_FILTER_FRAGMENT
+                       )
 
-                notifyItemChanged(clickPosition)
-                if (clickPosition != position) {
-                    mainCategoryView.alpha = 1f
-                    tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_white, 0);
-                    clickPosition = position
-                    (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
-                    (context as DashboardActivity).addFragmentCategory(
-                        SelectFilterFragment.getInstance(
-                            categoryList[position].sub_category,
-                            categoryList[position].startColor,
-                            categoryList[position].endColor,
-                            categoryList
-                        ),
-                        Constants.SELECT_FILTER_FRAGMENT
-                    )
-                } else {
-                    if (selectFilterFragment == null) {
-                        (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
-                        (context as DashboardActivity).addFragmentCategory(
-                            SelectFilterFragment.getInstance(
-                                categoryList[position].sub_category,
-                                categoryList[position].startColor,
-                                categoryList[position].endColor,
-                                categoryList
-                            ),
-                            Constants.SELECT_FILTER_FRAGMENT
-                        )
-                    } else {
-                        clickPosition = -1
-                        (context as DashboardActivity).supportFragmentManager.popBackStack()
-                    }
-                }
+                   notifyItemChanged(clickPosition)
+                   if (clickPosition != position) {
+                       mainCategoryView.alpha = 1f
+                       tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_white, 0);
+                       clickPosition = position
+                       (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
+                       (context as DashboardActivity).addFragmentCategory(
+                           SelectFilterFragment.getInstance(
+                               categoryList[position].sub_category,
+                               categoryList[position].startColor,
+                               categoryList[position].endColor,
+                               categoryList
+                           ),
+                           Constants.SELECT_FILTER_FRAGMENT
+                       )
+                   } else {
+                       if (selectFilterFragment == null) {
+                           (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
+                           (context as DashboardActivity).addFragmentCategory(
+                               SelectFilterFragment.getInstance(
+                                   categoryList[position].sub_category,
+                                   categoryList[position].startColor,
+                                   categoryList[position].endColor,
+                                   categoryList
+                               ),
+                               Constants.SELECT_FILTER_FRAGMENT
+                           )
+                       } else {
+                           clickPosition = -1
+                           (context as DashboardActivity).supportFragmentManager.popBackStack()
+                       }
+                   }
 
-            }*/
+               }*/
 
         }
 

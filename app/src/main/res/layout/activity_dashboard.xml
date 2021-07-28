@@ -27,7 +27,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_38sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +85,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_38sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -98,8 +98,8 @@
             android:layout_marginTop="@dimen/_40sdp"
             android:contentDescription="@string/app_name"
             android:onClick="onClickUser"
-            android:src="@drawable/ic_top_profile"
             android:scaleType="centerCrop"
+            android:src="@drawable/ic_top_profile"
             app:cornerRadius="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -112,9 +112,9 @@
             android:layout_marginStart="6dp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:contentDescription="@string/app_name"
+            android:onClick="onClickDiscover"
             android:paddingStart="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:onClick="onClickDiscover"
             android:src="@drawable/ic_search_dashboard"
             app:layout_constraintBottom_toBottomOf="@id/ivUser"
             app:layout_constraintEnd_toStartOf="@+id/ivCategory"
@@ -154,7 +154,7 @@
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -164,63 +164,64 @@
             app:lottie_repeatCount="7"
             app:lottie_repeatMode="restart" />
 
-        <FrameLayout
-            android:id="@+id/flContainerCategory"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!--        <FrameLayout
+                    android:id="@+id/flContainerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@id/svCategory"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
-        <HorizontalScrollView
-            android:id="@+id/svCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:fillViewport="true"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-     <!--           <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvDiscover"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@drawable/rounded_white_hollow"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="@dimen/_3sdp"
-                    android:drawableTint="@color/colorWhite"
-                    android:onClick="onClickDiscover"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingTop="@dimen/_6sdp"
-                    android:paddingEnd="@dimen/_12sdp"
-                    android:paddingBottom="@dimen/_6sdp"
-                    android:text="@string/discover"
-                    android:textSize="14sp"
-                    android:visibility="gone"
-                    app:typeface="MULI_EXTRA_BOLD" />-->
-
-       <!--         <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCategory"
-                    android:layout_width="wrap_content"
+        <!--        <HorizontalScrollView
+                    android:id="@+id/svCategory"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/tvDiscover"
-                    android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:fillViewport="true"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/_3sdp"
-                    android:visibility="visible"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/row_category" />-->
-            </RelativeLayout>
-        </HorizontalScrollView>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">-->
+
+        <!--     <RelativeLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content">
+
+      &lt;!&ndash;           <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvDiscover"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_centerVertical="true"
+                     android:layout_marginStart="@dimen/_5sdp"
+                     android:background="@drawable/rounded_white_hollow"
+                     android:drawableStart="@drawable/ic_search"
+                     android:drawablePadding="@dimen/_3sdp"
+                     android:drawableTint="@color/colorWhite"
+                     android:onClick="onClickDiscover"
+                     android:paddingStart="@dimen/_12sdp"
+                     android:paddingTop="@dimen/_6sdp"
+                     android:paddingEnd="@dimen/_12sdp"
+                     android:paddingBottom="@dimen/_6sdp"
+                     android:text="@string/discover"
+                     android:textSize="14sp"
+                     android:visibility="gone"
+                     app:typeface="MULI_EXTRA_BOLD" />&ndash;&gt;
+
+        &lt;!&ndash;         <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/rvCategory"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_toEndOf="@id/tvDiscover"
+                     android:clipToPadding="false"
+                     android:orientation="horizontal"
+                     android:paddingStart="@dimen/_3sdp"
+                     android:visibility="visible"
+                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                     tools:listitem="@layout/row_category" />&ndash;&gt;
+             </RelativeLayout>-->
+
+        <!--        </HorizontalScrollView>-->
 
         <FrameLayout
             android:id="@+id/flContainer"
