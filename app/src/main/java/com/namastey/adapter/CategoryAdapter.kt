@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.activity.DashboardActivity
 import com.namastey.model.CategoryBean
+import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.utils.Utils
+import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.row_category.view.*
 import java.util.*
 
 
 class CategoryAdapter(
     var categoryList: ArrayList<CategoryBean>,
-    var context: Activity
+    var context: Activity,
+    var onItemClick: OnItemClickCategory
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     var clickPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -45,18 +49,21 @@ class CategoryAdapter(
             // tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_up, 0)
 
 
-            /*   mainCategoryView.setOnClickListener {
-                   val selectFilterFragment =
+            tvCategory.setOnClickListener {
+                onItemClick.onItemClickCategoty(categoryList[position])
+
+                  /* val selectFilterFragment =
                        (context as DashboardActivity).supportFragmentManager.findFragmentByTag(
                            Constants.SELECT_FILTER_FRAGMENT
-                       )
+                       )*/
 
-                   notifyItemChanged(clickPosition)
+                   /*notifyItemChanged(clickPosition)
                    if (clickPosition != position) {
-                       mainCategoryView.alpha = 1f
+                       tvCategory.alpha = 1f
                        tvCategory.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_white, 0);
                        clickPosition = position
                        (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
+
                        (context as DashboardActivity).addFragmentCategory(
                            SelectFilterFragment.getInstance(
                                categoryList[position].sub_category,
@@ -66,6 +73,9 @@ class CategoryAdapter(
                            ),
                            Constants.SELECT_FILTER_FRAGMENT
                        )
+
+
+
                    } else {
                        if (selectFilterFragment == null) {
                            (context as DashboardActivity).supportFragmentManager.popBackStackImmediate()
@@ -82,11 +92,15 @@ class CategoryAdapter(
                            clickPosition = -1
                            (context as DashboardActivity).supportFragmentManager.popBackStack()
                        }
-                   }
+                   }*/
 
-               }*/
+               }
 
         }
 
+    }
+
+    public interface OnItemClickCategory {
+        fun onItemClickCategoty(categoryBean: CategoryBean)
     }
 }

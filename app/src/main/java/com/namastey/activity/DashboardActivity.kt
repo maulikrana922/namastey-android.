@@ -46,10 +46,7 @@ import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
 import com.namastey.BR
 import com.namastey.BuildConfig
 import com.namastey.R
-import com.namastey.adapter.CategoryAdapter
-import com.namastey.adapter.CommentAdapter
-import com.namastey.adapter.FeedAdapter
-import com.namastey.adapter.MembershipDialogSliderAdapter
+import com.namastey.adapter.*
 import com.namastey.application.NamasteyApplication
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.GlideApp
@@ -103,7 +100,8 @@ import javax.inject.Inject
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
     DashboardView, OnFeedItemClick,
-    OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick {
+    OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick,
+    CategoryAdapter.OnItemClickCategory, SubCategoryAdapter.OnItemClick {
     private val TAG = "DashboardActivity"
 
     @Inject
@@ -123,6 +121,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
+    private lateinit var bootomSheetCategoryDialog: BottomSheetDialog
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private lateinit var deleteIcon: Drawable
     private var position = -1
@@ -1358,9 +1357,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      */
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
         this.categoryBeanList = categoryBeanList
-       // tvDiscover.visibility = View.VISIBLE
+        // tvDiscover.visibility = View.VISIBLE
 
-        categoryAdapter = CategoryAdapter(this.categoryBeanList, this)
+        categoryAdapter = CategoryAdapter(this.categoryBeanList, this, this)
 
 
 //        setDashboardList()
@@ -1866,12 +1865,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
             bottomSheetDialogComment.edtComment.setText(strName)
             bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
+
+
         }
     }
 
     fun onClickCategory(view: View) {
 
-        val bootomSheetCategoryDialog =
+        bootomSheetCategoryDialog =
             BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bootomSheetCategoryDialog.setContentView(
             layoutInflater.inflate(
@@ -1894,6 +1895,22 @@ private fun prepareAnimation(animation: Animation): Animation? {
         bootomSheetCategoryDialog.rvCategory.layoutManager = horizontalLayout
         bootomSheetCategoryDialog.rvCategory.adapter = categoryAdapter
 
+
+        bootomSheetCategoryDialog.ivBack.setOnClickListener {
+            bootomSheetCategoryDialog.rvCategory.visibility = View.VISIBLE
+            bootomSheetCategoryDialog.rvSubCategory.visibility = View.GONE
+            bootomSheetCategoryDialog.clToolbar.visibility = View.GONE
+            bootomSheetCategoryDialog.tvFollowing.visibility = View.VISIBLE
+        }
+
+
+        bootomSheetCategoryDialog.rvSubCategory.addItemDecoration(
+            GridSpacingItemDecoration(
+                2,
+                20,
+                false
+            )
+        )
         bootomSheetCategoryDialog.show()
 
     }
@@ -2742,6 +2759,45 @@ private fun prepareAnimation(animation: Animation): Animation? {
         super.onFailed(msg, error, status)
         Log.e("DashboardActivity", "onFailed  error: $error")
         Log.e("DashboardActivity", "onFailed  msg: $msg")
+    }
+
+    /*CategoryAdapter Item Click*/
+    override fun onItemClickCategoty(categoryBean: CategoryBean) {
+
+        bootomSheetCategoryDialog.rvCategory.visibility = View.GONE
+        bootomSheetCategoryDialog.rvSubCategory.visibility = View.VISIBLE
+        bootomSheetCategoryDialog.clToolbar.visibility = View.VISIBLE
+        bootomSheetCategoryDialog.tvFollowing.visibility = View.GONE
+
+
+        val subCategoryAdapter = SubCategoryAdapter(
+            categoryBean,
+            this, this
+        )
+        bootomSheetCategoryDialog.tvTypeName.text = categoryBean.name
+        bootomSheetCategoryDialog.rvSubCategory.adapter = subCategoryAdapter
+    }
+
+    /*SubCategoryAdapter Item Click*/
+    override fun onItemClick(subCategoryId: Int) {
+        Log.e("Subcategory : ", subCategoryId.toString())
+        bootomSheetCategoryDialog.dismiss()
+        if (sessionManager.isGuestUser()) {
+            this.addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            feedList.clear()
+            currentPage = 1
+            totalCount = 1
+            videoIdList.clear()
+
+            getFeedListApi(subCategoryId)
+
+        }
     }
 
 }

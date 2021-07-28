@@ -156,8 +156,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
             .replace(R.id.flContainer, fragment, tag)
             .commitAllowingStateLoss()
     }
-/*
-    fun addFragmentCategory(fragment: Fragment, tag: String) {
+
+   /* fun addFragmentCategory(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().addToBackStack(tag)
             .replace(R.id.flContainerCategory, fragment, tag)
             .commitAllowingStateLoss()

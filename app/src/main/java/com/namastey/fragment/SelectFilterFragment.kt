@@ -83,8 +83,8 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
                 arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
 
             rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-            val subCategoryAdapter = SubCategoryAdapter(subCategoryList, requireActivity(), this)
-            rvSelectFilter.adapter = subCategoryAdapter
+           // val subCategoryAdapter = SubCategoryAdapter(subCategoryList, requireActivity(), this)
+            //rvSelectFilter.adapter = subCategoryAdapter
 
             val gd = GradientDrawable(
                 GradientDrawable.Orientation.TR_BL,
