@@ -21,10 +21,7 @@ import com.namastey.activity.DashboardActivity
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.utils.Constants
-import com.namastey.utils.CustomCommonAlertDialog
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
+import com.namastey.utils.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
@@ -60,14 +57,18 @@ class FeedAdapter(
         lateinit var mediaContainer: FrameLayout
 
         lateinit var mediaCoverImage: ImageView
-        lateinit var ivCommentFirst: ImageView
-        lateinit var ivCommentSecond: ImageView
-        lateinit var ivCommentThird: ImageView
+
+        //        lateinit var ivCommentFirst: ImageView
+//        lateinit var ivCommentSecond: ImageView
+//        lateinit var ivCommentThird: ImageView
         lateinit var ivFeedProfile: ImageView
         lateinit var ivFeedFollow: ImageView
         lateinit var ivFeedBoost: ImageView
+        lateinit var ivComment: ImageView
 
-        lateinit var tvCommentFeed: TextView
+
+        //lateinit var tvCommentFeed: TextView
+        lateinit var tvCommentCount: TextView
         lateinit var tvFeedName: TextView
         lateinit var tvFeedLike: TextView
         lateinit var tvFeedJob: TextView
@@ -85,14 +86,16 @@ class FeedAdapter(
             mediaContainer = parent.findViewById(R.id.mediaContainer)
 
             mediaCoverImage = parent.findViewById(R.id.ivMediaCoverImage)
-            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
-            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
-            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
+//            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
+//            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
+//            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
             ivFeedProfile = parent.findViewById(R.id.ivFeedProfile)
             ivFeedFollow = parent.findViewById(R.id.ivFeedFollow)
             ivFeedBoost = parent.findViewById(R.id.ivFeedBoost)
+            ivComment = parent.findViewById(R.id.ivComment)
 
-            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
+//            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
+            tvCommentCount = parent.findViewById(R.id.tvCommentCount)
             tvFeedName = parent.findViewById(R.id.tvFeedName)
             tvFeedLike = parent.findViewById(R.id.tvFeedLike)
             tvFeedJob = parent.findViewById(R.id.tvFeedJob)
@@ -152,6 +155,7 @@ class FeedAdapter(
 
                  // initializePlayer(itemView, dashboardBean.video_url, position)
              }*/
+
             if (!dashboardBean.video_url.isNullOrEmpty()) {
                 Log.e(
                     "ExoPlayerRecyclerView",
@@ -167,28 +171,41 @@ class FeedAdapter(
                     onFeedItemClick.onPostViewer(dashboardBean.id)
                 }, 5000)
             }
+            tvCommentCount.text = dashboardBean.comments.toString()
 
-            if (dashboardBean.who_can_comment == 2) {
-                tvCommentFeed.text = activity.getString(R.string.comments_off)
-            }else{
+           /* if (dashboardBean.who_can_comment == 2) {
+                //tvCommentFeed.text = activity.getString(R.string.comments_off)
+            } else {
                 if (dashboardBean.who_can_comment == 1) {
                     if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
-                        showCommentProfilePic(dashboardBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
-                    }else{
-                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+//                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+//                            .plus(activity.getString(R.string.comments))
+//                        showCommentProfilePic(
+//                            dashboardBean,
+//                            ivCommentFirst,
+//                            ivCommentSecond,
+//                            ivCommentThird
+//                        )
+                    } else {
+//                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                       // openCustomAlertDialog()
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
-                        showCommentProfilePic(dashboardBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
-                    }else{
-                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+//                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+//                            .plus(activity.getString(R.string.comments))
+//                        showCommentProfilePic(
+//                            dashboardBean,
+//                            ivCommentFirst,
+//                            ivCommentSecond,
+//                            ivCommentThird
+//                        )
+                    } else {
+//                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                       // openCustomAlertDialog()
                     }
                 }
-            }
+            }*/
 
             // if (dashboardBean.casual_name != "")
             tvFeedName.text = dashboardBean.casual_name
@@ -196,10 +213,52 @@ class FeedAdapter(
 //            if (dashboardBean.profile_url.isNotEmpty())
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
 
-            if (dashboardBean.is_like == 1)
-                tvFeedLike.text = activity.getString(R.string.liked)
-            else
-                tvFeedLike.text = activity.getString(R.string.like)
+            if (dashboardBean.is_match == 1) {
+                tvFeedLike.text = activity.getString(R.string.match)
+                tvFeedLike.setTextColor(
+                    ContextCompat.getColor(
+                        activity,
+                        R.color.white
+                    )
+                )
+                tvFeedLike.background =
+                    ContextCompat.getDrawable(activity, R.drawable.rounded_btn_red)
+                tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_like_dashboard,
+                    0,
+                    0,
+                    0
+                )
+            } else {
+                if (dashboardBean.is_like == 1) {
+                    tvFeedLike.text = activity.getString(R.string.liked)
+                    tvFeedLike.setTextColor(
+                        ContextCompat.getColor(
+                            activity,
+                            R.color.color_text_red
+                        )
+                    )
+                    tvFeedLike.background =
+                        ContextCompat.getDrawable(activity, R.drawable.rounded_btn)
+                    tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0)
+                } else {
+                    tvFeedLike.setTextColor(
+                        ContextCompat.getColor(
+                            activity,
+                            R.color.white
+                        )
+                    )
+                    tvFeedLike.text = activity.getString(R.string.match)
+                    tvFeedLike.background =
+                        ContextCompat.getDrawable(activity, R.drawable.rounded_btn_red)
+                    tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_like_dashboard,
+                        0,
+                        0,
+                        0
+                    )
+                }
+            }
 
             tvFeedJob.text = dashboardBean.job
 
@@ -275,18 +334,37 @@ class FeedAdapter(
             }
 
             // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
-            if (dashboardBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {// && !sessionManager.isGuestUser()) {
-                tvCommentFeed.setOnClickListener {
-                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-                }
-                ivCommentFirst.setOnClickListener {
-                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-                }
-                ivCommentSecond.setOnClickListener {
-                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-                }
-                ivCommentThird.setOnClickListener {
-                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+            //  if (dashboardBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {// && !sessionManager.isGuestUser()) {
+//                tvCommentFeed.setOnClickListener {
+//                }
+//                ivCommentFirst.setOnClickListener {
+//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+//                }
+//                ivCommentSecond.setOnClickListener {
+//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+//                }
+//                ivCommentThird.setOnClickListener {
+//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
+//                }
+            // }
+
+            ivComment.setOnClickListener {
+                if (dashboardBean.who_can_comment == 2) {
+                    openCustomAlertDialog()
+                } else {
+                    if (dashboardBean.who_can_comment == 1) {
+                        if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
+                            onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                        } else {
+                            openCustomAlertDialog()
+                        }
+                    } else {
+                        if (dashboardBean.is_comment == 0) {
+                            onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                        } else {
+                            openCustomAlertDialog()
+                        }
+                    }
                 }
             }
 
@@ -320,7 +398,8 @@ class FeedAdapter(
             }
 
             if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1 &&
-                sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+                sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1
+            ) {
                 animationVideoLike.visibility = View.VISIBLE
             } else {
                 animationVideoLike.visibility = View.GONE
@@ -337,12 +416,12 @@ class FeedAdapter(
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
                 tvFeedBoost.visibility = View.VISIBLE
-                ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
+                // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
                 tvFeedBoost.visibility = View.VISIBLE
-                ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
+                // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
 
             boostAnimationProgress(itemView)
@@ -352,6 +431,7 @@ class FeedAdapter(
             )
         }
     }
+
 
     private fun showCommentProfilePic(
         dashboardBean: DashboardBean,
@@ -396,6 +476,7 @@ class FeedAdapter(
             }
         }
     }
+
     private fun boostAnimationProgress(itemView: View) {
         val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
         itemView.circularSeekBar.setOnSeekBarChangeListener(object :
@@ -426,5 +507,18 @@ class FeedAdapter(
                 //  Log.e("FeedAdapter", "onStartTrackingTouch")
             }
         })
+    }
+
+    fun openCustomAlertDialog() {
+        object : CustomAlertDialog(
+            activity,
+            activity.resources.getString(R.string.alert_comment_message),
+            activity.getString(R.string.okay),
+            ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
     }
 }

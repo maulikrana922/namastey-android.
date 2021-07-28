@@ -19,24 +19,14 @@
         android:background="@drawable/video_cards_tint"
         tools:context=".activity.DashboardActivity">
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvFeed"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:paddingBottom="@dimen/_38sdp"-->
-<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/svCategory"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"/>-->
+
         <com.namastey.customViews.ExoPlayerRecyclerView
             android:id="@+id/viewpagerFeed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/_38sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,71 +35,103 @@
             android:id="@+id/ivProfile"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
+            android:layout_marginBottom="50dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_male"
             app:civ_border_color="@color/colorBlack"
             app:civ_border_width="@dimen/_1sdp"
             app:civ_circle_background_color="@color/colorWhite"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="50dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvNoOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:text="@string/msg_no_one_new"
             android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintTop_toBottomOf="@id/ivProfile"
+            android:text="@string/msg_no_one_new"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/ivProfile" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvNoOneMessage"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:text="@string/msg_change_distance"
             android:padding="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/tvNoOne"
+            android:text="@string/msg_change_distance"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tvNoOne" />
 
         <androidx.constraintlayout.widget.Group
-            android:visibility="gone"
             android:id="@+id/groupNoOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="ivProfile,tvNoOne,tvNoOneMessage"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="ivProfile,tvNoOne,tvNoOneMessage" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/_38sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <com.namastey.customViews.RoundImageView
             android:id="@+id/ivUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_42sdp"
+            android:layout_height="@dimen/_42sdp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_40sdp"
             android:contentDescription="@string/app_name"
             android:onClick="onClickUser"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_top_profile"
+            app:cornerRadius="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundedCorners="all" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickDiscover"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_search_dashboard"
+            app:layout_constraintBottom_toBottomOf="@id/ivUser"
+            app:layout_constraintEnd_toStartOf="@+id/ivCategory"
+            app:layout_constraintTop_toTopOf="@id/ivUser" />
+
+        <ImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickCategory"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_filter_dashboard"
+            app:layout_constraintBottom_toBottomOf="@id/ivUser"
+            app:layout_constraintEnd_toStartOf="@+id/ivInbox"
+            app:layout_constraintTop_toTopOf="@id/ivUser" />
 
         <ImageView
             android:id="@+id/ivInbox"
@@ -120,7 +142,7 @@
             android:onClick="onClickInbox"
             android:paddingStart="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
-            android:src="@drawable/ic_top_chat"
+            android:src="@drawable/ic_chat_dashboard"
             app:layout_constraintBottom_toBottomOf="@id/ivUser"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivUser" />
@@ -130,7 +152,7 @@
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_120sdp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -140,83 +162,64 @@
             app:lottie_repeatCount="7"
             app:lottie_repeatMode="restart" />
 
+               <!-- <FrameLayout
+                    android:id="@+id/flContainerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
-        <!--    <com.namastey.customViews.CustomTextView-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        android:text="@string/app_name"-->
-        <!--        app:typeface="MULI_BLACK"-->
-        <!--        android:textSize="25sp"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <View-->
-<!--            android:id="@+id/viewDivider"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:background="@color/colorBlackTransparent"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/svCategory"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
-
-        <FrameLayout
-            android:id="@+id/flContainerCategory"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@id/svCategory"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <HorizontalScrollView
-            android:id="@+id/svCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:fillViewport="true"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvDiscover"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="@dimen/_3sdp"
-                    android:background="@drawable/rounded_white_hollow"
-                    android:drawableTint="@color/colorWhite"
-                    android:onClick="onClickDiscover"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingTop="@dimen/_6sdp"
-                    android:paddingEnd="@dimen/_12sdp"
-                    android:paddingBottom="@dimen/_6sdp"
-                    android:text="@string/discover"
-                    android:textSize="14sp"
-                    android:visibility="gone"
-                    app:typeface="MULI_EXTRA_BOLD" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCategory"
-                    android:layout_width="wrap_content"
+        <!--        <HorizontalScrollView
+                    android:id="@+id/svCategory"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/tvDiscover"
-                    android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:fillViewport="true"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/_3sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/row_category" />
-            </RelativeLayout>
-        </HorizontalScrollView>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">-->
+
+        <!--     <RelativeLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content">
+
+      &lt;!&ndash;           <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvDiscover"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_centerVertical="true"
+                     android:layout_marginStart="@dimen/_5sdp"
+                     android:background="@drawable/rounded_white_hollow"
+                     android:drawableStart="@drawable/ic_search"
+                     android:drawablePadding="@dimen/_3sdp"
+                     android:drawableTint="@color/colorWhite"
+                     android:onClick="onClickDiscover"
+                     android:paddingStart="@dimen/_12sdp"
+                     android:paddingTop="@dimen/_6sdp"
+                     android:paddingEnd="@dimen/_12sdp"
+                     android:paddingBottom="@dimen/_6sdp"
+                     android:text="@string/discover"
+                     android:textSize="14sp"
+                     android:visibility="gone"
+                     app:typeface="MULI_EXTRA_BOLD" />&ndash;&gt;
+
+        &lt;!&ndash;         <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/rvCategory"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_toEndOf="@id/tvDiscover"
+                     android:clipToPadding="false"
+                     android:orientation="horizontal"
+                     android:paddingStart="@dimen/_3sdp"
+                     android:visibility="visible"
+                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                     tools:listitem="@layout/row_category" />&ndash;&gt;
+             </RelativeLayout>-->
+
+        <!--        </HorizontalScrollView>-->
 
         <FrameLayout
             android:id="@+id/flContainer"

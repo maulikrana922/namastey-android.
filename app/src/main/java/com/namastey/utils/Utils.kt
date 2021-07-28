@@ -80,6 +80,18 @@ object Utils {
         v.background = gd
     }
 
+
+    fun roundShapeGradient(v: View, intArrayOf: IntArray) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+            intArrayOf
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadii = floatArrayOf(40f, 40f, 40f, 40f, 40f, 40f, 40f, 40f)
+        v.background = gd
+    }
+
     fun rectangleCornerShapeGradient(v: View, intArrayOf: IntArray) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,

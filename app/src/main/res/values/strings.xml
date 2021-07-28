@@ -189,6 +189,7 @@
     <string name="discover">Discover</string>
     <string name="msg_no_one_new">There is no one new around you</string>
     <string name="msg_change_distance">Change distance in settings OR turn on global to see namastey members</string>
+    <string name="alert_comment_message">Comment this video is not allowed by the user.</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>
@@ -606,4 +607,8 @@
     <string name="choose_album">Choose Album</string>
     <string name="create_a_new_album">Create a new album</string>
     <string name="err_new_album_name">Enter New Album Name</string>
+    <string name="match">Match</string>
+    <string name="it_s_match">It\'s a Match!</string>
+    <string name="you">You</string>
+    <string name="send_a_message">Send a Message</string>
 </resources>

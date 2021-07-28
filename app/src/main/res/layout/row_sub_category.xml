@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/subCategoryHolder"
-    style="@style/CustomCardViewAllCornerStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/Theme.MaterialComponents"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardPreventCornerOverlap="false"
-    app:strokeWidth="0dp">
-
+    android:layout_height="wrap_content">
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvSubCategory"
         style="@style/tvWrapWhiteStyle"
         android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/rounded_white_solid_white_corner"
+        android:background="@drawable/rounded_pink_solid_all_corner"
         android:gravity="center"
-        android:paddingStart="@dimen/_8sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_3sdp"
-        android:paddingBottom="@dimen/_8sdp"
         android:text="sdfsd"
-        android:textColor="@color/colorBlack"
-        android:textSize="14sp"
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_15sdp"
+        android:textColor="@color/color_black_text"
+        android:textSize="@dimen/_14sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,4 +24,4 @@
         app:typeface="MULI_SEMIBOLD" />
 
     <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
