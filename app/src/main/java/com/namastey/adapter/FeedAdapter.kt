@@ -171,8 +171,9 @@ class FeedAdapter(
                     onFeedItemClick.onPostViewer(dashboardBean.id)
                 }, 5000)
             }
+            tvCommentCount.text = dashboardBean.comments.toString()
 
-            if (dashboardBean.who_can_comment == 2) {
+           /* if (dashboardBean.who_can_comment == 2) {
                 //tvCommentFeed.text = activity.getString(R.string.comments_off)
             } else {
                 if (dashboardBean.who_can_comment == 1) {
@@ -187,7 +188,7 @@ class FeedAdapter(
 //                        )
                     } else {
 //                        tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
+                       // openCustomAlertDialog()
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
@@ -201,10 +202,10 @@ class FeedAdapter(
 //                        )
                     } else {
 //                        tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
+                       // openCustomAlertDialog()
                     }
                 }
-            }
+            }*/
 
             // if (dashboardBean.casual_name != "")
             tvFeedName.text = dashboardBean.casual_name
