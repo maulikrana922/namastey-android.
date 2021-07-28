@@ -607,4 +607,7 @@
     <string name="create_a_new_album">Create a new album</string>
     <string name="err_new_album_name">Enter New Album Name</string>
     <string name="match">Match</string>
+    <string name="it_s_match">It\'s a Match!</string>
+    <string name="you">You</string>
+    <string name="send_a_message">Send a Message</string>
 </resources>

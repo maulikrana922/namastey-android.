@@ -16,11 +16,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_matches_screen">
+        android:background="@color/color_text_red">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_32sdp"
                         android:src="@drawable/balloon_orange"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -45,6 +46,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_78sdp"
                         android:src="@drawable/balloon_green"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -54,6 +56,7 @@
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_marginBottom="@dimen/_107sdp"
                         android:src="@drawable/rectangle_238"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -63,6 +66,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_112sdp"
                         android:src="@drawable/rectangle_239"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -72,6 +76,7 @@
                         android:layout_marginStart="@dimen/_16sdp"
                         android:layout_marginBottom="@dimen/_36sdp"
                         android:src="@drawable/circle_orange_hollow"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -81,51 +86,50 @@
                         android:layout_marginTop="@dimen/_80sdp"
                         android:layout_marginEnd="@dimen/_24sdp"
                         android:src="@drawable/circle_white_hollow"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvCongratulations"
+                        style="@style/tvWrapWhiteStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_16sdp"
+                        android:layout_marginBottom="@dimen/_50sdp"
                         android:gravity="center"
-                        android:text="@string/congratulations"
-                        android:textColor="@color/colorRed"
+                        android:text="@string/it_s_match"
                         android:textSize="40sp"
                         app:typeface="MULI_EXTRA_BOLD" />
 
-                    <com.namastey.customViews.RoundImageView
-                        android:id="@+id/ivProfile1"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_105sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_90sdp"
-                        android:layout_marginEnd="@dimen/_55sdp"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/default_placeholder"
-                        app:cornerRadius="@dimen/_10sdp"
-                        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-                        app:roundedCorners="topLeft|bottomRight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        android:gravity="center">
 
-                    <com.namastey.customViews.RoundImageView
-                        android:id="@+id/ivProfile2"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_105sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_55sdp"
-                        android:layout_marginTop="@dimen/_90sdp"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/default_placeholder"
-                        app:cornerRadius="@dimen/_10sdp"
-                        app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-                        app:roundedCorners="topRight|bottomLeft" />
+                        <com.namastey.customViews.RoundImageView
+                            android:id="@+id/ivProfile1"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_105sdp"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_placeholder"
+                            app:cornerRadius="@dimen/_10sdp"
+                            app:roundedCorners="topLeft|bottomRight" />
+
+                        <com.namastey.customViews.RoundImageView
+                            android:id="@+id/ivProfile2"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_105sdp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_placeholder"
+                            app:cornerRadius="@dimen/_10sdp"
+                            app:roundedCorners="topRight|bottomLeft" />
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="@dimen/_32sdp"
@@ -134,17 +138,36 @@
                         android:layout_marginStart="@dimen/_100sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:src="@drawable/circle_pink_hollow"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_36sdp"
-                        android:layout_height="@dimen/_36sdp"
-                        android:layout_gravity="center|bottom"
-                        android:layout_marginBottom="@dimen/_32sdp"
-                        android:src="@drawable/ic_list_like"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
 
                 </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/ic_match_bottom_heart"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:src="@drawable/ic_match_top_heart"
+                        tools:ignore="ContentDescription" />
+
+                </RelativeLayout>
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvItsMatch"
@@ -163,8 +186,8 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:onClick="onClickOpenChat"
-                    android:background="@drawable/rounded_white_solid">
+                    android:background="@drawable/rounded_white_solid_white_corner"
+                    android:onClick="onClickOpenChat">
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvGoToChat"
@@ -175,9 +198,9 @@
                         android:paddingTop="@dimen/_12sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_12sdp"
-                        android:text="@string/go_to_the_chat"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
+                        android:text="@string/send_a_message"
+                        android:textColor="@color/color_text_red"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -192,9 +215,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_16sdp"
-                    android:onClick="onClickBack"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:background="@drawable/rounded_red_solid">
+                    android:background="@drawable/rounded_white_border_transparent_solid"
+                    android:onClick="onClickBack">
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvBackToNamastey"
@@ -206,7 +229,7 @@
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_12sdp"
                         android:text="@string/back_to_namastey"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -221,12 +244,11 @@
                     android:layout_gravity="bottom|center"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
-                    android:drawableTop="@drawable/ic_share_with_frd"
+                    android:drawableStart="@drawable/ic_match_share"
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center"
                     android:onClick="onClickShare"
                     android:text="@string/share_with_friends"
-                    android:textColor="@color/colorBlack"
                     android:textSize="14sp"
                     app:typeface="MULI_SEMIBOLD" />
 
