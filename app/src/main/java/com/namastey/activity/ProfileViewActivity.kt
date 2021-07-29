@@ -623,7 +623,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickEditProfile(view: View) {
-        openActivity(this@ProfileViewActivity, EditProfileActivity())
+//        openActivity(this@ProfileViewActivity, EditProfileActivity())
+          openActivity(this@ProfileViewActivity, EditActivity())
     }
 
     override fun onBackPressed() {

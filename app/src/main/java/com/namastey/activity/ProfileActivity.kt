@@ -492,7 +492,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
      * click on Edit info open edit profile activity
      */
     fun onClickEditProfile(view: View) {
-        openActivity(this@ProfileActivity, EditProfileActivity())
+//        openActivity(this@ProfileActivity, EditProfileActivity())
+        openActivity(this@ProfileActivity, EditActivity())
     }
 
     /**

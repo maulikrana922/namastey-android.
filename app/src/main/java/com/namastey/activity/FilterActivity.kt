@@ -62,6 +62,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
         filterViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(FilterViewModel::class.java)
+
         activityFilterBinding = bindViewData()
         activityFilterBinding.viewModel = filterViewModel
 
