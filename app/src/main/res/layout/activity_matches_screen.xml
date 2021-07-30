@@ -110,30 +110,50 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <com.namastey.customViews.RoundImageView
-                            android:id="@+id/ivProfile1"
-                            android:layout_width="@dimen/_100sdp"
-                            android:layout_height="@dimen/_105sdp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:background="@drawable/rounded_white_solid_white_corner"
-                            android:contentDescription="@string/app_name"
-                            android:padding="@dimen/_5sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_placeholder"
-                            app:cornerRadius="@dimen/_10sdp"
-                            app:roundedCorners="all" />
+                            android:padding="@dimen/_2sdp">
 
-                        <com.namastey.customViews.RoundImageView
-                            android:id="@+id/ivProfile2"
-                            android:layout_width="@dimen/_100sdp"
-                            android:layout_height="@dimen/_105sdp"
-                            android:layout_gravity="center"
+                            <com.namastey.customViews.RoundImageView
+                                android:id="@+id/ivProfile1"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_105sdp"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rounded_white_solid_all_corner"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_placeholder"
+                                app:cornerRadius="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
+                                app:layout_constraintStart_toEndOf="@id/ckbFindUser"
+                                app:layout_constraintTop_toTopOf="@id/guidlineUser"
+                                app:roundedCorners="all" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:background="@drawable/rounded_white_solid_white_corner"
-                            android:contentDescription="@string/app_name"
-                            android:padding="@dimen/_5sdp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_placeholder"
-                            app:cornerRadius="@dimen/_10sdp"
-                            app:roundedCorners="all" />
+                            android:padding="@dimen/_2sdp">
+
+                            <com.namastey.customViews.RoundImageView
+                                android:id="@+id/ivProfile2"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_105sdp"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rounded_white_solid_all_corner"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_placeholder"
+                                app:cornerRadius="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
+                                app:layout_constraintStart_toEndOf="@id/ckbFindUser"
+                                app:layout_constraintTop_toTopOf="@id/guidlineUser"
+                                app:roundedCorners="all" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <ImageView

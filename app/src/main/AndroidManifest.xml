@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.EditActivity"></activity>
+        <activity android:name=".activity.EditInterestActivity"></activity>
+        <activity android:name=".activity.EditActivity" />
         <activity android:name=".activity.NotInvitedActivity" />
         <activity android:name=".activity.AddVideoActivity" />
         <activity android:name=".activity.SocialLinkActivity" />

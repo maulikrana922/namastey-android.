@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        android:padding="@dimen/_5sdp">
+        android:padding="@dimen/_10sdp">
 
         <RelativeLayout
             android:id="@+id/llToolbar"
@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_45sdp"
                 android:contentDescription="@string/app_name"
                 android:onClick="onEditBackClick"
@@ -80,9 +79,7 @@
                     android:id="@+id/llCentreView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -93,8 +90,6 @@
                         style="@style/tvWrapBlackStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_10sdp"
                         android:singleLine="true"
                         android:text="@string/name"
                         android:textSize="12sp"
@@ -114,7 +109,7 @@
                         android:textColor="@color/color_text"
                         android:textColorHint="@color/colorDarkGray"
                         android:textSize="14sp"
-                        app:typeface="MULI_EXTRA_BOLD" />
+                        app:typeface="MULI_REGULAR" />
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvCasualNameError"
@@ -134,8 +129,6 @@
                     android:id="@+id/llProfileUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@id/llCentreView"
                     app:layout_constraintStart_toStartOf="@id/llCentreView"
@@ -167,7 +160,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvProfileUserName"
-                        app:typeface="MULI_EXTRA_BOLD" />
+                        app:typeface="MULI_REGULAR" />
 
                 </LinearLayout>
 
@@ -176,8 +169,6 @@
                     android:id="@+id/llTagline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@id/llCentreView"
                     app:layout_constraintStart_toStartOf="@id/llCentreView"
@@ -207,7 +198,7 @@
                         android:textColor="@color/colorRed"
                         android:textColorHint="@color/colorDarkGray"
                         android:textSize="14sp"
-                        app:typeface="MULI_SEMIBOLD" />
+                        app:typeface="MULI_REGULAR" />
 
                 </LinearLayout>
 
@@ -216,8 +207,6 @@
                     android:id="@+id/llEducationLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@id/llCentreView"
                     app:layout_constraintStart_toStartOf="@id/llCentreView"
@@ -261,12 +250,11 @@
                             android:singleLine="true"
                             android:textColor="@color/colorRed"
                             android:textSize="14sp"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                     </LinearLayout>
 
                 </LinearLayout>
-
 
                 <!--    TODO: Job-->
 
@@ -274,8 +262,6 @@
                     android:id="@+id/llJobLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@id/llCentreView"
                     app:layout_constraintStart_toStartOf="@id/llCentreView"
@@ -311,7 +297,7 @@
                             android:hint="@string/occupation"
                             android:singleLine="true"
                             android:textSize="14sp"
-                            app:typeface="MULI_EXTRA_BOLD" />
+                            app:typeface="MULI_REGULAR" />
 
                     </LinearLayout>
 
@@ -322,9 +308,7 @@
                     android:id="@+id/llInterest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:gravity="center_vertical"
                     android:onClick="onClickBasicInfo"
                     android:orientation="horizontal"
@@ -348,10 +332,8 @@
                     android:id="@+id/llSocialLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
                     android:gravity="center_vertical"
                     android:onClick="onClickBasicInfo"
                     android:orientation="horizontal"

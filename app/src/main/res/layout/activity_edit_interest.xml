@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.SelectCategoryViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:id="@+id/llToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivEditInterestBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onEditBackClick"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_new" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/txtDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:layout_toEndOf="@id/ivEditInterestBack"
+                android:gravity="end"
+                android:onClick="onEditSaveClick"
+                android:text="@string/done"
+                android:textColor="@color/color_text_red"
+                android:textSize="@dimen/_16sdp"
+                app:typeface="MULI_SEMIBOLD" />
+
+        </RelativeLayout>
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/txtEditInterestTitle"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/interest"
+            android:textSize="@dimen/actionBarTitle"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llEditInterestTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_20sdp" />
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
+</layout>

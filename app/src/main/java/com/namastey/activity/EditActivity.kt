@@ -394,7 +394,6 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         edtProfileTagline.setText(profileBean.about_me)
         edtProfileTagline.setSelection(edtProfileTagline.text?.length ?: 0)
         sessionManager.setCategoryList(profileBean.category)
-        generateProfileTagUI()
 
         if (profileBean.education.size > 0) {
             sessionManager.setEducationBean(profileBean.education[0])
@@ -406,116 +405,6 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         }
 
 
-    }
-
-    private fun generateProfileTagUI() {
-/*
-        var profileTagCount = 0
-        if (sessionManager.getCategoryList().size > 0) {
-            for (categoryBean in sessionManager.getCategoryList()) {
-                val layoutInflater = LayoutInflater.from(this@EditActivity)
-                val view = layoutInflater.inflate(R.layout.view_profile_tag, llProfileTag, false)
-                view.tvCategory.text = categoryBean.name.toString()
-
-                //                    if (categoryBean.sub_category.size > 0) {
-                when {
-                    categoryBean.startColor.isEmpty() -> {
-                        categoryBean.startColor = "#B2BAF2"     // Default set if colours not found
-                        categoryBean.endColor = "#28BAD3"
-                    }
-                }
-
-                Utils.rectangleShapeGradient(
-                    view, intArrayOf(
-                        Color.parseColor(categoryBean.startColor),
-                        Color.parseColor(categoryBean.endColor)
-                    )
-                )
-
-                for (subCategoryBean in categoryBean.sub_category) {
-                    val tvSubCategory = TextView(this@EditActivity)
-                    tvSubCategory.layoutParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-
-                    tvSubCategory.text = subCategoryBean.name.toString()
-                    tvSubCategory.setPadding(40, 20, 40, 20)
-                    tvSubCategory.setTextColor(Color.BLACK)
-                    tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
-
-                    view.chipProfileTag.addView(tvSubCategory)
-
-                    if (subCategoryBean.is_selected == 1) {
-                        subCategoryIdList.add(subCategoryBean.id)
-                        ++profileTagCount
-                        tvSubCategory.setTextColor(Color.WHITE)
-                        tvSubCategory.setBackgroundResource(R.drawable.rounded_green_solid_all_corner)
-
-                    }
-                    tvSubCategory.setOnClickListener {
-
-                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
-                                this@EditActivity,
-                                R.drawable.rounded_white_solid_white_corner
-                            )?.constantState
-                        ) {
-                            subCategoryIdList.add(subCategoryBean.id)
-                            ++profileTagCount
-                            tvSubCategory.setTextColor(Color.WHITE)
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_green_solid_all_corner)
-
-                            editProfileApiCall()
-
-                        } else {
-                            subCategoryIdList.remove(subCategoryBean.id)
-                            --profileTagCount
-                            tvSubCategory.setTextColor(Color.BLACK)
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
-
-                            editProfileApiCall()
-                        }
-                        tvCountProfileTag.text = profileTagCount.toString()
-                    }
-                }
-
-                llProfileTag.addView(view)
-
-                view.tvCategory.setOnClickListener {
-                    //                    if (categoryBean.sub_category.size > 0) {
-                    if (view.chipProfileTag.visibility == View.VISIBLE) {
-                        view.chipProfileTag.visibility = View.GONE
-                        view.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.ic_arrow_down_gray,
-                            0
-                        )
-                    } else {
-                        val count = llProfileTag.childCount - 1
-                        for (index in 0..count) {
-                            val viewCategory = llProfileTag.getChildAt(index)
-                            viewCategory.chipProfileTag.visibility = View.GONE
-                            viewCategory.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_arrow_down_gray,
-                                0
-                            )
-                        }
-                        view.chipProfileTag.visibility = View.VISIBLE
-                        view.tvCategory.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.ic_arrow_up_gray,
-                            0
-                        )
-                    }
-                }
-            }
-        }
-        tvCountProfileTag.text = profileTagCount.toString()
-*/
     }
 
     private fun editProfileApiCall() {
@@ -545,11 +434,17 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             edtProfileTagline.text.toString().trim()
         )
         jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
+
+        // TODO: SubCategory
+/*
+
         jsonObject.addProperty(
             Constants.TAGS,
             subCategoryIdList.joinToString()
         )
-
+*/
+        // TODO: Category
+/*
         val categoryIdList: ArrayList<Int> = ArrayList()
         for (category in sessionManager.getCategoryList()) {
             categoryIdList.add(category.id)
@@ -558,15 +453,20 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             Constants.CATEGORY_ID,
             categoryIdList.joinToString()
         )
+*/
+        // TODO: Social Link
+/*
         val socialAccountId = ArrayList<Long>()
         for (data in socialAccountList) {
             socialAccountId.add(data.id)
         }
         jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
+ */
         jsonObject.addProperty(
             Constants.EDUCATION,
             sessionManager.getEducationBean().id
         )
+
 
         jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
         val androidID =
@@ -608,7 +508,11 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             }
 
             llInterest -> {
-
+                openActivityWithResultCode(
+                    this@EditActivity,
+                    EditInterestActivity(),
+                    Constants.REQUEST_CODE
+                )
             }
 
             llSocialLink -> {
