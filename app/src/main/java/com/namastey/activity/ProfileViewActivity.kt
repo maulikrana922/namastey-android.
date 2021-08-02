@@ -95,12 +95,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         // Need to change
         if (profileBean.gender == Constants.Gender.female.name) {
-            ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
+           // ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                 .fitCenter().into(ivProfileUser)
         } else {
-            ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
+           // ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
             GlideApp.with(this).load(R.drawable.ic_male)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                 .fitCenter().into(ivProfileUser)
@@ -497,12 +497,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             profileBean = intent.getParcelableExtra<ProfileBean>("profileBean") as ProfileBean
 
             if (sessionManager.getUserGender() == Constants.Gender.female.name) {
-                ivProfileTop.background = getDrawable(R.drawable.female_bg)
+                //ivProfileTop.background = getDrawable(R.drawable.female_bg)
                 GlideApp.with(this).load(R.drawable.ic_female)
                     .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                     .fitCenter().into(ivProfileUser)
             } else {
-                ivProfileTop.background = getDrawable(R.drawable.male_bg)
+                //ivProfileTop.background = getDrawable(R.drawable.male_bg)
                 GlideApp.with(this).load(R.drawable.ic_male)
                     .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                     .fitCenter().into(ivProfileUser)
