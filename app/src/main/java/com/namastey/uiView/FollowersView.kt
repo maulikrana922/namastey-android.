@@ -6,4 +6,5 @@ import java.util.*
 interface FollowersView : BaseView {
     fun onSuccess(list: ArrayList<DashboardBean>)
 
+
 }

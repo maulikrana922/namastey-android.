@@ -567,6 +567,7 @@
     <string name="text_violation">Your Namastey profile has been banned for activity that violets our  <a href="http://www.google.com"> Terms of use.</a></string>
     <string name="text_violation1">Your Namastey profile has been banned for activity that violets our <a href="http://www.google.com"> <![CDATA[<u><font color=#000000>Terms of use.</font></u>]]> </a></string>
     <string name="text_admin_block_note">"Please note that if you are subscribed to any premium services through the Play store, you will need to cancel your subscription with the appropriate provider."</string>
+    <string name="text_admin_block_note1">Please note that if you are subscribed to any \npremium services through the App Store or Google \nPlay, you will need to cancel your subscription with \nthe appropriate provider,</string>
     <string name="action_logout">Logout</string>
     <string name="string_buy_boost">Please buy boost.</string>
     <string name="your_crush_is_waiting">Your Crush is Waiting</string>
@@ -610,4 +611,12 @@
     <string name="it_s_match">It\'s a Match!</string>
     <string name="you">You</string>
     <string name="send_a_message">Send a Message</string>
+    <string name="no__internet">No Internet!</string>
+    <string name="please_check_your_internet_connection">Please check your internet connection</string>
+    <string name="try_again">Try Again</string>
+    <string name="text_banned_account">Your account has been \nbanned</string>
+    <string name="text_violation2">Your Namastey profile has been banned for \nactivity that violets our <a href="http://www.google.com">Terms of use.</a></string>
+    <string name="nofollowers">You are not having followers</string>
+    <string name="nofollowing">You are not following anyone</string>
+    <string name="emptyfollowingmsg">When You Start following people,you\'ll see them here</string>
 </resources>
