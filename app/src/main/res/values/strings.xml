@@ -619,4 +619,6 @@
     <string name="nofollowers">You are not having followers</string>
     <string name="nofollowing">You are not following anyone</string>
     <string name="emptyfollowingmsg">When You Start following people,you\'ll see them here</string>
+    <string name="about">About</string>
+    <string name="social_links">Social Links</string>
 </resources>

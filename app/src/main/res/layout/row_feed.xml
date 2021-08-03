@@ -1,418 +1,430 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    style="@style/CustomCardViewTopCornerStyle"
+    app:cardCornerRadius="@dimen/_16sdp"
+    android:theme="@style/Theme.MaterialComponents"
+    app:cardUseCompatPadding="true"
     android:layout_height="match_parent">
 
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <VideoView
-            android:id="@+id/postVideo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-        <!--        <com.namastey.player.InstaLikePlayerView-->
-        <!--            android:id="@+id/feedPlayerView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            tools:background="@color/gradient_five_end"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+        android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/mediaContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@android:color/black">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivMediaCoverImage"
+            <VideoView
+                android:id="@+id/postVideo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"
-                android:scaleType="fitXY"
+                android:layout_gravity="center"
                 android:visibility="gone" />
+
+            <!--        <com.namastey.player.InstaLikePlayerView-->
+            <!--            android:id="@+id/feedPlayerView"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="match_parent"-->
+            <!--            tools:background="@color/gradient_five_end"-->
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+            <FrameLayout
+                android:id="@+id/mediaContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/black">
+
+                <ImageView
+                    android:id="@+id/ivMediaCoverImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/black"
+                    android:scaleType="fitXY"
+                    android:visibility="gone" />
+
+            </FrameLayout>
 
         </FrameLayout>
 
-    </FrameLayout>
+        <!--
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivCommentFirst"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/default_placeholder"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
 
-    <!--
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCommentFirst"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/default_placeholder"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivCommentSecond"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/default_placeholder"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+                app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
+                app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
+                app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCommentSecond"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/default_placeholder"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
-            app:layout_constraintEnd_toEndOf="@id/ivCommentFirst"
-            app:layout_constraintStart_toEndOf="@id/ivCommentFirst"
-            app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivCommentThird"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/default_placeholder"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+                app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
+                app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
+                app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivCommentThird"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/default_placeholder"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
-            app:layout_constraintEnd_toEndOf="@id/ivCommentSecond"
-            app:layout_constraintStart_toEndOf="@id/ivCommentSecond"
-            app:layout_constraintTop_toTopOf="@id/tvFeedShare" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvCommentFeed"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:gravity="start"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
+                app:layout_constraintEnd_toStartOf="@id/tvFeedLike"
+                app:layout_constraintStart_toEndOf="@id/ivCommentThird"
+                app:layout_constraintTop_toTopOf="@id/tvFeedShare" />-->
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvCommentFeed"
+            android:id="@+id/tvFeedLike"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/rounded_btn_red"
+            android:drawableStart="@drawable/ic_like_dashboard"
+            android:drawablePadding="@dimen/_12sdp"
+            android:gravity="center"
+            android:paddingStart="@dimen/_16sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_16sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="@string/match"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFeedShare"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:drawableTop="@drawable/ic_shared_cards"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvFeedLike"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFeedView"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:drawableTop="@drawable/ic_view"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tvFeedShare"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationBoost"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginBottom="@dimen/_minus10sdp"
+            app:layout_constraintBottom_toTopOf="@id/circularSeekBar"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/video_like_heart1"
+            app:lottie_repeatMode="restart" />
+
+        <ProgressBar
+            android:id="@+id/progressBarBoost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/color_instagram"
+            android:indeterminateTintMode="src_atop"
+            android:max="30"
+            android:progress="0"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ivFeedBoost"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+        <me.tankery.lib.circularseekbar.CircularSeekBar
+            android:id="@+id/circularSeekBar"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:visibility="gone"
+            app:cs_circle_color="@color/color_chip_gray"
+            app:cs_circle_progress_color="@color/color_instagram"
+            app:cs_circle_stroke_width="@dimen/_2sdp"
+            app:cs_circle_style="round"
+            app:cs_disable_pointer="true"
+            app:cs_end_angle="180"
+            app:cs_maintain_equal_circle="true"
+            app:cs_progress="25"
+            app:cs_start_angle="-180"
+            app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+
+        <ImageView
+            android:id="@+id/ivFeedBoost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/ic_boost_send"
+            app:layout_constraintBottom_toTopOf="@id/tvFeedBoost"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare"
+            tools:ignore="ContentDescription" />
+
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvFeedBoost"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/ivComment"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+        <ImageView
+            android:id="@+id/ivComment"
+            android:layout_width="18dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:src="@drawable/ic_comment"
+            app:layout_constraintBottom_toTopOf="@id/tvCommentCount"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare"
+            tools:ignore="ContentDescription" />
+
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvCommentCount"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tvFeedView"
+            app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
+            app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
+
+        <com.hendraanggrian.appcompat.widget.SocialTextView
+            android:id="@+id/tvFeedDesc"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="start"
+            android:gravity="top"
+            android:maxLines="2"
+            android:minLines="2"
+            android:paddingEnd="@dimen/_5sdp"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvFeedShare"
             app:layout_constraintEnd_toStartOf="@id/tvFeedLike"
-            app:layout_constraintStart_toEndOf="@id/ivCommentThird"
-            app:layout_constraintTop_toTopOf="@id/tvFeedShare" />-->
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clUser" />
 
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFeedLike"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_width="wrap_content"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:background="@drawable/rounded_btn_red"
-        android:drawableStart="@drawable/ic_like_dashboard"
-        android:drawablePadding="@dimen/_12sdp"
-        android:gravity="center"
-        android:paddingStart="@dimen/_16sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_16sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:text="@string/match"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!--    <com.namastey.customViews.CustomTextView-->
+        <!--        android:id="@+id/tvFeedDescFirst"-->
+        <!--        style="@style/tvWrapWhiteStyle"-->
+        <!--        android:layout_width="0dp"-->
+        <!--        android:layout_marginBottom="@dimen/_3sdp"-->
+        <!--        android:paddingEnd="@dimen/_5sdp"-->
+        <!--        android:textSize="14sp"-->
+        <!--        app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"-->
+        <!--        app:layout_constraintEnd_toStartOf="@id/tvFeedView"-->
+        <!--        app:layout_constraintStart_toStartOf="@id/ivCommentFirst" />-->
 
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFeedShare"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:drawableTop="@drawable/ic_shared_cards"
-        android:drawablePadding="@dimen/_3sdp"
-        android:gravity="center"
-        android:text="0"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvFeedLike"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!--    <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationVideoLike"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/video_like_heart"
+                app:lottie_repeatMode="restart" />
 
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFeedView"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:drawableTop="@drawable/ic_view"
-        android:drawablePadding="@dimen/_3sdp"
-        android:gravity="center"
-        android:text="0"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedShare"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+            <com.namastey.customViews.RoundImageView
+                android:id="@+id/ivFeedProfile"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:src="@drawable/default_placeholder"
+                android:scaleType="centerCrop"
+                app:cornerRadius="@dimen/_8sdp"
+                app:roundedCorners="all"
+                app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animationBoost"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_80sdp"
-        android:layout_marginBottom="@dimen/_minus10sdp"
-        app:layout_constraintBottom_toTopOf="@id/circularSeekBar"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/video_like_heart1"
-        app:lottie_repeatMode="restart" />
+            <ImageView
+                android:id="@+id/ivFeedFollow"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_add_follow_from_profile"
+                app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
+                app:layout_constraintEnd_toEndOf="@id/ivFeedProfile"
+                app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
+                app:layout_constraintTop_toBottomOf="@id/ivFeedProfile" />
 
-    <ProgressBar
-        android:id="@+id/progressBarBoost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/color_instagram"
-        android:indeterminateTintMode="src_atop"
-        android:max="30"
-        android:progress="0"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/ivFeedBoost"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFeedName"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="@string/user"
+                app:layout_constraintBottom_toTopOf="@id/tvFeedJob"
+                app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
+                app:layout_constraintTop_toTopOf="@id/ivFeedProfile"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:typeface="MULI_SEMIBOLD" />
 
-    <me.tankery.lib.circularseekbar.CircularSeekBar
-        android:id="@+id/circularSeekBar"
-        android:layout_width="@dimen/_32sdp"
-        android:layout_height="@dimen/_32sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/_25sdp"
-        android:visibility="gone"
-        app:cs_circle_color="@color/color_chip_gray"
-        app:cs_circle_progress_color="@color/color_instagram"
-        app:cs_circle_stroke_width="@dimen/_2sdp"
-        app:cs_circle_style="round"
-        app:cs_disable_pointer="true"
-        app:cs_end_angle="180"
-        app:cs_maintain_equal_circle="true"
-        app:cs_progress="25"
-        app:cs_start_angle="-180"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFeedJob"
+                style="@style/tvWrapWhiteStyle"
+                android:text="@string/jobs"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
+                app:layout_constraintStart_toStartOf="@id/tvFeedName"
+                app:layout_constraintTop_toBottomOf="@id/tvFeedName"
+                app:layout_constraintVertical_chainStyle="packed" />-->
 
 
-    <ImageView
-        android:id="@+id/ivFeedBoost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:src="@drawable/ic_boost_send"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedBoost"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare"
-        tools:ignore="ContentDescription" />
-
-
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFeedBoost"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:gravity="center"
-        android:text="0"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/ivComment"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
-
-    <ImageView
-        android:id="@+id/ivComment"
-        android:layout_width="18dp"
-        android:layout_height="22dp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:src="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/tvCommentCount"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare"
-        tools:ignore="ContentDescription" />
-
-
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvCommentCount"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:gravity="center"
-        android:text="0"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedView"
-        app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
-        app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
-
-
-    <com.hendraanggrian.appcompat.widget.SocialTextView
-        android:id="@+id/tvFeedDesc"
-        style="@style/tvWrapWhiteStyle"
-        android:layout_width="0dp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:gravity="top"
-        android:maxLines="2"
-        android:minLines="2"
-        android:paddingEnd="@dimen/_5sdp"
-        android:textSize="14sp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        app:layout_constraintEnd_toStartOf="@id/tvFeedLike"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clUser" />
-
-    <!--    <com.namastey.customViews.CustomTextView-->
-    <!--        android:id="@+id/tvFeedDescFirst"-->
-    <!--        style="@style/tvWrapWhiteStyle"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_marginBottom="@dimen/_3sdp"-->
-    <!--        android:paddingEnd="@dimen/_5sdp"-->
-    <!--        android:textSize="14sp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"-->
-    <!--        app:layout_constraintEnd_toStartOf="@id/tvFeedView"-->
-    <!--        app:layout_constraintStart_toStartOf="@id/ivCommentFirst" />-->
-
-    <!--    <com.airbnb.lottie.LottieAnimationView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationVideoLike"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_90sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:elevation="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gl78"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/video_like_heart"
             app:lottie_repeatMode="restart" />
 
-        <com.namastey.customViews.RoundImageView
-            android:id="@+id/ivFeedProfile"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:src="@drawable/default_placeholder"
-            android:scaleType="centerCrop"
-            app:cornerRadius="@dimen/_8sdp"
-            app:roundedCorners="all"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:background="@drawable/rounded_btn_red"
+            android:backgroundTint="@color/colorBlackTransparent"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_4sdp"
             app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/ivFeedFollow"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_add_follow_from_profile"
-            app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
-            app:layout_constraintEnd_toEndOf="@id/ivFeedProfile"
-            app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
-            app:layout_constraintTop_toBottomOf="@id/ivFeedProfile" />
-
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFeedName"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/user"
-            app:layout_constraintBottom_toTopOf="@id/tvFeedJob"
-            app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
-            app:layout_constraintTop_toTopOf="@id/ivFeedProfile"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:typeface="MULI_SEMIBOLD" />
-
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFeedJob"
-            style="@style/tvWrapWhiteStyle"
-            android:text="@string/jobs"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
-            app:layout_constraintStart_toStartOf="@id/tvFeedName"
-            app:layout_constraintTop_toBottomOf="@id/tvFeedName"
-            app:layout_constraintVertical_chainStyle="packed" />-->
-
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animationVideoLike"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_90sdp"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:elevation="@dimen/_8sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gl78"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/video_like_heart"
-        app:lottie_repeatMode="restart" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:background="@drawable/rounded_btn_red"
-        android:backgroundTint="@color/colorBlackTransparent"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_4sdp"
-        app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gl75">
-
-
-        <com.namastey.customViews.RoundImageView
-            android:id="@+id/ivFeedProfile"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_placeholder"
-            app:cornerRadius="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:roundedCorners="all" />
+            app:layout_constraintTop_toBottomOf="@+id/gl75">
 
-        <ImageView
-            android:id="@+id/ivFeedFollow"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_add_follow_from_profile"
-            app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
-            app:layout_constraintEnd_toEndOf="@id/ivFeedProfile"
-            app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
-            app:layout_constraintTop_toBottomOf="@id/ivFeedProfile" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFeedName"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:text="@string/user"
-            app:layout_constraintBottom_toTopOf="@id/tvFeedJob"
-            app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
-            app:layout_constraintTop_toTopOf="@id/ivFeedProfile"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:typeface="MULI_SEMIBOLD" />
+            <com.namastey.customViews.RoundImageView
+                android:id="@+id/ivFeedProfile"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_placeholder"
+                app:cornerRadius="@dimen/_8sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundedCorners="all" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvFeedJob"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/jobs"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
-            app:layout_constraintTop_toBottomOf="@id/tvFeedName" />
+            <ImageView
+                android:id="@+id/ivFeedFollow"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_add_follow_from_profile"
+                app:layout_constraintBottom_toBottomOf="@id/ivFeedProfile"
+                app:layout_constraintEnd_toEndOf="@id/ivFeedProfile"
+                app:layout_constraintStart_toStartOf="@id/ivFeedProfile"
+                app:layout_constraintTop_toBottomOf="@id/ivFeedProfile" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFeedName"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/user"
+                app:layout_constraintBottom_toTopOf="@id/tvFeedJob"
+                app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
+                app:layout_constraintTop_toTopOf="@id/ivFeedProfile"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvFeedJob"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="@string/jobs"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@id/ivFeedProfile"
+                app:layout_constraintTop_toBottomOf="@id/tvFeedName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl75"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.68" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl78"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.60" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl75"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.78" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl78"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.70" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

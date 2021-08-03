@@ -49,7 +49,7 @@ class UserSearchAdapter(
             tvFindUser.text = dashboardBean.username
             tvUserJob.text = dashboardBean.job
 
-            GlideLib.loadImageUrlRound(activity, ivFindUser, dashboardBean.profile_url)
+            GlideLib.loadImage(activity, ivFindUser, dashboardBean.profile_url)
 
             if (isDisplayCkb) {
                 ckbFindUser.visibility = View.VISIBLE

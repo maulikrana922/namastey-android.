@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.EditActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ProfileBasicViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:id="@+id/llToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivEditBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onEditBackClick"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_new" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/txtSettingTitle"
+                style="@style/tvWrapBlackStyle"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:layout_toStartOf="@id/txtSave"
+                android:layout_toEndOf="@id/ivEditBack"
+                android:text="@string/edit_info"
+                android:textSize="@dimen/actionBarTitle"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/txtSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:onClick="onEditSaveClick"
+                android:text="@string/save"
+                android:textColor="@color/color_text_red"
+                android:textSize="@dimen/_16sdp"
+                app:typeface="MULI_SEMIBOLD" />
+
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--    TODO: Name-->
+                <LinearLayout
+                    android:id="@+id/llCentreView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvUniqueNameError"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/name"
+                        android:textSize="12sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomEditText
+                        android:id="@+id/edtProfileCasualName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_white_solid_white_corner"
+                        android:hint="@string/name"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_13sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/colorDarkGray"
+                        android:textSize="14sp"
+                        app:typeface="MULI_REGULAR" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvCasualNameError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app:typeface="MULI_EXTRA_BOLD" />
+                </LinearLayout>
+
+                <!--    TODO: USERNAME-->
+                <LinearLayout
+                    android:id="@+id/llProfileUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/llCentreView"
+                    app:layout_constraintStart_toStartOf="@id/llCentreView"
+                    app:layout_constraintTop_toBottomOf="@id/llCentreView">
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvProfileUserName"
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/hint_user_name"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomEditText
+                        android:id="@+id/edtProfileUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_white_solid_white_corner"
+                        android:hint="@string/hint_user_name"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_13sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_text"
+                        android:textColorHint="@color/colorDarkGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvProfileUserName"
+                        app:typeface="MULI_REGULAR" />
+
+                </LinearLayout>
+
+                <!--    TODO: Tagline-->
+                <LinearLayout
+                    android:id="@+id/llTagline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/llCentreView"
+                    app:layout_constraintStart_toStartOf="@id/llCentreView"
+                    app:layout_constraintTop_toBottomOf="@id/llProfileUserName">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/about"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomEditText
+                        android:id="@+id/edtProfileTagline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_white_solid_white_corner"
+                        android:gravity="top"
+                        android:hint="@string/about"
+                        android:maxLines="5"
+                        android:minLines="5"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_13sdp"
+                        android:textColor="@color/colorRed"
+                        android:textColorHint="@color/colorDarkGray"
+                        android:textSize="14sp"
+                        app:typeface="MULI_REGULAR" />
+
+                </LinearLayout>
+
+                <!--    TODO: Education -->
+                <LinearLayout
+                    android:id="@+id/llEducationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/llCentreView"
+                    app:layout_constraintStart_toStartOf="@id/llCentreView"
+                    app:layout_constraintTop_toBottomOf="@id/llTagline">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/education"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <LinearLayout
+                        android:id="@+id/llEducation"
+                        style="@style/tvRoundCornerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_white_solid_white_corner"
+                        android:gravity="center_vertical"
+                        android:onClick="onClickBasicInfo"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
+                        app:layout_constraintStart_toStartOf="@id/llProfileUserName"
+                        app:layout_constraintTop_toBottomOf="@id/llTagline">
+
+                        <com.namastey.customViews.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/education"
+                            android:textSize="14sp"
+                            app:typeface="MULI_SEMIBOLD" />
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvProfileEducation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:singleLine="true"
+                            android:textColor="@color/colorRed"
+                            android:textSize="14sp"
+                            app:typeface="MULI_REGULAR" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--    TODO: Job-->
+
+                <LinearLayout
+                    android:id="@+id/llJobLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/llCentreView"
+                    app:layout_constraintStart_toStartOf="@id/llCentreView"
+                    app:layout_constraintTop_toBottomOf="@id/llEducationLayout">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/occupation"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <LinearLayout
+                        android:id="@+id/llJob"
+                        style="@style/tvRoundCornerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_white_solid_white_corner"
+                        android:gravity="center_vertical"
+                        android:onClick="onClickBasicInfo"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
+                        app:layout_constraintStart_toStartOf="@id/llProfileUserName"
+                        app:layout_constraintTop_toBottomOf="@id/llEducationLayout">
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvProfileJobs"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            android:hint="@string/occupation"
+                            android:singleLine="true"
+                            android:textSize="14sp"
+                            app:typeface="MULI_REGULAR" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--    TODO: Interest-->
+                <LinearLayout
+                    android:id="@+id/llInterest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:gravity="center_vertical"
+                    android:onClick="onClickBasicInfo"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
+                    app:layout_constraintStart_toStartOf="@id/llProfileUserName"
+                    app:layout_constraintTop_toBottomOf="@id/llJobLayout">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/interest"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </LinearLayout>
+
+                <!--    TODO: Social Link-->
+                <LinearLayout
+                    android:id="@+id/llSocialLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:onClick="onClickBasicInfo"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
+                    app:layout_constraintStart_toStartOf="@id/llProfileUserName"
+                    app:layout_constraintTop_toBottomOf="@id/llInterest">
+
+                    <com.namastey.customViews.CustomTextView
+                        style="@style/tvWrapBlackStyle"
+                        android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:paddingTop="@dimen/_13sdp"
+                        android:text="@string/social_links"
+                        android:textSize="14sp"
+                        app:typeface="MULI_EXTRA_BOLD" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/flContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true" />
+
+    </LinearLayout>
+</layout>
