@@ -36,7 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_32sdp"
                         android:src="@drawable/balloon_orange"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -46,7 +46,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_78sdp"
                         android:src="@drawable/balloon_green"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -56,7 +56,7 @@
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_marginBottom="@dimen/_107sdp"
                         android:src="@drawable/rectangle_238"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -66,7 +66,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_112sdp"
                         android:src="@drawable/rectangle_239"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -76,7 +76,7 @@
                         android:layout_marginStart="@dimen/_16sdp"
                         android:layout_marginBottom="@dimen/_36sdp"
                         android:src="@drawable/circle_orange_hollow"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -86,7 +86,7 @@
                         android:layout_marginTop="@dimen/_80sdp"
                         android:layout_marginEnd="@dimen/_24sdp"
                         android:src="@drawable/circle_white_hollow"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                     <com.namastey.customViews.CustomTextView
@@ -95,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_50sdp"
                         android:gravity="center"
                         android:text="@string/it_s_match"
@@ -106,29 +106,54 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="@dimen/_50sdp"
-                        android:gravity="center">
+                        android:layout_marginTop="@dimen/_150sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <com.namastey.customViews.RoundImageView
-                            android:id="@+id/ivProfile1"
-                            android:layout_width="@dimen/_100sdp"
-                            android:layout_height="@dimen/_105sdp"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_placeholder"
-                            app:cornerRadius="@dimen/_10sdp"
-                            app:roundedCorners="topLeft|bottomRight" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_white_solid_white_corner"
+                            android:padding="@dimen/_2sdp">
 
-                        <com.namastey.customViews.RoundImageView
-                            android:id="@+id/ivProfile2"
-                            android:layout_width="@dimen/_100sdp"
-                            android:layout_height="@dimen/_105sdp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_placeholder"
-                            app:cornerRadius="@dimen/_10sdp"
-                            app:roundedCorners="topRight|bottomLeft" />
+                            <com.namastey.customViews.RoundImageView
+                                android:id="@+id/ivProfile1"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_105sdp"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rounded_white_solid_all_corner"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_placeholder"
+                                app:cornerRadius="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
+                                app:layout_constraintStart_toEndOf="@id/ckbFindUser"
+                                app:layout_constraintTop_toTopOf="@id/guidlineUser"
+                                app:roundedCorners="all" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_white_solid_white_corner"
+                            android:padding="@dimen/_2sdp">
+
+                            <com.namastey.customViews.RoundImageView
+                                android:id="@+id/ivProfile2"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_105sdp"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rounded_white_solid_all_corner"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/default_placeholder"
+                                app:cornerRadius="@dimen/_10sdp"
+                                app:layout_constraintBottom_toBottomOf="@id/guidlineUser"
+                                app:layout_constraintStart_toEndOf="@id/ckbFindUser"
+                                app:layout_constraintTop_toTopOf="@id/guidlineUser"
+                                app:roundedCorners="all" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <ImageView
@@ -138,36 +163,42 @@
                         android:layout_marginStart="@dimen/_100sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:src="@drawable/circle_pink_hollow"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         tools:ignore="ContentDescription" />
 
                 </FrameLayout>
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_20sdp">
 
                     <ImageView
+                        android:id="@+id/imgBottomHeart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_12sdp"
                         android:src="@drawable/ic_match_bottom_heart"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
+                        android:id="@+id/imgTopHeart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
-                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingStart="@dimen/_12sdp"
                         android:src="@drawable/ic_match_top_heart"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="ContentDescription" />
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvItsMatch"
@@ -264,17 +295,6 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/star"
-            app:lottie_repeatMode="restart" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationConfetti"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/confetti"
             app:lottie_repeatMode="restart" />
 
         <com.airbnb.lottie.LottieAnimationView

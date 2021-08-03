@@ -23,13 +23,17 @@
         <com.namastey.customViews.ExoPlayerRecyclerView
             android:id="@+id/viewpagerFeed"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_28sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/ivUser" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivProfile"

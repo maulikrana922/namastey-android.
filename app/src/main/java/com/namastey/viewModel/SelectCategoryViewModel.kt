@@ -1,6 +1,8 @@
 package com.namastey.viewModel
 
+import com.google.gson.JsonObject
 import com.namastey.R
+import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -51,6 +53,35 @@ class SelectCategoryViewModel constructor(
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()
+        }
+    }
+
+    fun editProfile(jsonObject: JsonObject) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileSelectCategoryView.isInternetAvailable()) {
+                    networkService.requestCreateProfile(jsonObject)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                profileSelectCategoryView.onSuccess(appResponse.message)
+                            } else {
+                                profileSelectCategoryView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    profileSelectCategoryView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                profileSelectCategoryView.onHandleException(exception)
+            }
         }
     }
 }

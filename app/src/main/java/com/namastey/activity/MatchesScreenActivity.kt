@@ -4,16 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMatchesScreenBinding
 import com.namastey.uiView.MatchesScreenBasicView
 import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MatchesScreenViewModel
 import kotlinx.android.synthetic.main.activity_matches_screen.*
+import kotlinx.android.synthetic.main.row_user_suggested.view.*
 import javax.inject.Inject
 
 class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), MatchesScreenBasicView {
@@ -58,27 +59,31 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
             val userProfile2 = sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
 
             if (userProfile1 != null && userProfile1.isNotEmpty()) {
-                Glide
-                    .with(this)
-                    .load(userProfile1)
-                    .into(ivProfile1)
+                GlideLib.loadImage(
+                    this@MatchesScreenActivity,
+                    ivProfile1,
+                    userProfile1
+                )
             } else {
-                Glide
-                    .with(this)
-                    .load(getDrawable(R.drawable.default_placeholder))
-                    .into(ivProfile1)
+                GlideLib.loadImage(
+                    this@MatchesScreenActivity,
+                    ivProfile1,
+                    userProfile1
+                )
             }
 
             if (userProfile2 != null && userProfile2.isNotEmpty()) {
-                Glide
-                    .with(this)
-                    .load(userProfile2)
-                    .into(ivProfile2)
+                GlideLib.loadImage(
+                    this@MatchesScreenActivity,
+                    ivProfile2,
+                    userProfile2
+                )
             } else {
-                Glide
-                    .with(this)
-                    .load(getDrawable(R.drawable.default_placeholder))
-                    .into(ivProfile2)
+                GlideLib.loadImage(
+                    this@MatchesScreenActivity,
+                    ivProfile2,
+                    userProfile2
+                )
             }
 
 
@@ -91,7 +96,7 @@ class MatchesScreenActivity : BaseActivity<ActivityMatchesScreenBinding>(), Matc
             tvItsMatch.text =
                 getString(R.string.you).plus(" ").plus(
                     getString(R.string.and)
-                ).plus(" ").plus(userName1).plus(" \n have")
+                ).plus(" ").plus(userName1).plus(" \n have ")
                     .plus(getString(R.string.str_liked_each_other))
         }
 

@@ -611,4 +611,6 @@
     <string name="it_s_match">It\'s a Match!</string>
     <string name="you">You</string>
     <string name="send_a_message">Send a Message</string>
+    <string name="about">About</string>
+    <string name="social_links">Social Links</string>
 </resources>

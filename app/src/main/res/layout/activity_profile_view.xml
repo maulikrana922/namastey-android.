@@ -25,29 +25,21 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/ivProfileTop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/male_bg"
-                    android:contentDescription="@string/app_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/ivProfileBack"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_14sdp"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
                     android:onClick="onClickProfileBack"
-                    android:src="@drawable/ic_back"
+                    android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/color_black_text" />
 
                 <ImageView
                     android:id="@+id/ivProfileMore"
@@ -59,22 +51,22 @@
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/ic_more"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
+                    app:layout_constraintTop_toTopOf="@id/ivProfileBack"
+                    app:tint="@color/color_black_text" />
 
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.namastey.customViews.RoundImageView
                     android:id="@+id/ivProfileUser"
-                    android:layout_width="@dimen/_73sdp"
-                    android:layout_height="@dimen/_73sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_male"
-                    app:civ_border_color="@color/colorWhite"
-                    app:civ_border_width="@dimen/_1sdp"
-                    app:civ_circle_background_color="@color/colorWhite"
+                    app:cornerRadius="@dimen/_8sdp"
                     app:layout_constraintStart_toStartOf="@id/ivProfileBack"
-                    app:layout_constraintTop_toBottomOf="@id/ivProfileBack" />
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileBack"
+                    app:roundedCorners="all" />
 
                 <ImageView
                     android:id="@+id/ivProfileCamera"
@@ -140,95 +132,177 @@
                     app:layout_constraintTop_toBottomOf="@id/tvJob"
                     app:typeface="MULI_SEMIBOLD" />
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvViews"
-                    style="@style/tvWrapWhiteStyle"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvView"
                     android:layout_width="0dp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:paddingEnd="@dimen/_5sdp"
-                    android:text="@string/views"
-                    app:layout_constraintStart_toStartOf="@id/tvEducation"
-                    app:layout_constraintTop_toBottomOf="@id/tvViewsCount" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toStartOf="@id/cvFollower"
+                    app:layout_constraintStart_toEndOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@id/tvEducation">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvFollowers"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:onClick="onClickFollow"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:text="@string/followers"
-                    app:layout_constraintEnd_toStartOf="@id/viewSecond"
-                    app:layout_constraintStart_toEndOf="@id/viewFirst"
-                    app:layout_constraintTop_toTopOf="@id/tvViews" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvFollowing"
-                    style="@style/tvWrapWhiteStyle"
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvViews1"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="wrap_content"
+                            android:text="@string/views"
+                            android:textColor="@color/color_text"
+                            android:textSize="@dimen/_10sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvViewsCount"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/color_black_text"
+                            android:textSize="@dimen/_16sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvViews1" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvFollower"
                     android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:onClick="onClickFollow"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:text="@string/following"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/cvFollowing"
+                    app:layout_constraintStart_toEndOf="@id/cvView"
+                    app:layout_constraintTop_toBottomOf="@id/tvEducation">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvFollowers"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="0dp"
+                            android:gravity="center_horizontal"
+                            android:onClick="onClickFollow"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="@string/followers"
+                            android:textColor="@color/color_text"
+                            android:textSize="@dimen/_10sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvFollowersCount"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="0dp"
+                            android:gravity="center_horizontal"
+                            android:onClick="onClickFollow"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="0"
+                            android:textColor="@color/color_black_text"
+                            android:textSize="@dimen/_16sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvFollowers" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvFollowing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:theme="@style/Theme.MaterialComponents"
+                    app:cardCornerRadius="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/viewSecond"
-                    app:layout_constraintTop_toTopOf="@id/tvViews" />
+                    app:layout_constraintStart_toEndOf="@+id/cvFollower"
+                    app:layout_constraintTop_toBottomOf="@id/tvEducation">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvViewsCount"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="0"
-                    app:layout_constraintEnd_toEndOf="@id/tvViews"
-                    app:layout_constraintStart_toStartOf="@id/tvViews"
-                    app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_8sdp">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvFollowersCount"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:onClick="onClickFollow"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:text="0"
-                    app:layout_constraintEnd_toEndOf="@id/tvFollowers"
-                    app:layout_constraintStart_toStartOf="@id/tvFollowers"
-                    app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvFollowingCount"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="0dp"
-                    android:onClick="onClickFollow"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:text="0"
-                    app:layout_constraintEnd_toEndOf="@id/tvFollowing"
-                    app:layout_constraintStart_toStartOf="@id/tvFollowing"
-                    app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvFollowing"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="wrap_content"
+                            android:onClick="onClickFollow"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="@string/following"
+                            android:textColor="@color/color_text"
+                            android:textSize="@dimen/_10sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <View
-                    android:id="@+id/viewFirst"
-                    android:layout_width="@dimen/_1sdp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/colorWhite"
-                    app:layout_constraintBottom_toBottomOf="@id/tvViews"
-                    app:layout_constraintEnd_toStartOf="@id/tvFollowers"
-                    app:layout_constraintStart_toEndOf="@id/tvViews"
-                    app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvFollowingCount"
+                            style="@style/tvWrapWhiteStyle"
+                            android:layout_width="match_parent"
+                            android:gravity="center_horizontal"
+                            android:onClick="onClickFollow"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:text="0"
+                            android:textColor="@color/color_black_text"
+                            android:textSize="@dimen/_16sdp"
+                            app:layout_constraintTop_toBottomOf="@+id/tvFollowing" />
 
-                <View
-                    android:id="@+id/viewSecond"
-                    android:layout_width="@dimen/_1sdp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/colorWhite"
-                    app:layout_constraintBottom_toBottomOf="@id/viewFirst"
-                    app:layout_constraintEnd_toStartOf="@id/tvFollowing"
-                    app:layout_constraintStart_toEndOf="@id/tvFollowers"
-                    app:layout_constraintTop_toBottomOf="@id/tvEducation" />
 
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!-- <View
+                     android:id="@+id/viewFirst"
+                     android:layout_width="@dimen/_1sdp"
+                     android:layout_height="0dp"
+                     android:layout_marginStart="@dimen/_12sdp"
+                     android:layout_marginTop="@dimen/_5sdp"
+                     android:background="@color/colorWhite"
+                     app:layout_constraintBottom_toBottomOf="@id/tvViews"
+                     app:layout_constraintEnd_toStartOf="@id/tvFollowers"
+                     app:layout_constraintStart_toEndOf="@id/tvViews"
+                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+
+                 <View
+                     android:id="@+id/viewSecond"
+                     android:layout_width="@dimen/_1sdp"
+                     android:layout_height="0dp"
+                     android:layout_marginTop="@dimen/_5sdp"
+                     android:background="@color/colorWhite"
+                     app:layout_constraintBottom_toBottomOf="@id/viewFirst"
+                     app:layout_constraintEnd_toStartOf="@id/tvFollowing"
+                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
+                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+ -->
                 <!--                <HorizontalScrollView-->
                 <!--                    android:id="@+id/svInterestChip"-->
                 <!--                    android:layout_width="0dp"-->
@@ -240,18 +314,7 @@
                 <!--                    app:layout_constraintStart_toStartOf="@id/tvViews"-->
                 <!--                    app:layout_constraintTop_toBottomOf="@id/tvViews">-->
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipProfileInterest"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    app:chipSpacingHorizontal="@dimen/_5sdp"
-                    app:chipSpacingVertical="@dimen/_5sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                    app:layout_constraintStart_toStartOf="@id/tvViews"
-                    app:layout_constraintTop_toBottomOf="@id/tvViews"
-                    app:singleLine="true" />
+
                 <!--                </HorizontalScrollView>-->
 
                 <com.namastey.customViews.CustomTextView
@@ -261,7 +324,7 @@
                     android:text="@string/about_me"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/chipProfileInterest" />
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileFollow" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAbouteDesc"
@@ -285,14 +348,14 @@
                     android:id="@+id/groupButtonsLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:constraint_referenced_ids="btnProfileFollow,btnProfileLike" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileMatches"
                     style="@style/btnRedStyle"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@drawable/rounded_white_solid_red_border"
                     android:minHeight="@dimen/_32sdp"
@@ -301,7 +364,7 @@
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
-                    app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileUser" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnEditProfile"
@@ -319,28 +382,87 @@
                     android:id="@+id/btnProfileFollow"
                     style="@style/btnRedStyle"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@drawable/rounded_white_solid_red_border"
+                    android:background="@drawable/rectangle_red_solid_all_corner_small"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickFollowRequest"
                     android:text="@string/follow"
                     android:textColor="@color/colorButtonRed"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
-                    app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileUser" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileLike"
                     style="@style/btnRedStyle"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/rounded_btn_red"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickProfileLike"
                     android:text="@string/like"
                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_28sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:src="@drawable/ic_link_facebook"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAbouteDesc" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivInstagram"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    android:src="@drawable/ic_link_instagram"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivFacebook"
+                    app:layout_constraintStart_toEndOf="@+id/ivFacebook"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAbouteDesc"
+                    app:layout_constraintTop_toTopOf="@+id/ivFacebook" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivTwitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    android:src="@drawable/ic_link_twitter"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivInstagram"
+                    app:layout_constraintStart_toEndOf="@+id/ivInstagram"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAbouteDesc"
+                    app:layout_constraintTop_toTopOf="@+id/ivInstagram" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSportfity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    android:src="@drawable/ic_link_spotify"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivTwitter"
+                    app:layout_constraintStart_toEndOf="@+id/ivTwitter"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAbouteDesc"
+                    app:layout_constraintTop_toTopOf="@+id/ivTwitter" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipProfileInterest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    app:chipSpacingHorizontal="@dimen/_5sdp"
+                    app:chipSpacingVertical="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivFacebook"
+                    app:singleLine="true" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAlbumList"
@@ -350,7 +472,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btnProfileMatches"
+                    app:layout_constraintTop_toBottomOf="@id/chipProfileInterest"
                     app:reverseLayout="true"
                     app:stackFromEnd="true" />
 
@@ -378,13 +500,372 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- <androidx.constraintlayout.widget.ConstraintLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+
+                 <ImageView
+                     android:id="@+id/ivProfileTop"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/male_bg"
+                     android:contentDescription="@string/app_name"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+                 <ImageView
+                     android:id="@+id/ivProfileBack"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="@dimen/_15sdp"
+                     android:layout_marginTop="@dimen/_45sdp"
+                     android:contentDescription="@string/app_name"
+                     android:onClick="onClickProfileBack"
+                     android:src="@drawable/ic_back"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+                 <ImageView
+                     android:id="@+id/ivProfileMore"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginEnd="@dimen/_15sdp"
+                     android:contentDescription="@string/app_name"
+                     android:onClick="onClickProfileMore"
+                     android:padding="@dimen/_5sdp"
+                     android:src="@drawable/ic_more"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
+
+
+                 <de.hdodenhof.circleimageview.CircleImageView
+                     android:id="@+id/ivProfileUser"
+                     android:layout_width="@dimen/_73sdp"
+                     android:layout_height="@dimen/_73sdp"
+                     android:layout_marginTop="@dimen/_20sdp"
+                     android:contentDescription="@string/app_name"
+                     android:scaleType="centerCrop"
+                     android:src="@drawable/ic_male"
+                     app:civ_border_color="@color/colorWhite"
+                     app:civ_border_width="@dimen/_1sdp"
+                     app:civ_circle_background_color="@color/colorWhite"
+                     app:layout_constraintStart_toStartOf="@id/ivProfileBack"
+                     app:layout_constraintTop_toBottomOf="@id/ivProfileBack" />
+
+                 <ImageView
+                     android:id="@+id/ivProfileCamera"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:contentDescription="@string/app_name"
+                     android:onClick="onClickProfileImage"
+                     android:src="@drawable/ic_cam_profile"
+                     android:visibility="invisible"
+                     app:layout_constraintBottom_toBottomOf="@+id/ivProfileUser"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
+                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toBottomOf="@+id/ivProfileUser" />
+
+                 <com.google.android.material.chip.ChipGroup
+                     android:id="@+id/chipProfileSocial"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="@dimen/_12sdp"
+                     android:layout_marginTop="@dimen/_2sdp"
+                     android:layout_marginEnd="@dimen/_8sdp"
+                     android:layout_marginBottom="@dimen/_5sdp"
+                     app:chipSpacingHorizontal="@dimen/_8sdp"
+                     app:chipSpacingVertical="@dimen/_8sdp"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
+                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toBottomOf="@id/ivProfileCamera" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvProfileUsername"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="@dimen/_10sdp"
+                     android:layout_marginTop="@dimen/_3sdp"
+                     android:layout_marginEnd="@dimen/_3sdp"
+                     android:singleLine="true"
+                     android:textColor="@color/colorWhite"
+                     android:textSize="20sp"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toEndOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toTopOf="@id/ivProfileUser"
+                     app:typeface="MULI_EXTRA_BOLD" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvJob"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="@dimen/_3sdp"
+                     android:paddingEnd="@dimen/_5sdp"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
+                     app:layout_constraintTop_toBottomOf="@id/tvProfileUsername"
+                     app:typeface="MULI_SEMIBOLD" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvEducation"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="@dimen/_3sdp"
+                     android:paddingEnd="@dimen/_5sdp"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
+                     app:layout_constraintTop_toBottomOf="@id/tvJob"
+                     app:typeface="MULI_SEMIBOLD" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvViews"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="@dimen/_3sdp"
+                     android:paddingEnd="@dimen/_5sdp"
+                     android:text="@string/views"
+                     app:layout_constraintStart_toStartOf="@id/tvEducation"
+                     app:layout_constraintTop_toBottomOf="@id/tvViewsCount" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvFollowers"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginStart="@dimen/_3sdp"
+                     android:onClick="onClickFollow"
+                     android:paddingStart="@dimen/_5sdp"
+                     android:text="@string/followers"
+                     app:layout_constraintEnd_toStartOf="@id/viewSecond"
+                     app:layout_constraintStart_toEndOf="@id/viewFirst"
+                     app:layout_constraintTop_toTopOf="@id/tvViews" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvFollowing"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginStart="@dimen/_3sdp"
+                     android:onClick="onClickFollow"
+                     android:paddingStart="@dimen/_5sdp"
+                     android:text="@string/following"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toEndOf="@id/viewSecond"
+                     app:layout_constraintTop_toTopOf="@id/tvViews" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvViewsCount"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="@dimen/_10sdp"
+                     android:text="0"
+                     app:layout_constraintEnd_toEndOf="@id/tvViews"
+                     app:layout_constraintStart_toStartOf="@id/tvViews"
+                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvFollowersCount"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:onClick="onClickFollow"
+                     android:paddingStart="@dimen/_5sdp"
+                     android:text="0"
+                     app:layout_constraintEnd_toEndOf="@id/tvFollowers"
+                     app:layout_constraintStart_toStartOf="@id/tvFollowers"
+                     app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvFollowingCount"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:onClick="onClickFollow"
+                     android:paddingStart="@dimen/_5sdp"
+                     android:text="0"
+                     app:layout_constraintEnd_toEndOf="@id/tvFollowing"
+                     app:layout_constraintStart_toStartOf="@id/tvFollowing"
+                     app:layout_constraintTop_toTopOf="@id/tvViewsCount" />
+
+                 <View
+                     android:id="@+id/viewFirst"
+                     android:layout_width="@dimen/_1sdp"
+                     android:layout_height="0dp"
+                     android:layout_marginStart="@dimen/_12sdp"
+                     android:layout_marginTop="@dimen/_5sdp"
+                     android:background="@color/colorWhite"
+                     app:layout_constraintBottom_toBottomOf="@id/tvViews"
+                     app:layout_constraintEnd_toStartOf="@id/tvFollowers"
+                     app:layout_constraintStart_toEndOf="@id/tvViews"
+                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+
+                 <View
+                     android:id="@+id/viewSecond"
+                     android:layout_width="@dimen/_1sdp"
+                     android:layout_height="0dp"
+                     android:layout_marginTop="@dimen/_5sdp"
+                     android:background="@color/colorWhite"
+                     app:layout_constraintBottom_toBottomOf="@id/viewFirst"
+                     app:layout_constraintEnd_toStartOf="@id/tvFollowing"
+                     app:layout_constraintStart_toEndOf="@id/tvFollowers"
+                     app:layout_constraintTop_toBottomOf="@id/tvEducation" />
+
+                 &lt;!&ndash;                <HorizontalScrollView&ndash;&gt;
+                 &lt;!&ndash;                    android:id="@+id/svInterestChip"&ndash;&gt;
+                 &lt;!&ndash;                    android:layout_width="0dp"&ndash;&gt;
+                 &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;
+                 &lt;!&ndash;                    android:layout_marginTop="@dimen/_12sdp"&ndash;&gt;
+                 &lt;!&ndash;                    android:layout_marginBottom="@dimen/_5sdp"&ndash;&gt;
+                 &lt;!&ndash;                    android:scrollbars="none"&ndash;&gt;
+                 &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"&ndash;&gt;
+                 &lt;!&ndash;                    app:layout_constraintStart_toStartOf="@id/tvViews"&ndash;&gt;
+                 &lt;!&ndash;                    app:layout_constraintTop_toBottomOf="@id/tvViews">&ndash;&gt;
+
+                 <com.google.android.material.chip.ChipGroup
+                     android:id="@+id/chipProfileInterest"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_12sdp"
+                     android:layout_marginBottom="@dimen/_5sdp"
+                     app:chipSpacingHorizontal="@dimen/_5sdp"
+                     app:chipSpacingVertical="@dimen/_5sdp"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toStartOf="@id/tvViews"
+                     app:layout_constraintTop_toBottomOf="@id/tvViews"
+                     app:singleLine="true" />
+                 &lt;!&ndash;                </HorizontalScrollView>&ndash;&gt;
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvAboutLable"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_marginTop="@dimen/_8sdp"
+                     android:text="@string/about_me"
+                     android:textSize="18sp"
+                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toBottomOf="@id/chipProfileInterest" />
+
+                 <com.namastey.customViews.CustomTextView
+                     android:id="@+id/tvAbouteDesc"
+                     style="@style/tvWrapWhiteStyle"
+                     android:layout_width="0dp"
+                     android:layout_marginTop="@dimen/_3sdp"
+                     android:layout_marginEnd="@dimen/_8sdp"
+                     android:maxLines="4"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toBottomOf="@id/tvAboutLable" />
+
+                 <androidx.constraintlayout.widget.Group
+                     android:id="@+id/groupButtons"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:visibility="invisible"
+                     app:constraint_referenced_ids="btnProfileMatches,btnEditProfile" />
+
+                 <androidx.constraintlayout.widget.Group
+                     android:id="@+id/groupButtonsLike"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:visibility="gone"
+                     app:constraint_referenced_ids="btnProfileFollow,btnProfileLike" />
+
+                 <com.namastey.customViews.CustomButton
+                     android:id="@+id/btnProfileMatches"
+                     style="@style/btnRedStyle"
+                     android:layout_marginStart="@dimen/_5sdp"
+                     android:layout_marginTop="@dimen/_8sdp"
+                     android:layout_marginEnd="@dimen/_10sdp"
+                     android:background="@drawable/rounded_white_solid_red_border"
+                     android:minHeight="@dimen/_32sdp"
+                     android:onClick="onClickMatches"
+                     android:text="@string/matches"
+                     android:textColor="@color/colorButtonRed"
+                     app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
+                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                     app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
+
+                 <com.namastey.customViews.CustomButton
+                     android:id="@+id/btnEditProfile"
+                     style="@style/btnRedStyle"
+                     android:layout_marginStart="@dimen/_10sdp"
+                     android:layout_marginEnd="@dimen/_5sdp"
+                     android:minHeight="@dimen/_32sdp"
+                     android:onClick="onClickEditProfile"
+                     android:text="@string/edit_info"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toEndOf="@+id/btnProfileMatches"
+                     app:layout_constraintTop_toTopOf="@id/btnProfileMatches" />
+
+                 <com.namastey.customViews.CustomButton
+                     android:id="@+id/btnProfileFollow"
+                     style="@style/btnRedStyle"
+                     android:layout_marginStart="@dimen/_5sdp"
+                     android:layout_marginTop="@dimen/_8sdp"
+                     android:layout_marginEnd="@dimen/_10sdp"
+                     android:background="@drawable/rounded_white_solid_red_border"
+                     android:minHeight="@dimen/_32sdp"
+                     android:onClick="onClickFollowRequest"
+                     android:text="@string/follow"
+                     android:textColor="@color/colorButtonRed"
+                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
+                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                     app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
+
+                 <com.namastey.customViews.CustomButton
+                     android:id="@+id/btnProfileLike"
+                     style="@style/btnRedStyle"
+                     android:layout_marginStart="@dimen/_10sdp"
+                     android:layout_marginEnd="@dimen/_5sdp"
+                     android:minHeight="@dimen/_32sdp"
+                     android:onClick="onClickProfileLike"
+                     android:text="@string/like"
+                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
+                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
+
+                 <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/rvAlbumList"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_10sdp"
+                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/btnProfileMatches"
+                     app:reverseLayout="true"
+                     app:stackFromEnd="true" />
+
+                 <include
+                     android:id="@+id/layoutPrivateAccount"
+                     layout="@layout/view_private_account"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:visibility="gone"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/btnProfileMatches"
+                     app:layout_constraintVertical_bias="1" />
+
+                 <ProgressBar
+                     android:id="@+id/progressBar"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+
+             </androidx.constraintlayout.widget.ConstraintLayout>-->
         </androidx.core.widget.NestedScrollView>
 
         <FrameLayout
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
 
     </FrameLayout>
+
+
 </layout>

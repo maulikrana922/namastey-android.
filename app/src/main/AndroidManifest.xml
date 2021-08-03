@@ -40,7 +40,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.NotInvitedActivity"></activity>
+        <activity android:name=".activity.EditInterestActivity"></activity>
+        <activity android:name=".activity.EditActivity" />
+        <activity android:name=".activity.NotInvitedActivity" />
         <activity android:name=".activity.AddVideoActivity" />
         <activity android:name=".activity.SocialLinkActivity" />
         <activity android:name=".activity.AboutActivity" />
@@ -63,8 +65,7 @@
         <activity
             android:name=".activity.OTPActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.InviteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
