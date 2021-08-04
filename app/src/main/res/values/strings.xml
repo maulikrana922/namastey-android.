@@ -337,8 +337,9 @@
     <string name="edit_post">Edit Post</string>
     <string name="update">Update</string>
     <string name="select_cover">Select cover</string>
-    <string name="hint_video_desc">Describe your video</string>
+    <string name="hint_video_desc">Write a caption for your video...</string>
     <string name="add_to">Add to</string>
+    <string name="choose">Choose</string>
     <string name="add_to_album">Add to album</string>
     <string name="album">Album</string>
     <string name="shared_with">Shared with</string>

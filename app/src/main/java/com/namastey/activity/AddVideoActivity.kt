@@ -177,6 +177,9 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
 //        openActivity(this@AddVideoActivity, NotInvitedActivity())
     }
 
+    fun onClickAddVideo(view: View){
+        openActivity(this@AddVideoActivity, PostVideoActivity())
+    }
     fun onClickSkip(view: View) {
         editProfileApiCall()
     }

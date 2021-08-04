@@ -87,11 +87,13 @@ class EducationActivity : BaseActivity<ActivityEducationBinding>(), EducationVie
 
     fun onClickContinue(view: View) {
         if (!TextUtils.isEmpty(edtEducation.text.toString().trim())){
-            educationViewModel.addEducation(
-                edtEducation.text.toString().trim()
-            )
+            sessionManager.setStringValue(edtEducation.text.toString().trim(), Constants.KEY_EDUCATION)
+//            educationViewModel.addEducation(
+//                edtEducation.text.toString().trim()
+//            )
         }else if (!TextUtils.isEmpty(edtOccupation.text.toString().trim())){
-            addJob()
+            sessionManager.setStringValue(edtOccupation.text.toString().trim(), Constants.KEY_JOB)
+//            addJob()
         }
     }
 

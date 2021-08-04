@@ -54,7 +54,7 @@ class CustomTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(
 
             Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf")
 
-            else -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
+            else -> Typeface.createFromAsset(context.assets, "DMSans-Regular.ttf")
         }
     }
 }
