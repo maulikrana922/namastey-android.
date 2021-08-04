@@ -44,17 +44,17 @@ class CustomTextView(context: Context, attrs: AttributeSet) : AppCompatTextView(
     @Throws(IllegalArgumentException::class)
     private fun createTypeface(context: Context, typefaceValue: Int): Typeface {
         return when (typefaceValue) {
-            Constants.MULI_REGULAR -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
+            Constants.MULI_REGULAR -> Typeface.createFromAsset(context.assets, "DMSans-Regular.ttf")
 
-            Constants.MULI_LIGHT -> Typeface.createFromAsset(context.assets, "Muli-Light.ttf")
+            Constants.MULI_LIGHT -> Typeface.createFromAsset(context.assets, "DMSans-Regular.ttf")
 
-            Constants.MULI_BLACK -> Typeface.createFromAsset(context.assets, "Muli-Black.ttf")
+            Constants.MULI_BLACK -> Typeface.createFromAsset(context.assets, "DMSans-Regular.ttf")
 
-            Constants.MULI_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "Muli-SemiBold.ttf")
+            Constants.MULI_SEMI_BOLD -> Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf")
 
-            Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(context.assets, "Muli-ExtraBold.ttf")
+            Constants.MULI_EXTRA_BOLD -> Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf")
 
-            else -> Typeface.createFromAsset(context.assets, "Muli-Regular.ttf")
+            else -> Typeface.createFromAsset(context.assets, "DMSans-Regular.ttf")
         }
     }
 }

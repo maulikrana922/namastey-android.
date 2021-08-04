@@ -237,10 +237,10 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
             jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
             jsonObject.addProperty(
                 Constants.EDUCATION,
-                sessionManager.getEducationBean().id
+                sessionManager.getStringValue(Constants.KEY_EDUCATION)
             )
 
-            jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
+            jsonObject.addProperty(Constants.JOBS,  sessionManager.getStringValue(Constants.KEY_JOB))
             val albumId = ArrayList<Long>()
             for (data in albumList) {
                 albumId.add(data.id)

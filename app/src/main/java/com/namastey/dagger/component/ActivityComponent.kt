@@ -89,4 +89,5 @@ interface ActivityComponent {
 
 
 //    fun inject(activity: EmailActivity)
+    fun inject(activity: ProfilePicActivity)
 }

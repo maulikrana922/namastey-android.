@@ -395,14 +395,15 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         edtProfileTagline.setSelection(edtProfileTagline.text?.length ?: 0)
         sessionManager.setCategoryList(profileBean.category)
 
-        if (profileBean.education.size > 0) {
-            sessionManager.setEducationBean(profileBean.education[0])
-            tvProfileEducation.text = sessionManager.getEducationBean().course
-        }
-        if (profileBean.jobs.size > 0) {
-            sessionManager.setJobBean(profileBean.jobs[0])
-            tvProfileJobs.text = sessionManager.getJobBean().title
-        }
+      //  if (profileBean.education.size > 0) {
+           sessionManager.setStringValue(profileBean.education,Constants.KEY_EDUCATION)
+            tvProfileEducation.text = sessionManager.getStringValue(Constants.KEY_EDUCATION)
+       // }
+        // if (profileBean.jobs.size > 0) {
+        //sessionManager.setJobBean(profileBean.jobs)
+        sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
+        tvProfileJobs.text = profileBean.jobs
+        // }
 
 
     }
@@ -464,11 +465,11 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
  */
         jsonObject.addProperty(
             Constants.EDUCATION,
-            sessionManager.getEducationBean().id
+            sessionManager.getStringValue(Constants.KEY_EDUCATION)
         )
 
 
-        jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
+        jsonObject.addProperty(Constants.JOBS, sessionManager.getStringValue(Constants.KEY_JOB))
         val androidID =
             Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
