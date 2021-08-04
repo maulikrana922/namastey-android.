@@ -144,16 +144,16 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
 //            socialAccountId.add(data.id)
 //        }
 //        jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
-        if (sessionManager.getEducationBean().course.isNotEmpty()) {
+       // if (sessionManager.getEducationBean().course.isNotEmpty()) {
             jsonObject.addProperty(
                 Constants.EDUCATION,
-                sessionManager.getEducationBean().id
+                sessionManager.getStringValue(Constants.KEY_EDUCATION)
             )
-        }
+       // }
 
-        if (sessionManager.getJobBean().title.isNotEmpty()) {
-            jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
-        }
+//        if (sessionManager.getJobBean().title.isNotEmpty()) {
+            jsonObject.addProperty(Constants.JOBS, sessionManager.getStringValue(Constants.KEY_JOB))
+//        }
         val androidID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
 
         jsonObject.addProperty(Constants.DEVICE_ID, androidID)

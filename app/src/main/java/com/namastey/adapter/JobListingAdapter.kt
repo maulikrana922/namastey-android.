@@ -56,7 +56,7 @@ class JobListingAdapter(
                 if (jobListing[position].isSelect == 0){
                     rbSelected.isChecked = true
                     jobBean.isSelect = 1
-                    sessionManager.setJobBean(jobBean)
+//                    sessionManager.setJobBean(jobBean)
                     jobListing[position].isSelect = 1
                     jobListing[selectedPosition].isSelect = 0
                     selectedPosition = position

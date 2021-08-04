@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.listeners.OnEducationItemClick
 import com.namastey.model.EducationBean
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_education.view.*
 import java.util.*
@@ -56,7 +57,7 @@ class EducationAdapter(
                 if (educationList[position].isSelect == 0) {
                     rbSelected.isChecked = true
                     educationBean.isSelect = 1
-                    sessionManager.setEducationBean(educationBean)
+//                    sessionManager.setEducationBean(educationBean)
                     educationList[position].isSelect = 1
                     educationList[selectedPosition].isSelect = 0
                     selectedPosition = position

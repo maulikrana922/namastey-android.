@@ -53,7 +53,6 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.ActivityBannedUser" />
         <activity android:name=".activity.NoInternetActivity" />
-        <activity android:name=".activity.NotInvitedActivity" />
         <activity android:name=".activity.AddVideoActivity" />
         <activity android:name=".activity.SocialLinkActivity" />
         <activity android:name=".activity.AboutActivity" />
