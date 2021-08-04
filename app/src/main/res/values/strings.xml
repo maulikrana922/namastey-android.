@@ -621,4 +621,9 @@
     <string name="emptyfollowingmsg">When You Start following people,you\'ll see them here</string>
     <string name="about">About</string>
     <string name="social_links">Social Links</string>
+    <string name="follow_request_msg">Approve or ignore requests</string>
+    <string name="activity">Activity</string>
+    <string name="accept">Accept</string>
+    <string name="followback">Follow Back</string>
+    <string name="time">Time</string>
 </resources>

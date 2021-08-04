@@ -14,7 +14,7 @@
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
         app:cornerRadius="@dimen/_8sdp"
-        app:roundedCorners="topRight|bottomLeft"
+        app:roundedCorners="all"
         android:src="@drawable/default_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidlineFollowing"

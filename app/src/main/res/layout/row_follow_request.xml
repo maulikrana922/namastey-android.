@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,7 +16,7 @@
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivUserProfile"
-            android:layout_width="@dimen/_45sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
@@ -24,7 +25,7 @@
             app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-            app:roundedCorners="topRight|bottomLeft" />
+            app:roundedCorners="all" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,7 +46,7 @@
                 android:paddingBottom="@dimen/_2sdp"
                 android:text="@string/user"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp"
+                android:textSize="@dimen/_14sdp"
                 app:typeface="MULI_SEMIBOLD" />
 
             <com.namastey.customViews.CustomTextView
@@ -60,33 +61,33 @@
                 android:text="@string/jobs"
                 android:textColor="@color/colorLightGrayText"
                 android:textSize="12sp"
-                app:typeface="MULI_SEMIBOLD" />
+                app:typeface="MULI_SEMIBOLD"
+                android:visibility="gone"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/mainCategoryView"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_height="wrap_content">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvCategory"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_4sdp"
-                android:background="@drawable/rounded_red_solid">
+                android:background="@drawable/squer_grey_border_transparent_solid"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:gravity="center|start"
+                android:paddingTop="@dimen/_2sdp"
+                android:text="@string/education"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/_12sdp"
+                app:typeface="MULI_SEMIBOLD" />
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvCategory"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                    android:text="@string/education"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:typeface="MULI_EXTRA_BOLD" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -94,22 +95,23 @@
             android:id="@+id/mainDenyView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/rounded_white_solid_red_border"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rounded_red_button"
             android:visibility="visible">
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvDeny"
+                android:id="@+id/tvAllow"
                 style="@style/tvWrapWhiteStyle"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_25sdp"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/_12sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="@string/deny"
-                android:textColor="@color/colorRed"
+                android:text="@string/accept"
+                android:textColor="@color/colorWhite"
                 android:textSize="12sp"
+                android:paddingHorizontal="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -122,13 +124,22 @@
             android:id="@+id/mainAllowView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_6sdp"
-            android:background="@drawable/rounded_red_solid"
-            android:visibility="visible">
+            android:background="@drawable/squer_grey_border_transparent_solid"
+            android:visibility="visible"
+        >
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAllow"
+            <ImageView
+                android:id="@+id/tvDeny"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/ic_close"
+                tools:ignore="MissingConstraints"
+                android:padding="@dimen/_8sdp"/>
+
+         <!--   <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvDeny"
                 style="@style/tvWrapWhiteStyle"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -142,7 +153,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:typeface="MULI_EXTRA_BOLD" />
+                app:typeface="MULI_EXTRA_BOLD" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
