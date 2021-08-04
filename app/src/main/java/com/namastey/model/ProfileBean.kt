@@ -34,8 +34,10 @@ class ProfileBean() : Parcelable {
     var distance: String = ""
     var gender: String = ""
     var category: ArrayList<CategoryBean> = ArrayList()
-    var education: ArrayList<EducationBean> = ArrayList()
-    var jobs: ArrayList<JobBean> = ArrayList()
+    var education: String = ""
+
+    // var jobs: ArrayList<JobBean> = ArrayList()
+    var jobs: String = ""
     var social_accounts: ArrayList<SocialAccountBean> = ArrayList()
 
     //  var interest: ArrayList<InterestBean> = ArrayList()
@@ -43,7 +45,8 @@ class ProfileBean() : Parcelable {
     var age: Int = 0
     var is_like: Int = 0
     var is_block: Int = 0
-    var is_match: Int  = 0
+    var is_match: Int = 0
+
     @SerializedName("notification_tage")
     var notificationBean: ArrayList<NotificationOnOffBean> = ArrayList()
 
@@ -78,8 +81,8 @@ class ProfileBean() : Parcelable {
         distance = parcel.readString() ?: ""
         gender = parcel.readString() ?: ""
         category = parcel.createTypedArrayList(CategoryBean) ?: ArrayList()
-        education = parcel.createTypedArrayList(EducationBean) ?: ArrayList()
-        jobs = parcel.createTypedArrayList(JobBean) ?: ArrayList()
+        education = parcel.readString() ?: ""
+        jobs = parcel.readString() ?: ""
         social_accounts = parcel.createTypedArrayList(SocialAccountBean) ?: ArrayList()
         //  interest = parcel.createTypedArrayList(InterestBean) ?: ArrayList()
         albums = parcel.createTypedArrayList(AlbumBean) ?: ArrayList()
@@ -117,8 +120,8 @@ class ProfileBean() : Parcelable {
         parcel.writeString(distance)
         parcel.writeString(gender)
         parcel.writeTypedList(category)
-        parcel.writeTypedList(education)
-        parcel.writeTypedList(jobs)
+        parcel.writeString(education)
+        parcel.writeString(jobs)
         parcel.writeTypedList(social_accounts)
         //   parcel.writeTypedList(interest)
         parcel.writeTypedList(albums)

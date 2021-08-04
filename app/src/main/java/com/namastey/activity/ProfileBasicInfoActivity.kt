@@ -140,14 +140,14 @@ class ProfileBasicInfoActivity : BaseActivity<ActivityProfileBasicInfoBinding>()
             llCategory.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
         }
 
-        if (sessionManager.getEducationBean().course.isNotEmpty()) {
-            tvProfileEducation.text = sessionManager.getEducationBean().course
+        //if (sessionManager.getEducationBean().course.isNotEmpty()) {
+            tvProfileEducation.text = sessionManager.getStringValue(Constants.KEY_EDUCATION)
             llEducation.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
-        }
-        if (sessionManager.getJobBean().title.isNotEmpty()) {
-            tvProfileJobs.text = sessionManager.getJobBean().title
+       // }
+       // if (sessionManager.getJobBean().title.isNotEmpty()) {
+            tvProfileJobs.text =sessionManager.getStringValue(Constants.KEY_JOB)
             llJob.setBackgroundResource(R.drawable.rounded_white_solid_black_border)
-        }
+       // }
     }
 
     fun onClickProfileNext(view: View) {

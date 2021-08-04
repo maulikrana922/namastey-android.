@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.FollowingViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_following"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickProfileBack"
+                android:src="@drawable/ic_back" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/headertitle"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/ivBack"
+                android:text="@string/following"
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_20sdp" />
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_following">
+
+            <LinearLayout
+                android:id="@+id/llSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="@drawable/rounded_search"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchFollowFollowing"
+                    style="@style/searchViewStyle"
+                    app:defaultQueryHint="@string/search"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="@string/search"
+                    app:searchHintIcon="@drawable/ic_search" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchUser"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/llSearchView"
+                app:layout_constraintStart_toStartOf="@id/llSearchView"
+                app:layout_constraintTop_toBottomOf="@id/llSearchView"
+                tools:listitem="@layout/row_following" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidlineEmpty"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <LinearLayout
+                android:id="@+id/llEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/guidlineEmpty">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    app:cardBackgroundColor="@color/white">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_40sdp"
+                        android:contentDescription="@string/app_name"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/empty_male_female" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvEmptyFollow"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_marginStart="@dimen/_70sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:text="@string/nofollowers"
+                        android:textColor="@color/colorBlack"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvEmptyFollowMsg"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_60sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:maxLines="3"
+                        android:text="@string/emptyfollowingmsg"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBlack" />
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

@@ -95,9 +95,9 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                 edtJobCompany.setText(jobBean.company_name)
             }
         } else {
-            val jobBean = sessionManager.getJobBean()
-            edtJobTitle.setText(jobBean.title)
-            edtJobCompany.setText(jobBean.company_name)
+            //val jobBean = sessionManager.getJobBean()
+           // edtJobTitle.setText(jobBean.title)
+            //edtJobCompany.setText(jobBean.company_name)
         }
     }
 
@@ -114,7 +114,7 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                 Intent().putExtra("jobBean", jobBean)
             )
         } else {
-            sessionManager.setJobBean(jobBean)
+//            sessionManager.setJobBean(jobBean)
         }
         activity!!.onBackPressed()
     }
@@ -170,17 +170,17 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                                 )
                             }
                         } else {
-                            if (sessionManager.getJobBean().company_name.isNotEmpty())
-                                jsonObject.addProperty(
-                                    Constants.JOB_ID,
-                                    sessionManager.getJobBean().id
-                                )
+//                           if (sessionManager.getJobBean().company_name.isNotEmpty())
+//                                jsonObject.addProperty(
+//                                    Constants.JOB_ID,
+//                                    sessionManager.getJobBean().id
+//                                )
                         }
                         jobViewModel.addJob(jsonObject)
                     }
                 }
             }
-            btnJobRemove -> {
+   /*         btnJobRemove -> {
                 if (sessionManager.getJobBean().id == jobBean.id) {
                     object : CustomAlertDialog(
                         requireActivity(),
@@ -211,7 +211,7 @@ class JobFragment : BaseFragment<FragmentJobBinding>(), JobView,
                         }
                     }.show()
                 }
-            }
+            }*/
         }
     }
 

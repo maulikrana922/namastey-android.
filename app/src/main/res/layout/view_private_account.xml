@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewPrivateAccount"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/_15sdp">
+    android:paddingBottom="@dimen/_15sdp"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardUseCompatPadding="true">
 
-    <ImageView
-        android:id="@+id/ivPrivateAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_18sdp"
-        android:src="@drawable/ic_private_account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <com.namastey.customViews.CustomTextView
-        android:id="@+id/tvPrivateAccount"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/_16sdp"
+        android:paddingBottom="@dimen/_16sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_25sdp"
-        android:layout_marginEnd="@dimen/_25sdp"
-        android:gravity="center"
-        android:paddingStart="@dimen/_15sdp"
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_2sdp"
-        android:singleLine="true"
-        android:text="@string/this_account_is_private"
-        android:textColor="@color/colorDarkGray"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@id/ivPrivateAccount"
-        app:layout_constraintStart_toStartOf="@id/ivPrivateAccount"
-        app:layout_constraintTop_toBottomOf="@id/ivPrivateAccount"
-        app:typeface="MULI_SEMIBOLD" />
+        android:background="@color/colorWhite"
+        android:layout_height="wrap_content">
 
-    <!--<com.namastey.customViews.CustomTextView
-        android:id="@+id/tvFollowPrivateAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:gravity="center"
-        android:text="@string/message_follow_private_account"
-        android:textColor="@color/colorDarkGray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/tvPrivateAccount"
-        app:layout_constraintStart_toStartOf="@id/tvPrivateAccount"
-        app:layout_constraintTop_toBottomOf="@id/tvPrivateAccount"
-        app:typeface="MULI_SEMIBOLD" />-->
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/ivPrivateAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_lock_new"
+            app:layout_constraintEnd_toStartOf="@+id/tvPrivateAccount"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvPrivateAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/this_account_is_private"
+            android:textColor="@color/color_black_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPrivateAccount"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/ivPrivateAccount"
+            app:layout_constraintTop_toTopOf="@id/ivPrivateAccount"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/customTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/follow_this_account_to_see_videos_and_know_more_about_them"
+            android:textColor="@color/color_black_text"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/tvPrivateAccount"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivPrivateAccount"
+            app:typeface="MULI_REGULAR" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

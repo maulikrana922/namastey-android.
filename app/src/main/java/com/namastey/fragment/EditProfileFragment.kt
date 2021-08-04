@@ -608,14 +608,16 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         sessionManager.setCategoryList(profileBean.category)
         generateProfileTagUI()
 
-        if (profileBean.education.size > 0) {
-            sessionManager.setEducationBean(profileBean.education[0])
-            tvProfileEducation.text = sessionManager.getEducationBean().course
-        }
-        if (profileBean.jobs.size > 0) {
-            sessionManager.setJobBean(profileBean.jobs[0])
-            tvProfileJobs.text = sessionManager.getJobBean().title
-        }
+       // if (profileBean.education.size > 0) {
+            sessionManager.setStringValue(profileBean.education,Constants.KEY_EDUCATION)
+            tvProfileEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
+       // }
+//        if (profileBean.jobs.size > 0) {
+//            sessionManager.setJobBean(profileBean.jobs[0])
+        sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
+
+        tvProfileJobs.text = profileBean.jobs
+//        }
         rangeProfileAge.setMaxStartValue(
             sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
         )
@@ -687,10 +689,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
         jsonObject.addProperty(
             Constants.EDUCATION,
-            sessionManager.getEducationBean().id
+            sessionManager.getStringValue(Constants.KEY_EDUCATION)
         )
 
-        jsonObject.addProperty(Constants.JOBS, sessionManager.getJobBean().id)
+        jsonObject.addProperty(Constants.JOBS,  sessionManager.getStringValue(Constants.KEY_JOB))
         val androidID = Settings.Secure.getString(requireActivity().contentResolver, Settings.Secure.ANDROID_ID)
 
         jsonObject.addProperty(Constants.DEVICE_ID, androidID)
@@ -705,8 +707,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), ProfileB
         super.onActivityResult(requestCode, resultCode, data)
         Log.d("onActivityResult", "onActivityResult")
         if (requestCode == Constants.REQUEST_CODE_EDUCATION || requestCode == Constants.REQUEST_CODE_JOB) {
-            tvProfileJobs.text = sessionManager.getJobBean().title
-            tvProfileEducation.text = sessionManager.getEducationBean().course
+            tvProfileJobs.text =  sessionManager.getStringValue(Constants.KEY_JOB)
+            tvProfileEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
             editProfileApiCall()
         } else if (data != null) {
             when {

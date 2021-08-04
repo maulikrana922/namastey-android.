@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -75,7 +76,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         if (profileBean.user_id == sessionManager.getUserId()) {
             isMyProfile = true
             groupButtons.visibility = View.VISIBLE
-            groupButtonsLike.visibility = View.GONE
+            groupButtonsLike.visibility = View.INVISIBLE
         } else {
             isMyProfile = false
             groupButtons.visibility = View.INVISIBLE
@@ -123,7 +124,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     private fun fillValue(profileBean: ProfileBean) {
-        tvProfileUsername.text = profileBean.username
+        tvProfileUsername.text = profileBean.casual_name
+        tvCasualName.text = profileBean.username
+
         if (profileBean.about_me.isNotEmpty() && profileBean.about_me != null)
             tvAbouteDesc.text = profileBean.about_me
         else
@@ -135,12 +138,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         if (profileBean.profileUrl.isNotEmpty())
             GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
-        if (profileBean.education.size > 0) {
-            tvEducation.text = profileBean.education[0].course
-        }
-        if (profileBean.jobs.size > 0) {
-            tvJob.text = profileBean.jobs[0].title
-        }
+        //if (profileBean.education.size > 0) {
+            tvEducation.text = profileBean.education
+       // }
+        //if (profileBean.jobs.size > 0) {
+            tvJob.text = profileBean.jobs
+       // }
 
         //generateChooseInterestUI(profileBean.interest)
         if (profileBean.sub_cat_tag != null && profileBean.sub_cat_tag.size > 0) {
@@ -165,6 +168,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 rvAlbumList.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
                 layoutPrivateAccount.visibility = View.VISIBLE
+                chipProfileInterest.visibility=View.GONE
+                tvInterestTitel.visibility=View.GONE
                 rvAlbumList.visibility = View.GONE
             }
         } else {
@@ -186,8 +191,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         )
         tvInterest.text = interestSubCategoryList[0].name
         tvInterest.setPadding(40, 18, 40, 18)
-        tvInterest.setTextColor(Color.WHITE)
-        tvInterest.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
+        tvInterest.setTextColor(ContextCompat.getColor(this ,R.color.color_text_red))
+        tvInterest.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
 
         chipProfileInterest.addView(tvInterest)
 
@@ -199,9 +204,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             )
             tvInterestSecond.text = interestSubCategoryList[1].name
             tvInterestSecond.setPadding(40, 18, 40, 18)
-            tvInterestSecond.setTextColor(Color.WHITE)
-            tvInterestSecond.setBackgroundResource(R.drawable.rounded_white_border_transparent_solid)
-
+            tvInterestSecond.setTextColor(ContextCompat.getColor(this ,R.color.color_text_red))
+            tvInterestSecond.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
             chipProfileInterest.addView(tvInterestSecond)
         }
 
@@ -222,7 +226,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //            ivSocialIcon.background = getDrawable(R.drawable.circle_white_solid)
             when (socialBean.name) {
                 getString(R.string.facebook) -> {
-                    ivSocialIcon.setImageResource(R.drawable.ic_facebook)
+                    ivSocialIcon.setImageResource(R.drawable.ic_link_facebook)
                     ivSocialIcon.setOnClickListener {
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
                             if (profileBean.user_profile_type == 0) {
@@ -294,7 +298,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     }
                 }
                 getString(R.string.instagram) -> {
-                    ivSocialIcon.setImageResource(R.drawable.profile_link_instagram)
+                    ivSocialIcon.setImageResource(R.drawable.ic_link_instagram)
 
                     ivSocialIcon.setOnClickListener {
                         Log.e("ProfileViewActivity", "Instagram Click: \t ${socialBean.link}")
@@ -373,14 +377,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     }
                 }
                 getString(R.string.snapchat) -> {
-                    ivSocialIcon.setImageResource(R.drawable.ic_snapchat)
+                    ivSocialIcon.setImageResource(R.drawable.ic_link_snapchat)
 
                 }
                 getString(R.string.tiktok) -> {
                     ivSocialIcon.setImageResource(R.drawable.ic_tiktok)
                 }
                 getString(R.string.spotify) -> {
-                    ivSocialIcon.setImageResource(R.drawable.profile_link_spotify)
+                    ivSocialIcon.setImageResource(R.drawable.ic_link_spotify)
                     ivSocialIcon.setOnClickListener {
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
                             if (profileBean.user_profile_type == 0) {
@@ -423,7 +427,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     ivSocialIcon.setImageResource(R.drawable.profile_link_linkedin)
                 }
                 getString(R.string.twitter) -> {
-                    ivSocialIcon.setImageResource(R.drawable.ic_share_twitter)
+                    ivSocialIcon.setImageResource(R.drawable.ic_link_twitter)
                     ivSocialIcon.setOnClickListener {
 
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
@@ -520,12 +524,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvFollowingCount.text = profileBean.following.toString()
             tvViewsCount.text = profileBean.viewers.toString()
 
-            if (sessionManager.getEducationBean().course.isNotEmpty()) {
-                tvEducation.text = sessionManager.getEducationBean().course
-            }
-            if (sessionManager.getJobBean().title.isNotEmpty()) {
-                tvJob.text = sessionManager.getJobBean().title
-            }
+           // if (sessionManager.getEducationBean().course.isNotEmpty()) {
+                tvEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
+          //  }
+            //if (sessionManager.getJobBean().title.isNotEmpty()) {
+                tvJob.text =  sessionManager.getStringValue(Constants.KEY_JOB)
+            //}
 //            profileViewModel.getUserFullProfile(sessionManager.getUserId())
 
             /*btnProfileLike.setOnClickListener {
@@ -570,8 +574,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
                 else
                     tvAbouteDesc.text = getString(R.string.about_me_empty)
-                tvJob.text = sessionManager.getJobBean().title
-                tvEducation.text = sessionManager.getEducationBean().course
+                tvJob.text =  sessionManager.getStringValue(Constants.KEY_JOB)
+                tvEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
             }
         }
     }

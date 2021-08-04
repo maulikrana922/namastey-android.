@@ -40,9 +40,19 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.EditInterestActivity"></activity>
         <activity android:name=".activity.EditActivity" />
         <activity android:name=".activity.NotInvitedActivity" />
+        <activity android:name=".activity.FollowersActivity"
+            android:theme="@style/AppTheme1">
+        </activity>
+        <activity
+            android:name=".activity.FollowingActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".activity.ActivityBannedUser" />
+        <activity android:name=".activity.NoInternetActivity" />
         <activity android:name=".activity.AddVideoActivity" />
         <activity android:name=".activity.SocialLinkActivity" />
         <activity android:name=".activity.AboutActivity" />
@@ -65,7 +75,8 @@
         <activity
             android:name=".activity.OTPActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".activity.InviteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

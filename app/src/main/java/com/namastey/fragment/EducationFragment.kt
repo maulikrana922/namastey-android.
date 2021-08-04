@@ -98,8 +98,8 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                 edtEducationCourse.setText(educationBean.course)
             }
         } else {
-            edtCollegeName.setText(sessionManager.getEducationBean().college)
-            edtEducationCourse.setText(sessionManager.getEducationBean().course)
+           // edtCollegeName.setText( sessionManager.getStringValue(Constants.KEY_EDUCATION))
+            //edtEducationCourse.setText( sessionManager.getStringValue(Constants.KEY_EDUCATION))
         }
     }
 
@@ -118,7 +118,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                 Intent().putExtra("educationBean", educationBean)
             )
         } else {
-            sessionManager.setEducationBean(educationBean)
+            //sessionManager.setEducationBean(educationBean)
         }
         activity!!.onBackPressed()
     }
@@ -178,7 +178,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                                 )
                             }
                         } else {
-                            if (sessionManager.getEducationBean().college.isEmpty())
+                            /*if (sessionManager.getEducationBean().college.isEmpty())
                                 educationViewModel.addEducation(
                                     edtEducationCourse.text.toString().trim()
                                 )
@@ -187,12 +187,12 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                                     sessionManager.getEducationBean().id,
                                     edtCollegeName.text.toString().trim(),
                                     edtEducationCourse.text.toString().trim()
-                                )
+                                )*/
                         }
                     }
                 }
             }
-            btnEducationRemove -> {
+         /*   btnEducationRemove -> {
                 if (sessionManager.getEducationBean().id == educationBean.id) {
                     object : CustomAlertDialog(
                         requireActivity(),
@@ -223,7 +223,7 @@ class EducationFragment : BaseFragment<FragmentEducationBinding>(), EducationVie
                         }
                     }.show()
                 }
-            }
+            }*/
         }
     }
 

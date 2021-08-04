@@ -423,9 +423,19 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
      */
     fun onClickFollow(view: View) {
         if (!sessionManager.isGuestUser() && profileBean.is_completly_signup == 1) {
-            val intent = Intent(this@ProfileActivity, FollowingFollowersActivity::class.java)
+            val intent = Intent(this@ProfileActivity, FollowingActivity::class.java)
             intent.putExtra(Constants.PROFILE_BEAN, profileBean)
             intent.putExtra("isMyProfile", true)
+            intent.putExtra("title", "Following")
+            openActivity(intent)
+        }
+    }
+    fun onClickFollower(view: View) {
+        if (!sessionManager.isGuestUser() && profileBean.is_completly_signup == 1) {
+            val intent = Intent(this@ProfileActivity, FollowersActivity::class.java)
+            intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+            intent.putExtra("isMyProfile", true)
+            intent.putExtra("title", "Follower")
             openActivity(intent)
         }
     }
