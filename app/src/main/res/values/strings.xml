@@ -337,7 +337,7 @@
     <string name="edit_post">Edit Post</string>
     <string name="update">Update</string>
     <string name="select_cover">Select cover</string>
-    <string name="hint_video_desc">Write a caption for your video...</string>
+    <string name="hint_video_desc">Describe your video</string>
     <string name="add_to">Add to</string>
     <string name="choose">Choose</string>
     <string name="add_to_album">Add to album</string>
@@ -623,6 +623,12 @@
     <string name="emptyfollowingmsg">When You Start following people,you\'ll see them here</string>
     <string name="about">About</string>
     <string name="social_links">Social Links</string>
-    <string name="follow_this_account_to_see_videos_and_know_more_about_them">Follow this account to see videos and know more about them</string>
     <string name="cover">Cover</string>
+    <string name="follow_request_msg">Approve or ignore request</string>
+    <string name="activity">Activity</string>
+    <string name="follow_this_account_to_see_videos_and_know_more_about_them">Follow this account to see videos and know more about them.</string>
+    <string name="accept">Accept</string>
+    <string name="time">Time</string>
+    <string name="followback">Follow Back</string>
+    <string name="unfollow">Unfollow</string>
 </resources>

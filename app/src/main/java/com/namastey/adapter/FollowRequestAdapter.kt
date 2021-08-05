@@ -51,12 +51,12 @@ class FollowRequestAdapter(
                 )
                 tvCategory.text = followRequest.sub_cat_details[0].name
 
-                Utils.rectangleShapeGradient(
-                    mainCategoryView, intArrayOf(
-                        Color.parseColor(followRequest.sub_cat_details[0].start_color),
-                        Color.parseColor(followRequest.sub_cat_details[0].end_color)
-                    )
-                )
+//                Utils.rectangleShapeGradient(
+//                    mainCategoryView, intArrayOf(
+//                        Color.parseColor(followRequest.sub_cat_details[0].start_color),
+//                        Color.parseColor(followRequest.sub_cat_details[0].end_color)
+//                    )
+//                )
             } else {
                 tvCategory.visibility = View.GONE
                 mainCategoryView.visibility = View.GONE

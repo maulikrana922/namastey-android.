@@ -50,6 +50,8 @@ class FollowersActivity : BaseActivity<ActivityFollowingBinding>(),
     private var userName = ""
     private var profileBean = ProfileBean()
     private var title:String? = null
+    private lateinit var activityName:String
+
 
 
     override fun getViewModel() = followersViewModel
@@ -75,7 +77,7 @@ class FollowersActivity : BaseActivity<ActivityFollowingBinding>(),
     override fun onBackPressed(){
         intent = Intent(this@FollowersActivity,ProfileActivity::class.java)
         startActivity(intent)
-        finish()
+        finishActivity()
     }
 
 
@@ -86,6 +88,8 @@ class FollowersActivity : BaseActivity<ActivityFollowingBinding>(),
     private fun initData() {
 
         profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+
+        activityName = intent.getStringExtra("title").toString()
 
         title = intent.getStringExtra("title")
         if(title.equals("Follower")){
@@ -228,12 +232,12 @@ class FollowersActivity : BaseActivity<ActivityFollowingBinding>(),
         } else {
             llEmpty.visibility = View.GONE
             rvSearchUser.visibility = View.VISIBLE
-            rvSearchUser.addItemDecoration(
+           /* rvSearchUser.addItemDecoration(
                 DividerItemDecoration(
                     applicationContext,
                     LinearLayoutManager.VERTICAL
                 )
-            )
+            )*/
         }
         followingAdapter = FollowingAdapter(
             followersList,
@@ -241,7 +245,8 @@ class FollowersActivity : BaseActivity<ActivityFollowingBinding>(),
             false,
             this,
             sessionManager.getUserId(),
-            isMyProfile
+            isMyProfile,
+            activityName
         )
         rvSearchUser.adapter = followingAdapter
 

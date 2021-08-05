@@ -9,6 +9,7 @@ import com.namastey.listeners.OnFollowItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.utils.CustomCommonAlertDialog
 import com.namastey.utils.GlideLib
+import kotlinx.android.synthetic.main.activity_following.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_following.view.*
 import java.util.*
@@ -19,7 +20,8 @@ class FollowingAdapter(
     var isFollowing: Boolean,
     var onFollowItemClick: OnFollowItemClick,
     var userId: Long,
-    var isMyProfile: Boolean
+    var isMyProfile: Boolean,
+    var activityName:String
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {/*, Filterable {
 
     var followingFullList = ArrayList<DashboardBean>()
@@ -50,6 +52,12 @@ class FollowingAdapter(
 
         fun bind(position: Int) = with(itemView) {
 
+            if (activityName.equals("Follower")) {
+                tvFollowingLabel.setBackgroundResource(R.drawable.rounded_red_border_background)
+            } else {
+                tvFollowingLabel.setBackgroundResource(R.drawable.rounded_grey_background)
+            }
+
             val dashboardBean = followingList[position]
             tvFollowingName.text = dashboardBean.username
             tvFollowingJob.text = dashboardBean.job
@@ -69,7 +77,7 @@ class FollowingAdapter(
                     if (dashboardBean.is_follow == 0)
                         tvFollowingLabel.text = activity.getString(R.string.follow)
                     else
-                        tvFollowingLabel.text = activity.getString(R.string.following)
+                        tvFollowingLabel.text = activity.getString(R.string.unfollow)
                 }
 
             }

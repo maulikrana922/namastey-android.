@@ -80,8 +80,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_done"
-                        android:tint="@color/colorRed"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/colorRed" />
 
                 </LinearLayout>
 
@@ -120,9 +120,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_done"
-                        android:tint="@color/colorRed"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/colorRed" />
 
                 </LinearLayout>
 
@@ -161,9 +161,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_done"
-                        android:tint="@color/colorRed"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/colorRed" />
 
                 </LinearLayout>
 
@@ -202,9 +202,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_done"
-                        android:tint="@color/colorRed"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/colorRed" />
 
                 </LinearLayout>
 
@@ -245,9 +245,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_done"
-                        android:tint="@color/colorRed"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/colorRed" />
 
                 </LinearLayout>
 

@@ -82,6 +82,10 @@ interface ActivityComponent {
     fun inject(activity: AddVideoActivity)
     fun inject(activity: FollowingActivity)
     fun inject(activity: FollowersActivity)
+    fun inject(activity: NotificationActivity)
+    fun inject(activity: FollowRequestActivity)
+
+
 
 
 //    fun inject(activity: EmailActivity)
