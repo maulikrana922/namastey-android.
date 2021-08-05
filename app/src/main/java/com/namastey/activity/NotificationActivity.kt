@@ -70,13 +70,13 @@ class NotificationActivity :  BaseActivity<ActivityNotificationBinding>(), Notif
     fun onFollowrequest(view: View){
         intent = Intent(this@NotificationActivity,FollowRequestActivity::class.java)
         startActivity(intent)
-        finish()
+        finishActivity()
     }
 
     override fun onBackPressed(){
         intent = Intent(this@NotificationActivity,DashboardActivity::class.java)
         startActivity(intent)
-        finish()
+        finishActivity()
     }
 
     fun onClickProfileBack(view: View) {

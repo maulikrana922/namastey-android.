@@ -41,6 +41,8 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var userId: Long = -1
     private var isMyProfile = false
     private var userName = ""
+    private lateinit var activityName : String
+
 
 
     companion object {
@@ -225,7 +227,8 @@ class FollowingFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             true,
             this,
             sessionManager.getUserId(),
-            isMyProfile
+            isMyProfile,
+            activityName
         )
         rvFollowing.adapter = followingAdapter
     }

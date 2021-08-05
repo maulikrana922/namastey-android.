@@ -41,6 +41,7 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
     private var userId: Long = -1
     private var isMyProfile = false
     private var userName = ""
+    private lateinit var activityName : String
 
 
     override fun getViewModel() = followersViewModel
@@ -226,7 +227,9 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             false,
             this,
             sessionManager.getUserId(),
-            isMyProfile
+            isMyProfile,
+            activityName
+
         )
         rvFollowing.adapter = followingAdapter
 

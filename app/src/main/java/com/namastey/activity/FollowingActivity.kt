@@ -52,6 +52,7 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
     private var isMyProfile = false
     private var userName = ""
     private var profileBean = ProfileBean()
+    private lateinit var activityName:String
 
 
     override fun getViewModel() = followingViewModel
@@ -70,12 +71,14 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
         activityFollowingbinding.viewModel = followingViewModel
         initData()
 
+
+
     }
 
     override fun onBackPressed(){
         intent = Intent(this@FollowingActivity,ProfileActivity::class.java)
         startActivity(intent)
-        finish()
+        finishActivity()
     }
 
 
@@ -87,6 +90,8 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
     private fun initData() {
 
         profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+
+        activityName = intent.getStringExtra("title").toString()
 
         title = intent.getStringExtra("title")
         if (title.equals("Follower")) {
@@ -229,12 +234,12 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
         } else {
             llEmpty.visibility = View.GONE
             rvSearchUser.visibility = View.VISIBLE
-            rvSearchUser.addItemDecoration(
+            /*rvSearchUser.addItemDecoration(
                 DividerItemDecoration(
                     applicationContext,
                     LinearLayoutManager.VERTICAL
                 )
-            )
+            )*/
         }
         followingAdapter = FollowingAdapter(
             followingList,
@@ -242,7 +247,8 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
             true,
             this,
             sessionManager.getUserId(),
-            isMyProfile
+            isMyProfile,
+            activityName
         )
         rvSearchUser.adapter = followingAdapter
     }
