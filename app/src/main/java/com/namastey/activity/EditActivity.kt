@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.exoplayer2.trackselection.RandomTrackSelection
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -23,6 +25,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.fragment_job.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import java.util.*
 import javax.inject.Inject
@@ -180,6 +183,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         )
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 */
+       finishActivity()
 
     }
 
@@ -395,14 +399,14 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         edtProfileTagline.setSelection(edtProfileTagline.text?.length ?: 0)
         sessionManager.setCategoryList(profileBean.category)
 
-      //  if (profileBean.education.size > 0) {
-           sessionManager.setStringValue(profileBean.education,Constants.KEY_EDUCATION)
-            tvProfileEducation.text = sessionManager.getStringValue(Constants.KEY_EDUCATION)
-       // }
+        //  if (profileBean.education.size > 0) {
+        sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
+        edtEducation.setText(profileBean.education)
+        // }
         // if (profileBean.jobs.size > 0) {
         //sessionManager.setJobBean(profileBean.jobs)
         sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
-        tvProfileJobs.text = profileBean.jobs
+        edtOccupation.setText(profileBean.jobs)
         // }
 
 
@@ -436,7 +440,8 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         )
         jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
 
-        // TODO: SubCategory
+
+
 /*
 
         jsonObject.addProperty(
@@ -444,7 +449,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             subCategoryIdList.joinToString()
         )
 */
-        // TODO: Category
+
 /*
         val categoryIdList: ArrayList<Int> = ArrayList()
         for (category in sessionManager.getCategoryList()) {
@@ -455,7 +460,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             categoryIdList.joinToString()
         )
 */
-        // TODO: Social Link
+
 /*
         val socialAccountId = ArrayList<Long>()
         for (data in socialAccountList) {
@@ -465,11 +470,12 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
  */
         jsonObject.addProperty(
             Constants.EDUCATION,
-            sessionManager.getStringValue(Constants.KEY_EDUCATION)
+            edtEducation.text.toString()
         )
-
-
-        jsonObject.addProperty(Constants.JOBS, sessionManager.getStringValue(Constants.KEY_JOB))
+        jsonObject.addProperty(
+            Constants.JOBS,
+            edtOccupation.text.toString()
+        )
         val androidID =
             Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
@@ -492,21 +498,6 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
 
     private fun onClick(view: View) {
         when (view) {
-            llEducation -> {
-                openActivityWithResultCode(
-                    this@EditActivity,
-                    EducationListActivity(),
-                    Constants.REQUEST_CODE_EDUCATION
-                )
-            }
-
-            llJob -> {
-                openActivityWithResultCode(
-                    this@EditActivity,
-                    JobListingActivity(),
-                    Constants.REQUEST_CODE_JOB
-                )
-            }
 
             llInterest -> {
                 openActivityWithResultCode(

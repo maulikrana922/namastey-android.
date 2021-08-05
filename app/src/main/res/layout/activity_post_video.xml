@@ -89,7 +89,7 @@
                     android:minLines="4"
                     android:padding="@dimen/_5sdp"
                     android:textSize="16sp"
-                    android:textColor="@color/post_video_text"
+                    android:textColor="@color/color_black_text"
                     app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ivPostVideo"
@@ -220,9 +220,11 @@
 
                 <com.namastey.customViews.CustomTextView
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    android:text="@string/select_cover"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:text="@string/cover"
                     android:textSize="14sp"
+                    android:textColor="@color/white"
+                    app:typeface="MULI_REGULAR"
                     app:layout_constraintBottom_toBottomOf="@id/ivSelectCover"
                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="@id/ivSelectCover" />

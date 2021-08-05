@@ -2,11 +2,13 @@ package com.namastey.viewModel
 
 import com.google.gson.JsonObject
 import com.namastey.R
+import com.namastey.model.AlbumBean
 import com.namastey.model.AppResponse
 import com.namastey.model.VideoBean
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
+import com.namastey.uiView.CreateAlbumView
 import com.namastey.uiView.PostVideoView
 import com.namastey.utils.Constants
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ class PostVideoViewModel constructor(
 ) : BaseViewModel(networkService, dbHelper, baseView) {
 
     private var postVideoView = baseView as PostVideoView
+
     private lateinit var job: Job
 
     fun postVideoDesc(jsonObject: JsonObject) {
@@ -209,6 +212,35 @@ class PostVideoViewModel constructor(
             } catch (t: Throwable) {
                 //setIsLoading(false)
                 postVideoView.onHandleException(t)
+            }
+        }
+    }
+
+    fun addEditAlbum(jsonObject: JsonObject) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (postVideoView.isInternetAvailable()) {
+                    networkService.requestAddUpdateAlbum(jsonObject)
+                        .let { appResponse: AppResponse<AlbumBean> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                postVideoView.onSuccessAddAlbum(appResponse.data!!)
+                            } else {
+                                postVideoView.onFailed(
+                                    appResponse.message,
+                                    appResponse.error,
+                                    appResponse.status
+                                )
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    postVideoView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                postVideoView.onHandleException(exception)
             }
         }
     }

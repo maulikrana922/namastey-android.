@@ -573,6 +573,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     override fun onSuccessResponse(user: User) {
         sessionManager.setAccessToken(user.token)
 //        sessionManager.setUserEmail(user.email)
+        sessionManager.setUserId(user.user_id)
+        sessionManager.setStringValue(user.username,Constants.USERNAME)
         sessionManager.setUserPhone(user.mobile)
         edtPhone.text!!.clear()
         Utils.hideKeyboard(this@SignUpActivity)

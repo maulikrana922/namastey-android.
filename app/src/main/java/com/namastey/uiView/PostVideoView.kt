@@ -7,7 +7,7 @@ import java.util.*
 
 interface PostVideoView : BaseView {
     fun onSuccessPostVideoDesc(videoBean: VideoBean)
-
+    fun onSuccessAddAlbum(albumBean: AlbumBean)
     fun onSuccessPostVideo(videoBean: VideoBean)
     fun onSuccessPostCoverImage(videoBean: VideoBean)
     fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>)
