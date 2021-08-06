@@ -630,4 +630,6 @@
     <string name="time">Time</string>
     <string name="followback">Follow Back</string>
     <string name="unfollow">Unfollow</string>
+    <string name="received">Received</string>
+    <string name="sent">Sent</string>
 </resources>

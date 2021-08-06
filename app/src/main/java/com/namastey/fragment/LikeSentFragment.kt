@@ -68,7 +68,7 @@ class LikeSentFragment : BaseFragment<FragmentLikedUserPostBinding>(), ProfileLi
 
     override fun onSuccess(data: ArrayList<VideoBean>) {
         Log.e("LikeUserPostFragment", "onSuccess: ${data.size}")
-        likeProfileAdapter = LikeProfileAdapter(data, requireActivity(), this,this)
+        likeProfileAdapter = LikeProfileAdapter(data, requireActivity(), this,this,resources.getString(R.string.sent))
         rvLikeUserPost.adapter = likeProfileAdapter
     }
 
@@ -83,7 +83,6 @@ class LikeSentFragment : BaseFragment<FragmentLikedUserPostBinding>(), ProfileLi
     }
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {

@@ -1,6 +1,7 @@
 package com.namastey.adapter
 
 import android.app.Activity
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,8 @@ class LikeProfileAdapter(
     var videoBeanList: ArrayList<VideoBean>,
     var activity: Activity,
     var onSelectUserItemClick: OnSelectUserItemClick,
-    var onPostImageClick: OnPostImageClick
+    var onPostImageClick: OnPostImageClick,
+    var titleName: String
 ) : RecyclerView.Adapter<LikeProfileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -46,17 +48,40 @@ class LikeProfileAdapter(
                     activity, ivVideoImage, videoBean.cover_image_url
                 )
 
-            GlideLib
-                .loadImage(
-                    activity, ivProfile, videoBean.profile_url
-                )
+            if(titleName.equals("Received")){
+                clrmain.visibility = View.GONE
 
-            tvUsername.text = videoBean.username
+                GlideLib
+                    .loadImage(
+                        activity, ivProfile1, videoBean.profile_url
+                    )
+
+                tvUsername1.text = videoBean.username
+            }else{
+                ivProfile1.visibility = View.GONE
+                tvUsername1.visibility = View.GONE
+
+
+
+                GlideLib
+                    .loadImage(
+                        activity, ivProfile, videoBean.profile_url
+                    )
+
+                tvUsername.text = videoBean.username
+            }
 
             ivProfile.setOnClickListener {
                 onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
             }
             tvUsername.setOnClickListener {
+                onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+            }
+
+            ivProfile1.setOnClickListener {
+                onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
+            }
+            tvUsername1.setOnClickListener {
                 onSelectUserItemClick.onSelectItemClick(videoBean.user_id, position)
             }
 
