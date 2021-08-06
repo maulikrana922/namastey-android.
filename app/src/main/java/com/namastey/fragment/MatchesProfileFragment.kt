@@ -98,16 +98,16 @@ class MatchesProfileFragment : BaseFragment<FragmentMatchesProfileBinding>(), Ma
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
-            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+            //if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
                 val intent = Intent(requireActivity(), LikeProfileActivity::class.java)
                 intent.putExtra("likeUserCount", likeUserCount)
                 intent.putExtra("lastUserProfile", lastUserProfile)
                 openActivity(intent)
-            } else{
-                val intent = Intent(requireActivity(), MembershipActivity::class.java)
-                intent.putExtra("isFromMatchProfile", true)
-                openActivity(intent)
-            }
+           // } else{
+             //   val intent = Intent(requireActivity(), MembershipActivity::class.java)
+            //    intent.putExtra("isFromMatchProfile", true)
+            //    openActivity(intent)
+         //   }
 
         }
 

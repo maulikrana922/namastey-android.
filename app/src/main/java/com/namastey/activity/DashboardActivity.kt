@@ -1433,7 +1433,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                val intent = Intent(this@DashboardActivity, NotificationActivity::class.java)
+                val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
                 intent.putExtra("isFromDashboard", true)
                 openActivity(intent)
             } else {

@@ -61,7 +61,7 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
         likeUserCount = intent.getIntExtra("likeUserCount", 0)
         lastUserProfile = intent.getStringExtra("lastUserProfile")!!
 
-        tabOneTitle = likeUserCount.toString().plus(" ").plus(resources.getString(R.string.likes))
+       //tabOneTitle = likeUserCount.toString().plus(" ").plus(resources.getString(R.string.likes))
 
         setupViewPager()
         tabLikeProfile.setupWithViewPager(viewPagerLikeProfile)
@@ -72,22 +72,23 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         //adapter.addFrag(LikeUserPostFragment(), resources.getString(R.string.likes))
-        adapter.addFrag(LikedUserPostFragment(), tabOneTitle)
-        adapter.addFrag(LikeSentFragment(), resources.getString(R.string.likes_sent))
+        adapter.addFrag(LikedUserPostFragment(),resources.getString(R.string.received) )
+        adapter.addFrag(LikeSentFragment(), resources.getString(R.string.sent))
         viewPagerLikeProfile.adapter = adapter
     }
 
     private fun setupTabIcons() {
         tabOne = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
         tabOne.background =
-            ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
-        tabOne.text = tabOneTitle
-        tabOne.setTextColor(Color.WHITE)
+            ContextCompat.getDrawable(this, R.drawable.rounded_red_btn2)
+       tabOne.text =  resources.getString(R.string.received)
+       // tabOne.setTextColor(Color.WHITE)
         tabLikeProfile.getTabAt(0)?.customView = tabOne
         tabTwo = LayoutInflater.from(this).inflate(R.layout.custom_tab, null) as TextView
-        tabTwo.text = resources.getString(R.string.likes_sent)
-        tabTwo.setTextColor(Color.GRAY)
-        tabTwo.background = ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
+        tabTwo.text = resources.getString(R.string.sent)
+        tabTwo.setTextColor(Color.RED)
+        //tabTwo.background = ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
+        tabTwo.setBackgroundResource(R.color.color_search)
         tabLikeProfile.getTabAt(1)?.customView = tabTwo
 
         tabLikeProfile.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -109,18 +110,22 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
     private fun changeSelectedTab(position: Int) {
         if (position == 0) {
             tabOne.background =
-                ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_red_solid)
+                ContextCompat.getDrawable(this, R.drawable.rounded_red_btn2)
             tabOne.setTextColor(Color.WHITE)
-            tabTwo.background =
-                ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
-            tabTwo.setTextColor(Color.GRAY)
+         //   tabTwo.background =
+               // ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
+            tabTwo.setBackgroundResource(R.color.color_search)
+
+            tabTwo.setTextColor(Color.RED)
         } else {
-            tabOne.background =
-                ContextCompat.getDrawable(this, R.drawable.rounded_bottom_left_pink_solid)
-            tabOne.setTextColor(Color.GRAY)
             tabTwo.background =
-                ContextCompat.getDrawable(this, R.drawable.rounded_top_right_red_solid)
+                ContextCompat.getDrawable(this, R.drawable.rounded_red_btn2)
             tabTwo.setTextColor(Color.WHITE)
+           // tabTwo.background =
+          //      ContextCompat.getDrawable(this, R.drawable.rounded_top_right_red_solid)
+            tabOne.setBackgroundResource(R.color.color_search)
+
+            tabOne.setTextColor(Color.RED)
         }
     }
 

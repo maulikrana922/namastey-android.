@@ -68,7 +68,7 @@ class LikedUserPostFragment : BaseFragment<FragmentLikedUserPostBinding>(), Prof
 
     override fun onSuccess(data: ArrayList<VideoBean>) {
         Log.e("LikedUserPostFragment", "onSuccess: ${data.size}")
-        likeProfileAdapter = LikeProfileAdapter(data, requireActivity(), this, this)
+        likeProfileAdapter = LikeProfileAdapter(data, requireActivity(), this, this,resources.getString(R.string.received))
         rvLikeUserPost.adapter = likeProfileAdapter
     }
 

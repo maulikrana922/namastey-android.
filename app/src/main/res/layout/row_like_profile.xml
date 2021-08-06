@@ -16,7 +16,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewLikeProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/_5sdp">
+
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivVideoImage"
@@ -31,30 +33,69 @@
             app:layout_constraintTop_toTopOf="parent"
             app:roundedCorners="all" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clrmain"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/round_trending_background"
+            android:padding="@dimen/_3sdp"
+            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.namastey.customViews.RoundImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="34dp"
+                android:layout_height="33dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_placeholder"
+                app:cornerRadius="@dimen/_8sdp"
+                app:roundedCorners="all"
+                card_view:ignore="MissingConstraints" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvUsername"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+                app:layout_constraintStart_toEndOf="@id/ivProfile"
+                app:layout_constraintTop_toTopOf="@id/ivProfile"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.namastey.customViews.RoundImageView
-            android:id="@+id/ivProfile"
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:id="@+id/ivProfile1"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_7sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"
-            app:cornerRadius="@dimen/_20sdp"
-            app:layout_constraintBottom_toBottomOf="@id/ivVideoImage"
+            app:cornerRadius="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivVideoImage"
             app:roundedCorners="all" />
 
         <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvUsername"
+            android:id="@+id/tvUsername1"
             style="@style/tvWrapWhiteStyle"
             android:layout_marginStart="@dimen/_7sdp"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/ivProfile"
-            app:layout_constraintStart_toEndOf="@id/ivProfile"
-            app:layout_constraintTop_toTopOf="@id/ivProfile"
+            app:layout_constraintBottom_toBottomOf="@id/ivProfile1"
+            app:layout_constraintStart_toEndOf="@id/ivProfile1"
+            app:layout_constraintTop_toTopOf="@id/ivProfile1"
             app:typeface="MULI_EXTRA_BOLD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.cardview.widget.CardView>
