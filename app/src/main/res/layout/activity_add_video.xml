@@ -81,7 +81,7 @@
             android:id="@+id/ivAddVideo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="g"
+            android:visibility="visible"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_15sdp"
