@@ -1,18 +1,18 @@
 package com.namastey.adapter
 
-import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.customViews.CustomTextView
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.VideoBean
-import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
-import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.row_album_detail.view.*
 import java.util.*
 
@@ -24,7 +24,9 @@ class AlbumDetailAdapter(
     var onSelectUserItemClick: OnSelectUserItemClick,
     var fromEdit: Boolean,
     var fromFilter: Boolean,
-    var isSavedAlbum: Boolean
+    var isSavedAlbum: Boolean,
+    var albumId: Int
+
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -88,7 +90,25 @@ class AlbumDetailAdapter(
                 if (fromEdit) {
                     ivRemoveVideo.visibility = View.VISIBLE
                     ivRemoveVideo.setOnClickListener {
-                        object : CustomAlertDialog(
+                        val deleteDialog = Dialog(activity, R.style.MyDialogTheme)
+                        deleteDialog.setContentView(R.layout.dialog_delete)
+                        deleteDialog.setCancelable(false)
+                        deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                        deleteDialog.tvAlertMsg.setText(resources.getString(R.string.video_delete_alert_msg))
+                        deleteDialog.btnNeg.setText(resources.getString(R.string.video_delete_btn_pos))
+                        deleteDialog.btnPos.setText(resources.getString(R.string.video_delete_btn_neg))
+
+                        deleteDialog.findViewById<CustomTextView>(R.id.btnPos).setOnClickListener {
+                            onItemClick.onItemClick(videoBean.id, position)
+                            notifyDataSetChanged()
+                            deleteDialog.dismiss()
+                        }
+                        deleteDialog.findViewById<CustomTextView>(R.id.btnNeg).setOnClickListener {
+                            deleteDialog.dismiss()
+                        }
+                        deleteDialog.show()
+
+                       /* object : CustomAlertDialog(
                             activity as Activity,
                             resources.getString(R.string.msg_remove_post),
                             activity.getString(R.string.yes),
@@ -104,7 +124,7 @@ class AlbumDetailAdapter(
                                     }
                                 }
                             }
-                        }.show()
+                        }.show()*/
                     }
                 }
 

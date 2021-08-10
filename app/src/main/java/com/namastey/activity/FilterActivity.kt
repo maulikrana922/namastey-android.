@@ -131,7 +131,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
                 this,
                 false,
                 true,
-                false
+                false,
+                0
             )
         rvFilterTranding.adapter = albumDetailAdapter
         Log.e("FilterActivity", "onSuccessTreding: ${data[0].is_like}")

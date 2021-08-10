@@ -18,84 +18,116 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite">
+            android:layout_marginTop="@dimen/_45sdp">
 
-            <ImageView
-                android:id="@+id/imgTop"
+            <RelativeLayout
+                android:id="@+id/rlmainalbum"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:src="@drawable/green_bar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="?attr/actionBarSize"
+                tools:ignore="MissingConstraints">
 
-            <ImageView
-                android:id="@+id/ivAlbumDetailBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_45sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickAlbumDetailBack"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <RelativeLayout
+                    android:id="@+id/rlalbumheader"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    tools:ignore="MissingConstraints">
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvAlbumTitle"
-                style="@style/tvTitleStyle"
-                android:text="@string/edit_album"
-                app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
-                app:layout_constraintEnd_toStartOf="@id/ivMore"
-                app:layout_constraintStart_toEndOf="@id/ivAlbumDetailBack"
-                app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack" />
+                    <ImageView
+                        android:id="@+id/ivAlbumDetailBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_14sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:contentDescription="@string/app_name"
+                        android:onClick="onClickAlbumDetailBack"
+                        android:src="@drawable/ic_back_new"
+                        app:tint="@color/color_black_text" />
 
-            <ImageView
-                android:id="@+id/ivMore"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_more"
-                android:onClick="onClickAlbumDetailMore"
-                app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack" />
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvAlbumTitle"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"                        android:layout_toRightOf="@+id/ivAlbumDetailBack"
+                        android:text="@string/edit_album"
+                        android:singleLine="true"
+                        android:textColor="@color/color_black_text"
+                        android:textSize="@dimen/_14sdp"
+                        app:typeface="MULI_EXTRA_BOLD"/>
 
-            <com.namastey.customViews.CustomEditText
-                android:id="@+id/edtAlbumName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_edit_gray"
-                android:hint="@string/hint_album_name"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_15sdp"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@id/ivMore"
-                app:layout_constraintStart_toStartOf="@id/ivAlbumDetailBack"
-                app:layout_constraintTop_toBottomOf="@id/imgTop"
-                app:typeface="MULI_SEMIBOLD" />
+                    <ImageView
+                        android:id="@+id/ivMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:contentDescription="@string/app_name"
+                        android:onClick="onClickAlbumDetailMore"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_more"
+                        android:visibility="gone"
+                        app:tint="@color/color_black_text" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rleditalbum"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:visibility="gone"
+                    tools:ignore="MissingConstraints">
+
+                    <com.namastey.customViews.CustomEditText
+                        android:id="@+id/edtAlbumName"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_45sdp"
+                        android:cursorVisible="true"
+                        android:layout_toLeftOf="@id/tvalbumtitlesave"
+                        android:textColor="@color/color_black_text"
+                        android:textSize="@dimen/_20sdp" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvalbumtitlesave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:contentDescription="@string/app_name"
+                        android:onClick="dialogSave"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/album_title_save"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_18sdp" />
+
+
+                </RelativeLayout>
+            </RelativeLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvAlbumDetail"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:outlineSpotShadowColor="@color/colorGray"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/ivMore"
-                app:layout_constraintStart_toStartOf="@id/ivAlbumDetailBack"
-                app:layout_constraintTop_toBottomOf="@id/edtAlbumName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rlmainalbum"
+                app:layout_constraintVertical_bias="0.0"
                 app:spanCount="2"
                 tools:listitem="@layout/row_album_detail" />
 
@@ -109,55 +141,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--            android:id="@+id/trimmerView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:clickable="true"-->
-        <!--            android:visibility="gone">-->
-
-        <!--            <com.video.trimmer.view.VideoTrimmer-->
-        <!--                android:id="@+id/videoTrimmer"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:visibility="visible"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent" />-->
-
-        <!--            <com.namastey.customViews.CustomButton-->
-        <!--                android:id="@+id/btnSave"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginTop="@dimen/_40sdp"-->
-        <!--                android:background="@color/colorBlack"-->
-        <!--                android:gravity="center"-->
-        <!--                android:onClick="onClickSave"-->
-        <!--                android:text="@string/save"-->
-        <!--                android:textColor="@color/colorWhite"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toEndOf="@id/btnCancel" />-->
-
-        <!--            <com.namastey.customViews.CustomButton-->
-        <!--                android:id="@+id/btnCancel"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:background="@color/colorBlack"-->
-        <!--                android:gravity="center"-->
-        <!--                android:onClick="onClickCancel"-->
-        <!--                android:text="@string/cancel"-->
-        <!--                android:textColor="@color/colorWhite"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintEnd_toStartOf="@id/btnSave"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-
-        <!--                />-->
-
-        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
     </FrameLayout>
 </layout>
