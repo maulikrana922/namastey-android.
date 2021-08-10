@@ -353,6 +353,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             intent.putExtra("videoBean", this.videoBean)
         } else
             intent.putExtra("videoBean", videoBean)
+
+        intent.putExtra("videoFile", videoFile)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
     }
@@ -405,6 +407,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         when {
             TextUtils.isEmpty(edtVideoDesc.text.toString()) -> showMsg(getString(R.string.msg_empty_video_desc))
             pictureFile == null -> showMsg(getString(R.string.msg_empty_cover_image))
+            albumBean.id == 0L -> showMsg(getString(R.string.msg_select_album))
             else -> {
                 window.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

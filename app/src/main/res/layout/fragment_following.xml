@@ -103,7 +103,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:maxLines="3"
-                android:text="@string/msg_empty_followers"
+                android:text="@string/msg_empty_followers_title"
                 android:textColor="@color/colorBlack" />
         </LinearLayout>
 

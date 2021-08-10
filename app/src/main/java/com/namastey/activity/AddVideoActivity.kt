@@ -28,6 +28,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.AddVideoViewModel
+import kotlinx.android.synthetic.main.activity_add_video.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import java.io.File
@@ -45,6 +46,7 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     private lateinit var addVideoViewModel: AddVideoViewModel
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var videoFile: File? = null
+    private var isVideoUpload = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,7 +190,11 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     }
 
     fun onClickContinue(view: View) {
-//        openActivity(this@AddVideoActivity, NotInvitedActivity())
+        if (isVideoUpload){
+            editProfileApiCall()
+        }else{
+            showMsg(R.string.msg_add_video)
+        }
     }
 
     fun onClickAddVideo(view: View) {
@@ -267,7 +273,7 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "video/*"
         intent.action = Intent.ACTION_GET_CONTENT;
-        startActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+        startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -283,7 +289,17 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
             intent.putExtra("videoFile", videoFile)
             openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
 
-        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+        }else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO){
+            if (data != null) {
+                videoFile = data.getSerializableExtra("videoFile") as File?
+//                ivAddVideo.visibility = View.GONE
+//                videoView.visibility = View.VISIBLE
+//
+//                videoView.setVideoURI(Uri.parse(videoFile!!.path))
+//                videoView.start()
+                isVideoUpload = true
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
 
             if (data != null) {
                 val selectedVideo = data.data

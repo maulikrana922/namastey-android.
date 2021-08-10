@@ -48,12 +48,13 @@
         <activity android:name=".activity.NotInvitedActivity" />
         <activity
             android:name=".activity.FollowersActivity"
-            android:theme="@style/AppTheme1"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".activity.FollowingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.ActivityBannedUser" />
         <activity android:name=".activity.NoInternetActivity" />

@@ -81,6 +81,7 @@
             android:id="@+id/ivAddVideo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="g"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_15sdp"
@@ -90,6 +91,22 @@
             app:layout_constraintBottom_toTopOf="@id/btnContinue"
             app:layout_constraintTop_toBottomOf="@id/tvVideoMsgTwo"
             app:roundedCorners="all" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/rounded_white_solid_white_corner"
+            app:cornerRadius="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintTop_toBottomOf="@id/tvVideoMsgTwo"
+            app:roundedCorners="all" />
+
 
         <ImageView
             android:layout_width="wrap_content"

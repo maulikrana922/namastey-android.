@@ -42,7 +42,6 @@ import com.namastey.model.*
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.activity_profile_view.groupButtons
 import kotlinx.android.synthetic.main.activity_profile_view.ivProfileCamera
@@ -189,6 +188,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         else
             tvAbouteDesc.text = getString(R.string.about_me_empty)
 
+        sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+        sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+        sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
+        sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+        sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+        sessionManager.setInterestIn(profileBean.interest_in_gender)
+        sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+        sessionManager.setIntegerValue(profileBean.is_global, Constants.KEY_GLOBAL)
+        sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
+
+        ivProfileMore.visibility = View.VISIBLE
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
@@ -921,17 +934,23 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
     fun openFollowersScreen() {
-        val intent = Intent(this@ProfileViewActivity, FollowingActivity::class.java)
+        val intent = Intent(this@ProfileViewActivity, FollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-        intent.putExtra("isMyProfile", true)
-        intent.putExtra("title", "Following")
+        if (sessionManager.getUserId() == profileBean.user_id)
+            intent.putExtra("isMyProfile", true)
+        else
+            intent.putExtra("isMyProfile", false)
+        intent.putExtra("title", "Follower")
         openActivity(intent)
     }
 
     fun openFollowingsScreen() {
         val intent = Intent(this@ProfileViewActivity, FollowingActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-        intent.putExtra("isMyProfile", true)
+        if (sessionManager.getUserId() == profileBean.user_id)
+            intent.putExtra("isMyProfile", true)
+        else
+            intent.putExtra("isMyProfile", false)
         intent.putExtra("title", "Following")
         openActivity(intent)
     }

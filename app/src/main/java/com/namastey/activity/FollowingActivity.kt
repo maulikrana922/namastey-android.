@@ -1,16 +1,11 @@
 package com.namastey.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.e
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.FollowingAdapter
@@ -23,16 +18,8 @@ import com.namastey.uiView.FollowingView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.FollowingViewModel
-import kotlinx.android.synthetic.main.activity_followers.*
 import kotlinx.android.synthetic.main.activity_following.*
-import kotlinx.android.synthetic.main.activity_following.headertitle
-import kotlinx.android.synthetic.main.activity_following.llEmpty
-import kotlinx.android.synthetic.main.activity_following.rvSearchUser
-import kotlinx.android.synthetic.main.activity_following.searchFollowFollowing
-import kotlinx.android.synthetic.main.activity_following.tvEmptyFollow
-import kotlinx.android.synthetic.main.activity_following.tvEmptyFollowMsg
-import kotlinx.android.synthetic.main.activity_following_followers.*
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingView,
@@ -52,7 +39,7 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
     private var isMyProfile = false
     private var userName = ""
     private var profileBean = ProfileBean()
-    private lateinit var activityName:String
+    private lateinit var activityName: String
 
 
     override fun getViewModel() = followingViewModel
@@ -72,12 +59,9 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
         initData()
 
 
-
     }
 
-    override fun onBackPressed(){
-        intent = Intent(this@FollowingActivity,ProfileActivity::class.java)
-        startActivity(intent)
+    override fun onBackPressed() {
         finishActivity()
     }
 
@@ -102,9 +86,7 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
 
         if (intent.hasExtra("isMyProfile"))
             isMyProfile = intent.getBooleanExtra("isMyProfile", false)
-        if (!isMyProfile) {
-            ivFollowFind.visibility = View.GONE
-        }
+
         userId = profileBean.user_id
         userName = profileBean.username
         followingViewModel.getFollowingList(userId)
@@ -179,17 +161,7 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
         }
 
         if (followingList.size == 0) {
-            tvEmptyFollow.text = getString(R.string.nofollowing)
-            if (isMyProfile) {
-                tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_followers_temp)
-                )
-            } else {
-                tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_followers),
-                    userName
-                )
-            }
+            setEmptyMsg()
 
             llEmpty.visibility = View.VISIBLE
             rvSearchUser.visibility = View.GONE
@@ -218,17 +190,7 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
     override fun onSuccess(list: ArrayList<DashboardBean>) {
         followingList = list
         if (followingList.size == 0) {
-            tvEmptyFollow.text = getString(R.string.following)
-            if (isMyProfile) {
-                tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_followers_temp)
-                )
-            } else {
-                tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_followers),
-                    userName
-                )
-            }
+            setEmptyMsg()
             llEmpty.visibility = View.VISIBLE
             rvSearchUser.visibility = View.GONE
         } else {
@@ -251,5 +213,23 @@ class FollowingActivity : BaseActivity<ActivityFollowingBinding>(), FollowingVie
             activityName
         )
         rvSearchUser.adapter = followingAdapter
+    }
+
+    fun setEmptyMsg() {
+        if (isMyProfile) {
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_following), getString(R.string.you)
+            )
+            tvEmptyFollow.text = String.format(
+                getString(R.string.msg_empty_following_title),
+                getString(R.string.you)
+            )
+        } else {
+            tvEmptyFollowMsg.text = String.format(
+                getString(R.string.msg_empty_following), userName
+            )
+            tvEmptyFollow.text =
+                String.format(getString(R.string.msg_empty_following_title), userName)
+        }
     }
 }
