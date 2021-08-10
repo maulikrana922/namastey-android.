@@ -1,14 +1,19 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +21,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.gowtham.library.utils.TrimType
+import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumListProfileAdapter
@@ -34,9 +43,18 @@ import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.viewModel.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.activity_profile_view.groupButtons
+import kotlinx.android.synthetic.main.activity_profile_view.ivProfileCamera
+import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
+import kotlinx.android.synthetic.main.activity_profile_view.tvAbouteDesc
+import kotlinx.android.synthetic.main.activity_profile_view.tvFollowersCount
+import kotlinx.android.synthetic.main.activity_profile_view.tvFollowingCount
+import kotlinx.android.synthetic.main.activity_profile_view.tvProfileUsername
+import kotlinx.android.synthetic.main.activity_profile_view.tvViewsCount
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -58,6 +76,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var isMyProfile = false
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private var username = ""
+    private val REQUEST_CODE = 101
+    private var profileFile: File? = null
+    private var isCameraOpen = false
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var videoFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +100,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             isMyProfile = true
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.INVISIBLE
+            ivProfileCamera.visibility = View.VISIBLE
         } else {
             isMyProfile = false
             groupButtons.visibility = View.INVISIBLE
@@ -89,19 +113,51 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
 
             when (profileBean.is_like) {
-                1 -> btnProfileLike.text = getString(R.string.liked)
-                else -> btnProfileLike.text = getString(R.string.like)
+                1 -> {
+                    btnProfileLike.text = getString(R.string.liked)
+                    btnProfileLike.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.color_text_red
+                        )
+                    )
+                    btnProfileLike.background =
+                        ContextCompat.getDrawable(this, R.drawable.rounded_btn)
+                    btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.heart,
+                        0,
+                        0,
+                        0
+                    )
+                }
+                else -> {
+                    btnProfileLike.text = getString(R.string.match)
+                    btnProfileLike.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.white
+                        )
+                    )
+                    btnProfileLike.background =
+                        ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
+                    btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_like_dashboard,
+                        0,
+                        0,
+                        0
+                    )
+                }
             }
         }
 
         // Need to change
         if (profileBean.gender == Constants.Gender.female.name) {
-           // ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
+            // ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
             GlideApp.with(this).load(R.drawable.ic_female)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
                 .fitCenter().into(ivProfileUser)
         } else {
-           // ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
+            // ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
             GlideApp.with(this).load(R.drawable.ic_male)
                 .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
                 .fitCenter().into(ivProfileUser)
@@ -132,6 +188,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         else
             tvAbouteDesc.text = getString(R.string.about_me_empty)
 
+        sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+        sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+        sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+        sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
+        sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+        sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
+        sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+        sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+        sessionManager.setInterestIn(profileBean.interest_in_gender)
+        sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+        sessionManager.setIntegerValue(profileBean.is_global, Constants.KEY_GLOBAL)
+        sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
+
+        ivProfileMore.visibility = View.VISIBLE
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
@@ -139,11 +209,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
 
         //if (profileBean.education.size > 0) {
-            tvEducation.text = profileBean.education
-       // }
+        tvEducation.text = profileBean.education
+        // }
         //if (profileBean.jobs.size > 0) {
-            tvJob.text = profileBean.jobs
-       // }
+        tvJob.text = profileBean.jobs
+        // }
 
         //generateChooseInterestUI(profileBean.interest)
         if (profileBean.sub_cat_tag != null && profileBean.sub_cat_tag.size > 0) {
@@ -170,8 +240,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 rvAlbumList.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
                 layoutPrivateAccount.visibility = View.VISIBLE
-                chipProfileInterest.visibility=View.GONE
-                tvInterestTitel.visibility=View.GONE
+                chipProfileInterest.visibility = View.GONE
+                tvInterestTitel.visibility = View.GONE
                 rvAlbumList.visibility = View.GONE
             }
         } else {
@@ -193,7 +263,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         )
         tvInterest.text = interestSubCategoryList[0].name
         tvInterest.setPadding(40, 18, 40, 18)
-        tvInterest.setTextColor(ContextCompat.getColor(this ,R.color.color_text_red))
+        tvInterest.setTextColor(ContextCompat.getColor(this, R.color.color_text_red))
         tvInterest.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
 
         chipProfileInterest.addView(tvInterest)
@@ -206,7 +276,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             )
             tvInterestSecond.text = interestSubCategoryList[1].name
             tvInterestSecond.setPadding(40, 18, 40, 18)
-            tvInterestSecond.setTextColor(ContextCompat.getColor(this ,R.color.color_text_red))
+            tvInterestSecond.setTextColor(ContextCompat.getColor(this, R.color.color_text_red))
             tvInterestSecond.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
             chipProfileInterest.addView(tvInterestSecond)
         }
@@ -526,11 +596,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvFollowingCount.text = profileBean.following.toString()
             tvViewsCount.text = profileBean.viewers.toString()
 
-           // if (sessionManager.getEducationBean().course.isNotEmpty()) {
-                tvEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
-          //  }
+            // if (sessionManager.getEducationBean().course.isNotEmpty()) {
+            tvEducation.text = sessionManager.getStringValue(Constants.KEY_EDUCATION)
+            //  }
             //if (sessionManager.getJobBean().title.isNotEmpty()) {
-                tvJob.text =  sessionManager.getStringValue(Constants.KEY_JOB)
+            tvJob.text = sessionManager.getStringValue(Constants.KEY_JOB)
             //}
 //            profileViewModel.getUserFullProfile(sessionManager.getUserId())
 
@@ -542,11 +612,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
             }*/
         }
-
-
-//        else {
-//            profileViewModel.getUserFullProfile(intent.getLongExtra(Constants.USER_ID, 0))
-//        }
+        /*  else {
+              profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(),sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
+          }*/
 
     }
 
@@ -564,9 +632,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileViewModel.getUserFullProfile("", username)
             } else {
                 Log.e("ProfileViewActivity", "USER_ID ")
+
                 profileViewModel.getUserFullProfile(
                     intent.getLongExtra(Constants.USER_ID, 0).toString(), ""
                 )
+
             }
         }
         if (profileBean.user_id == sessionManager.getUserId()) {
@@ -576,8 +646,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
                 else
                     tvAbouteDesc.text = getString(R.string.about_me_empty)
-                tvJob.text =  sessionManager.getStringValue(Constants.KEY_JOB)
-                tvEducation.text =  sessionManager.getStringValue(Constants.KEY_EDUCATION)
+                tvJob.text = sessionManager.getStringValue(Constants.KEY_JOB)
+                tvEducation.text = sessionManager.getStringValue(Constants.KEY_EDUCATION)
             }
         }
     }
@@ -586,7 +656,251 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         onBackPressed()
     }
 
-    fun onClickProfileImage(view: View) {}
+    fun onClickProfileImage(view: View) {
+        selectImage()
+    }
+
+    private fun selectImage() {
+
+        val options = arrayOf<CharSequence>(
+            getString(R.string.take_photo),
+            getString(R.string.select_photo)
+        )
+
+
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle(
+            getString(R.string.upload_profile_picture)
+        )
+        builder.setItems(options) { dialog, item ->
+            when (item) {
+                0 -> isCameraPermissionGranted()
+                1 -> isReadWritePermissionGranted()
+            }
+        }
+        builder.show()
+    }
+
+    private fun isCameraPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                capturePhoto()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    Constants.PERMISSION_CAMERA
+                )
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+
+    private fun isReadWritePermissionGrantedVide() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGalleryForVideo()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            openGalleryForVideo()
+        }
+    }
+
+    private fun openGalleryForVideo() {
+
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_GET_CONTENT;
+        startActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+    }
+
+    private fun isReadWritePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGalleryForImage()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            openGalleryForImage()
+        }
+    }
+
+
+    private fun openGalleryForImage() {
+
+        profileFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString() + ".jpeg"
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+
+    private fun capturePhoto() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            try {
+                val photoUri: Uri = FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + ".provider",
+                    Utils.getCameraFile(this@ProfileViewActivity)
+                )
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                startActivityForResult(takePictureIntent, Constants.REQUEST_CODE_CAMERA_IMAGE)
+            } catch (ex: Exception) {
+                showMsg(ex.localizedMessage)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Request Code : ", requestCode.toString())
+        if (requestCode === TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null) {
+            val uri = Uri.parse(TrimVideo.getTrimmedVideoPath(data))
+            Log.e("Trimmed video ", "Trimmed path:: $uri")
+
+            videoFile = File(uri.path)
+            val intent = Intent(this@ProfileViewActivity, PostVideoActivity::class.java)
+            intent.putExtra("videoFile", videoFile)
+           // intent.putExtra("albumId", albums.id)
+//                intent.putExtra("thumbnailImage", pictureFile)
+           //intent.putExtra("albumBean", albumBean)
+            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+//            ivProfileUser.setImageURI(data?.data) // handle chosen image
+
+            if (data != null) {
+                val selectedImage = data.data
+
+                if (selectedImage != null) {
+//                    val inputStream: InputStream?
+                    try {
+//                        val selectedImage = data.data
+                        val filePathColumn =
+                            arrayOf(MediaStore.Images.Media.DATA)
+                        val cursor: Cursor? = this@ProfileViewActivity.contentResolver.query(
+                            selectedImage,
+                            filePathColumn, null, null, null
+                        )
+                        cursor!!.moveToFirst()
+
+                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                        val picturePath: String = cursor.getString(columnIndex)
+                        cursor.close()
+
+                        GlideLib.loadImage(this, ivProfileUser, picturePath)
+                        Log.d("Image Path", "Image Path  is $picturePath")
+                        profileFile = Utils.saveBitmapToFile(File(picturePath))
+
+                        if (profileFile != null && profileFile!!.exists()) {
+                            isCameraOpen = true
+                            profileViewModel.updateProfilePic(profileFile!!)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
+//            if (data != null) {
+            val imageFile = Utils.getCameraFile(this@ProfileViewActivity)
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                applicationContext.packageName + ".provider",
+                imageFile
+            )
+            val bitmap: Bitmap = Utils.scaleBitmapDown(
+                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                1200
+            )!!
+
+            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+
+            if (imageFile.exists()) {
+                isCameraOpen = true
+                profileViewModel.updateProfilePic(imageFile)
+            }
+//            }
+        }else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+
+            if (data != null) {
+                val selectedVideo = data.data
+
+                if (selectedVideo != null) {
+//                    val videoPath = Utils.getPath(this, selectedVideo)
+//                    Log.d("Path", videoPath.toString())
+                    Log.d("Path", selectedVideo.toString())
+
+
+
+                    TrimVideo.activity(selectedVideo.toString())
+//                        .setCompressOption(CompressOption(30,"1M",460,320))
+                        .setTrimType(TrimType.MIN_MAX_DURATION)
+                        .setMinToMax(10,30)
+//                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
+                        .start(this)
+
+
+//                    trimmerView.visibility = View.VISIBLE
+//                    videoTrimmer.setOnTrimVideoListener(this)
+//                        .setVideoURI(Uri.parse(videoPath))
+//                        .setVideoInformationVisibility(true)
+//                        .setMaxDuration(60)
+//                        .setMinDuration(6)
+//                        .setDestinationPath(
+//                            Environment.getExternalStorageDirectory()
+//                                .toString() + File.separator + "temp" + File.separator + "Videos" + File.separator
+//                        )
+
+
+                }
+            }
+        }
+    }
 
     /**
      * Open following/followers screen click on counter
@@ -607,10 +921,39 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
+    fun onClickFollowing(view: View){
+        val whoCanView = profileBean.safetyBean.is_followers
+        if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            completeSignUpDialog()
+        } else if (!sessionManager.isGuestUser()) {
+            if (sessionManager.getUserId() == profileBean.user_id || whoCanView == 0) {
+                openFollowingsScreen()
+            } else if (whoCanView == 1) {
+                if (profileBean.is_follow == 1) {
+                    openFollowingsScreen()
+                }
+            }
+        }
+    }
     fun openFollowersScreen() {
-        val intent = Intent(this@ProfileViewActivity, FollowingFollowersActivity::class.java)
+        val intent = Intent(this@ProfileViewActivity, FollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
-        intent.putExtra("isMyProfile", isMyProfile)
+        if (sessionManager.getUserId() == profileBean.user_id)
+            intent.putExtra("isMyProfile", true)
+        else
+            intent.putExtra("isMyProfile", false)
+        intent.putExtra("title", "Follower")
+        openActivity(intent)
+    }
+
+    fun openFollowingsScreen() {
+        val intent = Intent(this@ProfileViewActivity, FollowingActivity::class.java)
+        intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+        if (sessionManager.getUserId() == profileBean.user_id)
+            intent.putExtra("isMyProfile", true)
+        else
+            intent.putExtra("isMyProfile", false)
+        intent.putExtra("title", "Following")
         openActivity(intent)
     }
 
@@ -630,7 +973,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickEditProfile(view: View) {
 //        openActivity(this@ProfileViewActivity, EditProfileActivity())
-          openActivity(this@ProfileViewActivity, EditActivity())
+        openActivity(this@ProfileViewActivity, EditActivity())
     }
 
     override fun onBackPressed() {
@@ -652,11 +995,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onViewAlbumItemClick(value: Long, position: Int) {
     }
 
-    fun onClickMatches(view: View) {
-        val intent = Intent(this@ProfileViewActivity, MatchesActivity::class.java)
-        intent.putExtra("userName", username)
-        intent.putExtra("onClickMatches", true)
-        openActivity(intent)
+    fun onClickAddVideo(view: View) {
+        selectVideo()
     }
 
     fun onClickProfileMore(view: View) {
@@ -692,8 +1032,31 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         profileBean.is_like = dashboardBean.is_like
         if (dashboardBean.is_like == 1) {
             btnProfileLike.text = resources.getString(R.string.liked)
+            btnProfileLike.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_text_red
+                )
+            )
+            btnProfileLike.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_btn)
+            btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0)
         } else {
-            btnProfileLike.text = resources.getString(R.string.like)
+            btnProfileLike.text = resources.getString(R.string.match)
+            btnProfileLike.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.white
+                )
+            )
+            btnProfileLike.background =
+                ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
+            btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_like_dashboard,
+                0,
+                0,
+                0
+            )
         }
 
         if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
@@ -1074,14 +1437,50 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>) {
-        TODO("Not yet implemented")
     }
 
     override fun onLogoutSuccess(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onLogoutFailed(msg: String, error: Int) {
-        TODO("Not yet implemented")
+    }
+
+    /**
+     * gives option for select video or take video from camera
+     */
+    private fun selectVideo() {
+        bottomSheetDialog = BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
+        bottomSheetDialog.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.tvPhotoTake.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            if (isPermissionGrantedForCamera())
+                captureVideo()
+        }
+        bottomSheetDialog.tvPhotoChoose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            isReadWritePermissionGrantedVide()
+        }
+        bottomSheetDialog.tvPhotoCancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun captureVideo() {
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        startActivityForResult(cameraIntent, Constants.REQUEST_POST_VIDEO)
     }
 }

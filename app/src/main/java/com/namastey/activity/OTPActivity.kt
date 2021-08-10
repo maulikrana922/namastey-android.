@@ -79,6 +79,7 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
         Utils.hideKeyboard(this)
         sessionManager.setVerifiedUser(user.is_verified)
         sessionManager.setuserUniqueId(user.user_uniqueId)
+        sessionManager.setUserId(user.user_id)
         sessionManager.setGuestUser(false)
         sessionManager.setIntegerValue(user.is_invited,Constants.KEY_IS_INVITED)
         sessionManager.setIntegerValue(user.purchase, Constants.KEY_IS_PURCHASE)

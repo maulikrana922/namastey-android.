@@ -96,6 +96,7 @@
                         app:defaultQueryHint="@string/search"
                         app:iconifiedByDefault="false"
                         app:queryHint="@string/search"
+                        app:queryBackground="@color/color_search"
                         app:searchHintIcon="@drawable/ic_search" />
 
                     <androidx.recyclerview.widget.RecyclerView

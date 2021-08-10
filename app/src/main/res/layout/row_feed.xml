@@ -228,14 +228,15 @@
 
         <ImageView
             android:id="@+id/ivComment"
-            android:layout_width="18dp"
+            android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginBottom="@dimen/_8sdp"
             android:src="@drawable/ic_comment"
             app:layout_constraintBottom_toTopOf="@id/tvCommentCount"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
             app:layout_constraintStart_toStartOf="@id/tvFeedShare"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            app:tint="@color/colorWhite" />
 
 
         <com.namastey.customViews.CustomTextView

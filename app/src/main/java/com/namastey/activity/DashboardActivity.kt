@@ -1417,7 +1417,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     // Temp open this activity
     fun onClickUser(view: View) {
-        openActivity(this, ProfileActivity())
+        //openActivity(this, ProfileViewActivity())
+        val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USER_ID, sessionManager.getUserId())
+        openActivity(intent)
     }
 
     fun onClickInbox(view: View) {

@@ -1,14 +1,23 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
+import com.gowtham.library.utils.TrimType
+import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -19,6 +28,10 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.AddVideoViewModel
+import kotlinx.android.synthetic.main.activity_add_video.*
+import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -31,6 +44,9 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var binding: ActivityAddVideoBinding
     private lateinit var addVideoViewModel: AddVideoViewModel
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var videoFile: File? = null
+    private var isVideoUpload = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,15 +160,15 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
 //            socialAccountId.add(data.id)
 //        }
 //        jsonObject.addProperty(Constants.SOCIAL_ACCOUNTS, socialAccountId.joinToString())
-       // if (sessionManager.getEducationBean().course.isNotEmpty()) {
-            jsonObject.addProperty(
-                Constants.EDUCATION,
-                sessionManager.getStringValue(Constants.KEY_EDUCATION)
-            )
-       // }
+        // if (sessionManager.getEducationBean().course.isNotEmpty()) {
+        jsonObject.addProperty(
+            Constants.EDUCATION,
+            sessionManager.getStringValue(Constants.KEY_EDUCATION)
+        )
+        // }
 
 //        if (sessionManager.getJobBean().title.isNotEmpty()) {
-            jsonObject.addProperty(Constants.JOBS, sessionManager.getStringValue(Constants.KEY_JOB))
+        jsonObject.addProperty(Constants.JOBS, sessionManager.getStringValue(Constants.KEY_JOB))
 //        }
         val androidID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
 
@@ -174,13 +190,129 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     }
 
     fun onClickContinue(view: View) {
-//        openActivity(this@AddVideoActivity, NotInvitedActivity())
+        if (isVideoUpload){
+            editProfileApiCall()
+        }else{
+            showMsg(R.string.msg_add_video)
+        }
     }
 
-    fun onClickAddVideo(view: View){
-        openActivity(this@AddVideoActivity, PostVideoActivity())
+    fun onClickAddVideo(view: View) {
+        //openActivity(this@AddVideoActivity, PostVideoActivity())
+        selectVideo()
     }
+
     fun onClickSkip(view: View) {
         editProfileApiCall()
     }
+
+    private fun selectVideo() {
+        bottomSheetDialog = BottomSheetDialog(this@AddVideoActivity, R.style.dialogStyle)
+        bottomSheetDialog.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.tvPhotoTake.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            if (isPermissionGrantedForCamera())
+                captureVideo()
+        }
+        bottomSheetDialog.tvPhotoChoose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            isReadWritePermissionGrantedVide()
+        }
+        bottomSheetDialog.tvPhotoCancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun captureVideo() {
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        startActivityForResult(cameraIntent, Constants.REQUEST_POST_VIDEO)
+    }
+
+    private fun isReadWritePermissionGrantedVide() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGalleryForVideo()
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), Constants.PERMISSION_STORAGE
+                )
+            }
+        } else {
+            openGalleryForVideo()
+        }
+    }
+
+    private fun openGalleryForVideo() {
+
+        videoFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString()
+        )
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_GET_CONTENT;
+        startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Request Code : ", requestCode.toString())
+
+        if (requestCode === TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null) {
+            val uri = Uri.parse(TrimVideo.getTrimmedVideoPath(data))
+            Log.e("Trimmed video ", "Trimmed path:: $uri")
+
+            videoFile = File(uri.path)
+            val intent = Intent(this@AddVideoActivity, PostVideoActivity::class.java)
+            intent.putExtra("videoFile", videoFile)
+            openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
+
+        }else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO){
+            if (data != null) {
+                videoFile = data.getSerializableExtra("videoFile") as File?
+//                ivAddVideo.visibility = View.GONE
+//                videoView.visibility = View.VISIBLE
+//
+//                videoView.setVideoURI(Uri.parse(videoFile!!.path))
+//                videoView.start()
+                isVideoUpload = true
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
+
+            if (data != null) {
+                val selectedVideo = data.data
+
+                if (selectedVideo != null) {
+                    Log.d("Path", selectedVideo.toString())
+                    TrimVideo.activity(selectedVideo.toString())
+                        .setTrimType(TrimType.MIN_MAX_DURATION)
+                        .setMinToMax(10, 30)
+                        .start(this)
+                }
+            }
+        }
+    }
+
 }

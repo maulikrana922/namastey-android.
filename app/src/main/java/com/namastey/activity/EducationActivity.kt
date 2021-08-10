@@ -95,6 +95,7 @@ class EducationActivity : BaseActivity<ActivityEducationBinding>(), EducationVie
             sessionManager.setStringValue(edtOccupation.text.toString().trim(), Constants.KEY_JOB)
 //            addJob()
         }
+        openActivity(this@EducationActivity, ProfilePicActivity())
     }
 
     private fun addJob(){

@@ -88,7 +88,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var isTouched = false
     private var items = arrayOf<CharSequence>()
     private var lengthCount = 0
-
+    private lateinit var postVideoAlbumAdapter :PostVideoAlbumAdapter
     override fun getViewModel() = postVideoViewModel
 
     override fun getLayoutId() = R.layout.activity_post_video
@@ -191,7 +191,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         } else {
             isFromEditPost = false
             if (intent.hasExtra("videoFile")) {
-                albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
+               // albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
                 videoFile = intent.getSerializableExtra("videoFile") as File?
 //            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
                 Log.d("TAG", videoFile!!.name.toString())
@@ -254,7 +254,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 }
             }
         }
-        tvAlbumName.text = albumBean.name
+       // tvAlbumName.text = albumBean.name
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->
             isTouched = true
@@ -334,6 +334,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
     }
 
+    override fun onSuccessAddAlbum(albumBean: AlbumBean) {
+        albumList.add(albumBean)
+        postVideoAlbumAdapter.notifyDataSetChanged()
+    }
+
     override fun onSuccessPostVideo(videoBean: VideoBean) {
         Log.d("PostVideoActivity", videoBean.toString())
         postVideoViewModel.addMediaCoverImage(videoBean.id, pictureFile)
@@ -348,6 +353,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             intent.putExtra("videoBean", this.videoBean)
         } else
             intent.putExtra("videoBean", videoBean)
+
+        intent.putExtra("videoFile", videoFile)
         setResult(Activity.RESULT_OK, intent)
         super.onBackPressed()
     }
@@ -400,6 +407,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         when {
             TextUtils.isEmpty(edtVideoDesc.text.toString()) -> showMsg(getString(R.string.msg_empty_video_desc))
             pictureFile == null -> showMsg(getString(R.string.msg_empty_cover_image))
+            albumBean.id == 0L -> showMsg(getString(R.string.msg_select_album))
             else -> {
                 window.setFlags(
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -524,11 +532,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             Constants.FILE_PATH,
             System.currentTimeMillis().toString() + ".jpeg"
         )
-
-        val galleryIntent = Intent()
-        galleryIntent.type = "image/*"
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(galleryIntent, Constants.REQUEST_CODE_IMAGE)
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
     }
 
     private fun capturePhoto() {
@@ -717,7 +723,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         val recyclerAlbum: RecyclerView = albumDialog.findViewById(R.id.recyclerAlbum)
         val tvNewAlbum: TextView = albumDialog.findViewById(R.id.tvNewAlbum)
 
-        val postVideoAlbumAdapter = PostVideoAlbumAdapter(
+         postVideoAlbumAdapter = PostVideoAlbumAdapter(
             this@PostVideoActivity,
             albumList,
             albumBean.id,
@@ -744,11 +750,13 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val tempAlbumBean = AlbumBean()
-                tempAlbumBean.name = edtNewAlbum.text.toString()
-                postVideoAlbumAdapter.notifyDataSetChanged()
-                albumList.add(tempAlbumBean)
+                val jsonObject = JsonObject()
+                jsonObject.addProperty(Constants.NAME, edtNewAlbum.text.toString())
+                jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
+                postVideoViewModel.addEditAlbum(jsonObject)
+
                 edtNewAlbum.text?.clear()
+
             }
         }
 

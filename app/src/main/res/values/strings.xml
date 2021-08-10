@@ -193,10 +193,10 @@
 
     <!--    Follow screen-->
     <string name="search">Search</string>
-    <string name="msg_empty_following_temp">When People follow you. you\'ll see them here </string>
-    <string name="msg_empty_following">%1$s has no followers.</string>
-    <string name="msg_empty_followers_temp">When you follow people. you\'ll see them here</string>
-    <string name="msg_empty_followers">%1$s is not following anyone.</string>
+    <string name="msg_empty_following">When %1$s Start following people,you\'ll see them here </string>
+    <string name="msg_empty_following_title">%1$s are not following anyone</string>
+    <string name="msg_empty_followers">When people start following %1$s, you\'ll see them here</string>
+    <string name="msg_empty_followers_title">%1$s have no followers</string>
     <string name="msg_unfollow_user">Are you sure you want to Unfollow?</string>
     <string name="msg_remove_followers">Are you sure you want to remove follower?</string>
 
@@ -339,6 +339,7 @@
     <string name="select_cover">Select cover</string>
     <string name="hint_video_desc">Describe your video</string>
     <string name="add_to">Add to</string>
+    <string name="choose">Choose</string>
     <string name="add_to_album">Add to album</string>
     <string name="album">Album</string>
     <string name="shared_with">Shared with</string>
@@ -348,6 +349,8 @@
     <string name="automatically_share">Automatically share to</string>
     <string name="msg_empty_video_desc">Please enter video description</string>
     <string name="msg_empty_cover_image">Please select cover image</string>
+    <string name="msg_select_album">Please choose album</string>
+    <string name="msg_add_video">Please add video or skipp now</string>
     <string name="select_album">Select album</string>
 
     <!--    Edit profile -->
@@ -618,11 +621,10 @@
     <string name="text_banned_account">Your account has been \nbanned</string>
     <string name="text_violation2">Your Namastey profile has been banned for \nactivity that violets our <a href="http://www.google.com">Terms of use.</a></string>
     <string name="nofollowers">You are not having followers</string>
-    <string name="nofollowing">You are not following anyone</string>
-    <string name="emptyfollowingmsg">When You Start following people,you\'ll see them here</string>
+    <string name="nofollowing">%1$s are not following anyone</string>
     <string name="about">About</string>
     <string name="social_links">Social Links</string>
-    <string name="choose">Choose</string>
+    <string name="cover">Cover</string>
     <string name="follow_request_msg">Approve or ignore request</string>
     <string name="activity">Activity</string>
     <string name="follow_this_account_to_see_videos_and_know_more_about_them">Follow this account to see videos and know more about them.</string>

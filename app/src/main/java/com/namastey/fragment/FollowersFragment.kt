@@ -180,10 +180,10 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             tvEmptyFollow.text = getString(R.string.followers)
             if (isMyProfile){
                 tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_following_temp))
+                    getString(R.string.msg_empty_following))
             }else {
                 tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_following),
+                    getString(R.string.msg_empty_following_title),
                     userName
                 )
             }
@@ -202,10 +202,10 @@ class FollowersFragment : BaseFragment<FragmentFollowingBinding>(), FollowingVie
             tvEmptyFollow.text = getString(R.string.followers)
             if (isMyProfile){
                 tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_following_temp))
+                    getString(R.string.msg_empty_following))
             }else {
                 tvEmptyFollowMsg.text = String.format(
-                    getString(R.string.msg_empty_following),
+                    getString(R.string.msg_empty_following_title),
                     userName
                 )
             }
