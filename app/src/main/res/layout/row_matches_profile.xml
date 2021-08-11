@@ -16,24 +16,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/circle_pink_hollow"
         android:padding="@dimen/_2sdp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.namastey.customViews.RoundImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
+            app:cornerRadius="@dimen/_12sdp"
+            app:roundedCorners="all"
             android:src="@drawable/default_placeholder" />
+
     </LinearLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="@dimen/_72sdp"
-        android:layout_height="@dimen/_72sdp"
-        android:visibility="gone"
-        app:civ_border_color="@color/colorWhite"
-        app:civ_border_width="1dp"
-        app:civ_circle_background_color="@color/white" />
+    <!--    <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/_72sdp"
+            android:layout_height="@dimen/_72sdp"
+            android:visibility="gone"
+            app:civ_border_color="@color/colorWhite"
+            app:civ_border_width="1dp"
+            app:civ_circle_background_color="@color/white"
+            app:cornerRadius="@dimen/_8sdp"
+            app:roundedCorners="all" />-->
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvProfileName"
@@ -45,4 +51,6 @@
         android:textColor="@color/colorDarkGray"
         android:textSize="12sp"
         app:typeface="MULI_SEMIBOLD" />
+
+
 </LinearLayout>

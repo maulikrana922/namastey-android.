@@ -2,9 +2,9 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llMessage"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/llMessage"
     android:orientation="vertical"
     android:padding="@dimen/_4sdp">
 
@@ -14,11 +14,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
+        android:padding="@dimen/_4sdp">
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivUserProfile"
-            android:layout_width="@dimen/_45sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="@id/guidlineFollowing"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/guidlineFollowing"
-            app:roundedCorners="topRight|bottomLeft" />
+            app:roundedCorners="all" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,18 +58,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mainCategoryView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_red_solid">
+                    android:layout_height="wrap_content">
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvCategory"
                         style="@style/tvWrapWhiteStyle"
                         android:layout_height="match_parent"
+                        android:background="@drawable/rounded_gray_border_transparent_solid"
                         android:gravity="center_vertical"
                         android:paddingStart="@dimen/_8sdp"
                         android:paddingTop="@dimen/_4sdp"
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_4sdp"
+                        android:textColor="@color/text_Color"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -79,19 +80,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.namastey.customViews.CustomTextView
-                    android:visibility="gone"
-                    android:id="@+id/tvUnreadMsg"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_18sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@drawable/circle_red_solid"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:typeface="MULI_SEMIBOLD" />
 
             </LinearLayout>
 
@@ -122,6 +110,22 @@
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:textSize="14sp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvUnreadMsg"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/rounded_text_red"
+                    android:gravity="center"
+
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="visible"
                     app:typeface="MULI_SEMIBOLD" />
 
             </LinearLayout>
@@ -129,8 +133,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height=".75dp"
-        android:background="@color/colorGray" />
 </LinearLayout>

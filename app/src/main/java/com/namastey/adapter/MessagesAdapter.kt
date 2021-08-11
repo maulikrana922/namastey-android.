@@ -56,13 +56,13 @@ class MessagesAdapter(
                 mainCategoryView.visibility = View.VISIBLE
                 tvCategory.text = matchesListBean.sub_cat_details[0].name
 
-                Utils.rectangleShapeGradient(
-                    mainCategoryView, intArrayOf(
-                        Color.parseColor(matchesListBean.sub_cat_details[0].start_color),
-                        Color.parseColor(matchesListBean.sub_cat_details[0].end_color)
-                    )
-                )
-                mainCategoryView.alpha = 0.5f
+//                Utils.rectangleShapeGradient(
+//                    mainCategoryView, intArrayOf(
+//                        Color.parseColor(matchesListBean.sub_cat_details[0].start_color),
+//                        Color.parseColor(matchesListBean.sub_cat_details[0].end_color)
+//                    )
+//                )
+//                mainCategoryView.alpha = 0.5f
             } else {
 //                tvCategory.visibility = View.GONE
                 mainCategoryView.visibility = View.GONE

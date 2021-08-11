@@ -11,6 +11,8 @@ import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -35,7 +37,6 @@ class GlideLib {
                 .load(bitmap)
                 .into(imageView)
         }
-
         fun loadThumbnailImage(context: Context, imageView: ImageView, uri: Uri) {
             Glide.with(context)
                 .asBitmap()
