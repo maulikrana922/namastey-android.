@@ -1,6 +1,5 @@
 package com.namastey.activity
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,10 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
-import android.text.InputType
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -20,10 +18,8 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
-import com.gowtham.library.utils.CompressOption
 import com.gowtham.library.utils.TrimType
 import com.gowtham.library.utils.TrimVideo
-import com.gowtham.library.utils.TrimmerUtils
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumDetailAdapter
@@ -34,13 +30,16 @@ import com.namastey.listeners.OnPostImageClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.DashboardBean
+import com.namastey.model.ProfileBean
 import com.namastey.model.VideoBean
 import com.namastey.uiView.CreateAlbumView
 import com.namastey.utils.*
 import com.namastey.viewModel.CreateAlbumViewModel
 import kotlinx.android.synthetic.main.activity_album_detail.*
+import kotlinx.android.synthetic.main.activity_like_profile.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
+import kotlinx.android.synthetic.main.row_choose_interest.*
 import java.io.File
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -64,6 +63,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private var position = -1
     private var videoFile: File? = null
     private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var profileBean = ProfileBean()
     private var albumBean = AlbumBean()
     private var fromEdit = false
     private var isSavedAlbum = false
@@ -93,10 +93,17 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
         Log.e("AlbumDetailActivity ", "isShowMenu:: $isShowMenu")
 
-        if (intent.hasExtra("albumId")) {
-            albumId = intent.getLongExtra("albumId", 0)
+//        tvalbumtitlesave.setOnClickListener{
+//            rlalbumheader.visibility = View.VISIBLE
+//            rleditalbum.visibility = View.GONE
+//        }
 
-            albumViewModel.getAlbumDetail(albumId)
+            /* if (intent.hasExtra("albumId")) {
+                 albumId = intent.getLongExtra("albumId", 0)
+                 albumViewModel.getAlbumDetail(albumId)
+             }*/
+
+/*
             edtAlbumName.visibility = View.VISIBLE
             edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
@@ -142,15 +149,15 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     return false
                 }
             })
+*/
+        profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
 
-        } else {
-            edtAlbumName.visibility = View.GONE
-            val gender = intent.getStringExtra(Constants.GENDER)
-            if (gender == Constants.Gender.female.name)
-                imgTop.setImageResource(R.drawable.pink_bar)
-            else
-                imgTop.setImageResource(R.drawable.blue_bar)
+        Log.d("sru", profileBean.user_id.toString())
+        Log.d("shti", sessionManager.getUserId().toString())
 
+        if (profileBean.user_id == sessionManager.getUserId()) {
+
+            ivMore.visibility = View.VISIBLE
             albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
             tvAlbumTitle.text = albumBean.name
             albumDetailAdapter =
@@ -160,9 +167,36 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     this,
                     this,
+                    true,
+                    false,
+                    false,
+                    1
+                )
+            rvAlbumDetail.adapter = albumDetailAdapter
+
+        } else {
+            //edtAlbumName.visibility = View.GONE
+            // val gender = intent.getStringExtra(Constants.GENDER)
+            /*if (gender == Constants.Gender.female.name)
+                imgTop.setImageResource(R.drawable.pink_bar)
+            else
+                imgTop.setImageResource(R.drawable.blue_bar)*/
+            ivMore.visibility = View.GONE
+
+            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
+            tvAlbumTitle.text = albumBean.name
+            edtAlbumName.hint = albumBean.name
+            albumDetailAdapter =
+                AlbumDetailAdapter(
+                    albumBean.post_video_list,
+                    this@AlbumDetailActivity,
+                    this,
+                    this,
+                    this,
                     fromEdit,
                     false,
-                    false
+                    false,
+                    0
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -337,6 +371,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private fun createPopUpMenu() {
         val popupMenu = PopupMenu(this, ivMore)
         popupMenu.menuInflater.inflate(R.menu.menu_album_detail, popupMenu.menu)
+        val menuRename = popupMenu.menu.findItem(R.id.action_rename)
         val menuShowHide = popupMenu.menu.findItem(R.id.action_show_hide)
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_order).setVisible(true)
         if (isHide == 1) {
@@ -368,18 +403,42 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.action_rename -> {
+                    dialogRenameAlbum()
+                }
                 R.id.action_delete_order -> {
                     dialogDeleteAlbum()
                 }
                 R.id.action_show_hide -> {
                     dialogHideAlbum(textHideShow)
                     menuShowHide.title = textHideShow
-
                 }
             }
             true
         }
         popupMenu.show()
+    }
+
+    private fun dialogRenameAlbum() {
+        rleditalbum.visibility = View.VISIBLE
+        rlalbumheader.visibility = View.GONE
+    }
+
+    fun dialogSave(view: View) {
+        rlalbumheader.visibility = View.VISIBLE
+        rleditalbum.visibility = View.GONE
+        editAlbumApiCall()
+
+      /*  if (isEditAlbum) {
+            isEditAlbum = false
+            edtAlbumName.inputType = InputType.TYPE_NULL
+            edtAlbumName.clearFocus()
+            editAlbumApiCall()
+        } else {
+            isEditAlbum = true
+            edtAlbumName.requestFocus()
+            edtAlbumName.inputType = InputType.TYPE_CLASS_TEXT
+        }*/
     }
 
     private fun dialogDeleteAlbum() {
@@ -606,6 +665,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     override fun onSuccessResponse(albumBean: AlbumBean) {
+        Toast.makeText(applicationContext,albumBean.name,Toast.LENGTH_SHORT).show()
+        tvAlbumTitle.setText(albumBean.name)
         isEditAlbum = false
     }
 
@@ -642,7 +703,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    isSavedAlbum
+                    isSavedAlbum,
+                    0
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -690,7 +752,6 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
         TODO("Not yet implemented")
     }
-
 
 //    fun onClickSave(view: View) {
 //        videoTrimmer.onSaveClicked()

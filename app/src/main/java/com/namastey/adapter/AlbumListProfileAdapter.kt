@@ -12,6 +12,7 @@ import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.ProfileBean
 import com.namastey.utils.Constants
 import kotlinx.android.synthetic.main.row_parent_album_profile.view.*
 import java.util.*
@@ -22,7 +23,8 @@ class AlbumListProfileAdapter(
     var onViewAlbumClick: OnViewAlbumClick,
     var onItemClick: OnItemClick,
     var gender: String,
-    var isMyProfile: Boolean
+    var isMyProfile: Boolean,
+    var profileBean: ProfileBean
 ) : RecyclerView.Adapter<AlbumListProfileAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -64,6 +66,9 @@ class AlbumListProfileAdapter(
                 intent.putExtra(Constants.FROM_EDIT, false)
                 intent.putExtra(Constants.GENDER, gender)
                 intent.putExtra("isMyProfile", isMyProfile)
+                intent.putExtra(Constants.PROFILE_BEAN, profileBean)
+                intent.putExtra("isShowMenu", true)
+                intent.putExtra("albumId", id)
                 (activity as ProfileViewActivity).openActivity(intent)
             }
 

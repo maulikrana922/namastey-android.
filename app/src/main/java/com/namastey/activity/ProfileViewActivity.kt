@@ -228,7 +228,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 this,
                 this,
                 profileBean.gender,
-                isMyProfile
+                isMyProfile,
+                profileBean
+
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
