@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -46,6 +47,7 @@ class ThumbyActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.thumbnail, menu)
+        menu.findItem(R.id.action_menu_done).title = Html.fromHtml("<font color='#F30D46'>Save</font>")
         return true
     }
 

@@ -88,7 +88,7 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
-
+        videoView.setOnPreparedListener { mp -> mp.isLooping = true }
     }
 
     private fun editProfileApiCall() {
@@ -190,9 +190,9 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     }
 
     fun onClickContinue(view: View) {
-        if (isVideoUpload){
+        if (isVideoUpload) {
             editProfileApiCall()
-        }else{
+        } else {
             showMsg(R.string.msg_add_video)
         }
     }
@@ -289,15 +289,16 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
             intent.putExtra("videoFile", videoFile)
             openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
 
-        }else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO){
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
             if (data != null) {
                 videoFile = data.getSerializableExtra("videoFile") as File?
-//                ivAddVideo.visibility = View.GONE
-//                videoView.visibility = View.VISIBLE
-//
-//                videoView.setVideoURI(Uri.parse(videoFile!!.path))
-//                videoView.start()
+                ivAddVideo.visibility = View.INVISIBLE
+                videoView.visibility = View.VISIBLE
+
+                videoView.setVideoURI(Uri.parse(videoFile!!.path))
+                videoView.start()
                 isVideoUpload = true
+                initData()
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
 
