@@ -41,7 +41,14 @@ class ThumbyActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_new)
         videoUri = intent.getParcelableExtra<Uri>(EXTRA_URI) as Uri
 
+        initData()
         setupVideoContent()
+    }
+
+    private fun initData() {
+        rlGallery.setOnClickListener {
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

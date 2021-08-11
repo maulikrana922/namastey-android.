@@ -98,10 +98,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //            rleditalbum.visibility = View.GONE
 //        }
 
-            /* if (intent.hasExtra("albumId")) {
-                 albumId = intent.getLongExtra("albumId", 0)
-                 albumViewModel.getAlbumDetail(albumId)
-             }*/
+        /* if (intent.hasExtra("albumId")) {
+             albumId = intent.getLongExtra("albumId", 0)
+             albumViewModel.getAlbumDetail(albumId)
+         }*/
 
 /*
             edtAlbumName.visibility = View.VISIBLE
@@ -156,13 +156,20 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         Log.d("shti", sessionManager.getUserId().toString())
 
         if (profileBean.user_id == sessionManager.getUserId()) {
-
             ivMore.visibility = View.VISIBLE
             albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
+            var postVideoList: ArrayList<VideoBean> = ArrayList()
+            if (albumBean.post_video_list.isNotEmpty()) {
+                for (i in albumBean.post_video_list.indices+1) {
+                    if (i == 0)
+                        postVideoList.add(0, VideoBean())
+                    else postVideoList.add(albumBean.post_video_list[i-1])
+                }
+            }
             tvAlbumTitle.text = albumBean.name
             albumDetailAdapter =
                 AlbumDetailAdapter(
-                    albumBean.post_video_list,
+                    postVideoList,
                     this@AlbumDetailActivity,
                     this,
                     this,
@@ -429,16 +436,16 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         rleditalbum.visibility = View.GONE
         editAlbumApiCall()
 
-      /*  if (isEditAlbum) {
-            isEditAlbum = false
-            edtAlbumName.inputType = InputType.TYPE_NULL
-            edtAlbumName.clearFocus()
-            editAlbumApiCall()
-        } else {
-            isEditAlbum = true
-            edtAlbumName.requestFocus()
-            edtAlbumName.inputType = InputType.TYPE_CLASS_TEXT
-        }*/
+        /*  if (isEditAlbum) {
+              isEditAlbum = false
+              edtAlbumName.inputType = InputType.TYPE_NULL
+              edtAlbumName.clearFocus()
+              editAlbumApiCall()
+          } else {
+              isEditAlbum = true
+              edtAlbumName.requestFocus()
+              edtAlbumName.inputType = InputType.TYPE_CLASS_TEXT
+          }*/
     }
 
     private fun dialogDeleteAlbum() {
@@ -537,7 +544,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     TrimVideo.activity(selectedVideo.toString())
 //                        .setCompressOption(CompressOption(30,"1M",460,320))
                         .setTrimType(TrimType.MIN_MAX_DURATION)
-                        .setMinToMax(10,30)
+                        .setMinToMax(10, 30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
                         .start(this)
 
@@ -582,12 +589,12 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //
 //                    }else{
 
-                        TrimVideo.activity(selectedVideo.toString())
+                    TrimVideo.activity(selectedVideo.toString())
 //                            .setCompressOption(CompressOption(30,"400k",width,height))
-                            .setTrimType(TrimType.MIN_MAX_DURATION)
-                            .setMinToMax(10,30)
+                        .setTrimType(TrimType.MIN_MAX_DURATION)
+                        .setMinToMax(10, 30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
-                            .start(this)
+                        .start(this)
 //                    }
 
 //                    trimmerView.visibility = View.VISIBLE
@@ -639,9 +646,9 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         } else {
             this.position = position
             if (isSavedAlbum)
-                albumViewModel.removePostVideo(userId,1)
+                albumViewModel.removePostVideo(userId, 1)
             else
-                albumViewModel.removePostVideo(userId,0)
+                albumViewModel.removePostVideo(userId, 0)
         }
     }
 
@@ -665,7 +672,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     override fun onSuccessResponse(albumBean: AlbumBean) {
-        Toast.makeText(applicationContext,albumBean.name,Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, albumBean.name, Toast.LENGTH_SHORT).show()
         tvAlbumTitle.setText(albumBean.name)
         isEditAlbum = false
     }
