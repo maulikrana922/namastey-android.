@@ -16,7 +16,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,96 +25,112 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_45sdp">
 
-            <RelativeLayout
-                android:id="@+id/rlmainalbum"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                tools:ignore="MissingConstraints">
 
-                <RelativeLayout
-                    android:id="@+id/rlalbumheader"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    tools:ignore="MissingConstraints">
+            <ImageView
+                android:id="@+id/ivAlbumDetailBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_8sdp"
+                android:onClick="onClickAlbumDetailBack"
+                android:src="@drawable/ic_back_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/color_black_text" />
 
-                    <ImageView
-                        android:id="@+id/ivAlbumDetailBack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_14sdp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:contentDescription="@string/app_name"
-                        android:onClick="onClickAlbumDetailBack"
-                        android:src="@drawable/ic_back_new"
-                        app:tint="@color/color_black_text" />
+            <com.namastey.customViews.CustomEditText
+                android:id="@+id/edtAlbumTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_toRightOf="@+id/ivAlbumDetailBack"
+                android:background="@android:color/transparent"
+                android:enabled="false"
+                android:singleLine="true"
+                android:text="@string/edit_album"
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_18sdp"
+                app:layout_constraintEnd_toStartOf="@id/tvSave"
+                app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
+                app:layout_constraintStart_toEndOf="@+id/ivAlbumDetailBack"
+                app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack"
+                app:typeface="MULI_SEMIBOLD" />
 
-                    <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvAlbumTitle"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginEnd="@dimen/_3sdp"                        android:layout_toRightOf="@+id/ivAlbumDetailBack"
-                        android:text="@string/edit_album"
-                        android:singleLine="true"
-                        android:textColor="@color/color_black_text"
-                        android:textSize="@dimen/_14sdp"
-                        app:typeface="MULI_EXTRA_BOLD"/>
+            <ImageView
+                android:id="@+id/ivMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickAlbumDetailMore"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_more"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack"
+                app:tint="@color/color_black_text" />
 
-                    <ImageView
-                        android:id="@+id/ivMore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:contentDescription="@string/app_name"
-                        android:onClick="onClickAlbumDetailMore"
-                        android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_more"
-                        android:visibility="gone"
-                        app:tint="@color/color_black_text" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rleditalbum"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:visibility="gone"
-                    tools:ignore="MissingConstraints">
-
-                    <com.namastey.customViews.CustomEditText
-                        android:id="@+id/edtAlbumName"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_45sdp"
-                        android:cursorVisible="true"
-                        android:layout_toLeftOf="@id/tvalbumtitlesave"
-                        android:textColor="@color/color_black_text"
-                        android:textSize="@dimen/_20sdp" />
-
-                    <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvalbumtitlesave"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:contentDescription="@string/app_name"
-                        android:onClick="dialogSave"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/album_title_save"
-                        android:textColor="@color/colorRed"
-                        android:textSize="@dimen/_18sdp" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="dialogSave"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/album_title_save"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/_16sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/ivAlbumDetailBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivAlbumDetailBack" />
 
 
-                </RelativeLayout>
-            </RelativeLayout>
+            <!--                <RelativeLayout-->
+            <!--                    android:id="@+id/rleditalbum"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="?attr/actionBarSize"-->
+            <!--                    android:visibility="gone"-->
+            <!--                    tools:ignore="MissingConstraints">-->
+
+            <!--                    <com.namastey.customViews.CustomEditText-->
+            <!--                        android:id="@+id/edtAlbumName"-->
+            <!--                        style="@style/TextAppearance.AppCompat.Body1"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:layout_marginStart="@dimen/_45sdp"-->
+            <!--                        android:cursorVisible="true"-->
+            <!--                        android:layout_toLeftOf="@id/tvalbumtitlesave"-->
+            <!--                        android:textColor="@color/color_black_text"-->
+            <!--                        android:textSize="@dimen/_20sdp" />-->
+
+            <!--                    <com.namastey.customViews.CustomTextView-->
+            <!--                        android:id="@+id/tvalbumtitlesave"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:layout_alignParentRight="true"-->
+            <!--                        android:layout_centerVertical="true"-->
+            <!--                        android:layout_marginEnd="@dimen/_15sdp"-->
+            <!--                        android:contentDescription="@string/app_name"-->
+            <!--                        android:onClick="dialogSave"-->
+            <!--                        android:padding="@dimen/_5sdp"-->
+            <!--                        android:text="@string/album_title_save"-->
+            <!--                        android:textColor="@color/colorRed"-->
+            <!--                        android:textSize="@dimen/_18sdp" />-->
+
+
+            <!--                </RelativeLayout>-->
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -124,11 +141,12 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rlmainalbum"
+                app:layout_constraintTop_toBottomOf="@+id/ivAlbumDetailBack"
                 app:layout_constraintVertical_bias="0.0"
                 app:spanCount="2"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:padding="@dimen/_8sdp"
                 tools:listitem="@layout/row_album_detail" />
 
             <ProgressBar

@@ -165,8 +165,9 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvShare"
                     style="@style/tvWrapBlackStyle"
-                    android:drawableEnd="@drawable/ic_arrow_right"
-                    android:gravity="center"
+                    android:drawableEnd="@drawable/ic_arrow_right_red"
+                    android:drawableTint="@color/colorBlack"
+                    android:gravity="center_vertical"
                     android:onClick="onClickShareWith"
                     android:text="@string/everyone"
                     app:layout_constraintBottom_toBottomOf="@id/tvShareWith"

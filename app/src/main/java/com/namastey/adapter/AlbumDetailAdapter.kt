@@ -24,8 +24,7 @@ class AlbumDetailAdapter(
     var onSelectUserItemClick: OnSelectUserItemClick,
     var fromEdit: Boolean,
     var fromFilter: Boolean,
-    var isSavedAlbum: Boolean,
-    var albumId: Int
+    var isSavedAlbum: Boolean
 
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
