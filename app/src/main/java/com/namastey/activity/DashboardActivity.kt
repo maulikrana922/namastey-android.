@@ -1770,6 +1770,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onCommentClick(position: Int, postId: Long) {
         this.position = position
         this.postId = postId
+        var intent = Intent(this,CommentActivity::class.java)
+        intent.putExtra("postId",this.postId)
+        intent.putExtra("position",this.position)
+        openActivity(intent)
+    }
+
+        /*this.position = position
+        this.postId = postId
         bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogComment.setContentView(
             layoutInflater.inflate(
@@ -1836,8 +1844,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         bottomSheetDialogComment.show()
     }
-
-    private fun addCommentsTextChangeListener() {
+*/
+   /* private fun addCommentsTextChangeListener() {
         mentionArrayAdapter.clear()
         dashboardViewModel.getMentionList("")
         var strMention = ""
@@ -1871,7 +1879,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
 
         }
-    }
+    }*/
 
     fun onClickCategory(view: View) {
 
