@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,49 +11,93 @@
             type="com.namastey.viewModel.NotificationViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <RelativeLayout
-            android:id="@+id/rl_following"
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvNoData"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:elevation="@dimen/_8sdp"
+            android:gravity="center"
+            android:text="@string/no_activity"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_SEMIBOLD" />
 
-            <ImageView
-                android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:contentDescription="@string/app_name"
-                android:onClick="onClickProfileBack"
-                android:src="@drawable/ic_back" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="@dimen/_8sdp"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.namastey.customViews.CustomTextView
-                android:id="@+id/headertitle"
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickProfileBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_toEndOf="@+id/ivBack"
-                android:text="@string/notification"
-                android:textColor="@color/color_black_text"
-                android:textSize="@dimen/_20sdp" />
-        </RelativeLayout>
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/headertitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/ivBack"
+            android:text="@string/notification"
+            android:textColor="@color/color_black_text"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="@+id/ivBack"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:src="@drawable/ic_chat_dashboard"
+            app:layout_constraintBottom_toBottomOf="@id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/rl_following"
-            android:background="@color/colorWhite">
+            android:layout_height="0dp"
+            android:background="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -101,6 +144,7 @@
                         <com.namastey.customViews.CustomTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+
                             android:text="@string/follow_request_msg" />
 
                     </LinearLayout>
@@ -117,7 +161,8 @@
                     android:paddingBottom="@dimen/_4sdp"
                     android:text="@string/activity"
                     android:textColor="@color/colorBlack"
-                    android:textSize="20sp" />
+                    android:textSize="18dp"
+                    app:typeface="MULI_SEMIBOLD" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvNotification"
@@ -130,32 +175,12 @@
 
 
             </LinearLayout>
+
+
         </androidx.core.widget.NestedScrollView>
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvNoData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:gravity="center"
-            android:text="@string/no_activity"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:typeface="MULI_SEMIBOLD" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
-
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

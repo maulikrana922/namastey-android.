@@ -112,10 +112,9 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
             tabOne.background =
                 ContextCompat.getDrawable(this, R.drawable.rounded_red_btn2)
             tabOne.setTextColor(Color.WHITE)
-         //   tabTwo.background =
-               // ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
-            tabTwo.setBackgroundResource(R.color.color_search)
-
+//            tabTwo.background =
+//                ContextCompat.getDrawable(this, R.drawable.rounded_top_right_pink_solid)
+            tabTwo.setBackgroundColor(ContextCompat.getColor(this,R.color.color_search))
             tabTwo.setTextColor(Color.RED)
         } else {
             tabTwo.background =
@@ -123,8 +122,8 @@ class LikeProfileActivity : BaseActivity<ActivityLikeProfileBinding>(), ProfileL
             tabTwo.setTextColor(Color.WHITE)
            // tabTwo.background =
           //      ContextCompat.getDrawable(this, R.drawable.rounded_top_right_red_solid)
-            tabOne.setBackgroundResource(R.color.color_search)
-
+          // tabOne.setBackgroundResource(R.color.color_search)
+            tabOne.setBackgroundColor(ContextCompat.getColor(this,R.color.color_search))
             tabOne.setTextColor(Color.RED)
         }
     }

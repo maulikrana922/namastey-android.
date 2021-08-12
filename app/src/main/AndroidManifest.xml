@@ -67,6 +67,7 @@
         <activity android:name=".activity.EducationActivity" />
         <activity android:name=".activity.BirthdayActivity" />
         <activity android:name=".activity.GenderActivity" />
+        <activity android:name=".activity.NotificationActivity" />
         <activity
             android:name=".activity.NameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

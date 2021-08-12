@@ -10,14 +10,79 @@
 
         <variable
             name="viewModel"
-            type="com.namastey.viewModel.MatchesBasicViewModel" />
+            type="com.namastey.viewModel.MatchesProfileViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/ivMatchesProfileBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickMatchesBack"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_bel"
+                android:onClick="onClickNotification"
+                app:layout_constraintBottom_toBottomOf="@id/ivMatchesProfileBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivMatchesProfileBack" />
+
+
+            <include
+                android:id="@+id/viewMatchesList"
+                layout="@layout/view_matches_horizontal_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:layout_constraintTop_toBottomOf="@+id/ivMatchesProfileBack" />
+
+            <include
+                layout="@layout/view_matches_messages_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewMatchesList" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <FrameLayout
+            android:id="@+id/flContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+
+
+        <!--    <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
@@ -54,12 +119,12 @@
                     style="@style/tvTitleStyle"
                     android:text="@string/inbox"
                     app:layout_constraintBottom_toBottomOf="@id/ivMatchesProfileBack"
-                    app:layout_constraintEnd_toStartOf="@id/ivMatchesProfileMore"
+                    app:layout_constraintEnd_toStartOf="@id/ivNotification"
                     app:layout_constraintStart_toEndOf="@id/ivMatchesProfileBack"
                     app:layout_constraintTop_toTopOf="@id/ivMatchesProfileBack" />
 
                 <ImageView
-                    android:id="@+id/ivMatchesProfileMore"
+                    android:id="@+id/ivNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_15sdp"
@@ -98,7 +163,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tabMatchesProfile" />
 
-                <!--<FrameLayout
+                &lt;!&ndash;<FrameLayout
                     android:id="@+id/flContainer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -107,15 +172,11 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tabMatchesProfile" />-->
+                    app:layout_constraintTop_toBottomOf="@id/tabMatchesProfile" />&ndash;&gt;
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>-->
 
-        <FrameLayout
-            android:id="@+id/flContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+
     </FrameLayout>
 </layout>
