@@ -44,7 +44,7 @@ class MessagesAdapter(
 
             Log.e("MessageAdapter", "MatchesBean: Id: \t ${matchesListBean.id}")
 
-            llMessageView.setOnClickListener {
+            llMessage.setOnClickListener {
                 onMatchesItemClick.onMatchesItemClick(position, matchesListBean, true)
             }
 
@@ -53,7 +53,7 @@ class MessagesAdapter(
                     "MessagesAdapter",
                     "sub_cat_details: \t ${matchesListBean.sub_cat_details[0].name}"
                 )
-                mainCategoryView.visibility = View.VISIBLE
+                tvCategory.visibility = View.VISIBLE
                 tvCategory.text = matchesListBean.sub_cat_details[0].name
 
 //                Utils.rectangleShapeGradient(
@@ -65,7 +65,7 @@ class MessagesAdapter(
 //                mainCategoryView.alpha = 0.5f
             } else {
 //                tvCategory.visibility = View.GONE
-                mainCategoryView.visibility = View.GONE
+                tvCategory.visibility = View.GONE
             }
 
             if (matchesListBean.id == 0L) {
@@ -82,8 +82,8 @@ class MessagesAdapter(
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
             if (matchesListBean.chatMessage.read == 1 || matchesListBean.chatMessage.sender == sessionManager.getUserId()) {
-                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
-                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
+                tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.color_text))
+                tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.color_text))
                 tvUnreadMsg.visibility = View.GONE
             } else {
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
