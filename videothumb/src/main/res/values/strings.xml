@@ -2,4 +2,6 @@
     <string name="app_name">Thumby</string>
     <string name="picker_title">Select Cover</string>
     <string name="menu_done">Done</string>
+    <string name="save">Save</string>
+    <string name="add_from_gallery">Add from Gallery</string>
 </resources>

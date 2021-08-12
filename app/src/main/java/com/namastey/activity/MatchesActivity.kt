@@ -4,36 +4,48 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.tabs.TabLayout
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.adapter.ViewPagerAdapter
+import com.namastey.adapter.MatchedProfileAdapter
+import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMatchesBinding
-import com.namastey.fragment.FollowRequestFragment
-import com.namastey.fragment.MatchesProfileFragment
-import com.namastey.fragment.NotificationFragment
+import com.namastey.databinding.FragmentMatchesProfileBinding
+import com.namastey.listeners.OnMatchesItemClick
+import com.namastey.model.ChatMessage
+import com.namastey.model.LikedUserCountBean
 import com.namastey.model.MatchesListBean
-import com.namastey.uiView.MatchesBasicView
+import com.namastey.uiView.MatchesProfileView
 import com.namastey.utils.Constants
+import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
-import com.namastey.viewModel.MatchesBasicViewModel
+import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.activity_matches.*
+import kotlinx.android.synthetic.main.row_matches_profile_first.*
+import kotlinx.android.synthetic.main.view_matches_horizontal_list.*
+import kotlinx.android.synthetic.main.view_matches_messages_list.*
+import java.util.*
 import javax.inject.Inject
 
-class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView {
+class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileView,
+    OnMatchesItemClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var sessionManager: SessionManager
-    private lateinit var matchesBasicViewModel: MatchesBasicViewModel
+
+    //private lateinit var matchesBasicViewModel: MatchesBasicViewModel
+    private lateinit var matchesProfileViewModel: MatchesProfileViewModel
     private lateinit var activityMatchesProfileBinding: ActivityMatchesBinding
 
     private lateinit var tabOne: TextView
@@ -43,19 +55,93 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
     private var isFromDashboard = false
     private var userName = ""
 
+    private lateinit var fragmentAddFriendBinding: FragmentMatchesProfileBinding
+    private lateinit var layoutView: View
+    private lateinit var matchedProfileAdapter: MatchedProfileAdapter
+    private lateinit var messagesAdapter: MessagesAdapter
+    private var matchesListBean: ArrayList<MatchesListBean> = ArrayList()
+    private var messageList: ArrayList<MatchesListBean> = ArrayList()
+
+    //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+//    private var myChatRef: DatabaseReference = database.reference
+    private var likeUserCount = 0
+    private var lastUserProfile = ""
+
+    //    private lateinit var messageListListener: ValueEventListener
+//    private lateinit var getMessageListQuery: Query
+    private val db = Firebase.firestore
+    private lateinit var docReference: DocumentReference
+    private lateinit var listenerRegistration: ListenerRegistration
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
 
-        matchesBasicViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(MatchesBasicViewModel::class.java)
+        matchesProfileViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(MatchesProfileViewModel::class.java)
         activityMatchesProfileBinding = bindViewData()
-        activityMatchesProfileBinding.viewModel = matchesBasicViewModel
+        activityMatchesProfileBinding.viewModel = matchesProfileViewModel
 
         initData()
+        initUI()
     }
 
     private fun initData() {
+
+
+    }
+
+    override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
+        matchesListBean.clear()
+        matchesListBean = data
+        matchedProfileAdapter = MatchedProfileAdapter(matchesListBean, this, this)
+        rvMatchesList.adapter = matchedProfileAdapter
+
+    }
+
+    override fun onSuccessMessageList(chatMessageList: ArrayList<MatchesListBean>) {
+        messageList.clear()
+        messagesAdapter.notifyDataSetChanged()
+        messageList.addAll(chatMessageList)
+
+        if (messageList.isEmpty()) {
+            llNoMatch.visibility = View.VISIBLE
+            tvMessages.visibility = View.GONE
+            rvMessagesList.visibility = View.GONE
+        } else {
+            llNoMatch.visibility = View.GONE
+            tvMessages.visibility = View.VISIBLE
+            rvMessagesList.visibility = View.VISIBLE
+        }
+
+//        myChatRef = database.getReference(Constants.FirebaseConstant.CHATS)
+
+        removeListeners()
+
+        for (i in 0 until messageList.size) {
+            getMessageFromFirebase(messageList[i].id, i)
+        }
+    }
+
+    override fun onSuccessLikeUserCount(likedUserCountBean: LikedUserCountBean) {
+        this.likeUserCount = likedUserCountBean.like_count
+        this.lastUserProfile = likedUserCountBean.profile_pic
+
+        tvLikesCount.text = likeUserCount.toString()
+
+        GlideLib.loadImage(
+            this,
+            ivBackgroundPicture,
+            lastUserProfile
+        )
+    }
+
+    fun onClickNotification(view: View) {
+        openActivity(this@MatchesActivity, NotificationActivity())
+    }
+
+/*    private fun initData() {
         setupViewPager()
         tabMatchesProfile.setupWithViewPager(viewPagerMatchesProfile)
         setupTabIcons()
@@ -93,15 +179,15 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
                 )
             }
         }
-    }
+    }*/
 
-    override fun getViewModel() = matchesBasicViewModel
+    override fun getViewModel() = matchesProfileViewModel
 
     override fun getLayoutId() = R.layout.activity_matches
 
     override fun getBindingVariable() = BR.viewModel
 
-    private fun setupViewPager() {
+/*    private fun setupViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFrag(MatchesProfileFragment(), resources.getString(R.string.matches))
         adapter.addFrag(NotificationFragment(), resources.getString(R.string.notification))
@@ -135,7 +221,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
             }
 
         })
-    }
+    }*/
 
     /**
      * change background and text color according to select tab
@@ -181,7 +267,126 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesBasicView
     }
 
     override fun onDestroy() {
-        matchesBasicViewModel.onDestroy()
+        matchesProfileViewModel.onDestroy()
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::listenerRegistration.isInitialized)
+            listenerRegistration.remove()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        matchesProfileViewModel.getMatchesList()
+        matchesProfileViewModel.getChatMessageList()
+    }
+
+    private fun initUI() {
+        matchesProfileViewModel.getLikeUserCount()
+
+        rlProfileMain.setOnClickListener {
+            //if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+            val intent = Intent(this, LikeProfileActivity::class.java)
+            intent.putExtra("likeUserCount", likeUserCount)
+            intent.putExtra("lastUserProfile", lastUserProfile)
+            openActivity(intent)
+            // } else{
+            //   val intent = Intent(this, MembershipActivity::class.java)
+            //    intent.putExtra("isFromMatchProfile", true)
+            //    openActivity(intent)
+            //   }
+
+        }
+
+        messagesAdapter = MessagesAdapter(messageList, this, this, sessionManager)
+        rvMessagesList.adapter = messagesAdapter
+    }
+
+    override fun onMatchesItemClick(
+        position: Int,
+        matchesListBean: MatchesListBean,
+        fromMessage: Boolean
+    ) {
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra("isFromMessage", fromMessage)
+        intent.putExtra("matchesListBean", matchesListBean)
+        Log.e("MatchesProfileFragment", "matchesListBean.id: ${matchesListBean.id}")
+        if (matchesListBean.id == 0L) {
+            intent.putExtra("isFromAdmin", true)
+        } else {
+            intent.putExtra("isFromAdmin", false)
+        }
+        openActivity(intent)
+    }
+
+    private fun getMessageFromFirebase(messageUserId: Long, position: Int) {
+
+        val chatId = if (sessionManager.getUserId() < messageUserId)
+            sessionManager.getUserId().toString().plus("_").plus(messageUserId)
+        else
+            messageUserId.toString().plus("_").plus(sessionManager.getUserId())
+
+//        getMessageListQuery = myChatRef.child(chatId).orderByKey().limitToLast(1)
+        db.clearPersistence()
+        val docRef = db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId)
+
+        listenerRegistration = docRef.addSnapshotListener { document, error ->
+            if (document != null) {
+                Log.d("Success", "DocumentSnapshot data: ${document.data}")
+                val chatMessage = document.toObject(ChatMessage::class.java)
+
+                if (chatMessage != null) {
+                    messageList[position].chatMessage = chatMessage
+//                        messageList[position].timestamp =
+//                            Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+//                        messageList[position].message = chatMessage.message
+//                        messageList[position].url = chatMessage.url
+                }
+//                    messageList.sortByDescending { it.timestamp }
+                messagesAdapter.notifyItemChanged(position)
+            } else {
+                Log.d("TAG", "No such document")
+            }
+        }
+//            .addOnFailureListener { exception ->
+//                Log.d("TAG", "get failed with ", exception)
+//            }
+
+
+//        messageListListener = getMessageListQuery.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (snapshot in dataSnapshot.children) {
+//                    val chatMessage: ChatMessage = snapshot.getValue(ChatMessage::class.java)!!
+//                    Log.d("Firebase Fragment :", "Value is: ${chatMessage.message}")
+//
+//                    messageList[position].timestamp =
+//                        Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+//                    messageList[position].message = chatMessage.message
+//                    messageList[position].url = chatMessage.url
+//                }
+//                messagesAdapter.notifyDataSetChanged()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Failed to read value
+//                Log.w("Firebase :", "Failed to read value.", error.toException())
+//            }
+//        })
+    }
+
+
+    private fun removeListeners() {
+//        if (::messageListListener.isInitialized && ::getMessageListQuery.isInitialized){
+//            getMessageListQuery.removeEventListener(messageListListener)
+
+        if (::listenerRegistration.isInitialized)
+            listenerRegistration.remove()
+//        }
     }
 }

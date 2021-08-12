@@ -58,16 +58,16 @@ class FeedAdapter(
 
         lateinit var mediaCoverImage: ImageView
 
-        //        lateinit var ivCommentFirst: ImageView
-//        lateinit var ivCommentSecond: ImageView
-//        lateinit var ivCommentThird: ImageView
+        lateinit var ivCommentFirst: ImageView
+        lateinit var ivCommentSecond: ImageView
+        lateinit var ivCommentThird: ImageView
         lateinit var ivFeedProfile: ImageView
         lateinit var ivFeedFollow: ImageView
         lateinit var ivFeedBoost: ImageView
         lateinit var ivComment: ImageView
 
 
-        //lateinit var tvCommentFeed: TextView
+        lateinit var tvCommentFeed: TextView
         lateinit var tvCommentCount: TextView
         lateinit var tvFeedName: TextView
         lateinit var tvFeedLike: TextView
@@ -86,15 +86,15 @@ class FeedAdapter(
             mediaContainer = parent.findViewById(R.id.mediaContainer)
 
             mediaCoverImage = parent.findViewById(R.id.ivMediaCoverImage)
-//            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
-//            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
-//            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
+            ivCommentFirst = parent.findViewById(R.id.ivCommentFirst)
+            ivCommentSecond = parent.findViewById(R.id.ivCommentSecond)
+            ivCommentThird = parent.findViewById(R.id.ivCommentThird)
             ivFeedProfile = parent.findViewById(R.id.ivFeedProfile)
             ivFeedFollow = parent.findViewById(R.id.ivFeedFollow)
             ivFeedBoost = parent.findViewById(R.id.ivFeedBoost)
             ivComment = parent.findViewById(R.id.ivComment)
 
-//            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
+            tvCommentFeed = parent.findViewById(R.id.tvCommentFeed)
             tvCommentCount = parent.findViewById(R.id.tvCommentCount)
             tvFeedName = parent.findViewById(R.id.tvFeedName)
             tvFeedLike = parent.findViewById(R.id.tvFeedLike)
@@ -173,39 +173,39 @@ class FeedAdapter(
             }
             tvCommentCount.text = dashboardBean.comments.toString()
 
-           /* if (dashboardBean.who_can_comment == 2) {
-                //tvCommentFeed.text = activity.getString(R.string.comments_off)
+            if (dashboardBean.who_can_comment == 2) {
+                tvCommentFeed.text = activity.getString(R.string.comments_off)
             } else {
                 if (dashboardBean.who_can_comment == 1) {
                     if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
-//                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-//                            .plus(activity.getString(R.string.comments))
-//                        showCommentProfilePic(
-//                            dashboardBean,
-//                            ivCommentFirst,
-//                            ivCommentSecond,
-//                            ivCommentThird
-//                        )
+                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(
+                            dashboardBean,
+                            ivCommentFirst,
+                            ivCommentSecond,
+                            ivCommentThird
+                        )
                     } else {
-//                        tvCommentFeed.text = activity.getString(R.string.comments_off)
-                       // openCustomAlertDialog()
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                        openCustomAlertDialog()
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
-//                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-//                            .plus(activity.getString(R.string.comments))
-//                        showCommentProfilePic(
-//                            dashboardBean,
-//                            ivCommentFirst,
-//                            ivCommentSecond,
-//                            ivCommentThird
-//                        )
+                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                        showCommentProfilePic(
+                            dashboardBean,
+                            ivCommentFirst,
+                            ivCommentSecond,
+                            ivCommentThird
+                        )
                     } else {
-//                        tvCommentFeed.text = activity.getString(R.string.comments_off)
-                       // openCustomAlertDialog()
+                        tvCommentFeed.text = activity.getString(R.string.comments_off)
+                        openCustomAlertDialog()
                     }
                 }
-            }*/
+            }
 
             // if (dashboardBean.casual_name != "")
             tvFeedName.text = dashboardBean.casual_name
@@ -333,20 +333,26 @@ class FeedAdapter(
                 onFeedItemClick.onItemClick(position, dashboardBean)
             }
 
-            // if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
-            //  if (dashboardBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {// && !sessionManager.isGuestUser()) {
-//                tvCommentFeed.setOnClickListener {
-//                }
-//                ivCommentFirst.setOnClickListener {
-//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-//                }
-//                ivCommentSecond.setOnClickListener {
-//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-//                }
-//                ivCommentThird.setOnClickListener {
-//                    onFeedItemClick.onCommentClick(position, dashboardBean.id)
-//                }
-            // }
+            if (dashboardBean.is_comment == 0 && !sessionManager.isGuestUser()) {
+                if (dashboardBean.is_comment == 0 && !tvCommentFeed.text.contains(
+                        activity.getString(
+                            R.string.comments_off
+                        )
+                    )
+                ) {// && !sessionManager.isGuestUser()) {
+                    tvCommentFeed.setOnClickListener {
+                    }
+                    ivCommentFirst.setOnClickListener {
+                        onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                    }
+                    ivCommentSecond.setOnClickListener {
+                        onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                    }
+                    ivCommentThird.setOnClickListener {
+                        onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                    }
+                }
+            }
 
             ivComment.setOnClickListener {
                 if (dashboardBean.who_can_comment == 2) {
@@ -467,7 +473,6 @@ class FeedAdapter(
                 ivCommentSecond.visibility = View.GONE
                 ivCommentThird.visibility = View.GONE
                 GlideLib.loadImage(activity, ivCommentFirst, dashboardBean.profile_pic[0])
-
             }
             else -> {
                 ivCommentFirst.visibility = View.GONE

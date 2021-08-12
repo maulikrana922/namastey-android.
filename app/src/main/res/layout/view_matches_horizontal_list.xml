@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/matches"
         android:textColor="@color/colorBlack"
-        android:textSize="16sp"
+        android:textSize="@dimen/_16sdp"
         app:layout_constraintEnd_toStartOf="@id/svMatches"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

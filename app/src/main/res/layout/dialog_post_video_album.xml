@@ -1,86 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
-    android:padding="@dimen/_10sdp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.PostVideoViewModel" />
+    </data>
 
 
-    <ImageView
-        android:id="@+id/imgClosePostAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_close" />
-
-    <com.namastey.customViews.CustomTextView
-        style="@style/tvTitleBlackStyle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:text="@string/choose_album"
-        android:textSize="@dimen/_18sdp"
-        app:typeface="MULI_SEMIBOLD" />
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imgClosePostAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvChooseAlbum"
+            style="@style/tvTitleBlackStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/choose_album"
+            android:textSize="@dimen/_18sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgClosePostAlbum"
+            app:typeface="MULI_SEMIBOLD" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvChooseAlbum">
 
             <LinearLayout
-                android:id="@+id/llAlbumList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerAlbum"
+                <LinearLayout
+                    android:id="@+id/llAlbumList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerAlbum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
-            <RelativeLayout
-                android:id="@+id/llNewAlbum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/rounded_white_solid_white_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_12sdp">
+                </LinearLayout>
 
-                <com.namastey.customViews.CustomEditText
-                    android:id="@+id/edtNewAlbum"
-                    style="@style/tvWrapWhiteStyle"
+                <RelativeLayout
+                    android:id="@+id/llNewAlbum"
                     android:layout_width="match_parent"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_toStartOf="@id/tvNewAlbum"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/create_a_new_album"
-                    android:textColor="@color/color_text"
-                    app:typeface="MULI_SEMIBOLD" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/rounded_white_solid_white_corner"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_12sdp">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvNewAlbum"
-                    style="@style/tvWrapWhiteStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:gravity="end"
-                    android:text="@string/save"
-                    android:textColor="@color/color_text_red"
-                    app:typeface="MULI_SEMIBOLD" />
-            </RelativeLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+                    <com.namastey.customViews.CustomEditText
+                        android:id="@+id/edtNewAlbum"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_toStartOf="@id/tvNewAlbum"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/create_a_new_album"
+                        android:textColor="@color/color_text"
+                        app:typeface="MULI_SEMIBOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvNewAlbum"
+                        style="@style/tvWrapWhiteStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:gravity="end"
+                        android:text="@string/save"
+                        android:textColor="@color/color_text_red"
+                        app:typeface="MULI_SEMIBOLD" />
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

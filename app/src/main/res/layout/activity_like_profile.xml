@@ -15,7 +15,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -27,90 +28,83 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:id="@+id/rlprofileheader"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    tools:ignore="MissingConstraints">
 
-                    <ImageView
-                        android:id="@+id/ivLikeProfileBack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:contentDescription="@string/app_name"
-                        android:onClick="onClickLikeProfileBack"
-                        android:src="@drawable/ic_back" />
-
-                    <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvLikesHeader"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_toRightOf="@+id/ivLikeProfileBack"
-                        android:text="@string/likes"
-                        android:textColor="@color/color_black_text"
-                        android:textSize="@dimen/_20sdp" />
-
-                    <ImageView
-                        android:id="@+id/ivLikeProfileMore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:contentDescription="@string/app_name"
-                        android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_more"
-                        android:visibility="gone" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@drawable/rounded_btn_grey"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_3sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <ImageView
+                    android:id="@+id/ivLikeProfileBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="onClickLikeProfileBack"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rlprofileheader">
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvLikesHeader"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:text="@string/likes"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="@dimen/_18sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivLikeProfileBack"
+                    app:layout_constraintStart_toEndOf="@+id/ivLikeProfileBack"
+                    app:layout_constraintTop_toTopOf="@+id/ivLikeProfileBack"
+                    app:typeface="MULI_SEMIBOLD" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/rounded_red_btn2"
+                    android:backgroundTint="@color/color_search"
+                    android:padding="@dimen/_4sdp"
+                    app:layout_constraintStart_toStartOf="@+id/ivLikeProfileBack"
+                    app:layout_constraintTop_toBottomOf="@+id/ivLikeProfileBack">
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLikeProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:tabPaddingStart="@dimen/_2sdp"
-                        app:tabPaddingEnd="@dimen/_2sdp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:tabIndicator="@android:color/transparent"
+                        app:tabPaddingEnd="@dimen/_2sdp"
+                        app:tabPaddingStart="@dimen/_2sdp"
                         app:tabRippleColor="@android:color/transparent"
                         app:tabSelectedTextColor="@color/colorWhite"
                         app:tabTextColor="@color/colorGray" />
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPagerLikeProfile"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rl">
+                    app:layout_constraintTop_toBottomOf="@+id/clTab">
 
                     <FrameLayout
                         android:id="@+id/flContainer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true" />
+
                 </androidx.viewpager.widget.ViewPager>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -522,8 +522,8 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         destinationActivity: Activity,
         result_code: Int
     ) {
-        startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
-        activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+        //startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
+        //activity.overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     fun onEditBackClick(view: View) {

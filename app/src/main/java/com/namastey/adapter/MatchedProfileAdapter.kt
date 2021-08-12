@@ -38,7 +38,7 @@ class MatchedProfileAdapter(
                 llProfileImage.setBackgroundResource(0)
             else
                 llProfileImage.background =
-                    activity.getDrawable(R.drawable.dashed_circle_pink_hollow)
+                    activity.getDrawable(R.drawable.circle_pink_hollow)
 
             tvProfileName.text = matchesListBean.casual_name
 

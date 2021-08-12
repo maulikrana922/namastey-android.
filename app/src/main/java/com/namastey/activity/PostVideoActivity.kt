@@ -42,6 +42,7 @@ import com.namastey.adapter.PostVideoAlbumAdapter
 import com.namastey.customViews.CustomEditText
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityPostVideoBinding
+import com.namastey.databinding.DialogPostVideoAlbumBinding
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.MentionListBean
@@ -71,6 +72,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var activityPostVideoBinding: ActivityPostVideoBinding
+    private lateinit var postVideoBinding: DialogPostVideoAlbumBinding
     private lateinit var postVideoViewModel: PostVideoViewModel
     private lateinit var mentionListAdapter: MentionListAdapter
     private lateinit var defaultMentionAdapter: ArrayAdapter<Mention>
@@ -88,7 +90,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     private var isTouched = false
     private var items = arrayOf<CharSequence>()
     private var lengthCount = 0
-    private lateinit var postVideoAlbumAdapter :PostVideoAlbumAdapter
+    private lateinit var postVideoAlbumAdapter: PostVideoAlbumAdapter
     override fun getViewModel() = postVideoViewModel
 
     override fun getLayoutId() = R.layout.activity_post_video
@@ -103,7 +105,6 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             ViewModelProviders.of(this, viewModelFactory).get(PostVideoViewModel::class.java)
         activityPostVideoBinding = bindViewData()
         activityPostVideoBinding.viewModel = postVideoViewModel
-
         initData()
     }
 
@@ -191,7 +192,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         } else {
             isFromEditPost = false
             if (intent.hasExtra("videoFile")) {
-               // albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
+                // albumBean = intent.getParcelableExtra<AlbumBean>("albumBean") as AlbumBean
                 videoFile = intent.getSerializableExtra("videoFile") as File?
 //            pictureFile = intent.getSerializableExtra("thumbnailImage") as File?
                 Log.d("TAG", videoFile!!.name.toString())
@@ -254,7 +255,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 }
             }
         }
-       // tvAlbumName.text = albumBean.name
+        // tvAlbumName.text = albumBean.name
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->
             isTouched = true
@@ -718,12 +719,13 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
         val albumDialog = Dialog(this@PostVideoActivity, R.style.FullScreenDialogTheme)
         albumDialog.setContentView(R.layout.dialog_post_video_album)
 
+
         val imgClosePostAlbum: ImageView = albumDialog.findViewById(R.id.imgClosePostAlbum)
         val edtNewAlbum: CustomEditText = albumDialog.findViewById(R.id.edtNewAlbum)
         val recyclerAlbum: RecyclerView = albumDialog.findViewById(R.id.recyclerAlbum)
         val tvNewAlbum: TextView = albumDialog.findViewById(R.id.tvNewAlbum)
 
-         postVideoAlbumAdapter = PostVideoAlbumAdapter(
+        postVideoAlbumAdapter = PostVideoAlbumAdapter(
             this@PostVideoActivity,
             albumList,
             albumBean.id,
@@ -759,6 +761,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 
             }
         }
+
+
 
         albumDialog.show()
 
