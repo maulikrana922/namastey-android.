@@ -101,6 +101,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.INVISIBLE
             ivProfileCamera.visibility = View.VISIBLE
+            sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+            sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
+            sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
+            sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
+            sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
+            sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
+            sessionManager.setInterestIn(profileBean.interest_in_gender)
+            sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
+            sessionManager.setIntegerValue(profileBean.is_global, Constants.KEY_GLOBAL)
+            sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
         } else {
             isMyProfile = false
             groupButtons.visibility = View.INVISIBLE
@@ -188,18 +200,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         else
             tvAbouteDesc.text = getString(R.string.about_me_empty)
 
-        sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
-        sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
-        sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
-        sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
-        sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
-        sessionManager.setIntegerValue(profileBean.is_hide, Constants.IS_HIDE)
-        sessionManager.setStringValue(profileBean.min_age.toString(), Constants.KEY_AGE_MIN)
-        sessionManager.setStringValue(profileBean.max_age.toString(), Constants.KEY_AGE_MAX)
-        sessionManager.setInterestIn(profileBean.interest_in_gender)
-        sessionManager.setIntegerValue(profileBean.user_profile_type, Constants.PROFILE_TYPE)
-        sessionManager.setIntegerValue(profileBean.is_global, Constants.KEY_GLOBAL)
-        sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
+
 
         ivProfileMore.visibility = View.VISIBLE
         tvFollowersCount.text = profileBean.followers.toString()

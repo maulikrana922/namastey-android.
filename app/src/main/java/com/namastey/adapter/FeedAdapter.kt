@@ -119,7 +119,7 @@ class FeedAdapter(
             Log.e("FeedAdapter", "position: \t $position")
 
             if (position == itemCount - 1 && feedList.size >= 10) {
-                (context as DashboardActivity).getFeedListApi(0)
+                (context as DashboardActivity).getFeedListApi(0,false)
             }
 
             handlerVideo.removeCallbacksAndMessages(null)

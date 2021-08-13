@@ -42,7 +42,7 @@ class CategoryAdapter(
             Utils.roundShapeGradient(
                 tvCategory, intArrayOf(
                     Color.parseColor(categoryList[position].startColor),
-                    Color.parseColor(categoryList[position].endColor)
+                    Color.parseColor(categoryList[position].startColor)
                 )
             )
             tvCategory.alpha = 0.6f

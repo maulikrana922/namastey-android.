@@ -138,6 +138,7 @@ class CreateAlbumViewModel constructor(
     }
 
     fun removePostVideo(postId: Long, isSaved: Int) {
+        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (createAlbumView.isInternetAvailable()) {

@@ -121,7 +121,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private val PERMISSION_REQUEST_CODE = 101
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
-    private lateinit var bootomSheetCategoryDialog: BottomSheetDialog
+    private lateinit var bottomSheetCategoryDialog: BottomSheetDialog
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private lateinit var deleteIcon: Drawable
     private var position = -1
@@ -393,7 +393,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
     }
 
-    fun getFeedListApi(subCat: Int) {
+    fun getFeedListApi(subCat: Int, isFollowingSearch: Boolean) {
         val jsonObject = JSONObject()
 
         val videoListJsonArray = JSONArray(videoIdList)
@@ -418,6 +418,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         jsonObject.put("sub_cat_id", subCat)
         jsonObject.put("lat", latitude)
         jsonObject.put("lng", longitude)
+
+        if (isFollowingSearch)
+            jsonObject.put("following_id", sessionManager.getUserId())
 
 //        val feedVideoRequest = FeedVideoRequest(jsonArray,1,subCat, latitude, longitude)
         Log.e("DashboardActivity", "jsonObject: \t $jsonObject")
@@ -1476,6 +1479,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         currentPage = 1
                         totalCount = 1
                         videoIdList.clear()
+                        firstTime = true
                         /* dashboardViewModel.getNewFeedListV2(
                              currentPage,
                              data.getIntExtra("subCategoryId", 0),
@@ -1484,7 +1488,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                              videoIdList
                          )*/
 
-                        getFeedListApi(data.getIntExtra("subCategoryId", 0))
+                        getFeedListApi(data.getIntExtra("subCategoryId", 0), false)
 
 
                         /*currentPage = 1
@@ -1511,6 +1515,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     currentPage = 1
                     totalCount = 1
                     videoIdList.clear()
+                    firstTime = true
                     /* dashboardViewModel.getNewFeedListV2(
                          currentPage,
                          0,
@@ -1519,7 +1524,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                          videoIdList
                      )*/
 
-                    getFeedListApi(data.getIntExtra("subCategoryId", 0))
+                    getFeedListApi(data.getIntExtra("subCategoryId", 0), false)
 
 
                     /*getNewFeedList(
@@ -1751,7 +1756,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         videoIdList.clear()
         currentPage = 1
         totalCount = 1
-        getFeedListApi(0)
+        getFeedListApi(0, false)
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
@@ -1769,6 +1774,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
      */
     override fun onCommentClick(position: Int, postId: Long) {
         this.position = position
+        this.postId = postId
+        var intent = Intent(this,CommentActivity::class.java)
+        intent.putExtra("postId",this.postId)
+        intent.putExtra("position",this.position)
+        openActivity(intent)
+    }
+
+        /*this.position = position
         this.postId = postId
         bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogComment.setContentView(
@@ -1836,8 +1849,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         bottomSheetDialogComment.show()
     }
-
-    private fun addCommentsTextChangeListener() {
+*/
+   /* private fun addCommentsTextChangeListener() {
         mentionArrayAdapter.clear()
         dashboardViewModel.getMentionList("")
         var strMention = ""
@@ -1871,21 +1884,21 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
 
         }
-    }
+    }*/
 
     fun onClickCategory(view: View) {
 
-        bootomSheetCategoryDialog =
+        bottomSheetCategoryDialog =
             BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
-        bootomSheetCategoryDialog.setContentView(
+        bottomSheetCategoryDialog.setContentView(
             layoutInflater.inflate(
                 R.layout.dialog_bottom_category,
                 null
             )
         )
-        bootomSheetCategoryDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bootomSheetCategoryDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        bootomSheetCategoryDialog.setCancelable(true)
+        bottomSheetCategoryDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetCategoryDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetCategoryDialog.setCancelable(true)
 
         dashboardViewModel.getCommentList(postId)
 
@@ -1896,26 +1909,35 @@ private fun prepareAnimation(animation: Animation): Animation? {
         )
         categoryAdapter = CategoryAdapter(this.categoryBeanList, this, this)
 
-        bootomSheetCategoryDialog.rvCategory.layoutManager = horizontalLayout
-        bootomSheetCategoryDialog.rvCategory.adapter = categoryAdapter
+        bottomSheetCategoryDialog.rvCategory.layoutManager = horizontalLayout
+        bottomSheetCategoryDialog.rvCategory.adapter = categoryAdapter
 
 
-        bootomSheetCategoryDialog.ivBack.setOnClickListener {
-            bootomSheetCategoryDialog.rvCategory.visibility = View.VISIBLE
-            bootomSheetCategoryDialog.rvSubCategory.visibility = View.GONE
-            bootomSheetCategoryDialog.clToolbar.visibility = View.GONE
-            bootomSheetCategoryDialog.tvFollowing.visibility = View.VISIBLE
+        bottomSheetCategoryDialog.ivBack.setOnClickListener {
+            bottomSheetCategoryDialog.rvCategory.visibility = View.VISIBLE
+            bottomSheetCategoryDialog.rvSubCategory.visibility = View.GONE
+            bottomSheetCategoryDialog.clToolbar.visibility = View.GONE
+            bottomSheetCategoryDialog.tvFollowing.visibility = View.VISIBLE
         }
 
+        bottomSheetCategoryDialog.tvFollowing.setOnClickListener {
+            feedList.clear()
+            videoIdList.clear()
+            currentPage = 1
+            totalCount = 1
+            getFeedListApi(0, true)
+            firstTime = true
+            bottomSheetCategoryDialog.dismiss()
+        }
 
-        bootomSheetCategoryDialog.rvSubCategory.addItemDecoration(
+        bottomSheetCategoryDialog.rvSubCategory.addItemDecoration(
             GridSpacingItemDecoration(
                 2,
                 20,
                 false
             )
         )
-        bootomSheetCategoryDialog.show()
+        bottomSheetCategoryDialog.show()
 
     }
 
@@ -2636,7 +2658,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     videoIdList
                 )*/
 
-                getFeedListApi(0)
+                getFeedListApi(0, false)
 
                 //dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
             }
@@ -2737,7 +2759,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         latitude = location.latitude
                         longitude = location.longitude
                     }
-                    getFeedListApi(0)
+                    getFeedListApi(0, false)
                     // use your location object
                     // get latitude , longitude and other info from this
                 } else {
@@ -2755,7 +2777,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("DashboardActivity", "longitude: $longitude")
 
         if (feedList.size == 0) {
-            getFeedListApi(0)
+            getFeedListApi(0, false)
         }
     }
 
@@ -2768,24 +2790,24 @@ private fun prepareAnimation(animation: Animation): Animation? {
     /*CategoryAdapter Item Click*/
     override fun onItemClickCategoty(categoryBean: CategoryBean) {
 
-        bootomSheetCategoryDialog.rvCategory.visibility = View.GONE
-        bootomSheetCategoryDialog.rvSubCategory.visibility = View.VISIBLE
-        bootomSheetCategoryDialog.clToolbar.visibility = View.VISIBLE
-        bootomSheetCategoryDialog.tvFollowing.visibility = View.GONE
+        bottomSheetCategoryDialog.rvCategory.visibility = View.GONE
+        bottomSheetCategoryDialog.rvSubCategory.visibility = View.VISIBLE
+        bottomSheetCategoryDialog.clToolbar.visibility = View.VISIBLE
+        bottomSheetCategoryDialog.tvFollowing.visibility = View.GONE
 
 
         val subCategoryAdapter = SubCategoryAdapter(
             categoryBean,
             this, this
         )
-        bootomSheetCategoryDialog.tvTypeName.text = categoryBean.name
-        bootomSheetCategoryDialog.rvSubCategory.adapter = subCategoryAdapter
+        bottomSheetCategoryDialog.tvTypeName.text = categoryBean.name
+        bottomSheetCategoryDialog.rvSubCategory.adapter = subCategoryAdapter
     }
 
     /*SubCategoryAdapter Item Click*/
     override fun onItemClick(subCategoryId: Int) {
         Log.e("Subcategory : ", subCategoryId.toString())
-        bootomSheetCategoryDialog.dismiss()
+        bottomSheetCategoryDialog.dismiss()
         if (sessionManager.isGuestUser()) {
             this.addFragment(
                 SignUpFragment.getInstance(
@@ -2798,8 +2820,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
             currentPage = 1
             totalCount = 1
             videoIdList.clear()
-
-            getFeedListApi(subCategoryId)
+            firstTime = true
+            getFeedListApi(subCategoryId, false)
 
         }
     }

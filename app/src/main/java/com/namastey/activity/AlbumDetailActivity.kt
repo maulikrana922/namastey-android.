@@ -154,30 +154,26 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         Log.d("sru", profileBean.user_id.toString())
         Log.d("shti", sessionManager.getUserId().toString())
+        albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
 
         if (profileBean.user_id == sessionManager.getUserId()) {
+            fromEdit = true
             ivMore.visibility = View.VISIBLE
-            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
-            var postVideoList: ArrayList<VideoBean> = ArrayList()
-            if (albumBean.post_video_list.isNotEmpty()) {
-                for (i in albumBean.post_video_list.indices + 1) {
-                    if (i == 0)
-                        postVideoList.add(0, VideoBean())
-                    else postVideoList.add(albumBean.post_video_list[i - 1])
-                }
-            }
-            tvAlbumTitle.text = albumBean.name
+            postList = ArrayList()
+                postList.addAll(albumBean.post_video_list)
+                postList.add(0, VideoBean())
+            edtAlbumTitle.setText(albumBean.name)
+            albumId = albumBean.id
             albumDetailAdapter =
                 AlbumDetailAdapter(
-                    postVideoList,
+                    postList,
                     this@AlbumDetailActivity,
                     this,
                     this,
                     this,
                     true,
                     false,
-                    false,
-                    1
+                    false
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
 
@@ -190,20 +186,19 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 imgTop.setImageResource(R.drawable.blue_bar)*/
             ivMore.visibility = View.GONE
 
-            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
-            tvAlbumTitle.text = albumBean.name
-            edtAlbumName.hint = albumBean.name
+            edtAlbumTitle.setText(albumBean.name)
+            postList = ArrayList()
+            postList.addAll(albumBean.post_video_list)
             albumDetailAdapter =
                 AlbumDetailAdapter(
-                    albumBean.post_video_list,
+                    postList,
                     this@AlbumDetailActivity,
                     this,
                     this,
                     this,
                     fromEdit,
                     false,
-                    false,
-                    0
+                    false
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -212,7 +207,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     private fun editAlbumApiCall() {
         Utils.hideKeyboard(this@AlbumDetailActivity)
         val jsonObject = JsonObject()
-        jsonObject.addProperty(Constants.NAME, edtAlbumName.text.toString().trim())
+        jsonObject.addProperty(Constants.NAME, edtAlbumTitle.text.toString().trim())
         jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
         jsonObject.addProperty(Constants.ALBUM_ID, albumId)
 
@@ -427,13 +422,15 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     private fun dialogRenameAlbum() {
-        rleditalbum.visibility = View.VISIBLE
-        rlalbumheader.visibility = View.GONE
+        edtAlbumTitle.setText("")
+        edtAlbumTitle.isEnabled = true
+        edtAlbumTitle.hint = albumBean.name
+        edtAlbumTitle.requestFocus()
+        tvSave.visibility = View.VISIBLE
+        ivMore.visibility = View.GONE
     }
 
     fun dialogSave(view: View) {
-        rlalbumheader.visibility = View.VISIBLE
-        rleditalbum.visibility = View.GONE
         editAlbumApiCall()
 
         /*  if (isEditAlbum) {
@@ -668,13 +665,19 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
     override fun onSuccessAlbumHide(msg: String) {
         Log.e("AlbumDetailActivity ", "onSuccessAlbumHide:: $msg")
-        albumViewModel.getAlbumDetail(albumId)
+//        albumViewModel.getAlbumDetail(albumId)
+        isHide = if (isHide == 1)
+            0
+        else
+            1
     }
 
     override fun onSuccessResponse(albumBean: AlbumBean) {
-        Toast.makeText(applicationContext, albumBean.name, Toast.LENGTH_SHORT).show()
-        tvAlbumTitle.setText(albumBean.name)
+        edtAlbumTitle.setText(albumBean.name)
         isEditAlbum = false
+        tvSave.visibility = View.GONE
+        ivMore.visibility = View.VISIBLE
+        edtAlbumTitle.isEnabled = false
     }
 
     override fun onSuccessAlbumDetails(arrayList: ArrayList<AlbumBean>) {
@@ -683,22 +686,25 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         }
         if (arrayList.size > 0) {
             albumBean = arrayList[0]
+            postList = ArrayList()
             postList = arrayList[0].post_video_list
-            edtAlbumName.setText(arrayList[0].name)
+            edtAlbumTitle.setText(arrayList[0].name)
             this.isHide = arrayList[0].is_hide
             if (arrayList[0].name == getString(R.string.saved)) {
                 ivMore.visibility = View.GONE
                 isSavedAlbum = true
-                edtAlbumName.isEnabled = false
-                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    0,
-                    0
-                )
+//                edtAlbumName.isEnabled = false
+//                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
+//                    0,
+//                    0,
+//                    0,
+//                    0
+//                )
             } else {
                 isSavedAlbum = false
-                postList.add(0, VideoBean())
+                if (profileBean.user_id == sessionManager.getUserId()) {
+                    postList.add(0, VideoBean())
+                }
             }
 
             albumDetailAdapter =
@@ -710,8 +716,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    isSavedAlbum,
-                    0
+                    isSavedAlbum
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
