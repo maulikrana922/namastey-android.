@@ -1,7 +1,6 @@
 package com.namastey.adapter
 
 import android.app.Activity
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +52,7 @@ class MessagesAdapter(
                     "MessagesAdapter",
                     "sub_cat_details: \t ${matchesListBean.sub_cat_details[0].name}"
                 )
-                tvCategory.visibility = View.VISIBLE
+               tvCategory.visibility = View.VISIBLE
                 tvCategory.text = matchesListBean.sub_cat_details[0].name
 
 //                Utils.rectangleShapeGradient(
@@ -77,7 +76,7 @@ class MessagesAdapter(
             tvUsername.text = matchesListBean.casual_name
             if (matchesListBean.chatMessage.timestamp != -1L) {
                 tvLastTime.text =
-                    Utils.convertTimestampToChatFormat(matchesListBean.chatMessage.timestamp)
+                    Utils.convertTimestampToMessageFormat(matchesListBean.chatMessage.timestamp)
             }
             GlideLib.loadImage(activity, ivUserProfile, matchesListBean.profile_pic)
 
@@ -85,11 +84,15 @@ class MessagesAdapter(
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.color_text))
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.color_text))
                 tvUnreadMsg.visibility = View.GONE
+                tvLastTime.visibility = View.GONE
+                tvCategory.visibility = View.VISIBLE
             } else {
+                tvCategory.visibility = View.GONE
                 tvLastMsg.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
                 tvLastTime.setTextColor(ContextCompat.getColor(activity, R.color.colorRed))
                 if (matchesListBean.chatMessage.unreadCount != 0) {
                     tvUnreadMsg.visibility = View.VISIBLE
+                    tvLastTime.visibility = View.VISIBLE
                     tvUnreadMsg.text = matchesListBean.chatMessage.unreadCount.toString()
                 }
             }

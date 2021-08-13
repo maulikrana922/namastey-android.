@@ -56,6 +56,11 @@ object Utils {
         val format = SimpleDateFormat(Constants.DATE_FORMATE_CHAT, Locale.getDefault())
         return format.format(date)
     }
+    fun convertTimestampToMessageFormat(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat(Constants.DATE_FORMATE_MESSAGE, Locale.getDefault())
+        return format.format(date)
+    }
 
     fun rectangleShapeBorder(v: View, borderColor: Int, allCorner: Boolean) {
         val shape = GradientDrawable()

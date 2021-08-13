@@ -160,10 +160,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
             var postVideoList: ArrayList<VideoBean> = ArrayList()
             if (albumBean.post_video_list.isNotEmpty()) {
-                for (i in albumBean.post_video_list.indices+1) {
+                for (i in albumBean.post_video_list.indices + 1) {
                     if (i == 0)
                         postVideoList.add(0, VideoBean())
-                    else postVideoList.add(albumBean.post_video_list[i-1])
+                    else postVideoList.add(albumBean.post_video_list[i - 1])
                 }
             }
             tvAlbumTitle.text = albumBean.name

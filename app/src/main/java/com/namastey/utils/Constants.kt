@@ -372,6 +372,7 @@ object Constants {
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val DATE_FORMATE_CHAT = "MMM d, hh:mm a"
+    const val DATE_FORMATE_MESSAGE = "hh:mm a"
     const val RC_SIGN_IN = 100
     const val REQUEST_VIDEO_SELECT = 101
     const val PERMISSION_CAMERA = 102
