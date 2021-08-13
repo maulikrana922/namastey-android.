@@ -150,19 +150,19 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 
         Log.d("sru", profileBean.user_id.toString())
         Log.d("shti", sessionManager.getUserId().toString())
+        albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
 
         if (profileBean.user_id == sessionManager.getUserId()) {
             fromEdit = true
             ivMore.visibility = View.VISIBLE
-            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
-            val postVideoList: ArrayList<VideoBean> = ArrayList()
-                postVideoList.addAll(albumBean.post_video_list)
-                postVideoList.add(0, VideoBean())
+            postList = ArrayList()
+                postList.addAll(albumBean.post_video_list)
+                postList.add(0, VideoBean())
             edtAlbumTitle.setText(albumBean.name)
             albumId = albumBean.id
             albumDetailAdapter =
                 AlbumDetailAdapter(
-                    postVideoList,
+                    postList,
                     this@AlbumDetailActivity,
                     this,
                     this,
@@ -182,11 +182,12 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 imgTop.setImageResource(R.drawable.blue_bar)*/
             ivMore.visibility = View.GONE
 
-            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
             edtAlbumTitle.setText(albumBean.name)
+            postList = ArrayList()
+            postList.addAll(albumBean.post_video_list)
             albumDetailAdapter =
                 AlbumDetailAdapter(
-                    albumBean.post_video_list,
+                    postList,
                     this@AlbumDetailActivity,
                     this,
                     this,
