@@ -260,6 +260,7 @@ object Constants {
     const val KEY_BIRTH_DAY = "KEY_BIRTH_DAY"
     const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"
     const val KEY_IS_INVITED = "KEY_IS_INVITED"
+    const val ACTIVITY_EDIT = "ACTIVITY_EDIT"
 
 
     //    field key

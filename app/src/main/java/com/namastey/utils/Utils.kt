@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -130,6 +131,7 @@ object Utils {
         v.background = gd
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun imageOverlayGradient(v: View, startColor: String, endColor: String) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,

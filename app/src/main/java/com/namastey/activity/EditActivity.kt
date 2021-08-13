@@ -508,11 +508,10 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             }
 
             llSocialLink -> {
-                openActivityWithResultCode(
-                    this@EditActivity,
-                    SocialLinkActivity(),
-                    Constants.REQUEST_CODE
-                )
+                val intent=Intent(this,SocialLinkActivity::class.java)
+                intent.putExtra(Constants.ACTIVITY_EDIT,"EditActivity")
+                this.overridePendingTransition(R.anim.enter, R.anim.exit)
+                startActivity(intent)
             }
         }
     }
@@ -522,8 +521,8 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         destinationActivity: Activity,
         result_code: Int
     ) {
-        //startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
-        //activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+        startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
+        activity.overridePendingTransition(R.anim.enter, R.anim.exit)
     }
 
     fun onEditBackClick(view: View) {
