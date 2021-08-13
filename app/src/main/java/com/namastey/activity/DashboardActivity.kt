@@ -1479,6 +1479,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         currentPage = 1
                         totalCount = 1
                         videoIdList.clear()
+                        firstTime = true
                         /* dashboardViewModel.getNewFeedListV2(
                              currentPage,
                              data.getIntExtra("subCategoryId", 0),
@@ -1514,6 +1515,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     currentPage = 1
                     totalCount = 1
                     videoIdList.clear()
+                    firstTime = true
                     /* dashboardViewModel.getNewFeedListV2(
                          currentPage,
                          0,
@@ -1915,6 +1917,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             currentPage = 1
             totalCount = 1
             getFeedListApi(0, true)
+            firstTime = true
             bottomSheetCategoryDialog.dismiss()
         }
 
@@ -2808,7 +2811,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             currentPage = 1
             totalCount = 1
             videoIdList.clear()
-
+            firstTime = true
             getFeedListApi(subCategoryId, false)
 
         }
