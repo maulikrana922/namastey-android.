@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center|start"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/_5sdp"
-    android:paddingBottom="@dimen/_5sdp">
+    android:padding="@dimen/_8sdp">
 
     <com.namastey.customViews.RoundImageView
         android:id="@+id/ivMentionUser"

@@ -4,8 +4,7 @@
     android:id="@+id/holderComment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/_5sdp"
-    android:paddingBottom="@dimen/_5sdp">
+    android:padding="@dimen/_8sdp">
 
     <com.namastey.customViews.RoundImageView
         android:id="@+id/ivCommentUser"
@@ -18,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="@id/guidlineComment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidlineComment"
-        app:roundedCorners="topRight|bottomLeft" />
+        app:roundedCorners="all" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUsername"
@@ -50,6 +49,7 @@
         android:paddingEnd="@dimen/_3sdp"
         android:textColor="@color/colorBlack"
         android:textSize="12sp"
+        android:maxLines="3"
         app:layout_constraintBottom_toBottomOf="@id/ivCommentUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvUsername"
