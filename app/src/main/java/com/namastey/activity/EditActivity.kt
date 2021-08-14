@@ -500,10 +500,6 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
     }
 
     fun onClickBasicInfo(view: View) {
-        onClick(view)
-    }
-
-    private fun onClick(view: View) {
         when (view) {
 
             llInterest -> {
@@ -517,8 +513,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             llSocialLink -> {
                 val intent=Intent(this,SocialLinkActivity::class.java)
                 intent.putExtra(Constants.ACTIVITY_EDIT,"EditActivity")
-                this.overridePendingTransition(R.anim.enter, R.anim.exit)
-                startActivity(intent)
+                openActivity(intent)
             }
         }
     }

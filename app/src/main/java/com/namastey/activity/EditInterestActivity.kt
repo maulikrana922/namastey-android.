@@ -220,4 +220,8 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
         selectCategoryViewModel.editProfile(jsonObject)
     }
 
+    override fun onBackPressed() {
+        finishActivity()
+    }
+
 }
