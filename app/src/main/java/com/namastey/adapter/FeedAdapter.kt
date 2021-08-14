@@ -188,7 +188,6 @@ class FeedAdapter(
                         )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
@@ -202,7 +201,6 @@ class FeedAdapter(
                         )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
                     }
                 }
             }

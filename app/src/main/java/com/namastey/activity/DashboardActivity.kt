@@ -1423,6 +1423,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         //openActivity(this, ProfileViewActivity())
         val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
         intent.putExtra(Constants.USER_ID, sessionManager.getUserId())
+        intent.putExtra("ownProfile", true)
         openActivity(intent)
     }
 

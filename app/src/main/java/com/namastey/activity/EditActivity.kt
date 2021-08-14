@@ -231,8 +231,15 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         edtProfileTagline.minLines = 5
         edtProfileTagline.maxLines = 5
 
-        profileBasicViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
-//        generateProfileTagUI()
+        edtProfileUserName.setText(sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
+        edtProfileCasualName.setText(sessionManager.getStringValue(Constants.KEY_CASUAL_NAME))
+//        edtProfileCasualName.setSelection(edtProfileCasualName.text?.length ?: 0)
+        edtProfileTagline.setText(sessionManager.getStringValue(Constants.KEY_TAGLINE))
+        edtProfileTagline.setSelection(edtProfileTagline.text?.length ?: 0)
+
+
+        edtEducation.setText(sessionManager.getStringValue(Constants.KEY_EDUCATION))
+        edtOccupation.setText(sessionManager.getStringValue(Constants.KEY_JOB))
         edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -530,6 +537,9 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         onBackPressed()
     }
 
+    override fun onBackPressed() {
+        finishActivity()
+    }
     fun onEditSaveClick(view: View) {
         editProfileApiCall()
     }
