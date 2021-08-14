@@ -349,6 +349,9 @@ class FeedAdapter(
                     ivCommentThird.setOnClickListener {
                         onFeedItemClick.onCommentClick(position, dashboardBean.id)
                     }
+                    tvCommentFeed.setOnClickListener {
+                        onFeedItemClick.onCommentClick(position, dashboardBean.id)
+                    }
                 }
             }
 
@@ -393,13 +396,13 @@ class FeedAdapter(
             else
                 tvFeedBoost.text = "0"
 
-            tvFeedBoost.setOnClickListener {
-                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
-            }
-
-            ivFeedBoost.setOnClickListener {
-                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
-            }
+//            tvFeedBoost.setOnClickListener {
+//                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
+//            }
+//
+//            ivFeedBoost.setOnClickListener {
+//                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
+//            }
 
             if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1 &&
                 sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1

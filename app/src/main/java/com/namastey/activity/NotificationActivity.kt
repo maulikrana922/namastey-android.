@@ -68,8 +68,8 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
 
     fun onFollowrequest(view: View) {
         intent = Intent(this@NotificationActivity, FollowRequestActivity::class.java)
-        startActivity(intent)
-        finishActivity()
+        openActivity(intent)
+//        finishActivity()
     }
 
     override fun onBackPressed() {
@@ -159,6 +159,8 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
                 )
             }
             txtNotification.setText("You have " + data.size + " follow request.")
+        }else{
+            txtNotification.setText("You have 0 follow request.")
         }
     }
 

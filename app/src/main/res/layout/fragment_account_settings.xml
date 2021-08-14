@@ -83,7 +83,7 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/notifications"
                     android:textColor="@color/colorBlack"
@@ -94,7 +94,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/blocked_list"
                     app:typeface="MULI_REGULAR" />
@@ -104,7 +104,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/manage_account"
                     app:typeface="MULI_REGULAR" />
@@ -140,7 +140,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/content_languages"
                     app:typeface="MULI_REGULAR" />
@@ -206,7 +206,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/personalize_data"
                     app:typeface="MULI_REGULAR" />
@@ -216,7 +216,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/safety"
                     app:typeface="MULI_REGULAR" />
@@ -251,7 +251,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/invite_friends"
                     app:typeface="MULI_REGULAR" />
@@ -261,7 +261,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/leave_feedback"
                     app:typeface="MULI_REGULAR" />
@@ -271,7 +271,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/contact_us"
                     app:typeface="MULI_REGULAR" />
@@ -306,7 +306,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/terms_conditions"
                     app:typeface="MULI_REGULAR" />
@@ -316,7 +316,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/privacy_policy"
                     app:typeface="MULI_REGULAR" />
@@ -326,7 +326,7 @@
                     style="@style/tvWrapBlackStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawableEnd="@drawable/ic_forward_black"
                     android:gravity="start|center"
                     android:text="@string/billing_terms"
                     app:typeface="MULI_REGULAR" />

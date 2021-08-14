@@ -51,9 +51,7 @@ class FollowRequestActivity : BaseActivity<ActivityFollowRequestBinding>(), Foll
     }
 
     override fun onBackPressed() {
-        intent = Intent(this@FollowRequestActivity, NotificationActivity::class.java)
-        startActivity(intent)
-        finish()
+        finishActivity()
     }
 
     fun onClickProfileBack(view: View) {

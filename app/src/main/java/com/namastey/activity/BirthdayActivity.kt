@@ -155,7 +155,8 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
         }
         val ageInt = age
 
-        return ageInt >= 18
+        return ageInt in 18..45
+//        return ageInt >= 18
     }
 
     fun onClickContinue(view: View) {

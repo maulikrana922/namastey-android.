@@ -140,12 +140,16 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold" />
+                            app:typeface="MULI_SEMIBOLD"
+                            android:textSize="@dimen/_14sdp"
+                            android:textColor="@color/color_black_text"/>
 
                         <com.namastey.customViews.CustomTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
+                            android:textColor="@color/color_text"
+                            app:typeface="MULI_REGULAR"
+                            android:textSize="@dimen/_12sdp"
                             android:text="@string/follow_request_msg" />
 
                     </LinearLayout>
