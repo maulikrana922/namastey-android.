@@ -73,7 +73,7 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
     }
 
     override fun onBackPressed() {
-        finish()
+        finishActivity()
     }
 
     fun onClickProfileBack(view: View) {

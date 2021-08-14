@@ -202,7 +202,7 @@
                                 android:paddingTop="@dimen/_13sdp"
                                 android:paddingEnd="@dimen/_10sdp"
                                 android:paddingBottom="@dimen/_13sdp"
-                                android:textColor="@color/colorRed"
+                                android:textColor="@color/color_text"
                                 android:textColorHint="@color/colorDarkGray"
                                 android:textSize="14sp"
                                 app:typeface="MULI_REGULAR" />
@@ -355,6 +355,7 @@
                             android:gravity="center_vertical"
                             android:onClick="onClickBasicInfo"
                             android:orientation="horizontal"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
                             app:layout_constraintStart_toStartOf="@id/llProfileUserName"
                             app:layout_constraintTop_toBottomOf="@id/llJobLayout">
@@ -362,7 +363,7 @@
                             <com.namastey.customViews.CustomTextView
                                 style="@style/tvWrapBlackStyle"
                                 android:layout_width="match_parent"
-                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableEnd="@drawable/ic_forward_black"
                                 android:paddingTop="@dimen/_13sdp"
                                 android:text="@string/interest"
                                 android:textSize="14sp"
@@ -377,9 +378,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
                             android:gravity="center_vertical"
                             android:onClick="onClickBasicInfo"
                             android:orientation="horizontal"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             app:layout_constraintEnd_toEndOf="@id/llProfileUserName"
                             app:layout_constraintStart_toStartOf="@id/llProfileUserName"
                             app:layout_constraintTop_toBottomOf="@id/llInterest">
@@ -387,7 +390,7 @@
                             <com.namastey.customViews.CustomTextView
                                 style="@style/tvWrapBlackStyle"
                                 android:layout_width="match_parent"
-                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableEnd="@drawable/ic_forward_black"
                                 android:paddingTop="@dimen/_13sdp"
                                 android:text="@string/social_links"
                                 android:textSize="14sp"

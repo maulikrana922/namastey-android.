@@ -60,7 +60,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>() {
     }
 
     fun onClickContinue(view: View) {
-        openActivity(this@SocialLinkActivity, AddVideoActivity())
+        if (intent.hasExtra(Constants.ACTIVITY_EDIT))
+            finishActivity()
+        else
+            openActivity(this@SocialLinkActivity, AddVideoActivity())
     }
 
     override fun onBackPressed() {
@@ -73,7 +76,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>() {
 
     fun onClickSkip(view: View) {
         if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
-            finish()
+            finishActivity()
         } else
             openActivity(this@SocialLinkActivity, AddVideoActivity())
     }
