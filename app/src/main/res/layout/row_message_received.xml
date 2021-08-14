@@ -11,50 +11,67 @@
     android:paddingBottom="@dimen/_10sdp">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llMessageReceived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:background="@drawable/rounded_pink_solid"
-        android:minWidth="@dimen/_112sdp"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
+        android:padding="@dimen/_4sdp"
+        android:visibility="gone">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvMessageReceived"
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/CustomCardViewStyleChat"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginBottom="@dimen/_8sdp"
-            android:gravity="start|center"
-            android:text="@string/app_name"
-            android:textColor="@color/color_chip_gray"
-            android:textSize="14sp"
-            app:typeface="MULI_SEMIBOLD" />
+            app:cardElevation="@dimen/_4sdp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:minWidth="@dimen/_112sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMessageReceived"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/app_name"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="14sp"
+                    app:typeface="MULI_REGULAR" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvMessageReceivedTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:drawableStart="@drawable/ic_clock_grey"
+            android:layout_marginStart="@dimen/_4sdp"
             android:drawablePadding="@dimen/_8sdp"
-            android:gravity="start|center"
             android:text="7:21PM"
             android:textColor="@color/color_chip_gray"
-            android:textSize="14sp"
+            android:textSize="@dimen/_8sdp"
             app:typeface="MULI_SEMIBOLD" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:visibility="gone"
         android:id="@+id/flImageReceived"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_150sdp"
         android:layout_gravity="start"
-        android:layout_marginTop="@dimen/_12sdp">
+        android:layout_marginTop="@dimen/_12sdp"
+        android:visibility="gone">
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivImageReceived"
@@ -65,7 +82,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"
             app:cornerRadius="@dimen/_8sdp"
-            app:roundedCorners="topRight|bottomLeft" />
+            app:roundedCorners="topRight|topLeft|bottomRight" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvImageReceivedTime"
@@ -84,14 +101,14 @@
     </FrameLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llRecordingReceived"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/rounded_white_solid"
+        android:background="@drawable/rounded_pink_solid_chat_recevied"
         android:minWidth="@dimen/_180sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"

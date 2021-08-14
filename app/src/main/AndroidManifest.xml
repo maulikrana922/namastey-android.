@@ -70,6 +70,7 @@
         <activity android:name=".activity.BirthdayActivity" />
         <activity android:name=".activity.GenderActivity" />
         <activity android:name=".activity.NotificationActivity" />
+        <activity android:name=".activity.EditInterestActivity" />
         <activity
             android:name=".activity.NameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -83,7 +84,8 @@
         <activity
             android:name=".activity.OTPActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".activity.InviteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -106,8 +108,8 @@
             android:name=".activity.LikeProfileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme1"/>
         <activity android:name=".activity.SearchLocationActivity" />
         <activity android:name=".activity.PassportContentActivity" />
         <activity android:name=".activity.LocationActivity" />

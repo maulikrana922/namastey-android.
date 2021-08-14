@@ -1362,7 +1362,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         this.categoryBeanList = categoryBeanList
         // tvDiscover.visibility = View.VISIBLE
 
-        categoryAdapter = CategoryAdapter(this.categoryBeanList, this, this)
+
 
 
 //        setDashboardList()
@@ -1908,6 +1908,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             LinearLayoutManager.VERTICAL,
             false
         )
+        categoryAdapter = CategoryAdapter(this.categoryBeanList, this, this)
 
         bottomSheetCategoryDialog.rvCategory.layoutManager = horizontalLayout
         bottomSheetCategoryDialog.rvCategory.adapter = categoryAdapter

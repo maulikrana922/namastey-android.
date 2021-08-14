@@ -13,7 +13,7 @@ class ActivityListBean() : Parcelable {
     var updated_at: String = ""
     var follow_message: String = ""
     var is_follow: Int = 0
-
+    var time: String = ""
     var user_id: Long = 0
 
     //For Like
@@ -39,6 +39,8 @@ class ActivityListBean() : Parcelable {
         following_user_id = parcel.readLong()
         following_user_profile_pic = parcel.readString() ?: ""
         follow_message = parcel.readString() ?: ""
+        is_follow = parcel.readInt()
+        time = parcel.readString() ?: ""
         updated_at = parcel.readString() ?: ""
 
         user_id = parcel.readLong()
@@ -63,6 +65,8 @@ class ActivityListBean() : Parcelable {
         parcel.writeLong(following_user_id)
         parcel.writeString(following_user_profile_pic)
         parcel.writeString(follow_message)
+        parcel.writeInt(is_follow)
+        parcel.writeString(time)
         parcel.writeString(updated_at)
 
         parcel.writeLong(user_id)

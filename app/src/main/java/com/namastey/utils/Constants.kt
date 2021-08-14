@@ -260,6 +260,7 @@ object Constants {
     const val KEY_BIRTH_DAY = "KEY_BIRTH_DAY"
     const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"
     const val KEY_IS_INVITED = "KEY_IS_INVITED"
+    const val ACTIVITY_EDIT = "ACTIVITY_EDIT"
 
 
     //    field key
@@ -372,6 +373,7 @@ object Constants {
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val DATE_FORMATE_CHAT = "MMM d, hh:mm a"
+    const val DATE_FORMATE_MESSAGE = "hh:mm a"
     const val RC_SIGN_IN = 100
     const val REQUEST_VIDEO_SELECT = 101
     const val PERMISSION_CAMERA = 102

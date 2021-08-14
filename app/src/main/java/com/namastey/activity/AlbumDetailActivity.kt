@@ -45,7 +45,6 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAlbumView,
     OnItemClick, OnPostImageClick, OnSelectUserItemClick {
@@ -93,6 +92,11 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             isShowMenu = intent.getBooleanExtra("isShowMenu", false)
         }
         Log.e("AlbumDetailActivity ", "isShowMenu:: $isShowMenu")
+
+//        tvalbumtitlesave.setOnClickListener{
+//            rlalbumheader.visibility = View.VISIBLE
+//            rleditalbum.visibility = View.GONE
+//        }
 
         /* if (intent.hasExtra("albumId")) {
              albumId = intent.getLongExtra("albumId", 0)
