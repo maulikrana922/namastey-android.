@@ -188,7 +188,8 @@
     <string name="block_user">Block User</string>
     <string name="discover">Discover</string>
     <string name="msg_no_one_new">There is no one new around you</string>
-    <string name="msg_change_distance">Change distance in settings OR turn on global to see namastey members</string>
+    <string name="turn_on_global">Turn On Global</string>
+    <string name="msg_change_distance">Try changing the Distance or Turn on Global from the settings</string>
     <string name="alert_comment_message">Comment this video is not allowed by the user.</string>
 
     <!--    Follow screen-->

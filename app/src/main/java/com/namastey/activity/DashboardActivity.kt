@@ -295,9 +295,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     .fitCenter().into(ivUser)
             } else ivUser.setImageResource(R.drawable.ic_female_user)
 
-            GlideApp.with(this).load(R.drawable.ic_female)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-                .fitCenter().into(ivProfile)
+//            GlideApp.with(this).load(R.drawable.ic_female)
+//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+//                .fitCenter().into(ivProfile)
         } else {
             if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
                 GlideApp.with(this).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
@@ -305,9 +305,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     .fitCenter().into(ivUser)
             } else ivUser.setImageResource(R.drawable.ic_top_profile)
 
-            GlideApp.with(this).load(R.drawable.ic_male)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-                .fitCenter().into(ivProfile)
+//            GlideApp.with(this).load(R.drawable.ic_male)
+//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+//                .fitCenter().into(ivProfile)
         }
 
 
@@ -1384,13 +1384,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (feedList.size == 0) {
             mRecyclerView!!.visibility = View.GONE
             groupNoOne.visibility = View.VISIBLE
-            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
-                GlideLib.loadImage(
-                    this, ivProfile, sessionManager.getStringValue(
-                        Constants.KEY_PROFILE_URL
-                    )
-                )
-            }
+//            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+//                GlideLib.loadImage(
+//                    this, ivProfile, sessionManager.getStringValue(
+//                        Constants.KEY_PROFILE_URL
+//                    )
+//                )
+//            }
 
         } else {
             mRecyclerView!!.visibility = View.VISIBLE

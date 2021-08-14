@@ -40,10 +40,7 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_marginBottom="50dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_male"
-            app:civ_border_color="@color/colorBlack"
-            app:civ_border_width="@dimen/_1sdp"
-            app:civ_circle_background_color="@color/colorWhite"
+            android:src="@drawable/ic_hand_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,8 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/msg_no_one_new"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textColor="@color/color_black_text"
+            android:textSize="20sp"
+            app:typeface="MULI_SEMIBOLD"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivProfile" />
@@ -68,18 +66,35 @@
             android:gravity="center"
             android:padding="@dimen/_10sdp"
             android:text="@string/msg_change_distance"
-            android:textColor="@color/white"
+            android:textColor="@color/color_black_text"
             android:textSize="18sp"
+            app:typeface="MULI_REGULAR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNoOne" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvTurnOnGlobal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/turn_on_global"
+            android:padding="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/color_text_red"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/rounded_white_solid_white_corner"
+            app:layout_constraintTop_toBottomOf="@id/tvNoOneMessage"/>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupNoOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="ivProfile,tvNoOne,tvNoOneMessage" />
+            app:constraint_referenced_ids="ivProfile,tvNoOne,tvNoOneMessage,tvTurnOnGlobal" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
