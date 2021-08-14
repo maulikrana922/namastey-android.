@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gowtham.library.utils.TrimType
@@ -52,7 +53,20 @@ import kotlinx.android.synthetic.main.activity_profile_view.tvFollowingCount
 import kotlinx.android.synthetic.main.activity_profile_view.tvProfileUsername
 import kotlinx.android.synthetic.main.activity_profile_view.tvViewsCount
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareBlock
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareFacebook
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareInstagram
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareOther
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareReport
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareSave
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareTwitter
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareWhatssapp
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.svShareOption
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareBlock
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareCancel
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareReport
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareSave
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import java.io.File
 import java.util.*
@@ -1089,7 +1103,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare = BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
-                R.layout.dialog_bottom_share_feed,
+                R.layout.dialog_bottom_share_feed_new,
                 null
             )
         )
@@ -1101,26 +1115,32 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
 
-        bottomSheetDialogShare.tvShareBlock.text = getString(R.string.privacy)
+        bottomSheetDialogShare.tv_user_name.text = profileBean.username
+        bottomSheetDialogShare.tv_Job.text = profileBean.jobs
+        if (profileBean.profileUrl.isNotBlank()) {
+            GlideLib.loadImage(this@ProfileViewActivity,bottomSheetDialogShare.iv_user_profile, profileBean.profileUrl)
+        }
 
-        bottomSheetDialogShare.ivShareSave.setImageResource(R.drawable.ic_share_report)
-        bottomSheetDialogShare.tvShareSave.text = getString(R.string.report)
+        bottomSheetDialogShare.tvShareBlock.text = getString(R.string.block)
 
-        bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_send_message)
+        bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_report_new)
+        bottomSheetDialogShare.tvShareReport.text = getString(R.string.report)
+
+        bottomSheetDialogShare.ivShareMessage.setImageResource(R.drawable.ic_chat_new)
         if (profileBean.safetyBean.who_can_send_message == 2)
-            bottomSheetDialogShare.tvShareReport.text = getString(R.string.message_locked)
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
         else if (profileBean.safetyBean.who_can_send_message == 0) {
-            bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
         } else {
             if (profileBean.safetyBean.who_can_send_message == 1 && profileBean.is_follow_me == 1) {
-                bottomSheetDialogShare.tvShareReport.text = getString(R.string.send_message)
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
             } else {
-                bottomSheetDialogShare.tvShareReport.text = getString(R.string.message_locked)
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
             }
         }
-        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
+        /*bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-        }
+        }*/
 
         val shareMessage = String.format(
             getString(R.string.profile_link_msg),
@@ -1255,22 +1275,22 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
 
         //Report click
-        bottomSheetDialogShare.ivShareSave.setOnClickListener {
+        bottomSheetDialogShare.ivShareReport.setOnClickListener {
             displayReportUserDialog(profileBean)
         }
-        bottomSheetDialogShare.tvShareSave.setOnClickListener {
+        bottomSheetDialogShare.tvShareReport.setOnClickListener {
             // bottomSheetDialogShare.dismiss()
             displayReportUserDialog(profileBean)
         }
 
         //Send Message
-        bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            if (bottomSheetDialogShare.tvShareReport.text == getString(R.string.send_message)) {
+        bottomSheetDialogShare.ivShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
                 clickSendMessage(profileBean)
             }
         }
-        bottomSheetDialogShare.tvShareReport.setOnClickListener {
-            if (bottomSheetDialogShare.tvShareReport.text == getString(R.string.send_message)) {
+        bottomSheetDialogShare.tvShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
                 clickSendMessage(profileBean)
             }
         }

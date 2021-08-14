@@ -639,4 +639,9 @@
     <string name="video_delete_btn_pos">Cancel</string>
     <string name="video_delete_btn_neg">Delete</string>
     <string name="video_delete_alert_msg">Are you sure you want to delete this video?</string>
+    <string name="share_to">Share to</string>
+    <string name="share_message">Message \n (Locked)</string>
+    <string name="share_n_profile">Share \n Profile</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="copy_link">Copy Link</string>
 </resources>
