@@ -1,13 +1,11 @@
 package com.namastey.activity
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.util.Util
 import com.namastey.R
 import com.namastey.databinding.ActivitySocialLinkBinding
+import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import com.namastey.viewModel.BaseViewModel
 import kotlinx.android.synthetic.main.activity_social_link.*
@@ -21,13 +19,34 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>() {
         initUI()
     }
 
-    private fun initUI(){
-        Utils.rectangleShapeBorder(tvFacebook, ContextCompat.getColor(this,R.color.color_blue_facebook),true)
-        Utils.rectangleShapeBorder(tvInstagram, ContextCompat.getColor(this,R.color.color_instagram),true)
-        Utils.rectangleShapeBorder(tvTwitter, ContextCompat.getColor(this,R.color.color_twitter),true)
-        Utils.rectangleShapeBorder(tvSpotify, ContextCompat.getColor(this,R.color.color_spotify),true)
+    private fun initUI() {
+        if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
+            tvSkip.text = getString(R.string.done)
+        }
+
+        Utils.rectangleShapeBorder(
+            tvFacebook,
+            ContextCompat.getColor(this, R.color.color_blue_facebook),
+            true
+        )
+        Utils.rectangleShapeBorder(
+            tvInstagram,
+            ContextCompat.getColor(this, R.color.color_instagram),
+            true
+        )
+        Utils.rectangleShapeBorder(
+            tvTwitter,
+            ContextCompat.getColor(this, R.color.color_twitter),
+            true
+        )
+        Utils.rectangleShapeBorder(
+            tvSpotify,
+            ContextCompat.getColor(this, R.color.color_spotify),
+            true
+        )
 
     }
+
     override fun getViewModel(): BaseViewModel {
         TODO("Not yet implemented")
     }
@@ -47,11 +66,15 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>() {
     override fun onBackPressed() {
         finishActivity()
     }
+
     fun onClickBack(view: View) {
         onBackPressed()
     }
 
     fun onClickSkip(view: View) {
-        openActivity(this@SocialLinkActivity, AddVideoActivity())
+        if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
+            finish()
+        } else
+            openActivity(this@SocialLinkActivity, AddVideoActivity())
     }
 }

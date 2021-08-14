@@ -41,10 +41,10 @@ class SubCategoryAdapter(
                 onItemClick.onItemClick(categoryBean.sub_category[position].id)
             }
 
-            Utils.roundShapeGradient(
+            Utils.roundShapeGradientSmall(
                 tvSubCategory, intArrayOf(
                     Color.parseColor(categoryBean.startColor),
-                    Color.parseColor(categoryBean.endColor)
+                    Color.parseColor(categoryBean.startColor)
                 )
             )
             tvSubCategory.alpha = 0.6f

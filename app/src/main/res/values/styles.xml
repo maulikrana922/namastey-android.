@@ -31,6 +31,36 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
     <!--    Used for rounded corner -->
+    <style name="CustomCardViewStyleChat" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners_chat
+        </item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners_chat" parent="">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cornerSizeTopRight">@dimen/_20sdp</item>
+        <item name="cornerSizeTopLeft">@dimen/_20sdp</item>
+        <item name="cornerSizeBottomRight">@dimen/_20sdp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cardForegroundColor">@color/white</item>
+    </style>
+
+    <!--    Used for rounded corner -->
+    <style name="CustomCardViewStyleChatSend" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners_chat_send
+        </item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_card_custom_corners_chat_send" parent="">
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cornerSizeTopRight">@dimen/_20sdp</item>
+        <item name="cornerSizeTopLeft">@dimen/_20sdp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">@dimen/_20sdp</item>
+        <item name="cardForegroundColor">@color/white</item>
+    </style>
+
+    <!--    Used for rounded corner -->
     <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
     </style>

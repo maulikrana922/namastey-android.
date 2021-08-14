@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,49 +11,71 @@
     android:paddingBottom="@dimen/_10sdp">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llMessageSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@drawable/rounded_blue_green_top_right_solid"
-        android:minWidth="@dimen/_112sdp"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
+        android:padding="@dimen/_4sdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvMessageSend"
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/llMessageBg"
+            style="@style/CustomCardViewStyleChatSend"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginBottom="@dimen/_8sdp"
-            android:gravity="start|center"
-            android:text="@string/app_name"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            app:typeface="MULI_SEMIBOLD" />
+            android:layout_gravity="end"
+            android:elevation="@dimen/_4sdp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:cardBackgroundColor="@color/colorLightPink"
+            app:cardElevation="@dimen/_4sdp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/_112sdp"
+                android:padding="@dimen/_10sdp">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvMessageSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:gravity="start|center"
+                    android:text="@string/app_name"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="14sp"
+                    app:typeface="MULI_REGULAR" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvMessageSendTime"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:drawableStart="@drawable/ic_clock_white"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/_4sdp"
             android:drawablePadding="@dimen/_8sdp"
-            android:gravity="start|center"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
+            android:text="10:15 AM"
+            android:textColor="@color/color_text"
+            android:textSize="@dimen/_8sdp"
             app:typeface="MULI_SEMIBOLD" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:visibility="gone"
         android:id="@+id/flImageSend"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_150sdp"
         android:layout_gravity="end"
-        android:layout_marginTop="@dimen/_12sdp">
+        android:layout_marginTop="@dimen/_12sdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/ivImageSend"
@@ -64,7 +86,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/default_placeholder"
             app:cornerRadius="@dimen/_8sdp"
-            app:roundedCorners="topRight|bottomLeft" />
+            app:roundedCorners="topRight|topLeft|bottomLeft" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvImageSendTime"
@@ -82,15 +104,17 @@
     </FrameLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llRecordingSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/_12sdp"
         android:background="@drawable/rounded_white_solid"
         android:minWidth="@dimen/_180sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -152,4 +176,4 @@
             android:textSize="14sp"
             app:typeface="MULI_SEMIBOLD" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@ class NotificationAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(position: Int) = with(itemView) {
             val activityListBean = activityList[position]
-
+            tvtime.text = activityListBean.time
             if (activityListBean.cover_image_url != "") {
                 ivCommentCover.visibility = View.VISIBLE
                 GlideLib.loadImage(

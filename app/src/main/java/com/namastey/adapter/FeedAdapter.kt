@@ -119,7 +119,7 @@ class FeedAdapter(
             Log.e("FeedAdapter", "position: \t $position")
 
             if (position == itemCount - 1 && feedList.size >= 10) {
-                (context as DashboardActivity).getFeedListApi(0)
+                (context as DashboardActivity).getFeedListApi(0,false)
             }
 
             handlerVideo.removeCallbacksAndMessages(null)
@@ -188,7 +188,6 @@ class FeedAdapter(
                         )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
@@ -202,7 +201,6 @@ class FeedAdapter(
                         )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
-                        openCustomAlertDialog()
                     }
                 }
             }

@@ -67,7 +67,7 @@
         android:textColor="@color/color_text"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="@+id/ivUserProfile"
-        app:layout_constraintEnd_toStartOf="@+id/tvLastTime"
+        app:layout_constraintEnd_toStartOf="@+id/tvUnreadMsg"
         app:layout_constraintStart_toEndOf="@+id/ivUserProfile"
         app:typeface="MULI_SEMIBOLD" />
 
@@ -79,9 +79,10 @@
         android:padding="@dimen/_4sdp"
         android:textColor="@color/color_text"
         android:textSize="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivUserProfile"
-        app:layout_constraintEnd_toStartOf="@+id/tvUnreadMsg"
-        app:layout_constraintStart_toEndOf="@+id/tvLastMsg"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvUsername"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUsername"
         app:typeface="MULI_SEMIBOLD" />
 
     <com.namastey.customViews.CustomTextView
@@ -90,12 +91,11 @@
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_10sdp"
         android:background="@drawable/rounded_text_red"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/ivUserProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:typeface="MULI_SEMIBOLD" />

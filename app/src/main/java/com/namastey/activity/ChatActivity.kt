@@ -8,14 +8,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
@@ -32,12 +36,12 @@ import com.namastey.listeners.OnChatMessageClick
 import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
 import com.namastey.uiView.ChatBasicView
-import com.namastey.utils.Constants
-import com.namastey.utils.GlideLib
-import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
+import com.namastey.utils.*
 import com.namastey.viewModel.ChatViewModel
+import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.dialog_bottom_report.*
+import kotlinx.android.synthetic.main.dialog_common_alert.*
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -125,7 +129,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                         .into(ivProfileUser)
                 }
                 if (matchesListBean.username != "") {
-                    tvUserName.text = matchesListBean.username
+                    tvUserName.text = matchesListBean.casual_name
                 }
                 chatToolbar.setBackgroundColor(
                     ContextCompat.getColor(
@@ -263,13 +267,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 }
 
                 if (matchesListBean.username != "") {
-                    tvUserName.text = matchesListBean.username
+                    tvUserName.text = matchesListBean.casual_name
                 }
 
                 ivMic.setOnTouchListener(object : View.OnTouchListener {
                     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                         when (event?.action) {
-                            MotionEvent.ACTION_DOWN -> {
+                            MotionEvent.ACTION_UP -> {
                                 if (matchesListBean.is_block == 0) {
                                     if (matchesListBean.is_match == 1) {
                                         isAudioPermissionGranted()
@@ -278,7 +282,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 }
                                 return true
                             }
-                            MotionEvent.ACTION_UP -> {
+                            MotionEvent.ACTION_DOWN -> {
                                 Log.d(TAG, "Call stop record....")
                                 if (matchesListBean.is_block == 0) {
                                     if (matchesListBean.is_match == 1) {
@@ -296,6 +300,28 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
 
         }
+
+        edtMessage.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(
+                s: CharSequence?, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.isNotEmpty()) {
+                    ivSend.visibility = View.VISIBLE
+                    ivMic.visibility = View.GONE
+                } else {
+                    ivMic.visibility = View.VISIBLE
+                    ivSend.visibility = View.GONE
+                }
+            }
+        })
     }
 
     fun hideChatMoreButton(isHide: Boolean) {
@@ -307,12 +333,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     fun onClickChatSettings(view: View) {
-        addFragment(
-            ChatSettingsFragment.getInstance(
-                matchesListBean, matchesListBean.id
-            ),
-            Constants.CHAT_SETTINGS_FRAGMENT
-        )
+        /*  addFragment(
+              ChatSettingsFragment.getInstance(
+                  matchesListBean, matchesListBean.id
+              ),
+              Constants.CHAT_SETTINGS_FRAGMENT
+          )*/
+        createPopUpMenu()
     }
 
     override fun onResume() {
@@ -347,7 +374,26 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     override fun onSuccessDeleteMatches(msg: String) {
-        finishActivity()
+        // finishActivity()
+        val chatId = if (sessionManager.getUserId() < matchesListBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
+        else
+            matchesListBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+        db.collection(Constants.FirebaseConstant.MESSAGES).document(chatId)
+            .delete()
+            .addOnSuccessListener { Log.d("Success", "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w("Failure", "Error deleting document", e) }
+
+        object : CustomAlertDialog(
+            this,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+                finishActivity()
+            }
+        }.show()
     }
 
     override fun onSuccessAdminMessage(data: ArrayList<ChatMessage>) {
@@ -358,7 +404,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     override fun onSuccessMuteNotification(message: String) {
-        TODO("Not yet implemented")
+        if (matchesListBean.is_notification == 1) {
+            matchesListBean.is_notification = 0
+        } else {
+            matchesListBean.is_notification = 1
+        }
     }
 
     override fun onSuccess(msg: String) {
@@ -541,6 +591,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                     val imageUrl = it.toString()
                     chatViewModel.setIsLoading(false)
                     Log.d(TAG, "File upload success....")
+                    ivMic.setPadding(15, 15, 15, 15)
                     if (isImageUpload)
                         sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE, imageUrl)
                     else
@@ -583,7 +634,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             } catch (e: IOException) {
                 Log.e("LOG_TAG", "prepare() failed")
             }
-
             start()
         }
     }
@@ -645,9 +695,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     override fun onChatImageClick(imageUrl: String) {
         val intent = Intent(this@ChatActivity, ImageDisplayActivity::class.java)
-        intent.putExtra("imageUrl",imageUrl)
+        intent.putExtra("imageUrl", imageUrl)
         openActivity(intent)
     }
+
     override fun onChatMessageClick(message: String, position: Int) {
         when {
             message.contains("Edit your bio") -> {
@@ -677,7 +728,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             message.contains("To visit profile click on username") -> {
                 val value = message.substring(message.indexOf("F30C45") + 7)
 //                Log.d(TAG,"Username : " + value)
-                val username = value.substring(0,value.indexOf("</font>"))
+                val username = value.substring(0, value.indexOf("</font>"))
 //                Log.d(TAG,"Username : " + username)
                 val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
                 intent.putExtra(Constants.USERNAME, username)
@@ -685,4 +736,163 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
         }
     }
+
+    private fun createPopUpMenu() {
+        val popupMenu = PopupMenu(this, ivChatMore)
+        popupMenu.menuInflater.inflate(R.menu.menu_chat, popupMenu.menu)
+        val menuMute = popupMenu.menu.findItem(R.id.action_mute)
+        val menuDelete = popupMenu.menu.findItem(R.id.action_delete_match)
+        val menuBlock = popupMenu.menu.findItem(R.id.action_block)
+
+        if (matchesListBean.is_notification == 1) {
+            menuMute.title = getString(R.string.mute)
+        } else {
+            menuMute.title = getString(R.string.un_mute)
+        }
+        if (matchesListBean.is_match == 1)
+            menuDelete.title = getString(R.string.match_delete)
+        else menuDelete.title = getString(R.string.delete_chat)
+
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_mute -> {
+                    if (matchesListBean.is_notification == 1) {
+                        chatViewModel.muteParticularUserNotification(matchesListBean.id, 1)
+                    } else {
+                        chatViewModel.muteParticularUserNotification(matchesListBean.id, 0)
+                    }
+
+                }
+                R.id.action_block -> {
+                    dialogBlockUser()
+                }
+                R.id.action_delete_match -> {
+                    if (matchesListBean.is_match == 1)
+                        dialogMatchDeleteUser()
+                    else deleteChatDialog()
+                }
+                R.id.action_report -> {
+                    dialogReportUser()
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun dialogMatchDeleteUser() {
+        object : CustomCommonNewAlertDialog(
+            this,
+            matchesListBean!!.casual_name,
+            getString(R.string.msg_delete_matches),
+            matchesListBean!!.profile_pic,
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        chatViewModel.deleteMatches(matchesListBean!!.id)
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+    private fun deleteChatDialog() {
+        object : CustomCommonNewAlertDialog(
+            this,
+            matchesListBean.casual_name,
+            getString(R.string.msg_delete_chat),
+            matchesListBean.profile_pic,
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        chatViewModel.deleteChat(matchesListBean.id)
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+
+    private fun dialogReportUser() {
+        object : CustomCommonNewAlertDialog(
+            this,
+            matchesListBean!!.casual_name,
+            getString(R.string.msg_report_user),
+            matchesListBean!!.profile_pic,
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        // chatViewModel.reportUser(matchesListBean!!.id, "")
+                        dismiss()
+                        openReportBottomSheet()
+                    }
+                }
+            }
+        }.show()
+    }
+
+    private fun openReportBottomSheet() {
+        val bottomSheetDialogReport = BottomSheetDialog(this, R.style.dialogStyle)
+        bottomSheetDialogReport.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_report,
+                null
+            )
+        )
+        bottomSheetDialogReport.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogReport.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogReport.setCancelable(true)
+
+        bottomSheetDialogReport.tvReportCancel.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+        }
+
+        bottomSheetDialogReport.tvReportSpam.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_spam))
+        }
+
+        bottomSheetDialogReport.tvReportInappropriate.setOnClickListener {
+            bottomSheetDialogReport.dismiss()
+            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_inappropriate))
+        }
+
+        bottomSheetDialogReport.show()
+    }
+
+    private fun dialogBlockUser() {
+        object : CustomCommonNewAlertDialog(
+            this,
+            matchesListBean!!.casual_name,
+            getString(R.string.msg_block_user),
+            matchesListBean!!.profile_pic,
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnAlertOk.id -> {
+                        dismiss()
+                        chatViewModel.blockUser(matchesListBean!!.id, 1)
+                    }
+                }
+            }
+        }.show()
+    }
+
+
 }

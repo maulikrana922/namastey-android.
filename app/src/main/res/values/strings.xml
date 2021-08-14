@@ -644,4 +644,7 @@
     <string name="share_n_profile">Share \n Profile</string>
     <string name="whatsapp">Whatsapp</string>
     <string name="copy_link">Copy Link</string>
+    <string name="mute">Mute</string>
+    <string name="un_mute">UnMute</string>
+    <string name="delete_match">Delete match</string>
 </resources>

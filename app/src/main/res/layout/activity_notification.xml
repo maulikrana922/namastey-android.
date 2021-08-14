@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
 
         <com.namastey.customViews.CustomTextView
@@ -80,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:onClick="onClickProfileBack"
             android:src="@drawable/ic_chat_dashboard"
             app:layout_constraintBottom_toBottomOf="@id/ivBack"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +91,6 @@
             android:id="@+id/nestedScrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack">
 

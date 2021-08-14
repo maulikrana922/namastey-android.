@@ -19,6 +19,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -54,6 +55,11 @@ object Utils {
     fun convertTimestampToChatFormat(timestamp: Long): String {
         val date = Date(timestamp)
         val format = SimpleDateFormat(Constants.DATE_FORMATE_CHAT, Locale.getDefault())
+        return format.format(date)
+    }
+    fun convertTimestampToMessageFormat(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat(Constants.DATE_FORMATE_MESSAGE, Locale.getDefault())
         return format.format(date)
     }
 
@@ -92,6 +98,17 @@ object Utils {
         v.background = gd
     }
 
+    fun roundShapeGradientSmall(v: View, intArrayOf: IntArray) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+            intArrayOf
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadii = floatArrayOf(30f, 30f, 30f, 30f, 30f, 30f, 30f, 30f)
+        v.background = gd
+    }
+
     fun rectangleCornerShapeGradient(v: View, intArrayOf: IntArray) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,
@@ -114,6 +131,7 @@ object Utils {
         v.background = gd
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun imageOverlayGradient(v: View, startColor: String, endColor: String) {
         val gd = GradientDrawable(
             GradientDrawable.Orientation.TR_BL,

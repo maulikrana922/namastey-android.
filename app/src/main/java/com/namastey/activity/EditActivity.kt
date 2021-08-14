@@ -231,8 +231,15 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         edtProfileTagline.minLines = 5
         edtProfileTagline.maxLines = 5
 
-        profileBasicViewModel.getUserFullProfile(sessionManager.getUserId().toString(), "")
-//        generateProfileTagUI()
+        edtProfileUserName.setText(sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
+        edtProfileCasualName.setText(sessionManager.getStringValue(Constants.KEY_CASUAL_NAME))
+//        edtProfileCasualName.setSelection(edtProfileCasualName.text?.length ?: 0)
+        edtProfileTagline.setText(sessionManager.getStringValue(Constants.KEY_TAGLINE))
+        edtProfileTagline.setSelection(edtProfileTagline.text?.length ?: 0)
+
+
+        edtEducation.setText(sessionManager.getStringValue(Constants.KEY_EDUCATION))
+        edtOccupation.setText(sessionManager.getStringValue(Constants.KEY_JOB))
         edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -508,11 +515,10 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             }
 
             llSocialLink -> {
-                openActivityWithResultCode(
-                    this@EditActivity,
-                    SocialLinkActivity(),
-                    Constants.REQUEST_CODE
-                )
+                val intent=Intent(this,SocialLinkActivity::class.java)
+                intent.putExtra(Constants.ACTIVITY_EDIT,"EditActivity")
+                this.overridePendingTransition(R.anim.enter, R.anim.exit)
+                startActivity(intent)
             }
         }
     }
@@ -522,14 +528,17 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         destinationActivity: Activity,
         result_code: Int
     ) {
-        //startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
-        //activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+        startActivityForResult(Intent(activity, destinationActivity::class.java), result_code)
+        activity.overridePendingTransition(R.anim.enter, R.anim.exit)
     }
 
     fun onEditBackClick(view: View) {
         onBackPressed()
     }
 
+    override fun onBackPressed() {
+        finishActivity()
+    }
     fun onEditSaveClick(view: View) {
         editProfileApiCall()
     }

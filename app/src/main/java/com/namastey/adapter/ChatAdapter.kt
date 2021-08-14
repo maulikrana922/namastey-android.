@@ -105,7 +105,7 @@ class ChatAdapter(
                     onChatMessageClick.onChatMessageClick(chatMessage.message, position)
                 }
                 tvMessageReceivedTime.text =
-                    Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                    Utils.convertTimestampToMessageFormat(chatMessage.timestamp)
 
             }
 
@@ -169,7 +169,7 @@ class ChatAdapter(
                 tvMessageSend.setOnClickListener {
                     onChatMessageClick.onChatMessageClick(chatMessage.message, position)
                 }
-                tvMessageSendTime.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
+                tvMessageSendTime.text = Utils.convertTimestampToMessageFormat(chatMessage.timestamp)
             }
 
             if (currentPlayingPosition != -1) {

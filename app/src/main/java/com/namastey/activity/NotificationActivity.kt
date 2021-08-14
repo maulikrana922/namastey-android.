@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,10 +24,10 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.NotificationViewModel
 import kotlinx.android.synthetic.main.activity_notification.*
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
-class NotificationActivity :  BaseActivity<ActivityNotificationBinding>(), NotificationView,
+class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), NotificationView,
     FragmentRefreshListener, PurchasesUpdatedListener, OnNotificationClick {
 
     private val TAG = "NotificationActivity"
@@ -67,16 +66,14 @@ class NotificationActivity :  BaseActivity<ActivityNotificationBinding>(), Notif
     }
 
 
-    fun onFollowrequest(view: View){
-        intent = Intent(this@NotificationActivity,FollowRequestActivity::class.java)
+    fun onFollowrequest(view: View) {
+        intent = Intent(this@NotificationActivity, FollowRequestActivity::class.java)
         startActivity(intent)
         finishActivity()
     }
 
-    override fun onBackPressed(){
-        intent = Intent(this@NotificationActivity,DashboardActivity::class.java)
-        startActivity(intent)
-        finishActivity()
+    override fun onBackPressed() {
+        finish()
     }
 
     fun onClickProfileBack(view: View) {
@@ -161,7 +158,7 @@ class NotificationActivity :  BaseActivity<ActivityNotificationBinding>(), Notif
                     data[0].profile_url
                 )
             }
-            txtNotification.setText("You have "+data.size+ " follow request.")
+            txtNotification.setText("You have " + data.size + " follow request.")
         }
     }
 
@@ -197,6 +194,7 @@ class NotificationActivity :  BaseActivity<ActivityNotificationBinding>(), Notif
 
         //notificationAdapter.notifyDataSetChanged()
     }
+
     override fun onSuccessPostVideoDetailResponse(videoBean: VideoBean) {
         Log.e("NotificationAdapter", "videoBean: ${videoBean.id}")
         videoBeanList.add(videoBean)
