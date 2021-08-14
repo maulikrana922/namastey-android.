@@ -1353,13 +1353,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      * Display dialog of report user
      */
     private fun displayReportUserDialog(dashboardBean: ProfileBean) {
-        object : CustomCommonAlertDialog(
+        object : CustomCommonNewAlertDialog(
             this@ProfileViewActivity,
             dashboardBean.casual_name,
             getString(R.string.msg_report_user),
             dashboardBean.profileUrl,
-            getString(R.string.report_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
@@ -1374,13 +1374,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     private fun displayBlockUserDialog(dashboardBean: ProfileBean) {
-        object : CustomCommonAlertDialog(
+        object : CustomCommonNewAlertDialog(
             this@ProfileViewActivity,
             dashboardBean.casual_name,
             getString(R.string.msg_block_user),
             dashboardBean.profileUrl,
-            getString(R.string.block_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
