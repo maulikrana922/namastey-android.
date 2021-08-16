@@ -105,7 +105,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 }
 
                 2 -> {
-                    tvSelectInterest.text = getString(R.string.women)
+                    tvSelectInterest.text = getString(R.string.female)
                     tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_female_sign,
                         0,
@@ -341,7 +341,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 )
 
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.women)
+                tvSelectInterest.text = getString(R.string.female)
 //                setSelectedTextColor(tvInterestWomen, ivWomenSelect)
             }
             tvInterestEveryone -> {
@@ -361,7 +361,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 //            2 = Women
 //            3 = Everyone
         }
-        jsonObject.addProperty(Constants.GENDER, interestIn)
+        jsonObject.addProperty(Constants.INTERESTED_IN_GENDER, interestIn)
         Log.d("CreateProfile Request:", jsonObject.toString())
         settingsViewModel.editProfile(jsonObject)
 

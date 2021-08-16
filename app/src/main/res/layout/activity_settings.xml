@@ -399,7 +399,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tvSettingAge"
                     app:left_thumb_color="@color/colorButtonRed"
                     app:left_thumb_color_pressed="@color/colorButtonRed"
-                    app:max_value="100"
+                    app:max_value="45"
                     app:min_value="18"
                     app:right_thumb_color="@color/colorButtonRed"
                     app:right_thumb_color_pressed="@color/colorButtonRed" />

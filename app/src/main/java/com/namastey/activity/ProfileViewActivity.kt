@@ -115,6 +115,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             groupButtonsLike.visibility = View.INVISIBLE
             ivProfileCamera.visibility = View.VISIBLE
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
+            sessionManager.setStringValue(profileBean.username, Constants.KEY_MAIN_USER_NAME)
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
             sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
             sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
