@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llLocationBackground">
+        app:layout_constraintTop_toBottomOf="parent">
 
 
         <androidx.core.widget.NestedScrollView
@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorWhite">
 
-                <ImageView
+              <!--  <ImageView
                     android:id="@+id/llLocationBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:contentDescription="@string/app_name"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <ImageView
                     android:id="@+id/ivLocationBack"
@@ -52,16 +52,16 @@
                     android:layout_marginTop="@dimen/_45sdp"
                     android:contentDescription="@string/app_name"
                     android:onClick="onClickLocationBack"
-                    android:src="@drawable/ic_back"
+                    android:src="@drawable/ic_back_new"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvHeader"
-                    style="@style/tvWrapWhiteStyle"
+                    style="@style/tvWrapBlackStyle"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:text="@string/locations"
-                    android:textSize="20sp"
+                    android:text="@string/my_locations"
+                    android:textSize="@dimen/actionBarTitle"
                     app:layout_constraintBottom_toBottomOf="@id/ivLocationBack"
                     app:layout_constraintStart_toEndOf="@id/ivLocationBack"
                     app:layout_constraintTop_toTopOf="@id/ivLocationBack"
@@ -72,15 +72,16 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="match_parent"
                     android:gravity="start|center"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/current_location"
-                    android:textColor="@color/color_chip_gray"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llLocationBackground"
+                    app:layout_constraintTop_toBottomOf="@id/tvHeader"
                     app:typeface="MULI_EXTRA_BOLD" />
 
                 <LinearLayout
@@ -91,9 +92,6 @@
                     android:onClick="onClickMyCurrentLocation"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_15sdp"
-                    android:paddingEnd="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_15sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvCurrentLocation">
@@ -105,8 +103,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/app_name"
                         android:onClick="onClickLocationBack"
-                        android:src="@drawable/ic_current_location"
-                        android:tint="@color/color_chip_gray" />
+                        android:src="@drawable/ic_location_new"
+                        app:tint="@color/colorRed" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -120,7 +118,7 @@
                             android:layout_width="match_parent"
                             android:gravity="start|center"
                             android:text="@string/my_current_location"
-                            android:textColor="@color/color_chip_gray"
+                            android:textColor="@color/color_black_text"
                             android:textSize="16sp"
                             app:typeface="MULI_SEMIBOLD" />
 
@@ -131,8 +129,8 @@
                             android:layout_marginTop="@dimen/_2sdp"
                             android:gravity="start|center"
                             android:text="@string/my_current_address"
-                            android:textColor="@color/colorLightGrayText"
-                            android:textSize="16sp"
+                            android:textColor="@color/color_text"
+                            android:textSize="14sp"
                             app:typeface="MULI_SEMIBOLD" />
 
                     </LinearLayout>
@@ -145,12 +143,12 @@
                     android:layout_width="match_parent"
                     android:gravity="start|center"
                     android:paddingStart="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_50sdp"
                     android:paddingEnd="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:text="@string/recent_airport_locations"
-                    android:textColor="@color/color_chip_gray"
-                    android:textSize="18sp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llMyCurrentLocation"
@@ -173,17 +171,17 @@
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnAddNewLocation"
+                    style="@style/btnRedAllCornerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerInParent="true"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:background="@drawable/rounded_red_solid"
-                    android:drawableStart="@drawable/ic_location"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:drawableStart="@drawable/ic_close_square"
                     android:drawablePadding="@dimen/_6sdp"
                     android:gravity="center"
-                    android:paddingStart="@dimen/_30sdp"
-                    android:paddingEnd="@dimen/_30sdp"
+                    android:paddingStart="@dimen/_60sdp"
+                    android:paddingEnd="@dimen/_60sdp"
                     android:text="@string/add_a_new_location"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
@@ -205,7 +203,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llLocationBackground" />
+                    app:layout_constraintTop_toBottomOf="@id/tvHeader" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

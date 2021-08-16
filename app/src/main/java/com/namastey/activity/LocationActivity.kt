@@ -85,10 +85,10 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
     }
 
     private fun initData() {
-        if (sessionManager.getUserGender() == Constants.Gender.male.name)
+       /* if (sessionManager.getUserGender() == Constants.Gender.male.name)
             llLocationBackground.background = getDrawable(R.drawable.blue_bar)
         else
-            llLocationBackground.background = getDrawable(R.drawable.pink_bar)
+            llLocationBackground.background = getDrawable(R.drawable.pink_bar)*/
 
         //insertLocationToDB()
         getAllRecentLocationFromDB()
@@ -284,7 +284,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(), OnRecentLocati
         ivCurrentLocation.setColorFilter(
             ContextCompat.getColor(
                 this@LocationActivity,
-                R.color.colorBlueLight
+                R.color.colorRed
             )
         )
         sessionManager.setRecentLocationFromList(recentLocation)

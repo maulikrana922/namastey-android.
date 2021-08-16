@@ -63,7 +63,7 @@ class CurrentLocationAdapter(
                 ivCurrentLocation.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorBlueLight
+                        R.color.colorRed
                     )
                 )
                 locationBean.isSelected = false
@@ -75,7 +75,7 @@ class CurrentLocationAdapter(
                 ivCurrentLocation.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorBlueLight
+                        R.color.colorRed
                     )
                 )
             } else {
@@ -84,7 +84,7 @@ class CurrentLocationAdapter(
                 ivCurrentLocation.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_chip_gray
+                        R.color.colorRed
                     )
                 )
             }
@@ -96,7 +96,7 @@ class CurrentLocationAdapter(
                 ivCurrentLocation.setColorFilter(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorBlueLight
+                        R.color.colorRed
                     )
                 )
 

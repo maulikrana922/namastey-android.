@@ -649,4 +649,5 @@
     <string name="mute">Mute</string>
     <string name="un_mute">UnMute</string>
     <string name="delete_match">Delete match</string>
+    <string name="my_locations">My Locations</string>
 </resources>

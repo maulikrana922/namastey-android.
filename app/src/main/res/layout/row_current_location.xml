@@ -15,8 +15,8 @@
         android:layout_marginEnd="@dimen/_2sdp"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/_15sdp"
-        android:paddingBottom="@dimen/_15sdp">
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp">
 
         <ImageView
             android:id="@+id/ivCurrentLocation"
@@ -24,8 +24,8 @@
             android:layout_height="@dimen/_22sdp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_current_location"
-            android:tint="@color/color_chip_gray" />
+            android:src="@drawable/ic_location_new"
+            app:tint="@color/colorRed" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:gravity="start|center"
                 android:text="@string/my_current_location"
-                android:textColor="@color/color_chip_gray"
+                android:textColor="@color/color_black_text"
                 android:textSize="16sp"
                 app:typeface="MULI_EXTRA_BOLD" />
 
@@ -51,8 +51,8 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="start|center"
                 android:text="@string/my_current_address"
-                android:textColor="@color/color_chip_gray"
-                android:textSize="12sp"
+                android:textColor="@color/color_text"
+                android:textSize="14sp"
                 app:typeface="MULI_SEMIBOLD" />
 
         </LinearLayout>
@@ -65,13 +65,8 @@
             android:visibility="gone"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_done"
-            android:tint="@color/color_chip_gray" />
+            app:tint="@color/colorRed" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorLightGrayView" />
 
 </LinearLayout>
