@@ -59,7 +59,6 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareFacebo
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareInstagram
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareOther
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareReport
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareSave
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareTwitter
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareWhatssapp
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.svShareOption
