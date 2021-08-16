@@ -69,7 +69,6 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -78,9 +77,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.rvMentionList
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareFacebook
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed.ivShareInstagram
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.fragment_education.*
@@ -483,7 +480,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         bottomSheetDialogShare = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
-                R.layout.dialog_bottom_share_feed,
+                R.layout.dialog_bottom_share_feed_new,
                 null
             )
         )
@@ -495,10 +492,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
         bottomSheetDialogShare.setCancelable(true)
 
-        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
-            bottomSheetDialogShare.dismiss()
+//        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
+//            bottomSheetDialogShare.dismiss()
+//        }
+        bottomSheetDialogShare.tv_user_name.text = dashboardBean.username
+        bottomSheetDialogShare.tv_Job.text = dashboardBean.job
+        if (dashboardBean.profile_url.isNotBlank()) {
+            GlideLib.loadImage(this@DashboardActivity,bottomSheetDialogShare.iv_user_profile, dashboardBean.profile_url)
         }
-
         if (dashboardBean.is_share == 1) {
             // Share on Twitter app if install otherwise web link
             bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
