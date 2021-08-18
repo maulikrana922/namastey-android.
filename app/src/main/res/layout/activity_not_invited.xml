@@ -31,6 +31,7 @@
         app:typeface="MULI_SEMIBOLD" />
 
     <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvWebsite"
         style="@style/tvWrapBlackStyle"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"

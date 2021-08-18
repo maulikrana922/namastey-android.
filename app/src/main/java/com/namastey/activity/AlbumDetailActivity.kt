@@ -157,6 +157,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
 
         if (profileBean.user_id == sessionManager.getUserId()) {
+            isHide = if (albumBean.is_hide == 1)
+                1
+            else
+                0
             fromEdit = true
             ivMore.visibility = View.VISIBLE
             postList = ArrayList()

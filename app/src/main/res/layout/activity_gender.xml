@@ -211,7 +211,7 @@
                         android:id="@+id/tvSelectEveryone"
                         style="@style/tvWrapBlackStyle"
                         android:layout_width="match_parent"
-                        android:drawableStart="@drawable/ic_female_sign"
+                        android:drawableStart="@drawable/ic_non_binary"
                         android:drawablePadding="@dimen/_10sdp"
                         android:onClick="onClickSelectInterest"
                         android:padding="@dimen/_10sdp"

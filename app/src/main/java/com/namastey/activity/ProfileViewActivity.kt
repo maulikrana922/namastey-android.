@@ -111,6 +111,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         this.profileBean = profileBean
         if (profileBean.user_id == sessionManager.getUserId()) {
             isMyProfile = true
+            tvAboutLable.setText(R.string.about_me)
             groupButtons.visibility = View.VISIBLE
             groupButtonsLike.visibility = View.INVISIBLE
             ivProfileCamera.visibility = View.VISIBLE
@@ -133,6 +134,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             isMyProfile = false
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
+            tvAboutLable.setText(R.string.about)
 
             when (profileBean.is_follow) {
                 1 -> btnProfileFollow.text = getString(R.string.following)

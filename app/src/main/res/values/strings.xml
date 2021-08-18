@@ -53,6 +53,7 @@
     <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use</string>
     <string name="tv_policy_link">https://www.namasteyapp.com/privacy-policy</string>
     <string name="tv_billing_link">https://www.namasteyapp.com/billingterms</string>
+    <string name="tv_invite_link">https://www.namasteyapp.com/app-landing-page</string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
