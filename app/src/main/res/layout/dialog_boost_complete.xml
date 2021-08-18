@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_100sdp"
         app:cardBackgroundColor="@android:color/white"
-        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginStart="@dimen/_6sdp"
         app:cardPreventCornerOverlap="true"
-        android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_6sdp"
         app:cardCornerRadius="@dimen/_20sdp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,12 +20,25 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationRibbon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_250sdp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/ribbon"
+            app:lottie_repeatMode="restart"
+            />
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
             android:paddingBottom="@dimen/_20sdp">
 
             <ImageView
@@ -33,19 +46,19 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/ic_boost_new"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvTimeRemaining"
+                android:id="@+id/tvAlertUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/colorRed"
-                android:textSize="16sp"
-                android:text="@string/boost_time"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_20sdp"
+                android:text="@string/your_boost_was_a_success"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivboost"
@@ -58,12 +71,27 @@
                 android:layout_marginTop="@dimen/dp15"
                 android:gravity="center"
                 android:lineSpacingExtra="2dp"
-                android:text="@string/dialog_pending"
+                android:maxLines="1"
+                android:text="@string/alert_msg_boost"
                 android:textColor="@color/color_black_text"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeRemaining" />
+                app:layout_constraintTop_toBottomOf="@id/tvAlertUsername" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tv_alert_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="1"
+                android:text="@string/alert_boost_msg"
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertMsg" />
 
             <com.namastey.customViews.CustomButton
                 android:id="@+id/btnAlertOk"
@@ -72,12 +100,13 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_70sdp"
                 android:text="@string/okay"
+                android:textSize="@dimen/_16sdp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvAlertMsg" />
+                app:layout_constraintTop_toBottomOf="@id/tv_alert_msg" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
