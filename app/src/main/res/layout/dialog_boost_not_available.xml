@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_100sdp"
         app:cardBackgroundColor="@android:color/white"
-        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginStart="@dimen/_6sdp"
         app:cardPreventCornerOverlap="true"
-        android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_6sdp"
         app:cardCornerRadius="@dimen/_20sdp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/ic_boost_new"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -42,10 +42,10 @@
                 android:id="@+id/tvTimeRemaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="@color/colorRed"
-                android:textSize="16sp"
-                android:text="@string/boost_time"
+                android:layout_marginTop="20dp"
+                android:text="@string/boosts_not_available"
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_20sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivboost"
@@ -58,9 +58,9 @@
                 android:layout_marginTop="@dimen/dp15"
                 android:gravity="center"
                 android:lineSpacingExtra="2dp"
-                android:text="@string/dialog_pending"
+                android:text="@string/alert_msg_boost_not_available"
                 android:textColor="@color/color_black_text"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTimeRemaining" />
@@ -72,6 +72,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_70sdp"
                 android:text="@string/okay"
+                android:textSize="@dimen/_16sdp"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,5 +80,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
