@@ -166,6 +166,7 @@
         <item name="android:inputType">number</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="android:textColor">@color/color_text</item>
+        <item name="android:hint">-</item>
     </style>
 
     <style name="btnRedStyle">

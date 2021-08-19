@@ -111,7 +111,7 @@
     <string name="msg_age">Select your preferred age range</string>
     <string name="you_can_always">You can always change it later</string>
     <string name="select_maximum_distance">Select the maximum distance</string>
-    <string name="msg_education">What is your education qualification?</string>
+    <string name="msg_education">What is your educational qualification?</string>
     <string name="occupation">Occupation</string>
     <string name="msg_occupation">What do you do for a living?</string>
     <string name="msg_empty_education">Please enter education</string>

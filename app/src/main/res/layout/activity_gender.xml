@@ -167,7 +167,9 @@
                         android:drawableEnd="@drawable/ic_drop_down"
                         android:onClick="onClickSelectInterest"
                         android:padding="@dimen/_10sdp"
-                        android:text="@string/select"
+                        android:text="@string/select_interest"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:gravity="center_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
