@@ -35,10 +35,10 @@ import com.namastey.utils.Constants.ADMIN_BLOCK_USER_CODE
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.Constants.NOTIFICATION_BROADCAST
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.CustomAlertNewDialog
 import com.namastey.utils.SessionManager
-import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_delete.*
 import retrofit2.HttpException
-import java.io.IOException
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView {
 
@@ -401,16 +401,19 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
 //    }
 
     fun completeSignUpDialog() {
-        object : CustomAlertDialog(
+        object : CustomAlertNewDialog(
             this,
             getString(R.string.complete_profile),
-            getString(R.string.ok),
+            R.drawable.ic_video,
+            getString(R.string.continues),
             getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                        openActivity(this@BaseActivity, ProfileActivity())
+                        val intent = Intent(this@BaseActivity, ProfileViewActivity::class.java)
+                        intent.putExtra("ownProfile", true)
+                        openActivity(intent)
                     }
                     btnNeg.id -> {
                         dismiss()

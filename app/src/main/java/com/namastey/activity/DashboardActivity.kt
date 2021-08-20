@@ -287,6 +287,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideApp.with(this@DashboardActivity).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
                 .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.default_placeholder)
                 .fitCenter().into(ivUser)
         }
 
@@ -701,20 +702,20 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      * Display dialog of report user
      */
     private fun displayReportUserDialog(dashboardBean: DashboardBean) {
-        object : CustomCommonAlertDialog(
-            this@DashboardActivity,
+        object : CustomCommonNewAlertDialog(
+            this,
             dashboardBean.casual_name,
             getString(R.string.msg_report_user),
             dashboardBean.profile_url,
-            getString(R.string.report_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnAlertOk.id -> {
+                        dismiss()
                         bottomSheetDialogShare.dismiss()
-                        showReportTypeDialog(dashboardBean.user_id)
-                    }
+                        showReportTypeDialog(dashboardBean.user_id)                    }
                 }
             }
         }.show()
@@ -757,24 +758,24 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     private fun displayBlockUserDialog(dashboardBean: DashboardBean) {
-        object : CustomCommonAlertDialog(
-            this@DashboardActivity,
+        object : CustomCommonNewAlertDialog(
+            this,
             dashboardBean.casual_name,
             getString(R.string.msg_block_user),
             dashboardBean.profile_url,
-            getString(R.string.block_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnAlertOk.id -> {
+                        dismiss()
                         bottomSheetDialogShare.dismiss()
                         dashboardViewModel.blockUser(dashboardBean.user_id, 1)
                     }
                 }
             }
         }.show()
-
     }
 
     private fun showMembershipDialog(position: Int) {
