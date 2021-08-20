@@ -181,12 +181,12 @@
     <string name="send">Send</string>
     <string name="hint_add_comments">Add Comments</string>
     <string name="msg_send_follow_request">Send follow request?</string>
-    <string name="msg_report_user">Do you wish to report following user?</string>
+    <string name="msg_report_user">Do you want to report this user?</string>
     <string name="report_user">Report User</string>
     <string name="no_thanks">No thanks</string>
     <string name="its_spam">It\'s Spam</string>
     <string name="its_inappropriate">It\'s inappropriate</string>
-    <string name="msg_block_user">Do you wish to block the following user?</string>
+    <string name="msg_block_user">Do you want to block this user?</string>
     <string name="block_user">Block User</string>
     <string name="discover">Discover</string>
     <string name="msg_no_one_new">There is no one new around you</string>
@@ -340,7 +340,7 @@
     <string name="edit_post">Edit Post</string>
     <string name="update">Update</string>
     <string name="select_cover">Select cover</string>
-    <string name="hint_video_desc">Describe your video</string>
+    <string name="hint_video_desc">Write a caption for your video...</string>
     <string name="add_to">Add to</string>
     <string name="choose">Choose</string>
     <string name="add_to_album">Add to album</string>
@@ -643,8 +643,8 @@
     <string name="video_delete_btn_neg">Delete</string>
     <string name="video_delete_alert_msg">Are you sure you want to delete this video?</string>
     <string name="share_to">Share to</string>
-    <string name="share_message">Message \n (Locked)</string>
-    <string name="share_n_profile">Share \n Profile</string>
+    <string name="share_message">Message (Locked)</string>
+    <string name="share_n_profile">Share Profile</string>
     <string name="whatsapp">Whatsapp</string>
     <string name="copy_link">Copy Link</string>
     <string name="mute">Mute</string>
