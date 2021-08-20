@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.exoplayer2.trackselection.RandomTrackSelection
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -183,7 +181,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         )
         edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
 */
-       finishActivity()
+        finishActivity()
 
     }
 
@@ -448,7 +446,6 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
 
 
-
 /*
 
         jsonObject.addProperty(
@@ -511,8 +508,8 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             }
 
             llSocialLink -> {
-                val intent=Intent(this,SocialLinkActivity::class.java)
-                intent.putExtra(Constants.ACTIVITY_EDIT,"EditActivity")
+                val intent = Intent(this, SocialLinkActivity::class.java)
+                intent.putExtra(Constants.ACTIVITY_EDIT, "EditActivity")
                 openActivity(intent)
             }
         }
