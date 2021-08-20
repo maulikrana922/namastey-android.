@@ -159,6 +159,7 @@
     <string name="profile_link_msg">This is %1$s profile. \n</string>
     <string name="profile_link">To visit profile click on username <a href='To visit profile click on username'> <![CDATA[<u><font color=#F30C45>%1$s</font></u>]]></a></string>
 
+    <string name="matched">Matched</string>
     <string name="matches">Matches</string>
     <string name="view_all">View All</string>
     <string name="follow">Follow</string>
