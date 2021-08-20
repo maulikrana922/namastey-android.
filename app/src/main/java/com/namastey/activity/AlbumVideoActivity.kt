@@ -55,7 +55,22 @@ import kotlinx.android.synthetic.main.activity_album_video.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareApp
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareBlock
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareFacebook
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareInstagram
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareOther
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareReport
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareSave
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareTwitter
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareWhatssapp
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.progress_bar
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.svShareOption
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareBlock
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareCancel
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareReport
+import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareSave
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -477,60 +492,65 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
-    override fun onCommentClick(postId: Long) {
-        bottomSheetDialogComment = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
-        bottomSheetDialogComment.setContentView(
-            layoutInflater.inflate(
-                R.layout.dialog_bottom_post_comment,
-                null
-            )
-        )
-        bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        bottomSheetDialogComment.setCancelable(true)
-        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
+        override fun onCommentClick(postId: Long) {
+            var intent = Intent(this,CommentActivity::class.java)
+            intent.putExtra("postId",postId)
+            openActivity(intent)
 
-        albumViewModel.getCommentList(postId)
-
-        bottomSheetDialogComment.edtComment.setOnClickListener {
-            if (sessionManager.isGuestUser()) {
-                bottomSheetDialogComment.dismiss()
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
-            }
         }
-
-        bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-            if (sessionManager.isGuestUser()) {
-                bottomSheetDialogComment.dismiss()
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
-            } else {
-                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    completeSignUpDialog()
-                } else {
-                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                        albumViewModel.addComment(
-                            postId,
-                            bottomSheetDialogComment.edtComment.text.toString()
-                        )
-                    }
-                }
-            }
-        }
-        bottomSheetDialogComment.ivCloseComment.setOnClickListener {
-            bottomSheetDialogComment.dismiss()
-        }
-        bottomSheetDialogComment.show()
-    }
+//        bottomSheetDialogComment = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
+//        bottomSheetDialogComment.setContentView(
+//            layoutInflater.inflate(
+//                R.layout.dialog_bottom_post_comment,
+//                null
+//            )
+//        )
+//        bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
+//        bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
+//        bottomSheetDialogComment.setCancelable(true)
+//        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
+//
+//        albumViewModel.getCommentList(postId)
+//
+//        bottomSheetDialogComment.edtComment.setOnClickListener {
+//            if (sessionManager.isGuestUser()) {
+//                bottomSheetDialogComment.dismiss()
+//                addFragment(
+//                    SignUpFragment.getInstance(
+//                        true
+//                    ),
+//                    Constants.SIGNUP_FRAGMENT
+//                )
+//            }
+//        }
+//
+//        bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
+//            if (sessionManager.isGuestUser()) {
+//                bottomSheetDialogComment.dismiss()
+//                addFragment(
+//                    SignUpFragment.getInstance(
+//                        true
+//                    ),
+//                    Constants.SIGNUP_FRAGMENT
+//                )
+//            } else {
+//                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+//                    completeSignUpDialog()
+//                } else {
+//                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+//                        albumViewModel.addComment(
+//                            postId,
+//                            bottomSheetDialogComment.edtComment.text.toString()
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//        bottomSheetDialogComment.ivCloseComment.setOnClickListener {
+//            bottomSheetDialogComment.dismiss()
+//        }
+//        bottomSheetDialogComment.show()
+//    }
 
     override fun onShareClick(position: Int, videoBean: VideoBean) {
         if (sessionManager.isGuestUser()) {
@@ -558,11 +578,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
 
         this.position = position
-
         bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
-                R.layout.dialog_bottom_share_feed,
+                R.layout.dialog_bottom_share_feed_new,
                 null
             )
         )
@@ -576,6 +595,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         bottomSheetDialogShare.tvShareCancel.setOnClickListener {
             bottomSheetDialogShare.dismiss()
+        }
+        bottomSheetDialogShare.tv_user_name.text = videoBean.username
+        bottomSheetDialogShare.tv_Job.text = videoBean.job
+        if (videoBean.profile_url.isNotBlank()) {
+            GlideLib.loadImage(this@AlbumVideoActivity,bottomSheetDialogShare.iv_user_profile, videoBean.profile_url)
         }
 
         if (videoBean.is_share == 1) {
@@ -612,15 +636,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareBlock.visibility = View.GONE
             bottomSheetDialogShare.ivShareReport.visibility = View.GONE
             bottomSheetDialogShare.tvShareReport.visibility = View.GONE
-            bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
-            bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
+           // bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
+           // bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
         } else {
             bottomSheetDialogShare.ivShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.ivShareReport.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareReport.visibility = View.VISIBLE
-            bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
-            bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
+          //  bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
+           // bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
         }
 
         if (videoBean.is_download == 0){
@@ -647,12 +671,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogShare.ivShareBlock.setOnClickListener {
             displayBlockUserDialog(videoBean)
         }
-        bottomSheetDialogShare.ivShareDelete.setOnClickListener {
-            displayDeletePostDialog(videoBean)
-        }
-        bottomSheetDialogShare.tvShareDelete.setOnClickListener {
-            displayDeletePostDialog(videoBean)
-        }
+//        bottomSheetDialogShare.ivShareDelete.setOnClickListener {
+//            displayDeletePostDialog(videoBean)
+//        }
+//        bottomSheetDialogShare.tvShareDelete.setOnClickListener {
+//            displayDeletePostDialog(videoBean)
+//        }
 
         bottomSheetDialogShare.show()
     }
