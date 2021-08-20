@@ -213,10 +213,10 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         commentAdapter = CommentAdapter(data, this@CommentActivity, this, this)
         rvPostComments.adapter = commentAdapter
 
-        val params: ViewGroup.LayoutParams =
-            rvPostComments.layoutParams
-        params.height = 1130
-        rvPostComments.layoutParams = params
+//        val params: ViewGroup.LayoutParams =
+//            rvPostComments.layoutParams
+//        params.height = 1130
+//        rvPostComments.layoutParams = params
 //      if (data.size > 6) {
 //
 //        } else {

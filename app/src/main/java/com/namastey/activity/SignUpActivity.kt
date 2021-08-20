@@ -574,7 +574,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         sessionManager.setAccessToken(user.token)
 //        sessionManager.setUserEmail(user.email)
         sessionManager.setUserId(user.user_id)
-        sessionManager.setStringValue(user.username,Constants.USERNAME)
+//        sessionManager.setStringValue(user.username,Constants.USERNAME)
         sessionManager.setUserPhone(user.mobile)
         edtPhone.text!!.clear()
         Utils.hideKeyboard(this@SignUpActivity)
@@ -651,7 +651,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                 override fun updateDrawState(textPaint: TextPaint) {
                     // use this to change the link color
 //                    textPaint.color = Color.BLACK
-                    textPaint.typeface = Typeface.create(Typeface.createFromAsset(context.assets, "Muli-ExtraBold.ttf"), Typeface.BOLD)
+                    textPaint.typeface = Typeface.create(Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf"), Typeface.BOLD)
                     // toggle below value to enable/disable
                     // the underline shown below the clickable text
 //                    textPaint.isUnderlineText = true

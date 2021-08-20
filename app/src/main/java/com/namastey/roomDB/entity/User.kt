@@ -26,6 +26,8 @@ data class User(
     var is_register: Int,
     @Ignore
     var is_completly_signup: Int,
+    @Ignore
+    var profile_pic: String,
     @ColumnInfo(name = "is_purchase") var purchase: Int = 0
 
     //var is_purchase: Int = 0
@@ -45,6 +47,7 @@ data class User(
         "",
         0,
         0,
+        "",
         0
     )
 }

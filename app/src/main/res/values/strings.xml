@@ -53,6 +53,7 @@
     <string name="tv_term_link">https://www.namasteyapp.com/terms-of-use</string>
     <string name="tv_policy_link">https://www.namasteyapp.com/privacy-policy</string>
     <string name="tv_billing_link">https://www.namasteyapp.com/billingterms</string>
+    <string name="tv_invite_link">https://www.namasteyapp.com/app-landing-page</string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
@@ -110,7 +111,7 @@
     <string name="msg_age">Select your preferred age range</string>
     <string name="you_can_always">You can always change it later</string>
     <string name="select_maximum_distance">Select the maximum distance</string>
-    <string name="msg_education">What is your education qualification?</string>
+    <string name="msg_education">What is your educational qualification?</string>
     <string name="occupation">Occupation</string>
     <string name="msg_occupation">What do you do for a living?</string>
     <string name="msg_empty_education">Please enter education</string>

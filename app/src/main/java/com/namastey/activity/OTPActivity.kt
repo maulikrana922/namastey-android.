@@ -91,6 +91,8 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
 
         if (user.is_register == 1) {
             if (user.is_invited == 1) {
+                sessionManager.setStringValue(user.username,Constants.USERNAME)
+                sessionManager.setStringValue(user.profile_pic, Constants.KEY_PROFILE_URL)
                 val intent = Intent(this, DashboardActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

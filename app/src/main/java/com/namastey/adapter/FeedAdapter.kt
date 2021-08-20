@@ -293,35 +293,40 @@ class FeedAdapter(
                     var isFollow = 0
                     val msg: String
                     val btnText: String
-                    if (dashboardBean.is_follow == 1) {
-                        isFollow = 0
-                        msg = context.resources.getString(R.string.msg_remove_post)
-                        btnText = context.resources.getString(R.string.remove)
+                    isFollow = if (dashboardBean.is_follow == 1) {
+                        0
+                //                        msg = context.resources.getString(R.string.msg_remove_post)
+                //                        btnText = context.resources.getString(R.string.remove)
                     } else {
-                        isFollow = 1
-                        msg = context.resources.getString(R.string.msg_send_follow_request)
-                        btnText = context.resources.getString(R.string.send)
+                        1
+                //                        msg = context.resources.getString(R.string.msg_send_follow_request)
+                //                        btnText = context.resources.getString(R.string.send)
                     }
-                    object : CustomCommonAlertDialog(
-                        activity,
-                        dashboardBean.casual_name,
-                        msg,
-                        dashboardBean.profile_url,
-                        btnText,
-                        context.resources.getString(R.string.cancel)
-                    ) {
-                        override fun onBtnClick(id: Int) {
-                            when (id) {
-                                btnAlertOk.id -> {
-                                    onFeedItemClick.onClickFollow(
-                                        position,
-                                        dashboardBean,
-                                        isFollow
-                                    )
-                                }
-                            }
-                        }
-                    }.show()
+                    onFeedItemClick.onClickFollow(
+                        position,
+                        dashboardBean,
+                        isFollow
+                    )
+//                    object : CustomCommonAlertDialog(
+//                        activity,
+//                        dashboardBean.casual_name,
+//                        msg,
+//                        dashboardBean.profile_url,
+//                        btnText,
+//                        context.resources.getString(R.string.cancel)
+//                    ) {
+//                        override fun onBtnClick(id: Int) {
+//                            when (id) {
+//                                btnAlertOk.id -> {
+//                                    onFeedItemClick.onClickFollow(
+//                                        position,
+//                                        dashboardBean,
+//                                        isFollow
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    }.show()
                 }
             }
 

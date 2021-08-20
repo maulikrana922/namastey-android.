@@ -279,34 +279,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
             }
         }
-        /*Utils.rectangleShapeGradient(
-            tvDiscover, intArrayOf(
-                ContextCompat.getColor(this, R.color.color_spotify),
-                ContextCompat.getColor(this, R.color.color_instagram)
-            )
-        )*/
         if (sessionManager.getUserGender() == Constants.Gender.female.name) {
-            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
-                GlideApp.with(this).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
-                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-                    .fitCenter().into(ivUser)
-            } else ivUser.setImageResource(R.drawable.ic_female_user)
-
-//            GlideApp.with(this).load(R.drawable.ic_female)
-//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-//                .fitCenter().into(ivProfile)
+            ivUser.setImageResource(R.drawable.ic_female_user)
         } else {
-            if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
-                GlideApp.with(this).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
-                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-                    .fitCenter().into(ivUser)
-            } else ivUser.setImageResource(R.drawable.ic_top_profile)
-
-//            GlideApp.with(this).load(R.drawable.ic_male)
-//                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-//                .fitCenter().into(ivProfile)
+            ivUser.setImageResource(R.drawable.ic_top_profile)
         }
-
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+            GlideApp.with(this@DashboardActivity).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+                .apply(RequestOptions.circleCropTransform())
+                .fitCenter().into(ivUser)
+        }
 
         if (intent.hasExtra("isFromProfile")) {
             isFromProfile = intent.getBooleanExtra("isFromProfile", false)

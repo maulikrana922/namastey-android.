@@ -80,7 +80,9 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="parent"
             android:orientation="vertical"
+            tools:listitem="@layout/row_follow_request"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />

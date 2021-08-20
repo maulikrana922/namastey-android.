@@ -64,8 +64,11 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSocialMsg"
                     style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:maxLines="2"
+                    android:paddingEnd="@dimen/_5sdp"
+                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     android:text="@string/msg_connect_socials"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvSocial" />

@@ -88,7 +88,6 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
-        videoView.setOnPreparedListener { mp -> mp.isLooping = true }
     }
 
     private fun editProfileApiCall() {
@@ -239,7 +238,7 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
         )
 
         val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-        startActivityForResult(cameraIntent, Constants.REQUEST_POST_VIDEO)
+        startActivityForResult(cameraIntent, Constants.PERMISSION_CAMERA)
     }
 
     private fun isReadWritePermissionGrantedVide() {
@@ -298,9 +297,9 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
                 videoView.setVideoURI(Uri.parse(videoFile!!.path))
                 videoView.start()
                 isVideoUpload = true
-                initData()
+                videoView.setOnPreparedListener { mp -> mp.isLooping = true }
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_VIDEO_SELECT) {
+        } else if (resultCode == Activity.RESULT_OK && (requestCode == Constants.REQUEST_VIDEO_SELECT || requestCode == Constants.PERMISSION_CAMERA)) {
 
             if (data != null) {
                 val selectedVideo = data.data

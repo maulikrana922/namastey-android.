@@ -339,7 +339,7 @@
                     android:id="@+id/tvAboutLable"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/about_me"
+                    android:text="@string/about"
                     android:textColor="@color/color_black_text"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
