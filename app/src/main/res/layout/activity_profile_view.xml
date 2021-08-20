@@ -37,7 +37,7 @@
                     android:minHeight="?attr/actionBarSize"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:popupTheme="@style/ThemeOverlay.MenuTheme"
                     app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,7 +94,7 @@
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="0dp"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_male"
