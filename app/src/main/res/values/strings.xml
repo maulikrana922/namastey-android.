@@ -131,7 +131,7 @@
     <string name="select_gender">Select Gender</string>
     <string name="select_gender_message">Gender cannot be changed later.</string>
     <string name="date_of_birth">Birthday</string>
-<!--    <string name="date_of_birth_message">You must be at least 18 years old to join namastey.</string>-->
+    <!--    <string name="date_of_birth_message">You must be at least 18 years old to join namastey.</string>-->
     <string name="date_of_birth_message">Your age must be 18 years to 45 years to join namastey.</string>
 
     <!--    select video language fragment-->
@@ -661,4 +661,5 @@
     <string name="alert_msg_boost">You got about 8.5x more profile views.</string>
     <string name="alert_boost_msg">Swipe to see who checked you.</string>
     <string name="boost_time">29:29 Remaining</string>
+    <string name="share_profile">Share profile</string>
 </resources>

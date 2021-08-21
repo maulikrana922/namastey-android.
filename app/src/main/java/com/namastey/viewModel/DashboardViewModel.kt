@@ -525,6 +525,79 @@ class DashboardViewModel constructor(
         }
     }
 
+    fun getFollowingList(userId: Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetFollowingList(userId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccess(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+
+
+    }
+
+    fun getFollowingShareList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestToGetFollowingShareList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            dashboardView.onSuccess(appResponse.data!!)
+                        else
+                            dashboardView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
+                    }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(t)
+            }
+        }
+
+
+    }
+
+    fun startChat(messageUserId: Long, isChat: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToStartChat(messageUserId, isChat).let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        dashboardView.onSuccessStartChat(appResponse.message)
+//                    else
+//                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                }
+            } catch (t: Throwable) {
+//                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
     fun onDestroy() {
         if (::job.isInitialized) {
             job.cancel()

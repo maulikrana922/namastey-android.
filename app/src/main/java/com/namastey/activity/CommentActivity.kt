@@ -1,7 +1,6 @@
 package com.namastey.activity
 
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,8 +8,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -399,6 +396,12 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
     override fun onSuccessBoostUse(boostBean: BoostBean) {
         TODO("Not yet implemented")
+    }
+
+    override fun onSuccessStartChat(msg: String) {
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {

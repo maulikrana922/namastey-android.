@@ -21,5 +21,7 @@ interface DashboardView : BaseView {
     fun onSuccessMembershipList(membershipView:  ArrayList<MembershipPriceBean>)
     fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean)
     fun onSuccessBoostUse(boostBean: BoostBean)
+    fun onSuccessStartChat(msg: String)
+    fun onSuccess(list: ArrayList<DashboardBean>)
 
 }

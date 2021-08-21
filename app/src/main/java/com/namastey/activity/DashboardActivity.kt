@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -54,7 +55,6 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fcm.MyFirebaseMessagingService
 import com.namastey.fragment.NotificationFragment
-import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
@@ -77,10 +77,12 @@ import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.rvMentionList
+import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.fragment_education.*
+import kotlinx.android.synthetic.main.fragment_share_app.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -98,7 +100,7 @@ import javax.inject.Inject
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
     DashboardView, OnFeedItemClick,
     OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick,
-    CategoryAdapter.OnItemClickCategory, SubCategoryAdapter.OnItemClick {
+    CategoryAdapter.OnItemClickCategory, SubCategoryAdapter.OnItemClick, OnItemClick {
     private val TAG = "DashboardActivity"
 
     @Inject
@@ -115,7 +117,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var mentionArrayAdapter: ArrayAdapter<Mention>
+    private var followingList: ArrayList<DashboardBean> = ArrayList()
+    private lateinit var userShareAdapter: UserShareAdapter
     private val PERMISSION_REQUEST_CODE = 101
+    private lateinit var bottomSheetDialogShareApp: BottomSheetDialog
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
     private lateinit var bottomSheetCategoryDialog: BottomSheetDialog
@@ -285,7 +290,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             ivUser.setImageResource(R.drawable.ic_top_profile)
         }
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
-            GlideApp.with(this@DashboardActivity).load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+            GlideApp.with(this@DashboardActivity)
+                .load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
                 .apply(RequestOptions.circleCropTransform())
                 .fitCenter().into(ivUser)
         }
@@ -480,7 +486,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         bottomSheetDialogShare.tv_user_name.text = dashboardBean.username
         bottomSheetDialogShare.tv_Job.text = dashboardBean.job
         if (dashboardBean.profile_url.isNotBlank()) {
-            GlideLib.loadImage(this@DashboardActivity,bottomSheetDialogShare.iv_user_profile, dashboardBean.profile_url)
+            GlideLib.loadImage(
+                this@DashboardActivity,
+                bottomSheetDialogShare.iv_user_profile,
+                dashboardBean.profile_url
+            )
         }
         if (dashboardBean.is_share == 1) {
             // Share on Twitter app if install otherwise web link
@@ -581,18 +591,86 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             dashboardBean.username
         ).plus(" \n").plus(String.format(getString(R.string.profile_link), dashboardBean.username))
 
-        addFragment(
-            ShareAppFragment.getInstance(
-                sessionManager.getUserId(),
-                // dashboardBean?.cover_image_url,
-                coverImage,
-                dashboardBean.video_url,
-                message,
-                false
-            ),
-            Constants.SHARE_APP_FRAGMENT
+        bottomSheetDialogShareApp = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
+        bottomSheetDialogShareApp.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_profile,
+                null
+            )
         )
+        bottomSheetDialogShareApp.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShareApp.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShareApp.setCancelable(true)
+        dashboardViewModel.getFollowingShareList()
+        bottomSheetDialogShareApp.show()
+        searchFollowing()
+
+        bottomSheetDialogShareApp.ivShareClose.setOnClickListener {
+            bottomSheetDialogShareApp.dismiss()
+        }
+
+        bottomSheetDialogShareApp.tvDone.setOnClickListener {
+            bottomSheetDialogShareApp.dismiss()
+        }
+
+//        addFragment(
+//            ShareAppFragment.getInstance(
+//                sessionManager.getUserId(),
+//                // dashboardBean?.cover_image_url,
+//                coverImage,
+//                dashboardBean.video_url,
+//                message,
+//                false
+//            ),
+//            Constants.SHARE_APP_FRAGMENT
+//        )
     }
+
+    private fun searchFollowing() {
+        bottomSheetDialogShareApp.searchProfileShare.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty()) {
+                    bottomSheetDialogShareApp.rvSearchUsers.visibility = View.VISIBLE
+                    filter(newText.toString().trim())
+
+                } else {
+                    filter("")
+                    //shareAppViewModel.getFollowingList(userId)
+                    dashboardViewModel.getFollowingShareList()
+                }
+
+                return true
+            }
+        })
+
+        bottomSheetDialogShareApp.searchProfileShare.setOnCloseListener {
+            filter("")
+            dashboardViewModel.getFollowingShareList()
+            //shareAppViewModel.getFollowingList(userId)
+
+            false
+        }
+    }
+
+
+    private fun filter(text: String) {
+//        Log.e("ShareAppFragment", "filter: text: $text")
+        val filteredName: ArrayList<DashboardBean> = ArrayList()
+
+        for (following in followingList) {
+            if (following.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(following)
+            }
+        }
+
+        userShareAdapter.filterList(filteredName)
+    }
+
 
     private fun shareFaceBook(dashboardBean: DashboardBean) {
         var facebookAppFound = false
@@ -1346,8 +1424,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         // tvDiscover.visibility = View.VISIBLE
 
 
-
-
 //        setDashboardList()
 
     }
@@ -1759,116 +1835,116 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onCommentClick(position: Int, postId: Long) {
         this.position = position
         this.postId = postId
-        var intent = Intent(this,CommentActivity::class.java)
-        intent.putExtra("postId",this.postId)
-        intent.putExtra("position",this.position)
+        var intent = Intent(this, CommentActivity::class.java)
+        intent.putExtra("postId", this.postId)
+        intent.putExtra("position", this.position)
         openActivity(intent)
     }
 
-        /*this.position = position
-        this.postId = postId
-        bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
-        bottomSheetDialogComment.setContentView(
-            layoutInflater.inflate(
-                R.layout.dialog_bottom_post_comment,
-                null
-            )
+    /*this.position = position
+    this.postId = postId
+    bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
+    bottomSheetDialogComment.setContentView(
+        layoutInflater.inflate(
+            R.layout.dialog_bottom_post_comment,
+            null
         )
-        bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        bottomSheetDialogComment.setCancelable(true)
-        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
+    )
+    bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
+    bottomSheetDialogComment.setCancelable(true)
+    deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
 
-        dashboardViewModel.getCommentList(postId)
+    dashboardViewModel.getCommentList(postId)
 
-        bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-            if (sessionManager.isGuestUser()) {
-                bottomSheetDialogComment.dismiss()
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
-            } else {
-                if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                        dashboardViewModel.addComment(
-                            postId,
-                            bottomSheetDialogComment.edtComment.text.toString()
-                        )
-                    }
-                } else {
-                    completeSignUpDialog()
-                }
-            }
-        }
-
-        bottomSheetDialogComment.edtComment.setOnClickListener {
-            if (sessionManager.isGuestUser()) {
-                bottomSheetDialogComment.dismiss()
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
-            }
-        }
-
-        addCommentsTextChangeListener()
-
-        bottomSheetDialogComment.ivCloseComment.setOnClickListener {
+    bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
+        if (sessionManager.isGuestUser()) {
             bottomSheetDialogComment.dismiss()
-        }
-
-        bottomSheetDialogComment.setOnDismissListener {
-            if (isUpdateComment) {
-                isUpdateComment = false
-                val dashboardBean = feedList[position]
-                dashboardBean.comments = commentCount
-                feedAdapter.notifyItemChanged(position)
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
+                    dashboardViewModel.addComment(
+                        postId,
+                        bottomSheetDialogComment.edtComment.text.toString()
+                    )
+                }
+            } else {
+                completeSignUpDialog()
             }
         }
-
-        bottomSheetDialogComment.show()
     }
-*/
-   /* private fun addCommentsTextChangeListener() {
-        mentionArrayAdapter.clear()
-        dashboardViewModel.getMentionList("")
-        var strMention = ""
-        bottomSheetDialogComment.edtComment.showSoftInputOnFocus
-        bottomSheetDialogComment.edtComment.mentionColor =
-            ContextCompat.getColor(this, R.color.colorBlack)
-        bottomSheetDialogComment.edtComment.mentionAdapter = mentionArrayAdapter
-        bottomSheetDialogComment.edtComment.setMentionTextChangedListener { view, text ->
-            Log.e("mention", text.toString())
-            mentionArrayAdapter.notifyDataSetChanged()
-            strMention = text.toString()
-            if (text.length == 1) {
-                bottomSheetDialogComment.lvMentionList.visibility = View.GONE
-            } else bottomSheetDialogComment.lvMentionList.visibility = View.VISIBLE
 
-        }
-
-        bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
-
-        bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
-            val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
-                strMention, "${
-                    mentionArrayAdapter.getItem(
-                        i
-                    ).toString()
-                }"
+    bottomSheetDialogComment.edtComment.setOnClickListener {
+        if (sessionManager.isGuestUser()) {
+            bottomSheetDialogComment.dismiss()
+            addFragment(
+                SignUpFragment.getInstance(
+                    true
+                ),
+                Constants.SIGNUP_FRAGMENT
             )
-            bottomSheetDialogComment.edtComment.setText(strName)
-            bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
-            bottomSheetDialogComment.lvMentionList.visibility = View.GONE
-
-
         }
-    }*/
+    }
+
+    addCommentsTextChangeListener()
+
+    bottomSheetDialogComment.ivCloseComment.setOnClickListener {
+        bottomSheetDialogComment.dismiss()
+    }
+
+    bottomSheetDialogComment.setOnDismissListener {
+        if (isUpdateComment) {
+            isUpdateComment = false
+            val dashboardBean = feedList[position]
+            dashboardBean.comments = commentCount
+            feedAdapter.notifyItemChanged(position)
+        }
+    }
+
+    bottomSheetDialogComment.show()
+}
+*/
+    /* private fun addCommentsTextChangeListener() {
+         mentionArrayAdapter.clear()
+         dashboardViewModel.getMentionList("")
+         var strMention = ""
+         bottomSheetDialogComment.edtComment.showSoftInputOnFocus
+         bottomSheetDialogComment.edtComment.mentionColor =
+             ContextCompat.getColor(this, R.color.colorBlack)
+         bottomSheetDialogComment.edtComment.mentionAdapter = mentionArrayAdapter
+         bottomSheetDialogComment.edtComment.setMentionTextChangedListener { view, text ->
+             Log.e("mention", text.toString())
+             mentionArrayAdapter.notifyDataSetChanged()
+             strMention = text.toString()
+             if (text.length == 1) {
+                 bottomSheetDialogComment.lvMentionList.visibility = View.GONE
+             } else bottomSheetDialogComment.lvMentionList.visibility = View.VISIBLE
+
+         }
+
+         bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
+
+         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
+             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
+                 strMention, "${
+                     mentionArrayAdapter.getItem(
+                         i
+                     ).toString()
+                 }"
+             )
+             bottomSheetDialogComment.edtComment.setText(strName)
+             bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
+             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
+
+
+         }
+     }*/
 
     fun onClickCategory(view: View) {
 
@@ -2617,6 +2693,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
         feedAdapter.notifyDataSetChanged()
     }
 
+    override fun onSuccessStartChat(msg: String) {
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        followingList = list
+        if (followingList.size != 0) {
+            userShareAdapter =
+                UserShareAdapter(followingList, this, false, this, this)
+            bottomSheetDialogShareApp.rvProfileShare.adapter = userShareAdapter
+        }
+    }
+
     override fun onSuccessPostShare(msg: String) {
         Log.e("DashboardActivity", "onSuccessPostShare: msg:\t  $msg")
         feedList[position].share = feedList[position].share + 1
@@ -2808,6 +2896,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
             getFeedListApi(subCategoryId, false)
 
         }
+    }
+
+    override fun onItemClick(value: Long, position: Int) {
+    }
+
+    override fun onItemFollowingClick(dashboardBean: DashboardBean) {
     }
 
 }

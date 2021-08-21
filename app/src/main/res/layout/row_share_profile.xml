@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewSearchUser"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp">
+
+    <com.namastey.customViews.RoundImageView
+        android:id="@+id/ivFindUser"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_placeholder"
+        app:cornerRadius="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_share_app"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_share_app"
+        app:roundedCorners="all" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvFindName"
+        style="@style/tvWrapWhiteStyle"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/guideline_share_app"
+        app:layout_constraintEnd_toStartOf="@id/tvSendLabel"
+        app:layout_constraintStart_toEndOf="@id/ivFindUser"
+        app:layout_constraintTop_toTopOf="@id/ivFindUser"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_share_app"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.namastey.customViews.CustomTextView
+        android:id="@+id/tvSendLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/rounded_red_button"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/send"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_share_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_share_app"
+        app:layout_constraintVertical_bias="0.548"
+        app:typeface="MULI_SEMIBOLD" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
