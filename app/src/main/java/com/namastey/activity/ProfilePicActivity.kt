@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.animation.RotateAnimation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
@@ -136,7 +137,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                     MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                     1200
                 )!!
-                GlideLib.loadImageBitmap(this, ivProfilePic, bitmap)
+                GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap,90f))
 
             } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
 

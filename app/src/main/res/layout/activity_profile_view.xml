@@ -28,64 +28,80 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
-                <ImageView
-                    android:id="@+id/ivProfileBack"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_45sdp"
-                    android:contentDescription="@string/app_name"
-                    android:onClick="onClickProfileBack"
-                    android:padding="@dimen/_6sdp"
-                    android:src="@drawable/ic_back_new"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:background="@color/white"
+                    android:minHeight="?attr/actionBarSize"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/color_black_text" />
+                    app:popupTheme="@style/ThemeOverlay.MenuTheme"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-                <com.namastey.customViews.CustomTextView
-                    android:id="@+id/tvCasualName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
-                    android:layout_marginEnd="@dimen/_3sdp"
-                    android:singleLine="true"
-                    android:textColor="@color/color_black_text"
-                    android:textSize="@dimen/_14sdp"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivProfileBack"
-                    app:layout_constraintEnd_toStartOf="@+id/ivProfileMore"
-                    app:layout_constraintStart_toEndOf="@+id/ivProfileBack"
-                    app:layout_constraintTop_toTopOf="@id/ivProfileBack"
-                    app:typeface="MULI_EXTRA_BOLD" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/icBackProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/app_name"
+                            android:onClick="onClickProfileBack"
+                            android:padding="@dimen/_6sdp"
+                            android:src="@drawable/ic_back_new"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/color_black_text" />
+
+                        <com.namastey.customViews.CustomTextView
+                            android:id="@+id/tvCasualName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_3sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/color_black_text"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toBottomOf="@+id/icBackProfile"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/icBackProfile"
+                            app:layout_constraintTop_toTopOf="@id/icBackProfile"
+                            app:typeface="MULI_EXTRA_BOLD" />
 
 
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/ivProfileMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:contentDescription="@string/app_name"
-                    android:onClick="onClickProfileMore"
-                    android:src="@drawable/ic_more"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivProfileBack"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/ivProfileBack"
-                    app:tint="@color/color_black_text" />
+                         <!--    <ImageView
+                                 android:id="@+id/ivProfileMore"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:contentDescription="@string/app_name"
+                                 android:onClick="onClickProfileMore"
+                                 android:src="@drawable/ic_more"
+                                 android:visibility="gone"
+                                 android:layout_marginEnd="@dimen/_15sdp"
+                                 app:layout_constraintBottom_toBottomOf="@+id/icBackProfile"
+                                 app:layout_constraintEnd_toEndOf="parent"
+                                 app:layout_constraintTop_toTopOf="@id/icBackProfile"
+                                 app:tint="@color/color_black_text" />-->
 
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.appcompat.widget.Toolbar>
 
                 <com.namastey.customViews.RoundImageView
                     android:id="@+id/ivProfileUser"
                     android:layout_width="@dimen/_80sdp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_male"
                     app:cornerRadius="@dimen/_12sdp"
                     app:layout_constraintBottom_toBottomOf="@+id/cvView"
-                    app:layout_constraintStart_toStartOf="@id/ivProfileBack"
-                    app:layout_constraintTop_toBottomOf="@id/ivProfileBack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar"
                     app:roundedCorners="all" />
 
                 <ImageView
@@ -111,7 +127,7 @@
                     android:layout_marginEnd="@dimen/_8sdp"
                     app:chipSpacingHorizontal="@dimen/_8sdp"
                     app:chipSpacingVertical="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@+id/toolbar"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAbouteDesc" />
 
@@ -124,7 +140,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_black_text"
                     android:textSize="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@id/ivProfileUser"
                     app:layout_constraintTop_toTopOf="@id/ivProfileUser"
                     app:typeface="MULI_EXTRA_BOLD" />
@@ -137,7 +153,7 @@
                     android:paddingEnd="@dimen/_5sdp"
                     android:textColor="@color/color_text"
                     android:textSize="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
                     app:layout_constraintTop_toBottomOf="@id/tvProfileUsername"
                     app:typeface="MULI_SEMIBOLD" />
@@ -150,7 +166,7 @@
                     android:paddingEnd="@dimen/_5sdp"
                     android:textColor="@color/color_text"
                     android:textSize="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
                     app:layout_constraintTop_toBottomOf="@id/tvJob"
                     app:typeface="MULI_SEMIBOLD" />
@@ -256,9 +272,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:elevation="@dimen/_8sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/toolbar"
                     app:layout_constraintStart_toEndOf="@+id/cvFollower"
                     app:layout_constraintTop_toBottomOf="@id/tvEducation">
 
@@ -328,7 +345,7 @@
                 <!--                    android:layout_marginTop="@dimen/_12sdp"-->
                 <!--                    android:layout_marginBottom="@dimen/_5sdp"-->
                 <!--                    android:scrollbars="none"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/toolbar"-->
                 <!--                    app:layout_constraintStart_toStartOf="@id/tvViews"-->
                 <!--                    app:layout_constraintTop_toBottomOf="@id/tvViews">-->
 
@@ -338,7 +355,7 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAboutLable"
                     style="@style/tvWrapWhiteStyle"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:text="@string/about"
                     android:textColor="@color/color_black_text"
                     android:textSize="@dimen/_14sdp"
@@ -351,11 +368,10 @@
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
                     android:maxLines="4"
                     android:textColor="@color/color_text"
                     android:textSize="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAboutLable"
                     app:typeface="MULI_REGULAR" />
@@ -377,16 +393,17 @@
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnAddVideo"
                     style="@style/btnRedStyle"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="0dp"
                     android:background="@drawable/rounded_btn_red"
+                    android:drawableStart="@drawable/ic_video_new"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickAddVideo"
-                    android:text="@string/add_video"
-                    android:textColor="@color/white"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
-                    android:drawableStart="@drawable/ic_video_new"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    android:text="@string/add_video"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnEditProfile"
                     app:layout_constraintTop_toTopOf="@id/btnEditProfile" />
 
@@ -395,14 +412,14 @@
                     style="@style/btnRedStyle"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:minHeight="@dimen/_32sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/rectangle_red_solid_all_corner_small"
-                    android:textColor="@color/color_text_red"
+                    android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickEditProfile"
                     android:text="@string/edit_info"
+                    android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnAddVideo"
-                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/cvView" />
 
                 <com.namastey.customViews.CustomButton
@@ -410,30 +427,30 @@
                     style="@style/btnRedStyle"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/rectangle_red_solid_all_corner_small"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickFollowRequest"
                     android:text="@string/follow"
                     android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
-                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/cvView" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/btnProfileLike"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:background="@drawable/rounded_btn_red"
                     android:drawableStart="@drawable/ic_like_dashboard"
                     android:gravity="center"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickProfileLike"
-                    android:paddingStart="@dimen/_34sdp"
-                    android:paddingEnd="@dimen/_32sdp"
+                    android:paddingStart="@dimen/_30sdp"
+                    android:paddingEnd="@dimen/_30sdp"
                     android:text="@string/match"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
 
@@ -453,7 +470,7 @@
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/match"
                     android:textSize="@dimen/_14sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
                     app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
 
@@ -511,7 +528,7 @@
                     android:text="@string/interest"
                     android:textColor="@color/color_black_text"
                     android:textSize="@dimen/_14sdp"
-                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/chipProfileSocial"
                     app:typeface="MULI_SEMIBOLD" />
 
@@ -519,12 +536,12 @@
                     android:id="@+id/chipProfileInterest"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:padding="@dimen/_10sdp"
                     app:chipSpacingHorizontal="@dimen/_5sdp"
                     app:chipSpacingVertical="@dimen/_5sdp"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                    app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
+                    app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvInterestTitel"
                     app:singleLine="true" />
 
@@ -548,8 +565,8 @@
                     android:layout_marginTop="@dimen/_20sdp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
-                    app:layout_constraintStart_toStartOf="@id/ivProfileBack"
+                    app:layout_constraintEnd_toEndOf="@id/ivProfileUser"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAbouteDesc"
                     app:layout_constraintVertical_bias="1" />
 
@@ -581,7 +598,7 @@
                      app:layout_constraintTop_toTopOf="parent" />
 
                  <ImageView
-                     android:id="@+id/ivProfileBack"
+                     android:id="@+id/ivProfileUser"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginStart="@dimen/_15sdp"
@@ -593,7 +610,7 @@
                      app:layout_constraintTop_toTopOf="parent" />
 
                  <ImageView
-                     android:id="@+id/ivProfileMore"
+                     android:id="@+id/ivProfileUser"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_marginEnd="@dimen/_15sdp"
@@ -602,7 +619,7 @@
                      android:padding="@dimen/_5sdp"
                      android:src="@drawable/ic_more"
                      app:layout_constraintEnd_toEndOf="parent"
-                     app:layout_constraintTop_toTopOf="@id/ivProfileBack" />
+                     app:layout_constraintTop_toTopOf="@id/ivProfileUser" />
 
 
                  <de.hdodenhof.circleimageview.CircleImageView
@@ -616,8 +633,8 @@
                      app:civ_border_color="@color/colorWhite"
                      app:civ_border_width="@dimen/_1sdp"
                      app:civ_circle_background_color="@color/colorWhite"
-                     app:layout_constraintStart_toStartOf="@id/ivProfileBack"
-                     app:layout_constraintTop_toBottomOf="@id/ivProfileBack" />
+                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                     app:layout_constraintTop_toBottomOf="@id/ivProfileUser" />
 
                  <ImageView
                      android:id="@+id/ivProfileCamera"
@@ -656,7 +673,7 @@
                      android:singleLine="true"
                      android:textColor="@color/colorWhite"
                      android:textSize="20sp"
-                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintEnd_toEndOf="@id/toolbar"
                      app:layout_constraintStart_toEndOf="@id/ivProfileUser"
                      app:layout_constraintTop_toTopOf="@id/ivProfileUser"
                      app:typeface="MULI_EXTRA_BOLD" />
@@ -667,7 +684,7 @@
                      android:layout_width="0dp"
                      android:layout_marginTop="@dimen/_3sdp"
                      android:paddingEnd="@dimen/_5sdp"
-                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintEnd_toEndOf="@id/toolbar"
                      app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
                      app:layout_constraintTop_toBottomOf="@id/tvProfileUsername"
                      app:typeface="MULI_SEMIBOLD" />
@@ -678,7 +695,7 @@
                      android:layout_width="0dp"
                      android:layout_marginTop="@dimen/_3sdp"
                      android:paddingEnd="@dimen/_5sdp"
-                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintEnd_toEndOf="@id/toolbar"
                      app:layout_constraintStart_toStartOf="@id/tvProfileUsername"
                      app:layout_constraintTop_toBottomOf="@id/tvJob"
                      app:typeface="MULI_SEMIBOLD" />
@@ -779,7 +796,7 @@
                  &lt;!&ndash;                    android:layout_marginTop="@dimen/_12sdp"&ndash;&gt;
                  &lt;!&ndash;                    android:layout_marginBottom="@dimen/_5sdp"&ndash;&gt;
                  &lt;!&ndash;                    android:scrollbars="none"&ndash;&gt;
-                 &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="@id/ivProfileMore"&ndash;&gt;
+                 &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="@id/toolbar"&ndash;&gt;
                  &lt;!&ndash;                    app:layout_constraintStart_toStartOf="@id/tvViews"&ndash;&gt;
                  &lt;!&ndash;                    app:layout_constraintTop_toBottomOf="@id/tvViews">&ndash;&gt;
 
@@ -791,7 +808,7 @@
                      android:layout_marginBottom="@dimen/_5sdp"
                      app:chipSpacingHorizontal="@dimen/_5sdp"
                      app:chipSpacingVertical="@dimen/_5sdp"
-                     app:layout_constraintEnd_toEndOf="@id/ivProfileMore"
+                     app:layout_constraintEnd_toEndOf="@id/toolbar"
                      app:layout_constraintStart_toStartOf="@id/tvViews"
                      app:layout_constraintTop_toBottomOf="@id/tvViews"
                      app:singleLine="true" />
@@ -843,7 +860,7 @@
                      android:text="@string/matches"
                      android:textColor="@color/colorButtonRed"
                      app:layout_constraintEnd_toStartOf="@+id/btnEditProfile"
-                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                     app:layout_constraintStart_toStartOf="@+id/toolbar"
                      app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
 
                  <com.namastey.customViews.CustomButton
@@ -870,7 +887,7 @@
                      android:text="@string/follow"
                      android:textColor="@color/colorButtonRed"
                      app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
-                     app:layout_constraintStart_toStartOf="@+id/ivProfileBack"
+                     app:layout_constraintStart_toStartOf="@+id/toolbar"
                      app:layout_constraintTop_toBottomOf="@id/ivProfileTop" />
 
                  <com.namastey.customViews.CustomButton

@@ -15,6 +15,8 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -25,7 +27,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gowtham.library.utils.TrimType
@@ -42,30 +43,12 @@ import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
 import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
+import com.namastey.utils.Utils.rotateImage
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
-import kotlinx.android.synthetic.main.activity_profile_view.groupButtons
-import kotlinx.android.synthetic.main.activity_profile_view.ivProfileCamera
-import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
-import kotlinx.android.synthetic.main.activity_profile_view.tvAbouteDesc
-import kotlinx.android.synthetic.main.activity_profile_view.tvFollowersCount
-import kotlinx.android.synthetic.main.activity_profile_view.tvFollowingCount
-import kotlinx.android.synthetic.main.activity_profile_view.tvProfileUsername
-import kotlinx.android.synthetic.main.activity_profile_view.tvViewsCount
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareBlock
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareFacebook
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareInstagram
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareOther
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareReport
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareTwitter
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareWhatssapp
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.svShareOption
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareBlock
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareCancel
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareReport
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareSave
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import java.io.File
 import java.util.*
@@ -94,7 +77,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var isCameraOpen = false
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var videoFile: File? = null
-
+    private var isProfilePic = false
+    private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -117,7 +101,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             ivProfileCamera.visibility = View.VISIBLE
             sessionManager.setStringValue(profileBean.profileUrl, Constants.KEY_PROFILE_URL)
             sessionManager.setStringValue(profileBean.username, Constants.KEY_MAIN_USER_NAME)
-            sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+            if (profileBean.is_completly_signup == 1) {
+                sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
+            } else {
+                sessionManager.setBooleanValue(false, Constants.KEY_IS_COMPLETE_PROFILE)
+            }
             sessionManager.setStringValue(profileBean.about_me, Constants.KEY_TAGLINE)
             sessionManager.setStringValue(profileBean.casual_name, Constants.KEY_CASUAL_NAME)
             sessionManager.setStringValue(profileBean.distance, Constants.DISTANCE)
@@ -141,56 +129,75 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 2 -> btnProfileFollow.text = getString(R.string.pending)
                 else -> btnProfileFollow.text = getString(R.string.follow)
             }
-
-            when (profileBean.is_like) {
-                1 -> {
-                    btnProfileLike.text = getString(R.string.liked)
-                    btnProfileLike.setTextColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.color_text_red
+            if (profileBean.is_match == 1) {
+                btnProfileLike.text = getString(R.string.matched)
+                btnProfileLike.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+                btnProfileLike.background =
+                    ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
+                btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_matched,
+                    0,
+                    0,
+                    0
+                )
+            } else {
+                when (profileBean.is_like) {
+                    1 -> {
+                        btnProfileLike.text = getString(R.string.liked)
+                        btnProfileLike.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.color_text_red
+                            )
                         )
-                    )
-                    btnProfileLike.background =
-                        ContextCompat.getDrawable(this, R.drawable.rounded_btn)
-                    btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.heart,
-                        0,
-                        0,
-                        0
-                    )
-                }
-                else -> {
-                    btnProfileLike.text = getString(R.string.match)
-                    btnProfileLike.setTextColor(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.white
+                        btnProfileLike.background =
+                            ContextCompat.getDrawable(this, R.drawable.rounded_btn)
+                        btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.heart,
+                            0,
+                            0,
+                            0
                         )
-                    )
-                    btnProfileLike.background =
-                        ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
-                    btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_like_dashboard,
-                        0,
-                        0,
-                        0
-                    )
+                    }
+                    else -> {
+                        btnProfileLike.text = getString(R.string.match)
+                        btnProfileLike.setTextColor(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.white
+                            )
+                        )
+                        btnProfileLike.background =
+                            ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
+                        btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                            R.drawable.ic_like_dashboard,
+                            0,
+                            0,
+                            0
+                        )
+                    }
                 }
             }
         }
 
-        // Need to change
-        if (profileBean.gender == Constants.Gender.female.name) {
-            // ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
-            GlideApp.with(this).load(R.drawable.ic_female)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
-                .fitCenter().into(ivProfileUser)
-        } else {
-            // ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
-            GlideApp.with(this).load(R.drawable.ic_male)
-                .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
-                .fitCenter().into(ivProfileUser)
+        if (!isProfilePic) {
+            // Need to change
+            if (profileBean.gender == Constants.Gender.female.name) {
+                // ivProfileTop.background = resources.getDrawable(R.drawable.female_bg)
+                GlideApp.with(this).load(R.drawable.ic_female)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_female)
+                    .fitCenter().into(ivProfileUser)
+            } else {
+                // ivProfileTop.background = resources.getDrawable(R.drawable.male_bg)
+                GlideApp.with(this).load(R.drawable.ic_male)
+                    .apply(RequestOptions.circleCropTransform()).placeholder(R.drawable.ic_male)
+                    .fitCenter().into(ivProfileUser)
+            }
         }
         fillValue(profileBean)
     }
@@ -220,13 +227,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
 
 
-        ivProfileMore.visibility = View.VISIBLE
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
         tvViewsCount.text = profileBean.viewers.toString()
-        if (profileBean.profileUrl.isNotEmpty())
-            GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
-
+        if (!isProfilePic) {
+            if (profileBean.profileUrl.isNotEmpty())
+                GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, profileBean.profileUrl)
+        }
         //if (profileBean.education.size > 0) {
         tvEducation.text = profileBean.education
         // }
@@ -581,6 +588,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+        setSupportActionBar(toolbar)
         if (intent.getStringExtra(Constants.USERNAME) != "" && intent.getStringExtra(Constants.USERNAME) != null) {
             username = intent.getStringExtra(Constants.USERNAME)!!
             Log.e("ProfileViewActivity", "username, $username")
@@ -604,7 +612,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //            }
 
             if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotBlank()) {
-                GlideLib.loadImage(this@ProfileViewActivity, ivProfileUser, sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+                GlideLib.loadImage(
+                    this@ProfileViewActivity,
+                    ivProfileUser,
+                    sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+                )
             }
 //            tvProfileUsername.text = profileBean.username
 //            if (profileBean.about_me.isNotEmpty())
@@ -824,12 +836,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             videoFile = File(uri.path)
             val intent = Intent(this@ProfileViewActivity, PostVideoActivity::class.java)
             intent.putExtra("videoFile", videoFile)
-           // intent.putExtra("albumId", albums.id)
+            // intent.putExtra("albumId", albums.id)
 //                intent.putExtra("thumbnailImage", pictureFile)
-           //intent.putExtra("albumBean", albumBean)
+            //intent.putExtra("albumBean", albumBean)
             openActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
-        }
-        else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
 //            ivProfileUser.setImageURI(data?.data) // handle chosen image
 
             if (data != null) {
@@ -865,7 +876,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
-//            if (data != null) {
             val imageFile = Utils.getCameraFile(this@ProfileViewActivity)
             val photoUri = FileProvider.getUriForFile(
                 this,
@@ -876,15 +886,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                 1200
             )!!
-
-            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+            isProfilePic = true
+            GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap, 90f))
 
             if (imageFile.exists()) {
                 isCameraOpen = true
                 profileViewModel.updateProfilePic(imageFile)
             }
-//            }
-        }else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
 
             if (data != null) {
                 val selectedVideo = data.data
@@ -899,7 +908,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     TrimVideo.activity(selectedVideo.toString())
 //                        .setCompressOption(CompressOption(30,"1M",460,320))
                         .setTrimType(TrimType.MIN_MAX_DURATION)
-                        .setMinToMax(10,30)
+                        .setMinToMax(10, 30)
 //                        .setDestination("/storage/emulated/0/DCIM/namastey")  //default output path /storage/emulated/0/DOWNLOADS
                         .start(this)
 
@@ -940,7 +949,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
     }
 
-    fun onClickFollowing(view: View){
+    fun onClickFollowing(view: View) {
         val whoCanView = profileBean.safetyBean.is_followers
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
@@ -954,6 +963,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
     }
+
     fun openFollowersScreen() {
         val intent = Intent(this@ProfileViewActivity, FollowersActivity::class.java)
         intent.putExtra(Constants.PROFILE_BEAN, profileBean)
@@ -1018,17 +1028,15 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         selectVideo()
     }
 
-    fun onClickProfileMore(view: View) {
-        if (sessionManager.getUserId() == profileBean.user_id)
-            openActivity(this@ProfileViewActivity, SettingsActivity())
-        else if (profileBean.username.isNotEmpty()) {
+/*    fun onClickProfileMore(view: View) {
+        if (profileBean.username.isNotEmpty()) {
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
             } else {
                 openShareOptionDialog(profileBean)
             }
         }
-    }
+    }*/
 
     fun onClickProfileLike(view: View) {
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
@@ -1049,19 +1057,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //        isLike = dashboardBean.is_like
 
         profileBean.is_like = dashboardBean.is_like
-        if (dashboardBean.is_like == 1) {
-            btnProfileLike.text = resources.getString(R.string.liked)
-            btnProfileLike.setTextColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.color_text_red
-                )
-            )
-            btnProfileLike.background =
-                ContextCompat.getDrawable(this, R.drawable.rounded_btn)
-            btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0)
-        } else {
-            btnProfileLike.text = resources.getString(R.string.match)
+
+        if (dashboardBean.is_match == 1) {
+            btnProfileLike.text = getString(R.string.matched)
             btnProfileLike.setTextColor(
                 ContextCompat.getColor(
                     this,
@@ -1071,11 +1069,45 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             btnProfileLike.background =
                 ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
             btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_like_dashboard,
+                R.drawable.ic_matched,
                 0,
                 0,
                 0
             )
+        } else {
+            if (dashboardBean.is_like == 1) {
+                btnProfileLike.text = resources.getString(R.string.liked)
+                btnProfileLike.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.color_text_red
+                    )
+                )
+                btnProfileLike.background =
+                    ContextCompat.getDrawable(this, R.drawable.rounded_btn)
+                btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.heart,
+                    0,
+                    0,
+                    0
+                )
+            } else {
+                btnProfileLike.text = resources.getString(R.string.match)
+                btnProfileLike.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.white
+                    )
+                )
+                btnProfileLike.background =
+                    ContextCompat.getDrawable(this, R.drawable.rounded_btn_red)
+                btnProfileLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_like_dashboard,
+                    0,
+                    0,
+                    0
+                )
+            }
         }
 
         if (dashboardBean.is_match == 1 && dashboardBean.is_like == 1) {
@@ -1123,7 +1155,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.tv_user_name.text = profileBean.username
         bottomSheetDialogShare.tv_Job.text = profileBean.jobs
         if (profileBean.profileUrl.isNotBlank()) {
-            GlideLib.loadImage(this@ProfileViewActivity,bottomSheetDialogShare.iv_user_profile, profileBean.profileUrl)
+            GlideLib.loadImage(
+                this@ProfileViewActivity,
+                bottomSheetDialogShare.iv_user_profile,
+                profileBean.profileUrl
+            )
         }
 
         bottomSheetDialogShare.tvShareBlock.text = getString(R.string.block)
@@ -1507,5 +1543,56 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         startActivityForResult(cameraIntent, Constants.REQUEST_POST_VIDEO)
+    }
+
+    private fun createPopUpMenu() {
+        /* val popupMenu = PopupMenu(this, ivProfileMore)
+         popupMenu.menuInflater.inflate(R.menu.menu_profile_view, popupMenu.menu)
+         popupMenu.setOnMenuItemClickListener { item ->
+             when (item.itemId) {
+                 R.id.action_saved -> {
+
+                 }
+                 R.id.action_setting -> {
+                     openActivity(this@ProfileViewActivity, SettingsActivity())
+                 }
+             }
+             true
+         }
+         popupMenu.show()*/
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_profile_view, menu)
+        this.menu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemSaved=menu.findItem(R.id.action_saved)
+        val itemSetting=menu.findItem(R.id.action_setting)
+        when (item.itemId) {
+            R.id.action_more -> {
+                if (sessionManager.getUserId() != profileBean.user_id)  {
+                    itemSaved.isVisible=false
+                    itemSetting.isVisible=false
+                    if (profileBean.username.isNotEmpty()) {
+                        if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                            completeSignUpDialog()
+                        } else {
+                            openShareOptionDialog(profileBean)
+                        }
+                    }
+                }
+            }
+            R.id.action_saved -> {
+
+            }
+            R.id.action_setting -> {
+                openActivity(this@ProfileViewActivity, SettingsActivity())
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 }

@@ -22,7 +22,7 @@
             android:padding="@dimen/dp10">
 
             <ImageView
-                android:id="@+id/imgDeleteAccount"
+                android:id="@+id/ivIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -40,46 +40,51 @@
                 android:layout_marginTop="@dimen/dp15"
                 android:gravity="center"
                 android:maxLines="2"
-                android:padding="@dimen/_15sdp"
+                android:padding="@dimen/_10sdp"
                 android:text="@string/msg_delete_account"
                 android:textColor="@color/color_black_text"
-                android:textSize="@dimen/_16sdp"
+                android:textSize="@dimen/_14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgDeleteAccount" />
+                app:layout_constraintTop_toBottomOf="@id/ivIcons" />
 
             <LinearLayout
                 android:id="@+id/llDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_15sdp"
                 android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 app:layout_constraintTop_toBottomOf="@id/tvAlertMsg">
 
-                <com.namastey.customViews.CustomTextView
+                <com.namastey.customViews.CustomButton
                     android:id="@+id/btnNeg"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_btn"
                     android:gravity="center"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/color_btn"
                     android:padding="@dimen/_8sdp"
                     android:text="@android:string/cancel"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textColor="@color/color_text_red"
+                    android:textSize="@dimen/_14sdp" />
 
-                <com.namastey.customViews.CustomTextView
+                <com.namastey.customViews.CustomButton
                     android:id="@+id/btnPos"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp10"
                     android:layout_weight="1"
+
                     android:background="@drawable/circle_left_right_red"
                     android:gravity="center"
+                    android:textAllCaps="false"
                     android:padding="@dimen/_8sdp"
                     android:text="@string/confirm"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
 
             </LinearLayout>
