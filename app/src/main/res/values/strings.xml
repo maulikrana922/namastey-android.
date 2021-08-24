@@ -193,7 +193,8 @@
     <string name="msg_no_one_new">There is no one new around you</string>
     <string name="turn_on_global">Turn On Global</string>
     <string name="msg_change_distance">Try changing the Distance or Turn on Global from the settings</string>
-    <string name="alert_comment_message">Comment this video is not allowed by the user.</string>
+    <string name="alert_comment_message">Commenting this video is not allowed by the user.</string>
+    <string name="alert_save_message">Saving this video is not allowed by the user.</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>

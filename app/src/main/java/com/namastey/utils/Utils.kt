@@ -68,7 +68,7 @@ object Utils {
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         if (allCorner)
-            shape.cornerRadius = 20f
+            shape.cornerRadius = 40f
         else
             shape.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
 //        shape.setColor(backgroundColor)
@@ -81,7 +81,7 @@ object Utils {
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         if (allCorner)
-            shape.cornerRadius = 10f
+            shape.cornerRadius = 25f
         else
             shape.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
 //        shape.setColor(backgroundColor)
@@ -141,7 +141,7 @@ object Utils {
         )
 
         gd.shape = GradientDrawable.RECTANGLE
-        gd.cornerRadius = 10f
+        gd.cornerRadius = 25f
         v.background = gd
     }
 

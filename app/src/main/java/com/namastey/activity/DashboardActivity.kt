@@ -70,15 +70,16 @@ import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
+import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.tvTimeRemaining
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
-import kotlinx.android.synthetic.main.dialog_bottom_post_comment.rvMentionList
-import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.fragment_education.*
@@ -527,11 +528,27 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         } else {
             bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+            if (dashboardBean.is_saved == 1){
+                bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_save_fill))
+            }
         }
         //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-            dashboardViewModel.savePost(dashboardBean.id)
+            if (dashboardBean.is_saved == 1) {
+                object : CustomAlertDialog(
+                    this@DashboardActivity,
+                    resources.getString(R.string.alert_save_message),
+                    getString(R.string.okay),
+                    ""
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        dismiss()
+                    }
+                }.show()
+            } else {
+                dashboardViewModel.savePost(dashboardBean.id)
+            }
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
             displayReportUserDialog(dashboardBean)
@@ -793,7 +810,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     btnAlertOk.id -> {
                         dismiss()
                         bottomSheetDialogShare.dismiss()
-                        showReportTypeDialog(dashboardBean.user_id)                    }
+                        showReportTypeDialog(dashboardBean.user_id)
+                    }
                 }
             }
         }.show()
@@ -2018,38 +2036,60 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onFeedBoost(userId: Long) {
-        if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+//        if (sessionManager.isGuestUser()) {
+//            addFragment(
+//                SignUpFragment.getInstance(
+//                    true
+//                ),
+//                Constants.SIGNUP_FRAGMENT
+//            )
+//        } else {
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            showBoostFeatureNotAdded()
+//                =============== This feature currently not added ============
+//                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
+//                    val currentTime = System.currentTimeMillis()
+//                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+//                    Log.e("DashboardActivity", "currentTime: $currentTime")
+//                    Log.e("DashboardActivity", "storedTime: $storedTime")
+//                    storedTime += TimeUnit.MINUTES.toMillis(30)
+//                    timer = storedTime - currentTime
+//
+//                    showBoostPendingDialog(timer)
+//
+//                } else {
+//                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+//                        showBoostStartConfirmationDialog()
+//                    } else {
+//                        val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
+//                        intent.putExtra("fromBuyBoost", true)
+//                        openActivity(intent)
+//                    }
+//                }
+//                =============== This feature currently not added ============
+
         } else {
-            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
-                    val currentTime = System.currentTimeMillis()
-                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-                    Log.e("DashboardActivity", "currentTime: $currentTime")
-                    Log.e("DashboardActivity", "storedTime: $storedTime")
-                    storedTime += TimeUnit.MINUTES.toMillis(30)
-                    timer = storedTime - currentTime
-
-                    showBoostPendingDialog(timer)
-
-                } else {
-                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-                        showBoostStartConfirmationDialog()
-                    } else {
-                        val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
-                        intent.putExtra("fromBuyBoost", true)
-                        openActivity(intent)
-                    }
-                }
-            } else {
-                completeSignUpDialog()
-            }
+            completeSignUpDialog()
         }
+//        }
+    }
+
+    private fun showBoostFeatureNotAdded() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_not_available, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        if (!(this@DashboardActivity as Activity).isFinishing) {
+            alertDialog.show()
+        }
+
+        view.btnAlertOk.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
     }
 
     private fun showBoostStartConfirmationDialog() {
