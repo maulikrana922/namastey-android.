@@ -68,7 +68,20 @@ object Utils {
         val shape = GradientDrawable()
         shape.shape = GradientDrawable.RECTANGLE
         if (allCorner)
-            shape.cornerRadius = 30f
+            shape.cornerRadius = 20f
+        else
+            shape.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
+//        shape.setColor(backgroundColor)
+        shape.setStroke(3, borderColor)
+        v.background = shape
+    }
+
+
+    fun filterrectangleShapeBorder(v: View, borderColor: Int, allCorner: Boolean) {
+        val shape = GradientDrawable()
+        shape.shape = GradientDrawable.RECTANGLE
+        if (allCorner)
+            shape.cornerRadius = 10f
         else
             shape.cornerRadii = floatArrayOf(0f, 0f, 54f, 54f, 0f, 0f, 54f, 54f)
 //        shape.setColor(backgroundColor)
@@ -118,6 +131,17 @@ object Utils {
 
         gd.shape = GradientDrawable.RECTANGLE
         gd.cornerRadius = 20f
+        v.background = gd
+    }
+
+    fun filterrectangleCornerShapeGradient(v: View, intArrayOf: IntArray) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TR_BL,
+            intArrayOf
+        )
+
+        gd.shape = GradientDrawable.RECTANGLE
+        gd.cornerRadius = 10f
         v.background = gd
     }
 

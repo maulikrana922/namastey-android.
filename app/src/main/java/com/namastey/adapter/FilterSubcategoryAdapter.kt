@@ -25,6 +25,8 @@ class FilterSubcategoryAdapter(
     var endColor: String
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<FilterSubcategoryAdapter.ViewHolder>() {
 
+    var isshow:Boolean = false
+
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_filter_subcategory, parent, false
@@ -49,25 +51,40 @@ class FilterSubcategoryAdapter(
 
             Utils.imageOverlayGradient(ivSubcategory, startColor, endColor)
 
+            if(isshow ==  true) {
+
             if (subCategoryList[position].is_selected == 1) {
-                Utils.rectangleCornerShapeGradient(
+                Utils.filterrectangleCornerShapeGradient(
                     tvSubCategory, intArrayOf(
-                        ContextCompat.getColor(context,R.color.colorLightPink),
-                        ContextCompat.getColor(context,R.color.colorLightPink)
+                        Color.parseColor(startColor),
+                        Color.parseColor(endColor)
                     )
                 )
+
             } else {
-                Utils.rectangleShapeBorder(
+
+                Utils.filterrectangleShapeBorder(
                     tvSubCategory,
                     ContextCompat.getColor(
                         context,
-                        R.color.colorLightPink
+                        R.color.colorFilterBorder
+                    ), true
+                )
+            }
+            } else {
+
+                Utils.filterrectangleShapeBorder(
+                    tvSubCategory,
+                    ContextCompat.getColor(
+                        context,
+                        R.color.colorFilterBorder
                     ), true
                 )
             }
 
             view.alpha = 0.3f
             holderSubcategory.setOnClickListener {
+                isshow = true
                 subCategoryList.forEach { subcategory ->
                     subcategory.is_selected = 0
                 }

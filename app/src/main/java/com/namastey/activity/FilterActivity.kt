@@ -314,7 +314,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     private fun selectFollowing() {
-        Utils.rectangleCornerShapeGradient(
+        Utils.filterrectangleCornerShapeGradient(
             tvFollowing, intArrayOf(
                 ContextCompat.getColor(this@FilterActivity, R.color.color_text_red),
                 ContextCompat.getColor(this@FilterActivity, R.color.color_text_red)
@@ -325,7 +325,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     }
 
     private fun deselectFollowing() {
-        Utils.rectangleShapeBorder(
+        Utils.filterrectangleShapeBorder(
             tvFollowing,
             ContextCompat.getColor(this@FilterActivity, R.color.color_text_red), true
         )
