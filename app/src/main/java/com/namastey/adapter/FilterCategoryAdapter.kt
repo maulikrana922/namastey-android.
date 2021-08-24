@@ -41,8 +41,8 @@ class FilterCategoryAdapter(
         fun bind(position: Int) = with(itemView) {
             tvFilterCategory.text = categoryList[position].name
 
-            if (categoryList[position].is_selected == 1) {
-                tvFilterCategory.setTextColor(Color.WHITE)
+          if (categoryList[position].is_selected == 1) {
+              tvFilterCategory.setTextColor(Color.BLACK)
 
 /*
                 Utils.rectangleShapeGradient(
@@ -51,25 +51,23 @@ class FilterCategoryAdapter(
                         Color.parseColor(categoryList[position].endColor)
                     )
 */
-                Utils.rectangleCornerShapeGradient(
-                    tvFilterCategory, intArrayOf(
-                        Color.parseColor(categoryList[position].startColor),
-                        Color.parseColor(categoryList[position].endColor)
-                    )
-                )
-            } else {
-                tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                Utils.rectangleShapeBorder(
-                    tvFilterCategory,
-                    Color.parseColor(categoryList[position].endColor),true
-                )
-
-            }
-
+              Utils.filterrectangleCornerShapeGradient(
+                  tvFilterCategory, intArrayOf(
+                      Color.parseColor(categoryList[position].startColor),
+                      Color.parseColor(categoryList[position].endColor)
+                  )
+              )
+          }else {
+              tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
+              Utils.filterrectangleShapeBorder(
+                  tvFilterCategory,
+                  Color.parseColor(categoryList[position].endColor), true
+              )
+          }
             itemView.setOnClickListener {
                 if (position != lastSelectedPos) {
                     categoryList[position].is_selected = 1
-                    tvFilterCategory.setTextColor(Color.WHITE)
+                   tvFilterCategory.setTextColor(Color.BLACK)
 
 /*
                     Utils.rectangleShapeGradient(
@@ -85,7 +83,7 @@ class FilterCategoryAdapter(
                     if (lastSelectedPos != -1) {
                         categoryList[lastSelectedPos].is_selected = 0
                         tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                        Utils.rectangleShapeBorder(
+                        Utils.filterrectangleShapeBorder(
                             tvFilterCategory,
                             Color.parseColor(categoryList[lastSelectedPos].endColor),true
                         )
@@ -96,7 +94,7 @@ class FilterCategoryAdapter(
                     lastSelectedPos = -1
                     categoryList[position].is_selected = 0
                     tvFilterCategory.setTextColor(getColor(context, R.color.colorDarkGray))
-                    Utils.rectangleShapeBorder(
+                    Utils.filterrectangleShapeBorder(
                         tvFilterCategory,
                         Color.parseColor(categoryList[position].endColor),true
                     )
