@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
-        android:textColor="@color/color_text"
+        android:textColor="@color/colorBlack"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
