@@ -9,16 +9,26 @@
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvAlbumName"
         style="@style/tvWrapWhiteStyle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:text="@string/albums"
         android:textSize="18sp"
         android:textColor="@color/colorBlack"
-        app:layout_constraintEnd_toStartOf="@id/tvAlbumViewall"
+        app:layout_constraintEnd_toStartOf="@id/ivHide"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_EXTRA_BOLD" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivHide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_hide"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintStart_toEndOf="@+id/tvAlbumName"
+        app:layout_constraintTop_toTopOf="@+id/tvAlbumName"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAlbumName" />
 
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvAlbumViewall"
@@ -29,7 +39,6 @@
         android:textSize="18sp"
         android:drawableEnd="@drawable/ic_arrow_right"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvAlbumName"
         app:layout_constraintTop_toTopOf="parent"
         app:typeface="MULI_SEMIBOLD" />
 

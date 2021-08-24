@@ -14,8 +14,10 @@ import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.AlbumBean
 import com.namastey.model.ProfileBean
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_parent_album_profile.view.*
 import java.util.*
+import javax.inject.Inject
 
 class AlbumListProfileAdapter(
     var albumList: ArrayList<AlbumBean>,
@@ -24,7 +26,8 @@ class AlbumListProfileAdapter(
     var onItemClick: OnItemClick,
     var gender: String,
     var isMyProfile: Boolean,
-    var profileBean: ProfileBean
+    var profileBean: ProfileBean,
+    var userId:Long
 ) : RecyclerView.Adapter<AlbumListProfileAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -48,6 +51,12 @@ class AlbumListProfileAdapter(
 
             val albumBean = albumList[position]
             tvAlbumName.text = albumBean.name
+
+            if (profileBean.user_id ==userId) {
+                if (albumBean.is_hide == 1)
+                    ivHide.visibility = View.VISIBLE
+                else ivHide.visibility = View.GONE
+            }
 
             if (albumBean.post_video_list.size > 0) {
                 rvChildAlbumPost.visibility = View.VISIBLE

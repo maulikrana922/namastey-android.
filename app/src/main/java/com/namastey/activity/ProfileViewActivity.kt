@@ -255,8 +255,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 this,
                 profileBean.gender,
                 isMyProfile,
-                profileBean
-
+                profileBean,sessionManager.getUserId()
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
@@ -1586,7 +1585,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
             }
             R.id.action_saved -> {
-
+                openActivity(this@ProfileViewActivity, AlbumDetailActivity())
             }
             R.id.action_setting -> {
                 openActivity(this@ProfileViewActivity, SettingsActivity())
