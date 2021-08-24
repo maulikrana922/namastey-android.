@@ -82,8 +82,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     //room
-    implementation 'androidx.room:room-runtime:2.2.5'
-    kapt 'androidx.room:room-compiler:2.2.5'
+    implementation 'androidx.room:room-runtime:2.3.0'
+    kapt 'androidx.room:room-compiler:2.3.0'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     implementation "androidx.room:room-ktx:2.2.5"
 
@@ -127,7 +127,7 @@ dependencies {
 
 //    Facebook
     //implementation 'com.facebook.android:facebook-login:[5,6)'
-    implementation 'com.facebook.android:facebook-login:5.15.3'
+    implementation 'com.facebook.android:facebook-login:11.2.0'
 
 
 //    Google play services

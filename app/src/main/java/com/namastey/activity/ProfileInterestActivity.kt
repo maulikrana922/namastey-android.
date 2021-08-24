@@ -232,6 +232,10 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
 //        }
     }
 
+    override fun onSuccessAddLinkResponse(data: ArrayList<SocialAccountBean>) {
+
+    }
+
     override fun getViewModel() = profileInterestViewModel
 
     override fun getLayoutId() = R.layout.activity_profile_interest

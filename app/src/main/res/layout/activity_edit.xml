@@ -44,6 +44,7 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/txtSettingTitle"
                     style="@style/tvWrapBlackStyle"
+                    android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_toStartOf="@id/txtSave"
                     android:layout_toEndOf="@id/ivEditBack"
