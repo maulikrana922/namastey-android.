@@ -33,6 +33,8 @@ class DashboardBean() : Parcelable {
     var is_liked_you: Int = 0
     var share: Int = 0
     var is_share: Int = 0    // User profile share enable or disable
+    var is_saved: Int = 0    // Already saved video or not
+    var is_reported: Int = 0    // Already report user or not
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
@@ -55,6 +57,8 @@ class DashboardBean() : Parcelable {
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.createStringArrayList() ?: ArrayList()
+        parcel.readInt() ?: 0
+        parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
@@ -90,6 +94,8 @@ class DashboardBean() : Parcelable {
         parcel.writeInt(is_liked_you)
         parcel.writeInt(share)
         parcel.writeInt(is_share)
+        parcel.writeInt(is_saved)
+        parcel.writeInt(is_reported)
     }
 
     override fun describeContents(): Int {

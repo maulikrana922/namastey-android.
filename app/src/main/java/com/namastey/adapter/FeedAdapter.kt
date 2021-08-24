@@ -357,6 +357,10 @@ class FeedAdapter(
                     tvCommentFeed.setOnClickListener {
                         onFeedItemClick.onCommentClick(position, dashboardBean.id)
                     }
+                }else if (tvCommentFeed.text.contains(activity.getString(
+                        R.string.comments_off
+                    ))){
+                    openCustomAlertDialog()
                 }
             }
 
@@ -405,9 +409,9 @@ class FeedAdapter(
 //                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
 //            }
 //
-//            ivFeedBoost.setOnClickListener {
-//                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
-//            }
+            ivFeedBoost.setOnClickListener {
+                onFeedItemClick.onFeedBoost(dashboardBean.user_id)
+            }
 
             if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1 &&
                 sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1
