@@ -157,8 +157,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         val videoBean = videoList[position]
         videoBean.is_like = dashboardBean.is_like
+        videoBean.is_match = dashboardBean.is_match
 
-        if (dashboardBean.is_match == 1 && videoBean.is_like == 1) {
+        if (videoBean.is_match == 1 && videoBean.is_like == 1) {
             val intent = Intent(this@AlbumVideoActivity, MatchesScreenActivity::class.java)
             intent.putExtra("username", videoBean.username)
             intent.putExtra("profile_url", videoBean.profile_url)
@@ -166,6 +167,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
             Log.e("AlbumVideoActivity", "videoListDetail: ${dashboardBean.is_like}")
         videoList[position] = videoBean
+
         albumVideoAdapter.notifyItemChanged(position)
     }
 

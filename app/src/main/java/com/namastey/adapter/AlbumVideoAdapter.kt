@@ -135,37 +135,92 @@ class AlbumVideoAdapter(
                 viewDetailsVideo.visibility = View.GONE
 
             if (sessionManager.getUserId() == videoBean.user_id) {
-                tvFeedLike.text = activity.getString(R.string.edit)
+                tvFeedLike.text = activity.getString(R.string.edit_video)
             } else {
-                //tvFeedLike.text = activity.getString(R.string.like)
-                if (videoBean.is_like == 1) {
-                    tvFeedLike.text = activity.getString(R.string.liked)
-                    tvFeedLike.setTextColor(
-                        ContextCompat.getColor(
-                            activity,
-                            R.color.color_text_red
-                        )
-                    )
-                    tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0)
-                    tvFeedLike.background = activity.getDrawable(R.drawable.rounded_btn)
-                }else {
-                    tvFeedLike.text = activity.getString(R.string.match)
+
+                if (videoBean.is_match == 1) {
+                    tvFeedLike.text = activity.getString(R.string.matched)
                     tvFeedLike.setTextColor(
                         ContextCompat.getColor(
                             activity,
                             R.color.white
                         )
                     )
-                    tvFeedLike.background =
-                        ContextCompat.getDrawable(activity, R.drawable.rounded_btn_red)
                     tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_like_dashboard,
+                        R.drawable.ic_matched,
                         0,
                         0,
                         0
                     )
+                    tvFeedLike.background = activity.getDrawable(R.drawable.rounded_btn_red)
+                } else {
+                    when (videoBean.is_like) {
+                        1 -> {
+                            tvFeedLike.text = activity.getString(R.string.liked)
+                            tvFeedLike.setTextColor(
+                                ContextCompat.getColor(
+                                    activity,
+                                    R.color.color_text_red
+                                )
+                            )
+                            tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
+                                R.drawable.heart,
+                                0,
+                                0,
+                                0
+                            )
+                            tvFeedLike.background = activity.getDrawable(R.drawable.rounded_btn)
+                        }
+                        else -> {
+                            tvFeedLike.text = activity.getString(R.string.match)
+                            tvFeedLike.setTextColor(
+                                ContextCompat.getColor(
+                                    activity,
+                                    R.color.white
+                                )
+                            )
+                            tvFeedLike.background =
+                                ContextCompat.getDrawable(activity, R.drawable.rounded_btn_red)
+                            tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
+                                R.drawable.ic_like_dashboard,
+                                0,
+                                0,
+                                0
+                            )
+                        }
+                    }
                 }
             }
+
+                            //tvFeedLike.text = activity.getString(R.string.like)
+//                if (videoBean.is_like == 1) {
+//                    tvFeedLike.text = activity.getString(R.string.liked)
+//                    tvFeedLike.setTextColor(
+//                        ContextCompat.getColor(
+//                            activity,
+//                            R.color.color_text_red
+//                        )
+//                    )
+//                    tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0)
+//                    tvFeedLike.background = activity.getDrawable(R.drawable.rounded_btn)
+//                }else {
+//                    tvFeedLike.text = activity.getString(R.string.match)
+//                    tvFeedLike.setTextColor(
+//                        ContextCompat.getColor(
+//                            activity,
+//                            R.color.white
+//                        )
+//                    )
+//                    tvFeedLike.background =
+//                        ContextCompat.getDrawable(activity, R.drawable.rounded_btn_red)
+//                    tvFeedLike.setCompoundDrawablesWithIntrinsicBounds(
+//                        R.drawable.ic_like_dashboard,
+//                        0,
+//                        0,
+//                        0
+//                    )
+//                }
+
 
             /*if (videoBean.is_like == 1)
                 tvFeedLike.text = activity.getString(R.string.liked)
@@ -216,6 +271,7 @@ class AlbumVideoAdapter(
                     else
                         onVideoClick.onClickLike(position, videoBean, 1)
                 }
+
             }
             mainViewHolder.setOnClickListener {
                 isDisplayDetails = true

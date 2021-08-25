@@ -31,6 +31,7 @@ class VideoBean() : Parcelable {
     var share: Int = 0          // Total Share count
     var job: String = ""
     var is_share: Int = 0    // User profile share enable or disable
+    var is_match: Int = 0    // User profile share enable or disable
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -57,6 +58,8 @@ class VideoBean() : Parcelable {
         share = parcel.readInt()
         job =  parcel.readString() ?: ""
         is_share =  parcel.readInt() ?: 0
+        is_match =  parcel.readInt() ?: 0
+
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -84,6 +87,8 @@ class VideoBean() : Parcelable {
         parcel.writeInt(share)
         parcel.writeString(job)
         parcel.writeInt(is_share)
+        parcel.writeInt(is_match)
+
     }
 
     override fun describeContents(): Int {
