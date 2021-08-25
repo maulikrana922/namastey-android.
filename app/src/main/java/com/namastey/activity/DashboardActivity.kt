@@ -532,6 +532,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_save_fill))
             }
         }
+        if(dashboardBean.is_reported == 1){
+            bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_report_fill))
+        }
         //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()

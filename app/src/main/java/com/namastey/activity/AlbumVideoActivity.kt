@@ -638,24 +638,42 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareBlock.visibility = View.GONE
             bottomSheetDialogShare.ivShareReport.visibility = View.GONE
             bottomSheetDialogShare.tvShareReport.visibility = View.GONE
-           // bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
+            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
+            bottomSheetDialogShare.ivShareMessage.visibility = View.GONE
+            bottomSheetDialogShare.tvShareMessage.visibility = View.GONE
+
+            // bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
            // bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
         } else {
             bottomSheetDialogShare.ivShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.ivShareReport.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareReport.visibility = View.VISIBLE
-          //  bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
+            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+            bottomSheetDialogShare.ivShareMessage.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareMessage.visibility = View.VISIBLE
+
+            //  bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
            // bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
         }
-
+         Log.d("saved", videoBean.is_saved.toString())
         if (videoBean.is_download == 0){
             bottomSheetDialogShare.ivShareSave.visibility = View.GONE
             bottomSheetDialogShare.tvShareSave.visibility = View.GONE
         }else{
             bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+            if(videoBean.is_saved == 1){
+                bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_save_fill))
+            }
         }
+
+        if(videoBean.is_reported == 1){
+            bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_report_fill))
+        }
+
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -896,13 +914,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     private fun displayBlockUserDialog(videoBean: VideoBean) {
-        object : CustomCommonAlertDialog(
+        object : CustomCommonNewAlertDialog(
             this@AlbumVideoActivity,
             videoBean.username,
             getString(R.string.msg_block_user),
             videoBean.profile_url,
-            getString(R.string.block_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
@@ -920,13 +938,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Display dialog of report user
      */
     private fun displayReportUserDialog(videoBean: VideoBean) {
-        object : CustomCommonAlertDialog(
+        object : CustomCommonNewAlertDialog(
             this@AlbumVideoActivity,
             videoBean.username,
             getString(R.string.msg_report_user),
             videoBean.profile_url,
-            getString(R.string.report_user),
-            resources.getString(R.string.no_thanks)
+            getString(R.string.confirm),
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
