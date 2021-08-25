@@ -7,6 +7,7 @@ import java.util.*
 interface ProfileInterestView : BaseView {
 
     fun onSuccessResponse(data: ArrayList<SocialAccountBean>)
+    fun onSuccessAddLinkResponse(data: ArrayList<SocialAccountBean>)
     fun onSuccessSpotify(spotifyUrl: String)
     fun onSuccessInstagram(instagramData: InstagramData)
 }

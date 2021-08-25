@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_hide"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/_8sdp"
         app:layout_constraintStart_toEndOf="@+id/tvAlbumName"
         app:layout_constraintTop_toTopOf="@+id/tvAlbumName"

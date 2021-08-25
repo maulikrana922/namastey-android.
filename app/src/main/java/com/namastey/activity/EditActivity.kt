@@ -510,6 +510,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             llSocialLink -> {
                 val intent = Intent(this, SocialLinkActivity::class.java)
                 intent.putExtra(Constants.ACTIVITY_EDIT, "EditActivity")
+                intent.putExtra(Constants.KEY_IS_LOGIN, true)
                 openActivity(intent)
             }
         }

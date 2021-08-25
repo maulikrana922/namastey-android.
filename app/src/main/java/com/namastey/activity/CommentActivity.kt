@@ -176,8 +176,8 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     }
 
     override fun onSuccess(msg: String) {
-        tvTotalComment.text =
-            commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
+//        tvTotalComment.text =
+//            commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
 
         isUpdateComment = true
         commentCount = commentAdapter.itemCount
@@ -199,8 +199,8 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         commentAdapter.addCommentLastPosition(commentBean)
         rvPostComments.scrollToPosition(commentAdapter.itemCount - 1)
 
-        tvTotalComment.text =
-            commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
+//        tvTotalComment.text =
+//            commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
         commentCount = commentAdapter.itemCount
         isUpdateComment = true
     }

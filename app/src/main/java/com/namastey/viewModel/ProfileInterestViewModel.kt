@@ -30,15 +30,19 @@ class ProfileInterestViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                    networkService.requestAddSocialLinks(jsonObject)
-                        .let { appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
-                            setIsLoading(false)
-                            if (appResponse.status == Constants.OK) {
-                                profileInterestView.onSuccessResponse(appResponse.data!!)
-                            } else {
-                                profileInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
-                            }
+                networkService.requestAddSocialLinks(jsonObject)
+                    .let { appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK) {
+                            profileInterestView.onSuccessAddLinkResponse(appResponse.data!!)
+                        } else {
+                            profileInterestView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                         }
+                    }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 profileInterestView.onHandleException(exception)
@@ -46,18 +50,21 @@ class ProfileInterestViewModel constructor(
         }
     }
 
-
     fun getSocialLink() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                    networkService.requestToGetSocialLinksList().let {
-                            appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
+                networkService.requestToGetSocialLinksList()
+                    .let { appResponse: AppResponse<ArrayList<SocialAccountBean>> ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK) {
                             profileInterestView.onSuccessResponse(appResponse.data!!)
                         } else {
-                            profileInterestView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            profileInterestView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
                         }
                     }
             } catch (exception: Throwable) {
@@ -71,10 +78,10 @@ class ProfileInterestViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                    networkService.requestToGetInstagram(baseurl).let { any : Any ->
-                        Log.d("instagram Response : ", any.toString())
-                        setIsLoading(false)
-                    }
+                networkService.requestToGetInstagram(baseurl).let { any: Any ->
+                    Log.d("instagram Response : ", any.toString())
+                    setIsLoading(false)
+                }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 profileInterestView.onHandleException(exception)
@@ -93,13 +100,17 @@ class ProfileInterestViewModel constructor(
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetInstagramToken(apidata,client_id,client_secret,
-                token,authorization_code,redirectUrl).let { instagramData: InstagramData ->
-                    val accessTokenUrl = "https://graph.instagram.com/access_token?client_secret=".plus(client_secret).plus("&access_token=")
-                        .plus(instagramData.access_token).plus("&grant_type=ig_exchange_token")
+                networkService.requestToGetInstagramToken(
+                    apidata, client_id, client_secret,
+                    token, authorization_code, redirectUrl
+                ).let { instagramData: InstagramData ->
+                    val accessTokenUrl =
+                        "https://graph.instagram.com/access_token?client_secret=".plus(client_secret)
+                            .plus("&access_token=")
+                            .plus(instagramData.access_token).plus("&grant_type=ig_exchange_token")
                     Log.d("Instagram Data :", instagramData.access_token)
                     Log.d("Instagram user_id :", instagramData.user_id)
-                    fetchInstagramToken(accessTokenUrl,instagramData.user_id)
+                    fetchInstagramToken(accessTokenUrl, instagramData.user_id)
                 }
             } catch (exception: Throwable) {
                 setIsLoading(false)
@@ -114,13 +125,14 @@ class ProfileInterestViewModel constructor(
     ) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetInstagramTokenLink(accessTokenUrl).let { instagramData: InstagramData ->
-                    val usernameUrl = "https://graph.instagram.com/".plus(userid)
-                        .plus("?access_token=").plus(instagramData.access_token)
-                        .plus("&fields=username")
+                networkService.requestToGetInstagramTokenLink(accessTokenUrl)
+                    .let { instagramData: InstagramData ->
+                        val usernameUrl = "https://graph.instagram.com/".plus(userid)
+                            .plus("?access_token=").plus(instagramData.access_token)
+                            .plus("&fields=username")
 
-                    instagramFetchUsername(usernameUrl)
-                }
+                        instagramFetchUsername(usernameUrl)
+                    }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 profileInterestView.onHandleException(exception)
@@ -131,11 +143,12 @@ class ProfileInterestViewModel constructor(
     private fun instagramFetchUsername(usernameUrl: String) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToGetInstagramTokenLink(usernameUrl).let { instagramData: InstagramData ->
-                    Log.d("Instagram : ", instagramData.username)
-                    setIsLoading(false)
-                    profileInterestView.onSuccessInstagram(instagramData)
-                }
+                networkService.requestToGetInstagramTokenLink(usernameUrl)
+                    .let { instagramData: InstagramData ->
+                        Log.d("Instagram : ", instagramData.username)
+                        setIsLoading(false)
+                        profileInterestView.onSuccessInstagram(instagramData)
+                    }
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 profileInterestView.onHandleException(exception)
@@ -153,11 +166,12 @@ class ProfileInterestViewModel constructor(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
 
-                networkService.requestToGetSpotifyLink("Bearer ".plus(token)).let { appResponseSpotify: AppResponseSpotify<SpotifyBean> ->
-                    Log.d("spotify Response : ", appResponseSpotify.toString())
-                    setIsLoading(false)
-                    profileInterestView.onSuccessSpotify(appResponseSpotify.external_urls!!.spotify)
-                }
+                networkService.requestToGetSpotifyLink("Bearer ".plus(token))
+                    .let { appResponseSpotify: AppResponseSpotify<SpotifyBean> ->
+                        Log.d("spotify Response : ", appResponseSpotify.toString())
+                        setIsLoading(false)
+                        profileInterestView.onSuccessSpotify(appResponseSpotify.external_urls!!.spotify)
+                    }
 
             } catch (exception: Throwable) {
                 setIsLoading(false)

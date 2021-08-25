@@ -52,11 +52,10 @@ class AlbumListProfileAdapter(
             val albumBean = albumList[position]
             tvAlbumName.text = albumBean.name
 
-            if (profileBean.user_id ==userId) {
-                if (albumBean.is_hide == 1)
-                    ivHide.visibility = View.VISIBLE
-                else ivHide.visibility = View.GONE
-            }
+            if (profileBean.user_id == userId && albumBean.is_hide == 1)
+                ivHide.visibility = View.VISIBLE
+            else
+                ivHide.visibility = View.GONE
 
             if (albumBean.post_video_list.size > 0) {
                 rvChildAlbumPost.visibility = View.VISIBLE

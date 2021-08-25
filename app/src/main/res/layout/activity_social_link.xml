@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.ProfileInterestViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_15sdp"
+            android:onClick="onClickSkip"
             android:padding="@dimen/_5sdp"
             android:text="@string/tv_skip"
-            android:onClick="onClickSkip"
             android:textColor="@color/color_text_red"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/ivBack"
@@ -68,8 +79,8 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:maxLines="2"
                     android:paddingEnd="@dimen/_5sdp"
-                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     android:text="@string/msg_connect_socials"
+                    app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvSocial" />
 
@@ -83,7 +94,9 @@
                     android:drawableStart="@drawable/ic_link_facebook"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_facebook"
@@ -91,6 +104,22 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvSocialMsg" />
+
+
+                <ImageView
+                    android:id="@+id/ivFacebookDelete"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:onClick="onClickButton"
+                    android:src="@drawable/ic_del_photo"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvFacebook"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvFacebook"
+                    tools:ignore="ContentDescription" />
+
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvInstagram"
@@ -100,14 +129,31 @@
                     android:drawableStart="@drawable/ic_link_instagram"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_instagram"
+                    android:paddingEnd="@dimen/_25sdp"
                     android:textColor="@color/color_instagram"
                     app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvFacebook" />
+
+                <ImageView
+                    android:id="@+id/ivInstagramDelete"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:onClick="onClickButton"
+                    android:src="@drawable/ic_del_photo"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvInstagram"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvInstagram"
+                    tools:ignore="ContentDescription" />
+
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvTwitter"
@@ -117,14 +163,32 @@
                     android:drawableStart="@drawable/ic_link_twitter"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_twitter"
                     android:textColor="@color/color_twitter"
                     app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvInstagram" />
+
+
+                <ImageView
+                    android:id="@+id/ivTwitterDelete"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:onClick="onClickButton"
+                    android:src="@drawable/ic_del_photo"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvTwitter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvTwitter"
+                    tools:ignore="ContentDescription" />
+
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSpotify"
@@ -134,14 +198,30 @@
                     android:drawableStart="@drawable/ic_link_spotify"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_15sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_spotify"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:textColor="@color/color_spotify"
                     app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
                     app:layout_constraintTop_toBottomOf="@id/tvTwitter" />
+
+                <ImageView
+                    android:id="@+id/ivSpotifyDelete"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:onClick="onClickButton"
+                    android:src="@drawable/ic_del_photo"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvSpotify"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvSpotify"
+                    tools:ignore="ContentDescription" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -155,6 +235,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
