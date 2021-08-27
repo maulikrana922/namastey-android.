@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -138,7 +139,9 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
     }
 
     fun onClickNotification(view: View) {
-        openActivity(this@MatchesActivity, NotificationActivity())
+        val intent = Intent(this@MatchesActivity,NotificationActivity::class.java)
+        openActivityForResult(intent, 105)
+//        openActivity(this@MatchesActivity, NotificationActivity())
     }
 
 /*    private fun initData() {
@@ -389,6 +392,12 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
 //        })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 105) {
+            finishActivity()
+        }
+    }
 
     private fun removeListeners() {
 //        if (::messageListListener.isInitialized && ::getMessageListQuery.isInitialized){
