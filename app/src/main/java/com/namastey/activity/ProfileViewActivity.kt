@@ -1173,6 +1173,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_report_new)
         bottomSheetDialogShare.tvShareReport.text = getString(R.string.report)
 
+        bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+        bottomSheetDialogShare.tvShareSave.visibility = View.GONE
         bottomSheetDialogShare.ivShareMessage.setImageResource(R.drawable.ic_chat_new)
         if (profileBean.safetyBean.who_can_send_message == 2)
             bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)

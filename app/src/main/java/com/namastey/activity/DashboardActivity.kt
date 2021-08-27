@@ -522,35 +522,73 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 shareOther(dashboardBean)
             }
         }
-        if (dashboardBean.is_download == 0) {
-            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
-            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
-        } else {
-            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
-            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+//        if (dashboardBean.is_download == 0) {
+////            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+////            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
+//
+//        } else {
+//            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
+//            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
             if (dashboardBean.is_saved == 1){
                 bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_save_fill))
+            }
+//        }
+
+        if (dashboardBean.who_can_send_message == 2)
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
+        else if (dashboardBean.who_can_send_message == 0) {
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
+        } else {
+            if (dashboardBean.who_can_send_message == 1 && dashboardBean.is_follow_me == 1) {
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
+            } else {
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
             }
         }
         if(dashboardBean.is_reported == 1){
             bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_report_fill))
         }
+
+        //Send Message
+        bottomSheetDialogShare.ivShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
+                clickSendMessage(dashboardBean)
+            }
+        }
+        bottomSheetDialogShare.tvShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
+                clickSendMessage(dashboardBean)
+            }
+        }
         //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-            if (dashboardBean.is_saved == 1) {
-                object : CustomAlertDialog(
-                    this@DashboardActivity,
-                    resources.getString(R.string.alert_save_already),
-                    getString(R.string.okay),
-                    ""
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        dismiss()
-                    }
-                }.show()
-            } else {
-                dashboardViewModel.savePost(dashboardBean.id)
+            if (dashboardBean.is_download == 0){
+                            object : CustomAlertDialog(
+                this@DashboardActivity,
+                resources.getString(R.string.alert_saved_message),
+                getString(R.string.okay),
+                ""
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
+            }else{
+                if (dashboardBean.is_saved == 1) {
+                    object : CustomAlertDialog(
+                        this@DashboardActivity,
+                        resources.getString(R.string.alert_save_already),
+                        getString(R.string.okay),
+                        ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            dismiss()
+                        }
+                    }.show()
+                } else {
+                    dashboardViewModel.savePost(dashboardBean.id)
+                }
             }
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
@@ -567,6 +605,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
 
         bottomSheetDialogShare.show()
+    }
+    private fun clickSendMessage(dashboardBean: DashboardBean) {
+        val matchesListBean = MatchesListBean()
+        matchesListBean.id = dashboardBean.user_id
+        matchesListBean.username = dashboardBean.username
+        matchesListBean.casual_name = dashboardBean.casual_name
+        matchesListBean.profile_pic = dashboardBean.profile_url
+        matchesListBean.is_match = dashboardBean.is_match
+//        matchesListBean.is_block = dashboardBean.is_block
+        matchesListBean.is_read = 1
+
+        if (dashboardBean.user_id != sessionManager.getUserId()) {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", true)
+            when (dashboardBean.is_follow_me) {
+                1 -> intent.putExtra("isFollowMe", true)
+                else -> intent.putExtra("isFollowMe", false)
+            }
+            intent.putExtra("whoCanSendMessage", dashboardBean.who_can_send_message)
+            openActivity(intent)
+        }
     }
 
     private fun shareWhatsApp(dashboardBean: DashboardBean) {
@@ -734,20 +794,26 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             shareIntent.setPackage("com.instagram.android")
             try {
 
-                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                val fileName = "share_video.mp4"
-                val file = File(folder, fileName)
-                val uri = let {
-                    FileProvider.getUriForFile(
-                        it,
-                        "${BuildConfig.APPLICATION_ID}.provider",
-                        file
-                    )
-                }
+                val intentDirect = Intent(Intent.ACTION_SEND)
+                intentDirect.component = ComponentName("com.instagram.android","com.instagram.direct.share.handler.DirectShareHandlerActivity")
+                intentDirect.type = "text/plain"
+                intentDirect.putExtra(Intent.EXTRA_TEXT, "Your message here")
+                startActivity(intentDirect)
 
-                fileUrl = dashboardBean.video_url
-
-                downloadFile(this@DashboardActivity, fileUrl, uri)
+//                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+//                val fileName = "share_video.mp4"
+//                val file = File(folder, fileName)
+//                val uri = let {
+//                    FileProvider.getUriForFile(
+//                        it,
+//                        "${BuildConfig.APPLICATION_ID}.provider",
+//                        file
+//                    )
+//                }
+//
+//                fileUrl = dashboardBean.video_url
+//
+//                downloadFile(this@DashboardActivity, fileUrl, uri)
 
             } catch (e: Exception) {
                 Log.e("ERROR", e.printStackTrace().toString())
