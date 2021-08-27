@@ -52,8 +52,6 @@ import com.namastey.viewModel.AlbumViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_album_video.*
-import kotlinx.android.synthetic.main.dialog_alert.*
-import kotlinx.android.synthetic.main.dialog_alert.btnPos
 import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
@@ -74,6 +72,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareCancel
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareReport
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareSave
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
