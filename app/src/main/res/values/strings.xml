@@ -195,6 +195,8 @@
     <string name="msg_change_distance">Try changing the Distance or Turn on Global from the settings</string>
     <string name="alert_comment_message">Commenting this video is not allowed by the user.</string>
     <string name="alert_save_message">Saving this video is not allowed by the user.</string>
+    <string name="alert_save_already">This video has already been saved by you.</string>
+    <string name="alert_report_already">This user has already been reported by you.</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>
