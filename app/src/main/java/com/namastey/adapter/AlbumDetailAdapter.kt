@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
+import com.namastey.customViews.CustomButton
 import com.namastey.customViews.CustomTextView
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
@@ -97,12 +98,12 @@ class AlbumDetailAdapter(
                         deleteDialog.btnNeg.setText(resources.getString(R.string.video_delete_btn_pos))
                         deleteDialog.btnPos.setText(resources.getString(R.string.video_delete_btn_neg))
 
-                        deleteDialog.findViewById<CustomTextView>(R.id.btnPos).setOnClickListener {
+                        deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
                             onItemClick.onItemClick(videoBean.id, position)
                             notifyDataSetChanged()
                             deleteDialog.dismiss()
                         }
-                        deleteDialog.findViewById<CustomTextView>(R.id.btnNeg).setOnClickListener {
+                        deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
                             deleteDialog.dismiss()
                         }
                         deleteDialog.show()

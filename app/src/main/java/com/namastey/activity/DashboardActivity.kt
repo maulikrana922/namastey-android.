@@ -70,6 +70,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_alert.btnPos
+import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
@@ -547,6 +549,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
         if(dashboardBean.is_reported == 1){
             bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_report_fill))
+            bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
         }
 
         //Send Message
@@ -592,7 +595,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             }
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            displayReportUserDialog(dashboardBean)
+            if(dashboardBean.is_reported == 1){
+                displayReportedUserDialog()
+            }else {
+                displayReportUserDialog(dashboardBean)
+            }
         }
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
             displayReportUserDialog(dashboardBean)
@@ -897,6 +904,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     }
                 }.show()
     }
+    }
+
+    private fun displayReportedUserDialog() {
+        object : CustomAlertDialogNew(
+            this,
+            getString(R.string.reported_msg),
+            getString(R.string.okay),
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnDone.id -> {
+                        dismiss()
+                        bottomSheetDialogShare.dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 
     /**

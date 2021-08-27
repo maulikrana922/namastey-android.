@@ -400,6 +400,36 @@
             app:layout_constraintStart_toStartOf="@id/ivShareReport"
             app:layout_constraintTop_toBottomOf="@id/ivShareReport" />
 
+        <ImageView
+            android:id="@+id/ivShareDelete"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:contentDescription="@string/app_name"
+            android:background="@drawable/ic_round_background"
+            android:src="@drawable/ic_delete"
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/ivShareReport"
+            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvShareDelete"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/delete"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/ivShareDelete"
+            app:layout_constraintStart_toStartOf="@id/ivShareDelete"
+            app:layout_constraintTop_toBottomOf="@id/ivShareDelete" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
