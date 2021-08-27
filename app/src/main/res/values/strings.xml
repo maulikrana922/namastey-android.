@@ -658,7 +658,8 @@
     <string name="not_now">Not Now</string>
     <string name="use_boost_new">Use Boost!</string>
     <string name="boosts_not_available">Boosts are not available</string>
-    <string name="alert_msg_boost_not_available">Currently this feature is not live. Please stay tuned.</string>
+    <string name="membership_not_available">Membership are not available</string>
+    <string name="alert_msg_feature_not_available">Currently this feature is not live. Please stay tuned.</string>
     <string name="alert_msg_boost">You got about 8.5x more profile views.</string>
     <string name="alert_boost_msg">Swipe to see who checked you.</string>
     <string name="boost_time">29:29 Remaining</string>
