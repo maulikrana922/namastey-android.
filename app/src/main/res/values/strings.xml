@@ -194,6 +194,7 @@
     <string name="turn_on_global">Turn On Global</string>
     <string name="msg_change_distance">Try changing the Distance or Turn on Global from the settings</string>
     <string name="alert_comment_message">Commenting this video is not allowed by the user.</string>
+    <string name="alert_saved_message">Sharing this video is not allowed by the user.</string>
     <string name="alert_save_message">Saving this video is not allowed by the user.</string>
     <string name="alert_save_already">This video has already been saved by you.</string>
     <string name="alert_report_already">This user has already been reported by you.</string>
@@ -536,7 +537,7 @@
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
-    <string name="message_locked">Message\nLocked</string>
+    <string name="message_locked">Message (Locked)</string>
     <string name="private_account_message">This user have private account.</string>
 
     <!--    invite screen-->
@@ -666,4 +667,7 @@
     <string name="alert_boost_msg">Swipe to see who checked you.</string>
     <string name="boost_time">29:29 Remaining</string>
     <string name="share_profile">Share profile</string>
+    <string name="reported">Reported</string>
+    <string name="not_available">Not Available</string>
+    <string name="reported_msg">"This user has already been reported by you. "</string>
 </resources>

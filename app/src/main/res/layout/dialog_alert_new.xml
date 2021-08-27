@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_5sdp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        tools:ignore="SpUsage">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp10">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvAlertTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/not_available"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvAlertMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_16sdp"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertTitle"
+                tools:text="@string/app_name" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/btnView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_marginEnd="@dimen/dp10"
+                android:gravity="center"
+                android:padding="@dimen/dp15"
+                android:text="@string/view"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_16sdp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnDone"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertMsg" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/btnDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:gravity="center"
+                android:padding="@dimen/_12sdp"
+                android:text="@string/okay"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAlertMsg" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
