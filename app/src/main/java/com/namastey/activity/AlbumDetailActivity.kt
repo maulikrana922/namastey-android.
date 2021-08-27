@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -98,10 +97,11 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
 //            rleditalbum.visibility = View.GONE
 //        }
 
-        /* if (intent.hasExtra("albumId")) {
-             albumId = intent.getLongExtra("albumId", 0)
+         if (intent.hasExtra(Constants.ALBUM_ID)) {
+             albumId = intent.getLongExtra(Constants.ALBUM_ID, 0)
              albumViewModel.getAlbumDetail(albumId)
-         }*/
+         }
+
 
 /*
             edtAlbumName.visibility = View.VISIBLE
@@ -150,11 +150,15 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 }
             })
 */
-        profileBean = intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+        if (intent.hasExtra(Constants.PROFILE_BEAN))
+            profileBean =
+                intent.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
 
         Log.d("sru", profileBean.user_id.toString())
         Log.d("shti", sessionManager.getUserId().toString())
-        albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
+
+        if (intent.hasExtra(Constants.ALBUM_BEAN))
+            albumBean = intent.getParcelableExtra<AlbumBean>(Constants.ALBUM_BEAN) as AlbumBean
 
         if (profileBean.user_id == sessionManager.getUserId()) {
             isHide = if (albumBean.is_hide == 1)
@@ -164,8 +168,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             fromEdit = true
             ivMore.visibility = View.VISIBLE
             postList = ArrayList()
-                postList.addAll(albumBean.post_video_list)
-                postList.add(0, VideoBean())
+            postList.addAll(albumBean.post_video_list)
+            postList.add(0, VideoBean())
             edtAlbumTitle.setText(albumBean.name)
             albumId = albumBean.id
             albumDetailAdapter =

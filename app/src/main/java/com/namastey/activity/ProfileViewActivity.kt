@@ -38,7 +38,6 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
 import com.namastey.fragment.ShareAppFragment
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
@@ -120,10 +119,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
             sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
             btnMembership.visibility = View.VISIBLE
-            Utils.rectangleCornerShapeGradient(btnMembership, intArrayOf(
-                Color.parseColor("#3ED6EB"),
-                Color.parseColor("#FF72AD")
-            ))
+            Utils.rectangleCornerShapeGradient(
+                btnMembership, intArrayOf(
+                    Color.parseColor("#3ED6EB"),
+                    Color.parseColor("#FF72AD")
+                )
+            )
         } else {
             isMyProfile = false
             btnMembership.visibility = View.GONE
@@ -231,8 +232,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvAbouteDesc.text = profileBean.about_me
         else
             tvAbouteDesc.text = getString(R.string.about_me_empty)
-
-
+        if (profileBean.albums.isNotEmpty()) {
+            val albums = profileBean.albums.filter { it.name == getString(R.string.saved) }
+            Log.e("Album", albums.size.toString())
+        }
 
         tvFollowersCount.text = profileBean.followers.toString()
         tvFollowingCount.text = profileBean.following.toString()
@@ -262,7 +265,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 this,
                 profileBean.gender,
                 isMyProfile,
-                profileBean,sessionManager.getUserId()
+                profileBean, sessionManager.getUserId()
             )
         rvAlbumList.adapter = albumListProfileAdapter
 
@@ -1173,6 +1176,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         bottomSheetDialogShare.ivShareReport.setImageResource(R.drawable.ic_report_new)
         bottomSheetDialogShare.tvShareReport.text = getString(R.string.report)
 
+        bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+        bottomSheetDialogShare.tvShareSave.visibility = View.GONE
         bottomSheetDialogShare.ivShareMessage.setImageResource(R.drawable.ic_chat_new)
         if (profileBean.safetyBean.who_can_send_message == 2)
             bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
@@ -1575,13 +1580,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemSaved=menu.findItem(R.id.action_saved)
-        val itemSetting=menu.findItem(R.id.action_setting)
+        val itemSaved = menu.findItem(R.id.action_saved)
+        val itemSetting = menu.findItem(R.id.action_setting)
         when (item.itemId) {
             R.id.action_more -> {
-                if (sessionManager.getUserId() != profileBean.user_id)  {
-                    itemSaved.isVisible=false
-                    itemSetting.isVisible=false
+                if (sessionManager.getUserId() != profileBean.user_id) {
+                    itemSaved.isVisible = false
+                    itemSetting.isVisible = false
                     if (profileBean.username.isNotEmpty()) {
                         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                             completeSignUpDialog()
@@ -1592,7 +1597,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
             }
             R.id.action_saved -> {
-                openActivity(this@ProfileViewActivity, AlbumDetailActivity())
+                val intent = Intent(this@ProfileViewActivity, AlbumDetailActivity::class.java)
+                intent.putExtra(Constants.ALBUM_ID, profileBean.saved_album_id)
+                openActivity(intent)
             }
             R.id.action_setting -> {
                 openActivity(this@ProfileViewActivity, SettingsActivity())

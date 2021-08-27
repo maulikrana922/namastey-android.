@@ -111,27 +111,31 @@ class FollowingAdapter(
                         msg = resources.getString(R.string.msg_send_follow_request)
                     }
                 }
-
-                object : CustomCommonAlertDialog(
-                    activity,
-                    dashboardBean.username,
-                    msg,
-                    dashboardBean.profile_url,
-                    activity.resources.getString(R.string.yes),
-                    resources.getString(R.string.cancel)
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        when (id) {
-                            btnAlertOk.id -> {
-                                onFollowItemClick.onItemRemoveFollowersClick(
-                                    dashboardBean.id,
-                                    isFollow,
-                                    position
-                                )
-                            }
-                        }
-                    }
-                }.show()
+                onFollowItemClick.onItemRemoveFollowersClick(
+                    dashboardBean.id,
+                    isFollow,
+                    position
+                )
+//                object : CustomCommonAlertDialog(
+//                    activity,
+//                    dashboardBean.username,
+//                    msg,
+//                    dashboardBean.profile_url,
+//                    activity.resources.getString(R.string.yes),
+//                    resources.getString(R.string.cancel)
+//                ) {
+//                    override fun onBtnClick(id: Int) {
+//                        when (id) {
+//                            btnAlertOk.id -> {
+//                                onFollowItemClick.onItemRemoveFollowersClick(
+//                                    dashboardBean.id,
+//                                    isFollow,
+//                                    position
+//                                )
+//                            }
+//                        }
+//                    }
+//                }.show()
             }
         }
 
