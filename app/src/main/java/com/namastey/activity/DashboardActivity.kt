@@ -541,7 +541,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             if (dashboardBean.is_saved == 1) {
                 object : CustomAlertDialog(
                     this@DashboardActivity,
-                    resources.getString(R.string.alert_save_message),
+                    resources.getString(R.string.alert_save_already),
                     getString(R.string.okay),
                     ""
                 ) {
@@ -800,24 +800,37 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      * Display dialog of report user
      */
     private fun displayReportUserDialog(dashboardBean: DashboardBean) {
-        object : CustomCommonNewAlertDialog(
-            this,
-            dashboardBean.casual_name,
-            getString(R.string.msg_report_user),
-            dashboardBean.profile_url,
-            getString(R.string.confirm),
-            resources.getString(R.string.cancel)
-        ) {
-            override fun onBtnClick(id: Int) {
-                when (id) {
-                    btnAlertOk.id -> {
+        if (dashboardBean.is_reported == 1) {
+            object : CustomAlertDialog(
+                    this@DashboardActivity,
+                    resources.getString(R.string.alert_report_already),
+                    getString(R.string.okay),
+                    ""
+                ) {
+                    override fun onBtnClick(id: Int) {
                         dismiss()
-                        bottomSheetDialogShare.dismiss()
-                        showReportTypeDialog(dashboardBean.user_id)
                     }
-                }
-            }
-        }.show()
+                }.show()
+        } else{
+                object : CustomCommonNewAlertDialog(
+                    this,
+                    dashboardBean.casual_name,
+                    getString(R.string.msg_report_user),
+                    dashboardBean.profile_url,
+                    getString(R.string.confirm),
+                    resources.getString(R.string.cancel)
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        when (id) {
+                            btnAlertOk.id -> {
+                                dismiss()
+                                bottomSheetDialogShare.dismiss()
+                                showReportTypeDialog(dashboardBean.user_id)
+                            }
+                        }
+                    }
+                }.show()
+    }
     }
 
     /**
