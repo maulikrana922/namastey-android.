@@ -663,4 +663,7 @@
     <string name="alert_boost_msg">Swipe to see who checked you.</string>
     <string name="boost_time">29:29 Remaining</string>
     <string name="share_profile">Share profile</string>
+    <string name="reported">Reported</string>
+    <string name="not_available">Not Available</string>
+    <string name="reported_msg">"This user has already been reported by you. "</string>
 </resources>

@@ -53,6 +53,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_album_video.*
 import kotlinx.android.synthetic.main.dialog_alert.*
+import kotlinx.android.synthetic.main.dialog_alert.btnPos
+import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
@@ -642,9 +644,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareSave.visibility = View.GONE
             bottomSheetDialogShare.ivShareMessage.visibility = View.GONE
             bottomSheetDialogShare.tvShareMessage.visibility = View.GONE
+            bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
+            bottomSheetDialogShare.ivShareApp.visibility = View.GONE
+            bottomSheetDialogShare.tvShareApp.visibility = View.GONE
 
-            // bottomSheetDialogShare.ivShareDelete.visibility = View.VISIBLE
-           // bottomSheetDialogShare.tvShareDelete.visibility = View.VISIBLE
         } else {
             bottomSheetDialogShare.ivShareBlock.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareBlock.visibility = View.VISIBLE
@@ -654,25 +658,28 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
             bottomSheetDialogShare.ivShareMessage.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareMessage.visibility = View.VISIBLE
-
-            //  bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
-           // bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
-        }
-         Log.d("saved", videoBean.is_saved.toString())
-        if (videoBean.is_download == 0){
-            bottomSheetDialogShare.ivShareSave.visibility = View.GONE
-            bottomSheetDialogShare.tvShareSave.visibility = View.GONE
-        }else{
-            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
-            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
-            if(videoBean.is_saved == 1){
-                bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_save_fill))
+            bottomSheetDialogShare.ivShareDelete.visibility = View.GONE
+            bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
+            bottomSheetDialogShare.ivShareApp.visibility = View.VISIBLE
+            bottomSheetDialogShare.tvShareApp.visibility = View.VISIBLE
+            if (videoBean.is_download == 0){
+                bottomSheetDialogShare.ivShareSave.visibility = View.GONE
+                bottomSheetDialogShare.tvShareSave.visibility = View.GONE
+            }else{
+                bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
+                bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
+                if(videoBean.is_saved == 1){
+                    bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_save_fill))
+                }
             }
         }
+         Log.d("saved", videoBean.is_saved.toString())
 
         if(videoBean.is_reported == 1){
             bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_report_fill))
+            bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
         }
+
 
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
@@ -680,7 +687,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             albumViewModel.savePost(videoBean.id)
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            displayReportUserDialog(videoBean)
+            if(videoBean.is_reported == 1){
+                displayReportedUserDialog()
+            }else {
+                displayReportUserDialog(videoBean)
+            }
         }
         bottomSheetDialogShare.tvShareReport.setOnClickListener {
             displayReportUserDialog(videoBean)
@@ -691,12 +702,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogShare.ivShareBlock.setOnClickListener {
             displayBlockUserDialog(videoBean)
         }
-//        bottomSheetDialogShare.ivShareDelete.setOnClickListener {
-//            displayDeletePostDialog(videoBean)
-//        }
-//        bottomSheetDialogShare.tvShareDelete.setOnClickListener {
-//            displayDeletePostDialog(videoBean)
-//        }
+        bottomSheetDialogShare.ivShareDelete.setOnClickListener {
+            displayDeletePostDialog(videoBean)
+        }
+        bottomSheetDialogShare.tvShareDelete.setOnClickListener {
+            displayDeletePostDialog(videoBean)
+        }
 
         bottomSheetDialogShare.show()
     }
@@ -957,12 +968,30 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }.show()
     }
 
+    private fun displayReportedUserDialog() {
+        object : CustomAlertDialogNew(
+            this,
+            getString(R.string.reported_msg),
+            getString(R.string.okay),
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnDone.id -> {
+                        dismiss()
+                        bottomSheetDialogShare.dismiss()
+                    }
+                }
+            }
+        }.show()
+    }
+
     private fun displayDeletePostDialog(videoBean: VideoBean) {
-        object : CustomAlertDialog(
-            this@AlbumVideoActivity,
-            getString(R.string.msg_remove_post),
-            getString(R.string.delete),
-            resources.getString(R.string.no_thanks)
+        object : CustomAlertNewDialog(
+            this,
+            resources.getString(R.string.msg_delete_album),
+            R.drawable.ic_delete_new,
+            getString(R.string.confirm),
+            getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
