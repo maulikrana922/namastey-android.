@@ -13,6 +13,7 @@ class ProfileBean() : Parcelable {
     var name: String = ""
     var username: String = ""
     var casual_name: String = ""
+    var saved_album_id: Long = 0
 
     @SerializedName("profile_url")
     var profileUrl: String = ""
@@ -64,6 +65,7 @@ class ProfileBean() : Parcelable {
         name = parcel.readString() ?: ""
         username = parcel.readString() ?: ""
         casual_name = parcel.readString() ?: ""
+        saved_album_id = parcel.readLong()
         profileUrl = parcel.readString() ?: ""
         about_me = parcel.readString() ?: ""
         is_completly_signup = parcel.readInt() ?: 0
@@ -103,6 +105,7 @@ class ProfileBean() : Parcelable {
         parcel.writeString(name)
         parcel.writeString(username)
         parcel.writeString(casual_name)
+        parcel.writeLong(saved_album_id)
         parcel.writeString(profileUrl)
         parcel.writeString(about_me)
         parcel.writeInt(is_completly_signup)
