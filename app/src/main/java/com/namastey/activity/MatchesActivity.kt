@@ -26,6 +26,7 @@ import com.namastey.model.MatchesListBean
 import com.namastey.uiView.MatchesProfileView
 import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
+import com.namastey.utils.NotAvailableFeatureDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MatchesProfileViewModel
 import kotlinx.android.synthetic.main.activity_matches.*
@@ -55,7 +56,6 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
     private var isFromDashboard = false
     private var userName = ""
 
-    private lateinit var fragmentAddFriendBinding: FragmentMatchesProfileBinding
     private lateinit var layoutView: View
     private lateinit var matchedProfileAdapter: MatchedProfileAdapter
     private lateinit var messagesAdapter: MessagesAdapter
@@ -288,11 +288,20 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
+            object : NotAvailableFeatureDialog(
+                this,
+                getString(R.string.membership_not_available),
+                getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
             //if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
-            val intent = Intent(this, LikeProfileActivity::class.java)
-            intent.putExtra("likeUserCount", likeUserCount)
-            intent.putExtra("lastUserProfile", lastUserProfile)
-            openActivity(intent)
+//            val intent = Intent(this, LikeProfileActivity::class.java)
+//            intent.putExtra("likeUserCount", likeUserCount)
+//            intent.putExtra("lastUserProfile", lastUserProfile)
+//            openActivity(intent)
             // } else{
             //   val intent = Intent(this, MembershipActivity::class.java)
             //    intent.putExtra("isFromMatchProfile", true)

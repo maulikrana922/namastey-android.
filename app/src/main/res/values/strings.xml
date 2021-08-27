@@ -195,6 +195,8 @@
     <string name="msg_change_distance">Try changing the Distance or Turn on Global from the settings</string>
     <string name="alert_comment_message">Commenting this video is not allowed by the user.</string>
     <string name="alert_save_message">Saving this video is not allowed by the user.</string>
+    <string name="alert_save_already">This video has already been saved by you.</string>
+    <string name="alert_report_already">This user has already been reported by you.</string>
 
     <!--    Follow screen-->
     <string name="search">Search</string>
@@ -658,7 +660,8 @@
     <string name="not_now">Not Now</string>
     <string name="use_boost_new">Use Boost!</string>
     <string name="boosts_not_available">Boosts are not available</string>
-    <string name="alert_msg_boost_not_available">Currently this feature is not live. Please stay tuned.</string>
+    <string name="membership_not_available">Membership are not available</string>
+    <string name="alert_msg_feature_not_available">Currently this feature is not live. Please stay tuned.</string>
     <string name="alert_msg_boost">You got about 8.5x more profile views.</string>
     <string name="alert_boost_msg">Swipe to see who checked you.</string>
     <string name="boost_time">29:29 Remaining</string>

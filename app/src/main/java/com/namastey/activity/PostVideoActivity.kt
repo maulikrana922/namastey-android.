@@ -639,16 +639,21 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
                 if (data != null) {
                     val imageUri = data.getParcelableExtra<Uri>(ThumbyActivity.EXTRA_URI) as Uri
                     val location = data.getLongExtra(ThumbyActivity.EXTRA_THUMBNAIL_POSITION, 0)
+                    val type = data.getStringExtra(Constants.IMAGE_TYPE)
                     Log.e("PostVideoActivity ", "imageUri: \t $imageUri")
                     Log.e("PostVideoActivity ", "location: \t $location")
 
                     val options: BitmapFactory.Options = BitmapFactory.Options()
                     options.inJustDecodeBounds = true
 
-                    val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 1000, 1000)
+                    val bitmap: Bitmap = if (type != null)
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                    else
+                        ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 1000, 1000)
+
+                    GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, bitmap)
                     //val bitmap = ThumbyUtils.getBitmapAtFrame(this, imageUri, location, 1000, 1000)
                     Log.e("PostVideoActivity ", "bitmap: \t $bitmap")
-                    GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, bitmap)
 //                    val tempUri = Utils.getImageUri(applicationContext, bitmap)
 //                    pictureFile = File(Utils.getRealPathFromURI(this@PostVideoActivity,tempUri))
                     pictureFile = Utils.bitmapToFile(this@PostVideoActivity, bitmap)
@@ -708,7 +713,14 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
     }
 
     fun onClickSelectImage(view: View) {
-        selectImage()
+        val videoUri = Uri.fromFile(videoFile)
+        if (videoUri != null) {
+            startActivityForResult(
+                ThumbyActivity.getStartIntent(this, videoUri),
+                Constants.RESULT_CODE_PICK_THUMBNAIL
+            )
+        }
+        //selectImage()
     }
 
     /**

@@ -4,4 +4,10 @@
     <string name="menu_done">Done</string>
     <string name="save">Save</string>
     <string name="add_from_gallery">Add from Gallery</string>
+    <string name="approve_permissions">Approve Permissions</string>
+    <string name="hold_for_video_tap_for_photo">Hold for video, tap for photo</string>
+    <string name="switch_camera_button_alt">Switch camera</string>
+    <string name="gallery_button_alt">Gallery</string>
+    <string name="capture_button_alt">Capture</string>
+
 </resources>

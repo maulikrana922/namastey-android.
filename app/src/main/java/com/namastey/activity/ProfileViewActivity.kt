@@ -38,6 +38,7 @@ import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
 import com.namastey.fragment.ShareAppFragment
+import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
@@ -118,8 +119,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
             sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
             sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
+            btnMembership.visibility = View.VISIBLE
+            Utils.rectangleCornerShapeGradient(btnMembership, intArrayOf(
+                Color.parseColor("#3ED6EB"),
+                Color.parseColor("#FF72AD")
+            ))
         } else {
             isMyProfile = false
+            btnMembership.visibility = View.GONE
             groupButtons.visibility = View.INVISIBLE
             groupButtonsLike.visibility = View.VISIBLE
             tvAboutLable.setText(R.string.about)
@@ -1593,5 +1600,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
         return super.onOptionsItemSelected(item)
 
+    }
+
+    fun onClickMembership(view: View) {
+        object : NotAvailableFeatureDialog(
+            this,
+            getString(R.string.membership_not_available),
+            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
     }
 }

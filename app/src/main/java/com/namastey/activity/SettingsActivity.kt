@@ -24,6 +24,7 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.NotAvailableFeatureDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_gender.*
@@ -432,13 +433,23 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     fun onClickMyCurrentLocation(view: View) {
         //startSearchLocationScreen()
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
-            startSearchLocationScreen()
-        else {
-            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
-            intent.putExtra("isFromAirport", true)
-            openActivity(intent)
-        }
+        object : NotAvailableFeatureDialog(
+            this,
+            getString(R.string.membership_not_available),
+            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+
+//        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+//            startSearchLocationScreen()
+//        else {
+//            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
+//            intent.putExtra("isFromAirport", true)
+//            openActivity(intent)
+//        }
     }
 
     private fun startSearchLocationScreen() {

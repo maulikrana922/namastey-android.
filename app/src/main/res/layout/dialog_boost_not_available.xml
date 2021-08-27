@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@android:color/white"
-        android:layout_marginStart="@dimen/_6sdp"
+        android:layout_marginStart="@dimen/_4sdp"
         app:cardPreventCornerOverlap="true"
-        android:layout_marginEnd="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_4sdp"
         app:cardCornerRadius="@dimen/_20sdp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
             android:paddingBottom="@dimen/_20sdp">
 
             <ImageView
-                android:id="@+id/ivboost"
+                android:id="@+id/ivIcons"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/ic_boost_new"
@@ -38,16 +38,16 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <com.namastey.customViews.CustomTextView
-                android:id="@+id/tvTimeRemaining"
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/boosts_not_available"
                 android:textColor="@color/color_black_text"
-                android:textSize="@dimen/_20sdp"
+                android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivboost"
+                app:layout_constraintTop_toBottomOf="@+id/ivIcons"
                 app:typeface="MULI_EXTRA_BOLD" />
 
             <com.namastey.customViews.CustomTextView
@@ -57,12 +57,12 @@
                 android:layout_marginTop="@dimen/dp15"
                 android:gravity="center"
                 android:lineSpacingExtra="2dp"
-                android:text="@string/alert_msg_boost_not_available"
+                android:text="@string/alert_msg_feature_not_available"
                 android:textColor="@color/color_black_text"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeRemaining" />
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
             <com.namastey.customViews.CustomButton
                 android:id="@+id/btnAlertOk"
