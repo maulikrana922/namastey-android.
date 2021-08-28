@@ -910,7 +910,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         object : CustomAlertDialogNew(
             this,
             getString(R.string.reported_msg),
-            getString(R.string.okay),
+            getString(R.string.okay)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
@@ -2825,6 +2825,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
+        sessionManager.setIntegerValue(purchaseBean.invite_count, Constants.KEY_INVITE_COUNT)
         sessionManager.setLongValue(purchaseBean.purchase_date, Constants.KEY_PURCHASE_DATE)
         sessionManager.setIntegerValue(
             purchaseBean.number_of_boost_available,

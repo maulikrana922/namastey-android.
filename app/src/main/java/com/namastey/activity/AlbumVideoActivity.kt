@@ -971,7 +971,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         object : CustomAlertDialogNew(
             this,
             getString(R.string.reported_msg),
-            getString(R.string.okay),
+            getString(R.string.okay)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {

@@ -34,6 +34,7 @@ class PurchaseBean() : Parcelable {
   //  var promotionType: Int = 0
     var purchaseType: Int = 0
     var startTimeMillis: String = ""
+    var invite_count: Int = 0
   //  var userCancellationTimeMillis: Int = 0
 
     constructor(parcel: Parcel) : this() {
@@ -53,6 +54,7 @@ class PurchaseBean() : Parcelable {
         priceCurrencyCode = parcel.readString()?: ""
         purchaseType = parcel.readInt()
         startTimeMillis = parcel.readString()?: ""
+        invite_count = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -72,6 +74,7 @@ class PurchaseBean() : Parcelable {
         parcel.writeString(priceCurrencyCode)
         parcel.writeInt(purchaseType)
         parcel.writeString(startTimeMillis)
+        parcel.writeInt(invite_count)
 
     }
 

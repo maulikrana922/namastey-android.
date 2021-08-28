@@ -7,8 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputFilter
-import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
@@ -27,8 +25,11 @@ import com.namastey.listeners.OnInviteClick
 import com.namastey.model.Contact
 import com.namastey.uiView.InviteView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.SessionManager
 import com.namastey.viewModel.InviteViewModel
 import kotlinx.android.synthetic.main.activity_invite.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.row_contact_list.*
 import javax.inject.Inject
 
@@ -37,6 +38,9 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
     private lateinit var inviteViewModel: InviteViewModel
     private lateinit var activityInviteBinding: ActivityInviteBinding;
     private lateinit var adapter: ContactsAdapter
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -61,7 +65,10 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
 
     private fun initData() {
 
-        tvInviteRemaining.text = String.format(getString(R.string.invite_count), 10)
+        tvInviteRemaining.text = String.format(
+            getString(R.string.invite_count),
+            sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT)
+        )
         val et: TextView = searchContact.findViewById(R.id.search_src_text) as TextView
         et.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(15))
         adapter = ContactsAdapter(this, this)
@@ -111,7 +118,9 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
             val message = String.format(
                 getString(R.string.invite_sms_send),
                 "",
-                "+91".plus(searchContact.query)).plus(" \n").plus(getString(R.string.namastey_link)
+                "+91".plus(searchContact.query)
+            ).plus(" \n").plus(
+                getString(R.string.namastey_link)
             )
 
             inviteUser(number)
@@ -199,29 +208,66 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
 
         val sendIntent = Intent(Intent.ACTION_VIEW)
         sendIntent.data = Uri.parse("sms:")
-        if (contact.numbers.size > 0){
-            sendIntent.putExtra("address", contact.numbers[0])
-            var number = contact.numbers[0].replace("-","")
+        if (sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT) > 0) {
+            if (contact.numbers.size > 0) {
+                sendIntent.putExtra("address", contact.numbers[0])
+                var number = contact.numbers[0].replace("-", "")
 
-            if (!number.startsWith("+"))        // Manually added +91 country code if number not saved with country code
-                number = "+91 ".plus(number)
+                if (!number.startsWith("+"))        // Manually added +91 country code if number not saved with country code
+                    number = "+91 ".plus(number)
 
-            inviteUser(number)
+                inviteUser(number)
 
-            val message = String.format(
-                getString(R.string.invite_sms_send),
-                contact.name,
-                number.plus(" ")).plus(" \n").plus(getString(R.string.namastey_link)
-            )
-            sendIntent.putExtra("sms_body", message)
-            startActivity(sendIntent)
-        }else{
-            Toast.makeText(this@InviteActivity,getString(R.string.msg_phone_number),Toast.LENGTH_LONG).show()
+                val message = String.format(
+                    getString(R.string.invite_sms_send),
+                    contact.name,
+                    number.plus(" ")
+                ).plus(" \n").plus(
+                    getString(R.string.namastey_link)
+                )
+                sendIntent.putExtra("sms_body", message)
+                startActivity(sendIntent)
+            } else {
+                Toast.makeText(
+                    this@InviteActivity,
+                    getString(R.string.msg_phone_number),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        } else {
+            object : CustomAlertDialog(
+                this@InviteActivity,
+                resources.getString(R.string.msg_out_of_invite),
+                getString(R.string.okay),
+                getString(R.string.cancel)
+            ) {
+                override fun onBtnClick(id: Int) {
+                    when (id) {
+                        btnPos.id -> {
+                            dismiss()
+                        }
+                        btnNeg.id -> {
+                            dismiss()
+                        }
+                    }
+                }
+            }.show()
         }
-
     }
 
     private fun inviteUser(number: String) {
         inviteViewModel.sendInvitation(number.filter { !it.isWhitespace() })
+    }
+
+    override fun onSuccess(msg: String) {
+        val count = sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT)
+        if (count > 0) {
+            sessionManager.setIntegerValue(count - 1, Constants.KEY_INVITE_COUNT)
+            tvInviteRemaining.text = String.format(
+                getString(R.string.invite_count),
+                sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT)
+            )
+
+        }
     }
 }

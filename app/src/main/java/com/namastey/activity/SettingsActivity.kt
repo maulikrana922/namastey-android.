@@ -348,7 +348,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             tvInterestEveryone -> {
                 interestIn = 3
                 tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_female_sign,
+                    R.drawable.ic_non_binary,
                     0,
                     R.drawable.ic_drop_down,
                     0
@@ -435,7 +435,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
         object : NotAvailableFeatureDialog(
             this,
-            getString(R.string.membership_not_available),
+            getString(R.string.location_not_available),
             getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
         ) {
             override fun onBtnClick(id: Int) {

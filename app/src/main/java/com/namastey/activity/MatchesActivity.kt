@@ -293,7 +293,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         rlProfileMain.setOnClickListener {
             object : NotAvailableFeatureDialog(
                 this,
-                getString(R.string.membership_not_available),
+                getString(R.string.see_who_likes_not_available),
                 getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
             ) {
                 override fun onBtnClick(id: Int) {
