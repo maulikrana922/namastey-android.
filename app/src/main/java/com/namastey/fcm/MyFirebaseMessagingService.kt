@@ -18,10 +18,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
-import com.namastey.activity.ChatActivity
-import com.namastey.activity.DashboardActivity
-import com.namastey.activity.MatchesActivity
-import com.namastey.activity.ProfileActivity
+import com.namastey.activity.*
 import com.namastey.model.MatchesListBean
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -182,7 +179,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 //                }
                 "2" -> { // for follow Notification
                     intent =
-                        Intent(this, ProfileActivity::class.java)
+                        Intent(this, ProfileViewActivity::class.java)
                     intent.putExtra("isMyProfile", true)
                 }
                 "3" -> { // for new video Notification

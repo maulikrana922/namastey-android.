@@ -248,6 +248,7 @@
                             android:layout_width="@dimen/_32sdp"
                             android:layout_height="@dimen/_32sdp"
                             android:layout_marginStart="@dimen/_4sdp"
+                            android:background="@drawable/ic_camera_bg"
                             android:onClick="onClickSendMessage"
                             android:padding="@dimen/_4sdp"
                             android:src="@drawable/ic_send_new"

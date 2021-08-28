@@ -125,6 +125,37 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     Color.parseColor("#FF72AD")
                 )
             )
+
+            if (!profileBean.notificationBean.isNullOrEmpty()) {
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_mentions,
+                    Constants.KEY_IS_MENTIONS
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_matches,
+                    Constants.KEY_IS_MATCHES
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_follow,
+                    Constants.KEY_IS_NEW_FOLLOWERS
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_comment,
+                    Constants.KEY_IS_COMMENTS
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_suggest,
+                    Constants.KEY_IS_VIDEO_SUGGESTIONS
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_video_suggest,
+                    Constants.KEY_VIDEO_FROM_YOU_FOLLOW
+                )
+                sessionManager.setIntegerValue(
+                    profileBean.notificationBean[0].is_message,
+                    Constants.KEY_NOTIFICATION_IS_MESSAGE
+                )
+            }
         } else {
             isMyProfile = false
             btnMembership.visibility = View.GONE
@@ -273,7 +304,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
                 rvAlbumList.visibility = View.VISIBLE
+                chipProfileSocial.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
+                chipProfileSocial.visibility = View.GONE
                 layoutPrivateAccount.visibility = View.VISIBLE
                 chipProfileInterest.visibility = View.GONE
                 tvInterestTitel.visibility = View.GONE
@@ -282,6 +315,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         } else {
             rvAlbumList.visibility = View.VISIBLE
             layoutPrivateAccount.visibility = View.GONE
+            chipProfileSocial.visibility = View.VISIBLE
         }
 
     }

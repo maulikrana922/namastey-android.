@@ -47,7 +47,7 @@
                         android:layout_weight="1"
                         android:gravity="start|center"
                         android:text="@string/everyone"
-                        android:textColor="@color/color_text"
+                        android:textColor="@color/color_black_text"
                         app:typeface="MULI_EXTRA_BOLD" />
 
 
@@ -83,7 +83,7 @@
                         android:layout_weight="1"
                         android:gravity="start|center"
                         android:text="@string/followers"
-                        android:textColor="@color/color_text"
+                        android:textColor="@color/color_black_text"
                         app:typeface="MULI_EXTRA_BOLD" />
 
 
@@ -120,7 +120,7 @@
                         android:layout_weight="1"
                         android:gravity="start|center"
                         android:text="@string/no_one"
-                        android:textColor="@color/color_text"
+                        android:textColor="@color/color_black_text"
                         app:typeface="MULI_EXTRA_BOLD" />
 
 
@@ -148,7 +148,7 @@
                     android:gravity="start|center"
                     android:maxLines="5"
                     android:text="@string/safety_sub_who_can_send_you_direct_msg"
-                    android:textColor="@color/color_chip_gray"
+                    android:textColor="@color/color_text"
                     android:textSize="12sp"
                     app:typeface="MULI_SEMIBOLD" />
 

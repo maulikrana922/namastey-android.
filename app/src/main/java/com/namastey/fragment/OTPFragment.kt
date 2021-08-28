@@ -13,10 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.DashboardActivity
-import com.namastey.activity.ProfileActivity
-import com.namastey.activity.ProfileBasicInfoActivity
-import com.namastey.activity.SignUpActivity
+import com.namastey.activity.*
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentOtpBinding
 import com.namastey.roomDB.entity.User
@@ -93,7 +90,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
                         activity!!.finish()
                     }, 1000)
                 }else{
-                    openActivity(requireActivity(), ProfileActivity())
+                    openActivity(requireActivity(), ProfileViewActivity())
                 }
             }
             /*if (isFromDashboard)   // Open dashboard activity

@@ -718,7 +718,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 openActivity(intent)
             }
             message.contains("Buy Boost") -> {
-                val intent = Intent(this@ChatActivity, ProfileActivity::class.java)
+                val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
                 intent.putExtra("fromBuyBoost", true)
                 openActivity(intent)
             }
@@ -744,7 +744,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         val menuDelete = popupMenu.menu.findItem(R.id.action_delete_match)
         val menuBlock = popupMenu.menu.findItem(R.id.action_block)
 
-        if (matchesListBean.is_notification == 1) {
+        if (matchesListBean.is_notification == 0) {
             menuMute.title = getString(R.string.mute)
         } else {
             menuMute.title = getString(R.string.un_mute)
@@ -758,9 +758,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             when (item.itemId) {
                 R.id.action_mute -> {
                     if (matchesListBean.is_notification == 1) {
-                        chatViewModel.muteParticularUserNotification(matchesListBean.id, 1)
-                    } else {
                         chatViewModel.muteParticularUserNotification(matchesListBean.id, 0)
+                    } else {
+                        chatViewModel.muteParticularUserNotification(matchesListBean.id, 1)
                     }
 
                 }
