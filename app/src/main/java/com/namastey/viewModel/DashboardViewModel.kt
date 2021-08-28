@@ -32,12 +32,12 @@ class DashboardViewModel constructor(
         _downloading.value = downloading
     }
 
-    fun getCategoryList() {
+    fun getCategoryList(userId: Long) {
 //        setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (dashboardView.isInternetAvailable()) {
-                    networkService.requestToGetCategoryList().let { appResponse ->
+                    networkService.requestToGetCategoryList(userId).let { appResponse ->
                         //                        setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             dashboardView.onSuccessCategory(appResponse.data!!)

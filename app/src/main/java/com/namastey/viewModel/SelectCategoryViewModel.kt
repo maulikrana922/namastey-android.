@@ -23,12 +23,12 @@ class SelectCategoryViewModel constructor(
         baseView as ProfileSelectCategoryView
     private lateinit var job: Job
 
-    fun getCategoryList() {
+    fun getCategoryList(userId:Long) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (profileSelectCategoryView.isInternetAvailable()) {
-                    networkService.requestToGetCategoryList().let { appResponse ->
+                    networkService.requestToGetCategoryList(userId).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
                             profileSelectCategoryView.onSuccessCategory(appResponse.data!!)

@@ -77,9 +77,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetUserFullProfileAsync(userId, username).await()
         }
 
-    suspend fun requestToGetCategoryList(): AppResponse<ArrayList<CategoryBean>> =
+    suspend fun requestToGetCategoryList(userId: Long): AppResponse<ArrayList<CategoryBean>> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToGetCategoryListAsync().await()
+            networkRequest.requestToGetCategoryListAsync(userId).await()
         }
 
     suspend fun requestToGetFeed(subCatId: Int): AppResponse<ArrayList<DashboardBean>> =

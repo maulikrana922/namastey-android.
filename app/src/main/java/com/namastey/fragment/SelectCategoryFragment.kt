@@ -112,7 +112,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>(),
         if (selectedCategoryList.size == 0)
             selectCategoryId = sessionManager.getChooseInterestList()
 
-        selectCategoryViewModel.getCategoryList()
+        selectCategoryViewModel.getCategoryList(sessionManager.getUserId())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

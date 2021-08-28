@@ -2,14 +2,17 @@ package com.namastey.activity
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -29,6 +32,7 @@ import kotlinx.android.synthetic.main.view_profile_tag.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     ProfileSelectCategoryView, OnCategoryItemClick {
@@ -47,7 +51,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     private var selectCategoryId: ArrayList<Int> = ArrayList()
     private var subCategoryIdList: ArrayList<Int> = ArrayList()
     private var socialAccountList: ArrayList<SocialAccountBean> = ArrayList()
-
+    private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
 
     var profileTagCount = 0
 
@@ -79,14 +83,27 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
 
     private fun initData() {
 
-        selectedCategoryList = sessionManager.getCategoryList()
+        /*selectedCategoryList = sessionManager.getCategoryList()
         if (selectedCategoryList.size == 0)
-            selectCategoryId = sessionManager.getChooseInterestList()
+            selectCategoryId = sessionManager.getChooseInterestList()*/
 
-        selectCategoryViewModel.getCategoryList()
+        selectCategoryViewModel.getCategoryList(sessionManager.getUserId())
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        this.categoryBeanList = categoryBeanList
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            categoryBeanList.groupBy { it.sub_category }.forEach { (name, list) ->
+                for (i in name.indices)
+                    if (name[i].is_selected == 1)
+                        selectedCategoryList.add(name[i])
+
+            }
+        }
+
 
         if (categoryBeanList.size > 0) {
             for (categoryBeanPosition in categoryBeanList.indices) {
@@ -162,6 +179,11 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
                             --profileTagCount
                             tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
                         }
+                        if (selectedCategoryList.any { it.id == subCategoryBean.id }) {
+                            selectedCategoryList.removeIf { bean -> bean.id == subCategoryBean.id }
+                        } else {
+                            selectedCategoryList.add(subCategoryBean)
+                        }
                     }
                 }
 
@@ -172,7 +194,6 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     }
 
     override fun onSuccess(msg: String) {
-        super.onSuccess(msg)
         onBackPressed()
     }
 
@@ -205,19 +226,18 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
 
     private fun editProfileApiCall() {
 
+        val subCategoryId=ArrayList<Int>()
+        val jsonArrayInterest = JsonArray()
+        for (i in selectedCategoryList.indices)
+            jsonArrayInterest.add(selectedCategoryList[i].id)
         val jsonObject = JsonObject()
-
-
-        val categoryIdList: ArrayList<Int> = ArrayList()
-        for (category in sessionManager.getCategoryList()) {
-            categoryIdList.add(category.id)
-        }
-        jsonObject.addProperty(
-            Constants.CATEGORY_ID,
-            categoryIdList.joinToString()
+        jsonObject.add(
+            Constants.TAGS,
+            jsonArrayInterest
         )
 
-        selectCategoryViewModel.editProfile(jsonObject)
+
+       selectCategoryViewModel.editProfile(jsonObject)
     }
 
     override fun onBackPressed() {

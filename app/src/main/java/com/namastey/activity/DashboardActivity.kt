@@ -307,7 +307,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
         dashboardViewModel.getPurchaseStatus()
         //dashboardViewModel.getMembershipPriceList()
-        dashboardViewModel.getCategoryList()
+        dashboardViewModel.getCategoryList(sessionManager.getUserId())
         // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
         // dashboardViewModel.getNewFeedListV2(currentPage, 0, latitude, longitude, videoIdList)
 //        getFeedListApi(0)

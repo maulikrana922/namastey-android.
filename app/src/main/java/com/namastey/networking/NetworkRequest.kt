@@ -58,8 +58,9 @@ interface NetworkRequest {
         @Field(Constants.USERNAME) username: String
     ): Deferred<AppResponse<ProfileBean>>
 
-    @GET(Constants.GET_CATEGORY_LIST)
-    fun requestToGetCategoryListAsync(): Deferred<AppResponse<ArrayList<CategoryBean>>>
+    @FormUrlEncoded
+    @POST(Constants.GET_CATEGORY_LIST)
+    fun requestToGetCategoryListAsync(@Field(Constants.USER_ID) userId: Long): Deferred<AppResponse<ArrayList<CategoryBean>>>
 
     @Multipart
     @POST(Constants.UPDATE_PROFILE_PIC)
