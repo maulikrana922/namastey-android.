@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_alert_new.*
 abstract class CustomAlertDialogNew(
     activity: Activity,
     private val msg: String,
-    private val posBtnName: String,
+    private val posBtnName: String
 ) : Dialog(activity, R.style.MyDialogTheme) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -53,6 +53,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     private var userList = ArrayList<DashboardBean>()
     private lateinit var albumDetailAdapter: AlbumDetailAdapter
     private var postList = ArrayList<VideoBean>()
+    private var followingClick = false
 
     private var isFollowingSelected: Boolean = false
 
@@ -97,7 +98,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             }
         })
         rvFilterTranding.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-
+        followingClick = false
         val jsonObject = JsonObject()
         jsonObject.addProperty("sub_cat_id", "")
         filterViewModel.getTredingVideoList(jsonObject)
@@ -116,9 +117,22 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         postList = data
 
         if (postList.size <= 0) {
-            tvNoFilterVideo.visibility = View.VISIBLE
+            if (followingClick) {
+                llEmpty.visibility = View.VISIBLE
+                tvEmptyFollowMsg.text = String.format(
+                    getString(R.string.msg_empty_following), getString(R.string.you)
+                )
+                tvEmptyFollow.text = String.format(
+                    getString(R.string.msg_empty_following_title),
+                    getString(R.string.you)
+                )
+            } else {
+                tvNoFilterVideo.visibility = View.VISIBLE
+            }
+
             rvFilterTranding.visibility = View.GONE
         } else {
+            llEmpty.visibility = View.GONE
             tvNoFilterVideo.visibility = View.GONE
             rvFilterTranding.visibility = View.VISIBLE
         }
@@ -266,6 +280,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 //            intent.putExtra("subCategoryId", subCategoryId)
 //            setResult(Activity.RESULT_OK, intent)
 //            finish()
+            followingClick = false
             postList.clear()
             postList = ArrayList()
             val jsonObject = JsonObject()
@@ -303,14 +318,24 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             categoryAdapter.notifyDataSetChanged()
         }
 
-        if (isFollowingSelected) {
-            isFollowingSelected = false
-            deselectFollowing()
-        } else {
-            isFollowingSelected = true
+//        if (isFollowingSelected) {
+//            isFollowingSelected = false
+//            deselectFollowing()
+//        } else {
+//            isFollowingSelected = true
+//
+        followingClick = true
+        postList.clear()
+        postList = ArrayList()
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("sub_cat_id", "")
+        jsonObject.addProperty("sub_cat_id", "")
+        jsonObject.addProperty("following_id", sessionManager.getUserId())
 
-            selectFollowing()
-        }
+
+        filterViewModel.getTredingVideoList(jsonObject)
+        selectFollowing()
+//        }
     }
 
     private fun selectFollowing() {

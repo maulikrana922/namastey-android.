@@ -403,7 +403,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
     fun completeSignUpDialog() {
         object : CustomAlertNewDialog(
             this,
-            getString(R.string.complete_profile),
+            getString(R.string.msg_one_video),
             R.drawable.ic_video,
             getString(R.string.continues),
             getString(R.string.cancel)

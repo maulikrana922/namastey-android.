@@ -11,6 +11,7 @@ import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.InviteView
+import com.namastey.utils.Constants
 import kotlinx.coroutines.*
 
 class InviteViewModel constructor(
@@ -102,6 +103,9 @@ class InviteViewModel constructor(
             try {
                 networkService.requestToSendInvitation(number).let { appResponse ->
                     setIsLoading(false)
+                    if (appResponse.status == Constants.OK){
+                        inviteView.onSuccess(appResponse.message)
+                    }
                 }
 
             } catch (t: Throwable) {
