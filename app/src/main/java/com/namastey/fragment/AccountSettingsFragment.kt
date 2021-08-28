@@ -93,8 +93,8 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
         tvContentLanguages.setOnClickListener {
             (activity as AccountSettingsActivity).changeHeaderText(getString(R.string.content_languages))
             (activity as AccountSettingsActivity).addFragment(
-                ContentLanguageFragment.getInstance(),
-                Constants.CONTENT_LANGUAGE_FRAGMENT
+                ContentLanguagesFragment.getInstance(),
+                Constants.CONTENT_LANGUAGES_FRAGMENT
             )
         }
 

@@ -125,7 +125,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     Color.parseColor("#FF72AD")
                 )
             )
-
+            sessionManager.setLanguageList(profileBean.languageBean)
             if (!profileBean.notificationBean.isNullOrEmpty()) {
                 sessionManager.setIntegerValue(
                     profileBean.notificationBean[0].is_mentions,

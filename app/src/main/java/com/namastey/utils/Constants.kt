@@ -197,6 +197,7 @@ object Constants {
     const val BLOCK_LIST_FRAGMENT = "BlockListFragment"
     const val MANAGE_ACCOUNT_FRAGMENT = "ManageAccountFragment"
     const val CONTENT_LANGUAGE_FRAGMENT = "ContentLanguageFragment"
+    const val CONTENT_LANGUAGES_FRAGMENT = "ContentLanguagesFragment"
     const val SAFETY_FRAGMENT = "SafetyFragment"
     const val SAFETY_SUB_FRAGMENT = "SafetySubFragment"
     const val CHAT_SETTINGS_FRAGMENT = "ChatSettingsFragment"

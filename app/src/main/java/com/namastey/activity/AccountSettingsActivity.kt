@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -101,9 +102,15 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
         val jsonObject = JsonObject()
 
         if (selectLanguageIdList.size >= 1) {
-            jsonObject.addProperty(Constants.LANGUAGE, selectLanguageIdList.joinToString())
             Log.d("Profile Request:", jsonObject.toString())
-
+            val jsonArrayLanguage = JsonArray()
+            for (i in selectLanguageIdList){
+                jsonArrayLanguage.add(i)
+            }
+            jsonObject.add(
+                Constants.LANGUAGE,
+                jsonArrayLanguage
+            )
             accountSettingsViewModel.editProfile(jsonObject)
         }else{
             object : CustomAlertDialog(

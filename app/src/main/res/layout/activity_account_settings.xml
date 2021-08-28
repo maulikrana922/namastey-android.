@@ -66,6 +66,7 @@
                     android:onClick="onClickSaveLanguage"
                     android:text="@string/save"
                     android:textSize="20sp"
+                    android:textColor="@color/colorRed"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/ivAccountSettingBack"
                     app:layout_constraintEnd_toEndOf="parent"
