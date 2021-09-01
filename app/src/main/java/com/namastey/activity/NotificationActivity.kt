@@ -80,6 +80,12 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
         onBackPressed()
     }
 
+    fun onClickChat(view: View) {
+        val intent = Intent()
+        setResult(106, intent)
+        finishActivity()
+    }
+
 
     private fun initUI() {
 

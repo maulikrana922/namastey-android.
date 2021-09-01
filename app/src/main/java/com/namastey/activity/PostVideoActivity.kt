@@ -140,10 +140,11 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //            videoFile = File(Uri.parse(videoBean.video_url).path)
             GlideLib.loadImage(this, ivSelectCover, videoBean.cover_image_url)
             tvAlbumName.isEnabled = false
+            tvAlbumName.text = albumBean.name
             tvAlbumName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
-                R.drawable.ic_lock,
+                0,
                 0
             )
 

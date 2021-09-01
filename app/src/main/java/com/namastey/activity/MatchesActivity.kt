@@ -394,7 +394,9 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 105) {
+        if (resultCode == 106){
+            // Do nothing
+        }else if (requestCode == 105) {
             finishActivity()
         }
     }
