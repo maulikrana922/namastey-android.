@@ -29,7 +29,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -40,12 +39,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.hendraanggrian.appcompat.widget.Mention
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter
 import com.namastey.BR
-import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.*
 import com.namastey.application.NamasteyApplication
@@ -70,13 +70,11 @@ import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.dialog_alert.*
-import kotlinx.android.synthetic.main.dialog_alert.btnPos
 import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.*
 import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
-import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.tvTimeRemaining
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
@@ -93,11 +91,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
@@ -138,6 +136,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var fragmentRefreshListener: FragmentRefreshListener? = null
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
+    private var selectedShareProfile=ArrayList<DashboardBean>()
     private var currentPage = 1
     private var mbNext = true
     private var mbLoading = true
@@ -163,6 +162,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
     private var totalCount = 1
+    private val db = Firebase.firestore
 
     //In App Product Price
     private lateinit var billingClient: BillingClient
@@ -531,9 +531,14 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 //        } else {
 //            bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
 //            bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
-            if (dashboardBean.is_saved == 1){
-                bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_save_fill))
-            }
+        if (dashboardBean.is_saved == 1) {
+            bottomSheetDialogShare.ivShareSave.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@DashboardActivity,
+                    R.drawable.ic_save_fill
+                )
+            )
+        }
 //        }
 
         if (dashboardBean.who_can_send_message == 2)
@@ -547,8 +552,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
             }
         }
-        if(dashboardBean.is_reported == 1){
-            bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@DashboardActivity, R.drawable.ic_report_fill))
+        if (dashboardBean.is_reported == 1) {
+            bottomSheetDialogShare.ivShareReport.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@DashboardActivity,
+                    R.drawable.ic_report_fill
+                )
+            )
             bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
         }
 
@@ -566,18 +576,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         //Bottom Icons
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-            if (dashboardBean.is_download == 0){
-                            object : CustomAlertDialog(
-                this@DashboardActivity,
-                resources.getString(R.string.alert_saved_message),
-                getString(R.string.okay),
-                ""
-            ) {
-                override fun onBtnClick(id: Int) {
-                    dismiss()
-                }
-            }.show()
-            }else{
+            if (dashboardBean.is_download == 0) {
+                object : CustomAlertDialog(
+                    this@DashboardActivity,
+                    resources.getString(R.string.alert_saved_message),
+                    getString(R.string.okay),
+                    ""
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        dismiss()
+                    }
+                }.show()
+            } else {
                 if (dashboardBean.is_saved == 1) {
                     object : CustomAlertDialog(
                         this@DashboardActivity,
@@ -595,9 +605,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             }
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            if(dashboardBean.is_reported == 1){
+            if (dashboardBean.is_reported == 1) {
                 displayReportedUserDialog()
-            }else {
+            } else {
                 displayReportUserDialog(dashboardBean)
             }
         }
@@ -613,6 +623,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
         bottomSheetDialogShare.show()
     }
+
     private fun clickSendMessage(dashboardBean: DashboardBean) {
         val matchesListBean = MatchesListBean()
         matchesListBean.id = dashboardBean.user_id
@@ -653,7 +664,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
             sendIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                Uri.parse(dashboardBean.video_url)
+                Uri.parse(getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username)
             )
             startActivity(sendIntent)
         } catch (e: PackageManager.NameNotFoundException) {
@@ -698,7 +709,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
 
         bottomSheetDialogShareApp.tvDone.setOnClickListener {
-            bottomSheetDialogShareApp.dismiss()
+            sendMessageToMultiple()
         }
 
 //        addFragment(
@@ -765,7 +776,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         var shareIntent =
             Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, dashboardBean.video_url)
+        shareIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+        )
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(dashboardBean.video_url))
 
         val pm: PackageManager = packageManager
@@ -802,9 +816,15 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             try {
 
                 val intentDirect = Intent(Intent.ACTION_SEND)
-                intentDirect.component = ComponentName("com.instagram.android","com.instagram.direct.share.handler.DirectShareHandlerActivity")
+                intentDirect.component = ComponentName(
+                    "com.instagram.android",
+                    "com.instagram.direct.share.handler.DirectShareHandlerActivity"
+                )
                 intentDirect.type = "text/plain"
-                intentDirect.putExtra(Intent.EXTRA_TEXT, "Your message here")
+                intentDirect.putExtra(
+                    Intent.EXTRA_TEXT,
+                    getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+                )
                 startActivity(intentDirect)
 
 //                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
@@ -875,35 +895,35 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun displayReportUserDialog(dashboardBean: DashboardBean) {
         if (dashboardBean.is_reported == 1) {
             object : CustomAlertDialog(
-                    this@DashboardActivity,
-                    resources.getString(R.string.alert_report_already),
-                    getString(R.string.okay),
-                    ""
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        dismiss()
-                    }
-                }.show()
-        } else{
-                object : CustomCommonNewAlertDialog(
-                    this,
-                    dashboardBean.casual_name,
-                    getString(R.string.msg_report_user),
-                    dashboardBean.profile_url,
-                    getString(R.string.confirm),
-                    resources.getString(R.string.cancel)
-                ) {
-                    override fun onBtnClick(id: Int) {
-                        when (id) {
-                            btnAlertOk.id -> {
-                                dismiss()
-                                bottomSheetDialogShare.dismiss()
-                                showReportTypeDialog(dashboardBean.user_id)
-                            }
+                this@DashboardActivity,
+                resources.getString(R.string.alert_report_already),
+                getString(R.string.okay),
+                ""
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
+        } else {
+            object : CustomCommonNewAlertDialog(
+                this,
+                dashboardBean.casual_name,
+                getString(R.string.msg_report_user),
+                dashboardBean.profile_url,
+                getString(R.string.confirm),
+                resources.getString(R.string.cancel)
+            ) {
+                override fun onBtnClick(id: Int) {
+                    when (id) {
+                        btnAlertOk.id -> {
+                            dismiss()
+                            bottomSheetDialogShare.dismiss()
+                            showReportTypeDialog(dashboardBean.user_id)
                         }
                     }
-                }.show()
-    }
+                }
+            }.show()
+        }
     }
 
     private fun displayReportedUserDialog() {
@@ -3050,6 +3070,76 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+        var isSameValue=false
+        if (selectedShareProfile.isNotEmpty()) {
+            for (i in selectedShareProfile.indices)
+                if (selectedShareProfile[i].user_id == dashboardBean.user_id) {
+                    selectedShareProfile.removeAt(i)
+                    isSameValue=true
+                    break
+                }
+        }
+
+        if (!isSameValue)
+            selectedShareProfile.add(dashboardBean)
+
+
+    }
+
+
+    private fun sendMessageToMultiple() {
+
+        for (profileBean in selectedShareProfile) {
+            Log.e(TAG, "userId: \t $profileBean")
+            dashboardViewModel.startChat(profileBean.user_id, 1)
+            val message = String.format(
+                getString(R.string.profile_link_msg),
+                profileBean.username,""
+            ).plus(" \n")
+                .plus(String.format(getString(R.string.profile_link), profileBean.username))
+            val chatMessage = ChatMessage(
+                message,
+                sessionManager.getUserId(),
+                profileBean.user_id,
+                "",
+                System.currentTimeMillis(),
+                0,
+                0
+            )
+            val chatId = if (sessionManager.getUserId() < profileBean.user_id)
+                sessionManager.getUserId().toString().plus("_").plus(profileBean.user_id)
+            else
+                profileBean.user_id.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.CHATS)
+                .add(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+
+//            Added last message
+            // chatMessage.unreadCount = ++unreadCount
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                .document(chatId).set(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+            bottomSheetDialogShareApp.dismiss()
+        }
     }
 
 }

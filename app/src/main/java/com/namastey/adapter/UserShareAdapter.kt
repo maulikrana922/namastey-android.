@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.namastey.R
 import com.namastey.listeners.OnItemClick
@@ -53,6 +54,19 @@ class UserShareAdapter(
 
             viewSearchUser.setOnClickListener {
                 onItemClick.onItemClick(dashboardBean.user_id, position)
+                onItemClick.onItemFollowingClick(dashboardBean)
+            }
+            tvSendLabel.setOnClickListener {
+                if(tvSendLabel.isSelected) {
+                    tvSendLabel.text = context.getString(R.string.send)
+                    tvSendLabel.setTextColor(ContextCompat.getColorStateList(context,R.color.white))
+                    tvSendLabel.isSelected = false
+                }
+                else {
+                    tvSendLabel.text = context.getString(R.string.undo)
+                    tvSendLabel.setTextColor(ContextCompat.getColorStateList(context,R.color.color_text_red))
+                    tvSendLabel.isSelected = true
+                }
                 onItemClick.onItemFollowingClick(dashboardBean)
             }
         }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Namastey</string>
-
+    <string name="prefix_name">link</string>
     <string name="facebook_app_id">242557967197480</string>
     <string name="fb_login_protocol_scheme">fb242557967197480</string>
     <string name="instagram_app_id">943839639712239</string>
@@ -54,6 +54,7 @@
     <string name="tv_policy_link">https://www.namasteyapp.com/privacy-policy</string>
     <string name="tv_billing_link">https://www.namasteyapp.com/billingterms</string>
     <string name="tv_invite_link">https://www.namasteyapp.com/app-landing-page</string>
+    <string name="dynamic_link_msg">Hey, check this out on namastey app \n</string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
@@ -674,4 +675,5 @@
     <string name="reported">Reported</string>
     <string name="not_available">Not Available</string>
     <string name="reported_msg">"This user has already been reported by you. "</string>
+    <string name="undo">Undo</string>
 </resources>

@@ -128,6 +128,7 @@ object Constants {
     const val BOOST_USE = "boost-use"
     const val FEED_LIST_V2 = "feed-list-v2"
     const val INVITE_USER = "invite-user"
+    const val DYNAMIC_LINK = "https://www.namasteyapp.com/link/?username="
 
     const val LOGIN = "login"
     const val LOGOUT = "logout"
