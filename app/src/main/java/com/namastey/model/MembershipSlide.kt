@@ -5,5 +5,6 @@ class MembershipSlide(
     var description: String = "",
     var profile_url: Int = 0,
     var background: Int = 0,
-    var profilePicture: String = ""
+    var profilePicture: String = "",
+    var count: String = ""
 )

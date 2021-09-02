@@ -674,4 +674,9 @@
     <string name="reported">Reported</string>
     <string name="not_available">Not Available</string>
     <string name="reported_msg">"This user has already been reported by you. "</string>
+    <string name="become_elite">Become Elite</string>
+    <string name="get_namastey_elite">Get Namastey Elite</string>
+    <string name="express_your_feeling_freely_with_the_people_you_like">Express your feeling freely with the people you like.</string>
+    <string name="Do_not_like_to_wait_Go_Unlimited">Don’t like to wait? Go Unlimited</string>
+    <string name="travel_around_the_world_in_just_80_seconds">Travel around the world in just 80 \nseconds.</string>
 </resources>

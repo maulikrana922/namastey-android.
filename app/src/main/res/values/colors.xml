@@ -14,8 +14,10 @@
     <color name="colorLightGrayView">#E5E5E5</color>
     <color name="alert_text">#F30D46</color>
     <color name="camera_bg">#FCB7C8</color>
-
-
+    <color name="boost_color_pink">#F452A2</color>
+    <color name="boost_color_orange">#FDAF6D</color>
+    <color name="airport_color_blue">#4C76F2</color>
+    <color name="airport_color_light_blue">#13CEF7</color>
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
@@ -58,6 +60,7 @@
     <color name="color_black_text">#272727</color>
     <color name="color_text">#595959</color>
     <color name="color_text_red">#F30D46</color>
+    <color name="indicator_color">#FEE7ED</color>
 
 
     <color name="gradient_one_end">#28BAD3</color>

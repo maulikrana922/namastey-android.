@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MemberActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.namastey.viewModel.MembershipViewModel" />
+
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llTopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBackMemberShip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:contentDescription="@string/app_name"
+            android:onClick="onClickMembershipBack"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_back_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/txtSettingTitle"
+            style="@style/tvWrapBlackStyle"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_47sdp"
+            android:text="@string/membership"
+            android:textSize="@dimen/actionBarTitle"
+            app:layout_constraintStart_toEndOf="@id/ivBackMemberShip"
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="MULI_SEMIBOLD" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_25sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llTopLayout">
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvAirport"
+            style="@style/tvWrapWhiteStyle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/rounded_airport_button"
+            android:text="@string/airport"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_16sdp"
+            android:drawableStart="@drawable/ic_airport_new"
+            android:textColor="@color/white"
+            android:paddingLeft="@dimen/_20sdp"
+            android:drawablePadding="@dimen/_2sdp"
+            app:layout_constraintStart_toEndOf="@+id/tvBoost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvBoost"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/rounded_boost_button"
+            android:text="@string/boost"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"
+            android:gravity="center_vertical"
+            android:drawablePadding="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_30sdp"
+            android:drawableStart="@drawable/ic_boost_send"
+            app:layout_constraintEnd_toStartOf="@+id/tvAirport"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tvAirport"
+            app:layout_constraintTop_toTopOf="@id/tvAirport" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vpSlide"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_270sdp"
+        android:layout_marginTop="64dp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/llBottomLayout"
+       />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tlIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_8sdp"
+        android:layout_marginTop="340dp"
+        app:layout_constraintTop_toBottomOf="@+id/llBottomLayout"
+        app:layout_constraintLeft_toLeftOf="@+id/vpSlide"
+        app:layout_constraintRight_toRightOf="@+id/vpSlide"
+        app:tabBackground="@drawable/indicator_selector_pink"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp" />
+
+    <com.namastey.customViews.CustomButton
+        android:id="@+id/btnAddNewLocation"
+        style="@style/btnRedAllCornerStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:gravity="center"
+        android:paddingStart="@dimen/_100sdp"
+        android:paddingEnd="@dimen/_100sdp"
+        android:text="@string/become_elite"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:typeface="MULI_EXTRA_BOLD" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
