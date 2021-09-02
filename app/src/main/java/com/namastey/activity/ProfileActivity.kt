@@ -1706,4 +1706,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>(), PurchasesUpdated
 
     override fun onLogoutFailed(msg: String, error: Int) {
     }
+
+    override fun onSuccessStartChat(msg: String) {
+
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+
+    }
 }

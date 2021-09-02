@@ -244,6 +244,50 @@ class ProfileViewModel constructor(
         }
     }
 
+    fun startChat(messageUserId: Long, isChat: Int) {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToStartChat(messageUserId, isChat).let { appResponse ->
+                    if (appResponse.status == Constants.OK)
+                        profileView.onSuccessStartChat(appResponse.message)
+//                    else
+//                        chatBasicView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                }
+            } catch (t: Throwable) {
+//                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
+    fun getFollowingShareList() {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (profileView.isInternetAvailable()) {
+                    networkService.requestToGetFollowingShareList().let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            profileView.onSuccess(appResponse.data!!)
+                        else
+                            profileView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
+                    }
+                } else {
+                    setIsLoading(false)
+                    profileView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                profileView.onHandleException(t)
+            }
+        }
+
+
+    }
+
     fun logOut() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {

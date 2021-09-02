@@ -21,10 +21,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
+import java.net.URI
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -577,4 +575,31 @@ object Utils {
         mLastClickTime = SystemClock.elapsedRealtime()
         return false
     }
+
+    fun saveFile(sourceuri: URI) : String{
+        val sourceFilename: String = sourceuri.path
+        val destinationFilename = Environment.getExternalStorageDirectory().path + File.separatorChar +"profile.jpg"
+        var bis: BufferedInputStream? = null
+        var bos: BufferedOutputStream? = null
+        try {
+            bis = BufferedInputStream(FileInputStream(sourceFilename))
+            bos = BufferedOutputStream(FileOutputStream(destinationFilename, false))
+            val buf = ByteArray(1024)
+            bis.read(buf)
+            do {
+                bos.write(buf)
+            } while (bis.read(buf) !== -1)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                if (bis != null) bis.close()
+                if (bos != null) bos.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return destinationFilename
+    }
+
 }

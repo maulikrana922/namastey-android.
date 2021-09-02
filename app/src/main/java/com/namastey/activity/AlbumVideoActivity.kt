@@ -7,13 +7,14 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -21,31 +22,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.namastey.BR
-import com.namastey.BuildConfig
 import com.namastey.R
 import com.namastey.adapter.AlbumVideoAdapter
 import com.namastey.adapter.CommentAdapter
 import com.namastey.adapter.UpnextVideoAdapter
+import com.namastey.adapter.UserShareAdapter
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
-import com.namastey.fragment.ShareAppFragment
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnSocialTextViewClick
 import com.namastey.listeners.OnVideoClick
-import com.namastey.model.AlbumBean
-import com.namastey.model.CommentBean
-import com.namastey.model.DashboardBean
-import com.namastey.model.VideoBean
+import com.namastey.model.*
 import com.namastey.uiView.AlbumView
 import com.namastey.utils.*
 import com.namastey.viewModel.AlbumViewModel
@@ -56,21 +57,7 @@ import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareApp
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareBlock
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareFacebook
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareInstagram
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareOther
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareReport
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareSave
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareTwitter
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.ivShareWhatssapp
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.progress_bar
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.svShareOption
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareBlock
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareCancel
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareReport
-import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.tvShareSave
+import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.coroutines.CoroutineScope
@@ -78,7 +65,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
+import java.io.ByteArrayOutputStream
+import java.net.URI
 import java.util.*
 import javax.inject.Inject
 
@@ -92,6 +80,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     @Inject
     lateinit var sessionManager: SessionManager
 
+    private val TAG = "AlbumVideoActivity"
     private lateinit var activityAlbumVideoBinding: ActivityAlbumVideoBinding
     private lateinit var albumViewModel: AlbumViewModel
     private lateinit var albumVideoAdapter: AlbumVideoAdapter
@@ -100,13 +89,20 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private lateinit var commentAdapter: CommentAdapter
     private lateinit var bottomSheetDialogComment: BottomSheetDialog
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
+    private lateinit var userShareAdapter: UserShareAdapter
+    private var selectedShareProfile = ArrayList<DashboardBean>()
+
     private var fileUrl = ""
     private lateinit var deleteIcon: Drawable
     private var colorDrawableBackground = ColorDrawable(Color.RED)
     private var position = -1
     private var editPost = false
     private var isMyProfile = false
-
+    private var followingList: ArrayList<DashboardBean> = ArrayList()
+    private val db = Firebase.firestore
+    private var storage = Firebase.storage
+    private var storageRef = storage.reference
+    private lateinit var bitmapProfile : Bitmap
     var mRecyclerView: ExoPlayerRecyclerView? = null
     var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
@@ -117,6 +113,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onSuccess(msg: String) {
         bottomSheetDialogComment.tvTotalComment.text =
             commentAdapter.itemCount.toString().plus(" ").plus(getString(R.string.comments))
+    }
+
+    override fun onSuccessStartChat(msg: String) {
+        TODO("Not yet implemented")
     }
 
     override fun onSuccessAddComment(commentBean: CommentBean) {
@@ -166,7 +166,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             intent.putExtra("profile_url", videoBean.profile_url)
             openActivity(intent)
         }
-            Log.e("AlbumVideoActivity", "videoListDetail: ${dashboardBean.is_like}")
+        Log.e("AlbumVideoActivity", "videoListDetail: ${dashboardBean.is_like}")
         videoList[position] = videoBean
 
         albumVideoAdapter.notifyItemChanged(position)
@@ -211,9 +211,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder
                 ): Int {
-                    return if (data[viewHolder.adapterPosition].user_id == sessionManager.getUserId() || isMyProfile){
+                    return if (data[viewHolder.adapterPosition].user_id == sessionManager.getUserId() || isMyProfile) {
                         super.getSwipeDirs(recyclerView, viewHolder)
-                    }else{
+                    } else {
                         0
                     }
 
@@ -333,8 +333,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         mRecyclerView = findViewById(R.id.viewpagerAlbum)
 
         val position = intent.getIntExtra("position", 0)
-        if (intent.hasExtra("isMyProfile")){
-            isMyProfile = intent.getBooleanExtra("isMyProfile",false)
+        if (intent.hasExtra("isMyProfile")) {
+            isMyProfile = intent.getBooleanExtra("isMyProfile", false)
         }
         /* albumVideoAdapter =
              AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
@@ -367,7 +367,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         albumVideoAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post { mRecyclerView!!.playVideo(false,false, position) }
+            Handler(Looper.getMainLooper()).post {
+                mRecyclerView!!.playVideo(
+                    false,
+                    false,
+                    position
+                )
+            }
             firstTime = false
         }
     }
@@ -433,7 +439,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onItemClick(id: Long, position: Int) {
         //viewpagerAlbum.currentItem = position
         mLayoutManager!!.scrollToPositionWithOffset(position, 0);
-        mRecyclerView!!.playVideo(false,false, position)
+        mRecyclerView!!.playVideo(false, false, position)
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
         groupUpnext.visibility = View.GONE
@@ -441,7 +447,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+        var isSameValue = false
+        if (selectedShareProfile.isNotEmpty()) {
+            for (i in selectedShareProfile.indices)
+                if (selectedShareProfile[i].id == dashboardBean.id) {
+                    selectedShareProfile.removeAt(i)
+                    isSameValue = true
+                    break
+                }
+        }
 
+        if (!isSameValue)
+            selectedShareProfile.add(dashboardBean)
     }
 
     override fun onVideoClick() {
@@ -495,12 +512,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
-        override fun onCommentClick(postId: Long) {
-            var intent = Intent(this,CommentActivity::class.java)
-            intent.putExtra("postId",postId)
-            openActivity(intent)
+    override fun onCommentClick(postId: Long) {
+        var intent = Intent(this, CommentActivity::class.java)
+        intent.putExtra("postId", postId)
+        openActivity(intent)
 
-        }
+    }
 //        bottomSheetDialogComment = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
 //        bottomSheetDialogComment.setContentView(
 //            layoutInflater.inflate(
@@ -579,7 +596,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Need to reduce this code
      */
     private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
-
+        selectedShareProfile.clear()
         this.position = position
         bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
@@ -589,7 +606,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             )
         )
 
-        if (videoBean.is_share == 0 ){
+        if (videoBean.is_share == 0) {
             bottomSheetDialogShare.svShareOption.alpha = 0.3f
         }
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -602,7 +619,12 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         bottomSheetDialogShare.tv_user_name.text = videoBean.username
         bottomSheetDialogShare.tv_Job.text = videoBean.job
         if (videoBean.profile_url.isNotBlank()) {
-            GlideLib.loadImage(this@AlbumVideoActivity,bottomSheetDialogShare.iv_user_profile, videoBean.profile_url)
+            GlideLib.loadImage(
+                this@AlbumVideoActivity,
+                bottomSheetDialogShare.iv_user_profile,
+                videoBean.profile_url
+            )
+            bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
 
         if (videoBean.is_share == 1) {
@@ -661,21 +683,31 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
             bottomSheetDialogShare.ivShareApp.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareApp.visibility = View.VISIBLE
-            if (videoBean.is_download == 0){
+            if (videoBean.is_download == 0) {
                 bottomSheetDialogShare.ivShareSave.visibility = View.GONE
                 bottomSheetDialogShare.tvShareSave.visibility = View.GONE
-            }else{
+            } else {
                 bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
                 bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
-                if(videoBean.is_saved == 1){
-                    bottomSheetDialogShare.ivShareSave.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_save_fill))
+                if (videoBean.is_saved == 1) {
+                    bottomSheetDialogShare.ivShareSave.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            this@AlbumVideoActivity,
+                            R.drawable.ic_save_fill
+                        )
+                    )
                 }
             }
         }
-         Log.d("saved", videoBean.is_saved.toString())
+        Log.d("saved", videoBean.is_saved.toString())
 
-        if(videoBean.is_reported == 1){
-            bottomSheetDialogShare.ivShareReport.setImageDrawable(ContextCompat.getDrawable(this@AlbumVideoActivity, R.drawable.ic_report_fill))
+        if (videoBean.is_reported == 1) {
+            bottomSheetDialogShare.ivShareReport.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@AlbumVideoActivity,
+                    R.drawable.ic_report_fill
+                )
+            )
             bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
         }
 
@@ -686,9 +718,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             albumViewModel.savePost(videoBean.id)
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
-            if(videoBean.is_reported == 1){
+            if (videoBean.is_reported == 1) {
                 displayReportedUserDialog()
-            }else {
+            } else {
                 displayReportUserDialog(videoBean)
             }
         }
@@ -741,16 +773,141 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     private fun shareWithInApp(videoBean: VideoBean) {
-        addFragment(
-            ShareAppFragment.getInstance(
-                sessionManager.getUserId(),
-                videoBean.cover_image_url,
-                videoBean.video_url,
-                "",
-                false
-            ),
-            Constants.SHARE_APP_FRAGMENT
+        Log.e("DashboardActivity", "cover_image_url: \t ${videoBean?.profile_url}")
+        var coverImage = ""
+        if (videoBean.profile_url != null && videoBean.profile_url != "") {
+            coverImage = videoBean.profile_url
+        } else {
+            coverImage = ""
+        }
+        val message = String.format(
+            getString(R.string.profile_link_msg),
+            videoBean.username
+        ).plus(" \n").plus(String.format(getString(R.string.profile_link), videoBean.username))
+
+        bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
+        bottomSheetDialogShare.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_profile,
+                null
+            )
         )
+        bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShare.setCancelable(true)
+        albumViewModel.getFollowingShareList()
+        bottomSheetDialogShare.show()
+        searchFollowing()
+
+        bottomSheetDialogShare.ivShareClose.setOnClickListener {
+            bottomSheetDialogShare.dismiss()
+        }
+
+        bottomSheetDialogShare.tvDone.setOnClickListener {
+            sendMessageToMultiple(videoBean)
+        }
+
+    }
+
+    private fun searchFollowing() {
+        bottomSheetDialogShare.searchProfileShare.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty()) {
+                    bottomSheetDialogShare.rvSearchUsers.visibility = View.VISIBLE
+                    filter(newText.toString().trim())
+
+                } else {
+                    filter("")
+                    //shareAppViewModel.getFollowingList(userId)
+                    albumViewModel.getFollowingShareList()
+                }
+
+                return true
+            }
+        })
+
+        bottomSheetDialogShare.searchProfileShare.setOnCloseListener {
+            filter("")
+            albumViewModel.getFollowingShareList()
+            //shareAppViewModel.getFollowingList(userId)
+
+            false
+        }
+    }
+
+    private fun filter(text: String) {
+//        Log.e("ShareAppFragment", "filter: text: $text")
+        val filteredName: ArrayList<DashboardBean> = ArrayList()
+
+        for (following in followingList) {
+            if (following.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(following)
+            }
+        }
+
+        userShareAdapter.filterList(filteredName)
+    }
+
+    private fun sendMessageToMultiple(videoBean: VideoBean) {
+
+        for (profileBean in selectedShareProfile) {
+            Log.e(TAG, "userId: \t $profileBean")
+            albumViewModel.startChat(profileBean.id, 1)
+            val message = String.format(
+                getString(R.string.profile_link_msg),
+                videoBean.username, ""
+            ).plus(" \n")
+                .plus(String.format(getString(R.string.profile_link), videoBean.username))
+            val chatMessage = ChatMessage(
+                message,
+                sessionManager.getUserId(),
+                profileBean.id,
+                "",
+                System.currentTimeMillis(),
+                0,
+                0
+            )
+            val chatId = if (sessionManager.getUserId() < profileBean.id)
+                sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
+            else
+                profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
+            if (videoBean.profile_url!=null) {
+                uploadFile(profileBean)
+            }
+//            Firestore part
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.CHATS)
+                .add(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+
+//            Added last message
+            // chatMessage.unreadCount = ++unreadCount
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                .document(chatId).set(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+            bottomSheetDialogShare.dismiss()
+        }
     }
 
     private fun shareTwitter(videoBean: VideoBean) {
@@ -814,7 +971,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             shareIntent.setPackage("com.instagram.android")
             try {
                 val intentDirect = Intent(Intent.ACTION_SEND)
-                intentDirect.component = ComponentName("com.instagram.android","com.instagram.direct.share.handler.DirectShareHandlerActivity")
+                intentDirect.component = ComponentName(
+                    "com.instagram.android",
+                    "com.instagram.direct.share.handler.DirectShareHandlerActivity"
+                )
                 intentDirect.type = "text/plain"
                 intentDirect.putExtra(Intent.EXTRA_TEXT, "Your message here")
                 startActivity(intentDirect)
@@ -992,7 +1152,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                             albumViewModel.removePostVideo(videoBean.id, 0)
                     }
 
-                    btnNeg.id ->{
+                    btnNeg.id -> {
                         bottomSheetDialogShare.dismiss()
                     }
                 }
@@ -1061,6 +1221,15 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         albumVideoAdapter.notifyItemRangeChanged(position, albumVideoAdapter.itemCount)
     }
 
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        followingList = list
+        if (followingList.size != 0) {
+            userShareAdapter =
+                UserShareAdapter(followingList, this, false, this, this)
+            bottomSheetDialogShare.rvProfileShare.adapter = userShareAdapter
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         mRecyclerView!!.onRestartPlayer()
@@ -1096,5 +1265,94 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
 
         super.onDestroy()
+    }
+
+
+    private fun uploadFile(
+        dashboardBean: DashboardBean
+    ) {
+        albumViewModel.setIsLoading(true)
+        val  profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
+        Log.e(TAG, "Upload file started....")
+        val fileStorage: StorageReference = storageRef.child(
+            Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
+        )
+        val baos = ByteArrayOutputStream()
+        bitmapProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        var uploadTask = fileStorage.putBytes(data)
+        uploadTask.addOnFailureListener {
+            albumViewModel.setIsLoading(false)
+            Log.e("Firebase : ", "Image uplaod issue")
+        }.addOnSuccessListener { taskSnapshot ->
+            uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                fileStorage.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result.toString()
+                    albumViewModel.setIsLoading(false)
+                    Log.e(TAG, "File upload success....$downloadUri")
+                    sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_IMAGE, downloadUri)
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+
+        }
+    }
+
+    private fun sendMessage(dashboardBean: DashboardBean, message: String, imageUrl: String) {
+
+        albumViewModel.startChat(dashboardBean.id, 1)
+
+        val chatMessage = ChatMessage(
+            message,
+            sessionManager.getUserId(),
+            dashboardBean.id,
+            imageUrl,
+            System.currentTimeMillis(),
+            0,
+            0
+        )
+        val chatId = if (sessionManager.getUserId() < dashboardBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
+        else
+            dashboardBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.CHATS)
+            .add(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+//            Added last message
+        // chatMessage.unreadCount = ++unreadCount
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId).set(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+        bottomSheetDialogShare.dismiss()
     }
 }

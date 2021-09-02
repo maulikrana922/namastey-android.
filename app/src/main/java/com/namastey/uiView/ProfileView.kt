@@ -16,6 +16,7 @@ interface ProfileView: BaseView {
     fun onSuccessBoostPriceList(boostPriceBean: ArrayList<BoostPriceBean>)
     fun onLogoutSuccess(msg: String)
     fun onLogoutFailed(msg: String, error: Int)
-
+    fun onSuccessStartChat(msg: String)
+    fun onSuccess(list: ArrayList<DashboardBean>)
 //    fun onSuccessProfileResponse(user: User)
 }

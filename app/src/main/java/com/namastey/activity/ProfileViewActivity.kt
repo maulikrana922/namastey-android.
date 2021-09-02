@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,22 +24,28 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.gowtham.library.utils.TrimType
 import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.adapter.AlbumListProfileAdapter
+import com.namastey.adapter.UserShareAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityProfileViewBinding
-import com.namastey.fragment.ShareAppFragment
 import com.namastey.listeners.OnItemClick
+import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnViewAlbumClick
 import com.namastey.model.*
 import com.namastey.uiView.ProfileView
@@ -49,15 +56,18 @@ import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
+import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.net.URI
 import java.util.*
 import javax.inject.Inject
 
 class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     ProfileView,
     OnViewAlbumClick,
-    OnItemClick {
+    OnItemClick, OnSelectUserItemClick {
     //OnFeedItemClick {
 
     @Inject
@@ -71,6 +81,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var profileBean = ProfileBean()
     private var isMyProfile = false
     private lateinit var bottomSheetDialogShare: BottomSheetDialog
+    private lateinit var bottomSheetDialogShareApp: BottomSheetDialog
+    private var followingList: ArrayList<DashboardBean> = ArrayList()
+    private var selectedShareProfile = ArrayList<DashboardBean>()
+    private lateinit var userShareAdapter: UserShareAdapter
     private var username = ""
     private val REQUEST_CODE = 101
     private var profileFile: File? = null
@@ -79,6 +93,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var videoFile: File? = null
     private var isProfilePic = false
     private lateinit var menu: Menu
+    private val db = Firebase.firestore
+    private var storage = Firebase.storage
+    private var storageRef = storage.reference
+    private val TAG = "ProfileViewActivtiy"
+    private lateinit var bitmapProfile : Bitmap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -1061,7 +1081,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
+        var isSameValue = false
+        if (selectedShareProfile.isNotEmpty()) {
+            for (i in selectedShareProfile.indices)
+                if (selectedShareProfile[i].user_id == dashboardBean.user_id) {
+                    selectedShareProfile.removeAt(i)
+                    isSameValue = true
+                    break
+                }
+        }
 
+        if (!isSameValue)
+            selectedShareProfile.add(dashboardBean)
     }
 
     override fun onViewAlbumItemClick(value: Long, position: Int) {
@@ -1071,15 +1102,111 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         selectVideo()
     }
 
-/*    fun onClickProfileMore(view: View) {
-        if (profileBean.username.isNotEmpty()) {
-            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                completeSignUpDialog()
-            } else {
-                openShareOptionDialog(profileBean)
+    /*    fun onClickProfileMore(view: View) {
+            if (profileBean.username.isNotEmpty()) {
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    completeSignUpDialog()
+                } else {
+                    openShareOptionDialog(profileBean)
+                }
+            }
+        }*/
+    private fun uploadFile(
+        dashboardBean: DashboardBean,
+        message: String,
+        photoUri: Uri
+    ) {
+        profileViewModel.setIsLoading(true)
+        val profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
+        Log.e(TAG, "Upload file started....")
+        val fileStorage: StorageReference = storageRef.child(
+            Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
+        )
+        if (dashboardBean.profile_url!=null) {
+            val baos = ByteArrayOutputStream()
+            bitmapProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            var uploadTask = fileStorage.putBytes(data)
+            uploadTask.addOnFailureListener {
+                profileViewModel.setIsLoading(false)
+                Log.e("Firebase : ", "Image uplaod issue")
+            }.addOnSuccessListener { taskSnapshot ->
+                uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
+                        }
+                    }
+                    fileStorage.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUri = task.result.toString()
+                        profileViewModel.setIsLoading(false)
+                        Log.e(TAG, "File upload success....$downloadUri")
+                        sendMessage(
+                            dashboardBean,
+                            Constants.FirebaseConstant.MSG_TYPE_IMAGE,
+                            downloadUri
+                        )
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                }
+
             }
         }
-    }*/
+    }
+
+    private fun sendMessage(dashboardBean: DashboardBean, message: String, imageUrl: String) {
+
+        profileViewModel.startChat(dashboardBean.id, 1)
+
+        val chatMessage = ChatMessage(
+            message,
+            sessionManager.getUserId(),
+            dashboardBean.id,
+            imageUrl,
+            System.currentTimeMillis(),
+            0,
+            0
+        )
+        val chatId = if (sessionManager.getUserId() < dashboardBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
+        else
+            dashboardBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.CHATS)
+            .add(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+//            Added last message
+        // chatMessage.unreadCount = ++unreadCount
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId).set(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+        bottomSheetDialogShareApp.dismiss()
+    }
+
 
     fun onClickProfileLike(view: View) {
         if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
@@ -1180,6 +1307,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      * Display share option if user login
      */
     private fun openShareOptionDialog(profileBean: ProfileBean) {
+        selectedShareProfile.clear()
         bottomSheetDialogShare = BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
@@ -1203,6 +1331,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 bottomSheetDialogShare.iv_user_profile,
                 profileBean.profileUrl
             )
+            bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
 
         bottomSheetDialogShare.tvShareBlock.text = getString(R.string.block)
@@ -1255,22 +1384,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
 
             bottomSheetDialogShare.ivShareApp.setOnClickListener {
-                bottomSheetDialogShare.dismiss()
-                val message = String.format(
-                    getString(R.string.profile_link_msg),
-                    profileBean.username, profileBean.about_me
-                ).plus(" \n")
-                    .plus(String.format(getString(R.string.profile_link), profileBean.username))
-                addFragment(
-                    ShareAppFragment.getInstance(
-                        sessionManager.getUserId(),
-                        "",
-                        "",
-                        message,
-                        true
-                    ),
-                    Constants.SHARE_APP_FRAGMENT
-                )
+                shareWithInApp(profileBean)
             }
 
             bottomSheetDialogShare.ivShareFacebook.setOnClickListener {
@@ -1382,6 +1496,144 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
 
         bottomSheetDialogShare.show()
+    }
+
+    private fun shareWithInApp(profileBean: ProfileBean) {
+        Log.e("DashboardActivity", "cover_image_url: \t ${profileBean?.profileUrl}")
+        var coverImage = ""
+        if (profileBean.profileUrl != null && profileBean.profileUrl != "") {
+            coverImage = profileBean.profileUrl
+        } else {
+            coverImage = ""
+        }
+        val message = String.format(
+            getString(R.string.profile_link_msg),
+            profileBean.username
+        ).plus(" \n").plus(String.format(getString(R.string.profile_link), profileBean.username))
+
+        bottomSheetDialogShareApp = BottomSheetDialog(this@ProfileViewActivity, R.style.dialogStyle)
+        bottomSheetDialogShareApp.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_share_profile,
+                null
+            )
+        )
+        bottomSheetDialogShareApp.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialogShareApp.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialogShareApp.setCancelable(true)
+        profileViewModel.getFollowingShareList()
+        bottomSheetDialogShareApp.show()
+        searchFollowing()
+
+        bottomSheetDialogShareApp.ivShareClose.setOnClickListener {
+            bottomSheetDialogShareApp.dismiss()
+        }
+
+        bottomSheetDialogShareApp.tvDone.setOnClickListener {
+            sendMessageToMultiple(profileBean)
+        }
+
+    }
+
+    private fun searchFollowing() {
+        bottomSheetDialogShareApp.searchProfileShare.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!!.isNotEmpty()) {
+                    bottomSheetDialogShareApp.rvSearchUsers.visibility = View.VISIBLE
+                    filter(newText.toString().trim())
+
+                } else {
+                    filter("")
+                    //shareAppViewModel.getFollowingList(userId)
+                    profileViewModel.getFollowingShareList()
+                }
+
+                return true
+            }
+        })
+
+        bottomSheetDialogShareApp.searchProfileShare.setOnCloseListener {
+            filter("")
+            profileViewModel.getFollowingShareList()
+            //shareAppViewModel.getFollowingList(userId)
+
+            false
+        }
+    }
+
+    private fun filter(text: String) {
+//        Log.e("ShareAppFragment", "filter: text: $text")
+        val filteredName: ArrayList<DashboardBean> = ArrayList()
+
+        for (following in followingList) {
+            if (following.username.toLowerCase().contains(text.toLowerCase())) {
+                filteredName.add(following)
+            }
+        }
+
+        userShareAdapter.filterList(filteredName)
+    }
+
+    private fun sendMessageToMultiple(profileBeanData: ProfileBean) {
+
+        for (profileBean in selectedShareProfile) {
+            Log.e(TAG, "userId: \t $profileBean")
+            profileViewModel.startChat(profileBean.id, 1)
+            val message = String.format(
+                getString(R.string.profile_link_msg),
+                profileBeanData.username, ""
+            ).plus(" \n")
+                .plus(String.format(getString(R.string.profile_link), profileBeanData.username))
+            val chatMessage = ChatMessage(
+                message,
+                sessionManager.getUserId(),
+                profileBean.id,
+                "",
+                System.currentTimeMillis(),
+                0,
+                0
+            )
+            val chatId = if (sessionManager.getUserId() < profileBean.id)
+                sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
+            else
+                profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+            uploadFile(profileBean,message, Uri.parse(profileBean.profile_url))
+
+//            Firestore part
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.CHATS)
+                .add(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+
+//            Added last message
+            // chatMessage.unreadCount = ++unreadCount
+            db.collection(Constants.FirebaseConstant.MESSAGES)
+                .document(chatId)
+                .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+                .document(chatId).set(chatMessage)
+                .addOnSuccessListener { documentReference ->
+                    Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Error adding document", e)
+                }
+            bottomSheetDialogShareApp.dismiss()
+        }
     }
 
     private fun clickSendMessage(profileBean: ProfileBean) {
@@ -1551,6 +1803,19 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onLogoutFailed(msg: String, error: Int) {
     }
 
+    override fun onSuccessStartChat(msg: String) {
+
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+        followingList = list
+        if (followingList.size != 0) {
+            userShareAdapter =
+                UserShareAdapter(followingList, this, false, this, this)
+            bottomSheetDialogShareApp.rvProfileShare.adapter = userShareAdapter
+        }
+    }
+
     /**
      * gives option for select video or take video from camera
      */
@@ -1653,5 +1918,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 dismiss()
             }
         }.show()
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int) {
+
+    }
+
+    override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
+
     }
 }

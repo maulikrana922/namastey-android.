@@ -9,13 +9,16 @@ import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.net.Uri
 import android.os.*
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +32,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -41,6 +45,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.hendraanggrian.appcompat.widget.Mention
@@ -89,8 +95,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.buffer.android.thumby.util.ThumbyUtils
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.net.URI
 import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -140,6 +150,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var currentPage = 1
     private var mbNext = true
     private var mbLoading = true
+    private lateinit var bitmapProfile : Bitmap
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
@@ -163,7 +174,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var noOfCall = 0
     private var totalCount = 1
     private val db = Firebase.firestore
-
+    private var storage = Firebase.storage
+    private var storageRef = storage.reference
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -469,6 +481,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      * Display share option if user login
      */
     private fun openShareOptionDialog(dashboardBean: DashboardBean) {
+        selectedShareProfile.clear()
         bottomSheetDialogShare = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogShare.setContentView(
             layoutInflater.inflate(
@@ -487,7 +500,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 //        bottomSheetDialogShare.tvShareCancel.setOnClickListener {
 //            bottomSheetDialogShare.dismiss()
 //        }
-        bottomSheetDialogShare.tv_user_name.text = dashboardBean.username
+        bottomSheetDialogShare.tv_user_name.text = dashboardBean.casual_name
         bottomSheetDialogShare.tv_Job.text = dashboardBean.job
         if (dashboardBean.profile_url.isNotBlank()) {
             GlideLib.loadImage(
@@ -495,6 +508,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 bottomSheetDialogShare.iv_user_profile,
                 dashboardBean.profile_url
             )
+             bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
         if (dashboardBean.is_share == 1) {
             // Share on Twitter app if install otherwise web link
@@ -678,10 +692,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     private fun shareWithInApp(dashboardBean: DashboardBean) {
-        Log.e("DashboardActivity", "cover_image_url: \t ${dashboardBean?.cover_image_url}")
+        Log.e("DashboardActivity", "cover_image_url: \t ${dashboardBean?.profile_url}")
         var coverImage = ""
-        if (dashboardBean.cover_image_url != null && dashboardBean.cover_image_url != "") {
-            coverImage = dashboardBean.cover_image_url
+        if (dashboardBean.profile_url != null && dashboardBean.profile_url != "") {
+            coverImage = dashboardBean.profile_url
         } else {
             coverImage = ""
         }
@@ -709,7 +723,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
 
         bottomSheetDialogShareApp.tvDone.setOnClickListener {
-            sendMessageToMultiple()
+            sendMessageToMultiple(dashboardBean)
         }
 
 //        addFragment(
@@ -3073,7 +3087,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         var isSameValue=false
         if (selectedShareProfile.isNotEmpty()) {
             for (i in selectedShareProfile.indices)
-                if (selectedShareProfile[i].user_id == dashboardBean.user_id) {
+                if (selectedShareProfile[i].id == dashboardBean.id) {
                     selectedShareProfile.removeAt(i)
                     isSameValue=true
                     break
@@ -3086,30 +3100,139 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
+    private fun uploadFile(
+        dashboardBean: DashboardBean,
+        message: String,
+        photoUri: Uri
+    ) {
+        dashboardViewModel.setIsLoading(true)
+        val  profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
+        Log.e(TAG, "Upload file started....")
+        val fileStorage: StorageReference = storageRef.child(
+            Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
+        )
 
-    private fun sendMessageToMultiple() {
+//        val filePath=Utils.getImageUri(this,bitmap)
+      /*  fileStorage.putFile(Uri.fromFile(File(profileFile)))
+            .addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                    val imageUrl = it.toString()
+                    dashboardViewModel.setIsLoading(false)
+                    Log.e(TAG, "File upload success....")
+                    sendMessage(dashboardBean, message, imageUrl)
+                }
+            }
+
+            .addOnFailureListener { e ->
+                print(e.message)
+                dashboardViewModel.setIsLoading(false)
+                Log.e("Firebase : ", "Image uplaod issue")
+            }
+        */
+        val baos = ByteArrayOutputStream()
+        bitmapProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        var uploadTask = fileStorage.putBytes(data)
+        uploadTask.addOnFailureListener {
+            dashboardViewModel.setIsLoading(false)
+            Log.e("Firebase : ", "Image uplaod issue")
+        }.addOnSuccessListener { taskSnapshot ->
+          uploadTask.continueWithTask { task ->
+              if (!task.isSuccessful) {
+                  task.exception?.let {
+                      throw it
+                  }
+              }
+              fileStorage.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result.toString()
+                    dashboardViewModel.setIsLoading(false)
+                    Log.e(TAG, "File upload success....$downloadUri")
+                    sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_IMAGE, downloadUri)
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+
+        }
+    }
+
+    private fun sendMessage(dashboardBean: DashboardBean, message: String, imageUrl: String) {
+
+        dashboardViewModel.startChat(dashboardBean.id, 1)
+
+        val chatMessage = ChatMessage(
+            message,
+            sessionManager.getUserId(),
+            dashboardBean.id,
+            imageUrl,
+            System.currentTimeMillis(),
+            0,
+            0
+        )
+        val chatId = if (sessionManager.getUserId() < dashboardBean.id)
+            sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
+        else
+            dashboardBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+//            Firestore part
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.CHATS)
+            .add(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+//                    val chatMessage = documentReference.get().result.toObject(ChatMessage::class.java)
+//                    chatMsgList.add(chatMessage!!)
+//                    chatAdapter.notifyItemInserted(chatAdapter.itemCount)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+//            Added last message
+        // chatMessage.unreadCount = ++unreadCount
+        db.collection(Constants.FirebaseConstant.MESSAGES)
+            .document(chatId)
+            .collection(Constants.FirebaseConstant.LAST_MESSAGE)
+            .document(chatId).set(chatMessage)
+            .addOnSuccessListener { documentReference ->
+                Log.e(TAG, "DocumentSnapshot written with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error adding document", e)
+            }
+
+        bottomSheetDialogShareApp.dismiss()
+    }
+
+    private fun sendMessageToMultiple(dashboardBean: DashboardBean) {
 
         for (profileBean in selectedShareProfile) {
             Log.e(TAG, "userId: \t $profileBean")
-            dashboardViewModel.startChat(profileBean.user_id, 1)
+            dashboardViewModel.startChat(profileBean.id, 1)
             val message = String.format(
                 getString(R.string.profile_link_msg),
-                profileBean.username,""
+                dashboardBean.username,""
             ).plus(" \n")
-                .plus(String.format(getString(R.string.profile_link), profileBean.username))
+                .plus(String.format(getString(R.string.profile_link), dashboardBean.username))
             val chatMessage = ChatMessage(
                 message,
                 sessionManager.getUserId(),
-                profileBean.user_id,
+                profileBean.id,
                 "",
                 System.currentTimeMillis(),
                 0,
                 0
             )
-            val chatId = if (sessionManager.getUserId() < profileBean.user_id)
-                sessionManager.getUserId().toString().plus("_").plus(profileBean.user_id)
+            val chatId = if (sessionManager.getUserId() < profileBean.id)
+                sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
             else
-                profileBean.user_id.toString().plus("_").plus(sessionManager.getUserId())
+                profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
+
+            uploadFile(profileBean,message, Uri.parse(dashboardBean.profile_url))
 
 //            Firestore part
             db.collection(Constants.FirebaseConstant.MESSAGES)
@@ -3138,7 +3261,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Error adding document", e)
                 }
-            bottomSheetDialogShareApp.dismiss()
+
         }
     }
 

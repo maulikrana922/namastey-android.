@@ -59,6 +59,14 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     }
 
     override fun onSuccessDeletePost() {
+
+    }
+
+    override fun onSuccess(list: ArrayList<DashboardBean>) {
+
+    }
+
+    override fun onSuccessStartChat(msg: String) {
         TODO("Not yet implemented")
     }
 
