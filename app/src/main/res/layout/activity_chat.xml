@@ -228,7 +228,7 @@
                             android:background="@drawable/ic_camera_bg"
                             android:padding="@dimen/_6sdp"
                             android:src="@drawable/ic_voice_new"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             tools:ignore="ContentDescription" />
 
                         <ImageView
@@ -245,14 +245,14 @@
 
                         <ImageView
                             android:id="@+id/ivSend"
-                            android:layout_width="@dimen/_32sdp"
-                            android:layout_height="@dimen/_32sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_4sdp"
                             android:background="@drawable/ic_camera_bg"
                             android:onClick="onClickSendMessage"
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_send_new"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             tools:ignore="ContentDescription" />
 
                     </LinearLayout>
