@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/_45sdp"
             android:contentDescription="@string/app_name"
             android:onClick="onClickBack"
-            android:src="@drawable/ic_back_new"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

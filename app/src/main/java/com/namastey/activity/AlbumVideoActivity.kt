@@ -813,35 +813,25 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.setPackage("com.instagram.android")
             try {
+                val intentDirect = Intent(Intent.ACTION_SEND)
+                intentDirect.component = ComponentName("com.instagram.android","com.instagram.direct.share.handler.DirectShareHandlerActivity")
+                intentDirect.type = "text/plain"
+                intentDirect.putExtra(Intent.EXTRA_TEXT, "Your message here")
+                startActivity(intentDirect)
 
-                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                val fileName = "share_video.mp4"
-                val file = File(folder, fileName)
-                val uri = let {
-                    FileProvider.getUriForFile(
-                        it,
-                        "${BuildConfig.APPLICATION_ID}.provider",
-                        file
-                    )
-                }
-                fileUrl = videoBean.video_url
-                downloadFile(this@AlbumVideoActivity, fileUrl, uri)
-
-//                    val videoPath = File(applicationContext.filesDir, "")
-//
-//                    val newFile = File(videoPath, Uri.parse(videoBean.video_url).path)
-//                    shareIntent.type = "video/*"
-//                    val contentUri =
-//                        FileProvider.getUriForFile(
-//                            applicationContext,
-//                            "com.namastey.provider",
-//                            newFile
-//                        );
-//
-//                    shareIntent.putExtra(
-//                        Intent.EXTRA_STREAM,
-//                        contentUri
+//                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+//                val fileName = "share_video.mp4"
+//                val file = File(folder, fileName)
+//                val uri = let {
+//                    FileProvider.getUriForFile(
+//                        it,
+//                        "${BuildConfig.APPLICATION_ID}.provider",
+//                        file
 //                    )
+//                }
+//                fileUrl = videoBean.video_url
+//                downloadFile(this@AlbumVideoActivity, fileUrl, uri)
+
             } catch (e: Exception) {
                 Log.e("ERROR", e.printStackTrace().toString())
             }
