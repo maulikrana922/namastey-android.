@@ -239,8 +239,8 @@
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>
 
-    <string name="take_photo">Take Photo</string>
-    <string name="select_photo">Select Photo</string>
+    <string name="take_photo">Camera</string>
+    <string name="select_photo">Gallery</string>
     <string name="upload_profile_picture">Upload Profile picture</string>
 
     <string name="signup_with_app">Sign up for NamasteyApp</string>
@@ -315,9 +315,9 @@
     <string name="hint_album_name">Enter Album Name</string>
     <string name="uploads">Uploads</string>
     <string name="saved">Saved</string>
-    <string name="select_video">Select Video</string>
-    <string name="take_video">Take Video</string>
-    <string name="from_video">From Video</string>
+    <string name="select_video">Gallery</string>
+    <string name="take_video">Camera</string>
+    <string name="from_video">Gallery</string>
     <string name="msg_save_album">Please save album</string>
     <string name="msg_remove_post">Are you sure you want to remove?</string>
 
@@ -664,9 +664,9 @@
     <string name="not_now">Not Now</string>
     <string name="use_boost_new">Use Boost!</string>
     <string name="boosts_not_available">Boosts are not available</string>
-    <string name="membership_not_available">Membership are not available</string>
-    <string name="location_not_available">Location are not available</string>
-    <string name="see_who_likes_not_available">See who likes not available</string>
+    <string name="membership_not_available">Membership not active</string>
+    <string name="location_not_available">Location not active</string>
+    <string name="see_who_likes_not_available">Crush not available</string>
     <string name="alert_msg_feature_not_available">Currently this feature is not live. Please stay tuned.</string>
     <string name="alert_msg_boost">You got about 8.5x more profile views.</string>
     <string name="alert_boost_msg">Swipe to see who checked you.</string>

@@ -300,28 +300,29 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
 
         }
-
-        edtMessage.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(
-                s: CharSequence?, start: Int,
-                count: Int, after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (s.isNotEmpty()) {
-                    ivSend.visibility = View.VISIBLE
-                    ivMic.visibility = View.GONE
-                } else {
-                    ivMic.visibility = View.VISIBLE
-                    ivSend.visibility = View.GONE
-                }
-            }
-        })
+//============================ For now this feature not release ============================
+//        edtMessage.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {}
+//            override fun beforeTextChanged(
+//                s: CharSequence?, start: Int,
+//                count: Int, after: Int
+//            ) {
+//            }
+//
+//            override fun onTextChanged(
+//                s: CharSequence, start: Int,
+//                before: Int, count: Int
+//            ) {
+//                if (s.isNotEmpty()) {
+//                    ivSend.visibility = View.VISIBLE
+//                    ivMic.visibility = View.GONE
+//                } else {
+//                    ivMic.visibility = View.VISIBLE
+//                    ivSend.visibility = View.GONE
+//                }
+//            }
+//        })
+//============================ For now this feature not release ============================
     }
 
     fun hideChatMoreButton(isHide: Boolean) {
