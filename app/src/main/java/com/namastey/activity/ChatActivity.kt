@@ -3,13 +3,12 @@ package com.namastey.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -40,8 +39,11 @@ import com.namastey.utils.*
 import com.namastey.viewModel.ChatViewModel
 import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.activity_post_video.*
+import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import org.buffer.android.thumby.ThumbyActivity
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -61,6 +63,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private lateinit var chatAdapter: ChatAdapter
     private var matchesListBean = MatchesListBean()
     private var chatMsgList = ArrayList<ChatMessage>()
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var pictureFile: File? = null
 
     //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
@@ -506,8 +510,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
             if (matchesListBean.is_match == 1 || isFollowMe) {
-                if (isPermissionGrantedForCamera())
-                    capturePhoto()
+                   selectImage()  //capturePhoto()
             }
         }
     }
@@ -565,6 +568,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                             uploadFile(imageUri, true)
                         }
                     }
+                }
+            }else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
+                try {
+                    val photoUri = FileProvider.getUriForFile(
+                        this,
+                        applicationContext.packageName.plus(".provider"),
+                        Utils.getCameraFile(this@ChatActivity)
+                    )
+                    uploadFile(photoUri, true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
@@ -895,5 +909,43 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         }.show()
     }
 
+    private fun selectImage() {
+        bottomSheetDialog = BottomSheetDialog(this@ChatActivity, R.style.dialogStyle)
+        bottomSheetDialog.setContentView(
+            layoutInflater.inflate(
+                R.layout.dialog_bottom_pick,
+                null
+            )
+        )
+        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.tvPhotoTake.text = getString(R.string.take_photo)
+        bottomSheetDialog.tvPhotoChoose.text = getString(R.string.select_photo)
 
+        bottomSheetDialog.tvPhotoTake.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            if (isPermissionGrantedForCamera())
+                capturePhoto()
+        }
+        bottomSheetDialog.tvPhotoChoose.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            openGalleryForImage()
+        }
+        bottomSheetDialog.tvPhotoCancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        bottomSheetDialog.show()
+    }
+
+
+    private fun openGalleryForImage() {
+        pictureFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString() + ".jpeg"
+        )
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, Constants.REQUEST_CODE_IMAGE)
+    }
 }
