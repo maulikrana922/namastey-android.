@@ -280,7 +280,7 @@ class AlbumVideoAdapter(
             }
             tvVideoUpNext.setOnClickListener {
                 isDisplayDetails = false
-                viewDetailsVideo.visibility = View.GONE
+//                viewDetailsVideo.visibility = View.GONE
                 onVideoClick.onUpnextClick(position)
             }
 
