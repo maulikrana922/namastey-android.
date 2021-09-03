@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.Manifest
+import android.R.attr.label
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlarmManager
@@ -18,7 +19,6 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.net.Uri
 import android.os.*
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,7 +32,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -95,11 +94,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.buffer.android.thumby.util.ThumbyUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.net.URI
 import java.sql.Timestamp
 import java.util.*
@@ -348,6 +345,12 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         // dashboardViewModel.getFeedList(0)
 
         mentionArrayAdapter = MentionArrayAdapter(this)
+
+        if (intent.hasExtra("fromLink")){
+            val intentProfile = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+            intentProfile.putExtra(Constants.USERNAME, intent.getStringExtra("username"))
+            openActivity(intentProfile)
+        }
     }
 
     private fun getVideoUrl() {
@@ -678,7 +681,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
             sendIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                Uri.parse(getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username)
+                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
             )
             startActivity(sendIntent)
         } catch (e: PackageManager.NameNotFoundException) {
@@ -693,16 +696,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun shareWithInApp(dashboardBean: DashboardBean) {
         Log.e("DashboardActivity", "cover_image_url: \t ${dashboardBean?.profile_url}")
-        var coverImage = ""
-        if (dashboardBean.profile_url != null && dashboardBean.profile_url != "") {
-            coverImage = dashboardBean.profile_url
-        } else {
-            coverImage = ""
-        }
-        val message = String.format(
-            getString(R.string.profile_link_msg),
-            dashboardBean.username
-        ).plus(" \n").plus(String.format(getString(R.string.profile_link), dashboardBean.username))
+//        var coverImage = ""
+//        if (dashboardBean.profile_url != null && dashboardBean.profile_url != "") {
+//            coverImage = dashboardBean.profile_url
+//        } else {
+//            coverImage = ""
+//        }
+//        val message = String.format(
+//            getString(R.string.profile_link_msg),
+//            dashboardBean.username
+//        ).plus(" \n").plus(String.format(getString(R.string.profile_link), dashboardBean.username))
 
         bottomSheetDialogShareApp = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
         bottomSheetDialogShareApp.setContentView(
@@ -871,7 +874,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun shareTwitter(dashboardBean: DashboardBean) {
         val tweetUrl =
             StringBuilder("https://twitter.com/intent/tweet?text=")
-        tweetUrl.append(dashboardBean.video_url)
+        tweetUrl.append(getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username)
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(tweetUrl.toString())
@@ -889,14 +892,19 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     private fun shareOther(dashboardBean: DashboardBean) {
-        val sendIntent = Intent()
-        sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-        sendIntent.putExtra(
-            Intent.EXTRA_TEXT, dashboardBean.video_url
-        )
-        sendIntent.type = "text/plain"
-        startActivity(sendIntent)
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this@DashboardActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+//        val sendIntent = Intent()
+//        sendIntent.action = Intent.ACTION_SEND
+//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+//        sendIntent.putExtra(
+//            Intent.EXTRA_TEXT, getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+//
+//        )
+//        sendIntent.type = "text/plain"
+//        startActivity(sendIntent)
     }
 
     private fun postShare(postId: Int) {
@@ -2548,7 +2556,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
             notificationBroadcast,
             IntentFilter(MyFirebaseMessagingService.NOTIFICATION_ACTION)
         )
-
+        if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
+            GlideApp.with(this@DashboardActivity)
+                .load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.default_placeholder)
+                .fitCenter().into(ivUser)
+        }
         LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
             myBroadcastReceiver, IntentFilter("countDown")
         )
@@ -3105,6 +3119,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         message: String,
         photoUri: Uri
     ) {
+        bottomSheetDialogShare.dismiss()
         dashboardViewModel.setIsLoading(true)
         val  profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
         Log.e(TAG, "Upload file started....")
@@ -3149,7 +3164,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     val downloadUri = task.result.toString()
                     dashboardViewModel.setIsLoading(false)
                     Log.e(TAG, "File upload success....$downloadUri")
-                    sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_IMAGE, downloadUri)
+                    sendMessage(
+                        dashboardBean,
+                        Constants.FirebaseConstant.MSG_TYPE_IMAGE,
+                        downloadUri
+                    )
                 } else {
                     // Handle failures
                     // ...
@@ -3215,7 +3234,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             dashboardViewModel.startChat(profileBean.id, 1)
             val message = String.format(
                 getString(R.string.profile_link_msg),
-                dashboardBean.username,""
+                dashboardBean.username, ""
             ).plus(" \n")
                 .plus(String.format(getString(R.string.profile_link), dashboardBean.username))
             val chatMessage = ChatMessage(
@@ -3232,7 +3251,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             else
                 profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
 
-            uploadFile(profileBean,message, Uri.parse(dashboardBean.profile_url))
+            uploadFile(profileBean, message, Uri.parse(dashboardBean.profile_url))
 
 //            Firestore part
             db.collection(Constants.FirebaseConstant.MESSAGES)
@@ -3265,4 +3284,17 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
     }
 
+    override fun onSuccessGlobal(msg: String) {
+        feedList.clear()
+        videoIdList.clear()
+        currentPage = 1
+        totalCount = 1
+        getFeedListApi(0, false)
+    }
+
+    fun onclickGlobal(view: View){
+        val jsonObject = JsonObject()
+        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+        dashboardViewModel.editProfile(jsonObject)
+    }
 }

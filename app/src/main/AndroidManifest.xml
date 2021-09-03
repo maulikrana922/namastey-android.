@@ -285,8 +285,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:host="namasteyapp.com/link"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:host="www.namasteyapp.com"
+                     />
             </intent-filter>
         </activity>
 

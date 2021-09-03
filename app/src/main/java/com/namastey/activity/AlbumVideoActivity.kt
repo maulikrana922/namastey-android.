@@ -1,9 +1,7 @@
 package com.namastey.activity
 
 import android.app.Activity
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -754,7 +752,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
             sendIntent.putExtra(
                 Intent.EXTRA_TEXT,
-                Uri.parse(videoBean.video_url)
+                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
             )
 //                sendIntent.putExtra(
 //                    Intent.EXTRA_STREAM,
@@ -913,7 +911,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private fun shareTwitter(videoBean: VideoBean) {
         val tweetUrl =
             StringBuilder("https://twitter.com/intent/tweet?text=")
-        tweetUrl.append(videoBean.video_url)
+        tweetUrl.append(getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username)
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(tweetUrl.toString())
@@ -976,7 +974,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     "com.instagram.direct.share.handler.DirectShareHandlerActivity"
                 )
                 intentDirect.type = "text/plain"
-                intentDirect.putExtra(Intent.EXTRA_TEXT, "Your message here")
+                intentDirect.putExtra(Intent.EXTRA_TEXT, getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username)
                 startActivity(intentDirect)
 
 //                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
@@ -1005,14 +1003,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     private fun shareOther(videoBean: VideoBean) {
-        val sendIntent = Intent()
-        sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-        sendIntent.putExtra(
-            Intent.EXTRA_TEXT, videoBean.video_url
-        )
-        sendIntent.type = "text/plain"
-        startActivity(sendIntent)
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this@AlbumVideoActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+//        val sendIntent = Intent()
+//        sendIntent.action = Intent.ACTION_SEND
+//        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+//        sendIntent.putExtra(
+//            Intent.EXTRA_TEXT, videoBean.video_url
+//        )
+//        sendIntent.type = "text/plain"
+//        startActivity(sendIntent)
     }
 
     /**

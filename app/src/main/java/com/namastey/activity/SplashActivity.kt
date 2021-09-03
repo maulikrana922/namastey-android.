@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProviders
@@ -59,7 +60,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             override fun onStart() {}
             override fun onUpdate(completionFraction: Float) {}
             override fun onEnd() {
-                startActivity(Intent(this@SplashActivity, DashboardActivity::class.java))
+                val intentDashboard = Intent(this@SplashActivity, DashboardActivity::class.java)
+
+                if (intent.data != null){
+                    val data: Uri? = intent.data
+                    val username = data?.getQueryParameter("username")
+                    intentDashboard.putExtra("username", username)
+                    intentDashboard.putExtra("fromLink", true)
+                }
+                startActivity(intentDashboard)
 //                overridePendingTransition(0, 0)
                 finish()
             }
@@ -104,7 +113,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
         val dynamicLink = intent.data
         if (dynamicLink != null) {
-            Log.e("Dynamic_Link:",dynamicLink.toString())
+            Log.e("Dynamic_Link:", dynamicLink.toString())
             //dynamicLink.getQueryParameter()
         }
     }

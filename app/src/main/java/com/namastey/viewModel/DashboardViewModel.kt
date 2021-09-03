@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import com.namastey.R
+import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -594,6 +595,30 @@ class DashboardViewModel constructor(
                 }
             } catch (t: Throwable) {
 //                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+    fun editProfile(jsonObject: JsonObject) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (dashboardView.isInternetAvailable()) {
+                    networkService.requestCreateProfile(jsonObject)
+                        .let { appResponse: AppResponse<Any> ->
+                            setIsLoading(false)
+                            if (appResponse.status == Constants.OK) {
+                                dashboardView.onSuccessGlobal(appResponse.message)
+                            } else {
+                                dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                            }
+                        }
+                } else {
+                    setIsLoading(false)
+                    dashboardView.showMsg(R.string.no_internet)
+                }
+            } catch (exception: Throwable) {
+                setIsLoading(false)
+                dashboardView.onHandleException(exception)
             }
         }
     }

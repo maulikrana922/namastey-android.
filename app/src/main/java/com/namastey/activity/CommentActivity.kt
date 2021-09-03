@@ -194,6 +194,9 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         TODO("Not yet implemented")
     }
 
+    override fun onSuccessGlobal(msg: String) {
+        TODO("Not yet implemented")
+    }
     override fun onSuccessAddComment(commentBean: CommentBean) {
         edtComment.setText("")
         commentAdapter.addCommentLastPosition(commentBean)

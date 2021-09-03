@@ -139,7 +139,7 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             btnPostVideo.text = getString(R.string.update)
 //            videoFile = File(Uri.parse(videoBean.video_url).path)
             GlideLib.loadImage(this, ivSelectCover, videoBean.cover_image_url)
-            tvAlbumName.isEnabled = false
+//            tvAlbumName.isEnabled = false
             tvAlbumName.text = albumBean.name
             tvAlbumName.setCompoundDrawablesWithIntrinsicBounds(
                 0,
@@ -249,13 +249,14 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
 //            val thumb: Bitmap =
 //                BitmapFactory.decodeFile(pictureFile!!.absolutePath)
 //            GlideLib.loadImageBitmap(this@PostVideoActivity, ivSelectCover, thumb)
-                if (intent.hasExtra("fromAlbumDetail")) {
-                    tvAlbumName.isEnabled = false
-                } else {
-                    postVideoViewModel.getAlbumList()
-                }
+//                if (intent.hasExtra("fromAlbumDetail")) {
+//                    tvAlbumName.isEnabled = true
+//                } else {
+//                    postVideoViewModel.getAlbumList()
+//                }
             }
         }
+        postVideoViewModel.getAlbumList()
         // tvAlbumName.text = albumBean.name
 
         switchCommentOff.setOnTouchListener(OnTouchListener { view, motionEvent ->

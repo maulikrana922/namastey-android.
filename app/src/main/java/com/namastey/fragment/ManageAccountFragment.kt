@@ -10,6 +10,7 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
 import com.namastey.activity.SignUpActivity
+import com.namastey.customViews.CustomButton
 import com.namastey.customViews.CustomTextView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentManageAccountBinding
@@ -128,11 +129,11 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
         deleteDialog.setContentView(R.layout.dialog_delete)
         deleteDialog.setCancelable(false)
         deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        deleteDialog.findViewById<CustomTextView>(R.id.btnPos).setOnClickListener {
+        deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
             manageAccountViewModel.removeAccount()
             deleteDialog.dismiss()
         }
-        deleteDialog.findViewById<CustomTextView>(R.id.btnNeg).setOnClickListener {
+        deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
             deleteDialog.dismiss()
         }
         deleteDialog.show()

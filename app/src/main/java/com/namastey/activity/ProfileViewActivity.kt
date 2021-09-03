@@ -1,9 +1,7 @@
 package com.namastey.activity
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.ComponentName
-import android.content.Intent
+import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -734,8 +732,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
         if (profileBean.user_id == sessionManager.getUserId()) {
-            if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).isNotEmpty()) {
-                tvProfileUsername.text = sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
+            if (sessionManager.getStringValue(Constants.CASUAL_NAME).isNotEmpty()) {
+                tvProfileUsername.text = sessionManager.getStringValue(Constants.CASUAL_NAME)
                 if (sessionManager.getStringValue(Constants.KEY_TAGLINE).isNotEmpty())
                     tvAbouteDesc.text = sessionManager.getStringValue(Constants.KEY_TAGLINE)
                 else
@@ -1422,7 +1420,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
 
             bottomSheetDialogShare.ivShareInstagram.setOnClickListener {
-
+                shareInstagram(profileBean)
             }
 
             bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
@@ -1442,7 +1440,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
                     sendIntent.putExtra(
                         Intent.EXTRA_TEXT,
-                        Uri.parse(shareMessage)
+                        getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + profileBean.username
                     )
                     startActivity(sendIntent)
                 } catch (e: PackageManager.NameNotFoundException) {
@@ -1456,14 +1454,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
 
             bottomSheetDialogShare.ivShareOther.setOnClickListener {
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-                sendIntent.putExtra(
-                    Intent.EXTRA_TEXT, shareMessage
-                )
-                sendIntent.type = "text/plain"
-                startActivity(sendIntent)
+                val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + profileBean.username)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(this@ProfileViewActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+//                val sendIntent = Intent()
+//                sendIntent.action = Intent.ACTION_SEND
+//                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+//                sendIntent.putExtra(
+//                    Intent.EXTRA_TEXT, shareMessage
+//                )
+//                sendIntent.type = "text/plain"
+//                startActivity(sendIntent)
             }
         }
         //Privacy Click
@@ -1496,6 +1498,37 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         }
 
         bottomSheetDialogShare.show()
+    }
+    private fun shareInstagram(profileBean: ProfileBean) {
+        var intent =
+            packageManager.getLaunchIntentForPackage("com.instagram.android")
+        if (intent != null) {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.setPackage("com.instagram.android")
+            try {
+
+                val intentDirect = Intent(Intent.ACTION_SEND)
+                intentDirect.component = ComponentName(
+                    "com.instagram.android",
+                    "com.instagram.direct.share.handler.DirectShareHandlerActivity"
+                )
+                intentDirect.type = "text/plain"
+                intentDirect.putExtra(
+                    Intent.EXTRA_TEXT,
+                    getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + profileBean.username
+                )
+                startActivity(intentDirect)
+            } catch (e: Exception) {
+                Log.e("ERROR", e.printStackTrace().toString())
+            }
+
+        } else {
+            intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse("market://details?id=" + "com.instagram.android")
+            startActivity(intent)
+        }
     }
 
     private fun shareWithInApp(profileBean: ProfileBean) {

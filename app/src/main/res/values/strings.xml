@@ -55,6 +55,7 @@
     <string name="tv_billing_link">https://www.namasteyapp.com/billingterms</string>
     <string name="tv_invite_link">https://www.namasteyapp.com/app-landing-page</string>
     <string name="dynamic_link_msg">Hey, check this out on namastey app \n</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 
     <string name="btn_sign_facebook">Continue with Facebook</string>
     <string name="btn_signup_google">Continue with Google</string>
