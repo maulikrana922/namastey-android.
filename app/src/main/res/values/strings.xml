@@ -679,4 +679,8 @@
     <string name="express_your_feeling_freely_with_the_people_you_like">Express your feeling freely with the people you like.</string>
     <string name="Do_not_like_to_wait_Go_Unlimited">Don’t like to wait? Go Unlimited</string>
     <string name="travel_around_the_world_in_just_80_seconds">Travel around the world in just 80 \nseconds.</string>
+    <string name="high_each_boost"><b>₹508</b>/mo</string>
+    <string name="save_boost">Save XX%</string>
+    <string name="medium_each_boost"><b>₹650</b>/mo</string>
+    <string name="low_each_boost"><b>₹1100</b>/mo</string>
 </resources>

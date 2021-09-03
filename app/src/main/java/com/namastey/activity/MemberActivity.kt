@@ -1,24 +1,34 @@
 package com.namastey.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
+import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.adapter.MemberDialogSliderAdapter
 import com.namastey.adapter.MemberSliderAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMemberBinding
 import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
 import com.namastey.uiView.MemberShipView
+import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_member.*
-import kotlinx.android.synthetic.main.activity_member.tlIndicator
-import kotlinx.android.synthetic.main.activity_member.vpSlide
+import kotlinx.android.synthetic.main.dialog_member.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -36,6 +46,11 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private lateinit var membershipViewModel: MembershipViewModel
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
+    private var selectedMonths = 1
+    private var subscriptionId = "000020"
+    private var isselected:Int = 0
+
+
 
 
     override fun getViewModel() = membershipViewModel
@@ -141,6 +156,141 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 }
             })
         }
+    }
+
+    fun onClickElite(view: View){
+        showCustomDialog(1)
+    }
+
+    private fun showCustomDialog(position:Int) {
+        selectedMonths = 1
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@MemberActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_member, viewGroup, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+
+        membershipViewModel.setIsLoading(true)
+        alertDialog.show()
+
+        dialogView.constHigh.setOnClickListener {
+            isselected=0
+            if(isselected == 0) {
+                dialogView.tvOfferHigh.visibility = VISIBLE
+                dialogView.viewSelectedHigh.visibility = VISIBLE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferMedium.visibility = GONE
+                dialogView.viewSelectedMedium.visibility = GONE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                dialogView.tvOfferLow.visibility = GONE
+                dialogView.viewSelectedLow.visibility = GONE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+            }
+        }
+        dialogView.constMedium.setOnClickListener {
+            isselected=1
+            if(isselected == 1){
+                dialogView.tvOfferMedium.visibility = VISIBLE
+                dialogView.viewSelectedMedium.visibility = VISIBLE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferHigh.visibility = GONE
+                dialogView.viewSelectedHigh.visibility = GONE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                dialogView.tvOfferLow.visibility = GONE
+                dialogView.viewSelectedLow.visibility = GONE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+            }
+        }
+        dialogView.constLow.setOnClickListener {
+            isselected=2
+            if(isselected == 2){
+                dialogView.tvOfferLow.visibility = VISIBLE
+                dialogView.viewSelectedLow.visibility = VISIBLE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferMedium.visibility = GONE
+                dialogView.viewSelectedMedium.visibility = GONE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                dialogView.tvOfferHigh.visibility = GONE
+                dialogView.viewSelectedHigh.visibility = GONE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+            }
+        }
+        /*Show dialog slider*/
+        val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
+        val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
+
+        viewpager.adapter =
+            MemberDialogSliderAdapter(this@MemberActivity, membershipSliderArrayList)
+        tabview.setupWithViewPager(viewpager, true)
+        viewpager.currentItem = position
+
+
+        val timer: TimerTask = object : TimerTask() {
+            override fun run() {
+                this@MemberActivity.runOnUiThread(Runnable {
+                    if (viewpager.currentItem < membershipSliderArrayList.size - 1) {
+                        viewpager.currentItem = viewpager.currentItem + 1
+                    } else {
+                        viewpager.currentItem = 0
+                    }
+                })
+            }
+        }
+        val time = Timer()
+        time.schedule(timer, 0, 5000)
+
+        dialogView.btnContinue.setOnClickListener {
+            alertDialog.dismiss()
+            val intent = Intent(this@MemberActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
+            openActivity(intent)
+        }
+
+        dialogView.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        class SliderTime : TimerTask() {
+            override fun run() {
+                this@MemberActivity.runOnUiThread(Runnable {
+                    if (vpSlide.currentItem < membershipSliderArrayList.size - 1) {
+                        vpSlide.currentItem = vpSlide.currentItem + 1
+                    } else {
+                        vpSlide.currentItem = 0
+                    }
+                })
+            }
+        }
+
     }
 
     fun onClickMembershipBack(view: View) {
