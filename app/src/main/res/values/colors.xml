@@ -18,6 +18,9 @@
     <color name="boost_color_orange">#FDAF6D</color>
     <color name="airport_color_blue">#4C76F2</color>
     <color name="airport_color_light_blue">#13CEF7</color>
+    <color name="location_marker_color_blue">#07DFF6</color>
+    <color name="location_marker_color_light_blue">#5E5BEF</color>
+
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>

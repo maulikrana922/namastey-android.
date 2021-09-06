@@ -124,8 +124,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="@string/high_each_boost"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextBoostHigh"
                         app:typeface="MULI_EXTRA_BOLD" />
 
@@ -199,9 +199,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textColor="@color/color_text_red"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="@string/medium_each_boost"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextBoostMedium"
                         app:typeface="MULI_EXTRA_BOLD" />
 
@@ -290,9 +290,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textSize="@dimen/_14sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="@string/low_each_boost"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextBoostLow"
                         app:typeface="MULI_EXTRA_BOLD" />
 

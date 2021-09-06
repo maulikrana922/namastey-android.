@@ -71,6 +71,7 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@drawable/rounded_airport_button"
             android:text="@string/airport"
+            android:onClick="onAirportClick"
             android:gravity="center_vertical"
             android:textSize="@dimen/_16sdp"
             android:drawableStart="@drawable/ic_airport_new"

@@ -1,19 +1,23 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.*
 import com.google.android.material.tabs.TabLayout
 import com.namastey.BR
 import com.namastey.R
@@ -21,14 +25,38 @@ import com.namastey.adapter.MemberDialogSliderAdapter
 import com.namastey.adapter.MemberSliderAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMemberBinding
+import com.namastey.fragment.SignUpFragment
 import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
 import com.namastey.uiView.MemberShipView
 import com.namastey.utils.Constants
+import com.namastey.utils.CurrencySymbol
 import com.namastey.utils.SessionManager
+import com.namastey.utils.Utils
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_member.*
 import kotlinx.android.synthetic.main.dialog_member.view.*
+import kotlinx.android.synthetic.main.dialog_member.view.btnContinue
+import kotlinx.android.synthetic.main.dialog_member.view.constHigh
+import kotlinx.android.synthetic.main.dialog_member.view.constLow
+import kotlinx.android.synthetic.main.dialog_member.view.constMedium
+import kotlinx.android.synthetic.main.dialog_member.view.tvNothanks
+import kotlinx.android.synthetic.main.dialog_member.view.tvOfferHigh
+import kotlinx.android.synthetic.main.dialog_member.view.tvOfferLow
+import kotlinx.android.synthetic.main.dialog_member.view.tvOfferMedium
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextBoostHigh
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextBoostLow
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextBoostMedium
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextHigh
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextHighEachBoost
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextLow
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextLowEachBoost
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextMedium
+import kotlinx.android.synthetic.main.dialog_member.view.tvTextMediumEachBoost
+import kotlinx.android.synthetic.main.dialog_member.view.viewSelectedHigh
+import kotlinx.android.synthetic.main.dialog_member.view.viewSelectedLow
+import kotlinx.android.synthetic.main.dialog_member.view.viewSelectedMedium
+import kotlinx.android.synthetic.main.dialog_membership.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -49,8 +77,11 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private var selectedMonths = 1
     private var subscriptionId = "000020"
     private var isselected:Int = 0
+    private val PERMISSION_REQUEST_CODE = 99
 
-
+    //In App Product Price
+    private lateinit var billingClient: BillingClient
+    private val subscriptionSkuList = listOf("000010", "000020", "000030")
 
 
     override fun getViewModel() = membershipViewModel
@@ -161,6 +192,139 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     fun onClickElite(view: View){
         showCustomDialog(1)
     }
+    fun onAirportClick(view: View){
+
+        if (sessionManager.isGuestUser()) {
+            addFragment(
+                SignUpFragment.getInstance(
+                    false
+                ),
+                Constants.SIGNUP_FRAGMENT
+            )
+        } else {
+            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                completeSignUpDialog()
+            } else {
+                addLocationPermission()
+            }
+        }
+    }
+
+    private fun addLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openActivity(this, PassportContentActivity())
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ), PERMISSION_REQUEST_CODE
+                )
+            }
+        } else {
+            openActivity(this, PassportContentActivity())
+        }
+    }
+
+    private fun setupBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
+
+            private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
+                val params = SkuDetailsParams
+                    .newBuilder()
+                    .setSkusList(subscriptionSkuList)
+                    .setType(BillingClient.SkuType.SUBS)
+                    .build()
+
+                billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
+                        for (i in skuDetailsList.indices) {
+
+                            val skuDetails = skuDetailsList[i]
+
+                            if (subscriptionSkuList.size >= 2) {
+                                if (skuDetails.sku == subscriptionSkuList[0]) {
+                                    val price = Utils.splitString(skuDetails.price, 1)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextLowEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+                                }
+
+                                if (skuDetails.sku == subscriptionSkuList[1]) {
+                                    val price = Utils.splitString(skuDetails.price, 6)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextMediumEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+
+                                }
+
+                                if (skuDetails.sku == subscriptionSkuList[2]) {
+                                    val price = Utils.splitString(skuDetails.price, 12)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextHighEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+                                }
+                                membershipViewModel.setIsLoading(false)
+                            }
+
+                        }
+                    } else if (billingResult.responseCode == 1) {
+                        //user cancel
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 2) {
+                        Toast.makeText(this@MemberActivity, "Internet required for purchase", Toast.LENGTH_LONG)
+                            .show()
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 3) {
+                        Toast.makeText(
+                            this@MemberActivity,
+                            "Incompatible Google Play Billing Version",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 7) {
+                        Toast.makeText(this@MemberActivity, "you already own Premium", Toast.LENGTH_LONG)
+                            .show()
+                        return@querySkuDetailsAsync
+                    } else
+                        Toast.makeText(this@MemberActivity, "no skuDetails sorry", Toast.LENGTH_LONG)
+                            .show()
+                }
+            } else {
+                println("Billing Client not ready")
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
+
+            }
+        })
+    }
+
 
     private fun showCustomDialog(position:Int) {
         selectedMonths = 1
@@ -196,6 +360,8 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                subscriptionId = "000030"
+
             }
         }
         dialogView.constMedium.setOnClickListener {
@@ -219,6 +385,9 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                subscriptionId = "000020"
+
             }
         }
         dialogView.constLow.setOnClickListener {
@@ -242,12 +411,15 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                subscriptionId = "000010"
+
             }
         }
         /*Show dialog slider*/
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
         val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
-
+        setupBillingClient(dialogView)
         viewpager.adapter =
             MemberDialogSliderAdapter(this@MemberActivity, membershipSliderArrayList)
         tabview.setupWithViewPager(viewpager, true)

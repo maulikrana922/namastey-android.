@@ -539,6 +539,7 @@
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
+    <string name="send_messages">Send Message</string>
     <string name="message_locked">Message (Locked)</string>
     <string name="private_account_message">This user have private account.</string>
 
@@ -683,4 +684,7 @@
     <string name="save_boost">Save XX%</string>
     <string name="medium_each_boost"><b>₹650</b>/mo</string>
     <string name="low_each_boost"><b>₹1100</b>/mo</string>
+    <string name="visit_gurgaon">Visit Gurgaon</string>
+    <string name="super_message_count">You have 5 Super Messages</string>
+    <string name="super_message_alert">You can send upto 280 words.\nMake them count! </string>
 </resources>

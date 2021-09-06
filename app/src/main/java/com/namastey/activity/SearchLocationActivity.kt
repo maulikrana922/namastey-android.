@@ -483,11 +483,11 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
                 getString(R.string.go_to).plus(" ").plus(city)
         }
 
-        if (recentLocation.state != "" && recentLocation.state != null) {
-            marker.tvMyCurrentAddress2.text = recentLocation.state
-        } else if (state != "") {
-            marker.tvMyCurrentAddress2.text = state
-        }
+//        if (recentLocation.state != "" && recentLocation.state != null) {
+//            marker.tvMyCurrentAddress2.text = recentLocation.state
+//        } else if (state != "") {
+//            marker.tvMyCurrentAddress2.text = state
+//        }
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
