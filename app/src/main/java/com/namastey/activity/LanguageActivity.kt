@@ -73,7 +73,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), ContentLanguag
 
         selectVideoIdList = ArrayList()
         rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 15, false))
-        videoLanguageAdapter = VideoLanguageAdapter(languageList, this@LanguageActivity, this)
+        videoLanguageAdapter = VideoLanguageAdapter(languageList, this@LanguageActivity, selectVideoIdList,this,sessionManager)
         rvVideoLanguage.adapter = videoLanguageAdapter
     }
 

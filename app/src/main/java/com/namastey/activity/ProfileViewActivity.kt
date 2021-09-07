@@ -118,6 +118,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
             sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
             sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
+            sessionManager.setLanguageList(profileBean.languageBean)
+            var selectLanguageIdList:ArrayList<Int> = ArrayList()
+            for(languageListId in sessionManager.getLanguageList()){
+                selectLanguageIdList.add(languageListId.id)
+            }
+            sessionManager.setLanguageIdList(selectLanguageIdList)
             btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
