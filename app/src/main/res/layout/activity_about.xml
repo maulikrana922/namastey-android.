@@ -62,7 +62,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
             android:background="@drawable/rounded_white_solid_white_corner"
             android:gravity="top"
             android:hint="@string/hint_type_here"
@@ -77,7 +77,9 @@
             android:text="@string/continues"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:stateListAnimator="@null"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

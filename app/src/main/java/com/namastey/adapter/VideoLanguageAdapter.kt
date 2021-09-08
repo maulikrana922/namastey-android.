@@ -63,15 +63,17 @@ class VideoLanguageAdapter(
 
             selectLanguageList = sessionManager.getLanguageIdList()
 
-            if (selectLanguageList.contains(videoLanguageList.get(position).id)){
-                ckbLanguage.isChecked = true
-            }else{
-                ckbLanguage.isChecked = false
-            }
+            ckbLanguage.isChecked = selectLanguageList.contains(videoLanguageList.get(position).id)
 
             ckbLanguage.setOnClickListener { v ->
                 onItemClick.onLanguageItemClick(videoLanguageList.get(position))
             }
+
+            clLanguage.setOnClickListener { v ->
+                ckbLanguage.isChecked = !ckbLanguage.isChecked
+                onItemClick.onLanguageItemClick(videoLanguageList.get(position))
+            }
+
         }
 
     }

@@ -286,7 +286,9 @@
                     app:layout_constraintEnd_toEndOf="@id/ivSelectCover"
                     app:layout_constraintStart_toStartOf="@id/edtVideoDesc"
                     app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
-                    app:layout_constraintVertical_bias="1" />
+                    app:layout_constraintVertical_bias="1"
+                    android:stateListAnimator="@null"
+                    />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

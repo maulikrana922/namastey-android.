@@ -75,7 +75,7 @@
                         android:drawableStart="@drawable/ic_male_sign"
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center"
-                        android:padding="@dimen/_7sdp"
+                        android:padding="@dimen/_8sdp"
                         android:text="@string/men"
                         android:textColor="#30B7D6" />
                 </FrameLayout>
@@ -101,7 +101,7 @@
                         android:drawableStart="@drawable/ic_female_sign"
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center_vertical"
-                        android:padding="@dimen/_5sdp"
+                        android:padding="@dimen/_8sdp"
                         android:text="@string/female"
                         android:textColor="#EB3EB0" />
                 </FrameLayout>
@@ -127,7 +127,7 @@
                         android:drawableStart="@drawable/ic_non_binary"
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center_vertical"
-                        android:padding="@dimen/_5sdp"
+                        android:padding="@dimen/_8sdp"
                         android:text="@string/non_binary"
                         android:textColor="#9748FC" />
                 </FrameLayout>
@@ -239,7 +239,9 @@
             android:text="@string/continues"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:stateListAnimator="@null"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

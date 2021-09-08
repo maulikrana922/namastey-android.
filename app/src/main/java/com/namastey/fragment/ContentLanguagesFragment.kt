@@ -100,6 +100,7 @@ class ContentLanguagesFragment : BaseFragment<FragmentContentLanguagesBinding>()
         rvVideoLanguage.adapter = videoLanguageAdapter    }
 
     override fun onLanguageItemClick(videoLanguageBean: VideoLanguageBean) {
+        selectLanguageIdList.clear()
         for (i in selectedLanguageList){
             selectLanguageIdList.add(i.id)
         }

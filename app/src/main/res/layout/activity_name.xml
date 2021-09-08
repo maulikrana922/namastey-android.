@@ -35,7 +35,7 @@
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvName"
         style="@style/tvWrapBlackStyle"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:text="@string/name"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
@@ -45,7 +45,7 @@
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvNameMsg"
         style="@style/tvWrapBlackStyle"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/enter_your_name"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
         app:layout_constraintTop_toBottomOf="@id/tvName" />
@@ -54,7 +54,7 @@
         android:id="@+id/edtFullName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_22sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/_10sdp"
@@ -71,7 +71,7 @@
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUsername"
         style="@style/tvWrapBlackStyle"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_45sdp"
         android:text="@string/user_name"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
@@ -81,7 +81,7 @@
     <com.namastey.customViews.CustomTextView
         android:id="@+id/tvUsernameMsg"
         style="@style/tvWrapBlackStyle"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/choose_username"
         app:layout_constraintStart_toStartOf="@id/ivNameBack"
         app:layout_constraintTop_toBottomOf="@id/tvUsername" />
@@ -90,7 +90,7 @@
         android:id="@+id/edtUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_22sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/_10sdp"
@@ -99,7 +99,7 @@
         android:singleLine="true"
         android:imeOptions="actionDone"
         android:hint="@string/user_name"
-        android:textColor="@color/color_text"
+        android:textColor="@color/color_black_text"
         android:background="@drawable/rounded_white_solid_white_corner"
         app:layout_constraintStart_toStartOf="@id/tvName"
         app:layout_constraintTop_toBottomOf="@id/tvUsernameMsg"/>
@@ -126,7 +126,9 @@
         android:onClick="onClickContinue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:stateListAnimator="@null"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
