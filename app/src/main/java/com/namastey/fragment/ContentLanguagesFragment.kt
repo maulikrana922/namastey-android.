@@ -77,6 +77,8 @@ class ContentLanguagesFragment : BaseFragment<FragmentContentLanguagesBinding>()
             selectedLanguageList.add(languageListId)
         }
 
+      //  sessionManager.setLanguageIdList(selectLanguageIdList)
+
        Log.e("ContentLanguage", "selectedLanguageList: \t  $selectedLanguageList")
        Log.e("ContentLanguage", "selectedLanguageId: \t  $selectLanguageIdList")
         contentLanguageViewModel.getContentLanguage(locale)
@@ -94,10 +96,13 @@ class ContentLanguagesFragment : BaseFragment<FragmentContentLanguagesBinding>()
         (activity as AccountSettingsActivity).setVisibilitySave(true)
         selectLanguageIdList = ArrayList()
         rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 15, false))
-        videoLanguageAdapter = VideoLanguageAdapter(languageList,requireActivity(),this)
+        videoLanguageAdapter = VideoLanguageAdapter(languageList,requireActivity(),selectLanguageIdList,this,sessionManager)
         rvVideoLanguage.adapter = videoLanguageAdapter    }
 
     override fun onLanguageItemClick(videoLanguageBean: VideoLanguageBean) {
+        for (i in selectedLanguageList){
+            selectLanguageIdList.add(i.id)
+        }
         if (selectLanguageIdList.contains(videoLanguageBean.id)) {
 //            Log.e("ContentLanguage", "onLanguageItemClick: \t Remove")
             selectLanguageIdList.remove(videoLanguageBean.id)

@@ -24,6 +24,7 @@ import com.namastey.utils.Constants.KEY_IS_GUEST_USER
 import com.namastey.utils.Constants.KEY_IS_LOGIN
 import com.namastey.utils.Constants.KEY_IS_VERIFIED_USER
 import com.namastey.utils.Constants.KEY_JOB
+import com.namastey.utils.Constants.KEY_LANGUAGE_ID_LIST
 import com.namastey.utils.Constants.KEY_LANGUAGE_LIST
 import com.namastey.utils.Constants.KEY_LOGIN_TYPE
 import com.namastey.utils.Constants.KEY_NOTIFICATION_DATA
@@ -277,6 +278,21 @@ class SessionManager(context: Context) {
         val e = mPrefs.edit()
         e.putString(KEY_LANGUAGE_LIST, Gson().toJson(languageList))
         e.apply()
+    }
+
+    fun setLanguageIdList(languageList: ArrayList<Int>) {
+        val e = mPrefs.edit()
+        e.putString(KEY_LANGUAGE_ID_LIST, Gson().toJson(languageList))
+        e.apply()
+    }
+
+    fun getLanguageIdList(): ArrayList<Int> {
+        val str = mPrefs.getString(KEY_LANGUAGE_ID_LIST, "")!!
+        val listType = object : TypeToken<ArrayList<Int>>() {}.type
+        return if (!TextUtils.isEmpty(str)) Gson().fromJson(
+            str,
+            listType
+        ) else ArrayList<Int>()
     }
 
     fun getLanguageList(): ArrayList<VideoLanguageBean> {

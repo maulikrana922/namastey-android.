@@ -67,7 +67,7 @@ class VideoLanguageFragment : BaseFragment<FragmentVideoLanguageBinding>(), Vide
 
         selectVideoIdList = ArrayList()
         rvVideoLanguage.addItemDecoration(GridSpacingItemDecoration(2, 10, false))
-        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!, this)
+        videoLanguageAdapter = VideoLanguageAdapter(languageList, activity!!, selectVideoIdList,this,sessionManager)
         rvVideoLanguage.adapter = videoLanguageAdapter
     }
 

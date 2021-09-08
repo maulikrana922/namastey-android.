@@ -12,14 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/llPassportContentBackground"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".85"
-            android:background="@drawable/rounded_bottom_blue_gradient"
-            android:contentDescription="@string/app_name" />
-
         <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -35,42 +27,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivPassportContentBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:contentDescription="@string/app_name"
-            android:onClick="onClickPassportContentBack"
-            android:src="@drawable/ic_back" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvPassport"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/airport"
-            android:textSize="26sp"
-            app:typeface="MULI_EXTRA_BOLD" />
+            <ImageView
+                android:id="@+id/ivPassportContentBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:contentDescription="@string/app_name"
+                android:onClick="onClickPassportContentBack"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_back_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvGetContentFromAnyPlace"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:text="@string/get_content_from_any_place"
-            android:textSize="16sp"
-            app:typeface="MULI_SEMIBOLD" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvPassport"
+                style="@style/tvWrapBlackStyle"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/airport"
+                android:textSize="@dimen/actionBarTitle"
+                app:layout_constraintBottom_toBottomOf="@id/ivPassportContentBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivPassportContentBack"
+                app:layout_constraintTop_toTopOf="@id/ivPassportContentBack"
+                app:typeface="MULI_SEMIBOLD" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/llSearchDestination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:background="@drawable/rounded_white_solid"
+            android:background="@drawable/rounded_btn"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

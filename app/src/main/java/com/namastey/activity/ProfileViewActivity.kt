@@ -136,6 +136,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sessionManager.setIntegerValue(profileBean.age, Constants.KEY_AGE)
             sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
             sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
+            sessionManager.setLanguageList(profileBean.languageBean)
+            var selectLanguageIdList:ArrayList<Int> = ArrayList()
+            for(languageListId in sessionManager.getLanguageList()){
+                selectLanguageIdList.add(languageListId.id)
+            }
+            sessionManager.setLanguageIdList(selectLanguageIdList)
             btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
@@ -1942,15 +1948,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickMembership(view: View) {
-        object : NotAvailableFeatureDialog(
-            this,
-            getString(R.string.membership_not_available),
-            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
-        ) {
-            override fun onBtnClick(id: Int) {
-                dismiss()
-            }
-        }.show()
+
+        val intent = Intent(this,MemberActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -1961,3 +1961,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     }
 }
+//        object : NotAvailableFeatureDialog(
+//            this,
+//            getString(R.string.membership_not_available),
+//            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
+//        ) {
+//            override fun onBtnClick(id: Int) {
+//                dismiss()
+//            }
+//        }.show()

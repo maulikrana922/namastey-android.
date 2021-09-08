@@ -541,6 +541,7 @@
     <!--Manage Account-->
     <string name="msg_delete">Are you sure you want to Delete your Account?</string>
     <string name="send_message">Send\nMessage</string>
+    <string name="send_messages">Send Message</string>
     <string name="message_locked">Message (Locked)</string>
     <string name="private_account_message">This user have private account.</string>
 
@@ -677,4 +678,17 @@
     <string name="not_available">Not Available</string>
     <string name="reported_msg">"This user has already been reported by you. "</string>
     <string name="undo">Undo</string>
+    <string name="become_elite">Become Elite</string>
+    <string name="get_namastey_elite">Get Namastey Elite</string>
+    <string name="express_your_feeling_freely_with_the_people_you_like">Express your feeling freely with the people you like.</string>
+    <string name="Do_not_like_to_wait_Go_Unlimited">Don’t like to wait? Go Unlimited</string>
+    <string name="travel_around_the_world_in_just_80_seconds">Travel around the world in just 80 \nseconds.</string>
+    <string name="high_each_boost"><b>₹508</b>/mo</string>
+    <string name="save_boost">Save XX%</string>
+    <string name="medium_each_boost"><b>₹650</b>/mo</string>
+    <string name="low_each_boost"><b>₹1100</b>/mo</string>
+    <string name="visit_gurgaon">Visit Gurgaon</string>
+    <string name="super_message_count">You have 5 Super Messages</string>
+    <string name="super_message_alert">You can send upto 280 words.\nMake them count! </string>
+
 </resources>

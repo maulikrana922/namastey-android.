@@ -90,6 +90,11 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
     }
 
     override fun onSuccess(msg: String) {
+        var List:ArrayList<Int> = ArrayList()
+        for (i in selectedLanguageList){
+            List.add(i.id)
+        }
+        sessionManager.setLanguageIdList(List)
         sessionManager.setLanguageList(selectedLanguageList)
         onBackPressed()
     }
@@ -101,11 +106,11 @@ class AccountSettingsActivity : BaseActivity<ActivityAccountSettingsBinding>(),
     fun onClickSaveLanguage(view: View) {
         val jsonObject = JsonObject()
 
-        if (selectLanguageIdList.size >= 1) {
+        if (selectedLanguageList.size >= 1) {
             Log.d("Profile Request:", jsonObject.toString())
             val jsonArrayLanguage = JsonArray()
-            for (i in selectLanguageIdList){
-                jsonArrayLanguage.add(i)
+            for (i in selectedLanguageList){
+                jsonArrayLanguage.add(i.id)
             }
             jsonObject.add(
                 Constants.LANGUAGE,

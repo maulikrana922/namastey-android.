@@ -43,12 +43,12 @@ object Constants {
     const val HVALUE = "L@titude2018"
 
     //    Test url
-//    const val BASE = "https://testyourapp.online/namasteyapp/api/"
-//    const val SPOTIFY_REDIRECT_URL = "http://testyourapp.online/namasteyapp/"
+    const val BASE = "https://testyourapp.online/namasteyapp/api/"
+    const val SPOTIFY_REDIRECT_URL = "http://testyourapp.online/namasteyapp/"
 
 //    Live url
-    const val BASE = "https://app.namasteyapp.com/api/"
-    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
+//    const val BASE = "https://app.namasteyapp.com/api/"
+//    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
 
     //  const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
@@ -247,6 +247,7 @@ object Constants {
     const val KEY_CAN_COMMENT_YOUR_VIDEO = "KEY_CAN_COMMENT_YOUR_VIDEO"
     const val KEY_NOTIFICATION_DATA = "notification_data"
     const val KEY_LANGUAGE_LIST = "KEY_LANGUAGE_LIST"
+    const val KEY_LANGUAGE_ID_LIST = "KEY_LANGUAGE_ID_LIST"
     const val KEY_CHOOSE_INTEREST_LIST = "KEY_CHOOSE_INTEREST_LIST"
     const val KEY_MAX_USER_LIKE = "KEY_MAX_USER_LIKE"
     const val KEY_BOOST_ME = "KEY_BOOST_ME"

@@ -27,21 +27,21 @@
             android:src="@drawable/ic_line_bottomsheet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.namastey.customViews.RoundImageView
             android:id="@+id/iv_user_profile"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:contentDescription="@string/app_name"
-            android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            app:cornerRadius="@dimen/_8sdp"
-            app:roundedCorners="all"
             android:src="@drawable/default_placeholder"
+            app:cornerRadius="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvShareCancel"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvShareCancel"
+            app:roundedCorners="all" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tv_user_name"
@@ -51,25 +51,24 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:paddingEnd="@dimen/_3sdp"
             android:text="@string/save"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlack"
             app:layout_constraintStart_toEndOf="@+id/iv_user_profile"
-            app:layout_constraintTop_toBottomOf="@id/tvShareCancel"
-             />
+            app:layout_constraintTop_toBottomOf="@id/tvShareCancel" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tv_Job"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_3sdp"
-            android:textColor="@color/color_text"
             android:text="@string/auto_translate"
-            android:layout_marginStart="@dimen/_8sdp"
+            android:textColor="@color/color_text"
             android:textSize="@dimen/_8sdp"
             app:layout_constraintStart_toEndOf="@+id/iv_user_profile"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_name"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
 
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tv_share_to"
@@ -78,179 +77,172 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingEnd="@dimen/_3sdp"
-            android:textSize="@dimen/_16sdp"
-            android:textStyle="bold"
             android:text="@string/share_to"
             android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_16sdp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_user_profile"
-            />
+            app:layout_constraintTop_toBottomOf="@id/iv_user_profile" />
 
 
-       <HorizontalScrollView
+        <HorizontalScrollView
             android:id="@+id/svShareOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_share_to" >
+            app:layout_constraintTop_toBottomOf="@id/tv_share_to">
 
-           <androidx.constraintlayout.widget.ConstraintLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="@dimen/_5sdp"
-               android:layout_marginEnd="@dimen/_5sdp"
-               android:layout_marginTop="@dimen/_10sdp"
-               android:layout_marginBottom="@dimen/_10sdp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
 
-            <ImageView
-                android:id="@+id/ivShareWhatssapp"
-                android:layout_width="@dimen/_45sdp"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:contentDescription="@string/app_name"
-                android:background="@drawable/ic_whatsapp_background"
-                android:src="@drawable/ic_whatsapp_fill"
-                android:padding="@dimen/_10sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/ivShareWhatssapp"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:background="@drawable/ic_whatsapp_background"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_whatsapp_fill"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-               <com.namastey.customViews.CustomTextView
-                   android:id="@+id/tvShareWhatssapp"
-                   style="@style/tvWrapWhiteStyle"
-                   android:layout_marginTop="@dimen/_3sdp"
-                   android:layout_marginBottom="@dimen/_10sdp"
-                   android:text="@string/whatsapp"
-                   android:textColor="@color/colorBlack"
-                   android:textSize="12sp"
-                   app:layout_constraintEnd_toEndOf="@id/ivShareWhatssapp"
-                   app:layout_constraintStart_toStartOf="@id/ivShareWhatssapp"
-                   app:layout_constraintTop_toBottomOf="@id/ivShareWhatssapp"
-                   app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareWhatssapp"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/whatsapp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivShareWhatssapp"
+                    app:layout_constraintStart_toStartOf="@id/ivShareWhatssapp"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareWhatssapp"
+                    app:typeface="MULI_SEMIBOLD" />
 
 
-               <ImageView
-                   android:id="@+id/ivShareInstagram"
-                   android:layout_width="@dimen/_45sdp"
-                   android:layout_height="@dimen/_45sdp"
-                   android:layout_marginStart="@dimen/_10sdp"
-                   android:contentDescription="@string/app_name"
-                   android:src="@drawable/ic_instagram_fill"
-                   android:padding="@dimen/_10sdp"
-                   android:background="@drawable/ic_instagram_background"
-                   app:layout_constraintStart_toEndOf="@id/ivShareWhatssapp"
-                   app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+                <ImageView
+                    android:id="@+id/ivShareInstagram"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:background="@drawable/ic_instagram_background"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_instagram_fill"
+                    app:layout_constraintStart_toEndOf="@id/ivShareWhatssapp"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
-               <com.namastey.customViews.CustomTextView
-                   android:id="@+id/tvShareInstagram"
-                   style="@style/tvWrapWhiteStyle"
-                   android:layout_marginTop="@dimen/_3sdp"
-                   android:layout_marginBottom="@dimen/_10sdp"
-                   android:text="@string/instagram"
-                   android:textColor="@color/colorBlack"
-                   android:textSize="12sp"
-                   app:layout_constraintEnd_toEndOf="@id/ivShareInstagram"
-                   app:layout_constraintStart_toStartOf="@id/ivShareInstagram"
-                   app:layout_constraintTop_toBottomOf="@id/ivShareInstagram"
-                   app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareInstagram"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/instagram"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivShareInstagram"
+                    app:layout_constraintStart_toStartOf="@id/ivShareInstagram"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareInstagram"
+                    app:typeface="MULI_SEMIBOLD" />
 
-               <ImageView
-                   android:id="@+id/ivShareFacebook"
-                   android:layout_width="@dimen/_45sdp"
-                   android:layout_height="@dimen/_45sdp"
-                   android:layout_marginStart="@dimen/_10sdp"
-                   android:padding="@dimen/_10sdp"
-                   android:visibility="gone"
-                   android:contentDescription="@string/app_name"
-                   android:src="@drawable/ic_facebook_fill"
-                   android:background="@drawable/ic_facebook_background"
-                   app:layout_constraintStart_toEndOf="@id/ivShareInstagram"
-                   app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+                <ImageView
+                    android:id="@+id/ivShareFacebook"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:background="@drawable/ic_facebook_background"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_facebook_fill"
+                    app:layout_constraintStart_toEndOf="@id/ivShareInstagram"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
-               <com.namastey.customViews.CustomTextView
-                   android:id="@+id/tvShareFacebook"
-                   style="@style/tvWrapWhiteStyle"
-                   android:layout_marginTop="@dimen/_3sdp"
-                   android:layout_marginBottom="@dimen/_10sdp"
-                   android:text="@string/facebook"
-                   android:textColor="@color/colorBlack"
-                   android:textSize="12sp"
-                   android:visibility="gone"
-                   app:layout_constraintEnd_toEndOf="@id/ivShareFacebook"
-                   app:layout_constraintStart_toStartOf="@id/ivShareFacebook"
-                   app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
-                   app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareFacebook"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/facebook"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintStart_toStartOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareFacebook"
+                    app:typeface="MULI_SEMIBOLD" />
 
-               <ImageView
-                   android:id="@+id/ivShareTwitter"
-                   android:layout_width="@dimen/_45sdp"
-                   android:layout_height="@dimen/_45sdp"
-                   android:layout_marginStart="@dimen/_10sdp"
-                   android:padding="@dimen/_10sdp"
-                   android:visibility="gone"
-                   android:contentDescription="@string/app_name"
-                   android:background="@drawable/ic_twitter_background"
-                   android:src="@drawable/ic_twitter_fill"
-                   app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
-                   app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+                <ImageView
+                    android:id="@+id/ivShareTwitter"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:background="@drawable/ic_twitter_background"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_twitter_fill"
+                    app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
-               <com.namastey.customViews.CustomTextView
-                   android:id="@+id/tvShareTwitter"
-                   style="@style/tvWrapWhiteStyle"
-                   android:layout_marginTop="@dimen/_3sdp"
-                   android:layout_marginBottom="@dimen/_10sdp"
-                   android:text="@string/twitter"
-                   android:visibility="gone"
-                   android:textColor="@color/colorBlack"
-                   android:textSize="12sp"
-                   app:layout_constraintEnd_toEndOf="@id/ivShareTwitter"
-                   app:layout_constraintStart_toStartOf="@id/ivShareTwitter"
-                   app:layout_constraintTop_toBottomOf="@id/ivShareTwitter"
-                   app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareTwitter"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/twitter"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivShareTwitter"
+                    app:layout_constraintStart_toStartOf="@id/ivShareTwitter"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareTwitter"
+                    app:typeface="MULI_SEMIBOLD" />
 
-               <ProgressBar
-                   android:id="@+id/progress_bar"
-                   android:layout_width="@dimen/_45sdp"
-                   android:layout_height="@dimen/_45sdp"
-                   android:layout_gravity="center"
-                   android:layout_marginStart="@dimen/_8sdp"
-                   android:layout_marginEnd="@dimen/_8sdp"
-                   android:indeterminate="false"
-                   android:max="100"
-                   android:padding="@dimen/_3sdp"
-                   android:progress="0"
-                   android:visibility="gone"
-                   app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
-                   app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:padding="@dimen/_3sdp"
+                    android:progress="0"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
-               <ImageView
-                   android:id="@+id/ivShareOther"
-                   android:layout_width="@dimen/_45sdp"
-                   android:layout_height="@dimen/_45sdp"
-                   android:layout_marginStart="@dimen/_10sdp"
-                   android:padding="@dimen/_10sdp"
-                   android:contentDescription="@string/app_name"
-                   android:src="@drawable/ic_copylink_fill"
-                   android:background="@drawable/ic_copylink_background"
-                   app:layout_constraintStart_toEndOf="@id/ivShareTwitter"
-                   app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
+                <ImageView
+                    android:id="@+id/ivShareOther"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:background="@drawable/ic_copylink_background"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_copylink_fill"
+                    app:layout_constraintStart_toEndOf="@id/ivShareTwitter"
+                    app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
 
-               <com.namastey.customViews.CustomTextView
-                   android:id="@+id/tvShareOther"
-                   style="@style/tvWrapWhiteStyle"
-                   android:layout_marginTop="@dimen/_3sdp"
-                   android:layout_marginBottom="@dimen/_10sdp"
-                   android:text="@string/copy_link"
-                   android:textColor="@color/colorBlack"
-                   android:textSize="12sp"
-                   app:layout_constraintEnd_toEndOf="@id/ivShareOther"
-                   app:layout_constraintStart_toStartOf="@id/ivShareOther"
-                   app:layout_constraintTop_toBottomOf="@id/ivShareOther"
-                   app:typeface="MULI_SEMIBOLD" />
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvShareOther"
+                    style="@style/tvWrapWhiteStyle"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:text="@string/copy_link"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivShareOther"
+                    app:layout_constraintStart_toStartOf="@id/ivShareOther"
+                    app:layout_constraintTop_toBottomOf="@id/ivShareOther"
+                    app:typeface="MULI_SEMIBOLD" />
 
-           </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-       </HorizontalScrollView>
+        </HorizontalScrollView>
 
         <View
             android:id="@+id/viewShare"
@@ -268,172 +260,187 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewShare" />
 
-        <ImageView
-            android:id="@+id/ivShareSave"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:padding="@dimen/_10sdp"
-            android:contentDescription="@string/app_name"
-            android:background="@drawable/ic_round_background"
-            android:src="@drawable/ic_save_new"
+        <HorizontalScrollView
+            android:id="@+id/hvshareview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintTop_toBottomOf="@id/view">
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareSave"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/save"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/ivShareSave"
-            app:layout_constraintStart_toStartOf="@id/ivShareSave"
-            app:layout_constraintTop_toBottomOf="@id/ivShareSave"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view"
+            android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/ivShareMessage"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:padding="@dimen/_10sdp"
-            android:background="@drawable/ic_round_background"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_chat_new"
-            app:layout_constraintEnd_toStartOf="@id/ivShareApp"
-            app:layout_constraintStart_toEndOf="@id/ivShareSave"
-            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+            <ImageView
+                android:id="@+id/ivShareSave"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_save_new"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareMessage"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/message_locked"
-            android:maxLines="2"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/ivShareMessage"
-            app:layout_constraintStart_toStartOf="@id/ivShareMessage"
-            app:layout_constraintTop_toBottomOf="@id/ivShareMessage"/>
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareSave"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/save"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/ivShareSave"
+                app:layout_constraintStart_toStartOf="@id/ivShareSave"
+                app:layout_constraintTop_toBottomOf="@id/ivShareSave" />
 
-        <ImageView
-            android:id="@+id/ivShareApp"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@drawable/ic_round_background"
-            android:padding="@dimen/_10sdp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_share_profile_new"
-            app:layout_constraintStart_toEndOf="@id/ivShareMessage"
-            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+            <ImageView
+                android:id="@+id/ivShareMessage"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_chat_new"
+                app:layout_constraintEnd_toStartOf="@id/ivShareApp"
+                app:layout_constraintStart_toEndOf="@id/ivShareSave"
+                app:layout_constraintTop_toTopOf="@id/ivShareSave" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareApp"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_width="0dp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/share_n_profile"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/ivShareApp"
-            app:layout_constraintStart_toStartOf="@id/ivShareApp"
-            app:layout_constraintTop_toBottomOf="@id/ivShareApp" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareMessage"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:maxLines="2"
+                android:text="@string/message_locked"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/ivShareMessage"
+                app:layout_constraintStart_toStartOf="@id/ivShareMessage"
+                app:layout_constraintTop_toBottomOf="@id/ivShareMessage" />
 
-        <ImageView
-            android:id="@+id/ivShareBlock"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="@drawable/ic_round_background"
-            android:contentDescription="@string/app_name"
-            android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_shield_fill"
-            android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@id/ivShareApp"
-            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+            <ImageView
+                android:id="@+id/ivShareApp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_share_profile_new"
+                app:layout_constraintStart_toEndOf="@id/ivShareMessage"
+                app:layout_constraintTop_toTopOf="@id/ivShareSave" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareBlock"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/block"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@id/ivShareBlock"
-            app:layout_constraintStart_toStartOf="@id/ivShareBlock"
-            app:layout_constraintTop_toBottomOf="@id/ivShareBlock" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareApp"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/share_n_profile"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/ivShareApp"
+                app:layout_constraintStart_toStartOf="@id/ivShareApp"
+                app:layout_constraintTop_toBottomOf="@id/ivShareApp" />
 
-        <ImageView
-            android:id="@+id/ivShareReport"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:contentDescription="@string/app_name"
-            android:background="@drawable/ic_round_background"
-            android:src="@drawable/ic_report_new"
-            android:padding="@dimen/_10sdp"
-            android:visibility="visible"
-            app:layout_constraintStart_toEndOf="@id/ivShareBlock"
-            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+            <ImageView
+                android:id="@+id/ivShareBlock"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_shield_fill"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/ivShareApp"
+                app:layout_constraintTop_toTopOf="@id/ivShareSave" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareReport"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/report"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@id/ivShareReport"
-            app:layout_constraintStart_toStartOf="@id/ivShareReport"
-            app:layout_constraintTop_toBottomOf="@id/ivShareReport" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareBlock"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/block"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/ivShareBlock"
+                app:layout_constraintStart_toStartOf="@id/ivShareBlock"
+                app:layout_constraintTop_toBottomOf="@id/ivShareBlock" />
 
-        <ImageView
-            android:id="@+id/ivShareDelete"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:contentDescription="@string/app_name"
-            android:background="@drawable/ic_round_background"
-            android:src="@drawable/ic_delete"
-            android:padding="@dimen/_10sdp"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@id/ivShareReport"
-            app:layout_constraintTop_toTopOf="@id/ivShareSave" />
+            <ImageView
+                android:id="@+id/ivShareReport"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_12sdp"
+                android:src="@drawable/ic_report_new"
+                android:visibility="visible"
+                app:layout_constraintStart_toEndOf="@id/ivShareBlock"
+                app:layout_constraintTop_toTopOf="@id/ivShareSave" />
 
-        <com.namastey.customViews.CustomTextView
-            android:id="@+id/tvShareDelete"
-            style="@style/tvWrapWhiteStyle"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="@string/delete"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/ivShareDelete"
-            app:layout_constraintStart_toStartOf="@id/ivShareDelete"
-            app:layout_constraintTop_toBottomOf="@id/ivShareDelete" />
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareReport"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/report"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/ivShareReport"
+                app:layout_constraintStart_toStartOf="@id/ivShareReport"
+                app:layout_constraintTop_toBottomOf="@id/ivShareReport" />
 
+            <ImageView
+                android:id="@+id/ivShareDelete"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/ic_round_background"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/ivShareReport"
+                app:layout_constraintTop_toTopOf="@id/ivShareSave" />
 
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvShareDelete"
+                style="@style/tvWrapWhiteStyle"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/delete"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/ivShareDelete"
+                app:layout_constraintStart_toStartOf="@id/ivShareDelete"
+                app:layout_constraintTop_toBottomOf="@id/ivShareDelete" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

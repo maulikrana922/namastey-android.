@@ -71,11 +71,11 @@ open class PassportContentActivity : FragmentActivity(),
     }
 
     private fun initData() {
-        if (sessionManager.getUserGender() == Constants.Gender.male.name) {
-            llPassportContentBackground.background = getDrawable(R.drawable.male_bg)
-        } else {
-            llPassportContentBackground.background = getDrawable(R.drawable.female_bg)
-        }
+//        if (sessionManager.getUserGender() == Constants.Gender.male.name) {
+//            llPassportContentBackground.background = getDrawable(R.drawable.male_bg)
+//        } else {
+//            llPassportContentBackground.background = getDrawable(R.drawable.female_bg)
+//        }
         Log.e(
             "PassportContent",
             " UserImage:\t ${sessionManager.getStringValue(Constants.KEY_PROFILE_URL)}"

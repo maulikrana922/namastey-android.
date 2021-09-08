@@ -40,6 +40,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
+        <activity android:name=".activity.MemberActivity"></activity>
         <activity
             android:name=".activity.CommentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
