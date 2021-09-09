@@ -365,7 +365,9 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
-                    app:layout_constraintTop_toBottomOf="@id/btnProfileFollow"/>
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileFollow"
+                    android:stateListAnimator="@null"
+                    />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAboutLable"
@@ -420,7 +422,9 @@
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnEditProfile"
-                    app:layout_constraintTop_toTopOf="@id/btnEditProfile" />
+                    app:layout_constraintTop_toTopOf="@id/btnEditProfile"
+                    android:stateListAnimator="@null"
+                    />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnEditProfile"
@@ -435,7 +439,9 @@
                     android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnAddVideo"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/cvView" />
+                    app:layout_constraintTop_toBottomOf="@id/cvView"
+                    android:stateListAnimator="@null"
+                    />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileFollow"
@@ -450,7 +456,9 @@
                     android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/cvView" />
+                    app:layout_constraintTop_toBottomOf="@id/cvView"
+                    android:stateListAnimator="@null"
+                    />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/btnProfileLike"
@@ -467,7 +475,9 @@
                     android:text="@string/match"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
-                    app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
+                    app:layout_constraintTop_toTopOf="@id/btnProfileFollow"
+                    android:stateListAnimator="@null"
+                    />
 
                 <!--<com.namastey.customViews.CustomTextView
                     android:id="@+id/btnProfileLike"

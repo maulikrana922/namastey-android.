@@ -311,7 +311,9 @@
                 android:gravity="center"
                 android:text="@string/continues"
                 android:textAllCaps="false"
-                app:layout_constraintTop_toBottomOf="@+id/llBuy" />
+                app:layout_constraintTop_toBottomOf="@+id/llBuy"
+                android:stateListAnimator="@null"
+                />
 
             <com.namastey.customViews.CustomTextView
                 android:id="@+id/tvNothanks"

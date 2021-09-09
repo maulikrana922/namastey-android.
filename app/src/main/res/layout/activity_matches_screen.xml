@@ -218,7 +218,9 @@
                     android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:background="@drawable/rounded_white_solid_white_corner"
-                    android:onClick="onClickOpenChat">
+                    android:onClick="onClickOpenChat"
+                    android:stateListAnimator="@null"
+                    >
 
                     <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvGoToChat"

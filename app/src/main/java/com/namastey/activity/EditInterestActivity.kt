@@ -23,6 +23,7 @@ import com.namastey.model.CategoryBean
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileSelectCategoryView
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.SelectCategoryViewModel
@@ -221,7 +222,18 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     }
 
     fun onEditSaveClick(view: View) {
-        editProfileApiCall()
+        if (selectedCategoryList.size >= Constants.MIN_CHOOSE_INTEREST) {
+            editProfileApiCall()
+        } else {
+            object : CustomAlertDialog(
+                this@EditInterestActivity,
+                resources.getString(R.string.msg_min_choose_interest), getString(R.string.ok), ""
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
+        }
     }
 
     private fun editProfileApiCall() {
