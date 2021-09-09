@@ -58,6 +58,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_delete.*
+import kotlinx.android.synthetic.main.row_album_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -440,6 +441,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         mRecyclerView!!.playVideo(false, false, position)
         //  tvUpnext.visibility = View.GONE
         //  rvAlbumUpnext.visibility = View.GONE
+        viewDetailsVideo.visibility = View.VISIBLE
         groupUpnext.visibility = View.GONE
         albumVideoAdapter.isDisplayDetails = true
     }

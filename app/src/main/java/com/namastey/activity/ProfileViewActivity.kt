@@ -1949,8 +1949,19 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickMembership(view: View) {
 
-        val intent = Intent(this,MemberActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this,MemberActivity::class.java)
+//        startActivity(intent)
+
+                object : NotAvailableFeatureDialog(
+            this,
+            getString(R.string.membership_not_available),
+            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
@@ -1961,12 +1972,3 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     }
 }
-//        object : NotAvailableFeatureDialog(
-//            this,
-//            getString(R.string.membership_not_available),
-//            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
-//        ) {
-//            override fun onBtnClick(id: Int) {
-//                dismiss()
-//            }
-//        }.show()
