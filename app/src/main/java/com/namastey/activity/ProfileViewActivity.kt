@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -655,6 +656,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun getBindingVariable() = BR.viewModel
 
     private fun initData() {
+
+        tvAbouteDesc.setMovementMethod(ScrollingMovementMethod())
+
         setSupportActionBar(toolbar)
         if (intent.getStringExtra(Constants.USERNAME) != "" && intent.getStringExtra(Constants.USERNAME) != null) {
             username = intent.getStringExtra(Constants.USERNAME)!!

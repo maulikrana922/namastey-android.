@@ -564,9 +564,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             )
             signUpViewModel.sendOTP(jsonObject)
 
-//            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
-//            intent.putExtra(Constants.MOBILE,"sdfsdf")
-//            openActivity(intent)
+            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
+            intent.putExtra(Constants.MOBILE,"sdfsdf")
+            openActivity(intent)
         }
     }
 
@@ -576,12 +576,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         sessionManager.setUserId(user.user_id)
 //        sessionManager.setStringValue(user.username,Constants.USERNAME)
         sessionManager.setUserPhone(user.mobile)
-        edtPhone.text!!.clear()
+       // edtPhone.text!!.clear()
         Utils.hideKeyboard(this@SignUpActivity)
+//        val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
+//        intent.putExtra(Constants.MOBILE,user.mobile)
+//        openActivity(intent)
+        edtPhone.text!!.clear()
 
-        val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
-        intent.putExtra(Constants.MOBILE,user.mobile)
-        openActivity(intent)
     }
 
 //    override fun onSuccessResponse(user: User) {

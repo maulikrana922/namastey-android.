@@ -221,6 +221,21 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
 
     private fun initData() {
 
+        edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                if (edtProfileTagline.hasFocus()) {
+                    v.parent.requestDisallowInterceptTouchEvent(true)
+                    when (event.action and MotionEvent.ACTION_MASK) {
+                        MotionEvent.ACTION_SCROLL -> {
+                            v.parent.requestDisallowInterceptTouchEvent(false)
+                            return true
+                        }
+                    }
+                }
+                return false
+            }
+        })
+
         Log.e("EditProfileFragment", "FromAddSocialLink: \t $fromAddSocialLink")
 
 //        edtProfileUserName.inputType = InputType.TYPE_NULL

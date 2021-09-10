@@ -206,7 +206,10 @@
                                 android:textColor="@color/color_text"
                                 android:textColorHint="@color/colorDarkGray"
                                 android:textSize="14sp"
-                                app:typeface="MULI_REGULAR" />
+                                app:typeface="MULI_REGULAR"
+                                android:overScrollMode="always"
+                                android:scrollbarStyle="insideInset"
+                                android:scrollbars="vertical"/>
 
                         </LinearLayout>
 
