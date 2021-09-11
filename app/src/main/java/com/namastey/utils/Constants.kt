@@ -266,7 +266,8 @@ object Constants {
     const val KEY_IS_INVITED = "KEY_IS_INVITED"
     const val ACTIVITY_EDIT = "ACTIVITY_EDIT"
     const val SOCIAL_ACCOUNTLIST = "socialAccountList"
-
+    const val KEY_COUNT = "count"
+    const val KEY_POSITION = "position"
 
     //    field key
     const val ID = "id"

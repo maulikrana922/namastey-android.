@@ -45,7 +45,7 @@
             android:name=".activity.CommentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.EditActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
