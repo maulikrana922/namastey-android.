@@ -99,8 +99,9 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/ivUserProfile"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLastMsg"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvLastMsg"
         app:typeface="MULI_SEMIBOLD" />
 
 

@@ -1223,6 +1223,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         videoList.removeAt(position)
         albumVideoAdapter.notifyItemRemoved(position)
         albumVideoAdapter.notifyItemRangeChanged(position, albumVideoAdapter.itemCount)
+        if(albumVideoAdapter.itemCount == 0) {
+            onBackPressed()
+        }
     }
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {

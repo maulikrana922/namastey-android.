@@ -362,7 +362,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         chipProfileInterest.addView(tvInterest)
 
-        if (interestSubCategoryList.size >= 2) {
+        if (interestSubCategoryList.size >= 3) {
             val tvInterestSecond = TextView(this@ProfileViewActivity)
             tvInterestSecond.layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -373,6 +373,17 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvInterestSecond.setTextColor(ContextCompat.getColor(this, R.color.color_text_red))
             tvInterestSecond.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
             chipProfileInterest.addView(tvInterestSecond)
+
+            val tvInterestThird = TextView(this@ProfileViewActivity)
+            tvInterestThird.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            tvInterestThird.text = interestSubCategoryList[2].name
+            tvInterestThird.setPadding(40, 18, 40, 18)
+            tvInterestThird.setTextColor(ContextCompat.getColor(this, R.color.color_text_red))
+            tvInterestThird.setBackgroundResource(R.drawable.rounded_gray_border_transparent_solid)
+            chipProfileInterest.addView(tvInterestThird)
         }
 
     }
