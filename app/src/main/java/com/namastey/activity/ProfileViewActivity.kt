@@ -766,7 +766,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileBack(view: View) {
-        onBackPressed()
+        if(intent.hasExtra("isfromdelete")){
+            var intent = Intent(this@ProfileViewActivity,DashboardActivity::class.java)
+            openActivity(intent)
+        }else{
+            onBackPressed()
+
+        }
     }
 
     fun onClickProfileImage(view: View) {
