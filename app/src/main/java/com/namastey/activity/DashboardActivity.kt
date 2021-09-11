@@ -103,6 +103,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+import android.R.attr.name
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
@@ -143,11 +146,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var fragmentRefreshListener: FragmentRefreshListener? = null
     private lateinit var membershipSliderArrayList: ArrayList<MembershipSlide>
     private var membershipViewList = ArrayList<MembershipPriceBean>()
-    private var selectedShareProfile=ArrayList<DashboardBean>()
+    private var selectedShareProfile = ArrayList<DashboardBean>()
     private var currentPage = 1
     private var mbNext = true
     private var mbLoading = true
-    private lateinit var bitmapProfile : Bitmap
+    private lateinit var bitmapProfile: Bitmap
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
@@ -173,6 +176,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private val db = Firebase.firestore
     private var storage = Firebase.storage
     private var storageRef = storage.reference
+    private var commentBean: ArrayList<CommentBean> = ArrayList()
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -346,7 +350,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
         mentionArrayAdapter = MentionArrayAdapter(this)
 
-        if (intent.hasExtra("fromLink")){
+        if (intent.hasExtra("fromLink")) {
             val intentProfile = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intentProfile.putExtra(Constants.USERNAME, intent.getStringExtra("username"))
             openActivity(intentProfile)
@@ -511,7 +515,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 bottomSheetDialogShare.iv_user_profile,
                 dashboardBean.profile_url
             )
-             bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
+            bitmapProfile =
+                (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
         if (dashboardBean.is_share == 1) {
             // Share on Twitter app if install otherwise web link
@@ -893,9 +898,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun shareOther(dashboardBean: DashboardBean) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username)
+        val clip = ClipData.newPlainText(
+            "label",
+            getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+        )
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(this@DashboardActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this@DashboardActivity,
+            getString(R.string.copied_to_clipboard),
+            Toast.LENGTH_SHORT
+        ).show()
 //        val sendIntent = Intent()
 //        sendIntent.action = Intent.ACTION_SEND
 //        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
@@ -1764,6 +1776,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } else {
                 supportFragmentManager.popBackStack()
             }
+        } else if (requestCode == 100) {
+            try {
+                val count = data!!.getIntExtra(Constants.KEY_COUNT, 0)
+                val position = data.getIntExtra(Constants.KEY_POSITION, 0)
+                if (count != -1) {
+                    feedAdapter.feedList[position].comments = count
+                    feedAdapter.notifyItemChanged(position)
+                    Log.e("Count", count.toString());
+                }
+            }catch (e:Exception){
+                Log.e("Exception",e.message.toString())
+            }
         }
     }
 
@@ -2005,7 +2029,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
         var intent = Intent(this, CommentActivity::class.java)
         intent.putExtra("postId", this.postId)
         intent.putExtra("position", this.position)
-        openActivity(intent)
+        // openActivity(intent)
+        startActivityForResult(intent, 100)
     }
 
     /*this.position = position
@@ -2614,6 +2639,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessGetComment(data: ArrayList<CommentBean>) {
+        commentBean=data;
         bottomSheetDialogComment.rvMentionList.visibility = View.GONE
         bottomSheetDialogComment.tvTotalComment.text =
             data.size.toString().plus(" ").plus(getString(R.string.comments))
@@ -3098,12 +3124,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
-        var isSameValue=false
+        var isSameValue = false
         if (selectedShareProfile.isNotEmpty()) {
             for (i in selectedShareProfile.indices)
                 if (selectedShareProfile[i].id == dashboardBean.id) {
                     selectedShareProfile.removeAt(i)
-                    isSameValue=true
+                    isSameValue = true
                     break
                 }
         }
@@ -3121,29 +3147,29 @@ private fun prepareAnimation(animation: Animation): Animation? {
     ) {
         bottomSheetDialogShare.dismiss()
         dashboardViewModel.setIsLoading(true)
-        val  profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
+        val profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
         Log.e(TAG, "Upload file started....")
         val fileStorage: StorageReference = storageRef.child(
             Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
         )
 
 //        val filePath=Utils.getImageUri(this,bitmap)
-      /*  fileStorage.putFile(Uri.fromFile(File(profileFile)))
-            .addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.storage.downloadUrl.addOnSuccessListener {
-                    val imageUrl = it.toString()
-                    dashboardViewModel.setIsLoading(false)
-                    Log.e(TAG, "File upload success....")
-                    sendMessage(dashboardBean, message, imageUrl)
-                }
-            }
+        /*  fileStorage.putFile(Uri.fromFile(File(profileFile)))
+              .addOnSuccessListener { taskSnapshot ->
+                  taskSnapshot.storage.downloadUrl.addOnSuccessListener {
+                      val imageUrl = it.toString()
+                      dashboardViewModel.setIsLoading(false)
+                      Log.e(TAG, "File upload success....")
+                      sendMessage(dashboardBean, message, imageUrl)
+                  }
+              }
 
-            .addOnFailureListener { e ->
-                print(e.message)
-                dashboardViewModel.setIsLoading(false)
-                Log.e("Firebase : ", "Image uplaod issue")
-            }
-        */
+              .addOnFailureListener { e ->
+                  print(e.message)
+                  dashboardViewModel.setIsLoading(false)
+                  Log.e("Firebase : ", "Image uplaod issue")
+              }
+          */
         val baos = ByteArrayOutputStream()
         bitmapProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -3152,13 +3178,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
             dashboardViewModel.setIsLoading(false)
             Log.e("Firebase : ", "Image uplaod issue")
         }.addOnSuccessListener { taskSnapshot ->
-          uploadTask.continueWithTask { task ->
-              if (!task.isSuccessful) {
-                  task.exception?.let {
-                      throw it
-                  }
-              }
-              fileStorage.downloadUrl
+            uploadTask.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                fileStorage.downloadUrl
             }.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val downloadUri = task.result.toString()
@@ -3292,7 +3318,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         getFeedListApi(0, false)
     }
 
-    fun onclickGlobal(view: View){
+    fun onclickGlobal(view: View) {
         val jsonObject = JsonObject()
         jsonObject.addProperty(Constants.IS_GLOBAL, 1)
         dashboardViewModel.editProfile(jsonObject)

@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -61,7 +62,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     private lateinit var deleteIcon: Drawable
     private var commentCount = -1
     private var isUpdateComment = false
-
+     private var position=0
     lateinit var dbHelper: DBHelper
     override fun getViewModel() = dashboardViewModel
 
@@ -87,7 +88,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
 
         var id = intent.getLongExtra ("postId",0L)
-        var position = intent.getIntExtra("position",0)
+         position = intent.getIntExtra("position",0)
         dashboardViewModel.getCommentList(id)
 
         ivCommentAdd.setOnClickListener {
@@ -132,7 +133,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                 dashboardBean.comments = commentCount
 
             }
-            finishActivity()
+           onBackPressed()
         }
     }
 
@@ -444,4 +445,11 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         rvMentionLists.visibility = View.GONE
     }
 
+    override fun onBackPressed() {
+        val returnIntent = Intent()
+        returnIntent.putExtra(Constants.KEY_COUNT, commentCount)
+        returnIntent.putExtra(Constants.KEY_POSITION, position)
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
+    }
 }
