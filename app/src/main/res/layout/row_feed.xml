@@ -107,8 +107,7 @@
             android:id="@+id/tvCommentFeed"
             style="@style/tvWrapWhiteStyle"
             android:layout_width="0dp"
-
-            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="start"
             android:textSize="14sp"
