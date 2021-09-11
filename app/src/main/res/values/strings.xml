@@ -330,7 +330,7 @@
     <string name="discovery_settings">Discovery Settings</string>
     <string name="swiping_in">Swiping in</string>
     <string name="my_current_location">My Current Location</string>
-    <string name="discovery_location_msg">Change your location to see namastey members in other cities.</string>
+    <string name="discovery_location_msg">Change your location to see Namastey members in other locations.</string>
     <string name="distance">Distance</string>
     <string name="account_settings">Account Settings</string>
     <string name="setting_interest_in">Interested In</string>
@@ -555,7 +555,7 @@
     <string name="tv_invite_contact_msg">You can invite your contact to Namastey and connect with them.</string>
     <string name="btn_search_contacts">Search Contacts</string>
     <string name="msg_phone_number">Invalid phone number</string>
-    <string name="namastey_link">https://www.namasteyapp.com/</string>
+    <string name="namastey_link">https://www.namasteyapp.com/download</string>
     <string name="invite_sms_send">Hey %1$s - I have an invite to Namastey and want you to join. 🙂 I added you using %2$s, so make sure to use that number when you register. Here is the link! </string>
 
     <string name="recurring_billing_cancel_anytime">Recurring billing, cancel anytime.</string>

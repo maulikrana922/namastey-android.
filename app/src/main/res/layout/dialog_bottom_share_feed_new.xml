@@ -94,9 +94,10 @@
             app:layout_constraintTop_toBottomOf="@id/tv_share_to">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp">
 
@@ -158,6 +159,7 @@
                     android:background="@drawable/ic_facebook_background"
                     android:contentDescription="@string/app_name"
                     android:padding="@dimen/_12sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_facebook_fill"
                     app:layout_constraintStart_toEndOf="@id/ivShareInstagram"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
@@ -168,6 +170,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/facebook"
+                    android:visibility="gone"
                     android:textColor="@color/colorBlack"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@id/ivShareFacebook"
@@ -183,6 +186,7 @@
                     android:background="@drawable/ic_twitter_background"
                     android:contentDescription="@string/app_name"
                     android:padding="@dimen/_12sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_twitter_fill"
                     app:layout_constraintStart_toEndOf="@id/ivShareFacebook"
                     app:layout_constraintTop_toTopOf="@id/ivShareWhatssapp" />
@@ -193,6 +197,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/twitter"
+                    android:visibility="gone"
                     android:textColor="@color/colorBlack"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@id/ivShareTwitter"

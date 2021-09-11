@@ -288,7 +288,7 @@
                 <data
                     android:scheme="https"
                     android:host="www.namasteyapp.com"
-                     />
+                     android:pathPrefix="/earlyaccess"/>
             </intent-filter>
         </activity>
 
