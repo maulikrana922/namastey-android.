@@ -1,7 +1,6 @@
 package com.namastey.activity
 
 import android.Manifest
-import android.R.attr.label
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlarmManager
@@ -1023,7 +1022,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     private fun showMembershipDialog(position: Int) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+/*        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         //  val viewGroup: ViewGroup = layoutView.findViewById(android.R.id.content)
         val dialogView: View =
             LayoutInflater.from(this@DashboardActivity)
@@ -1035,7 +1034,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             alertDialog.show()
         }
 
-        /*Show dialog slider*/
+        *//*Show dialog slider*//*
         val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
         val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
         //manageVisibility(dialogView)
@@ -1046,7 +1045,21 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         viewpager.currentItem = position
         dialogView.tvNothanks.setOnClickListener {
             alertDialog.dismiss()
-        }
+        }*/
+
+        object : CustomAlertDialog(
+            this,
+            "You have reached your daily limit.",
+            getString(R.string.okay),""
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 
     private fun setupBillingClient(view: View) {
@@ -1773,6 +1786,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                     feedAdapter.notifyItemChanged(position)
                     Log.e("Count", count.toString());
                 }
+                mRecyclerView!!.playVideo(false, false, position)
             }catch (e:Exception){
                 Log.e("Exception",e.message.toString())
             }
@@ -2831,6 +2845,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             msg, getString(R.string.ok), ""
         ) {
             override fun onBtnClick(id: Int) {
+                feedAdapter.feedList[position].is_reported = 1
                 dismiss()
             }
         }.show()
@@ -2842,6 +2857,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             msg, getString(R.string.ok), ""
         ) {
             override fun onBtnClick(id: Int) {
+                feedAdapter.feedList[position].is_saved = 1
                 dismiss()
             }
         }.show()

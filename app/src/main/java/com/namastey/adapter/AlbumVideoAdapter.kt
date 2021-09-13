@@ -286,16 +286,16 @@ class AlbumVideoAdapter(
 
             if (videoBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {
                 tvCommentFeed.setOnClickListener {
-                    onVideoClick.onCommentClick(videoBean.id)
+                    onVideoClick.onCommentClick(videoBean.id,videoBean.user_id)
                 }
                 ivCommentFirst.setOnClickListener {
-                    onVideoClick.onCommentClick(videoBean.id)
+                    onVideoClick.onCommentClick(videoBean.id, videoBean.user_id)
                 }
                 ivCommentSecond.setOnClickListener {
-                    onVideoClick.onCommentClick(videoBean.id)
+                    onVideoClick.onCommentClick(videoBean.id, videoBean.user_id)
                 }
                 ivCommentThird.setOnClickListener {
-                    onVideoClick.onCommentClick(videoBean.id)
+                    onVideoClick.onCommentClick(videoBean.id, videoBean.user_id)
                 }
 
             }

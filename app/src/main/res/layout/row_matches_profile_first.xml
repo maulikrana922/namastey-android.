@@ -39,9 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:visibility="visible"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_album"
+                android:visibility="visible"
                 app:cornerRadius="@dimen/_12sdp"
                 app:roundedCorners="all" />
 

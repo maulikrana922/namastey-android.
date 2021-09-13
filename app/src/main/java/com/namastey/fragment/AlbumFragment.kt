@@ -49,10 +49,18 @@ class AlbumFragment : BaseFragment<FragmentAlbumBinding>(), AlbumView, View.OnCl
     override fun onSuccessSavePost(msg: String) {
     }
 
+    override fun onSuccessReport(msg: String) {
+
+    }
+
     override fun onSuccessBlockUser(msg: String) {
     }
 
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
+    }
+
+    override fun onFailedMaxLike(msg: String, error: Int) {
+
     }
 
     override fun onSuccessPostShare(msg: String) {

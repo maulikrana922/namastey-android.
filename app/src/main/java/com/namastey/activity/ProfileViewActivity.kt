@@ -143,7 +143,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 selectLanguageIdList.add(languageListId.id)
             }
             sessionManager.setLanguageIdList(selectLanguageIdList)
-            btnMembership.visibility = View.VISIBLE
+          //  btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),

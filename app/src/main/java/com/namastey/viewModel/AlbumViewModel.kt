@@ -144,7 +144,7 @@ class AlbumViewModel constructor(
                     networkService.requestToReportUser(reportUserId, reason).let { appResponse ->
                         setIsLoading(false)
                         if (appResponse.status == Constants.OK)
-                            albumView.onSuccessSavePost(appResponse.message)
+                            albumView.onSuccessReport(appResponse.message)
                         else
                             albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                     }
@@ -208,7 +208,7 @@ class AlbumViewModel constructor(
                             if (appResponse.status == Constants.OK)
                                 appResponse.data?.let { albumView.onSuccessProfileLike(appResponse.data!!) }
                             else
-                                albumView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                                albumView.onFailedMaxLike(appResponse.message, appResponse.error)
                         }
                 } else {
                     albumView.showMsg(R.string.no_internet)

@@ -72,7 +72,7 @@
                 android:gravity="center"
                 android:padding="@dimen/_12sdp"
                 android:text="@android:string/ok"
-                android:textColor="@color/progress_color"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnNeg"

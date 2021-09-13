@@ -20,7 +20,7 @@ abstract class CustomCommonNewAlertDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_common_new_alert)
+        setContentView(R.layout.dialog_common_alert)
         setCancelable(false)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         tvAlertMsg.text = msg

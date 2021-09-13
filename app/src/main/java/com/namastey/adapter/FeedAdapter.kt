@@ -18,6 +18,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
+import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
@@ -431,12 +432,12 @@ class FeedAdapter(
             if (SessionManager(context).getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
-                tvFeedBoost.visibility = View.VISIBLE
+               // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
-                tvFeedBoost.visibility = View.VISIBLE
+               // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
 

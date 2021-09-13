@@ -51,13 +51,13 @@ import com.namastey.viewModel.AlbumViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_album_video.*
+import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_alert_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
-import kotlinx.android.synthetic.main.dialog_common_alert.*
-import kotlinx.android.synthetic.main.dialog_delete.*
+import kotlinx.android.synthetic.main.dialog_common_new_alert.*
 import kotlinx.android.synthetic.main.row_album_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -101,7 +101,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private val db = Firebase.firestore
     private var storage = Firebase.storage
     private var storageRef = storage.reference
-    private lateinit var bitmapProfile : Bitmap
+    private lateinit var bitmapProfile: Bitmap
     var mRecyclerView: ExoPlayerRecyclerView? = null
     var mLayoutManager: LinearLayoutManager? = null
     private var firstTime = true
@@ -133,6 +133,19 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             msg, getString(R.string.ok), ""
         ) {
             override fun onBtnClick(id: Int) {
+                albumVideoAdapter.videoList[position].is_saved = 1
+                dismiss()
+            }
+        }.show()
+    }
+
+    override fun onSuccessReport(msg: String) {
+        object : CustomAlertDialog(
+            this@AlbumVideoActivity,
+            msg, getString(R.string.ok), ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                albumVideoAdapter.videoList[position].is_reported = 1
                 dismiss()
             }
         }.show()
@@ -169,6 +182,22 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         videoList[position] = videoBean
 
         albumVideoAdapter.notifyItemChanged(position)
+    }
+
+    override fun onFailedMaxLike(msg: String, error: Int) {
+        object : CustomAlertDialog(
+            this,
+            "You have reached your daily limit.",
+            getString(R.string.okay),""
+        ) {
+            override fun onBtnClick(id: Int) {
+                when (id) {
+                    btnPos.id -> {
+                        dismiss()
+                    }
+                }
+            }
+        }.show()
     }
 
     override fun onSuccessGetComment(data: java.util.ArrayList<CommentBean>) {
@@ -512,11 +541,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
     }
 
-    override fun onCommentClick(postId: Long) {
+    override fun onCommentClick(postId: Long, userId: Long) {
         var intent = Intent(this, CommentActivity::class.java)
         intent.putExtra("postId", postId)
-        openActivity(intent)
-
+        intent.putExtra(Constants.USER_ID, userId)
+        startActivityForResult(intent, 100)
     }
 //        bottomSheetDialogComment = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
 //        bottomSheetDialogComment.setContentView(
@@ -624,7 +653,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 bottomSheetDialogShare.iv_user_profile,
                 videoBean.profile_url
             )
-            bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
+            bitmapProfile =
+                (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
 
         if (videoBean.is_share == 1) {
@@ -683,23 +713,25 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareDelete.visibility = View.GONE
             bottomSheetDialogShare.ivShareApp.visibility = View.VISIBLE
             bottomSheetDialogShare.tvShareApp.visibility = View.VISIBLE
-            if (videoBean.is_download == 0) {
+            /*if (videoBean.is_download == 0) {
                 bottomSheetDialogShare.ivShareSave.visibility = View.GONE
                 bottomSheetDialogShare.tvShareSave.visibility = View.GONE
             } else {
                 bottomSheetDialogShare.ivShareSave.visibility = View.VISIBLE
                 bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
-                if (videoBean.is_saved == 1) {
-                    bottomSheetDialogShare.ivShareSave.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this@AlbumVideoActivity,
-                            R.drawable.ic_save_fill
-                        )
-                    )
-                }
-            }
+
+            }*/
         }
         Log.d("saved", videoBean.is_saved.toString())
+
+        if (videoBean.is_saved == 1) {
+            bottomSheetDialogShare.ivShareSave.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@AlbumVideoActivity,
+                    R.drawable.ic_save_fill
+                )
+            )
+        }
 
         if (videoBean.is_reported == 1) {
             bottomSheetDialogShare.ivShareReport.setImageDrawable(
@@ -715,7 +747,33 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
-            albumViewModel.savePost(videoBean.id)
+            if (videoBean.is_download == 0) {
+                object : CustomAlertDialog(
+                    this@AlbumVideoActivity,
+                    resources.getString(R.string.alert_saved_message),
+                    getString(R.string.okay),
+                    ""
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        dismiss()
+                    }
+                }.show()
+            } else {
+                if (videoBean.is_saved == 1) {
+                    object : CustomAlertDialog(
+                        this@AlbumVideoActivity,
+                        resources.getString(R.string.alert_save_already),
+                        getString(R.string.okay),
+                        ""
+                    ) {
+                        override fun onBtnClick(id: Int) {
+                            dismiss()
+                        }
+                    }.show()
+                } else {
+                    albumViewModel.savePost(videoBean.id)
+                }
+            }
         }
         bottomSheetDialogShare.ivShareReport.setOnClickListener {
             if (videoBean.is_reported == 1) {
@@ -876,7 +934,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
             else
                 profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
-            if (videoBean.profile_url!=null) {
+            if (videoBean.profile_url != null) {
                 uploadFile(profileBean)
             }
 //            Firestore part
@@ -976,7 +1034,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     "com.instagram.direct.share.handler.DirectShareHandlerActivity"
                 )
                 intentDirect.type = "text/plain"
-                intentDirect.putExtra(Intent.EXTRA_TEXT, getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username)
+                intentDirect.putExtra(
+                    Intent.EXTRA_TEXT,
+                    getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+                )
                 startActivity(intentDirect)
 
 //                val folder = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
@@ -1006,9 +1067,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     private fun shareOther(videoBean: VideoBean) {
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username)
+        val clip = ClipData.newPlainText(
+            "label",
+            getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+        )
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(this@AlbumVideoActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this@AlbumVideoActivity,
+            getString(R.string.copied_to_clipboard),
+            Toast.LENGTH_SHORT
+        ).show()
 //        val sendIntent = Intent()
 //        sendIntent.action = Intent.ACTION_SEND
 //        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
@@ -1204,11 +1272,25 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_POST_VIDEO) {
+
             if (data != null) {      // Temp need to change
                 editPost = true
                 val videoBean = data.getParcelableExtra<VideoBean>("videoBean") as VideoBean
                 videoList[position] = videoBean
                 albumVideoAdapter.notifyItemChanged(position)
+            }
+        }else if (requestCode == 100) {
+            try {
+                val count = data!!.getIntExtra(Constants.KEY_COUNT, 0)
+                val position = data.getIntExtra(Constants.KEY_POSITION, 0)
+                if (count != -1) {
+                    albumVideoAdapter.videoList[position].comments = count
+                    albumVideoAdapter.notifyItemChanged(position)
+                    Log.e("Count", count.toString());
+                }
+                mRecyclerView!!.playVideo(false, false, position)
+            }catch (e:Exception){
+                Log.e("Exception",e.message.toString())
             }
         }
     }
@@ -1223,7 +1305,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         videoList.removeAt(position)
         albumVideoAdapter.notifyItemRemoved(position)
         albumVideoAdapter.notifyItemRangeChanged(position, albumVideoAdapter.itemCount)
-        if(albumVideoAdapter.itemCount == 0) {
+        if (albumVideoAdapter.itemCount == 0) {
             val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
             intent.putExtra("ownProfile", true)
             intent.putExtra("isfromdelete", true)
@@ -1282,7 +1364,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         dashboardBean: DashboardBean
     ) {
         albumViewModel.setIsLoading(true)
-        val  profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
+        val profileFile = Utils.saveFile(URI.create(dashboardBean.profile_url))
         Log.e(TAG, "Upload file started....")
         val fileStorage: StorageReference = storageRef.child(
             Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
@@ -1307,7 +1389,11 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     val downloadUri = task.result.toString()
                     albumViewModel.setIsLoading(false)
                     Log.e(TAG, "File upload success....$downloadUri")
-                    sendMessage(dashboardBean, Constants.FirebaseConstant.MSG_TYPE_IMAGE, downloadUri)
+                    sendMessage(
+                        dashboardBean,
+                        Constants.FirebaseConstant.MSG_TYPE_IMAGE,
+                        downloadUri
+                    )
                 } else {
                     // Handle failures
                     // ...

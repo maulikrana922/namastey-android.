@@ -39,7 +39,7 @@ import kotlinx.android.synthetic.main.activity_comment.ivCloseComment
 import kotlinx.android.synthetic.main.activity_comment.ivCommentAdd
 import kotlinx.android.synthetic.main.activity_comment.lvMentionList
 import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
@@ -62,8 +62,9 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     private lateinit var deleteIcon: Drawable
     private var commentCount = -1
     private var isUpdateComment = false
-    private var position=0
+    private var position = 0
     lateinit var dbHelper: DBHelper
+    private var userId = 0L
     override fun getViewModel() = dashboardViewModel
 
     override fun getLayoutId() = R.layout.activity_comment
@@ -87,8 +88,11 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
         deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
 
-        var id = intent.getLongExtra ("postId",0L)
-         position = intent.getIntExtra("position",0)
+        var id = intent.getLongExtra("postId", 0L)
+        if (intent.hasExtra(Constants.USER_ID))
+            userId = intent.getLongExtra(Constants.USER_ID, 0L)
+        position = intent.getIntExtra("position", 0)
+
         dashboardViewModel.getCommentList(id)
 
         ivCommentAdd.setOnClickListener {
@@ -104,7 +108,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                     if (edtComment.text.toString().isNotBlank()) {
                         dashboardViewModel.addComment(
                             id,
-                           edtComment.text.toString()
+                            edtComment.text.toString()
                         )
                     }
                 } else {
@@ -113,7 +117,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
             }
         }
 
-       edtComment.setOnClickListener {
+        edtComment.setOnClickListener {
             if (sessionManager.isGuestUser()) {
                 addFragment(
                     SignUpFragment.getInstance(
@@ -127,12 +131,12 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         addCommentsTextChangeListener()
 
         ivCloseComment.setOnClickListener {
-            if (isUpdateComment) {
-                isUpdateComment = false
-                val dashboardBean = feedList[position]
-                dashboardBean.comments = commentCount
+            /*    if (isUpdateComment) {
+                    isUpdateComment = false
+                    val dashboardBean = feedList[position]
+                    dashboardBean.comments = commentCount
 
-            }
+                }*/
             onBackPressed()
         }
     }
@@ -141,37 +145,37 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         mentionArrayAdapter.clear()
         dashboardViewModel.getMentionList("")
         var strMention = ""
-       edtComment.showSoftInputOnFocus
-       edtComment.mentionColor =
+        edtComment.showSoftInputOnFocus
+        edtComment.mentionColor =
             ContextCompat.getColor(this, R.color.colorBlack)
-       edtComment.mentionAdapter = mentionArrayAdapter
-       edtComment.setMentionTextChangedListener { view, text ->
+        edtComment.mentionAdapter = mentionArrayAdapter
+        edtComment.setMentionTextChangedListener { view, text ->
             Log.e("mention", text.toString())
             mentionArrayAdapter.notifyDataSetChanged()
             strMention = text.toString()
 
 
-           Log.d("!!!!!!!!!!!!!!!!!!",strMention)
+            Log.d("!!!!!!!!!!!!!!!!!!", strMention)
             if (text.length == 1) {
-               lvMentionList.visibility = View.GONE
+                lvMentionList.visibility = View.GONE
             } else
                 lvMentionList.visibility = View.VISIBLE
 
         }
 
-       lvMentionList.adapter = mentionArrayAdapter
+        lvMentionList.adapter = mentionArrayAdapter
 
-       lvMentionList.setOnItemClickListener { _, _, i, l ->
-            val strName =edtComment.text.toString().replace(
+        lvMentionList.setOnItemClickListener { _, _, i, l ->
+            val strName = edtComment.text.toString().replace(
                 strMention, "${
                     mentionArrayAdapter.getItem(
                         i
                     ).toString()
                 }"
             )
-           edtComment.setText(strName)
-           edtComment.setSelection(edtComment.text!!.length)
-           lvMentionList.visibility = View.GONE
+            edtComment.setText(strName)
+            edtComment.setSelection(edtComment.text!!.length)
+            lvMentionList.visibility = View.GONE
 
         }
     }
@@ -183,6 +187,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         isUpdateComment = true
         commentCount = commentAdapter.itemCount
     }
+
     override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
         TODO("Not yet implemented")
     }
@@ -198,6 +203,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     override fun onSuccessGlobal(msg: String) {
         TODO("Not yet implemented")
     }
+
     override fun onSuccessAddComment(commentBean: CommentBean) {
         edtComment.setText("")
         commentAdapter.addCommentLastPosition(commentBean)
@@ -239,7 +245,11 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder
                 ): Int {
-                    if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
+                    if (sessionManager.getUserId() == userId) {
+                        return super.getSwipeDirs(recyclerView, viewHolder)
+                    }else{
+                        if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
+                    }
                     return super.getSwipeDirs(recyclerView, viewHolder)
                 }
 
@@ -248,7 +258,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                     swipeDirection: Int
                 ) {
 
-                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id) {
+                    if (sessionManager.getUserId() == data[viewHolder.adapterPosition].user_id || sessionManager.getUserId() == userId) {
                         dashboardViewModel.deleteComment(data[viewHolder.adapterPosition].id)
                         data.removeAt(viewHolder.adapterPosition)
                         commentAdapter.notifyItemRemoved(viewHolder.adapterPosition)
@@ -363,7 +373,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                     LinearLayoutManager.VERTICAL
                 )
             )
-          rvMentionLists.visibility = View.GONE
+            rvMentionLists.visibility = View.GONE
 
             for (i in mentionList.indices) {
                 mentionArrayAdapter.addAll(
@@ -377,7 +387,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
             }
 
         } else {
-          rvMentionLists.visibility = View.GONE
+            rvMentionLists.visibility = View.GONE
         }
     }
 
@@ -409,7 +419,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     }
 
     override fun onSelectItemClick(userId: Long, position: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onSelectItemClick(
@@ -444,6 +454,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         edtComment.setText(username)
         rvMentionLists.visibility = View.GONE
     }
+
     override fun onBackPressed() {
         val returnIntent = Intent()
         returnIntent.putExtra(Constants.KEY_COUNT, commentCount)
