@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activity.MemberActivity"></activity>
+        <activity android:name=".activity.UnderReviewActivity"></activity>
+        <activity android:name=".activity.MemberActivity" />
         <activity
             android:name=".activity.CommentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -283,12 +284,13 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="https"
                     android:host="www.namasteyapp.com"
-                     />
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
