@@ -34,7 +34,9 @@ class DashboardBean() : Parcelable {
     var share: Int = 0
     var is_share: Int = 0    // User profile share enable or disable
     var is_saved: Int = 0    // Already saved video or not
-    var is_reported: Int = 0    // Already report user or not
+    var is_reported: Int = 0
+    var is_report_me: Int = 0    // Already report user or not
+    // Already report user or not
     var who_can_send_message: Int = 0
 
     constructor(parcel: Parcel) : this() {
@@ -58,6 +60,7 @@ class DashboardBean() : Parcelable {
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.createStringArrayList() ?: ArrayList()
+        parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
         parcel.readInt() ?: 0
@@ -98,6 +101,7 @@ class DashboardBean() : Parcelable {
         parcel.writeInt(is_share)
         parcel.writeInt(is_saved)
         parcel.writeInt(is_reported)
+        parcel.writeInt(is_report_me)
         parcel.writeInt(who_can_send_message)
     }
 

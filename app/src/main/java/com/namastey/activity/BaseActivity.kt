@@ -32,6 +32,7 @@ import com.namastey.listeners.OnInteractionWithFragment
 import com.namastey.uiView.BaseView
 import com.namastey.utils.Constants
 import com.namastey.utils.Constants.ADMIN_BLOCK_USER_CODE
+import com.namastey.utils.Constants.ADMIN_USER_UNDER_REVIEW
 import com.namastey.utils.Constants.INVALID_SESSION_ERROR_CODE
 import com.namastey.utils.Constants.NOTIFICATION_BROADCAST
 import com.namastey.utils.CustomAlertDialog
@@ -127,6 +128,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
             ADMIN_BLOCK_USER_CODE -> {
                 // logout from app and go to launch screen
                 logoutAndRedirectSignUp()
+            }
+            ADMIN_USER_UNDER_REVIEW -> {
+                openActivity(Intent(this@BaseActivity, UnderReviewActivity::class.java))
             }
             else -> {
                 showMsg(msg)

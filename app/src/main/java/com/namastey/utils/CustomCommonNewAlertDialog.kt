@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.namastey.R
 import kotlinx.android.synthetic.main.dialog_common_new_alert.*
 
+
 abstract class CustomCommonNewAlertDialog(
     private val activity: Activity,
     private val username: String,
@@ -20,7 +21,7 @@ abstract class CustomCommonNewAlertDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_common_alert)
+        setContentView(R.layout.dialog_common_new_alert)
         setCancelable(false)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         tvAlertMsg.text = msg

@@ -153,6 +153,7 @@ object Constants {
     const val BOOST_PRICE_LIST = "boost-price-list"
     const val MEMBERSHIP_PRICE_LIST = "membership-price-list"
     const val LIKED_USER_POST = "liked-user-post"
+    const val REMOVE_REPORT_FLAG = "remove-report-flag"
     const val LIKE_USER_POST = "like-user-post"
     const val LIKED_USER_COUNT = "liked-user-count"
     const val POST_SHARE = "post-share"
@@ -163,6 +164,7 @@ object Constants {
     //    api response error code
     const val OK = 200
     const val ADMIN_BLOCK_USER_CODE = 404
+    const val ADMIN_USER_UNDER_REVIEW = 406
 
     const val TIME_OUT: Long = 60
     const val CACHE_TIME = 432000
