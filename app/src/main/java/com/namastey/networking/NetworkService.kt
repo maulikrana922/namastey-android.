@@ -470,9 +470,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
             networkRequest.requestToGetLikedUserCountAsync().await()
         }
 
-    suspend fun requestToDeleteAlbum(albumId: Long): AppResponse<Any> =
+    suspend fun requestToDeleteAlbum(albumId: Long, isSaved: Int): AppResponse<Any> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToDeleteAlbumAsync(albumId).await()
+            networkRequest.requestToDeleteAlbumAsync(albumId,isSaved).await()
         }
 
     suspend fun requestToHideAlbum(albumId: Long, isHide: Int): AppResponse<Any> =

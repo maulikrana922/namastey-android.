@@ -419,7 +419,8 @@ interface NetworkRequest {
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = Constants.DELETE_ALBUM, hasBody = true)
     fun requestToDeleteAlbumAsync(
-        @Field(Constants.ALBUM_ID) albumId: Long
+        @Field(Constants.ALBUM_ID) albumId: Long,
+        @Field("is_saved") isSaved: Int
     ): Deferred<AppResponse<Any>>
 
     @FormUrlEncoded
