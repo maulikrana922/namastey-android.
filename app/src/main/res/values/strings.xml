@@ -691,5 +691,11 @@
     <string name="visit_gurgaon">Visit Gurgaon</string>
     <string name="super_message_count">You have 5 Super Messages</string>
     <string name="super_message_alert">You can send upto 280 words.\nMake them count! </string>
+    <string name="warning">Warning!</string>
+    <string name="alert_msg_report_warning">We’ve detected inappopriate behavior that could lead to your account being banned. Please visit our Community Guidelines to learn about what is not permitted on Namastey.</string>
+    <string name="i_promise">I Promise</string>
+    <string name="i_understand_it_won_t_happen_again">I understand. It won’t happen again</string>
+    <string name="alert_msg_under_review">You’ve been reported by users many times. We will be reviewing your account to determine what action needs to be taken.</string>
+    <string name="your_account_is_under_review">Your Account is Under Review</string>
 
 </resources>
