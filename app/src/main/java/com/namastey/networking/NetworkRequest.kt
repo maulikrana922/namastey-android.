@@ -392,8 +392,8 @@ interface NetworkRequest {
         @Field(Constants.IS_CHAT) isChat: Int
     ): Deferred<AppResponse<Any>>
 
-//    @GET(Constants.MESSAGE_USER_LIST)
-//    fun requestToGetChatMessageListAsync(@Field("Authentication") postId: Int): Deferred<AppResponse<ArrayList<MatchesListBean>>>
+    @GET(Constants.MESSAGE_USER_LIST)
+    fun requestToGetChatMessageListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
 
     @FormUrlEncoded
     @POST(Constants.GET_POST_DETAILS)
@@ -409,9 +409,6 @@ interface NetworkRequest {
 
     @GET(Constants.LIKED_USER_POST)
     fun requestToGetLikedUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
-
-    @GET(Constants.REMOVE_REPORT_FLAG)
-    fun requestReportFlag(): Deferred<AppResponse<Any>>
 
     @GET(Constants.LIKE_USER_POST)
     fun requestToGetLikeUserPostAsync(): Deferred<AppResponse<ArrayList<VideoBean>>>
