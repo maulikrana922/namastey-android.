@@ -1764,6 +1764,18 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } else {
                 supportFragmentManager.popBackStack()
             }
+        }else if (requestCode == 100) {
+            try {
+                val count = data!!.getIntExtra(Constants.KEY_COUNT, 0)
+                val position = data.getIntExtra(Constants.KEY_POSITION, 0)
+                if (count != -1) {
+                    feedAdapter.feedList[position].comments = count
+                    feedAdapter.notifyItemChanged(position)
+                    Log.e("Count", count.toString());
+                }
+            }catch (e:Exception){
+                Log.e("Exception",e.message.toString())
+            }
         }
     }
 
@@ -2005,7 +2017,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         var intent = Intent(this, CommentActivity::class.java)
         intent.putExtra("postId", this.postId)
         intent.putExtra("position", this.position)
-        openActivity(intent)
+        startActivityForResult(intent, 100)
     }
 
     /*this.position = position

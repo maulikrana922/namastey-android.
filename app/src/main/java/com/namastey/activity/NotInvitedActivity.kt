@@ -24,7 +24,7 @@ class NotInvitedActivity : BaseActivity<ActivityNotInvitedBinding>() {
         tvWebsite.makeLinks(Pair("Website", View.OnClickListener {
             val browserIntent =
                 Intent(Intent.ACTION_VIEW)
-            browserIntent.data = Uri.parse(getString(R.string.tv_invite_link))
+            browserIntent.data = Uri.parse(getString(R.string.tv_early_access))
             startActivity(browserIntent)
         }))
     }

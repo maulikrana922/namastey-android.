@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
+import com.namastey.activity.InviteActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentAccountSettingsBinding
 import com.namastey.uiView.AccountSettingsView
@@ -106,11 +107,7 @@ class AccountSettingsFragment : BaseFragment<FragmentAccountSettingsBinding>(),
             )
         }
         tvInviteFriends.setOnClickListener {
-            addFragmentFindFriend(
-                FindFriendFragment.getInstance(true
-                ),
-                Constants.FIND_FRIEND_FRAGMENT
-            )
+            openActivity(requireActivity(), InviteActivity())
         }
         tvContactUs.setOnClickListener {
             val intent =

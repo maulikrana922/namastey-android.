@@ -56,11 +56,11 @@
                 android:id="@+id/txtSettingTitle"
                 style="@style/tvWrapBlackStyle"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_45sdp"
                 android:text="@string/Settings"
                 android:textSize="@dimen/actionBarTitle"
                 app:layout_constraintStart_toEndOf="@id/ivSettingBack"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivSettingBack"
+                app:layout_constraintBottom_toBottomOf="@id/ivSettingBack"
                 app:typeface="MULI_SEMIBOLD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
