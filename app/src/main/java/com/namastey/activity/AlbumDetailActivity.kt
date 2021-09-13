@@ -463,8 +463,10 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnPos.id -> {
-                        albumViewModel.deleteAlbum(albumId)
-
+                        if (isSavedAlbum == false)
+                            albumViewModel.deleteAlbum(albumId,0)
+                        else if (isHide == 0)
+                            albumViewModel.deleteAlbum(albumId,1)
                     }
                     btnNeg.id -> {
                         dismiss()
@@ -703,8 +705,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                 isSavedAlbum = true
 //                edtAlbumName.isEnabled = false
 //                edtAlbumName.setCompoundDrawablesWithIntrinsicBounds(
-//                    0,
-//                    0,
+ //                    0,
 //                    0,
 //                    0
 //                )

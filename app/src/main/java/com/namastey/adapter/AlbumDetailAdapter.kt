@@ -175,6 +175,29 @@ class AlbumDetailAdapter(
                 }
 
             }
+            if(isSavedAlbum == true){
+                val videoBean = videoList[position]
+                ivRemoveVideo.visibility = View.VISIBLE
+                ivRemoveVideo.setOnClickListener {
+                    val deleteDialog = Dialog(activity, R.style.MyDialogTheme)
+                    deleteDialog.setContentView(R.layout.dialog_delete)
+                    deleteDialog.setCancelable(false)
+                    deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    deleteDialog.tvAlertMsg.setText(resources.getString(R.string.video_delete_alert_msg))
+                    deleteDialog.btnNeg.setText(resources.getString(R.string.video_delete_btn_pos))
+                    deleteDialog.btnPos.setText(resources.getString(R.string.video_delete_btn_neg))
+
+                    deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
+                        onItemClick.onItemClick(videoBean.id, position)
+                        notifyDataSetChanged()
+                        deleteDialog.dismiss()
+                    }
+                    deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
+                        deleteDialog.dismiss()
+                    }
+                    deleteDialog.show()
+                }
+            }
 
         }
 

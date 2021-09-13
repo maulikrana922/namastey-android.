@@ -170,11 +170,11 @@ class CreateAlbumViewModel constructor(
 
     }
 
-    fun deleteAlbum(albumId: Long) {
+    fun deleteAlbum(albumId: Long, isSaved: Int) {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
-                networkService.requestToDeleteAlbum(albumId).let { appResponse ->
+                networkService.requestToDeleteAlbum(albumId,isSaved).let { appResponse ->
                     setIsLoading(false)
                     if (appResponse.status == Constants.OK)
                         createAlbumView.onSuccessAlbumDelete(appResponse.message)
