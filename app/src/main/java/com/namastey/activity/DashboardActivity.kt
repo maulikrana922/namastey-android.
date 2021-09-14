@@ -2477,20 +2477,25 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         openActivity(intentMatchesActivity)
                     }
                     "2" -> { // for follow Notification
-
-                        val profileBean: ProfileBean = ProfileBean()
-                        profileBean.user_id = sessionManager.getUserId()
-                        profileBean.username =
-                            sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
-                        profileBean.profileUrl =
-                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
-                        profileBean.gender = sessionManager.getStringValue(Constants.GENDER)
+                        val matchesListBean =
+                            intent.getParcelableExtra<MatchesListBean>("matchesListBean")
+                       // val profileBean: ProfileBean = ProfileBean()
+//                        profileBean.user_id = sessionManager.getUserId()
+//                        profileBean.username = intent.getStringExtra("username")!!
+//                        profileBean.profileUrl =
+//                            sessionManager.getStringValue(Constants.KEY_PROFILE_URL)
+//                        profileBean.gender = sessionManager.getStringValue(Constants.GENDER)
 
                         val intentProfileActivity =
-                            Intent(this@DashboardActivity, ProfileActivity::class.java)
+                            Intent(this@DashboardActivity, ProfileViewActivity::class.java)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        intentProfileActivity.putExtra(Constants.PROFILE_BEAN, profileBean)
+                        var username=""
+                        username = if (intent.hasExtra(Constants.USERNAME))
+                            intent.getStringExtra(Constants.USERNAME)!!
+                        else sessionManager.getStringValue(Constants.USERNAME)
+
+                        intentProfileActivity.putExtra(Constants.USERNAME ,username)
                         intentProfileActivity.putExtra("isMyProfile", true)
                         startActivity(intentProfileActivity)
                         // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)

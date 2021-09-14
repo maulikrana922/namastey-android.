@@ -18,7 +18,10 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.namastey.R
-import com.namastey.activity.*
+import com.namastey.activity.ChatActivity
+import com.namastey.activity.DashboardActivity
+import com.namastey.activity.MatchesActivity
+import com.namastey.activity.ProfileViewActivity
 import com.namastey.model.MatchesListBean
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
@@ -43,7 +46,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         //SessionManager(applicationContext).setFirebaseToken(token)
         println("$tag token --> $token")
-        Log.e("token",token)
+        Log.e("token", token)
         SessionManager(applicationContext).setFirebaseToken(token)
     }
 
@@ -138,23 +141,29 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(Constants.ACTION_ACTION_TYPE, "notification")
             intent.putExtra(KEY_NOTIFICATION_COUNT, notificationCount)
             intent.putExtra(KEY_NOTIFICATION, getNotification)
+            if (jsonObject.has("alert")) {
+                val alertMessage = jsonObject.getString("alert").split(" ")
+                Log.e("User Name:", alertMessage[0])
+                intent.putExtra(Constants.USERNAME, alertMessage[0])
+            }
             intent.putExtra(Constants.NOTIFICATION_TYPE, Constants.NOTIFICATION_PENDING_INTENT)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
 
-            if (getNotification.isNotificationType == "7"){
+            if (getNotification.isNotificationType == "7") {
 //                intent =
 //                    Intent(this, DashboardActivity::class.java)
                 val matchesListBean = MatchesListBean()
+
                 matchesListBean.username = jsonObject.getString("username")
                 matchesListBean.profile_pic = jsonObject.getString("profile_pic")
                 matchesListBean.id = jsonObject.getLong("user_id")
                 matchesListBean.is_match = jsonObject.getInt("is_match")
                 intent.putExtra("isFromMessage", true)
                 intent.putExtra("chatNotification", true)
-                intent.putExtra("matchesListBean",matchesListBean)
-                Log.d("Chat notification :","6 pass")
-                if (ChatActivity.isChatActivityOpen){
+                intent.putExtra("matchesListBean", matchesListBean)
+                Log.d("Chat notification :", "6 pass")
+                if (ChatActivity.isChatActivityOpen) {
                     if (ChatActivity.userId == matchesListBean.id)
                         openChatActivity = true
                 }
@@ -180,6 +189,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 "2" -> { // for follow Notification
                     intent =
                         Intent(this, ProfileViewActivity::class.java)
+                    val alertMessage = jsonObject.getString("alert").split(" ")
+                    Log.e("User Name:",alertMessage[0])
+                    intent.putExtra(Constants.USERNAME, alertMessage[0])
                     intent.putExtra("isMyProfile", true)
                 }
                 "3" -> { // for new video Notification
@@ -218,9 +230,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     matchesListBean.is_match = jsonObject.getInt("is_match")
                     intent.putExtra("isFromMessage", true)
                     intent.putExtra("chatNotification", true)
-                    intent.putExtra("matchesListBean",matchesListBean)
-                    Log.d("Chat notification :","6 pass")
-                    if (ChatActivity.isChatActivityOpen){
+                    intent.putExtra("matchesListBean", matchesListBean)
+                    Log.d("Chat notification :", "6 pass")
+                    if (ChatActivity.isChatActivityOpen) {
                         if (ChatActivity.userId == matchesListBean.id)
                             openChatActivity = true
                     }
@@ -242,7 +254,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         if (!openChatActivity) {
             val pendingIntent =
-                PendingIntent.getActivity(this, notificationCount, intent, PendingIntent.FLAG_ONE_SHOT)
+                PendingIntent.getActivity(
+                    this,
+                    notificationCount,
+                    intent,
+                    PendingIntent.FLAG_ONE_SHOT
+                )
             val channelId = getString(R.string.channel_id)
             val channelName = getString(R.string.notifiy)
             val notificationManager =
@@ -261,7 +278,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 channel.enableLights(true)
                 channel.lightColor = Color.BLACK
                 channel.enableVibration(true)
-                channel.setSound(sound,attributes)
+                channel.setSound(sound, attributes)
                 notificationManager.createNotificationChannel(channel)
             }
 
@@ -282,7 +299,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 notificationBuilder.setSound(sound);
             }
 
-            notificationManager.notify(getNotification.notificationCount.toInt(), notificationBuilder.build())
+            notificationManager.notify(
+                getNotification.notificationCount.toInt(),
+                notificationBuilder.build()
+            )
         }
     }
 
@@ -314,6 +334,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         return true
     }
+
     companion object {
         const val KEY_NT = "NT"
         const val KEY_NOTIFICATION = "notification"

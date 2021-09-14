@@ -88,12 +88,17 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
 
 
     private fun initUI() {
+        if (intent.hasExtra("onFollowRequest")) {
+            intent = Intent(this@NotificationActivity, FollowRequestActivity::class.java)
+            openActivity(intent)
+        }
 
-        notificationViewModel.getFollowRequestList()
+            notificationViewModel.getFollowRequestList()
         val builder = AlertDialog.Builder(this)
         dialog = builder.create()
         dialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         setSelectedApi()
+
     }
 
     private fun setSelectedApi() {

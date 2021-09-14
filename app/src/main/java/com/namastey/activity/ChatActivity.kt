@@ -268,8 +268,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                         .into(ivProfileUser)
                 }
 
-                if (matchesListBean.username != "") {
-                    tvUserName.text = matchesListBean.casual_name
+                if (intent.hasExtra("chatNotification"))
+                    tvUserName.text = matchesListBean.username
+                else {
+                    if (matchesListBean.username != "") {
+                        tvUserName.text = matchesListBean.casual_name
+                    }
                 }
 
                 ivMic.setOnTouchListener(object : View.OnTouchListener {

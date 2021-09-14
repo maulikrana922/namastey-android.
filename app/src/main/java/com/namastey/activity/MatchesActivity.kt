@@ -88,10 +88,6 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         initUI()
     }
 
-    private fun initData() {
-
-
-    }
 
     override fun onSuccessMatchesList(data: ArrayList<MatchesListBean>) {
         matchesListBean.clear()
@@ -144,23 +140,23 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
 //        openActivity(this@MatchesActivity, NotificationActivity())
     }
 
-/*    private fun initData() {
-        setupViewPager()
-        tabMatchesProfile.setupWithViewPager(viewPagerMatchesProfile)
-        setupTabIcons()
+    private fun initData() {
+//        setupViewPager()
+//        tabMatchesProfile.setupWithViewPager(viewPagerMatchesProfile)
+//        setupTabIcons()
         if (intent.hasExtra("isFromDashboard")) {
             isFromDashboard = intent.getBooleanExtra("isFromDashboard", false)
-            if (isFromDashboard)
-                tabMatchesProfile.getTabAt(0)?.select()
-            else
-                tabMatchesProfile.getTabAt(1)?.select()
+//            if (isFromDashboard)
+//
+//            else
+
         } else  if (intent.hasExtra("onClickMatches")) {
             onClickMatches = intent.getBooleanExtra("onClickMatches", false)
-            userName = intent.getStringExtra("userName")!!
-            if (onClickMatches)
-                tabMatchesProfile.getTabAt(0)?.select()
-            else
-                tabMatchesProfile.getTabAt(1)?.select()
+//            userName = intent.getStringExtra("userName")!!
+//            if (onClickMatches)
+//                tabMatchesProfile.getTabAt(0)?.select()
+//            else
+//                tabMatchesProfile.getTabAt(1)?.select()
         } else if (intent.hasExtra("chatNotification")) {
             val intentChat = Intent(this@MatchesActivity, ChatActivity::class.java)
             intentChat.putExtra("isFromMessage", true)
@@ -174,15 +170,12 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         if (intent.hasExtra("onFollowRequest")) {
             val onFollowRequest = intent.getBooleanExtra("onFollowRequest", false)
             if (onFollowRequest) {
-                tabMatchesProfile.getTabAt(0)?.select()
-                val followRequestFragment = FollowRequestFragment.getInstance()
-                addFragment(
-                    followRequestFragment,
-                    Constants.FOLLOW_REQUEST_FRAGMENT
-                )
+                val intent = Intent(this@MatchesActivity,NotificationActivity::class.java)
+                intent.putExtra("onFollowRequest", true)
+                openActivity(intent)
             }
         }
-    }*/
+    }
 
     override fun getViewModel() = matchesProfileViewModel
 
