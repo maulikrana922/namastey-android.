@@ -377,7 +377,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         if (msg == getString(R.string.user_unblock_success))
             matchesListBean.is_block = 0
         else matchesListBean.is_block = 1
-
+        finishActivity()
     }
 
     override fun onSuccessDeleteMatches(msg: String) {
@@ -788,8 +788,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 }
                 R.id.action_block -> {
                     if (matchesListBean.is_block == 1)
-                        dialogBlockUser(0,getString(R.string.msg_unblock_user))
-                    else dialogBlockUser(1,getString(R.string.msg_block_user))
+                        dialogBlockUser(0, getString(R.string.msg_unblock_user))
+                    else dialogBlockUser(1, getString(R.string.msg_block_user))
                 }
                 R.id.action_delete_match -> {
                     if (matchesListBean.is_match == 1)

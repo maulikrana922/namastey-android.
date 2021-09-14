@@ -43,7 +43,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         //SessionManager(applicationContext).setFirebaseToken(token)
         println("$tag token --> $token")
-
+        Log.e("token",token)
         SessionManager(applicationContext).setFirebaseToken(token)
     }
 
