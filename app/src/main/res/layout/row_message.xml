@@ -33,10 +33,18 @@
         tools:text="Timothy Lucas"
         android:textColor="@color/color_black_text"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/tvCategory"
+        app:layout_constraintEnd_toStartOf="@id/barrier"
         app:layout_constraintStart_toEndOf="@+id/ivUserProfile"
         app:layout_constraintTop_toTopOf="@+id/ivUserProfile"
         app:typeface="MULI_EXTRA_BOLD" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="tvCategory, tvLastTime"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.namastey.customViews.CustomTextView
@@ -51,7 +59,7 @@
         android:paddingBottom="@dimen/_4sdp"
         android:textColor="@color/text_Color"
         android:textSize="14sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivUserProfile"
         app:typeface="MULI_EXTRA_BOLD" />
