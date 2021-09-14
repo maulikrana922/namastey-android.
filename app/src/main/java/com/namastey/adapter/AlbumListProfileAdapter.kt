@@ -2,6 +2,7 @@ package com.namastey.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +62,8 @@ class AlbumListProfileAdapter(
                 rvChildAlbumPost.visibility = View.VISIBLE
                 rvChildAlbumPost.apply {
                     adapter =
-                        VideoListAdapter(albumBean.post_video_list, activity, onItemClick, false,isMyProfile)
+                        VideoListAdapter(albumBean.post_video_list, activity, onItemClick, false,isMyProfile,profileBean.safetyBean.who_can_send_message,
+                            profileBean.is_follow_me)
                     setRecycledViewPool(viewPool)
                 }
             }else{
@@ -69,6 +71,7 @@ class AlbumListProfileAdapter(
             }
 
             tvAlbumViewall.setOnClickListener{
+                Log.d("!!!!!!!!", profileBean.safetyBean.who_can_send_message.toString())
                 val intent = Intent(activity, AlbumDetailActivity::class.java)
                 intent.putExtra(Constants.ALBUM_BEAN, albumBean)
                 intent.putExtra(Constants.FROM_EDIT, false)
@@ -77,6 +80,8 @@ class AlbumListProfileAdapter(
                 intent.putExtra(Constants.PROFILE_BEAN, profileBean)
                 intent.putExtra("isShowMenu", true)
                 intent.putExtra("albumId", id)
+                intent.putExtra("message",profileBean.safetyBean.who_can_send_message)
+                intent.putExtra("follow",profileBean.is_follow_me)
                 (activity as ProfileViewActivity).openActivity(intent)
             }
 

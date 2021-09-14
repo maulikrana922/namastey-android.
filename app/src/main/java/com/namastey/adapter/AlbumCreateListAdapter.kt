@@ -9,6 +9,7 @@ import com.namastey.R
 import com.namastey.listeners.OnCreateAlbumItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.model.AlbumBean
+import com.namastey.model.ProfileBean
 import kotlinx.android.synthetic.main.row_parent_album.view.*
 import java.util.*
 
@@ -18,7 +19,6 @@ class AlbumCreateListAdapter(
     var onCreateAlbumItemClick: OnCreateAlbumItemClick,
     var onItemClick: OnItemClick
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumCreateListAdapter.ViewHolder>() {
-
     private val viewPool = RecyclerView.RecycledViewPool()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -76,7 +76,7 @@ class AlbumCreateListAdapter(
                 onCreateAlbumItemClick.onClickAddVideo(albumBean)
             }
             rvChildAlbumPost.apply {
-                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,true,false)
+                adapter = VideoListAdapter(albumBean.post_video_list, activity, onItemClick,true,false,0,0)
                 setRecycledViewPool(viewPool)
             }
 

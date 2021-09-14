@@ -639,10 +639,13 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     }
 
     override fun onItemPostImageClick(position: Int, videoList: ArrayList<VideoBean>) {
+        Log.d("!!!!!!!!", profileBean.safetyBean.who_can_send_message.toString())
         this.position = position
         val intent = Intent(this@AlbumDetailActivity, AlbumVideoActivity::class.java)
         intent.putExtra(Constants.VIDEO_LIST, videoList)
         intent.putExtra("position", position)
+        intent.putExtra("message",profileBean.safetyBean.who_can_send_message)
+        intent.putExtra("follow",profileBean.is_follow_me)
         openActivity(intent)
     }
 

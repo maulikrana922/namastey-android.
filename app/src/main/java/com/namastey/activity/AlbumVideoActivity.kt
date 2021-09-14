@@ -625,6 +625,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Need to reduce this code
      */
     private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
+        var message = intent.getIntExtra("message",0)
+        var followme =intent.getIntExtra("follow",0)
+
+        Log.d("!!!!!!!!", message.toString())
         selectedShareProfile.clear()
         this.position = position
         bottomSheetDialogShare = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
@@ -721,6 +725,17 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 bottomSheetDialogShare.tvShareSave.visibility = View.VISIBLE
 
             }*/
+        }
+        if (message == 2)
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
+        else if (message == 0) {
+            bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
+        } else {
+            if (message == 1 && followme == 1) {
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.send_message)
+            } else {
+                bottomSheetDialogShare.tvShareMessage.text = getString(R.string.message_locked)
+            }
         }
         Log.d("saved", videoBean.is_saved.toString())
 
