@@ -10,6 +10,7 @@ import com.namastey.R
 import com.namastey.activity.AlbumVideoActivity
 import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnItemClick
+import com.namastey.model.ProfileBean
 import com.namastey.model.VideoBean
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
@@ -23,7 +24,9 @@ class VideoListAdapter(
     var activity: Context,
     var onItemClick: OnItemClick,
     var fromCreate: Boolean,
-    var isMyProfile: Boolean
+    var isMyProfile: Boolean,
+    var saftyId: Int,
+    var follow: Int
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -74,6 +77,8 @@ class VideoListAdapter(
                     intent.putExtra(Constants.VIDEO_LIST, videoList)
                     intent.putExtra("position", position)
                     intent.putExtra("isMyProfile", isMyProfile)
+                    intent.putExtra("message",saftyId)
+                    intent.putExtra("follow",follow)
                     (activity as ProfileViewActivity).openActivity(intent)
                 }
             }
