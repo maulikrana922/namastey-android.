@@ -625,8 +625,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Need to reduce this code
      */
     private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
-        var message = intent.getIntExtra("message",0)
-        var followme =intent.getIntExtra("follow",0)
+        val message = intent.getIntExtra("message",0)
+        val followme =intent.getIntExtra("follow",0)
 
         Log.d("!!!!!!!!", message.toString())
         selectedShareProfile.clear()
@@ -758,7 +758,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
         }
 
-
+        bottomSheetDialogShare.ivShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)){
+                clickSendMessage(videoBean,message)
+            }
+        }
+        bottomSheetDialogShare.tvShareMessage.setOnClickListener {
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)){
+                clickSendMessage(videoBean,message)
+            }
+        }
         //Bottom Icon
         bottomSheetDialogShare.ivShareSave.setOnClickListener {
             bottomSheetDialogShare.dismiss()
@@ -815,7 +824,28 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         bottomSheetDialogShare.show()
     }
+    private fun clickSendMessage(videoBean: VideoBean, message: Int) {
+        val matchesListBean = MatchesListBean()
+        matchesListBean.id = videoBean.user_id
+        matchesListBean.username = videoBean.username
+        matchesListBean.casual_name = videoBean.username  // Need to change casual name
+        matchesListBean.profile_pic = videoBean.profile_url
+        matchesListBean.is_match = videoBean.is_match
+//        matchesListBean.is_block = dashboardBean.is_block
+        matchesListBean.is_read = 1
 
+        if (videoBean.user_id != sessionManager.getUserId()) {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("matchesListBean", matchesListBean)
+            intent.putExtra("isFromProfile", true)
+            when (videoBean.is_follow_me) {
+                1 -> intent.putExtra("isFollowMe", true)
+                else -> intent.putExtra("isFollowMe", false)
+            }
+            intent.putExtra("whoCanSendMessage", message)
+            openActivity(intent)
+        }
+    }
     private fun shareWhatsApp(videoBean: VideoBean) {
         try {
             val pm: PackageManager = packageManager
