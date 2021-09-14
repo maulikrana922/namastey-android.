@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
 import com.namastey.R
 import com.namastey.model.AppResponse
+import com.namastey.model.MatchesListBean
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -619,6 +620,23 @@ class DashboardViewModel constructor(
             } catch (exception: Throwable) {
                 setIsLoading(false)
                 dashboardView.onHandleException(exception)
+            }
+        }
+    }
+
+    fun getRequestToRemoveFlag() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                networkService.requestToRemoveFlag().let { appResponse: AppResponse<Any> ->
+                    setIsLoading(false)
+                    if (appResponse.status == Constants.OK) {
+                        dashboardView.onSuccessStartChat(appResponse.message)
+                    } else {
+                        dashboardView.onFailed(appResponse.message, appResponse.error, appResponse.status)
+                    }
+                }
+            } catch (t: Throwable) {
+                dashboardView.onHandleException(t)
             }
         }
     }

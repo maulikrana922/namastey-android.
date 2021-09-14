@@ -189,7 +189,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             tvAboutLable.setText(R.string.about)
 
             when (profileBean.is_follow) {
-                1 -> btnProfileFollow.text = getString(R.string.following)
+                1 -> btnProfileFollow.text = getString(R.string.un_follow)
                 2 -> btnProfileFollow.text = getString(R.string.pending)
                 else -> btnProfileFollow.text = getString(R.string.follow)
             }
@@ -275,7 +275,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         } else {
             profileBean.is_follow = 1
             profileBean.followers += 1
-            btnProfileFollow.text = resources.getString(R.string.following)
+            btnProfileFollow.text = resources.getString(R.string.un_follow)
         }
         tvFollowersCount.text = profileBean.followers.toString()
     }
@@ -1318,7 +1318,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
-            btnProfileFollow.text = resources.getString(R.string.following)
+            btnProfileFollow.text = resources.getString(R.string.un_follow)
         } else if (profileBean.is_follow == 0) {
             profileBean.followers -= 1
             btnProfileFollow.text = resources.getString(R.string.follow)

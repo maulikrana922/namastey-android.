@@ -1650,7 +1650,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 ) {
                     override fun onBtnClick(id: Int) {
                         when (id) {
-                            btnAlertOk.id -> {
+                            btnPromise.id -> {
+                                dashboardViewModel.getRequestToRemoveFlag()
                                 dismiss()
                             }
                         }
@@ -2941,6 +2942,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessStartChat(msg: String) {
+        Log.e("msg",msg)
     }
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
@@ -3105,6 +3107,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("DashboardActivity", "onFailed  error: $error")
         Log.e("DashboardActivity", "onFailed  msg: $msg")
     }
+
 
     /*CategoryAdapter Item Click*/
     override fun onItemClickCategoty(categoryBean: CategoryBean) {

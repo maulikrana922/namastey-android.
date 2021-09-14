@@ -18,9 +18,11 @@ abstract class ReportWarningDialog(
         setCancelable(false)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        btnAlertOk.setOnClickListener { v ->
-            if (ckbreport.isChecked)
+        btnPromise.setOnClickListener { v ->
+            if (ckbreport.isChecked) {
                 dismiss()
+                onBtnClick(v.id)
+            }
         }
 
     }

@@ -149,6 +149,7 @@
     <string name="guest_user">Guest User</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="un_follow">Unfollow</string>
     <string name="pending">Pending</string>
     <string name="remove">Remove</string>
     <string name="about_me">About me</string>
@@ -633,7 +634,7 @@
     <string name="please_check_your_internet_connection">Please check your internet connection</string>
     <string name="try_again">Try Again</string>
     <string name="text_banned_account">Your account has been \nbanned</string>
-    <string name="text_violation2">Your Namastey profile has been banned for \nactivity that violets our <a href="http://www.google.com">Terms of use.</a></string>
+    <string name="text_violation2">Your Namastey profile has been banned for \nactivity that violets our <u>Terms of Use.</u></string>
     <string name="nofollowers">You are not having followers</string>
     <string name="nofollowing">%1$s are not following anyone</string>
     <string name="about">About</string>
@@ -698,5 +699,6 @@
     <string name="alert_msg_under_review">You’ve been reported by users many times. We will be reviewing your account to determine what action needs to be taken.</string>
     <string name="your_account_is_under_review">Your Account is Under Review</string>
     <string name="user_unblock_success">User Unblock successfully.</string>
+    <string name="terms_if_use">Terms of Use</string>
 
 </resources>

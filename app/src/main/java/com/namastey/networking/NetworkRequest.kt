@@ -395,6 +395,9 @@ interface NetworkRequest {
     @GET(Constants.MESSAGE_USER_LIST)
     fun requestToGetChatMessageListAsync(): Deferred<AppResponse<ArrayList<MatchesListBean>>>
 
+    @GET(Constants.REMOVE_FLAG_REPORT)
+    fun requestToRemoveFlag(): Deferred<AppResponse<Any>>
+
     @FormUrlEncoded
     @POST(Constants.GET_POST_DETAILS)
     fun requestToGetPostDetailsAsync(

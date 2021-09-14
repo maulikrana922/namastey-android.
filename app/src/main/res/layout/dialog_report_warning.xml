@@ -94,7 +94,7 @@
                 app:layout_constraintTop_toTopOf="@id/ckbreport" />
 
             <com.namastey.customViews.CustomButton
-                android:id="@+id/btnAlertOk"
+                android:id="@+id/btnPromise"
                 style="@style/btnRedAllCornerStyle"
                 android:layout_marginStart="@dimen/_70sdp"
                 android:layout_marginTop="@dimen/_20sdp"

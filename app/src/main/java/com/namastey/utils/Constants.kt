@@ -124,6 +124,7 @@ object Constants {
     const val ADMIN_MESSAGE_LIST = "admin-message-list"
     const val PARTICULAR_CHAT_NOTIFICATION = "perticular-chat-notification"
     const val GET_PURCHASE_STATUS = "get-purchase-status"
+    const val REMOVE_FLAG_REPORT = "remove-report-flag"
     const val RECEIPT_VERIFICATION = "receipt-varification"
     const val BOOST_USE = "boost-use"
     const val FEED_LIST_V2 = "feed-list-v2"

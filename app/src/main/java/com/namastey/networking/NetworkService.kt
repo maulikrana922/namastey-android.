@@ -5,6 +5,7 @@ import com.namastey.model.*
 import com.namastey.roomDB.entity.Country
 import com.namastey.roomDB.entity.User
 import com.namastey.utils.Constants
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -438,6 +439,10 @@ class NetworkService(private val networkRequest: NetworkRequest) {
     suspend fun requestToGetChatMessageList(): AppResponse<ArrayList<MatchesListBean>> =
         withContext(Dispatchers.IO) {
             networkRequest.requestToGetChatMessageListAsync().await()
+        }
+    suspend fun requestToRemoveFlag(): AppResponse<Any> =
+        withContext(Dispatchers.IO) {
+            networkRequest.requestToRemoveFlag().await()
         }
 
     suspend fun requestToGetPostDetails(postId: Long): AppResponse<VideoBean> =
