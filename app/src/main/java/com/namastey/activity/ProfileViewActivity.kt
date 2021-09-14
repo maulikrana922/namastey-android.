@@ -15,10 +15,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -669,6 +666,23 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun initData() {
 
         tvAbouteDesc.setMovementMethod(ScrollingMovementMethod())
+
+
+        scrollView.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                tvAbouteDesc.getParent().requestDisallowInterceptTouchEvent(false)
+                return false
+            }
+        })
+
+        tvAbouteDesc.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                tvAbouteDesc.getParent().requestDisallowInterceptTouchEvent(true)
+                return false
+            }
+        })
+
+        tvAbouteDesc.movementMethod = ScrollingMovementMethod()
 
         setSupportActionBar(toolbar)
         if (intent.getStringExtra(Constants.USERNAME) != "" && intent.getStringExtra(Constants.USERNAME) != null) {
