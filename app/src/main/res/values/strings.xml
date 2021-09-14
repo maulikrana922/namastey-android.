@@ -697,5 +697,6 @@
     <string name="i_understand_it_won_t_happen_again">I understand. It won’t happen again</string>
     <string name="alert_msg_under_review">You’ve been reported by users many times. We will be reviewing your account to determine what action needs to be taken.</string>
     <string name="your_account_is_under_review">Your Account is Under Review</string>
+    <string name="user_unblock_success">User Unblock successfully.</string>
 
 </resources>

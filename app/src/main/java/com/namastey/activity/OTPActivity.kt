@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
@@ -11,6 +12,7 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityOtpBinding
+import com.namastey.fragment.AdminBlockUserFragment
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.OTPView
 import com.namastey.utils.Constants
@@ -81,7 +83,7 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
         sessionManager.setuserUniqueId(user.user_uniqueId)
         sessionManager.setUserId(user.user_id)
         sessionManager.setGuestUser(false)
-        sessionManager.setIntegerValue(user.is_invited,Constants.KEY_IS_INVITED)
+        sessionManager.setIntegerValue(user.is_invited, Constants.KEY_IS_INVITED)
         sessionManager.setIntegerValue(user.purchase, Constants.KEY_IS_PURCHASE)
         if (user.is_completly_signup == 1) {
             sessionManager.setBooleanValue(true, Constants.KEY_IS_COMPLETE_PROFILE)
@@ -91,7 +93,7 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
 
         if (user.is_register == 1) {
             if (user.is_invited == 1) {
-                sessionManager.setStringValue(user.username,Constants.USERNAME)
+                sessionManager.setStringValue(user.username, Constants.USERNAME)
                 sessionManager.setStringValue(user.profile_pic, Constants.KEY_PROFILE_URL)
                 val intent = Intent(this, DashboardActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -131,6 +133,20 @@ class OTPActivity : BaseActivity<ActivityOtpBinding>(), OTPView {
 
     fun onClickOtpBack(view: View) {
         onBackPressed()
+    }
+
+    override fun onFailed(msg: String, error: Int, status: Int) {
+        Log.e("OTPFragment", "onFailed: msg \t $msg")
+        Log.e("OTPFragment", "onFailed: error \t $error")
+        if (status == Constants.ADMIN_BLOCK_USER_CODE) {
+            openActivity(Intent(this@OTPActivity, ActivityBannedUser::class.java))
+            finish()
+        } else if (status == Constants.ADMIN_USER_UNDER_REVIEW) {
+            openActivity(Intent(this@OTPActivity, UnderReviewActivity::class.java))
+            finish()
+        } else {
+            showMsg(msg.toString())
+        }
     }
 
     override fun onBackPressed() {

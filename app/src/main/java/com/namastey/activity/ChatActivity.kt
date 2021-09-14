@@ -3,7 +3,6 @@ package com.namastey.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
@@ -42,8 +41,7 @@ import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_report.*
-import kotlinx.android.synthetic.main.dialog_common_alert.*
-import org.buffer.android.thumby.ThumbyActivity
+import kotlinx.android.synthetic.main.dialog_common_new_alert.*
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -376,6 +374,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     override fun onSuccessBlockUser(msg: String) {
+        if (msg == getString(R.string.user_unblock_success))
+            matchesListBean.is_block = 0
+        else matchesListBean.is_block = 1
+
     }
 
     override fun onSuccessDeleteMatches(msg: String) {
@@ -510,7 +512,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
             if (matchesListBean.is_match == 1 || isFollowMe) {
-                   selectImage()  //capturePhoto()
+                selectImage()  //capturePhoto()
             }
         }
     }
@@ -569,7 +571,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                         }
                     }
                 }
-            }else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
+            } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
                 try {
                     val photoUri = FileProvider.getUriForFile(
                         this,
@@ -769,6 +771,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         else menuDelete.title = getString(R.string.delete_chat)
 
 
+        if (matchesListBean.is_block == 1)
+            menuBlock.title = getString(R.string.unblock)
+        else menuBlock.title = getString(R.string.block)
+
+
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_mute -> {
@@ -780,7 +787,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
                 }
                 R.id.action_block -> {
-                    dialogBlockUser()
+                    if (matchesListBean.is_block == 1)
+                        dialogBlockUser(0,getString(R.string.msg_unblock_user))
+                    else dialogBlockUser(1,getString(R.string.msg_block_user))
                 }
                 R.id.action_delete_match -> {
                     if (matchesListBean.is_match == 1)
@@ -889,11 +898,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         bottomSheetDialogReport.show()
     }
 
-    private fun dialogBlockUser() {
+    private fun dialogBlockUser(block: Int, msg: String) {
         object : CustomCommonNewAlertDialog(
             this,
             matchesListBean!!.casual_name,
-            getString(R.string.msg_block_user),
+            msg,
             matchesListBean!!.profile_pic,
             getString(R.string.confirm),
             resources.getString(R.string.cancel)
@@ -902,7 +911,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 when (id) {
                     btnAlertOk.id -> {
                         dismiss()
-                        chatViewModel.blockUser(matchesListBean!!.id, 1)
+                        chatViewModel.blockUser(matchesListBean!!.id, block)
                     }
                 }
             }
