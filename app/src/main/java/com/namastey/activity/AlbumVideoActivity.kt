@@ -58,6 +58,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_new_alert.*
+import kotlinx.android.synthetic.main.dialog_delete.*
 import kotlinx.android.synthetic.main.row_album_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -1261,7 +1262,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
-                    btnPos.id -> {
+                    btnConfirm.id -> {
                         bottomSheetDialogShare.dismiss()
                         if (videoBean.album_name == getString(R.string.saved))
                             albumViewModel.removePostVideo(videoBean.id, 1)
@@ -1269,7 +1270,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                             albumViewModel.removePostVideo(videoBean.id, 0)
                     }
 
-                    btnNeg.id -> {
+                    btnDeleteCancel.id -> {
                         bottomSheetDialogShare.dismiss()
                     }
                 }

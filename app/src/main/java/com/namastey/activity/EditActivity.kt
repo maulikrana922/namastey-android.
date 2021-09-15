@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -23,6 +25,7 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.activity_name.*
 import kotlinx.android.synthetic.main.fragment_job.*
 import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import java.util.*
@@ -63,88 +66,33 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
     }
 
     private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
-//        TODO: Code comment Started
-/*
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.facebook) }) {
-            mainFacebook.visibility = View.VISIBLE
-            tvFacebookLink.text = data.single { s -> s.name == getString(R.string.facebook) }
-                .link
-        } else {
-            mainFacebook.visibility = View.GONE
-        }
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.instagram) }) {
-            mainInstagram.visibility = View.VISIBLE
-            tvInstagramLink.text = data.single { s -> s.name == getString(R.string.instagram) }
-                .link
-        } else {
-            mainInstagram.visibility = View.GONE
-        }
-*/
-//        TODO: Code comment End
 
-
-//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.snapchat) }) {
-//            mainSnapchat.visibility = View.VISIBLE
-//            tvSnapchatLink.text = data.single { s -> s.name == getString(R.string.snapchat) }
-//                .link
-//        } else {
-//            mainSnapchat.visibility = View.GONE
-//        }
-//
-//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.tiktok) }) {
-//            mainTikTok.visibility = View.VISIBLE
-//            tvTiktokLink.text = data.single { s -> s.name == getString(R.string.tiktok) }
-//                .link
-//        } else {
-//            mainTikTok.visibility = View.GONE
-//        }
-
-//        TODO: Code Commented Started
-/*
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.twitter) }) {
-            mainTwitter.visibility = View.VISIBLE
-            tvTwitterLink.text = data.single { s -> s.name == getString(R.string.twitter) }
-                .link
-        } else {
-            mainTwitter.visibility = View.GONE
-        }
-*/
-/*
-        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.spotify) }) {
-            mainSpotify.visibility = View.VISIBLE
-            tvSpotifyLink.text = data.single { s -> s.name == getString(R.string.spotify) }
-                .link
-        } else {
-            mainSpotify.visibility = View.GONE
-        }
-*/
-//        TODO: Code Commented End
-
-//        if (data.any { socialAccountBean -> socialAccountBean.name == getString(R.string.linkedin) }) {
-//            mainLinkedin.visibility = View.VISIBLE
-//            tvLinkedinLink.text = data.single { s -> s.name == getString(R.string.linkedin) }
-//                .link
-//        } else {
-//            mainLinkedin.visibility = View.GONE
-//        }
     }
 
     override fun onFailedUniqueName(error: ErrorBean?) {
         Log.e(TAG, "onFailedUniqueName: Error: \t ${error!!.user_name}")
-        isEditUsername = true
         edtProfileUserName.requestFocus()
         edtProfileUserName.inputType = InputType.TYPE_CLASS_TEXT
         edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
-            R.drawable.ic_tick_square,
+            0,
             0
         )
+        tvUserNameError.visibility = View.VISIBLE
+        tvUserNameError.text = error.user_name
     }
 
     override fun onSuccessUniqueName(msg: String) {
-        //super.onSuccess(msg)
-        editProfileApiCall()
+        tvUserNameError.visibility = View.GONE
+        if (edtProfileUserName.text.toString().length >= 5) {
+            edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_tick_square,
+                0
+            )
+        }
         Log.e(TAG, "onSuccess: Error: \t $msg")
     }
 
@@ -191,6 +139,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         getActivityComponent().inject(this)
 
         setupViewModel()
+        initData()
     }
 
     override fun getViewModel() = profileBasicViewModel
@@ -216,10 +165,11 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
         activityEditBinding = bindViewData()
         activityEditBinding.viewModel = profileBasicViewModel
 
-        initData()
+
     }
 
     private fun initData() {
+
 
         edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, event: MotionEvent): Boolean {
@@ -253,154 +203,34 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
 
         edtEducation.setText(sessionManager.getStringValue(Constants.KEY_EDUCATION))
         edtOccupation.setText(sessionManager.getStringValue(Constants.KEY_JOB))
-        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
-            0,
-            0,
-            R.drawable.ic_edit_gray,
-            0
-        )
+
         edtProfileUserName.compoundDrawablePadding = 25
-/*
-        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-            0,
-            0,
-            R.drawable.ic_edit_gray,
-            0
-        )
-        edtProfileCasualName.compoundDrawablePadding = 25
 
-        edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edit_gray, 0)
-        edtProfileTagline.compoundDrawablePadding = 25
-*/
+        edtProfileUserName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().length >= 5) {
+                    Log.d("Username: ", "username :" + s.toString())
+                    if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME) != s.toString())
+                        profileBasicViewModel.checkUniqueUsername(s.toString())
 
-        edtProfileUserName.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent): Boolean {
-                val DRAWABLE_RIGHT = 2
-                if (event.action === MotionEvent.ACTION_UP) {
-                    if (event.rawX >= edtProfileUserName.right - (edtProfileUserName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
-                    ) {
-                        if (isEditUsername) {
-                            isEditUsername = false
-                            edtProfileUserName.inputType = InputType.TYPE_NULL
-                            edtProfileUserName.clearFocus()
-                            if (edtProfileUserName.text.toString()
-                                    .trim() != sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME)
-                            ) {
-                                //editProfileApiCall()
-                                profileBasicViewModel.checkUniqueUsername(
-                                    edtProfileUserName.text.toString().trim()
-                                )
-                            }
-                            edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_edit_gray,
-                                0
-                            )
-                        } else {
-                            isEditUsername = true
-                            edtProfileUserName.requestFocus()
-                            edtProfileUserName.inputType = InputType.TYPE_CLASS_TEXT
-                            edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_tick_square,
-                                0
-                            )
-                        }
-
-                        return true
-                    }
+                } else {
+                    tvUserNameError.visibility = View.GONE
+                    edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        0,
+                        0
+                    )
                 }
-                return false
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
             }
         })
-
-/*
-        edtProfileCasualName.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent): Boolean {
-                val DRAWABLE_RIGHT = 2
-                if (event.action === MotionEvent.ACTION_UP) {
-                    if (event.rawX >= edtProfileCasualName.right - (edtProfileCasualName.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
-                    ) {
-                        if (isEditCasualName) {
-                            isEditCasualName = false
-*/
-/*
-//                            edtProfileCasualName.inputType = InputType.TYPE_NULL
-                            edtProfileCasualName.clearFocus()
-                            editProfileApiCall()
-                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_edit_gray,
-                                0
-                            )
-*//*
-
-                        } else {
-                            isEditCasualName = true
-*/
-/*
-                            edtProfileCasualName.inputType = InputType.TYPE_CLASS_TEXT
-                            edtProfileCasualName.requestFocus()
-                            edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_tick_square,
-                                0
-                            )
-*//*
-
-                        }
-
-                        return true
-                    }
-                }
-                return false
-            }
-        })
-*/
-
-/*
-        edtProfileTagline.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent): Boolean {
-                val DRAWABLE_RIGHT = 2
-                if (event.action === MotionEvent.ACTION_UP) {
-                    if (event.rawX >= edtProfileTagline.right - (edtProfileTagline.compoundDrawables[DRAWABLE_RIGHT].bounds.width() + 50)
-                    ) {
-                        if (isEditTagLine) {
-                            isEditTagLine = false
-                            edtProfileTagline.inputType = InputType.TYPE_NULL
-                            edtProfileTagline.clearFocus()
-
-                            editProfileApiCall()
-                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_edit_gray,
-                                0
-                            )
-                        } else {
-                            isEditTagLine = true
-                            edtProfileTagline.inputType = InputType.TYPE_CLASS_TEXT
-                            edtProfileTagline.requestFocus()
-
-                            edtProfileTagline.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.ic_tick_square,
-                                0
-                            )
-                        }
-
-                        return true
-                    }
-                }
-                return false
-            }
-        })
-*/
     }
 
     private fun fillValue(profileBean: ProfileBean) {
@@ -547,6 +377,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
     override fun onBackPressed() {
         finishActivity()
     }
+
     fun onEditSaveClick(view: View) {
         editProfileApiCall()
     }

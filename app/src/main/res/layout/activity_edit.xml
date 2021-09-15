@@ -149,6 +149,19 @@
                                 android:textSize="14sp"
                                 app:typeface="MULI_EXTRA_BOLD" />
 
+                            <com.namastey.customViews.CustomTextView
+                                android:id="@+id/tvUserNameError"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="@dimen/_15sdp"
+                                android:paddingEnd="@dimen/_10sdp"
+                                android:singleLine="true"
+                                android:textColor="@color/colorRed"
+                                android:textSize="12sp"
+                                android:text="@string/empty_username_minimum"
+                                android:visibility="gone"
+                                app:typeface="MULI_EXTRA_BOLD" />
+
                             <com.namastey.customViews.CustomEditText
                                 android:id="@+id/edtProfileUserName"
                                 android:layout_width="match_parent"

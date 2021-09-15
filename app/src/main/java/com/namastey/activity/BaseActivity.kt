@@ -414,12 +414,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), BaseView
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
-                    btnPos.id -> {
+                    btnConfirm.id -> {
                         val intent = Intent(this@BaseActivity, ProfileViewActivity::class.java)
                         intent.putExtra("ownProfile", true)
                         openActivity(intent)
                     }
-                    btnNeg.id -> {
+                    btnDeleteCancel.id -> {
                         dismiss()
                     }
                 }
