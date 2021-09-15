@@ -41,8 +41,7 @@
     <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
     <string name="permission_denied_contact_message">You have denied contact permission Allow permission at setting</string>
     <!--<string name="location_permission_message">Namastey uses your location for features like Filters,Search, Matches advertising and more.</string>-->
-    <string name="location_permission_message">Namastey uses your location for features like Matches,Filters,Search and more.</string>
-
+    <string name="location_permission_message">Namastey uses your location to show you profiles in the distance range you select.</string>
     <string name="tv_skip">Skip</string>
     <string name="tv_the_video_profile">The Video Profile</string>
     <string name="tv_term_condition_message_temp">We don\'t post anythings to your Facebook or Snapchat. By continuing, you agree to our <![CDATA[<u><font color=#000000>Terms of service</font></u> and <u><font color=#000000>Privacy Policy </font></u>.]]></string>
@@ -342,7 +341,7 @@
     <string name="msg_out_of_invite">You are out of invite</string>
     <string name="private_account">Private Account</string>
     <string name="tv_global">Global</string>
-    <string name="msg_global">allows you to see all namastey members in feed screen.</string>
+    <string name="msg_global">See all namastey members.</string>
 
 
     <!--    Post video screen-->
@@ -700,5 +699,6 @@
     <string name="your_account_is_under_review">Your Account is Under Review</string>
     <string name="user_unblock_success">User Unblock successfully.</string>
     <string name="terms_if_use">Terms of Use</string>
+    <string name="allow_comment">Allow comments</string>
 
 </resources>

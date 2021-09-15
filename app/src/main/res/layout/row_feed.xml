@@ -275,9 +275,11 @@
             android:minLines="2"
             android:paddingEnd="@dimen/_2sdp"
             android:textSize="14sp"
+            android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintEnd_toStartOf="@id/tvFeedLike"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clUser" />
+            app:layout_constraintBottom_toTopOf="@+id/tvFeedLike"
+            />
 
         <!--    <com.namastey.customViews.CustomTextView-->
         <!--        android:id="@+id/tvFeedDescFirst"-->
@@ -370,7 +372,7 @@
             app:layout_constraintBottom_toTopOf="@id/tvFeedDesc"
             app:layout_constraintEnd_toStartOf="@+id/tvFeedView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gl75">
+           >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
