@@ -115,12 +115,12 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             edtProfileTagline.text.toString().trim(),
             Constants.KEY_TAGLINE
         )
-        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
-            0,
-            0,
-            R.drawable.ic_edit_gray,
-            0
-        )
+//        edtProfileUserName.setCompoundDrawablesWithIntrinsicBounds(
+//            0,
+//            0,
+//            R.drawable.ic_edit_gray,
+//            0
+//        )
 /*        edtProfileCasualName.setCompoundDrawablesWithIntrinsicBounds(
             0,
             0,
@@ -379,7 +379,11 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
     }
 
     fun onEditSaveClick(view: View) {
-        editProfileApiCall()
+        if (edtProfileUserName.text.toString().trim().length < 5) {
+            showMsg(getString(R.string.empty_username_minimum))
+        } else {
+            editProfileApiCall()
+        }
     }
 
 }
