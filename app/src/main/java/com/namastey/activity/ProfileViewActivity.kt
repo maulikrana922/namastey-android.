@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.*
 import android.content.pm.ActivityInfo
@@ -20,6 +21,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -94,6 +96,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var storageRef = storage.reference
     private val TAG = "ProfileViewActivtiy"
     private lateinit var bitmapProfile : Bitmap
+    private val PERMISSION_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -1975,7 +1978,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 openActivity(intent)
             }
             R.id.action_setting -> {
-                openActivity(this@ProfileViewActivity, SettingsActivity())
+                setupPermissions()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -2005,5 +2008,46 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSelectItemClick(userId: Long, position: Int, userProfileType: String) {
 
+    }
+
+    private fun setupPermissions() {
+        val locationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+
+        if (locationPermission != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.location_permission_message))
+                    .setTitle(getString(R.string.permission_required))
+
+                builder.setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                    makeRequest()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+            } else
+                makeRequest()
+        } else {
+            openActivity(this@ProfileViewActivity, SettingsActivity())
+        }
+
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            PERMISSION_REQUEST_CODE
+        )
     }
 }

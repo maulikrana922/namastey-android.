@@ -2,6 +2,7 @@ package com.namastey.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -24,7 +25,6 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
-import com.namastey.utils.NotAvailableFeatureDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_gender.*
@@ -32,6 +32,8 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.groupSelectInterest
 import kotlinx.android.synthetic.main.activity_settings.tvSelectInterest
 import kotlinx.android.synthetic.main.dialog_alert.*
+import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 
 class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, LocationListener {
@@ -262,24 +264,35 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             latitude = currentLocationFromDB!!.latitude
             longitude = currentLocationFromDB!!.longitude
         }
-        if (currentLocationFromDB != null) {
-            if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
+        /*      if (currentLocationFromDB != null) {
+                  if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
 
-                Log.e("DashboardActivity", "latitude: $latitude")
-                Log.e("DashboardActivity", "longitude: $longitude")
-                if (realLatitude == latitude && realLongitude == longitude) {
-                    tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
-                } else {
-                    tvMyCurrentLocation.text =
-                        currentLocationFromDB!!.city.plus(", ").plus(currentLocationFromDB!!.state)
-                }
-            }
-        } else {
+                      Log.e("SettingActivity", "latitude: $latitude")
+                      Log.e("SettingActivity", "longitude: $longitude")
+                      if (realLatitude == latitude && realLongitude == longitude) {
+                          tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+                      } else {
+                          tvMyCurrentLocation.text =
+                              currentLocationFromDB!!.city.plus(", ").plus(currentLocationFromDB!!.state)
+                      }
+                  }
+              } else {
+                  tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+              }*/
+
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses = geocoder.getFromLocation(
+                realLatitude,
+                realLongitude,
+                1
+            )
+            val city = addresses[0].locality
+            tvMyCurrentLocation.text = city
+        } catch (e: IOException) {
+            e.printStackTrace()
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
-
-
-        //tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
     }
 
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
@@ -433,15 +446,15 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     fun onClickMyCurrentLocation(view: View) {
         //startSearchLocationScreen()
 
-        object : NotAvailableFeatureDialog(
-            this,
-            getString(R.string.location_not_available),
-            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
-        ) {
-            override fun onBtnClick(id: Int) {
-                dismiss()
-            }
-        }.show()
+        /* object : NotAvailableFeatureDialog(
+             this,
+             getString(R.string.location_not_available),
+             getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
+         ) {
+             override fun onBtnClick(id: Int) {
+                 dismiss()
+             }
+         }.show()*/
 
 //        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
 //            startSearchLocationScreen()

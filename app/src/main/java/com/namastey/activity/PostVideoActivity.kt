@@ -173,7 +173,8 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             downloadFile(this@PostVideoActivity, videoBean.cover_image_url, uri, false)
             downloadFile(this@PostVideoActivity, videoBean.video_url, uriVideo, true)
 
-            switchCommentOff.isChecked = videoBean.is_comment == 1
+            switchCommentOff.isChecked = videoBean.is_comment == 0
+
             val share = videoBean.share_with
             val item = share - 1
             when {
@@ -268,9 +269,9 @@ class PostVideoActivity : BaseActivity<ActivityPostVideoBinding>(), PostVideoVie
             if (isTouched) {
                 isTouched = false
                 commentOff = if (isChecked)
-                    1
-                else
                     0
+                else
+                    1
             }
         })
 
