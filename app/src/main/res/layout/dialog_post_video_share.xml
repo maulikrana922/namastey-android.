@@ -15,6 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_close"
         app:tint="@color/color_black_text" />
