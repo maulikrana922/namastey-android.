@@ -46,7 +46,7 @@ class InviteViewModel constructor(
     private fun getPhoneContacts(): ArrayList<Contact> {
         val contactsList = ArrayList<Contact>()
         val contactsCursor = NamasteyApplication.instance.contentResolver?.query(
-            ContactsContract.Contacts.CONTENT_URI,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             null,
             null,
             null,

@@ -119,7 +119,7 @@ class FeedAdapter(
             Log.e("FeedAdapter", "itemCount: \t $itemCount")
             Log.e("FeedAdapter", "position: \t $position")
 
-            if (position == itemCount - 1 && feedList.size >= 10) {
+            if (position == itemCount - 1) {
                 (context as DashboardActivity).getFeedListApi(0,false)
             }
 
