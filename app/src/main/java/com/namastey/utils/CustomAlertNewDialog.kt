@@ -24,17 +24,17 @@ abstract class CustomAlertNewDialog(
         setCancelable(false)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
         tvAlertMsg.text = msg
-        btnPos.text = posBtnName
-        btnNeg.text = negBtnName
-        btnPos.visibility = if (!TextUtils.isEmpty(posBtnName)) View.VISIBLE else View.GONE
-        btnNeg.visibility = if (!TextUtils.isEmpty(negBtnName)) View.VISIBLE else View.GONE
+        btnConfirm.text = posBtnName
+        btnDeleteCancel.text = negBtnName
+        btnConfirm.visibility = if (!TextUtils.isEmpty(posBtnName)) View.VISIBLE else View.GONE
+        btnDeleteCancel.visibility = if (!TextUtils.isEmpty(negBtnName)) View.VISIBLE else View.GONE
 
         ivIcons.setImageResource(icons)
-        btnPos.setOnClickListener { v ->
+        btnConfirm.setOnClickListener { v ->
             dismiss()
             onBtnClick(v.id)
         }
-        btnNeg.setOnClickListener { v ->
+        btnDeleteCancel.setOnClickListener { v ->
             dismiss()
             onBtnClick(v.id)
         }

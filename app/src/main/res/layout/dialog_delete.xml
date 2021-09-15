@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvAlertMsg">
 
                 <com.namastey.customViews.CustomButton
-                    android:id="@+id/btnNeg"
+                    android:id="@+id/btnDeleteCancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -74,13 +74,12 @@
                     />
 
                 <com.namastey.customViews.CustomButton
-                    android:id="@+id/btnPos"
+                    android:id="@+id/btnConfirm"
                     style="@style/tvWrapWhiteStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp10"
                     android:layout_weight="1"
-
                     android:background="@drawable/circle_left_right_red"
                     android:gravity="center"
                     android:textAllCaps="false"

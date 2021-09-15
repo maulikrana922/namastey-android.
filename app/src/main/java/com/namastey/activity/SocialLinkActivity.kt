@@ -55,7 +55,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
     private var appPreferences: AppPreferences? = null
     private val client = OkHttpClient()
     private lateinit var authenticationDialog: AuthenticationDialog
-
+    private var isEdit = false
 
     override fun getLayoutId() = R.layout.activity_social_link
 
@@ -389,10 +389,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
         jsonObject.add("social_links_details", jsonArray)
         Log.e("AddLinkRequest : ", jsonObject.toString())
-        profileInterestViewModel.addSocialLink(jsonObject)
+        if (isEdit)
+            profileInterestViewModel.addSocialLink(jsonObject)
+        else finishActivity()
     }
 
     fun onClickButton(view: View) {
+        isEdit=true
         when (view.id) {
             R.id.tvFacebook -> connectFacebook()
             R.id.tvInstagram -> connectToInstagram()
@@ -520,5 +523,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         val instagramLink = "http://instagram.com/_u/".plus(instagramData.username)
         tvInstagram.text = instagramLink
         ivInstagramDelete.visibility = View.VISIBLE
+    }
+
+    override fun onHandleException(e: Throwable) {
+        super.onHandleException(e)
+        finishActivity()
     }
 }

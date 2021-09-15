@@ -94,9 +94,9 @@ class AlbumDetailAdapter(
                         deleteDialog.setContentView(R.layout.dialog_delete)
                         deleteDialog.setCancelable(false)
                         deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                        deleteDialog.tvAlertMsg.setText(resources.getString(R.string.video_delete_alert_msg))
-                        deleteDialog.btnNeg.setText(resources.getString(R.string.video_delete_btn_pos))
-                        deleteDialog.btnPos.setText(resources.getString(R.string.video_delete_btn_neg))
+                        deleteDialog.tvAlertMsg.text = resources.getString(R.string.video_delete_alert_msg)
+                        deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
+                        deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
 
                         deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
                             onItemClick.onItemClick(videoBean.id, position)
@@ -183,9 +183,9 @@ class AlbumDetailAdapter(
                     deleteDialog.setContentView(R.layout.dialog_delete)
                     deleteDialog.setCancelable(false)
                     deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                    deleteDialog.tvAlertMsg.setText(resources.getString(R.string.video_delete_alert_msg))
-                    deleteDialog.btnNeg.setText(resources.getString(R.string.video_delete_btn_pos))
-                    deleteDialog.btnPos.setText(resources.getString(R.string.video_delete_btn_neg))
+                    deleteDialog.tvAlertMsg.text = resources.getString(R.string.video_delete_alert_msg)
+                    deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
+                    deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
 
                     deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
                         onItemClick.onItemClick(videoBean.id, position)
