@@ -785,7 +785,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             }
         }
 
-        userShareAdapter.filterList(filteredName)
+        if (::userShareAdapter.isInitialized)
+            userShareAdapter.filterList(filteredName)
     }
 
 
@@ -3287,6 +3288,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun sendMessageToMultiple(dashboardBean: DashboardBean) {
+        bottomSheetDialogShare.dismiss()
 
         for (profileBean in selectedShareProfile) {
             Log.e(TAG, "userId: \t $profileBean")

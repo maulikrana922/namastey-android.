@@ -55,6 +55,7 @@
                     android:id="@+id/tvTitlePostVideo"
                     style="@style/tvTitleBlackStyle"
                     android:text="@string/post"
+                    android:layout_marginStart="@dimen/_5sdp"
                     app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"
                     app:layout_constraintStart_toEndOf="@id/ivPostVideo"
                     app:layout_constraintTop_toTopOf="@id/ivPostVideo" />

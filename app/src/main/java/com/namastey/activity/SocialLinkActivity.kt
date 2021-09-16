@@ -36,8 +36,10 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_social_link.*
+import org.json.JSONObject
 import java.util.*
 import javax.inject.Inject
+
 
 class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), AuthenticationListener,
     ProfileInterestView {
@@ -68,6 +70,8 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
         //setContentView(R.layout.activity_social_link)
+        FacebookSdk.sdkInitialize(applicationContext)
+
         setupViewModel()
     }
 
@@ -232,8 +236,8 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
         LoginManager.getInstance()
             .logInWithReadPermissions(
-                this,
-                Arrays.asList("email", "public_profile", "user_link", "email")
+                this@SocialLinkActivity,
+                listOf("email", "public_profile","link")
             )
         //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_link"))
 
@@ -253,9 +257,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                                 .userId
                         )
                         val profile = Profile.getCurrentProfile()
-                        Log.d("Facebook profile :", profile!!.linkUri.toString())
-                        tvFacebook.text = profile.linkUri.toString()
-                        ivFacebookDelete.visibility = View.VISIBLE
+                        if (profile != null) {
+                            if (profile.linkUri != null) {
+                                Log.d("Facebook profile :", profile.linkUri.toString())
+                                tvFacebook.text = profile.linkUri.toString()
+                                ivFacebookDelete.visibility = View.VISIBLE
+                            }
+                        }
                     }
                 }
 
