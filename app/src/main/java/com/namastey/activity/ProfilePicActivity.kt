@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -133,11 +134,12 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                     applicationContext.packageName.plus(".provider"),
                     profileFile!!
                 )
+
                 val bitmap: Bitmap = Utils.scaleBitmapDown(
                     MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                     1200
                 )!!
-                GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap,90f))
+                GlideLib.loadImageBitmap(this, ivProfilePic, bitmap)
 
             } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
 
@@ -159,7 +161,10 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                             cursor.close()
 
                             Log.d("Image Path", "Image Path  is $picturePath")
-                            profileFile = Utils.saveBitmapToFile(File(picturePath))
+                            //profileFile = Utils.saveBitmapToFile(File(picturePath))
+
+                            val bitmap: Bitmap = BitmapFactory.decodeFile(picturePath)
+                            profileFile=File(Utils.saveBitmapToExtFilesDir(bitmap,this))
 
                             val photoUri = FileProvider.getUriForFile(
                                 this,

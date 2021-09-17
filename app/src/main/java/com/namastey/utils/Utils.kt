@@ -21,12 +21,19 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import java.io.*
 import java.net.URI
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.R.attr.path
+
+import android.R.attr.angle
+
+
+
 
 
 object Utils {
@@ -169,6 +176,32 @@ object Utils {
         v.foreground = gd
     }
 
+    fun saveBitmapToExtFilesDir(bitmap: Bitmap,context:Context): String? {
+        val fileName = (System.currentTimeMillis() / 1000L).toString()+".jpg"
+        val mDestDir: File = getExtFilesDir(context)!!
+        if (mDestDir != null) {
+            val mDestFile = File(mDestDir.path + File.separator + fileName)
+            return try {
+                val out = FileOutputStream(mDestFile)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                out.flush()
+                out.close()
+                mDestFile.absolutePath
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+        return null
+    }
+    fun getExtFilesDir(context: Context): File? {
+        val mDataDir = ContextCompat.getExternalFilesDirs(context, null)[0]
+        if (!mDataDir.exists()) {
+            mDataDir.mkdirs()
+        }
+        return if (mDataDir.exists()) mDataDir else null
+    }
+
     fun saveBitmapToFile(file: File): File? {
         return try {
             // BitmapFactory options to downsize the image
@@ -202,6 +235,8 @@ object Utils {
         } catch (e: Exception) {
             null
         }
+
+
     }
 
     fun getPath(context: Context, uri: Uri): String? {
