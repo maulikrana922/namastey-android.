@@ -967,9 +967,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         val picturePath: String = cursor.getString(columnIndex)
                         cursor.close()
 
-                        GlideLib.loadImage(this, ivProfileUser, picturePath)
                         Log.d("Image Path", "Image Path  is $picturePath")
-                        profileFile = Utils.saveBitmapToFile(File(picturePath))
+                        //profileFile = Utils.saveBitmapToFile(File(picturePath))
+                        profileFile = Utils.saveBitmapToExtFilesDir(picturePath,this)
+                        GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
 
                         if (profileFile != null && profileFile!!.exists()) {
                             isCameraOpen = true
@@ -992,7 +993,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 1200
             )!!
             isProfilePic = true
-            GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap, 90f))
+            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
 
             if (imageFile.exists()) {
                 isCameraOpen = true

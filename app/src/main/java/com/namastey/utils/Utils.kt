@@ -176,7 +176,8 @@ object Utils {
         v.foreground = gd
     }
 
-    fun saveBitmapToExtFilesDir(bitmap: Bitmap,context:Context): String? {
+    fun saveBitmapToExtFilesDir(filePath: String,context:Context): File? {
+        val bitmap: Bitmap = BitmapFactory.decodeFile(filePath)
         val fileName = (System.currentTimeMillis() / 1000L).toString()+".jpg"
         val mDestDir: File = getExtFilesDir(context)!!
         if (mDestDir != null) {
@@ -186,7 +187,7 @@ object Utils {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 out.flush()
                 out.close()
-                mDestFile.absolutePath
+                File(mDestFile.absolutePath)
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 null

@@ -162,9 +162,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
 
                             Log.d("Image Path", "Image Path  is $picturePath")
                             //profileFile = Utils.saveBitmapToFile(File(picturePath))
-
-                            val bitmap: Bitmap = BitmapFactory.decodeFile(picturePath)
-                            profileFile=File(Utils.saveBitmapToExtFilesDir(bitmap,this))
+                            profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
 
                             val photoUri = FileProvider.getUriForFile(
                                 this,
@@ -206,6 +204,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
     fun onClickPlus(view: View) {
         selectImage()
     }
+
     private fun isReadWritePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(

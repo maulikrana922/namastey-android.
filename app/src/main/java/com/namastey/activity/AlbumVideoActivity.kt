@@ -1352,10 +1352,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         albumVideoAdapter.notifyItemRemoved(position)
         albumVideoAdapter.notifyItemRangeChanged(position, albumVideoAdapter.itemCount)
         if (albumVideoAdapter.itemCount == 0) {
-            val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
-            intent.putExtra("ownProfile", true)
-            intent.putExtra("isfromdelete", true)
-            openActivity(intent)
+            finishActivity()
         }
     }
 
