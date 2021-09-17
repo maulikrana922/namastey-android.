@@ -57,7 +57,7 @@ public class InstagramApp {
         mTokenUrl = TOKEN_URL + "?client_id=" + clientId + "&client_secret="
                 + clientSecret + "&redirect_uri=" + mCallbackUrl + "&grant_type=authorization_code";
         mAuthUrl = AUTH_URL + "?client_id=" + clientId + "&redirect_uri="
-                + mCallbackUrl + "&response_type=code&display=touch&scope=likes+comments+relationships";
+                + mCallbackUrl + "&response_type=code&display=touch&scope=user_profile";
         InstagramDialog.OAuthDialogListener listener = new InstagramDialog.OAuthDialogListener() {
             @Override
             public void onComplete(String code) {

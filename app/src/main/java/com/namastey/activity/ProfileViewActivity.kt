@@ -969,6 +969,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
                         Log.d("Image Path", "Image Path  is $picturePath")
                         //profileFile = Utils.saveBitmapToFile(File(picturePath))
+                        isProfilePic = true
                         profileFile = Utils.saveBitmapToExtFilesDir(picturePath,this)
                         GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
 

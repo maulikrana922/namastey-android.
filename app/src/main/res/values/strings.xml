@@ -467,7 +467,7 @@
     <string name="readable_content">Readable content</string>
     <string name="msg_delete_matches">Do you wish to delete match?</string>
     <string name="msg_delete_chat">Are you sure you want to delete chat?</string>
-    <string name="msg_delete_account">Are you sure you want to delete account?</string>
+    <string name="msg_delete_account">Are you sure you want to delete your account?</string>
     <string name="it_s_spam">It\'s Spam</string>
     <string name="it_s_inappropriate">It\'s inappropriate</string>
     <string name="msg_buy_namastey">Buy namastey gold to message.</string>
