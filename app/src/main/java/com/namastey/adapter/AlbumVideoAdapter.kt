@@ -21,6 +21,7 @@ import com.namastey.activity.ProfileViewActivity
 import com.namastey.listeners.OnVideoClick
 import com.namastey.model.VideoBean
 import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.GlideLib
 import com.namastey.utils.SessionManager
 import java.util.*
@@ -284,6 +285,9 @@ class AlbumVideoAdapter(
                 onVideoClick.onUpnextClick(position)
             }
 
+            if (tvCommentFeed.text.contains(activity.getString(R.string.comments_off))){
+                tvCommentFeed.setOnClickListener { openCustomAlertDialog() }
+            }
             if (videoBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {
                 tvCommentFeed.setOnClickListener {
                     onVideoClick.onCommentClick(videoBean.id,videoBean.user_id)
@@ -350,4 +354,18 @@ class AlbumVideoAdapter(
         }
 
     }
+
+    fun openCustomAlertDialog() {
+        object : CustomAlertDialog(
+            activity,
+            activity.resources.getString(R.string.alert_comment_message),
+            activity.getString(R.string.okay),
+            ""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
+
 }

@@ -285,6 +285,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             postList = ArrayList()
             val jsonObject = JsonObject()
             jsonObject.addProperty("sub_cat_id", subCategoryId)
+            tvTranding.visibility = View.GONE
             filterViewModel.getTredingVideoList(jsonObject)
         }
 
@@ -332,7 +333,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         jsonObject.addProperty("sub_cat_id", "")
         jsonObject.addProperty("following_id", sessionManager.getUserId())
 
-
+        tvTranding.visibility = View.GONE
         filterViewModel.getTredingVideoList(jsonObject)
         selectFollowing()
 //        }

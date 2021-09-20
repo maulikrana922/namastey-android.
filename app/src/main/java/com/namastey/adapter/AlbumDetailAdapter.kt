@@ -98,12 +98,12 @@ class AlbumDetailAdapter(
                         deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
                         deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
 
-                        deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
+                        deleteDialog.findViewById<CustomButton>(R.id.btnConfirm).setOnClickListener {
                             onItemClick.onItemClick(videoBean.id, position)
                             notifyDataSetChanged()
                             deleteDialog.dismiss()
                         }
-                        deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
+                        deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel).setOnClickListener {
                             deleteDialog.dismiss()
                         }
                         deleteDialog.show()
@@ -187,12 +187,12 @@ class AlbumDetailAdapter(
                     deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
                     deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
 
-                    deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
+                    deleteDialog.findViewById<CustomButton>(R.id.btnConfirm).setOnClickListener {
                         onItemClick.onItemClick(videoBean.id, position)
                         notifyDataSetChanged()
                         deleteDialog.dismiss()
                     }
-                    deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
+                    deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel).setOnClickListener {
                         deleteDialog.dismiss()
                     }
                     deleteDialog.show()

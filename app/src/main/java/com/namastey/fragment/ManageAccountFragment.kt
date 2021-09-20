@@ -129,11 +129,11 @@ class ManageAccountFragment : BaseFragment<FragmentManageAccountBinding>(), Mana
         deleteDialog.setContentView(R.layout.dialog_delete)
         deleteDialog.setCancelable(false)
         deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        deleteDialog.findViewById<CustomButton>(R.id.btnPos).setOnClickListener {
+        deleteDialog.findViewById<CustomTextView>(R.id.btnConfirm).setOnClickListener {
             manageAccountViewModel.removeAccount()
             deleteDialog.dismiss()
         }
-        deleteDialog.findViewById<CustomButton>(R.id.btnNeg).setOnClickListener {
+        deleteDialog.findViewById<CustomTextView>(R.id.btnDeleteCancel).setOnClickListener {
             deleteDialog.dismiss()
         }
         deleteDialog.show()

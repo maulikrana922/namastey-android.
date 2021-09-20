@@ -114,7 +114,6 @@
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvTranding"
                     style="@style/tvWrapBlackStyle"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/trending"
                     app:layout_constraintStart_toStartOf="@id/llSearchView"
                     app:layout_constraintTop_toBottomOf="@id/rvSubcategory"
@@ -277,6 +276,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:clipToPadding="false"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_12sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

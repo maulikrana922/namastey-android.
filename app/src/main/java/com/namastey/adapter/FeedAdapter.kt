@@ -358,14 +358,15 @@ class FeedAdapter(
                     tvCommentFeed.setOnClickListener {
                         onFeedItemClick.onCommentClick(position, dashboardBean.id)
                     }
-                }else if (tvCommentFeed.text.contains(activity.getString(
-                        R.string.comments_off
-                    ))){
-                    openCustomAlertDialog()
                 }
+//                else if (tvCommentFeed.text.contains(activity.getString(
+//                        R.string.comments_off
+//                    ))){
+//                    openCustomAlertDialog()
+//                }
             }
 
-            ivComment.setOnClickListener {
+            tvCommentFeed.setOnClickListener {
                 if (dashboardBean.who_can_comment == 2) {
                     openCustomAlertDialog()
                 } else {

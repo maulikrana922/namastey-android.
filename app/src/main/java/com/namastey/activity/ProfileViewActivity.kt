@@ -286,8 +286,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         if (profileBean.about_me.isNotEmpty() && profileBean.about_me != null)
             tvAbouteDesc.text = profileBean.about_me
-        else
-            tvAbouteDesc.text = getString(R.string.about_me_empty)
+        else {
+            if (profileBean.user_id == sessionManager.getUserId())
+                tvAbouteDesc.text = getString(R.string.about_me_empty)
+            else
+                tvAbouteDesc.text = "-"
+        }
         if (profileBean.albums.isNotEmpty()) {
             val albums = profileBean.albums.filter { it.name == getString(R.string.saved) }
             Log.e("Album", albums.size.toString())

@@ -102,7 +102,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/llfrequest"
+                    android:id="@+id/ll_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

@@ -447,7 +447,9 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
 
     override fun onClickSocialText(userName: String) {
-        TODO("Not yet implemented")
+        val intent = Intent(this@CommentActivity, ProfileViewActivity::class.java)
+        intent.putExtra(Constants.USERNAME, userName)
+        openActivity(intent)
     }
 
     override fun onMentionItemClick(userId: Long, position: Int, username: String) {

@@ -169,8 +169,10 @@ class NotificationActivity : BaseActivity<ActivityNotificationBinding>(), Notifi
                     data[0].profile_url
                 )
             }
+            ll_request.visibility = View.VISIBLE
             txtNotification.setText("You have " + data.size + " follow request.")
         }else{
+            ll_request.visibility = View.GONE
             txtNotification.setText("You have 0 follow request.")
         }
     }

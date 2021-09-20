@@ -237,7 +237,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         LoginManager.getInstance()
             .logInWithReadPermissions(
                 this@SocialLinkActivity,
-                listOf("email", "public_profile","link")
+                listOf("email", "public_profile")
             )
         //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_link"))
 

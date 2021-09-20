@@ -283,7 +283,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
     private fun initUI() {
         matchesProfileViewModel.getLikeUserCount()
 
-/*        rlProfileMain.setOnClickListener {
+        rlProfileMain.setOnClickListener {
             object : NotAvailableFeatureDialog(
                 this,
                 getString(R.string.see_who_likes_not_available),
@@ -304,7 +304,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
             //    openActivity(intent)
             //   }
 
-        }*/
+        }
 
         messagesAdapter = MessagesAdapter(messageList, this, this, sessionManager)
         rvMessagesList.adapter = messagesAdapter
