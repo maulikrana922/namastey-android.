@@ -18,7 +18,7 @@ android {
         applicationId "com.namastey"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 8
+        versionCode 10
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        ndk {
@@ -220,5 +220,7 @@ dependencies {
 
 //    Country code picker
     implementation 'com.hbb20:ccp:2.4.7'
+
+    implementation 'com.google.android.play:core-ktx:1.8.1'
 
 }

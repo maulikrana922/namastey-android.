@@ -1,10 +1,21 @@
 package com.namastey.activity
 
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.appupdate.testing.FakeAppUpdateManager
+import com.google.android.play.core.install.InstallState
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
@@ -28,11 +39,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 
     private lateinit var splashViewModel: SplashViewModel
     private lateinit var activitySplashBinding: ActivitySplashBinding
+    private var MY_REQUEST_CODE = 105
+    private lateinit var appUpdateManager : AppUpdateManager
 
     override fun openLoginActivity() {
 //        Log.d("Login","user not login")
-
-        splash_view.splashAndDisappear(object : ISplashListener {
+        inAppUpdate()
+        /*splash_view.splashAndDisappear(object : ISplashListener {
             override fun onStart() {}
             override fun onUpdate(completionFraction: Float) {}
             override fun onEnd() {
@@ -40,7 +53,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
                 overridePendingTransition(0, 0)
                 finish()
             }
-        })
+        })*/
 //        Handler().postDelayed({
 //        }, 1000)
 //        openActivity(this,SignUpActivity())
@@ -62,7 +75,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             override fun onEnd() {
                 val intentDashboard = Intent(this@SplashActivity, DashboardActivity::class.java)
 
-                if (intent.data != null){
+                if (intent.data != null) {
                     val data: Uri? = intent.data
                     val username = data?.getQueryParameter("username")
                     intentDashboard.putExtra("username", username)
@@ -90,7 +103,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
-
+       appUpdateManager = AppUpdateManagerFactory.create(this@SplashActivity)
         var mServiceIntent: Intent? = null
         mServiceIntent = Intent(this, AppCloseService()::class.java)
         if (!isMyServiceRunning(AppCloseService()::class.java)) {
@@ -134,4 +147,72 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
 //            Log.e("FragmentActivity.TAG", "printHashKey()", e)
 //        }
 //    }
+
+    fun inAppUpdate() {
+
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    this,
+                    AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE)
+                        .setAllowAssetPackDeletion(true)
+                        .build(),
+                    MY_REQUEST_CODE
+                )
+            }else{
+                openActivity()
+            }
+        }
+
+        val listener = InstallStateUpdatedListener { state ->
+            if (state.installStatus() == InstallStatus.DOWNLOADING) {
+                val bytesDownloaded = state.bytesDownloaded()
+                val totalBytesToDownload = state.totalBytesToDownload()
+            }
+            if (state.installStatus() == InstallStatus.DOWNLOADED){
+                Toast.makeText(this,"An update has just been downloaded",Toast.LENGTH_LONG).show()
+            }
+        }
+        appUpdateManager.registerListener(listener)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MY_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+                inAppUpdate()
+            }else{
+                openActivity()
+            }
+        }
+    }
+
+    fun openActivity(){
+        splash_view.splashAndDisappear(object : ISplashListener {
+            override fun onStart() {}
+            override fun onUpdate(completionFraction: Float) {}
+            override fun onEnd() {
+                startActivity(Intent(this@SplashActivity, SignUpActivity::class.java))
+                overridePendingTransition(0, 0)
+                finish()
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    Toast.makeText(this,"An update has just been downloaded",Toast.LENGTH_LONG).show()
+                }
+            }
+
+    }
 }
