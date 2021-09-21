@@ -143,6 +143,31 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 selectLanguageIdList.add(languageListId.id)
             }
             sessionManager.setLanguageIdList(selectLanguageIdList)
+
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_download,
+                Constants.KEY_IS_DOWNLOAD_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_followers,
+                Constants.KEY_IS_YOUR_FOLLOWERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_suggest,
+                Constants.KEY_SUGGEST_YOUR_ACCOUNT_TO_OTHERS
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_comment,
+                Constants.KEY_CAN_COMMENT_YOUR_VIDEO
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.who_can_send_message,
+                Constants.KEY_CAN_SEND_YOU_DIRECT_MESSAGE
+            )
+            sessionManager.setIntegerValue(
+                profileBean.safetyBean.is_share,
+                Constants.KEY_IS_SHARE_PROFILE_SAFETY
+            )
           //  btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
