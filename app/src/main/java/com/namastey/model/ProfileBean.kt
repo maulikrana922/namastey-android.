@@ -47,6 +47,7 @@ class ProfileBean() : Parcelable {
     var is_like: Int = 0
     var is_block: Int = 0
     var is_match: Int = 0
+    var is_reported: Int = 0
 
     @SerializedName("notification_tage")
     var notificationBean: ArrayList<NotificationOnOffBean> = ArrayList()
@@ -92,6 +93,7 @@ class ProfileBean() : Parcelable {
         is_like = parcel.readInt() ?: 0
         is_block = parcel.readInt() ?: 0
         is_match = parcel.readInt() ?: 0
+        is_reported = parcel.readInt() ?: 0
         notificationBean = parcel.createTypedArrayList(NotificationOnOffBean) ?: ArrayList()
         // safetyBean = parcel.createTypedArrayList(SafetyBean) ?: SafetyBean()
         safetyBean = parcel.readValue(SafetyBean::class.java.classLoader) as SafetyBean
@@ -132,6 +134,7 @@ class ProfileBean() : Parcelable {
         parcel.writeInt(is_like)
         parcel.writeInt(is_block)
         parcel.writeInt(is_match)
+        parcel.writeInt(is_reported)
         parcel.writeTypedList(notificationBean)
         //parcel.writeTypedList(safetyBean)
         parcel.writeValue(safetyBean)

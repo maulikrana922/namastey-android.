@@ -1430,7 +1430,15 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 startActivity(intent)
             }
-
+            if (profileBean.is_reported == 1) {
+                bottomSheetDialogShare.ivShareReport.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this@ProfileViewActivity,
+                        R.drawable.ic_report_fill
+                    )
+                )
+                bottomSheetDialogShare.tvShareReport.setText(R.string.reported)
+            }
             bottomSheetDialogShare.ivShareApp.setOnClickListener {
                 shareWithInApp(profileBean)
             }
@@ -1771,23 +1779,36 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
      * Display dialog of report user
      */
     private fun displayReportUserDialog(dashboardBean: ProfileBean) {
-        object : CustomCommonNewAlertDialog(
-            this@ProfileViewActivity,
-            dashboardBean.casual_name,
-            getString(R.string.msg_report_user),
-            dashboardBean.profileUrl,
-            getString(R.string.confirm),
-            resources.getString(R.string.cancel)
-        ) {
-            override fun onBtnClick(id: Int) {
-                when (id) {
-                    btnAlertOk.id -> {
-                        bottomSheetDialogShare.dismiss()
-                        showReportTypeDialog(dashboardBean.user_id)
+        if (dashboardBean.is_reported == 1) {
+            object : CustomAlertDialog(
+                this@ProfileViewActivity,
+                resources.getString(R.string.alert_report_already),
+                getString(R.string.okay),
+                ""
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()
+        }else{
+            object : CustomCommonNewAlertDialog(
+                this@ProfileViewActivity,
+                dashboardBean.casual_name,
+                getString(R.string.msg_report_user),
+                dashboardBean.profileUrl,
+                getString(R.string.confirm),
+                resources.getString(R.string.cancel)
+            ) {
+                override fun onBtnClick(id: Int) {
+                    when (id) {
+                        btnAlertOk.id -> {
+                            bottomSheetDialogShare.dismiss()
+                            showReportTypeDialog(dashboardBean.user_id)
+                        }
                     }
                 }
-            }
-        }.show()
+            }.show()
+        }
 
     }
 

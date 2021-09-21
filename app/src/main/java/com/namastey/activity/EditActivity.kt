@@ -288,7 +288,7 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
             Constants.TAG_LINE,
             edtProfileTagline.text.toString().trim()
         )
-        jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
+//        jsonObject.addProperty(Constants.GENDER, sessionManager.getInterestIn())
 
 
 /*
