@@ -226,8 +226,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         initData()
         getDataFromIntent(intent!!)
 
-        val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName
-        Toast.makeText(this,"VersionName : $versionName",Toast.LENGTH_SHORT).show()
+//        val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName
+//        Toast.makeText(this,"VersionName : $versionName",Toast.LENGTH_SHORT).show()
     }
 
     override fun onStart() {
