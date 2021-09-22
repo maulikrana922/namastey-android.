@@ -1,5 +1,6 @@
 package com.namastey.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
@@ -183,11 +184,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MY_REQUEST_CODE) {
-            if (resultCode != RESULT_OK) {
-                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
-                inAppUpdate()
-            }else{
-                openActivity()
+            when (resultCode) {
+                RESULT_OK -> {
+        //                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+                    Toast.makeText(this,"Update started",Toast.LENGTH_LONG).show()
+                }
+                Activity.RESULT_CANCELED -> {
+                    Toast.makeText(this,"APP UPDATE CANCELED",Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    openActivity()
+                }
             }
         }
     }
