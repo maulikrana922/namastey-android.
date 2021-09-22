@@ -2,7 +2,6 @@ package com.namastey.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentSender
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.appupdate.testing.FakeAppUpdateManager
-import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
@@ -41,12 +38,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
     private lateinit var splashViewModel: SplashViewModel
     private lateinit var activitySplashBinding: ActivitySplashBinding
     private var MY_REQUEST_CODE = 105
-    private lateinit var appUpdateManager : AppUpdateManager
-
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var listener: InstallStateUpdatedListener
     override fun openLoginActivity() {
 //        Log.d("Login","user not login")
-        inAppUpdate()
-        /*splash_view.splashAndDisappear(object : ISplashListener {
+
+        splash_view.splashAndDisappear(object : ISplashListener {
             override fun onStart() {}
             override fun onUpdate(completionFraction: Float) {}
             override fun onEnd() {
@@ -54,7 +51,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
                 overridePendingTransition(0, 0)
                 finish()
             }
-        })*/
+        })
 //        Handler().postDelayed({
 //        }, 1000)
 //        openActivity(this,SignUpActivity())
@@ -104,7 +101,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
-       appUpdateManager = AppUpdateManagerFactory.create(this@SplashActivity)
+        appUpdateManager = AppUpdateManagerFactory.create(this@SplashActivity)
         var mServiceIntent: Intent? = null
         mServiceIntent = Intent(this, AppCloseService()::class.java)
         if (!isMyServiceRunning(AppCloseService()::class.java)) {
@@ -124,7 +121,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         activitySplashBinding = bindViewData()
         activitySplashBinding.viewModel = splashViewModel
 
-        splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
+        inAppUpdate()
+
         val dynamicLink = intent.data
         if (dynamicLink != null) {
             Log.e("Dynamic_Link:", dynamicLink.toString())
@@ -163,22 +161,24 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
                         .build(),
                     MY_REQUEST_CODE
                 )
-            }else{
-                openActivity()
+            } else {
+                splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
             }
         }
 
-        val listener = InstallStateUpdatedListener { state ->
-            if (state.installStatus() == InstallStatus.DOWNLOADING) {
-                val bytesDownloaded = state.bytesDownloaded()
-                val totalBytesToDownload = state.totalBytesToDownload()
-            }
-            if (state.installStatus() == InstallStatus.DOWNLOADED){
-                Toast.makeText(this,"An update has just been downloaded",Toast.LENGTH_LONG).show()
+        listener = InstallStateUpdatedListener { state ->
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                Toast.makeText(this, "App Update Successfully", Toast.LENGTH_LONG).show()
+                splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
             }
         }
-        appUpdateManager.registerListener(listener)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (listener!=null)
+            appUpdateManager.unregisterListener(listener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -186,20 +186,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
         if (requestCode == MY_REQUEST_CODE) {
             when (resultCode) {
                 RESULT_OK -> {
-        //                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
-                    Toast.makeText(this,"Update started",Toast.LENGTH_LONG).show()
+                    //                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+                    appUpdateManager.registerListener(listener)
+                    Toast.makeText(this, "Update started", Toast.LENGTH_LONG).show()
                 }
                 Activity.RESULT_CANCELED -> {
-                    Toast.makeText(this,"APP UPDATE CANCELED",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "APP UPDATE CANCELED", Toast.LENGTH_LONG).show()
+                    splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
                 }
                 else -> {
-                    openActivity()
+                    splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
                 }
             }
         }
     }
 
-    fun openActivity(){
+    fun openActivity() {
         splash_view.splashAndDisappear(object : ISplashListener {
             override fun onStart() {}
             override fun onUpdate(completionFraction: Float) {}
@@ -217,7 +219,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
             .appUpdateInfo
             .addOnSuccessListener { appUpdateInfo ->
                 if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    Toast.makeText(this,"An update has just been downloaded",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "An update has just been downloaded", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 

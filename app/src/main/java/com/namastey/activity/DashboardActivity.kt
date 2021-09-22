@@ -102,6 +102,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import android.R.attr.name
+
+
+
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
@@ -221,6 +225,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 //        getLocation()
         initData()
         getDataFromIntent(intent!!)
+
+        val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName
+        Toast.makeText(this,"VersionName : $versionName",Toast.LENGTH_SHORT).show()
     }
 
     override fun onStart() {
