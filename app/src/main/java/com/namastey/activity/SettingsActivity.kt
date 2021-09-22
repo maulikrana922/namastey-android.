@@ -1,5 +1,7 @@
 package com.namastey.activity
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.location.Geocoder
@@ -11,7 +13,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.LocationResult
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -59,7 +63,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     private var realLatitude: Double = 0.0
     private var realLongitude: Double = 0.0
     private lateinit var appLocationService: AppLocationService
-
+    private lateinit var locationCallback: LocationCallback
+    private val MIN_DISTANCE_FOR_UPDATE: Float = 10 * 1.toFloat()
+    private val MIN_TIME_FOR_UPDATE = 1000 * 60 * 2.toLong()
     override fun getViewModel() = settingsViewModel
 
     override fun getLayoutId() = R.layout.activity_settings
@@ -247,6 +253,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun setCurrentLocation() {
         //Log.e("SettingsActivity", "currentLocationFromDB: ${currentLocationFromDB.city}")
         Log.e(
@@ -280,11 +287,39 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                   tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
               }*/
 
+
+
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    Log.e("Location",location.latitude.toString())
+                }
+            }
+        }
+
+
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        locationManager.requestLocationUpdates(
+            LocationManager.NETWORK_PROVIDER,
+            MIN_TIME_FOR_UPDATE,
+            MIN_DISTANCE_FOR_UPDATE, this);
+
+
+        if (locationManager != null) {
+            val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                Log.e("Location",location.latitude.toString())
+                latitude = location.latitude;
+                longitude = location.longitude;
+            }
+        }
         val geocoder = Geocoder(this, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(
-                realLatitude,
-                realLongitude,
+                latitude,
+                longitude,
                 1
             )
             val city = addresses[0].locality
@@ -294,7 +329,9 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
     }
-
+    private val mLocationListener = LocationListener {
+        //your code here
+    }
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
         tvInterestMen.setTextColor(Color.GRAY)
         tvInterestWomen.setTextColor(Color.GRAY)
@@ -475,13 +512,14 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
 
     private fun getLocation() {
         appLocationService = AppLocationService(this)
-
         val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
         if (gpsLocation != null) {
             realLatitude = gpsLocation.latitude
             realLongitude = gpsLocation.longitude
             Log.e("DashboardActivity", "realLatitude: $realLatitude")
             Log.e("DashboardActivity", "realLongitude: $realLongitude")
+        }else{
+            tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
     }
 
@@ -491,4 +529,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         Log.e("DashboardActivity", "realLatitude: $realLatitude")
         Log.e("DashboardActivity", "realLongitude: $realLongitude")
     }
+}
+
+private fun LocationManager.requestLocationUpdates(networkProvider: String, minTimeBwUpdates: Long, minDistanceChangeForUpdates: Float, settingsActivity: SettingsActivity) {
+
 }

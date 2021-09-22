@@ -216,7 +216,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             when (profileBean.is_follow) {
                 1 -> btnProfileFollow.text = getString(R.string.un_follow)
                 2 -> btnProfileFollow.text = getString(R.string.pending)
-                else -> btnProfileFollow.text = getString(R.string.follow)
+                else ->{
+                    if (profileBean.is_follow_me==1)
+                    btnProfileFollow.text = getString(R.string.followback)
+                    else btnProfileFollow.text = getString(R.string.follow)
+                }
             }
             if (profileBean.is_match == 1) {
                 btnProfileLike.text = getString(R.string.matched)
@@ -1369,7 +1373,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             btnProfileFollow.text = resources.getString(R.string.un_follow)
         } else if (profileBean.is_follow == 0) {
             profileBean.followers -= 1
-            btnProfileFollow.text = resources.getString(R.string.follow)
+            if (profileBean.is_follow_me==1)
+            btnProfileFollow.text = resources.getString(R.string.followback)
+            else btnProfileFollow.text = resources.getString(R.string.follow)
         } else if (profileBean.is_follow == 2) {
             btnProfileFollow.text = resources.getString(R.string.pending)
         }
