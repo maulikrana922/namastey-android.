@@ -723,28 +723,31 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     override fun onChatMessageClick(message: String, position: Int) {
         when {
             message.contains("Edit your bio") -> {
-                openActivity(this@ChatActivity, EditProfileActivity())
+                openActivity(this@ChatActivity, EditActivity())
             }
             message.contains("Add More Video") -> {
-                val intent = Intent(this@ChatActivity, CreateAlbumActivity::class.java)
+                val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
+                intent.putExtra("ownProfile", true)
                 intent.putExtra("fromAlbumList", false)
                 openActivity(intent)
             }
             message.contains("Edit your profile") -> {
-                openActivity(this@ChatActivity, EditProfileActivity())
+                openActivity(this@ChatActivity, EditActivity())
             }
             message.contains("Add Social links") -> {
-                val intent = Intent(this@ChatActivity, EditProfileActivity::class.java)
+                val intent = Intent(this@ChatActivity, SocialLinkActivity::class.java)
                 intent.putExtra("fromAddSocialLink", true)
+                intent.putExtra(Constants.ACTIVITY_EDIT, "EditActivity")
                 openActivity(intent)
             }
             message.contains("Buy Boost") -> {
-                val intent = Intent(this@ChatActivity, ProfileViewActivity::class.java)
+                val intent = Intent(this@ChatActivity, MemberActivity::class.java)
+                intent.putExtra("ownProfile", true)
                 intent.putExtra("fromBuyBoost", true)
                 openActivity(intent)
             }
             message.contains("Try our membership") -> {
-                openActivity(this@ChatActivity, MembershipActivity())
+                openActivity(this@ChatActivity, MemberActivity())
             }
             message.contains("To visit profile click on username") -> {
                 val value = message.substring(message.indexOf("F30C45") + 7)

@@ -440,7 +440,10 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
             )
         } else {
             val intent = Intent(this@CommentActivity, ProfileViewActivity::class.java)
-            intent.putExtra(Constants.USER_ID, userId)
+            if (userId != sessionManager.getUserId())
+                intent.putExtra(Constants.USER_ID, userId)
+            else
+                intent.putExtra("ownProfile", true)
             openActivity(intent)
         }
     }
@@ -448,7 +451,10 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
     override fun onClickSocialText(userName: String) {
         val intent = Intent(this@CommentActivity, ProfileViewActivity::class.java)
-        intent.putExtra(Constants.USERNAME, userName)
+        if (userName == sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
+            intent.putExtra("ownProfile", true)
+        else
+            intent.putExtra(Constants.USERNAME, userName)
         openActivity(intent)
     }
 
