@@ -379,7 +379,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private fun getVideoUrl(position: Int) {
         /* mRecyclerView!!.layoutManager =
              LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
-        mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        mLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
 
         /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()

@@ -2605,6 +2605,9 @@ private fun prepareAnimation(animation: Animation): Animation? {
             currentPage = 1
             videoIdList.clear()
             totalCount = 1
+            firstTime = true
+            mRecyclerView!!.onRestartPlayer()
+
 //            getFeedListApi(0)
             Handler(Looper.getMainLooper()).postDelayed({
                 setupPermissions()
