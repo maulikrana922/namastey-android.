@@ -487,17 +487,21 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                 //Do Nothing
                             }
                         } else {
+
+
+
                             val intent =
                                 packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                            if (intent != null) {
+//                            if (intent != null) {
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("fb://profile/".plus(socialBean.link))
+                                        Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+//                                        Uri.parse("fb://profile/".plus(socialBean.link))
 //                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
                                     )
                                 )
-                            }
+//                            }
                         }
 
 //                        else{
@@ -911,7 +915,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         )
 
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "video/*"
+        intent.type = "video/mp4"
         intent.action = Intent.ACTION_GET_CONTENT;
         startActivityForResult(intent, Constants.REQUEST_POST_VIDEO)
     }

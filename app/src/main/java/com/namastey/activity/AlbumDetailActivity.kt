@@ -346,7 +346,7 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
         )
 
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "video/*"
+        intent.type = "video/mp4"
         intent.action = Intent.ACTION_GET_CONTENT;
         startActivityForResult(intent, Constants.REQUEST_VIDEO_SELECT)
     }

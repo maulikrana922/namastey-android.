@@ -237,7 +237,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         LoginManager.getInstance()
             .logInWithReadPermissions(
                 this@SocialLinkActivity,
-                listOf("email", "public_profile")
+                listOf("email", "public_profile", "user_link")
             )
         //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_link"))
 
@@ -257,13 +257,32 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                                 .userId
                         )
                         val profile = Profile.getCurrentProfile()
-                        if (profile != null) {
-                            if (profile.linkUri != null) {
-                                Log.d("Facebook profile :", profile.linkUri.toString())
-                                tvFacebook.text = profile.linkUri.toString()
+
+                        val request = GraphRequest.newMeRequest(
+                            loginResult.accessToken
+                        ) { _, response ->
+                            if (response != null) {
+                                Log.d(
+                                    "Facebook profile :",
+                                    response.rawResponse.toString()
+                                )
+                                tvFacebook.text = response.jsonObject?.getString("link") ?: ""
                                 ivFacebookDelete.visibility = View.VISIBLE
                             }
                         }
+
+                        val parameters = Bundle()
+                        parameters.putString("fields", "link")
+                        request.parameters = parameters
+                        request.executeAsync()
+
+//                        if (profile != null) {
+//                            if (profile.linkUri != null) {
+//                                Log.d("Facebook profile :", profile.linkUri.toString())
+//                                tvFacebook.text = profile.linkUri.toString()
+//                                ivFacebookDelete.visibility = View.VISIBLE
+//                            }
+//                        }
                     }
                 }
 
