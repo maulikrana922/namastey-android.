@@ -1,24 +1,22 @@
 package com.namastey.viewModel
 
 import android.R
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.database.Cursor
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.namastey.application.NamasteyApplication
 import com.namastey.model.Contact
-import com.namastey.model.PhoneContactData
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
 import com.namastey.uiView.InviteView
 import com.namastey.utils.Constants
 import kotlinx.coroutines.*
-import android.R.attr.name
-import android.content.ContentValues.TAG
-import android.util.Log
 
 
 class InviteViewModel constructor(
@@ -29,7 +27,7 @@ class InviteViewModel constructor(
 
     private var inviteView: InviteView = baseView as InviteView
     private lateinit var job: Job
-
+    private var numbers = ""
     private val _contactsLiveData = MutableLiveData<ArrayList<Contact>>()
     val contactsLiveData: LiveData<ArrayList<Contact>> = _contactsLiveData
 
@@ -42,7 +40,7 @@ class InviteViewModel constructor(
             val contactNumbers = contactNumbersAsync.await()
 
             contacts.forEach {
-                contactNumbers[it.name]?.let { numbers ->
+                contactNumbers[it.id]?.let { numbers ->
                     it.numbers = numbers
                 }
             }
@@ -50,26 +48,28 @@ class InviteViewModel constructor(
         }
     }
 
-/*
-    fun fetchContacts(context: Context) {
-        setIsLoading(true)
-        job = GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val contactsListAsync = async { getAllContactsList(context) }
-                val contacts = contactsListAsync.await()
-                _contactsLiveData.postValue(contacts)
-                setIsLoading(false)
-            } catch (t: Throwable) {
-                setIsLoading(false)
-            }
+
+/*    fun fetchContacts() {
+            ContactService().setCallbacks(this)
+        viewModelScope.launch {
+            val contactsListAsync = async { ContactService().arrPhoneContactData }
+            val contactNumbersAsync = async { getContactNumbers() }
+
+            val contacts = contactsListAsync.await()
+            val contactNumbers = contactNumbersAsync.await()
+
+            *//*contacts.forEach {
+                contactNumbers[it.id]?.let { numbers ->
+                    it.number = numbers
+                }
+            }*//*
+            _contactsLiveData.postValue(contacts)
         }
-    }
-*/
+    }*/
 
 
-
-    private fun getAllContactsList(context: Context): ArrayList<PhoneContactData> {
-        val arrPhoneContactData = ArrayList<PhoneContactData>()
+    private fun getAllContactsList(context: Context): ArrayList<Contact> {
+        val arrPhoneContactData = ArrayList<Contact>()
         val cr = context.contentResolver
         val cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
         if (cur != null && cur.count > 0) {
@@ -80,15 +80,12 @@ class InviteViewModel constructor(
                 val cur1Phone = cr.query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                    arrayOf<String>(id)
-
-                    , null
+                    arrayOf<String>(id), null
                 )
                 val strNumber = cr.query(
                     ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-                    arrayOf<String>(id)
-                    , null
+                    arrayOf<String>(id), null
                 )
                 if (cur1Phone != null) {
                     while (cur1Phone.moveToNext()) {
@@ -112,14 +109,14 @@ class InviteViewModel constructor(
                         null
                     )
                     while (pCur!!.moveToNext()) {
-                         number = pCur!!.getString(
+                        number = pCur!!.getString(
                             pCur!!.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER
                             )
                         )
                         Log.i(TAG, "Name: " + R.attr.name)
                         Log.i(TAG, "Phone Number: $number")
-                        arrPhoneContactData.add(PhoneContactData(number, name))
+                        arrPhoneContactData.add(Contact(id, number, name))
                     }
                     pCur!!.close()
                 }
@@ -144,13 +141,28 @@ class InviteViewModel constructor(
             while (contactsCursor.moveToNext()) {
                 val id = contactsCursor.getString(idIndex)
                 val name = contactsCursor.getString(nameIndex)
-                if (name != null) {
-                    contactsList.add(Contact(id, name))
+                val number = contactsCursor.getString(
+                    contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                )
+                if (numbers != name) {
+                    numbers = name
+                    if (name != null && number != null) {
+                        contactsList.add(Contact(id, name, number))
+                    }
                 }
             }
             contactsCursor.close()
         }
+        val hashSet: Set<Contact> = LinkedHashSet(contactsList)
+        val removedDuplicates = ArrayList(hashSet)
+        Log.e("ArraySize", contactsList.size.toString())
+        Log.e("ArraySize", removedDuplicates.size.toString())
         return contactsList
+    }
+
+    fun <T> removeDuplicates(list: ArrayList<T>?): ArrayList<T>? {
+        val set: Set<T> = LinkedHashSet(list)
+        return ArrayList(set)
     }
 
     private fun getContactNumbers(): HashMap<String, ArrayList<String>> {
@@ -189,7 +201,7 @@ class InviteViewModel constructor(
             try {
                 networkService.requestToSendInvitation(number).let { appResponse ->
                     setIsLoading(false)
-                    if (appResponse.status == Constants.OK){
+                    if (appResponse.status == Constants.OK) {
                         inviteView.onSuccess(appResponse.message)
                     }
                 }
@@ -207,4 +219,5 @@ class InviteViewModel constructor(
         if (::job.isInitialized)
             job.cancel()
     }
+
 }

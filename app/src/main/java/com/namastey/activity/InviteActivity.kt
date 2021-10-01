@@ -112,8 +112,8 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
 
         tvInvite.setOnClickListener {
             val sendIntent = Intent(Intent.ACTION_VIEW)
-            sendIntent.data = Uri.parse("sms:")
             val number = "+91".plus(searchContact.query)
+            sendIntent.data = Uri.parse("sms:")
             sendIntent.putExtra("address", number)
             val message = String.format(
                 getString(R.string.invite_sms_send),
@@ -207,11 +207,11 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
     override fun onClickInvite(contact: Contact) {
 
         val sendIntent = Intent(Intent.ACTION_VIEW)
-        sendIntent.data = Uri.parse("sms:")
+        sendIntent.data = Uri.parse("sms:${contact.number}")
         if (sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT) > 0) {
-            if (contact.numbers.size > 0) {
-                sendIntent.putExtra("address", contact.numbers[0])
-                var number = contact.numbers[0].replace("-", "")
+            if (contact.number.isNotEmpty()) {
+                //sendIntent.putExtra("address", contact.number)
+                var number = contact.number.replace("-", "")
 
                 if (!number.startsWith("+"))        // Manually added +91 country code if number not saved with country code
                     number = "+91 ".plus(number)

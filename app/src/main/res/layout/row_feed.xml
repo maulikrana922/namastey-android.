@@ -354,7 +354,7 @@
             android:id="@+id/animationVideoLike"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_90sdp"
-            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_16sdp"
             android:elevation="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gl78"
@@ -362,6 +362,7 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/video_like_heart"
             app:lottie_repeatMode="restart" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clUser"
@@ -445,7 +446,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.60" />
+            app:layout_constraintGuide_percent="0.58" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -481,6 +481,6 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
 
 
     override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
-        TODO("Not yet implemented")
+
     }
 }

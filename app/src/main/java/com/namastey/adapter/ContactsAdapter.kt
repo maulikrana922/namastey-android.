@@ -48,8 +48,8 @@ class ContactsAdapter(context: Context,var onInviteClick: OnInviteClick) : Recyc
         } else {
             text = text.toLowerCase()
             for (item in contactsCopy) {
-                if (item.numbers.size != 0) {
-                    if (item.name.toLowerCase().contains(text) || item.numbers[0].contains(text)) {
+                if (item.number.isNotEmpty()) {
+                    if (item.name.toLowerCase().contains(text) || item.number.contains(text)) {
                         contacts.add(item)
                     }
                 }
