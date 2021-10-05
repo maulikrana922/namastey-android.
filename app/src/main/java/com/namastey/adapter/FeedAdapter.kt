@@ -414,7 +414,7 @@ class FeedAdapter(
             ivFeedBoost.setOnClickListener {
                 onFeedItemClick.onFeedBoost(dashboardBean.user_id)
             }
-
+            Log.e("IS Purchase:"," IS Like You : ${dashboardBean.is_liked_you} , Is Like : ${dashboardBean.is_like}  , Is Purchase : ${sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE)}")
             if (dashboardBean.is_liked_you == 1 && dashboardBean.is_like != 1 &&
                 sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1
             ) {

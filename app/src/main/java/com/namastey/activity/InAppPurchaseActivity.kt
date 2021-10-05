@@ -548,10 +548,7 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
             Constants.KEY_NO_OF_BOOST
         )
 
-        val intent = Intent(this@InAppPurchaseActivity, DashboardActivity::class.java)
-        intent.flags =
-            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        openActivity(intent)
+       finishActivity()
     }
 }
 
