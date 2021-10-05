@@ -641,7 +641,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         )
 
         if (videoBean.is_share == 0) {
-            bottomSheetDialogShare.svShareOption.alpha = 0.3f
+           // bottomSheetDialogShare.svShareOption.alpha = 0.3f
         }
         bottomSheetDialogShare.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bottomSheetDialogShare.window?.attributes?.windowAnimations = R.style.DialogAnimation
@@ -662,7 +662,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
 
-        if (videoBean.is_share == 1) {
+        //if (videoBean.is_share == 1) {
             // Share on Twitter app if install otherwise web link
             bottomSheetDialogShare.ivShareWhatssapp.setOnClickListener {
                 postShare(videoBean.id.toInt())
@@ -689,7 +689,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 postShare(videoBean.id.toInt())
                 shareOther(videoBean)
             }
-        }
+       // }
 
         if (sessionManager.getUserId() == videoBean.user_id) {
             bottomSheetDialogShare.ivShareBlock.visibility = View.GONE

@@ -2045,6 +2045,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                             openShareOptionDialog(profileBean)
                         }
                     }
+                }else{
+                    itemSaved.isVisible = true
+                    itemSetting.isVisible = true
                 }
             }
             R.id.action_saved -> {
