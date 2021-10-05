@@ -431,10 +431,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             jsonObject.put("following_id", sessionManager.getUserId())
 
 //        val feedVideoRequest = FeedVideoRequest(jsonArray,1,subCat, latitude, longitude)
-        Log.e("DashboardActivity", "jsonObject: \t $jsonObject")
 
         val jsonParser = JsonParser()
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
+        Log.e("DashboardActivity", "jsonObject: \t $gsonObject")
 
         if (totalCount != 0)
             dashboardViewModel.getNewFeedListV2(gsonObject)

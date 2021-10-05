@@ -28,12 +28,6 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.R.attr.path
-
-import android.R.attr.angle
-
-
-
 
 
 object Utils {
@@ -184,7 +178,7 @@ object Utils {
             val mDestFile = File(mDestDir.path + File.separator + fileName)
             return try {
                 val out = FileOutputStream(mDestFile)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                rotateImage(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, out)
                 out.flush()
                 out.close()
                 File(mDestFile.absolutePath)
@@ -437,12 +431,29 @@ object Utils {
 //        return duration?.toLongOrNull() ?: 0
     }
 
-    fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
+    fun rotateImage(source: Bitmap): Bitmap {
+        /*val matrix = Matrix()
         matrix.postRotate(angle)
         return Bitmap.createBitmap(
             source, 0, 0, source.width, source.height,
             matrix, true
+        )*/
+
+        val rotationMatrix = Matrix()
+        if (source.width >= source.height) {
+            rotationMatrix.setRotate(90f)
+        } else {
+            rotationMatrix.setRotate(0f)
+        }
+
+        return Bitmap.createBitmap(
+            source,
+            0,
+            0,
+            source.width,
+            source.height,
+            rotationMatrix,
+            true
         )
     }
 

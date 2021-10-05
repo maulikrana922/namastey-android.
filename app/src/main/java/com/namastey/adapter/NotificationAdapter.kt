@@ -106,15 +106,15 @@ class NotificationAdapter(
                     }
 
                     if (activityListBean.mentions_id != 0) {
-                        GlideLib.loadImage(
+                 /*       GlideLib.loadImage(
                             activity,
                             ivUserProfile,
                             activityListBean.comment_user_profile_pic
-                        )
+                        )*/
                         GlideLib.loadImage(
                             activity,
                             ivUserProfile,
-                            activityListBean.comment_user_profile_pic
+                            activityListBean.mentions_user_profile_pic
                         )
                         // tvNotification.text = activityListBean.menstion_message
                         Utils.setHtmlText(tvNotification, activityListBean.menstion_message)

@@ -33,6 +33,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.gowtham.library.utils.TrimType
 import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
@@ -56,6 +58,8 @@ import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.URI
@@ -295,7 +299,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         fillValue(profileBean)
     }
 
-    override fun onSuccess(msg: String) {
+    override fun onSuccess(profileUrl: String) {
 //        super.onSuccess(msg)
         if (profileBean.is_follow == 1) {
             profileBean.is_follow = 0
@@ -307,6 +311,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             btnProfileFollow.text = resources.getString(R.string.un_follow)
         }
         tvFollowersCount.text = profileBean.followers.toString()
+        sessionManager.setStringValue(profileUrl, Constants.KEY_PROFILE_URL)
     }
 
     private fun fillValue(profileBean: ProfileBean) {
@@ -1010,7 +1015,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         //profileFile = Utils.saveBitmapToFile(File(picturePath))
                         isProfilePic = true
                         profileFile = Utils.saveBitmapToExtFilesDir(picturePath,this)
-                        GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
+                        val bitmap: Bitmap = Utils.scaleBitmapDown(
+                            MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(profileFile)),
+                            1200
+                        )!!
+                        //GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
+                        GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap))
 
                         if (profileFile != null && profileFile!!.exists()) {
                             isCameraOpen = true
@@ -1033,7 +1043,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 1200
             )!!
             isProfilePic = true
-            GlideLib.loadImageBitmap(this, ivProfileUser, bitmap)
+            GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap))
 
             if (imageFile.exists()) {
                 isCameraOpen = true
@@ -1955,6 +1965,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 UserShareAdapter(followingList, this, false, this, this)
             bottomSheetDialogShareApp.rvProfileShare.adapter = userShareAdapter
         }
+
     }
 
     /**

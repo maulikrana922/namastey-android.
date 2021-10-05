@@ -1,5 +1,7 @@
 package com.namastey.viewModel
 
+import android.util.Log
+import com.google.gson.internal.LinkedTreeMap
 import com.namastey.R
 import com.namastey.model.AppResponse
 import com.namastey.networking.NetworkService
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.io.File
 
 class ProfileViewModel constructor(
@@ -69,8 +72,15 @@ class ProfileViewModel constructor(
                         networkService.requestUpdateProfilePicAsync(mbProfile, rbDeviceType)
                             .let { appResponse ->
                                 setIsLoading(false)
-                                if (appResponse.status == Constants.OK)
-                                    profileView.onSuccess(appResponse.message)
+                                if (appResponse.status == Constants.OK) {
+                                        var url=""
+                                  (appResponse.data as ArrayList<LinkedTreeMap<Object, Object>>)[0].forEach {
+                                      it.value
+                                      if (it.key.toString() == "file_url")
+                                          url=it.value.toString()
+                                    }
+                                    profileView.onSuccess(url)
+                                }
                                 else
                                     profileView.onFailed(appResponse.message, appResponse.error, appResponse.status)
                             }
