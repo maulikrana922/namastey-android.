@@ -139,7 +139,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                     MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                     1200
                 )!!
-                GlideLib.loadImageBitmap(this, ivProfilePic, bitmap)
+                GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
 
             } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
 
@@ -169,7 +169,12 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                                 applicationContext.packageName.plus(".provider"),
                                 profileFile!!
                             )
-                            GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
+                            //GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
+                            val bitmap: Bitmap = Utils.scaleBitmapDown(
+                                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                                1200
+                            )!!
+                            GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
 
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -202,7 +207,8 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
     }
 
     fun onClickPlus(view: View) {
-        selectImage()
+        //selectImage()
+        isReadWritePermissionGranted()
     }
 
     private fun isReadWritePermissionGranted() {

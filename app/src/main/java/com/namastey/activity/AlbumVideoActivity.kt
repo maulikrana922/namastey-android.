@@ -116,7 +116,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onSuccessStartChat(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessAddComment(commentBean: CommentBean) {
@@ -651,7 +650,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.dismiss()
         }
         bottomSheetDialogShare.tv_user_name.text = videoBean.username
-        bottomSheetDialogShare.tv_Job.text = videoBean.job
+        bottomSheetDialogShare.tv_Job.text = videoBean.jobs
         if (videoBean.profile_url.isNotBlank()) {
             GlideLib.loadImage(
                 this@AlbumVideoActivity,

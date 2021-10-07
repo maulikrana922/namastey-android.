@@ -29,7 +29,7 @@ class VideoBean() : Parcelable {
     var profile_url: String = ""
     var is_download: Int = 0
     var share: Int = 0          // Total Share count
-    var job: String = ""
+    var jobs: String = ""
     var is_share: Int = 0    // User profile share enable or disable
     var is_match: Int = 0
     var is_saved : Int = 0
@@ -59,7 +59,7 @@ class VideoBean() : Parcelable {
         profile_url = parcel.readString() ?: ""
         is_download = parcel.readInt()
         share = parcel.readInt()
-        job =  parcel.readString() ?: ""
+        jobs =  parcel.readString() ?: ""
         is_share =  parcel.readInt() ?: 0
         is_match =  parcel.readInt() ?: 0
         is_saved =  parcel.readInt() ?: 0
@@ -91,7 +91,7 @@ class VideoBean() : Parcelable {
         parcel.writeString(profile_url)
         parcel.writeInt(is_download)
         parcel.writeInt(share)
-        parcel.writeString(job)
+        parcel.writeString(jobs)
         parcel.writeInt(is_share)
         parcel.writeInt(is_match)
         parcel.writeInt(is_saved)

@@ -186,8 +186,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_btn_grey"
-                        android:elevation="@dimen/_4sdp"
                         android:gravity="center"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:orientation="horizontal"
                         android:padding="@dimen/_4sdp">
 

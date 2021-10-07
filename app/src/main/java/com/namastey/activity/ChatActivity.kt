@@ -516,7 +516,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
             if (matchesListBean.is_match == 1 || isFollowMe) {
-                selectImage()  //capturePhoto()
+                //selectImage()  //capturePhoto()
+                openGalleryForImage()
             }
         }
     }

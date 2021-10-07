@@ -837,7 +837,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileImage(view: View) {
-        selectImage()
+       // selectImage()
+        isReadWritePermissionGranted()
     }
 
     private fun selectImage() {
