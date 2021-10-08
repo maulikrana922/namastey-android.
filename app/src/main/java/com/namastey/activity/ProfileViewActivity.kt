@@ -1193,7 +1193,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickAddVideo(view: View) {
-        selectVideo()
+        //selectVideo()
+        isReadWritePermissionGrantedVide()
     }
 
     /*    fun onClickProfileMore(view: View) {

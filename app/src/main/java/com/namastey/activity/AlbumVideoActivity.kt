@@ -952,8 +952,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 filteredName.add(following)
             }
         }
-
-        userShareAdapter.filterList(filteredName)
+        if (filteredName.isNotEmpty())
+            userShareAdapter.filterList(filteredName)
     }
 
     private fun sendMessageToMultiple(videoBean: VideoBean) {
