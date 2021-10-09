@@ -4,7 +4,7 @@ import android.os.Environment
 import java.io.File
 
 object Constants {
-    const val PERMISSION_CAMERA = 102
+    const val PERMISSION_GALLERY = 102
     const val REQUEST_POST_VIDEO = 103
     const val REQUEST_CODE_IMAGE = 104
     const val IMAGE_PATH = "image"

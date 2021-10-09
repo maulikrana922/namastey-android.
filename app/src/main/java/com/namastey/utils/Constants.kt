@@ -14,15 +14,6 @@ object Constants {
         var CALLBACK_URL = "twittersdk://"
     }
 
-    object FirebaseConstant {
-        var MESSAGES = "Messages"
-        var CHATS = "Chats"
-        var LAST_MESSAGE = "Last_message"
-        var IMAGES = "Images"
-        var VOICE = "Voice"
-        var MSG_TYPE_IMAGE = "MsgTypeImage"
-        var MSG_TYPE_VOICE = "MsgTypeVoice"
-    }
 
     object InAppPurchaseConstants {
         var PACKAGE_NAME = "package_name"
@@ -47,12 +38,30 @@ object Constants {
 //    const val SPOTIFY_REDIRECT_URL = "http://testyourapp.online/namasteyapp/"
 
     //    Test url
-//    const val BASE = "https://staging.namasteyapp.com/api/"
-//    const val SPOTIFY_REDIRECT_URL = "https://staging.namasteyapp.com/"
+    const val BASE = "https://staging.namasteyapp.com/api/"
+    const val SPOTIFY_REDIRECT_URL = "https://staging.namasteyapp.com/"
+    object FirebaseConstant {
+        var MESSAGES = "MessagesTest"
+        var CHATS = "Chats"
+        var LAST_MESSAGE = "Last_message"
+        var IMAGES = "ImagesTest"
+        var VOICE = "VoiceTest"
+        var MSG_TYPE_IMAGE = "MsgTypeImage"
+        var MSG_TYPE_VOICE = "MsgTypeVoice"
+    }
 
-//    Live url
-    const val BASE = "https://app.namasteyapp.com/api/"
-    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
+    //    Live url
+//    const val BASE = "https://app.namasteyapp.com/api/"
+//    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
+//    object FirebaseConstant {
+//        var MESSAGES = "Messages"
+//        var CHATS = "Chats"
+//        var LAST_MESSAGE = "Last_message"
+//        var IMAGES = "Images"
+//        var VOICE = "Voice"
+//        var MSG_TYPE_IMAGE = "MsgTypeImage"
+//        var MSG_TYPE_VOICE = "MsgTypeVoice"
+//    }
 
     //  const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
@@ -265,7 +274,7 @@ object Constants {
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
     const val KEY_INVITE_COUNT = "KEY_INVITE_COUNT"
-    const val KEY_PURCHASE_DATE= "KEY_PURCHASE_DATE"
+    const val KEY_PURCHASE_DATE = "KEY_PURCHASE_DATE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
     const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
     const val KEY_BIRTH_DAY = "KEY_BIRTH_DAY"
