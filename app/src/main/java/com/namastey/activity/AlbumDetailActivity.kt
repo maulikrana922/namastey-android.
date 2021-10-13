@@ -652,7 +652,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onItemClick(userId: Long, position: Int) {
         if (position == 0 && !isSavedAlbum) {
             this.position = 0
-            selectVideo()
+//            selectVideo()
+            isReadWritePermissionGranted()
         } else {
             this.position = position
             if (isSavedAlbum)
