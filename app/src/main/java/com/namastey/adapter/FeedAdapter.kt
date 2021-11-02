@@ -179,8 +179,16 @@ class FeedAdapter(
             } else {
                 if (dashboardBean.who_can_comment == 1) {
                     if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
+                        when (dashboardBean.comments) {
+                            1 -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comment))
+                            }
+                            else -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comments))
+                            }
+                        }
                         showCommentProfilePic(
                             dashboardBean,
                             ivCommentFirst,
@@ -192,8 +200,16 @@ class FeedAdapter(
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
+                        when (dashboardBean.comments) {
+                            1 -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comment))
+                            }
+                            else -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comments))
+                            }
+                        }
                         showCommentProfilePic(
                             dashboardBean,
                             ivCommentFirst,

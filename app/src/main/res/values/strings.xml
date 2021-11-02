@@ -178,6 +178,7 @@
     <string name="like">Like</string>
     <string name="dislike">Dislike</string>
     <string name="comments">Comments</string>
+    <string name="comment">Comment</string>
     <string name="privacy">Privacy</string>
     <string name="block">Block</string>
     <string name="report">Report</string>
@@ -205,7 +206,7 @@
     <!--    Follow screen-->
     <string name="search">Search</string>
     <string name="msg_empty_following">When %1$s Start following people,you\'ll see them here </string>
-    <string name="msg_empty_following_title">%1$s are not following anyone</string>
+    <string name="msg_empty_following_title">%1$s is not following anyone</string>
     <string name="msg_empty_followers">When people start following %1$s, you\'ll see them here</string>
     <string name="msg_empty_followers_title">%1$s have no followers</string>
     <string name="msg_unfollow_user">Are you sure you want to Unfollow?</string>
