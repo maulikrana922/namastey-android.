@@ -338,7 +338,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0,""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
@@ -387,7 +387,7 @@ class ShareAppFragment : BaseFragment<FragmentShareAppBinding>(),
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0,""
             )
             val chatId = if (sessionManager.getUserId() < userId)
                 sessionManager.getUserId().toString().plus("_").plus(userId)

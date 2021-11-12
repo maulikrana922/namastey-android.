@@ -1264,7 +1264,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0,""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
@@ -1736,7 +1736,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0,""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)

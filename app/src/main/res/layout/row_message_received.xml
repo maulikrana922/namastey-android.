@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_12sdp"
-        android:background="@drawable/rounded_pink_solid_chat_recevied"
+        android:background="@drawable/rounded_white_solid"
         android:minWidth="@dimen/_180sdp"
         android:orientation="vertical"
         android:visibility="gone">

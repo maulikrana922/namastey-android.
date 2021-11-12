@@ -20,6 +20,7 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import kotlinx.android.synthetic.main.row_message_received.view.*
 import kotlinx.android.synthetic.main.row_message_send.view.*
+import java.io.File
 import java.util.*
 
 class ChatAdapter(
@@ -32,7 +33,7 @@ class ChatAdapter(
     private val RIGHT_CHAT = 1
     private val LEFT_CHAT = 2
     private var currentPlayingPosition = -1
-    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == LEFT_CHAT) {
@@ -91,7 +92,7 @@ class ChatAdapter(
                 )
                 tvRecordingTimeReceived.text =
                     Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                tvRecordedDurationReceived.text = Utils.getMediaDuration(chatMessage.url)
+                tvRecordedDurationReceived.text = chatMessage.duration
             } else {
                 visibleSendMessage(
                     flImageReceived,
@@ -119,24 +120,25 @@ class ChatAdapter(
             ivImageReceived.setOnClickListener {
                 onChatMessageClick.onChatImageClick(chatMessage.url)
             }
+
             ivRecordReceived.setOnClickListener {
                 if (currentPlayingPosition != -1)
                     notifyItemChanged(currentPlayingPosition)
 
                 if (adapterPosition != currentPlayingPosition) {
                     currentPlayingPosition = adapterPosition
-                    if (mediaPlayer != null) {
+                    if (::mediaPlayer.isInitialized) {
                         updateNonPlayingView(ivRecordReceived)
-                        mediaPlayer!!.release()
+                        mediaPlayer.release()
                     }
                     ivRecordReceived.setImageResource(R.drawable.ic_pause)
                     startMediaPlayer(chatMessage.url, adapterPosition, ivRecordReceived)
                 } else {
-                    if (mediaPlayer != null) {
-                        if (mediaPlayer!!.isPlaying) {
-                            mediaPlayer!!.pause()
+                    if (::mediaPlayer.isInitialized) {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
                         } else {
-                            mediaPlayer!!.start()
+                            mediaPlayer.start()
                         }
                     }
                 }
@@ -161,7 +163,7 @@ class ChatAdapter(
             } else if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_VOICE && chatMessage.url.isNotEmpty()) {
                 visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llRecordingSend)
                 tvRecordingTimeSend.text = Utils.convertTimestampToChatFormat(chatMessage.timestamp)
-                tvRecordedDurationSend.text = Utils.getMediaDuration(chatMessage.url)
+                tvRecordedDurationSend.text = chatMessage.duration
             } else {
                 visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llMessageSend)
                 tvMessageSend.text = chatMessage.message
@@ -189,18 +191,18 @@ class ChatAdapter(
 
                 if (adapterPosition != currentPlayingPosition) {
                     currentPlayingPosition = adapterPosition
-                    if (mediaPlayer != null) {
+                    if (::mediaPlayer.isInitialized) {
                         updateNonPlayingView(ivRecordSend)
-                        mediaPlayer!!.release()
+                        mediaPlayer.release()
                     }
                     ivRecordSend.setImageResource(R.drawable.ic_pause)
                     startMediaPlayer(chatMessage.url, adapterPosition, ivRecordSend)
                 } else {
-                    if (mediaPlayer != null) {
-                        if (mediaPlayer!!.isPlaying) {
-                            mediaPlayer!!.pause()
+                    if (::mediaPlayer.isInitialized) {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
                         } else {
-                            mediaPlayer!!.start()
+                            mediaPlayer.start()
                         }
                     }
                 }
@@ -215,13 +217,13 @@ class ChatAdapter(
     ) {
         val audioUri = Uri.parse(audioUrl)
         mediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri)
-        mediaPlayer!!.setOnCompletionListener {
+        mediaPlayer.setOnCompletionListener {
             releaseMediaPlayer(
                 currentPlayingPosition,
                 ivRecordSend
             )
         }
-        mediaPlayer!!.start()
+        mediaPlayer.start()
     }
 
     private fun releaseMediaPlayer(
@@ -230,8 +232,8 @@ class ChatAdapter(
     ) {
         updateNonPlayingView(ivRecord)
 
-        mediaPlayer!!.release()
-        mediaPlayer = null
+        mediaPlayer.release()
+        //mediaPlayer = null
         currentPlayingPosition = -1
     }
 
@@ -240,7 +242,7 @@ class ChatAdapter(
     }
 
     private fun updatePlayingView(ivRecord: ImageView) {
-        if (mediaPlayer!!.isPlaying) {
+        if (mediaPlayer.isPlaying) {
             ivRecord.setImageResource(R.drawable.ic_pause)
         } else {
             ivRecord.setImageResource(R.drawable.ic_play)

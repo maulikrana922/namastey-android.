@@ -72,7 +72,7 @@
     <string name="connect_spotify">Connect Spotify</string>
     <string name="add_video">Add Video</string>
     <string name="msg_add_video_first">Upload atleast one video to match</string>
-    <string name="msg_add_video_second">You will need to upload videos to your albums to match with other namastey members</string>
+    <string name="msg_add_video_second">You need to upload genuine content showcasing your personality, keep it real!</string>
     <string name="msg_no_invite">Sorry! But you don’t have an invitation to join Namastey</string>
     <string name="msg_no_invite_second">To learn more about namastey, you can visit our Website</string>
     <string name="got_your_invitation">Got your invitation? Sign in</string>
@@ -700,5 +700,9 @@
     <string name="user_unblock_success">User Unblock successfully.</string>
     <string name="terms_if_use">Terms of Use</string>
     <string name="allow_comment">Allow comments</string>
+    <string name="slide_to_cancel">Slide To Cancel</string>
+    <string name="location_services_need">Location services need to be \nturned on for this to work</string>
+    <string name="where_you_at">where you at</string>
+    <string name="go_to_setting_namastay"><![CDATA[Go to settings > namastey > location > enable location while using the app]]></string>
 
 </resources>

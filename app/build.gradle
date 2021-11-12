@@ -222,5 +222,5 @@ dependencies {
     implementation 'com.hbb20:ccp:2.4.7'
 
     implementation 'com.google.android.play:core-ktx:1.8.1'
-
+    implementation 'com.devlomi.record-view:record-view:2.0.1'
 }

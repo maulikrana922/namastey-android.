@@ -83,7 +83,6 @@ import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
-import kotlinx.android.synthetic.main.dialog_common_alert.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_membership.view.*
 import kotlinx.android.synthetic.main.dialog_report_warning.*
 import kotlinx.android.synthetic.main.fragment_education.*
@@ -1909,25 +1908,30 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         val dialog = builder.create()
                         dialog.show()
                     } else {
-                        val builder = AlertDialog.Builder(this)
-                        builder.setMessage(getString(R.string.permission_denied_message))
-                            .setTitle(getString(R.string.permission_required))
+                        /* val builder = AlertDialog.Builder(this)
+                         builder.setMessage(getString(R.string.permission_denied_message))
+                             .setTitle(getString(R.string.permission_required))
 
-                        builder.setPositiveButton(
-                            getString(R.string.go_to_settings)
-                        ) { dialog, id ->
-                            val intent = Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", packageName, null)
-                            )
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
-                        }
+                         builder.setPositiveButton(
+                             getString(R.string.go_to_settings)
+                         ) { dialog, id ->
+                             val intent = Intent(
+                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                 Uri.fromParts("package", packageName, null)
+                             )
+                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                             startActivity(intent)
+                             finish()
+                         }
 
-                        val dialog = builder.create()
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.show()
+                         val dialog = builder.create()
+                         dialog.setCanceledOnTouchOutside(false)
+                         dialog.show()*/
+
+                        tvNoOneMessage.text = getString(R.string.location_services_need)
+                        tvNoOne.text = getString(R.string.where_you_at)
+                        tvTurnOnGlobal.text = getString(R.string.go_to_setting_namastay)
+                        groupNoOne.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -2484,7 +2488,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     "2" -> { // for follow Notification
                         val matchesListBean =
                             intent.getParcelableExtra<MatchesListBean>("matchesListBean")
-                       // val profileBean: ProfileBean = ProfileBean()
+                        // val profileBean: ProfileBean = ProfileBean()
 //                        profileBean.user_id = sessionManager.getUserId()
 //                        profileBean.username = intent.getStringExtra("username")!!
 //                        profileBean.profileUrl =
@@ -2495,12 +2499,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                             Intent(this@DashboardActivity, ProfileViewActivity::class.java)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        var username=""
+                        var username = ""
                         username = if (intent.hasExtra(Constants.USERNAME))
                             intent.getStringExtra(Constants.USERNAME)!!
                         else sessionManager.getStringValue(Constants.USERNAME)
 
-                        intentProfileActivity.putExtra(Constants.USERNAME ,username)
+                        intentProfileActivity.putExtra(Constants.USERNAME, username)
                         intentProfileActivity.putExtra("isMyProfile", true)
                         startActivity(intentProfileActivity)
                         // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
@@ -2955,7 +2959,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessStartChat(msg: String) {
-        Log.e("msg",msg)
+        Log.e("msg", msg)
     }
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
@@ -3256,7 +3260,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0, ""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
@@ -3312,7 +3316,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0, ""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
@@ -3361,8 +3365,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     fun onclickGlobal(view: View) {
-        val jsonObject = JsonObject()
-        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
-        dashboardViewModel.editProfile(jsonObject)
+        if (tvTurnOnGlobal.text.toString() == getString(R.string.go_to_setting_namastay)) {
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts("package", packageName, null)
+            )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        } else {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+            dashboardViewModel.editProfile(jsonObject)
+        }
     }
 }

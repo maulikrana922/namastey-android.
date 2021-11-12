@@ -111,7 +111,7 @@ class MessagesAdapter(
                 }
                 Constants.FirebaseConstant.MSG_TYPE_VOICE -> {
                     if (matchesListBean.chatMessage.url.isNotEmpty())
-                        tvLastMsg.text = Utils.getMediaDuration(matchesListBean.chatMessage.url)
+                        tvLastMsg.text = matchesListBean.chatMessage.duration
                     else
                         tvLastMsg.text = activity.getString(R.string.voice_message)
                     tvLastMsg.setCompoundDrawablesWithIntrinsicBounds(

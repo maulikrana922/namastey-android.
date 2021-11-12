@@ -973,7 +973,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0,""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
@@ -1456,7 +1456,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0,""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)

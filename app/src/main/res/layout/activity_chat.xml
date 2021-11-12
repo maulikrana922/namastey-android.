@@ -44,9 +44,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_15sdp"
                         android:layout_marginTop="@dimen/_45sdp"
-                        android:padding="@dimen/_8sdp"
                         android:contentDescription="@string/app_name"
                         android:onClick="onClickChatBack"
+                        android:padding="@dimen/_8sdp"
                         android:src="@drawable/ic_back_new"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -172,24 +172,33 @@
                     android:fitsSystemWindows="true"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvChat"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:stackFromEnd="true" />
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvChat"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:stackFromEnd="true" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llChatBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_btn_grey"
-                        android:gravity="center"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
+                        android:background="@drawable/rounded_btn_grey"
+                        android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="@dimen/_4sdp">
 
@@ -202,6 +211,14 @@
                             android:padding="@dimen/_6sdp"
                             android:src="@drawable/ic_camera_new"
                             tools:ignore="ContentDescription" />
+
+                        <com.devlomi.record_view.RecordView
+                            android:id="@+id/recordView"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            app:counter_time_color="@color/alert_text"
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/edtMessage"
@@ -220,18 +237,34 @@
                             android:textColor="@color/color_chip_gray"
                             android:textColorHint="@color/colorTextHint"
                             android:textSize="14sp"
+                            android:visibility="visible"
                             app:typeface="MULI_SEMIBOLD"
                             tools:ignore="Autofill" />
 
-                        <ImageView
-                            android:id="@+id/ivMic"
+                        <!--  <ImageView
+                              android:id="@+id/ivMic"
+                              android:layout_width="@dimen/_32sdp"
+                              android:layout_height="@dimen/_32sdp"
+                              android:background="@drawable/ic_camera_bg"
+                              android:padding="@dimen/_6sdp"
+                              android:src="@drawable/ic_voice_new"
+                              android:visibility="gone"
+                              tools:ignore="ContentDescription" />
+    -->
+
+                        <com.devlomi.record_view.RecordButton
+                            android:id="@+id/btnRecord"
                             android:layout_width="@dimen/_32sdp"
                             android:layout_height="@dimen/_32sdp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
                             android:background="@drawable/ic_camera_bg"
-                            android:padding="@dimen/_6sdp"
-                            android:src="@drawable/ic_voice_new"
-                            android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:scaleType="centerInside"
+                            android:visibility="visible"
+                            app:mic_icon="@drawable/ic_voice_new" />
 
                         <ImageView
                             android:id="@+id/ivSelectImage"
@@ -247,17 +280,18 @@
 
                         <ImageView
                             android:id="@+id/ivSend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_32sdp"
+                            android:layout_height="@dimen/_32sdp"
                             android:layout_marginStart="@dimen/_4sdp"
                             android:background="@drawable/ic_camera_bg"
                             android:onClick="onClickSendMessage"
                             android:padding="@dimen/_10sdp"
                             android:src="@drawable/ic_send_new"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             tools:ignore="ContentDescription" />
 
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <FrameLayout
@@ -266,6 +300,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:orientation="vertical" />
+
             </FrameLayout>
         </LinearLayout>
 
@@ -277,263 +312,6 @@
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
-    <!--
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/chatToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAddComment"
-                    app:contentInsetEnd="0dp"
-                    app:contentInsetStart="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/imgTop"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/yellow_bar"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/ivChatBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_45sdp"
-                            android:contentDescription="@string/app_name"
-                            android:onClick="onClickChatBack"
-                            android:src="@drawable/ic_back"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivProfileUser"
-                            android:layout_width="@dimen/_35sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginStart="@dimen/_7sdp"
-                            android:contentDescription="@string/app_name"
-                            android:onClick="onClickProfile"
-                            android:src="@drawable/ic_male"
-                            app:civ_border_color="@color/colorWhite"
-                            app:civ_border_width="@dimen/_1sdp"
-                            app:civ_circle_background_color="@color/colorWhite"
-                            app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
-                            app:layout_constraintStart_toEndOf="@+id/ivChatBack"
-                            app:layout_constraintTop_toTopOf="@id/ivChatBack" />
-
-                        <com.namastey.customViews.CustomTextView
-                            android:id="@+id/tvUserName"
-                            style="@style/tvTitleStyle"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:onClick="onClickProfile"
-                            app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
-                            app:layout_constraintEnd_toStartOf="@id/ivChatMore"
-                            app:layout_constraintStart_toEndOf="@id/ivProfileUser"
-                            app:layout_constraintTop_toTopOf="@id/ivChatBack" />
-
-                        <ImageView
-                            android:id="@+id/ivChatMore"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/_15sdp"
-                            android:contentDescription="@string/app_name"
-                            android:onClick="onClickChatSettings"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/ic_more"
-                            app:layout_constraintBottom_toBottomOf="@id/ivChatBack"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/ivChatBack" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/viewBuyNow"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/imgTop">
 
 
-                            <ImageView
-                                android:id="@+id/ivStart"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_12sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
-                                android:contentDescription="@string/app_name"
-                                android:src="@drawable/ic_star_yellow"
-                                app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/tvBuyMsg" />
-
-                            <ImageView
-                                android:id="@+id/ivCloseBuy"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/_20sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
-                                android:contentDescription="@string/app_name"
-                                android:src="@drawable/ic_close"
-                                android:visibility="gone"
-                                app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/tvBuyMsg" />
-
-                            <com.namastey.customViews.CustomTextView
-                                android:id="@+id/tvBuyMsg"
-                                style="@style/tvWrapWhiteStyle"
-                                android:layout_width="0dp"
-                                android:paddingStart="@dimen/_10sdp"
-                                android:paddingTop="@dimen/_5sdp"
-                                android:paddingEnd="@dimen/_10sdp"
-                                android:paddingBottom="@dimen/_12sdp"
-                                android:text="@string/msg_buy_namastey"
-                                android:textColor="@color/color_chip_gray"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/tvBuyNow"
-                                app:layout_constraintStart_toEndOf="@id/ivStart"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <com.namastey.customViews.CustomTextView
-                                android:id="@+id/tvBuyNow"
-                                style="@style/tvWrapWhiteStyle"
-                                android:layout_marginEnd="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_5sdp"
-                                android:onClick="onClickBuyNow"
-                                android:text="@string/buy_now"
-                                android:textColor="@color/colorButtonRed"
-                                app:layout_constraintBottom_toBottomOf="@id/tvBuyMsg"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/tvBuyMsg"
-                                app:typeface="MULI_EXTRA_BOLD" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.appcompat.widget.Toolbar>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
-                        android:orientation="vertical">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvChat"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:stackFromEnd="true" />
-
-                        <LinearLayout
-                            android:id="@+id/llChatBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorAddComment"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/_8sdp">
-
-                            <ImageView
-                                android:id="@+id/ivCamera"
-                                android:layout_width="@dimen/_32sdp"
-                                android:layout_height="@dimen/_32sdp"
-                                android:background="@drawable/rounded_blue_chat_all_corner_solid"
-                                android:onClick="onClickCamera"
-                                android:padding="@dimen/_6sdp"
-                                android:src="@drawable/ic_photo_camera"
-                                tools:ignore="ContentDescription" />
-
-                            <EditText
-                                android:id="@+id/edtMessage"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/_8sdp"
-                                android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:hint="@string/enter_message"
-                                android:inputType="textMultiLine"
-                                android:maxLines="10"
-                                android:paddingTop="@dimen/_12sdp"
-                                android:paddingBottom="@dimen/_12sdp"
-                                android:textColor="@color/color_chip_gray"
-                                android:textColorHint="@color/colorTextHint"
-                                android:textSize="14sp"
-                                app:typeface="MULI_SEMIBOLD"
-                                tools:ignore="Autofill" />
-
-                            <ImageView
-                                android:id="@+id/ivMic"
-                                android:layout_width="24dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_microphone_blue"
-                                tools:ignore="ContentDescription" />
-
-                            <ImageView
-                                android:id="@+id/ivSelectImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_4sdp"
-                                android:background="@drawable/rounded_blue_chat_all_corner_solid"
-                                android:contentDescription="@string/app_name"
-                                android:onClick="onClickSelectImage"
-                                android:padding="@dimen/_6sdp"
-                                android:src="@drawable/ic_add_24" />
-
-                            <ImageView
-                                android:id="@+id/ivSend"
-                                android:layout_width="@dimen/_32sdp"
-                                android:layout_height="@dimen/_32sdp"
-                                android:layout_marginStart="@dimen/_4sdp"
-                                android:onClick="onClickSendMessage"
-                                android:padding="@dimen/_4sdp"
-                                android:src="@drawable/ic_send"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/colorButtonRed" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:id="@+id/flContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
-                        android:orientation="vertical" />
-                </FrameLayout>
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
-
-        </FrameLayout>-->
 </layout>
