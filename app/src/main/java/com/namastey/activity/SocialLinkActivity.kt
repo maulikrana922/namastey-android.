@@ -397,9 +397,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
         jsonObject.add("social_links_details", jsonArray)
         Log.e("AddLinkRequest : ", jsonObject.toString())
-        if (isEdit)
-            profileInterestViewModel.addSocialLink(jsonObject)
-        else finishActivity()
+        if (intent.hasExtra(Constants.ACTIVITY_EDIT)){
+            if (isEdit)
+                profileInterestViewModel.addSocialLink(jsonObject)
+            else finishActivity()
+        }else {
+                profileInterestViewModel.addSocialLink(jsonObject)
+        }
     }
 
     fun onClickButton(view: View) {

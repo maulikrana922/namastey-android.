@@ -256,9 +256,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val pendingIntent =
                 PendingIntent.getActivity(
                     this,
-                    notificationCount,
+                    getNotification.notificationCount.toInt(),
                     intent,
-                    PendingIntent.FLAG_ONE_SHOT
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
             val channelId = getString(R.string.channel_id)
             val channelName = getString(R.string.notifiy)
