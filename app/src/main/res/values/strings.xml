@@ -36,7 +36,7 @@
     <string name="permission_required">Permission required</string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="gps_disable_message">GPS is not enabled. Do you want to go to settings menu?</string>
-    <string name="permission_denied_message">You have denied location permission Allow permission at setting</string>
+    <string name="permission_denied_message">you have denied location permission, kindly change your location settings to use namastey</string>
     <string name="permission_denied_storage_message">You have denied storage permission Allow permission at setting</string>
     <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
     <string name="permission_denied_contact_message">You have denied contact permission Allow permission at setting</string>
@@ -465,7 +465,7 @@
     <string name="delete_user">Delete User</string>
     <string name="gif">Gif</string>
     <string name="enter_message">Message…</string>
-    <string name="readable_content">Readable content</string>
+    <string name="readable_content">voice note 🎵</string>
     <string name="msg_delete_matches">Do you wish to delete match?</string>
     <string name="msg_delete_chat">Are you sure you want to delete chat?</string>
     <string name="msg_delete_account">Are you sure you want to delete your account?</string>
