@@ -165,7 +165,6 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
 
                     }
                     tvSubCategory.setOnClickListener {
-
                         if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
                                 this,
                                 R.drawable.rounded_white_solid_white_corner
@@ -185,6 +184,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
                         } else {
                             selectedCategoryList.add(subCategoryBean)
                         }
+
                     }
                 }
 
@@ -222,7 +222,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     }
 
     fun onEditSaveClick(view: View) {
-        if (selectedCategoryList.size >= Constants.MIN_CHOOSE_INTEREST) {
+        if (selectedCategoryList.size == Constants.MIN_CHOOSE_INTEREST) {
             editProfileApiCall()
         } else {
             object : CustomAlertDialog(
@@ -238,7 +238,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
 
     private fun editProfileApiCall() {
 
-        val subCategoryId=ArrayList<Int>()
+        val subCategoryId = ArrayList<Int>()
         val jsonArrayInterest = JsonArray()
         for (i in selectedCategoryList.indices)
             jsonArrayInterest.add(selectedCategoryList[i].id)
@@ -249,7 +249,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
         )
 
 
-       selectCategoryViewModel.editProfile(jsonObject)
+        selectCategoryViewModel.editProfile(jsonObject)
     }
 
     override fun onBackPressed() {

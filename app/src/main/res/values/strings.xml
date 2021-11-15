@@ -120,7 +120,7 @@
     <string name="add_profile_pic">Add Profile Picture</string>
     <string name="interest">Interest</string>
     <string name="hint_type_here">Type here...</string>
-    <string name="msg_interest">Choose at least 3 topics that interests you</string>
+    <string name="msg_interest">Choose 05 topics that interests you</string>
     <string name="about_you">About you</string>
     <string name="msg_about_you">Tell people about yourself</string>
     <string name="empty_full_name">Please enter full name</string>
@@ -238,7 +238,7 @@
     <string name="tv_no_video_found">No video found</string>
 
     <string name="select_filter">Select Filter</string>
-    <string name="msg_min_choose_interest">Please select at least 3</string>
+    <string name="msg_min_choose_interest">Please choose 05 topics that interests you</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>
 

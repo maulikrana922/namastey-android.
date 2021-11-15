@@ -51,6 +51,33 @@ class ChooseInterestViewModel constructor(
         }
     }
 
+    fun getCategoryList(userId:Long) {
+        setIsLoading(true)
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (chooseInterestView.isInternetAvailable()) {
+                    networkService.requestToGetCategoryList(userId).let { appResponse ->
+                        setIsLoading(false)
+                        if (appResponse.status == Constants.OK)
+                            chooseInterestView.onSuccessCategory(appResponse.data!!)
+                        else
+                            chooseInterestView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
+                    }
+                } else {
+                    setIsLoading(false)
+                    chooseInterestView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                setIsLoading(false)
+                chooseInterestView.onHandleException(t)
+            }
+        }
+    }
+
     fun getAllSubcategoryList() {
         setIsLoading(true)
         job = GlobalScope.launch(Dispatchers.Main) {

@@ -1,12 +1,18 @@
 package com.namastey.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -16,15 +22,18 @@ import com.namastey.R
 import com.namastey.adapter.InterestAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityInterestBinding
-import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
+import com.namastey.model.CategoryBean
 import com.namastey.model.InterestBean
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.ChooseInterestView
 import com.namastey.utils.*
 import com.namastey.viewModel.ChooseInterestViewModel
+import kotlinx.android.synthetic.main.activity_edit_interest.*
 import kotlinx.android.synthetic.main.activity_interest.*
+import kotlinx.android.synthetic.main.activity_interest.llEditInterestTag
+import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -43,6 +52,10 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
     private var selectInterestIdList: ArrayList<Int> = ArrayList()
     private var androidId = ""
     private var selectCategoryId: ArrayList<Int> = ArrayList()
+    private var categoryBeanList: ArrayList<CategoryBean> = ArrayList()
+    private var subCategoryIdList: ArrayList<Int> = ArrayList()
+    var profileTagCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -54,8 +67,8 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
 
     private fun initData() {
         // chooseInterestViewModel.getChooseInterestList()
-        chooseInterestViewModel.getAllSubcategoryList()
-
+        // chooseInterestViewModel.getAllSubcategoryList()
+        chooseInterestViewModel.getCategoryList(sessionManager.getUserId())
         androidId =
             Settings.Secure.getString(
                 this@InterestActivity.contentResolver,
@@ -133,6 +146,100 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
         }, 1000)
     }
 
+    override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+        this.categoryBeanList = categoryBeanList
+
+        if (categoryBeanList.size > 0) {
+            for (categoryBeanPosition in categoryBeanList.indices) {
+                var categoryBean = categoryBeanList[categoryBeanPosition]
+                val layoutInflater = LayoutInflater.from(this)
+                val view =
+                    layoutInflater.inflate(R.layout.view_profile_tag, llEditInterestTag, false)
+
+                (view.layoutParams as LinearLayout.LayoutParams).setMargins(0, 0, 0, 0)
+                view.tvCategory.text = categoryBean.name
+
+                view.tvCategory.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                view.tvCategory.setTextColor(
+                    ContextCompat.getColor(
+                        this@InterestActivity,
+                        R.color.color_text
+                    )
+                )
+
+                Utils.rectangleShapeGradient(
+                    view, intArrayOf(
+                        ContextCompat.getColor(
+                            this@InterestActivity,
+                            android.R.color.transparent
+                        ),
+                        ContextCompat.getColor(
+                            this@InterestActivity,
+                            android.R.color.transparent
+                        )
+                    )
+                )
+
+                for (subCategoryBean in categoryBean.sub_category) {
+                    val tvSubCategory = TextView(this)
+                    tvSubCategory.layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+
+                    tvSubCategory.text = subCategoryBean.name
+                    tvSubCategory.setPadding(40, 20, 40, 20)
+                    tvSubCategory.setTextColor(Color.BLACK)
+                    tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
+
+                    view.chipProfileTag.addView(tvSubCategory)
+                    tvSubCategory.setTextColor(
+                        ContextCompat.getColor(
+                            this@InterestActivity,
+                            R.color.color_text
+                        )
+                    )
+
+                    if (subCategoryBean.is_selected == 1) {
+                        subCategoryIdList.add(subCategoryBean.id)
+                        ++profileTagCount
+                        tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+
+                    }
+                    tvSubCategory.setOnClickListener {
+                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                                this,
+                                R.drawable.rounded_white_solid_white_corner
+                            )?.constantState
+                        ) {
+                            subCategoryIdList.add(subCategoryBean.id)
+                            ++profileTagCount
+                            tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+
+                        } else {
+                            subCategoryIdList.remove(subCategoryBean.id)
+                            --profileTagCount
+                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
+                        }
+
+                        if (selectInterestIdList.contains(subCategoryBean.id)) {
+                            selectCategoryId.remove(categoryBean.id)
+                            selectInterestIdList.remove(subCategoryBean.id)
+                        } else {
+                            selectCategoryId.add(categoryBean.id)
+                            selectInterestIdList.add(subCategoryBean.id)
+                        }
+                    }
+                }
+
+                llEditInterestTag.addView(view)
+                view.chipProfileTag.visibility = View.VISIBLE
+            }
+        }
+
+    }
+
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
         Log.e("ChooseInterestFragment", "interestList")
     }
@@ -158,11 +265,11 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
         activityInterestBinding.viewModel = chooseInterestViewModel
     }
 
-    fun onClickContinue(view: View){
-        if (selectInterestIdList.size >= Constants.MIN_CHOOSE_INTEREST) {
-
+    fun onClickContinue(view: View) {
+        if (selectInterestIdList.size == Constants.MIN_CHOOSE_INTEREST) {
+            Log.e("InterestList", selectInterestIdList.size.toString())
             sessionManager.setChooseInterestList(selectInterestIdList)
-            
+
 //            val jsonArrayInterest = JsonArray()
 //            for (selectInterest in selectInterestIdList) {
 //                jsonArrayInterest.add(JsonPrimitive(selectInterest))
@@ -182,6 +289,7 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
             }.show()
         }
     }
+
     override fun onBackPressed() {
         finishActivity()
     }

@@ -18,6 +18,7 @@ import com.namastey.adapter.InterestAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChooseInterestBinding
 import com.namastey.listeners.OnImageItemClick
+import com.namastey.model.CategoryBean
 import com.namastey.model.InterestBean
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.roomDB.entity.User
@@ -198,6 +199,10 @@ class ChooseInterestFragment : BaseFragment<FragmentChooseInterestBinding>(), Ch
             startActivity(Intent(activity, DashboardActivity::class.java))
             activity!!.finish()
         }, 1000)
+    }
+
+    override fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>) {
+
     }
 
     override fun onSuccess(interestList: ArrayList<InterestBean>) {
