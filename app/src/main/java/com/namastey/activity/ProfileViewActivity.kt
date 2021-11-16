@@ -172,7 +172,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.safetyBean.is_share,
                 Constants.KEY_IS_SHARE_PROFILE_SAFETY
             )
-          // btnMembership.visibility = View.VISIBLE
+          btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),
@@ -2067,10 +2067,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     fun onClickMembership(view: View) {
 
-//        val intent = Intent(this,MemberActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this,MemberActivity::class.java)
+        startActivity(intent)
 
-                object : NotAvailableFeatureDialog(
+         /*       object : NotAvailableFeatureDialog(
             this,
             getString(R.string.membership_not_available),
             getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
@@ -2078,7 +2078,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             override fun onBtnClick(id: Int) {
                 dismiss()
             }
-        }.show()
+        }.show()*/
 
     }
 

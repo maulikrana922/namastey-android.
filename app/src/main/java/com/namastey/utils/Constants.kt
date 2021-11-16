@@ -391,7 +391,7 @@ object Constants {
 
 
     //    Other constants
-    const val MIN_CHOOSE_INTEREST = 5
+    const val MIN_CHOOSE_INTEREST = 9
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val DATE_FORMATE_CHAT = "MMM d, hh:mm a"

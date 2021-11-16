@@ -120,7 +120,7 @@
     <string name="add_profile_pic">Add Profile Picture</string>
     <string name="interest">Interest</string>
     <string name="hint_type_here">Type here...</string>
-    <string name="msg_interest">Choose 05 topics that interests you</string>
+    <string name="msg_interest">Choose 09 topics that interests you</string>
     <string name="about_you">About you</string>
     <string name="msg_about_you">Tell people about yourself</string>
     <string name="empty_full_name">Please enter full name</string>
@@ -238,7 +238,7 @@
     <string name="tv_no_video_found">No video found</string>
 
     <string name="select_filter">Select Filter</string>
-    <string name="msg_min_choose_interest">Please choose 05 topics that interests you</string>
+    <string name="msg_min_choose_interest">Please choose 09 topics that interests you</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>
 
@@ -439,7 +439,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="all_your_profile_data_will_be_deleted_permanently_within_30_days">All your profile data will be deleted permanently within 30 Days</string>
     <string name="suggest_your_account_to_others">Suggest your account to others</string>
-    <string name="suggest_your_account_text">Choose whether your profile can be suggested to users in Trending.</string>
+    <string name="suggest_your_account_text">Choose whatever your profile can be suggested to users in Trending.</string>
     <string name="allow_video_downloads">Allow video downloads</string>
     <string name="allow_messages_from">Allow messages from</string>
     <string name="allow_profile_shares">Allow profile shares</string>

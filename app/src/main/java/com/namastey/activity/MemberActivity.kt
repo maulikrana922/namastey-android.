@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -76,9 +75,9 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private var membershipViewList = ArrayList<MembershipPriceBean>()
     private var selectedMonths = 1
     private var subscriptionId = "000020"
-    private var isselected:Int = 0
+    private var isselected: Int = 0
     private val PERMISSION_REQUEST_CODE = 99
-
+    private var inAppProductId = "b00200"
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -189,25 +188,28 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         }
     }
 
-    fun onClickElite(view: View){
+    fun onClickElite(view: View) {
         showCustomDialog(1)
     }
-    fun onAirportClick(view: View){
 
-        if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    false
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        } else {
-            if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                completeSignUpDialog()
+    fun onAirportClick(view: View) {
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+
+            if (sessionManager.isGuestUser()) {
+                addFragment(
+                    SignUpFragment.getInstance(
+                        false
+                    ),
+                    Constants.SIGNUP_FRAGMENT
+                )
             } else {
-                addLocationPermission()
+                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                    completeSignUpDialog()
+                } else {
+                    addLocationPermission()
+                }
             }
-        }
+        }else showCustomDialog(1)
     }
 
     private fun addLocationPermission() {
@@ -294,7 +296,11 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                         //user cancel
                         return@querySkuDetailsAsync
                     } else if (billingResult.responseCode == 2) {
-                        Toast.makeText(this@MemberActivity, "Internet required for purchase", Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            this@MemberActivity,
+                            "Internet required for purchase",
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                         return@querySkuDetailsAsync
                     } else if (billingResult.responseCode == 3) {
@@ -305,11 +311,19 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                         ).show()
                         return@querySkuDetailsAsync
                     } else if (billingResult.responseCode == 7) {
-                        Toast.makeText(this@MemberActivity, "you already own Premium", Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            this@MemberActivity,
+                            "you already own Premium",
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                         return@querySkuDetailsAsync
                     } else
-                        Toast.makeText(this@MemberActivity, "no skuDetails sorry", Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            this@MemberActivity,
+                            "no skuDetails sorry",
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                 }
             } else {
@@ -325,8 +339,108 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         })
     }
 
+     fun showBootDialog(view: View) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@MemberActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_member, viewGroup, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
 
-    private fun showCustomDialog(position:Int) {
+         dialogView.constHigh.setOnClickListener {
+             isselected = 0
+             if (isselected == 0) {
+                 dialogView.tvOfferHigh.visibility = VISIBLE
+                 dialogView.viewSelectedHigh.visibility = VISIBLE
+                 dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                 dialogView.tvOfferMedium.visibility = GONE
+                 dialogView.viewSelectedMedium.visibility = GONE
+                 dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                 dialogView.tvOfferLow.visibility = GONE
+                 dialogView.viewSelectedLow.visibility = GONE
+                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                 subscriptionId = "000030"
+
+             }
+         }
+         dialogView.constMedium.setOnClickListener {
+             isselected = 1
+             if (isselected == 1) {
+                 dialogView.tvOfferMedium.visibility = VISIBLE
+                 dialogView.viewSelectedMedium.visibility = VISIBLE
+                 dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                 dialogView.tvOfferHigh.visibility = GONE
+                 dialogView.viewSelectedHigh.visibility = GONE
+                 dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                 dialogView.tvOfferLow.visibility = GONE
+                 dialogView.viewSelectedLow.visibility = GONE
+                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                 subscriptionId = "000020"
+
+             }
+         }
+         dialogView.constLow.setOnClickListener {
+             isselected = 2
+             if (isselected == 2) {
+                 dialogView.tvOfferLow.visibility = VISIBLE
+                 dialogView.viewSelectedLow.visibility = VISIBLE
+                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
+                 dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                 dialogView.tvOfferMedium.visibility = GONE
+                 dialogView.viewSelectedMedium.visibility = GONE
+                 dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                 dialogView.tvOfferHigh.visibility = GONE
+                 dialogView.viewSelectedHigh.visibility = GONE
+                 dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                 dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                 subscriptionId = "000010"
+
+             }
+         }
+         setupBillingClient(dialogView)
+         dialogView.btnContinue.setOnClickListener {
+             alertDialog.dismiss()
+             val intent = Intent(this@MemberActivity, InAppPurchaseActivity::class.java)
+             intent.putExtra(Constants.IN_APP_PRODUCT_ID, inAppProductId)
+             openActivity(intent)
+         }
+
+         dialogView.tvNothanks.setOnClickListener {
+             alertDialog.dismiss()
+         }
+
+    }
+
+    private fun showCustomDialog(position: Int) {
         selectedMonths = 1
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@MemberActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
@@ -340,8 +454,8 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         alertDialog.show()
 
         dialogView.constHigh.setOnClickListener {
-            isselected=0
-            if(isselected == 0) {
+            isselected = 0
+            if (isselected == 0) {
                 dialogView.tvOfferHigh.visibility = VISIBLE
                 dialogView.viewSelectedHigh.visibility = VISIBLE
                 dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text_red))
@@ -365,8 +479,8 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
             }
         }
         dialogView.constMedium.setOnClickListener {
-            isselected=1
-            if(isselected == 1){
+            isselected = 1
+            if (isselected == 1) {
                 dialogView.tvOfferMedium.visibility = VISIBLE
                 dialogView.viewSelectedMedium.visibility = VISIBLE
                 dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text_red))
@@ -391,8 +505,8 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
             }
         }
         dialogView.constLow.setOnClickListener {
-            isselected=2
-            if(isselected == 2){
+            isselected = 2
+            if (isselected == 2) {
                 dialogView.tvOfferLow.visibility = VISIBLE
                 dialogView.viewSelectedLow.visibility = VISIBLE
                 dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))

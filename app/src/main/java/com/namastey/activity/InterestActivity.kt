@@ -204,8 +204,13 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
                     if (subCategoryBean.is_selected == 1) {
                         subCategoryIdList.add(subCategoryBean.id)
                         ++profileTagCount
-                        tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-
+                        //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                        Utils.roundShapeGradient(
+                            tvSubCategory, intArrayOf(
+                                Color.parseColor(categoryBean.startColor),
+                                Color.parseColor(categoryBean.endColor)
+                            )
+                        )
                     }
                     tvSubCategory.setOnClickListener {
                         if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
@@ -215,8 +220,13 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
                         ) {
                             subCategoryIdList.add(subCategoryBean.id)
                             ++profileTagCount
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-
+                            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                            Utils.roundShapeGradient(
+                                tvSubCategory, intArrayOf(
+                                    Color.parseColor(categoryBean.startColor),
+                                    Color.parseColor(categoryBean.endColor)
+                                )
+                            )
                         } else {
                             subCategoryIdList.remove(subCategoryBean.id)
                             --profileTagCount

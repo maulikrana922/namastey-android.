@@ -1,6 +1,5 @@
 package com.namastey.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
@@ -293,8 +292,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations){
-                    Log.e("Location",location.latitude.toString())
+                for (location in locationResult.locations) {
+                    Log.e("Location", location.latitude.toString())
                 }
             }
         }
@@ -304,13 +303,14 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         locationManager.requestLocationUpdates(
             LocationManager.NETWORK_PROVIDER,
             MIN_TIME_FOR_UPDATE,
-            MIN_DISTANCE_FOR_UPDATE, this);
+            MIN_DISTANCE_FOR_UPDATE, this
+        );
 
 
         if (locationManager != null) {
             val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                Log.e("Location",location.latitude.toString())
+                Log.e("Location", location.latitude.toString())
                 latitude = location.latitude;
                 longitude = location.longitude;
             }
@@ -329,9 +329,11 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
     }
+
     private val mLocationListener = LocationListener {
         //your code here
     }
+
     private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
         tvInterestMen.setTextColor(Color.GRAY)
         tvInterestWomen.setTextColor(Color.GRAY)
@@ -493,19 +495,20 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
              }
          }.show()*/
 
-//        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
-//            startSearchLocationScreen()
-//        else {
-//            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
-//            intent.putExtra("isFromAirport", true)
-//            openActivity(intent)
-//        }
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+        //startSearchLocationScreen()
+            openActivity(this, PassportContentActivity())
+        else {
+            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
+            intent.putExtra("isFromAirport", true)
+            openActivity(intent)
+        }
     }
 
     private fun startSearchLocationScreen() {
         val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
-        intent.putExtra("latitude", latitude)
-        intent.putExtra("longitude", longitude)
+        intent.putExtra("latitude", realLatitude)
+        intent.putExtra("longitude", realLongitude)
         intent.putExtra("isFromSearch", true)
         openActivity(intent)
     }
@@ -518,7 +521,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             realLongitude = gpsLocation.longitude
             Log.e("DashboardActivity", "realLatitude: $realLatitude")
             Log.e("DashboardActivity", "realLongitude: $realLongitude")
-        }else{
+        } else {
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
     }
@@ -531,6 +534,11 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     }
 }
 
-private fun LocationManager.requestLocationUpdates(networkProvider: String, minTimeBwUpdates: Long, minDistanceChangeForUpdates: Float, settingsActivity: SettingsActivity) {
+private fun LocationManager.requestLocationUpdates(
+    networkProvider: String,
+    minTimeBwUpdates: Long,
+    minDistanceChangeForUpdates: Float,
+    settingsActivity: SettingsActivity
+) {
 
 }

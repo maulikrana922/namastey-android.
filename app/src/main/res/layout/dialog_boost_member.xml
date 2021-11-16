@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conmain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/conBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_20sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:text="@string/get_boost"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="@dimen/_16sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:typeface="MULI_SEMIBOLD" />
+
+                <com.namastey.customViews.RoundImageView
+                    android:id="@+id/ivIcon"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:src="@drawable/ic_cards_boots"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvtitle" />
+
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvOutOfBoost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center"
+                    android:text="@string/out_of_boosts"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/ivIcon"
+                    app:typeface="MULI_EXTRA_BOLD" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvBoostDayRemaining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/boost_day_remaining"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="@dimen/_12sdp"
+                    app:fontFamily="Muli-SemiBold"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOutOfBoost" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvNextFreeBoost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:gravity="center"
+                    android:text="@string/boost_next_free_boost"
+                    android:textColor="@color/color_black_text"
+                    android:textSize="@dimen/_12sdp"
+                    app:fontFamily="Muli-SemiBold"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBoostDayRemaining" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBuy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintTop_toBottomOf="@+id/conBackground">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constHigh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <View
+                        android:id="@+id/viewBgHigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/color_btn"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOfferHigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_18sdp"
+                        android:background="@drawable/rounded_btn_red"
+                        android:elevation="@dimen/_4sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:text="@string/most_popular"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_7sdp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSelectedHigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/rectangle_corner_red"
+                        android:visibility="invisible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextHigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/_20"
+                        android:textSize="@dimen/_20sdp"
+                        android:textColor="@color/color_text"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextBoostHigh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/month"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/color_text"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextHigh"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextHighEachBoost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostHigh"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <View
+                        android:id="@+id/viewBgMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/color_btn"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOfferMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_18sdp"
+                        android:background="@drawable/rounded_btn_red"
+                        android:elevation="@dimen/_4sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:text="@string/most_popular"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_7sdp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <View
+                        android:id="@+id/viewSelectedMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/rectangle_corner_red"
+                        android:visibility="visible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="@string/_10"
+                        android:textColor="@color/color_text_red"
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextBoostMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/month"
+                        android:textColor="@color/color_text_red"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextMedium"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextMediumEachBoost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/color_text_red"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostMedium"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextSaveBoost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/color_text_red"
+                        android:textSize="@dimen/_10sdp"
+                        android:text="@string/save_boost"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextMediumEachBoost"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constLow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <View
+                        android:id="@+id/viewBgLow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@color/color_btn"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvOfferLow"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_18sdp"
+                        android:background="@drawable/rounded_btn_red"
+                        android:elevation="@dimen/_4sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:gravity="center"
+                        android:text="@string/most_popular"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_7sdp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/viewSelectedLow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:background="@drawable/rectangle_corner_red"
+                        android:visibility="invisible" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextLow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:text="@string/_3"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_20sdp"
+                        android:textColor="@color/color_text"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextBoostLow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/month"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/color_text"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextLow"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                    <com.namastey.customViews.CustomTextView
+                        android:id="@+id/tvTextLowEachBoost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_3sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextBoostLow"
+                        app:typeface="MULI_EXTRA_BOLD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <com.namastey.customViews.CustomButton
+                android:id="@+id/btnContinue"
+                style="@style/btnRedAllCornerStyle"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_62sdp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_62sdp"
+                android:elevation="@dimen/_4sdp"
+                android:gravity="center"
+                android:text="@string/continues"
+                android:textAllCaps="false"
+                app:layout_constraintTop_toBottomOf="@+id/llBuy"
+                android:stateListAnimator="@null"
+                />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tvNothanks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_12sdp"
+                android:text="@string/no_thanks"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintTop_toBottomOf="@+id/btnContinue"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+

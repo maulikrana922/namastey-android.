@@ -2252,27 +2252,28 @@ private fun prepareAnimation(animation: Animation): Animation? {
 //            )
 //        } else {
         if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-            showBoostFeatureNotAdded()
+           // showBoostFeatureNotAdded()
 //                =============== This feature currently not added ============
-//                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
-//                    val currentTime = System.currentTimeMillis()
-//                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-//                    Log.e("DashboardActivity", "currentTime: $currentTime")
-//                    Log.e("DashboardActivity", "storedTime: $storedTime")
-//                    storedTime += TimeUnit.MINUTES.toMillis(30)
-//                    timer = storedTime - currentTime
-//
-//                    showBoostPendingDialog(timer)
-//
-//                } else {
-//                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-//                        showBoostStartConfirmationDialog()
-//                    } else {
-//                        val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
-//                        intent.putExtra("fromBuyBoost", true)
-//                        openActivity(intent)
-//                    }
-//                }
+                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
+                    val currentTime = System.currentTimeMillis()
+                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+                    Log.e("DashboardActivity", "currentTime: $currentTime")
+                    Log.e("DashboardActivity", "storedTime: $storedTime")
+                    storedTime += TimeUnit.MINUTES.toMillis(1)
+                    timer = storedTime - currentTime
+
+                    showBoostPendingDialog(timer)
+
+                } else {
+                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                        showBoostStartConfirmationDialog()
+                    } else {
+                        val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+                        intent.putExtra("fromBuyBoost", true)
+                        intent.putExtra("ownProfile", true)
+                        openActivity(intent)
+                    }
+                }
 //                =============== This feature currently not added ============
 
         } else {
@@ -2370,7 +2371,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
-            showBoostStartConfirmationDialog()
+            if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                showBoostStartConfirmationDialog()
+            } else {
+                val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+                intent.putExtra("fromBuyBoost", true)
+                intent.putExtra("ownProfile", true)
+                openActivity(intent)
+            }
         }
 
         view.tvNoThanks.setOnClickListener {

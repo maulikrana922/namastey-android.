@@ -215,15 +215,21 @@ class ChatAdapter(
         adapterPosition: Int,
         ivRecordSend: ImageView
     ) {
-        val audioUri = Uri.parse(audioUrl)
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri)
-        mediaPlayer.setOnCompletionListener {
-            releaseMediaPlayer(
-                currentPlayingPosition,
-                ivRecordSend
-            )
+        if (audioUrl.isNotEmpty()) {
+            try {
+                val audioUri = Uri.parse(audioUrl)
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), audioUri)
+                mediaPlayer.setOnCompletionListener {
+                    releaseMediaPlayer(
+                        currentPlayingPosition,
+                        ivRecordSend
+                    )
+                }
+                mediaPlayer.start()
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
-        mediaPlayer.start()
     }
 
     private fun releaseMediaPlayer(
