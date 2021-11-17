@@ -102,7 +102,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             when (interestIn) {
 
                 1 -> {
-                    tvSelectInterest.text = getString(R.string.men)
+                    tvSelectInterest.text = getString(R.string.male)
                     tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_male_sign,
                         0,
@@ -113,7 +113,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 }
 
                 2 -> {
-                    tvSelectInterest.text = getString(R.string.female)
+                    tvSelectInterest.text = getString(R.string.women)
                     tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_female_sign,
                         0,

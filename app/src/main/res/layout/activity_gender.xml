@@ -76,7 +76,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center"
                         android:padding="@dimen/_8sdp"
-                        android:text="@string/men"
+                        android:text="@string/male"
                         android:textColor="#30B7D6" />
                 </FrameLayout>
 
@@ -102,7 +102,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center_vertical"
                         android:padding="@dimen/_8sdp"
-                        android:text="@string/female"
+                        android:text="@string/women"
                         android:textColor="#EB3EB0" />
                 </FrameLayout>
 

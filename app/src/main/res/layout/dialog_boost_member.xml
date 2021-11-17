@@ -48,10 +48,9 @@
 
                 <com.namastey.customViews.RoundImageView
                     android:id="@+id/ivIcon"
-                    android:layout_width="@dimen/_70sdp"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:src="@drawable/ic_cards_boots"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +61,6 @@
                     android:id="@+id/tvOutOfBoost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:gravity="center"
                     android:text="@string/out_of_boosts"
                     android:textColor="@color/color_black_text"
@@ -117,7 +115,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <View
-                        android:id="@+id/viewBgHigh"
+                        android:id="@+id/viewBgHighBoost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -132,7 +130,7 @@
                         android:elevation="@dimen/_4sdp"
                         android:layout_marginHorizontal="@dimen/_15sdp"
                         android:gravity="center"
-                        android:text="@string/most_popular"
+                        android:text="@string/save_32"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_7sdp"
                         android:visibility="invisible"
@@ -164,7 +162,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/month"
+                        android:text="@string/boosts"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/color_text"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextHigh"
@@ -191,7 +189,7 @@
                     android:orientation="vertical">
 
                     <View
-                        android:id="@+id/viewBgMedium"
+                        android:id="@+id/viewBgMediumBoost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -206,7 +204,7 @@
                         android:elevation="@dimen/_4sdp"
                         android:layout_marginHorizontal="@dimen/_15sdp"
                         android:gravity="center"
-                        android:text="@string/most_popular"
+                        android:text="@string/save_14"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_7sdp"
                         android:visibility="visible"
@@ -238,7 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/month"
+                        android:text="@string/boosts"
                         android:textColor="@color/color_text_red"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold"
@@ -257,18 +255,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvTextBoostMedium"
                         app:typeface="MULI_EXTRA_BOLD" />
 
-                    <com.namastey.customViews.CustomTextView
-                        android:id="@+id/tvTextSaveBoost"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/color_text_red"
-                        android:textSize="@dimen/_10sdp"
-                        android:text="@string/save_boost"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTextMediumEachBoost"
-                        app:typeface="MULI_EXTRA_BOLD" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -284,14 +270,14 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <View
-                        android:id="@+id/viewBgLow"
+                        android:id="@+id/viewBgLowBoost"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@color/color_btn"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.namastey.customViews.CustomTextView
+                 <!--   <com.namastey.customViews.CustomTextView
                         android:id="@+id/tvOfferLow"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_18sdp"
@@ -304,7 +290,7 @@
                         android:textSize="@dimen/_7sdp"
                         android:visibility="invisible"
                         app:layout_constraintTop_toTopOf="parent" />
-
+-->
                     <View
                         android:id="@+id/viewSelectedLow"
                         android:layout_width="match_parent"
@@ -331,7 +317,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/month"
+                        android:text="@string/boosts"
                         android:textSize="@dimen/_12sdp"
                         android:textColor="@color/color_text"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextLow"
@@ -353,7 +339,7 @@
             </LinearLayout>
 
             <com.namastey.customViews.CustomButton
-                android:id="@+id/btnContinue"
+                android:id="@+id/btnBuyBoost"
                 style="@style/btnRedAllCornerStyle"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/_62sdp"
@@ -361,7 +347,7 @@
                 android:layout_marginEnd="@dimen/_62sdp"
                 android:elevation="@dimen/_4sdp"
                 android:gravity="center"
-                android:text="@string/continues"
+                android:text="@string/buy_boost"
                 android:textAllCaps="false"
                 app:layout_constraintTop_toBottomOf="@+id/llBuy"
                 android:stateListAnimator="@null"
@@ -377,7 +363,7 @@
                 android:text="@string/no_thanks"
                 android:textColor="@color/color_text"
                 android:textSize="@dimen/_14sdp"
-                app:layout_constraintTop_toBottomOf="@+id/btnContinue"
+                app:layout_constraintTop_toBottomOf="@+id/btnBuyBoost"
                 app:typeface="MULI_EXTRA_BOLD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

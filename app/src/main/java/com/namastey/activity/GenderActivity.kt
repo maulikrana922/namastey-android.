@@ -64,14 +64,14 @@ class GenderActivity : BaseActivity<ActivityGenderBinding>() {
                 isInterestInSelected = true
                 sessionManager.setInterestIn(1)
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.men)
+                tvSelectInterest.text = getString(R.string.male)
                 tvSelectInterest.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_male_sign,0,0,0)
             }
             tvSelectFemale -> {
                 isInterestInSelected = true
                 sessionManager.setInterestIn(2)
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.female)
+                tvSelectInterest.text = getString(R.string.women)
                 tvSelectInterest.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_female_sign,0,0,0)
             }
             tvSelectEveryone -> {

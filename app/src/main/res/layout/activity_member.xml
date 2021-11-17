@@ -98,7 +98,7 @@
             android:stateListAnimator="@null"
             android:text="@string/boost"
             android:textColor="@color/white"
-            android:onClick="showBootDialog"
+            android:onClick="onClickBoost"
             android:textSize="@dimen/_16sdp"
             app:layout_constraintBottom_toBottomOf="@id/tvAirport"
             app:layout_constraintEnd_toStartOf="@+id/tvAirport"

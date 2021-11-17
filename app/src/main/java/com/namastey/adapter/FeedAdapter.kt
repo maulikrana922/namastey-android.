@@ -3,6 +3,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
@@ -23,11 +25,13 @@ import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.utils.*
+import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
 import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class FeedAdapter(
@@ -37,21 +41,25 @@ class FeedAdapter(
     var sessionManager: SessionManager
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private val TAG = "FeedAdapter"
-
+    private var progressPercentage:Int = 0
     val handlerVideo = Handler(activity.mainLooper)
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
+  /*  override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
         LayoutInflater.from(parent.context).inflate(
             R.layout.row_feed, parent, false
         )
-    )
+    )*/
 
     override fun getItemCount() = feedList.size
 
     override fun onBindViewHolder(holderFeed: FeedViewHolder, position: Int) {
         holderFeed.bind(position, activity)
     }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.FeedViewHolder {
+        return FeedViewHolder(LayoutInflater.from(parent.context).inflate(
+            R.layout.row_feed, parent, false
+        ))
+    }
     inner class FeedViewHolder(@param:NonNull private val parent: View) :
         RecyclerView.ViewHolder(parent) {
 
@@ -66,7 +74,7 @@ class FeedAdapter(
         lateinit var ivFeedFollow: ImageView
         lateinit var ivFeedBoost: ImageView
         lateinit var ivComment: ImageView
-
+        lateinit var progressBarBoost:ProgressBar
 
         lateinit var tvCommentFeed: TextView
         lateinit var tvCommentCount: TextView
@@ -104,7 +112,7 @@ class FeedAdapter(
             tvFeedView = parent.findViewById(R.id.tvFeedView)
             tvFeedShare = parent.findViewById(R.id.tvFeedShare)
             tvFeedBoost = parent.findViewById(R.id.tvFeedBoost)
-
+            progressBarBoost=parent.findViewById(R.id.progressBarBoost)
             animationVideoLike = parent.findViewById(R.id.animationVideoLike)
             animationBoost = parent.findViewById(R.id.animationBoost)
 
@@ -458,7 +466,9 @@ class FeedAdapter(
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
 
-            boostAnimationProgress(itemView)
+
+            //itemView.circularSeekBar.progress=progressPercentage.toFloat()
+
             Log.e(
                 "ExoPlayerRecyclerView",
                 "Bind : " + Calendar.getInstance().time.toString()
@@ -510,8 +520,9 @@ class FeedAdapter(
         }
     }
 
-    private fun boostAnimationProgress(itemView: View) {
-        val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
+    private fun boostAnimationProgress() {
+/*        val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
+
         itemView.circularSeekBar.setOnSeekBarChangeListener(object :
             OnCircularSeekBarChangeListener {
             override fun onProgressChanged(
@@ -533,13 +544,55 @@ class FeedAdapter(
             }
 
             override fun onStopTrackingTouch(seekBar: CircularSeekBar) {
-                //  Log.e("FeedAdapter", "onStopTrackingTouch")
+                 Log.e("FeedAdapter", "onStopTrackingTouch")
             }
 
             override fun onStartTrackingTouch(seekBar: CircularSeekBar) {
-                //  Log.e("FeedAdapter", "onStartTrackingTouch")
+                  Log.e("FeedAdapter", "onStartTrackingTouch")
             }
-        })
+        })*/
+
+        val currentTime = System.currentTimeMillis()
+        var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+        Log.e("DashboardActivity", "currentTime: $currentTime")
+        Log.e("DashboardActivity", "storedTime: $storedTime")
+        storedTime += TimeUnit.MINUTES.toMillis(1)
+        val timer = storedTime - currentTime
+        val interval = 1000L
+
+
+        val numberOfSeconds: Int = timer.toInt() / 1000
+        val factor = 100 / numberOfSeconds
+
+        val t: CountDownTimer
+        t = object : CountDownTimer(timer, interval) {
+            override fun onTick(millisUntilFinished: Long) {
+                val time = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                        TimeUnit.MILLISECONDS.toHours(
+                            millisUntilFinished
+                        )
+                    ), // The change is in this line
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                        TimeUnit.MILLISECONDS.toMinutes(
+                            millisUntilFinished
+                        )
+                    )
+                )
+
+
+                val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                 progressPercentage = (numberOfSeconds - secondsRemaining) * factor
+                Log.e("DashboardActivity", "Percentage: $progressPercentage")
+               // progressPercentage.toFloat()
+            }
+
+            override fun onFinish() {
+                cancel()
+            }
+        }.start()
     }
 
     fun openCustomAlertDialog() {
