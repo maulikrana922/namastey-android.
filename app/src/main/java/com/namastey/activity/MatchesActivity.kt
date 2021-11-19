@@ -297,11 +297,10 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
                 intent.putExtra("lastUserProfile", lastUserProfile)
                 openActivity(intent)
             } else {
-                val intent = Intent(this, MembershipActivity::class.java)
-                intent.putExtra("isFromMatchProfile", true)
-                openActivity(intent)
+                val intent = Intent(this, MemberActivity::class.java)
+                intent.putExtra(Constants.ACTIVITY_TYPE, "MatchesActivity")
+                startActivity(intent)
             }
-
         }
 
         messagesAdapter = MessagesAdapter(messageList, this, this, sessionManager)

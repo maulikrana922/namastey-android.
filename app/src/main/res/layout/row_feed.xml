@@ -206,7 +206,7 @@
             app:cs_disable_pointer="true"
             app:cs_end_angle="180"
             app:cs_maintain_equal_circle="true"
-            app:cs_progress="25"
+            app:cs_progress="0"
             app:cs_start_angle="-180"
             app:layout_constraintBottom_toTopOf="@id/tvFeedView"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
@@ -358,9 +358,10 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:elevation="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gl78"
+            app:layout_constraintBottom_toBottomOf="@+id/clUser"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
+            android:layout_marginBottom="@dimen/_20sdp"
             app:lottie_rawRes="@raw/video_like_heart"
             app:lottie_repeatMode="restart" />
 

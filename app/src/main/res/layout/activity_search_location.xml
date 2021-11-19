@@ -38,12 +38,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_25sdp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivSearchLocationBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_45sdp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/ic_back_new"
+                    android:onClick="onClickPassportContentBack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.namastey.customViews.CustomTextView
+                    android:id="@+id/tvPassport"
+                    style="@style/tvWrapBlackStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/airport"
+                    android:textSize="@dimen/actionBarTitle"
+                    app:layout_constraintBottom_toBottomOf="@id/ivSearchLocationBack"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivSearchLocationBack"
+                    app:layout_constraintTop_toTopOf="@id/ivSearchLocationBack"
+                    app:typeface="MULI_SEMIBOLD" />
 
 
-            <ImageView
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--            <ImageView
                 android:id="@+id/ivSearchLocationBack"
                 android:layout_width="@dimen/_26sdp"
                 android:layout_height="@dimen/_26sdp"
@@ -53,29 +87,39 @@
                 android:onClick="onClickSearchLocationBack"
                 android:padding="@dimen/_8sdp"
                 android:src="@drawable/ic_close"
-                android:tint="@color/colorBlack" />
+                android:tint="@color/colorBlack" />-->
 
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:visibility="visible"
-                tools:context=".activity.SearchLocationActivity" />
+            <LinearLayout
+                android:background="@drawable/rounded_btn"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_height="40dp">
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_facebook"
+                    android:visibility="visible"
+                    tools:context=".activity.SearchLocationActivity" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-       <!-- <fragment
-            android:id="@+id/place_autocomplete_fragment1"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:visibility="gone"
-            tools:context=".activity.SearchLocationActivity" />-->
+        <!-- <fragment
+             android:id="@+id/place_autocomplete_fragment1"
+             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="top"
+             android:layout_marginTop="@dimen/_25sdp"
+             android:visibility="gone"
+             tools:context=".activity.SearchLocationActivity" />-->
 
         <LinearLayout
             android:layout_width="match_parent"

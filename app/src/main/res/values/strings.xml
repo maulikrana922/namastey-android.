@@ -440,7 +440,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="all_your_profile_data_will_be_deleted_permanently_within_30_days">All your profile data will be deleted permanently within 30 Days</string>
     <string name="suggest_your_account_to_others">Suggest your account to others</string>
-    <string name="suggest_your_account_text">Choose whatever your profile can be suggested to users in Trending.</string>
+    <string name="suggest_your_account_text">Choose whether your profile can be suggested to users in Trending.</string>
     <string name="allow_video_downloads">Allow video downloads</string>
     <string name="allow_messages_from">Allow messages from</string>
     <string name="allow_profile_shares">Allow profile shares</string>

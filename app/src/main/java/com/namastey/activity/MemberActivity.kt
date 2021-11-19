@@ -123,6 +123,9 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
+        if (intent.hasExtra(Constants.ACTIVITY_TYPE)){
+            showCustomDialog(3)
+        }
     }
 
     private fun setSliderData() {

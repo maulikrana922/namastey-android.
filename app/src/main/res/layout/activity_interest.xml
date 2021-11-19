@@ -46,6 +46,9 @@
             android:id="@+id/tvInterestMsg"
             style="@style/tvWrapBlackStyle"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="@string/msg_interest"
             app:layout_constraintStart_toStartOf="@id/tvInterest"
             app:layout_constraintTop_toBottomOf="@id/tvInterest" />

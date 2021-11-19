@@ -39,6 +39,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.namastey.BR
 import com.namastey.R
+import com.namastey.application.NamasteyApplication
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySearchLocationBinding
@@ -240,6 +241,11 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
         })
     }
 
+    fun onClickPassportContentBack(view: View) {
+        onBackPressed()
+    }
+
+
     private fun getAddress(latitude: Double, longitude: Double) {
 
         val addresses: List<Address>
@@ -297,6 +303,7 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
 
         doAsync {
             dbHelper.addRecentLocation(recentLocation)
+            NamasteyApplication.instance.setIsUpdateProfile(true)
         }
 
         locationViewModel.addUserLocation(address, latitude.toString(), longitude.toString())
@@ -468,9 +475,8 @@ class SearchLocationActivity : BaseActivity<ActivitySearchLocationBinding>(),
         return bitmap
     }
 
-    private fun searchLocationMarker(context: Context): Bitmap? {
-        val marker: View =
-            (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
+    private fun searchLocationMarker(context: Context): Bitmap {
+        val marker: View = (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
                 R.layout.view_search_location_marker,
                 null
             )

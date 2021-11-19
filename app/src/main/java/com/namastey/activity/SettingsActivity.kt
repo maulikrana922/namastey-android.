@@ -323,7 +323,20 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 1
             )
             val city = addresses[0].locality
-            tvMyCurrentLocation.text = city
+
+            if (currentLocationFromDB != null) {
+                if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
+                    if (realLatitude == latitude && realLongitude == longitude) {
+                        tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+                    } else {
+                        tvMyCurrentLocation.text = currentLocationFromDB!!.city.plus(", ")
+                            .plus(currentLocationFromDB!!.state)
+                    }
+                } else tvMyCurrentLocation.text = city
+            } else {
+                tvMyCurrentLocation.text = city
+            }
+
         } catch (e: IOException) {
             e.printStackTrace()
             tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
@@ -499,8 +512,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         //startSearchLocationScreen()
             openActivity(this, PassportContentActivity())
         else {
-            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
-            intent.putExtra("isFromAirport", true)
+            val intent = Intent(this@SettingsActivity, MemberActivity::class.java)
             openActivity(intent)
         }
     }

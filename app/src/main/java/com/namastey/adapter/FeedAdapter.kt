@@ -20,16 +20,15 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.utils.*
-import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
-import kotlinx.android.synthetic.main.dialog_common_alert.*
+import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
-import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -41,25 +40,30 @@ class FeedAdapter(
     var sessionManager: SessionManager
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private val TAG = "FeedAdapter"
-    private var progressPercentage:Int = 0
+    private var progressPercentage: Int = 0
     val handlerVideo = Handler(activity.mainLooper)
-
-  /*  override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.row_feed, parent, false
-        )
-    )*/
+    private var prevTimer: Long = 1
+    private var isCount = false
+    /*  override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
+          LayoutInflater.from(parent.context).inflate(
+              R.layout.row_feed, parent, false
+          )
+      )*/
 
     override fun getItemCount() = feedList.size
 
     override fun onBindViewHolder(holderFeed: FeedViewHolder, position: Int) {
         holderFeed.bind(position, activity)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.FeedViewHolder {
-        return FeedViewHolder(LayoutInflater.from(parent.context).inflate(
-            R.layout.row_feed, parent, false
-        ))
+        return FeedViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.row_feed, parent, false
+            )
+        )
     }
+
     inner class FeedViewHolder(@param:NonNull private val parent: View) :
         RecyclerView.ViewHolder(parent) {
 
@@ -74,7 +78,7 @@ class FeedAdapter(
         lateinit var ivFeedFollow: ImageView
         lateinit var ivFeedBoost: ImageView
         lateinit var ivComment: ImageView
-        lateinit var progressBarBoost:ProgressBar
+        lateinit var progressBarBoost: ProgressBar
 
         lateinit var tvCommentFeed: TextView
         lateinit var tvCommentCount: TextView
@@ -112,7 +116,7 @@ class FeedAdapter(
             tvFeedView = parent.findViewById(R.id.tvFeedView)
             tvFeedShare = parent.findViewById(R.id.tvFeedShare)
             tvFeedBoost = parent.findViewById(R.id.tvFeedBoost)
-            progressBarBoost=parent.findViewById(R.id.progressBarBoost)
+            progressBarBoost = parent.findViewById(R.id.progressBarBoost)
             animationVideoLike = parent.findViewById(R.id.animationVideoLike)
             animationBoost = parent.findViewById(R.id.animationBoost)
 
@@ -128,7 +132,7 @@ class FeedAdapter(
             Log.e("FeedAdapter", "position: \t $position")
 
             if (position == itemCount - 1) {
-                (context as DashboardActivity).getFeedListApi(0,false)
+                (context as DashboardActivity).getFeedListApi(0, false)
             }
 
             handlerVideo.removeCallbacksAndMessages(null)
@@ -237,7 +241,7 @@ class FeedAdapter(
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
 
             if (dashboardBean.is_match == 1) {
-                tvFeedLike.text = activity.getString(R.string.match)
+                tvFeedLike.text = activity.getString(R.string.matched)
                 tvFeedLike.setTextColor(
                     ContextCompat.getColor(
                         activity,
@@ -320,12 +324,12 @@ class FeedAdapter(
                     val btnText: String
                     isFollow = if (dashboardBean.is_follow == 1) {
                         0
-                //                        msg = context.resources.getString(R.string.msg_remove_post)
-                //                        btnText = context.resources.getString(R.string.remove)
+                        //                        msg = context.resources.getString(R.string.msg_remove_post)
+                        //                        btnText = context.resources.getString(R.string.remove)
                     } else {
                         1
-                //                        msg = context.resources.getString(R.string.msg_send_follow_request)
-                //                        btnText = context.resources.getString(R.string.send)
+                        //                        msg = context.resources.getString(R.string.msg_send_follow_request)
+                        //                        btnText = context.resources.getString(R.string.send)
                     }
                     onFeedItemClick.onClickFollow(
                         position,
@@ -457,17 +461,16 @@ class FeedAdapter(
             if (SessionManager(context).getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
-               // tvFeedBoost.visibility = View.VISIBLE
+                // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
+                // boostAnimationProgress(itemView)
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
-               // tvFeedBoost.visibility = View.VISIBLE
+                isCount = false
+                // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
-
-
-            //itemView.circularSeekBar.progress=progressPercentage.toFloat()
 
             Log.e(
                 "ExoPlayerRecyclerView",
@@ -475,7 +478,6 @@ class FeedAdapter(
             )
         }
     }
-
 
     private fun showCommentProfilePic(
         dashboardBean: DashboardBean,
@@ -520,79 +522,41 @@ class FeedAdapter(
         }
     }
 
-    private fun boostAnimationProgress() {
-/*        val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
+    private fun boostAnimationProgress(itemView: View) {
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            // showBoostFeatureNotAdded()
+//                =============== This feature currently not added ============
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
 
-        itemView.circularSeekBar.setOnSeekBarChangeListener(object :
-            OnCircularSeekBarChangeListener {
-            override fun onProgressChanged(
-                circularSeekBar: CircularSeekBar,
-                progress: Float,
-                fromUser: Boolean
-            ) {
-                val message = String.format(
-                    "Progress changed to %.2f, fromUser %s",
-                    progress,
-                    fromUser
-                )
-                var p = progress
-                p /= 100
-                //Log.e("FeedAdapter", message)
-                // Log.e("FeedAdapter", "progress: \t$progress")
-                //  Log.e("FeedAdapter", "p: \t$p")
-                //  Log.e("FeedAdapter", "fromUser: \t$fromUser")
+                val interval = 1000L
+                    val currentTime = System.currentTimeMillis()
+                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+                    Log.e("DashboardActivity", "currentTime: $currentTime")
+                    Log.e("DashboardActivity", "storedTime: $storedTime")
+                    storedTime += TimeUnit.MINUTES.toMillis(1)
+                    prevTimer = storedTime - currentTime
+                    isCount = true
+
+                val numberOfSeconds: Int = prevTimer.toInt() / 1000
+                val factor = 100 / numberOfSeconds
+
+                val t: CountDownTimer
+                t = object : CountDownTimer(prevTimer, interval) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        prevTimer = millisUntilFinished
+                        val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                        progressPercentage = (numberOfSeconds - secondsRemaining) * factor
+                        Log.e("DashboardActivity", "Percentage: $progressPercentage")
+                        itemView.circularSeekBar.progress = progressPercentage.toFloat()
+                        // progressPercentage.toFloat()
+                    }
+
+                    override fun onFinish() {
+                        cancel()
+                    }
+                }.start()
             }
-
-            override fun onStopTrackingTouch(seekBar: CircularSeekBar) {
-                 Log.e("FeedAdapter", "onStopTrackingTouch")
-            }
-
-            override fun onStartTrackingTouch(seekBar: CircularSeekBar) {
-                  Log.e("FeedAdapter", "onStartTrackingTouch")
-            }
-        })*/
-
-        val currentTime = System.currentTimeMillis()
-        var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-        Log.e("DashboardActivity", "currentTime: $currentTime")
-        Log.e("DashboardActivity", "storedTime: $storedTime")
-        storedTime += TimeUnit.MINUTES.toMillis(1)
-        val timer = storedTime - currentTime
-        val interval = 1000L
-
-
-        val numberOfSeconds: Int = timer.toInt() / 1000
-        val factor = 100 / numberOfSeconds
-
-        val t: CountDownTimer
-        t = object : CountDownTimer(timer, interval) {
-            override fun onTick(millisUntilFinished: Long) {
-                val time = String.format(
-                    "%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                        TimeUnit.MILLISECONDS.toHours(
-                            millisUntilFinished
-                        )
-                    ), // The change is in this line
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                        TimeUnit.MILLISECONDS.toMinutes(
-                            millisUntilFinished
-                        )
-                    )
-                )
-
-
-                val secondsRemaining = (millisUntilFinished / 1000).toInt()
-                 progressPercentage = (numberOfSeconds - secondsRemaining) * factor
-                Log.e("DashboardActivity", "Percentage: $progressPercentage")
-               // progressPercentage.toFloat()
-            }
-
-            override fun onFinish() {
-                cancel()
-            }
-        }.start()
+        }
     }
 
     fun openCustomAlertDialog() {
