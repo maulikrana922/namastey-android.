@@ -494,7 +494,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         } else {
                             val intent =
                                 packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                            if (intent != null) {
+//                            if (intent != null) {
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
@@ -502,7 +502,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
                                     )
                                 )
-                            }
+//                            }
                         }
 
 //                        else{
