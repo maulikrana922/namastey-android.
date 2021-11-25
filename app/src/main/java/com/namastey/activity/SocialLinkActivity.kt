@@ -291,6 +291,9 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                                     if (profile != null) {
                                         if (profile.linkUri != null) {
                                             Log.d("Facebook profile :", profile.linkUri.toString())
+                                            Log.v(
+                                                "LoginActivity Response ",
+                                                profile.linkUri.toString())
 //                                            tvFacebook.text = profile.linkUri.toString()
                                             ivFacebookDelete.visibility = View.VISIBLE
                                         }

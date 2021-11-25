@@ -498,8 +498,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                 startActivity(
                                     Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("fb://profile/".plus(socialBean.link))
-//                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
+//                                        Uri.parse("fb://profile/".plus(socialBean.link))
+                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
                                     )
                                 )
 //                            }
