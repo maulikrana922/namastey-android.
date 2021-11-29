@@ -36,7 +36,6 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_social_link.*
-import org.json.JSONObject
 import java.util.*
 import javax.inject.Inject
 
@@ -237,7 +236,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         LoginManager.getInstance()
             .logInWithReadPermissions(
                 this@SocialLinkActivity,
-                listOf("email", "public_profile")
+                listOf("email", "public_profile", "user_link")
             )
         //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_link"))
 
@@ -256,13 +255,52 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                             "LoginButton FacebookCallback onSuccess userId : " + loginResult.accessToken
                                 .userId
                         )
+                        val request = GraphRequest.newMeRequest(
+                            loginResult.accessToken
+                        ) { _response, response ->
+                            Log.v(
+                            "LoginActivity Response ",
+                            response.toString())
+                            Log.v(
+                            "LoginActivity Response ",
+                                response!!.jsonObject?.get("link").toString())
+                            tvFacebook.text = response.jsonObject?.get("link").toString()
+                            ivFacebookDelete.visibility = View.VISIBLE
+                        }
+                        val parameters = Bundle()
+                        parameters.putString("fields", "id,link")
+                        request.parameters = parameters
+                        request.executeAsync()
+
                         val profile = Profile.getCurrentProfile()
                         if (profile != null) {
                             if (profile.linkUri != null) {
                                 Log.d("Facebook profile :", profile.linkUri.toString())
-                                tvFacebook.text = profile.linkUri.toString()
+//                                tvFacebook.text = profile.linkUri.toString()
                                 ivFacebookDelete.visibility = View.VISIBLE
                             }
+                        }else{
+                            val profileTracker: ProfileTracker = object : ProfileTracker() {
+                                override fun onCurrentProfileChanged(
+                                    oldProfile: Profile?,
+                                    currentProfile: Profile?
+                                ) {
+                                    stopTracking()
+                                    Profile.setCurrentProfile(currentProfile)
+                                    val profile = Profile.getCurrentProfile()
+                                    if (profile != null) {
+                                        if (profile.linkUri != null) {
+                                            Log.d("Facebook profile :", profile.linkUri.toString())
+                                            Log.v(
+                                                "LoginActivity Response ",
+                                                profile.linkUri.toString())
+//                                            tvFacebook.text = profile.linkUri.toString()
+                                            ivFacebookDelete.visibility = View.VISIBLE
+                                        }
+                                    }
+                                }
+                            }
+                            profileTracker.startTracking()
                         }
                     }
                 }
