@@ -394,7 +394,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 )
 
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.men)
+                tvSelectInterest.text = getString(R.string.male)
 //                setSelectedTextColor(tvInterestMen, ivMenSelect)
             }
             tvInterestWomen -> {
@@ -407,7 +407,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 )
 
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.female)
+                tvSelectInterest.text = getString(R.string.women)
 //                setSelectedTextColor(tvInterestWomen, ivWomenSelect)
             }
             tvInterestEveryone -> {
