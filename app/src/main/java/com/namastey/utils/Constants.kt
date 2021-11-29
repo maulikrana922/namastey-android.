@@ -34,10 +34,6 @@ object Constants {
     const val HVALUE = "L@titude2018"
 
     //    Test url
-//    const val BASE = "https://testyourapp.online/namasteyapp/api/"
-//    const val SPOTIFY_REDIRECT_URL = "http://testyourapp.online/namasteyapp/"
-
-    //    Test url
     const val BASE = "https://staging.namasteyapp.com/api/"
     const val SPOTIFY_REDIRECT_URL = "https://staging.namasteyapp.com/"
     object FirebaseConstant {

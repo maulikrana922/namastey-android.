@@ -28,6 +28,7 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.NotAvailableFeatureDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_gender.*
@@ -394,7 +395,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 )
 
                 groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.male)
+                tvSelectInterest.text = getString(R.string.men)
 //                setSelectedTextColor(tvInterestMen, ivMenSelect)
             }
             tvInterestWomen -> {
@@ -498,7 +499,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     fun onClickMyCurrentLocation(view: View) {
         //startSearchLocationScreen()
 
-        /* object : NotAvailableFeatureDialog(
+         object : NotAvailableFeatureDialog(
              this,
              getString(R.string.location_not_available),
              getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
@@ -506,15 +507,15 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
              override fun onBtnClick(id: Int) {
                  dismiss()
              }
-         }.show()*/
+         }.show()
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
-        //startSearchLocationScreen()
-            openActivity(this, PassportContentActivity())
-        else {
-            val intent = Intent(this@SettingsActivity, MemberActivity::class.java)
-            openActivity(intent)
-        }
+//        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+//        //startSearchLocationScreen()
+//            openActivity(this, PassportContentActivity())
+//        else {
+//            val intent = Intent(this@SettingsActivity, MemberActivity::class.java)
+//            openActivity(intent)
+//        }
     }
 
     private fun startSearchLocationScreen() {

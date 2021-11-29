@@ -3066,7 +3066,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onFailedMaxLike(msg: String, error: Int) {
         Log.e("DashboardActivity", "onFailedMaxLike: msg:\t  $msg \t error:\t  $error")
         sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
-        showMembershipDialog(1)
+//        showMembershipDialog(1)
     }
 
     override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {

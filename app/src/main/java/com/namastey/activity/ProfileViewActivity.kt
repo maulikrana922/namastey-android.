@@ -172,7 +172,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.safetyBean.is_share,
                 Constants.KEY_IS_SHARE_PROFILE_SAFETY
             )
-          btnMembership.visibility = View.VISIBLE
+          btnMembership.visibility = View.GONE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),
@@ -447,7 +447,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                             if (profileBean.user_profile_type == 0) {
                                 val intent =
                                     packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                                if (intent != null) {
+//                                if (intent != null) {
 //                                    startActivity(
 //                                        Intent(
 //                                            Intent.ACTION_VIEW,
@@ -488,9 +488,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                         )
                                     }
                                 }
-                            } else if (profileBean.user_profile_type == 1) {
-                                //Do Nothing
-                            }
+//                            } else if (profileBean.user_profile_type == 1) {
+//                                //Do Nothing
+//                            }
                         } else {
                             val intent =
                                 packageManager.getLaunchIntentForPackage("com.facebook.katana")

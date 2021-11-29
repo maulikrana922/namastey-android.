@@ -102,7 +102,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center_vertical"
                         android:padding="@dimen/_8sdp"
-                        android:text="@string/women"
+                        android:text="@string/female"
                         android:textColor="#EB3EB0" />
                 </FrameLayout>
 
@@ -193,7 +193,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:onClick="onClickSelectInterest"
                         android:padding="@dimen/_10sdp"
-                        android:text="@string/male"
+                        android:text="@string/men"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/viewGender" />
 
