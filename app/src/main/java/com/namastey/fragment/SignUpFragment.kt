@@ -36,18 +36,13 @@ import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SignUpViewModel
-import com.snapchat.kit.sdk.SnapLogin
-import com.snapchat.kit.sdk.core.controller.LoginStateController
-import com.snapchat.kit.sdk.login.models.UserDataResponse
-import com.snapchat.kit.sdk.login.networking.FetchUserDataCallback
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import org.json.JSONException
 import java.util.*
 import javax.inject.Inject
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
-    View.OnClickListener, LoginStateController.OnLoginStateChangedListener,
-    FetchUserDataCallback {
+    View.OnClickListener{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -164,7 +159,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     }
 
     private fun initializeGoogleApi() {
-        SnapLogin.getLoginStateController(requireActivity()).addOnLoginStateChangedListener(this)
+        //SnapLogin.getLoginStateController(requireActivity()).addOnLoginStateChangedListener(this)
         FacebookSdk.sdkInitialize(requireContext())
 
         //For facebook used initializer
@@ -202,7 +197,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
                 googleLogin()
             }
             llSignupWithSnapchat -> {
-                loginWithSnapchat()
+                //loginWithSnapchat()
             }
             llSignupWithPhone -> {
                 loginWithPhoneEmail()
@@ -225,9 +220,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
     /**
      * Click on login with SnapChat
      */
-    private fun loginWithSnapchat() {
+   /* private fun loginWithSnapchat() {
         SnapLogin.getAuthTokenManager(requireActivity()).startTokenGrant()
-    }
+    }*/
 
     /**
      * Click on continue with Google
@@ -363,6 +358,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         }
     }
 
+/*
     override fun onSuccess(p0: UserDataResponse?) {
         val me = p0!!.data.me
         val name = me.displayName
@@ -402,6 +398,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(), SignUpView,
         val query = "{me{bitmoji{avatar},displayName,externalId}}"
         SnapLogin.fetchUserData(requireActivity(), query, null, this)
     }
+*/
 
     override fun onDestroy() {
         signUpViewModel.onDestroy()

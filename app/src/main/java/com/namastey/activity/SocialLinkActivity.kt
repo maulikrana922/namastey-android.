@@ -26,6 +26,7 @@ import com.namastey.model.InstagramData
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
+import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
 import com.spotify.sdk.android.authentication.AuthenticationClient
@@ -58,6 +59,9 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
     private lateinit var authenticationDialog: AuthenticationDialog
     private var isEdit = false
 
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override fun getLayoutId() = R.layout.activity_social_link
 
     override fun getBindingVariable() = BR.viewModel
@@ -70,7 +74,6 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         getActivityComponent().inject(this)
         //setContentView(R.layout.activity_social_link)
         FacebookSdk.sdkInitialize(applicationContext)
-
         setupViewModel()
     }
 
@@ -259,11 +262,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                             loginResult.accessToken
                         ) { _response, response ->
                             Log.v(
-                            "LoginActivity Response ",
-                            response.toString())
+                                "LoginActivity Response ",
+                                response.toString()
+                            )
                             Log.v(
-                            "LoginActivity Response ",
-                                response!!.jsonObject?.get("link").toString())
+                                "LoginActivity Response ",
+                                response!!.jsonObject?.get("link").toString()
+                            )
                             tvFacebook.text = response.jsonObject?.get("link").toString()
                             ivFacebookDelete.visibility = View.VISIBLE
                         }
@@ -279,7 +284,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 //                                tvFacebook.text = profile.linkUri.toString()
                                 ivFacebookDelete.visibility = View.VISIBLE
                             }
-                        }else{
+                        } else {
                             val profileTracker: ProfileTracker = object : ProfileTracker() {
                                 override fun onCurrentProfileChanged(
                                     oldProfile: Profile?,
@@ -291,9 +296,11 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                                     if (profile != null) {
                                         if (profile.linkUri != null) {
                                             Log.d("Facebook profile :", profile.linkUri.toString())
+                                            sessionManager.setStringValue(profile.name.toString(),"FacebookUserName")
                                             Log.v(
                                                 "LoginActivity Response ",
-                                                profile.linkUri.toString())
+                                                profile.linkUri.toString()
+                                            )
 //                                            tvFacebook.text = profile.linkUri.toString()
                                             ivFacebookDelete.visibility = View.VISIBLE
                                         }
@@ -371,6 +378,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
             override fun success(result: Result<User?>?) {
                 val user: User = result!!.data!!
+                sessionManager.setStringValue(user.name,"TwitterUserName")
                 Log.e(
                     "Twitter url : ",
                     Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
@@ -408,7 +416,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.facebook))
         if (tvFacebook.text.toString() != getString(R.string.connect_facebook)) {
             jsonObjectInner.addProperty(Constants.LINK, tvFacebook.text.toString().trim())
-        } else jsonObjectInner.addProperty(Constants.LINK, "")
+        } else {
+            jsonObjectInner.addProperty(Constants.LINK, "")
+            sessionManager.setStringValue("","FacebookUserName")
+        }
         jsonArray.add(jsonObjectInner)
 
         jsonObjectInner = JsonObject()
@@ -423,7 +434,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.instagram))
         if (tvInstagram.text.toString() != getString(R.string.connect_instagram)) {
             jsonObjectInner.addProperty(Constants.LINK, tvInstagram.text.toString().trim())
-        } else jsonObjectInner.addProperty(Constants.LINK, "")
+        } else {
+            jsonObjectInner.addProperty(Constants.LINK, "")
+            sessionManager.setStringValue("", "InstagramUsername")
+        }
         jsonArray.add(jsonObjectInner)
 
         jsonObjectInner = JsonObject()
@@ -435,17 +449,17 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
         jsonObject.add("social_links_details", jsonArray)
         Log.e("AddLinkRequest : ", jsonObject.toString())
-        if (intent.hasExtra(Constants.ACTIVITY_EDIT)){
+        if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
             if (isEdit)
                 profileInterestViewModel.addSocialLink(jsonObject)
             else finishActivity()
-        }else {
-                profileInterestViewModel.addSocialLink(jsonObject)
+        } else {
+            profileInterestViewModel.addSocialLink(jsonObject)
         }
     }
 
     fun onClickButton(view: View) {
-        isEdit=true
+        isEdit = true
         when (view.id) {
             R.id.tvFacebook -> connectFacebook()
             R.id.tvInstagram -> connectToInstagram()
@@ -552,6 +566,8 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
             ivSpotifyDelete.visibility = View.VISIBLE
             tvSpotify.text = data.single { s -> s.name == getString(R.string.spotify) }
                 .link
+            sessionManager.setStringValue(data.single { s -> s.name == getString(R.string.spotify) }
+                .name,"SpotifyUsername")
         } else {
             ivSpotifyDelete.visibility = View.GONE
         }
@@ -570,6 +586,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
     }
 
     override fun onSuccessInstagram(instagramData: InstagramData) {
+        sessionManager.setStringValue(instagramData.username, "InstagramUsername")
         val instagramLink = "http://instagram.com/_u/".plus(instagramData.username)
         tvInstagram.text = instagramLink
         ivInstagramDelete.visibility = View.VISIBLE

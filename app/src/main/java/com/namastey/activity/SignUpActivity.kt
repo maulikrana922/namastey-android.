@@ -48,10 +48,6 @@ import com.namastey.utils.Constants.RC_SIGN_IN
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.SignUpViewModel
-import com.snapchat.kit.sdk.SnapLogin
-import com.snapchat.kit.sdk.core.controller.LoginStateController
-import com.snapchat.kit.sdk.login.models.UserDataResponse
-import com.snapchat.kit.sdk.login.networking.FetchUserDataCallback
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
 import org.json.JSONException
@@ -60,9 +56,7 @@ import javax.inject.Inject
 
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
-    SignUpView,
-    LoginStateController.OnLoginStateChangedListener,
-    FetchUserDataCallback {
+    SignUpView{
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -74,7 +68,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var loginManager: LoginManager
     private lateinit var callbackManager: CallbackManager
-    private lateinit var mLoginStateChangedListener: LoginStateController
+   // private lateinit var mLoginStateChangedListener: LoginStateController
     private lateinit var googleSignInOptions: GoogleSignInOptions
     private lateinit var googleSignInClient: GoogleSignInClient
     private var firstName = ""
@@ -161,7 +155,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     }
 
     private fun initializeGoogleApi() {
-        SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
+        //SnapLogin.getLoginStateController(this).addOnLoginStateChangedListener(this)
         FacebookSdk.sdkInitialize(applicationContext)
 
         //For facebook used initializer
@@ -285,10 +279,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     /**
      * Click on login with SnapChat
      */
+/*
     private fun loginWithSnapchat() {
         SnapLogin.getAuthTokenManager(this).clearToken()
         SnapLogin.getAuthTokenManager(this@SignUpActivity).startTokenGrant()
     }
+*/
 
     /**
      * Click on continue with Google
@@ -392,10 +388,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         )
     }
 
-    private fun fetchUserData() {
+  /*  private fun fetchUserData() {
         val query = "{me{bitmoji{avatar},displayName,externalId}}"
         SnapLogin.fetchUserData(this@SignUpActivity, query, null, this)
-    }
+    }*/
 
     fun onLoginClick(view: View) {
         when (view) {
@@ -412,7 +408,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             }
 
             llSignupWithSnapchat -> {
-                loginWithSnapchat()
+                //loginWithSnapchat()
             }
         }
     }
@@ -437,7 +433,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         super.onDestroy()
     }
 
-    override fun onSuccess(p0: UserDataResponse?) {
+/*    override fun onSuccess(p0: UserDataResponse?) {
         val me = p0!!.data.me
         val name = me.displayName
         val avatar = me.bitmojiData.avatar
@@ -451,8 +447,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             "",
             sessionManager.getFirebaseToken()
         )
-    }
-
+    }*/
+/*
     override fun onFailure(p0: Boolean, p1: Int) {
         signUpViewModel.setIsLoading(false)
         print("onFailure")
@@ -470,7 +466,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     override fun onLoginSucceeded() {
         signUpViewModel.setIsLoading(true)
         fetchUserData()
-    }
+    }*/
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
