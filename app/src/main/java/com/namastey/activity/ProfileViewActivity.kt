@@ -171,7 +171,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.safetyBean.is_share,
                 Constants.KEY_IS_SHARE_PROFILE_SAFETY
             )
-            btnMembership.visibility = View.GONE
+            btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),
@@ -369,6 +369,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 // chipProfileSocial.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
                 chipProfileSocial.visibility = View.GONE
+                tvInstaUserName.visibility = View.GONE
+                tvFacebook.visibility = View.GONE
+                tvTwitter.visibility = View.GONE
+                tvSpotify.visibility = View.GONE
                 layoutPrivateAccount.visibility = View.VISIBLE
                 chipProfileInterest.visibility = View.GONE
                 tvInterestTitel.visibility = View.GONE
@@ -431,12 +435,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
 
         chipProfileSocial.removeAllViews()
-        if (data.isEmpty()) {
+//        if (data.isEmpty()) {
             tvInstaUserName.visibility = View.GONE
             tvFacebook.visibility = View.GONE
             tvTwitter.visibility = View.GONE
             tvSpotify.visibility = View.GONE
-        }
+//        }
         for (socialBean in data) {
             val ivSocialIcon = ImageView(this@ProfileViewActivity)
             ivSocialIcon.layoutParams = LinearLayout.LayoutParams(
@@ -448,7 +452,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.facebook) -> {
                     facebookLink = socialBean.link
                     if (socialBean.link.isNotEmpty()) {
-                        tvFacebook.text = sessionManager.getStringValue("FacebookUserName")
+                        tvFacebook.text = socialBean.username
                         tvFacebook.visibility = View.VISIBLE
                     }
                     ivSocialIcon.setImageResource(R.drawable.ic_link_facebook)
@@ -524,7 +528,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.instagram) -> {
                     if (socialBean.link.isNotEmpty()) {
-                        tvInstaUserName.text = sessionManager.getStringValue("InstagramUsername")
+//                        tvInstaUserName.text = sessionManager.getStringValue("InstagramUsername")
+                        tvInstaUserName.text = socialBean.username
                         tvInstaUserName.visibility = View.VISIBLE
                     }
                     ivSocialIcon.setImageResource(R.drawable.ic_link_instagram)
@@ -620,7 +625,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.spotify) -> {
                     if (socialBean.link.isNotEmpty()) {
-                        tvSpotify.text = sessionManager.getStringValue("SpotifyUsername")
+                        tvSpotify.text = socialBean.username
                         tvSpotify.visibility = View.VISIBLE
                     }
                     sportify = socialBean.link
@@ -668,7 +673,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.twitter) -> {
                     if (socialBean.link.isNotEmpty()) {
-                        tvTwitter.text = sessionManager.getStringValue("TwitterUserName")
+                        tvTwitter.text = socialBean.username
                         tvTwitter.visibility = View.VISIBLE
                     }
                     twitterLink = socialBean.link

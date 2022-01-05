@@ -416,6 +416,8 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.facebook))
         if (tvFacebook.text.toString() != getString(R.string.connect_facebook)) {
             jsonObjectInner.addProperty(Constants.LINK, tvFacebook.text.toString().trim())
+            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("FacebookUserName"))
+
         } else {
             jsonObjectInner.addProperty(Constants.LINK, "")
             sessionManager.setStringValue("","FacebookUserName")
@@ -426,6 +428,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.twitter))
         if (tvTwitter.text.toString() != getString(R.string.connect_twitter)) {
             jsonObjectInner.addProperty(Constants.LINK, tvTwitter.text.toString().trim())
+            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("TwitterUserName"))
         } else jsonObjectInner.addProperty(Constants.LINK, "")
         jsonArray.add(jsonObjectInner)
 
@@ -434,6 +437,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.instagram))
         if (tvInstagram.text.toString() != getString(R.string.connect_instagram)) {
             jsonObjectInner.addProperty(Constants.LINK, tvInstagram.text.toString().trim())
+            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("InstagramUsername"))
         } else {
             jsonObjectInner.addProperty(Constants.LINK, "")
             sessionManager.setStringValue("", "InstagramUsername")
@@ -444,6 +448,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.spotify))
         if (tvSpotify.text.toString() != getString(R.string.connect_spotify)) {
             jsonObjectInner.addProperty(Constants.LINK, tvSpotify.text.toString().trim())
+            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("InstagramUsername"))
         } else jsonObjectInner.addProperty(Constants.LINK, "")
         jsonArray.add(jsonObjectInner)
 

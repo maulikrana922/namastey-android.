@@ -448,6 +448,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private fun showBoostDialog(layout: Int) {
 
         var isFromProfile = true
+        inAppProductId = subscriptionSkuBoostList[1]
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@MemberActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
