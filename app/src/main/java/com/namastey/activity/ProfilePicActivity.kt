@@ -10,6 +10,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -96,7 +97,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
 
     private fun openGalleryForImage() {
         profileFile = File(
-            Constants.FILE_PATH,
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             System.currentTimeMillis().toString() + ".jpeg"
         )
 
@@ -188,7 +189,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                         try {
                             inputStream = contentResolver.openInputStream(selectedImage)
                             if (!profileFile!!.exists()) {
-                                File(Constants.FILE_PATH, System.currentTimeMillis().toString()).mkdirs()
+                                File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), System.currentTimeMillis().toString()).mkdirs()
                             }
                             val fileOutputStream = FileOutputStream(profileFile)
                             if (inputStream != null) {
