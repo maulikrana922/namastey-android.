@@ -35,7 +35,7 @@ object Constants {
 
     //    Test url
     const val BASE = "https://staging.namasteyapp.com/api/"
-    const val SPOTIFY_REDIRECT_URL = "https://staging.namasteyapp.com/"
+    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
     object FirebaseConstant {
         var MESSAGES = "MessagesTest"
         var CHATS = "Chats"
@@ -48,7 +48,7 @@ object Constants {
 
     //    Live url
 //    const val BASE = "https://app.namasteyapp.com/api/"
-//    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
+//    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
 //    object FirebaseConstant {
 //        var MESSAGES = "Messages"
 //        var CHATS = "Chats"

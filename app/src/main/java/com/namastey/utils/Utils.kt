@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.drawable.GradientDrawable
+import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.*
@@ -57,6 +58,7 @@ object Utils {
         val format = SimpleDateFormat(Constants.DATE_FORMATE_CHAT, Locale.getDefault())
         return format.format(date)
     }
+
     fun convertTimestampToMessageFormat(timestamp: Long): String {
         val date = Date(timestamp)
         val format = SimpleDateFormat(Constants.DATE_FORMATE_MESSAGE, Locale.getDefault())
@@ -151,7 +153,7 @@ object Utils {
         gd.cornerRadius = 20f
 
         gd.setColor(Color.parseColor(fillColor))
-        gd.setStroke(4,Color.parseColor(color))
+        gd.setStroke(4, Color.parseColor(color))
         v.background = gd
     }
 
@@ -170,15 +172,15 @@ object Utils {
         v.foreground = gd
     }
 
-    fun saveBitmapToExtFilesDir(filePath: String,context:Context): File? {
+    fun saveBitmapToExtFilesDir(filePath: String, context: Context): File? {
         val bitmap: Bitmap = BitmapFactory.decodeFile(filePath)
-        val fileName = (System.currentTimeMillis() / 1000L).toString()+".jpg"
+        val fileName = (System.currentTimeMillis() / 1000L).toString() + ".jpg"
         val mDestDir: File = getExtFilesDir(context)!!
         if (mDestDir != null) {
             val mDestFile = File(mDestDir.path + File.separator + fileName)
             return try {
                 val out = FileOutputStream(mDestFile)
-                rotateImage(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, out)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 out.flush()
                 out.close()
                 File(mDestFile.absolutePath)
@@ -189,6 +191,7 @@ object Utils {
         }
         return null
     }
+
     fun getExtFilesDir(context: Context): File? {
         val mDataDir = ContextCompat.getExternalFilesDirs(context, null)[0]
         if (!mDataDir.exists()) {
@@ -457,6 +460,52 @@ object Utils {
         )
     }
 
+    fun copyInputStream(input: InputStream, output: OutputStream) {
+        val buffer = ByteArray(1024)
+        while (true) {
+            val i = (input.read(buffer))
+            if (i == -1) {
+                break
+            }
+            output.write(buffer, 0, i)
+        }
+    }
+
+    fun applyExifInterface(path: String) {
+        val exif: ExifInterface
+        try {
+            exif = ExifInterface(path)
+
+            val orientation = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+
+            var angle = 0
+
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> angle = 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> angle = 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> angle = 270
+            }
+
+            if (angle != 0) {
+                val bmOptions = BitmapFactory.Options()
+                var bitmap = BitmapFactory.decodeFile(path, bmOptions)
+                val matrix = Matrix()
+                matrix.postRotate(angle.toFloat())
+                bitmap =
+                    Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+                val out = FileOutputStream(path)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                out.close()
+                bitmap.recycle()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     fun setHtmlText(textView: TextView, text: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT)
@@ -623,9 +672,10 @@ object Utils {
         return false
     }
 
-    fun saveFile(sourceuri: URI) : String{
+    fun saveFile(sourceuri: URI): String {
         val sourceFilename: String = sourceuri.path
-        val destinationFilename = Environment.getExternalStorageDirectory().path + File.separatorChar +"profile.jpg"
+        val destinationFilename =
+            Environment.getExternalStorageDirectory().path + File.separatorChar + "profile.jpg"
         var bis: BufferedInputStream? = null
         var bos: BufferedOutputStream? = null
         try {

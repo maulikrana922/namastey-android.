@@ -56,8 +56,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
-import java.io.ByteArrayOutputStream
-import java.io.File
+import java.io.*
 import java.net.URI
 import java.util.*
 import javax.inject.Inject
@@ -1025,7 +1024,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (data != null) {
                 val selectedImage = data.data
 
-                if (selectedImage != null) {
+          /*      if (selectedImage != null) {
 //                    val inputStream: InputStream?
                     try {
 //                        val selectedImage = data.data
@@ -1062,8 +1061,40 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                }*/
+
+                if (selectedImage != null) {
+                    val inputStream: InputStream?
+                    try {
+                        inputStream = contentResolver.openInputStream(selectedImage)
+                        if (!profileFile!!.exists()) {
+                            File(Constants.FILE_PATH, System.currentTimeMillis().toString()).mkdirs()
+                        }
+                        val fileOutputStream = FileOutputStream(profileFile)
+                        if (inputStream != null) {
+                            Utils.copyInputStream(inputStream, fileOutputStream)
+                            inputStream.close()
+                        }
+                        fileOutputStream.close()
+                        if (profileFile != null) {
+                            Utils.applyExifInterface(profileFile!!.getAbsolutePath())
+                        }
+                        //Glide.with(this).load(profileFile!!.getAbsolutePath()).into(ivLoadImage);
+                        GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
+                        isProfilePic = true
+                        if (profileFile != null && profileFile!!.exists()) {
+                            isCameraOpen = true
+                            profileViewModel.updateProfilePic(profileFile!!)
+                        }
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
                 }
             }
+
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
             val imageFile = Utils.getCameraFile(this@ProfileViewActivity)
             val photoUri = FileProvider.getUriForFile(

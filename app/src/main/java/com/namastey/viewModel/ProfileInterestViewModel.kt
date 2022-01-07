@@ -170,7 +170,7 @@ class ProfileInterestViewModel constructor(
                     .let { appResponseSpotify: AppResponseSpotify<SpotifyBean> ->
                         Log.d("spotify Response : ", appResponseSpotify.toString())
                         setIsLoading(false)
-                        profileInterestView.onSuccessSpotify(appResponseSpotify.external_urls!!.spotify)
+                        profileInterestView.onSuccessSpotify(appResponseSpotify.external_urls!!.spotify,appResponseSpotify.display_name)
                     }
 
             } catch (exception: Throwable) {

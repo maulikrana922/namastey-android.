@@ -28,9 +28,11 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfilePicViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile.ivProfileUser
 import kotlinx.android.synthetic.main.activity_profile_pic.*
+import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import java.io.File
+import java.io.*
 import javax.inject.Inject
 
 class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePicView {
@@ -146,7 +148,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                 if (data != null) {
                     val selectedImage = data.data
 
-                    if (selectedImage != null) {
+                  /*  if (selectedImage != null) {
                         try {
                             val filePathColumn =
                                 arrayOf(MediaStore.Images.Media.DATA)
@@ -179,6 +181,32 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
+                    }*/
+
+                    if (selectedImage != null) {
+                        val inputStream: InputStream?
+                        try {
+                            inputStream = contentResolver.openInputStream(selectedImage)
+                            if (!profileFile!!.exists()) {
+                                File(Constants.FILE_PATH, System.currentTimeMillis().toString()).mkdirs()
+                            }
+                            val fileOutputStream = FileOutputStream(profileFile)
+                            if (inputStream != null) {
+                                Utils.copyInputStream(inputStream, fileOutputStream)
+                                inputStream.close()
+                            }
+                            fileOutputStream.close()
+                            if (profileFile != null) {
+                                Utils.applyExifInterface(profileFile!!.getAbsolutePath())
+                            }
+                            //Glide.with(this).load(profileFile!!.getAbsolutePath()).into(ivLoadImage);
+                            GlideLib.loadImage(this, ivProfilePic, profileFile.toString())
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+
                     }
                 }
             }
