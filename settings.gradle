@@ -1,4 +1,3 @@
-include ':spotify-app-remote-release-0.7.1'
 //include ':videotrim'
 include ':videothumb'
 include ':app', ':dateandtimepicker'

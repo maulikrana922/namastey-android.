@@ -8,6 +8,6 @@ interface ProfileInterestView : BaseView {
 
     fun onSuccessResponse(data: ArrayList<SocialAccountBean>)
     fun onSuccessAddLinkResponse(data: ArrayList<SocialAccountBean>)
-    fun onSuccessSpotify(spotifyUrl: String)
+    fun onSuccessSpotify(spotifyUrl: String,name:String)
     fun onSuccessInstagram(instagramData: InstagramData)
 }

@@ -29,9 +29,8 @@ import com.namastey.utils.Constants
 import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationRequest
-import com.spotify.sdk.android.authentication.AuthenticationResponse
+import com.spotify.sdk.android.auth.*
+import com.spotify.sdk.android.auth.AuthorizationResponse
 import com.squareup.okhttp.OkHttpClient
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
@@ -296,7 +295,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                                     if (profile != null) {
                                         if (profile.linkUri != null) {
                                             Log.d("Facebook profile :", profile.linkUri.toString())
-                                            sessionManager.setStringValue(profile.name.toString(),"FacebookUserName")
+                                            sessionManager.setStringValue(
+                                                profile.name.toString(),
+                                                "FacebookUserName"
+                                            )
                                             Log.v(
                                                 "LoginActivity Response ",
                                                 profile.linkUri.toString()
@@ -378,7 +380,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
 
             override fun success(result: Result<User?>?) {
                 val user: User = result!!.data!!
-                sessionManager.setStringValue(user.name,"TwitterUserName")
+                sessionManager.setStringValue(user.name, "TwitterUserName")
                 Log.e(
                     "Twitter url : ",
                     Uri.parse("twitter://user?screen_name=" + user.screenName).toString()
@@ -416,11 +418,16 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.facebook))
         if (tvFacebook.text.toString() != getString(R.string.connect_facebook)) {
             jsonObjectInner.addProperty(Constants.LINK, tvFacebook.text.toString().trim())
-            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("FacebookUserName"))
+            if (sessionManager.getStringValue("FacebookUserName").isNotEmpty())
+                jsonObjectInner.addProperty(
+                    Constants.USERNAME,
+                    sessionManager.getStringValue("FacebookUserName")
+                )
+            else jsonObjectInner.addProperty(Constants.USERNAME, "")
 
         } else {
             jsonObjectInner.addProperty(Constants.LINK, "")
-            sessionManager.setStringValue("","FacebookUserName")
+            sessionManager.setStringValue("", "FacebookUserName")
         }
         jsonArray.add(jsonObjectInner)
 
@@ -428,7 +435,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.twitter))
         if (tvTwitter.text.toString() != getString(R.string.connect_twitter)) {
             jsonObjectInner.addProperty(Constants.LINK, tvTwitter.text.toString().trim())
-            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("TwitterUserName"))
+            if (sessionManager.getStringValue("TwitterUserName").isNotEmpty())
+                jsonObjectInner.addProperty(
+                    Constants.USERNAME,
+                    sessionManager.getStringValue("TwitterUserName")
+                )
+            else jsonObjectInner.addProperty(Constants.USERNAME, "")
+
         } else jsonObjectInner.addProperty(Constants.LINK, "")
         jsonArray.add(jsonObjectInner)
 
@@ -437,7 +450,12 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.instagram))
         if (tvInstagram.text.toString() != getString(R.string.connect_instagram)) {
             jsonObjectInner.addProperty(Constants.LINK, tvInstagram.text.toString().trim())
-            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("InstagramUsername"))
+            if (sessionManager.getStringValue("InstagramUsername").isNotEmpty())
+                jsonObjectInner.addProperty(
+                    Constants.USERNAME,
+                    sessionManager.getStringValue("InstagramUsername")
+                )
+            else jsonObjectInner.addProperty(Constants.USERNAME, "")
         } else {
             jsonObjectInner.addProperty(Constants.LINK, "")
             sessionManager.setStringValue("", "InstagramUsername")
@@ -448,7 +466,13 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.spotify))
         if (tvSpotify.text.toString() != getString(R.string.connect_spotify)) {
             jsonObjectInner.addProperty(Constants.LINK, tvSpotify.text.toString().trim())
-            jsonObjectInner.addProperty(Constants.USERNAME, sessionManager.getStringValue("InstagramUsername"))
+            if (sessionManager.getStringValue("SpotifyUsername").isNotEmpty())
+                jsonObjectInner.addProperty(
+                    Constants.USERNAME,
+                    sessionManager.getStringValue("SpotifyUsername")
+                )
+            else jsonObjectInner.addProperty(Constants.USERNAME, "")
+
         } else jsonObjectInner.addProperty(Constants.LINK, "")
         jsonArray.add(jsonObjectInner)
 
@@ -470,20 +494,25 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
             R.id.tvInstagram -> connectToInstagram()
             R.id.tvTwitter -> twitterLogin()
             R.id.tvSpotify -> {
-                val builder: AuthenticationRequest.Builder =
-                    AuthenticationRequest.Builder(
-                        getString(R.string.spotify_client_id),
-                        AuthenticationResponse.Type.TOKEN,
-                        Constants.SPOTIFY_REDIRECT_URL
-                    )
-                builder.setScopes(arrayOf("user-read-private", "streaming"))
-                val request: AuthenticationRequest = builder.build()
 
-                AuthenticationClient.openLoginActivity(
-                    this,
-                    Constants.REQUEST_SPOTIFY,
-                    request
+                val builder = AuthorizationRequest.Builder(
+                    getString(R.string.spotify_client_id),
+                    AuthorizationResponse.Type.TOKEN,
+                    Constants.SPOTIFY_REDIRECT_URL
                 )
+
+                builder.setScopes(
+                    arrayOf(
+                        "user-read-private",
+                        "playlist-read",
+                        "playlist-read-private",
+                        "streaming"
+                    )
+                )
+                val request = builder.build()
+
+                AuthorizationClient.openLoginActivity(this, Constants.REQUEST_SPOTIFY, request)
+
             }
             R.id.ivFacebookDelete -> {
                 ivFacebookDelete.visibility = View.GONE
@@ -524,14 +553,12 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         }
 
         if (requestCode == Constants.REQUEST_SPOTIFY) {
-            val response =
-                AuthenticationClient.getResponse(resultCode, data)
+            val response = AuthorizationClient.getResponse(resultCode, data)
             when (response.type) {
-                AuthenticationResponse.Type.TOKEN -> {
-                    Log.e("Social Login", response.accessToken)
+                AuthorizationResponse.Type.TOKEN -> {
                     profileInterestViewModel.getSpotifyLink(response.accessToken)
                 }
-                AuthenticationResponse.Type.ERROR -> {
+                AuthorizationResponse.Type.ERROR -> {
                     Log.e("Social Login", response.error)
                 }
                 else -> {
@@ -571,8 +598,6 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
             ivSpotifyDelete.visibility = View.VISIBLE
             tvSpotify.text = data.single { s -> s.name == getString(R.string.spotify) }
                 .link
-            sessionManager.setStringValue(data.single { s -> s.name == getString(R.string.spotify) }
-                .name,"SpotifyUsername")
         } else {
             ivSpotifyDelete.visibility = View.GONE
         }
@@ -585,8 +610,9 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
             openActivity(this@SocialLinkActivity, AddVideoActivity())
     }
 
-    override fun onSuccessSpotify(spotifyUrl: String) {
+    override fun onSuccessSpotify(spotifyUrl: String, name: String) {
         tvSpotify.text = spotifyUrl
+        sessionManager.setStringValue(name, "SpotifyUsername")
         ivSpotifyDelete.visibility = View.VISIBLE
     }
 
