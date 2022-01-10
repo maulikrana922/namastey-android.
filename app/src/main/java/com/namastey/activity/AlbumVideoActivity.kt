@@ -393,17 +393,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
         mRecyclerView!!.adapter = albumVideoAdapter
 
-        albumVideoAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post {
+            firstTime = false
+            Handler(Looper.getMainLooper()).postDelayed({
                 mRecyclerView!!.playVideo(
                     false,
                     false,
                     position
                 )
-            }
-            firstTime = false
+            }, 2000)
         }
+
+
     }
 
     override fun onBackPressed() {
@@ -473,6 +474,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         viewDetailsVideo.visibility = View.VISIBLE
         groupUpnext.visibility = View.GONE
         albumVideoAdapter.isDisplayDetails = true
+        albumVideoAdapter.notifyDataSetChanged()
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
