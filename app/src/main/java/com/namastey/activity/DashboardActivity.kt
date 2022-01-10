@@ -3293,6 +3293,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             totalCount = 1
             videoIdList.clear()
             firstTime = true
+            feedAdapter.notifyDataSetChanged()
             getFeedListApi(subCategoryId, false)
 
         }
