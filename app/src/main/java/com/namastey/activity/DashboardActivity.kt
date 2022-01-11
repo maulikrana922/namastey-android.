@@ -697,24 +697,33 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun shareWhatsApp(dashboardBean: DashboardBean) {
         try {
-            val pm: PackageManager = packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                sendIntent.type = "*/*"
-            sendIntent.type = "text/plain"
-            sendIntent.setPackage("com.whatsapp")
+//            val pm: PackageManager = packageManager
+//           pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+//            val sendIntent = Intent()
+//            sendIntent.action = Intent.ACTION_SEND
+//            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+////                sendIntent.type = "*/*"
+//            sendIntent.type = "text/plain"
+//            sendIntent.setPackage("com.whatsapp")
+//
+////                sendIntent.putExtra(
+////                    Intent.EXTRA_STREAM,
+////                    Uri.parse(dashboardBean.video_url)
+//
+//            sendIntent.putExtra(
+//                Intent.EXTRA_TEXT,
+//                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+//            )
+//            startActivity(sendIntent)
 
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(dashboardBean.video_url)
+             val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+            waIntent.setPackage("com.whatsapp")
 
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
-            )
-            startActivity(sendIntent)
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(waIntent, "Share with"))
+
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(
                 this@DashboardActivity,
