@@ -414,9 +414,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         val jsonObject = JsonObject()
         val jsonArray = JsonArray()
         var jsonObjectInner = JsonObject()
-
+        var isEmpty = false
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.facebook))
         if (tvFacebook.text.toString() != getString(R.string.connect_facebook)) {
+            isEmpty = true
             jsonObjectInner.addProperty(Constants.LINK, tvFacebook.text.toString().trim())
             if (sessionManager.getStringValue("FacebookUserName").isNotEmpty())
                 jsonObjectInner.addProperty(
@@ -434,6 +435,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.twitter))
         if (tvTwitter.text.toString() != getString(R.string.connect_twitter)) {
+            isEmpty = true
             jsonObjectInner.addProperty(Constants.LINK, tvTwitter.text.toString().trim())
             if (sessionManager.getStringValue("TwitterUserName").isNotEmpty())
                 jsonObjectInner.addProperty(
@@ -442,13 +444,16 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                 )
             else jsonObjectInner.addProperty(Constants.USERNAME, "")
 
-        } else jsonObjectInner.addProperty(Constants.LINK, "")
+        } else {
+            jsonObjectInner.addProperty(Constants.LINK, "")
+        }
         jsonArray.add(jsonObjectInner)
 
 
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.instagram))
         if (tvInstagram.text.toString() != getString(R.string.connect_instagram)) {
+            isEmpty = true
             jsonObjectInner.addProperty(Constants.LINK, tvInstagram.text.toString().trim())
             if (sessionManager.getStringValue("InstagramUsername").isNotEmpty())
                 jsonObjectInner.addProperty(
@@ -465,6 +470,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObjectInner = JsonObject()
         jsonObjectInner.addProperty(Constants.NAME, getString(R.string.spotify))
         if (tvSpotify.text.toString() != getString(R.string.connect_spotify)) {
+            isEmpty = true
             jsonObjectInner.addProperty(Constants.LINK, tvSpotify.text.toString().trim())
             if (sessionManager.getStringValue("SpotifyUsername").isNotEmpty())
                 jsonObjectInner.addProperty(
@@ -474,6 +480,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
             else jsonObjectInner.addProperty(Constants.USERNAME, "")
 
         } else jsonObjectInner.addProperty(Constants.LINK, "")
+
         jsonArray.add(jsonObjectInner)
 
         jsonObject.add("social_links_details", jsonArray)
@@ -483,7 +490,10 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
                 profileInterestViewModel.addSocialLink(jsonObject)
             else finishActivity()
         } else {
-            profileInterestViewModel.addSocialLink(jsonObject)
+            if (!isEmpty)
+                openActivity(this@SocialLinkActivity, AddVideoActivity())
+            else
+                profileInterestViewModel.addSocialLink(jsonObject)
         }
     }
 

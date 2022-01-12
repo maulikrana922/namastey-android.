@@ -402,6 +402,7 @@ object Constants {
     const val PERMISSION_CONTACTS = 118
     const val PERMISSION_AUDIO = 116
     const val FILTER_OK = 107
+    const val PROFILE_VIEW=105
     const val ADD_LINK = 108
     const val REQUEST_CODE = 109
     const val REQUEST_CODE_EDUCATION = 110

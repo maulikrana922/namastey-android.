@@ -7,7 +7,7 @@ interface OnFeedItemClick {
     fun onItemClick(position: Int, dashboardBean: DashboardBean)
     fun onCommentClick(position: Int, postId: Long)
     fun onProfileLikeClick(position: Int, dashboardBean: DashboardBean, isLike: Int)
-    fun onUserProfileClick(dashboardBean: DashboardBean)
+    fun onUserProfileClick(dashboardBean: DashboardBean,position: Int)
     fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int)
     fun onPostViewer(postId: Long)
     fun onFeedBoost(userId: Long)

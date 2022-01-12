@@ -415,13 +415,13 @@ class FeedAdapter(
             }
 
             ivFeedProfile.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedName.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedJob.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedLike.setOnClickListener {
                 if (dashboardBean.is_like == 1)

@@ -101,6 +101,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var instagramLink = ""
     private var sportify = ""
     private var twitterLink = ""
+    private lateinit var profileBeanData:ProfileBean
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getActivityComponent().inject(this)
@@ -1227,6 +1229,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onBackPressed() {
+        if (this::profileBeanData.isInitialized) {
+            val returnIntent = Intent()
+            returnIntent.putExtra("result", profileBeanData.is_follow)
+            setResult(RESULT_OK, returnIntent)
+        }
         finishActivity()
     }
 
@@ -1449,7 +1456,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
-
+            profileBeanData=profile
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
             btnProfileFollow.text = resources.getString(R.string.un_follow)

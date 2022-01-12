@@ -29,6 +29,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -114,6 +115,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.anko.startActivityForResult
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -173,6 +175,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
+    private var isFromProfileActivity=false
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -238,6 +241,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
 
+
         startMaxLikeService()
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
@@ -291,7 +295,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             return
         }
         LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
-            .requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            .requestLocationUpdates(mLocationRequest, mLocationCallback, null)
 
     }
 
@@ -320,7 +324,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.d("Days days : ", days.toString())
             Log.d(
                 "current time : ",
-                Utils.convertTimestampToChatFormat(System.currentTimeMillis()).toString()
+                Utils.convertTimestampToChatFormat(System.currentTimeMillis())
             )
             if (minutes > 30) {
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
@@ -1607,6 +1611,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } catch (e: Exception) {
                 Log.e("Exception", e.message.toString())
             }
+        }else if (requestCode == Constants.PROFILE_VIEW) {
+            try {
+                val follow = data?.getIntExtra("result",0)
+                val dashboardBean = feedList[position]
+                    dashboardBean.is_follow = follow!!
+                feedList[position] = dashboardBean
+                feedAdapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                Log.e("Exception", e.message.toString())
+            }
         }
     }
 
@@ -2016,7 +2030,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
-    override fun onUserProfileClick(dashboardBean: DashboardBean) {
+    override fun onUserProfileClick(dashboardBean: DashboardBean,position: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -2025,9 +2039,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
+            isFromProfileActivity=true
+            this.position = position
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, dashboardBean.user_id)
-            openActivity(intent)
+            //openActivity(intent)
+            startActivityForResult(intent,Constants.PROFILE_VIEW)
         }
     }
 
@@ -2742,6 +2759,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
+
         if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting) {
             isFromSetting = false
             feedList.clear()
