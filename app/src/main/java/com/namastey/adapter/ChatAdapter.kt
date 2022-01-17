@@ -143,7 +143,7 @@ class ChatAdapter(
                         song_seekbar_received
                     )
 
-                    tvRecordedDurationReceived.text = getDurestion()
+                    tvRecordedDurationReceived.text = "00:00"
                     Log.e("MAX", mediaPlayer.duration.toString())
                     song_seekbar_received.max = mediaPlayer.duration
 
@@ -155,14 +155,17 @@ class ChatAdapter(
                             progress: Int,
                             fromUser: Boolean
                         ) {
-                            // song_seekbar_received.progress = progress
-                            Log.e("Progress", progress.toString())
+                            try {
+                                tvRecordedDurationReceived.text =
+                                    getDurestion(mediaPlayer.currentPosition.toLong()+1)
+                                Log.e("Progress", progress.toString())
+                            } catch (e: java.lang.Exception) {
+                                tvRecordedDurationReceived.text =chatMessage.duration
+                            }
                         }
 
                         override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                        override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-                        }
+                        override fun onStopTrackingTouch(seekBar: SeekBar) {}
                     })
 
                 } else {
@@ -202,11 +205,12 @@ class ChatAdapter(
             } else {
                 visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, llMessageSend)
                 tvMessageSend.text = chatMessage.message
-                Utils.setHtmlText(tvMessageSend,chatMessage.message)
+                Utils.setHtmlText(tvMessageSend, chatMessage.message)
                 tvMessageSend.setOnClickListener {
                     onChatMessageClick.onChatMessageClick(chatMessage.message, position)
                 }
-                tvMessageSendTime.text = Utils.convertTimestampToMessageFormat(chatMessage.timestamp)
+                tvMessageSendTime.text =
+                    Utils.convertTimestampToMessageFormat(chatMessage.timestamp)
             }
 
             if (currentPlayingPosition != -1) {
@@ -243,7 +247,7 @@ class ChatAdapter(
                         song_seekbar_send
                     )
 
-                    tvRecordedDurationSend.text = getDurestion()
+                    tvRecordedDurationSend.text = "00:00"
                     Log.e("MAX", mediaPlayer.duration.toString())
                     song_seekbar_send.max = mediaPlayer.duration
 
@@ -254,8 +258,13 @@ class ChatAdapter(
                             progress: Int,
                             fromUser: Boolean
                         ) {
-                            song_seekbar_send.progress = progress
-                            Log.e("Progress", progress.toString())
+                            try {
+                                tvRecordedDurationSend.text =
+                                    getDurestion(mediaPlayer.currentPosition.toLong()+1)
+                                Log.e("Progress", progress.toString())
+                            } catch (e: java.lang.Exception) {
+                                tvRecordedDurationSend.text =chatMessage.duration
+                            }
                         }
 
                         override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -306,7 +315,6 @@ class ChatAdapter(
                     )
                 }
                 mediaPlayer.start()
-
                 val mHandler = Handler(Looper.getMainLooper())
                 activity.runOnUiThread(object : Runnable {
                     override fun run() {
@@ -317,7 +325,7 @@ class ChatAdapter(
                                 if (adapterPosition == currentPlayingPosition) {
                                     seekBar.progress = mCurrentPosition
                                 } else {
-                                    //seekBar.progress = 0
+
                                 }
                             }
 
@@ -328,7 +336,7 @@ class ChatAdapter(
                     }
                 })
 
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -392,14 +400,14 @@ class ChatAdapter(
     override fun getItemCount() = chatMsgList.size
 
 
-    private fun getDurestion(): String {
+    private fun getDurestion(duration: Long): String {
         return java.lang.String.format(
             "%02d:%02d",
-            TimeUnit.MILLISECONDS.toMinutes(mediaPlayer.duration.toLong()),
-            TimeUnit.MILLISECONDS.toSeconds(mediaPlayer.duration.toLong()) -
+            TimeUnit.MILLISECONDS.toMinutes(duration),
+            TimeUnit.MILLISECONDS.toSeconds(duration) -
                     TimeUnit.MINUTES.toSeconds(
                         TimeUnit.MILLISECONDS.toMinutes(
-                            mediaPlayer.duration.toLong()
+                            duration
                         )
                     )
         )

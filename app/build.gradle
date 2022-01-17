@@ -31,8 +31,25 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            buildConfigField 'String', 'SERVER','"https://app.namasteyapp.com/api/"'
+            buildConfigField 'String', 'MESSAGES','"Messages"'
+            buildConfigField 'String', 'CHATS','"Chats"'
+            buildConfigField 'String', 'LAST_MESSAGE','"Last_message"'
+            buildConfigField 'String', 'IMAGES','"Images"'
+            buildConfigField 'String', 'VOICE','"Voice"'
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField 'String', 'SERVER','"https://staging.namasteyapp.com/api/"'
+            buildConfigField 'String', 'MESSAGES','"MessagesTest"'
+            buildConfigField 'String', 'CHATS','"Chats"'
+            buildConfigField 'String', 'LAST_MESSAGE','"Last_message"'
+            buildConfigField 'String', 'IMAGES','"ImagesTest"'
+            buildConfigField 'String', 'VOICE','"VoiceTest"'
+            debuggable true
+            minifyEnabled false
         }
     }
     dataBinding {

@@ -173,7 +173,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.safetyBean.is_share,
                 Constants.KEY_IS_SHARE_PROFILE_SAFETY
             )
-            btnMembership.visibility = View.VISIBLE
+         //   btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),

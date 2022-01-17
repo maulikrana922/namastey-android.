@@ -1,6 +1,7 @@
 package com.namastey.utils
 
 import android.os.Environment
+import com.namastey.BuildConfig
 import java.io.File
 
 object Constants {
@@ -33,18 +34,32 @@ object Constants {
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
-    //    Test url
-    const val BASE = "https://staging.namasteyapp.com/api/"
+    //    Build config
+    const val BASE = BuildConfig.SERVER
     const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
+
     object FirebaseConstant {
-        var MESSAGES = "MessagesTest"
-        var CHATS = "Chats"
-        var LAST_MESSAGE = "Last_message"
-        var IMAGES = "ImagesTest"
-        var VOICE = "VoiceTest"
+        var MESSAGES = BuildConfig.MESSAGES
+        var CHATS = BuildConfig.CHATS
+        var LAST_MESSAGE = BuildConfig.LAST_MESSAGE
+        var IMAGES = BuildConfig.IMAGES
+        var VOICE = BuildConfig.VOICE
         var MSG_TYPE_IMAGE = "MsgTypeImage"
         var MSG_TYPE_VOICE = "MsgTypeVoice"
     }
+
+    //    Test url
+//    const val BASE = "https://staging.namasteyapp.com/api/"
+//    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
+//    object FirebaseConstant {
+//        var MESSAGES = "MessagesTest"
+//        var CHATS = "Chats"
+//        var LAST_MESSAGE = "Last_message"
+//        var IMAGES = "ImagesTest"
+//        var VOICE = "VoiceTest"
+//        var MSG_TYPE_IMAGE = "MsgTypeImage"
+//        var MSG_TYPE_VOICE = "MsgTypeVoice"
+//    }
 
     //    Live url
 //    const val BASE = "https://app.namasteyapp.com/api/"
@@ -402,7 +417,7 @@ object Constants {
     const val PERMISSION_CONTACTS = 118
     const val PERMISSION_AUDIO = 116
     const val FILTER_OK = 107
-    const val PROFILE_VIEW=105
+    const val PROFILE_VIEW = 105
     const val ADD_LINK = 108
     const val REQUEST_CODE = 109
     const val REQUEST_CODE_EDUCATION = 110

@@ -3460,7 +3460,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun sendMessageToMultiple(dashboardBean: DashboardBean) {
-        bottomSheetDialogShare.dismiss()
+        bottomSheetDialogShareApp.dismiss()
 
         for (profileBean in selectedShareProfile) {
             Log.e(TAG, "userId: \t $profileBean")
