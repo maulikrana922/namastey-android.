@@ -40,7 +40,6 @@ class ChatAdapter(
     private val LEFT_CHAT = 2
     private var currentPlayingPosition = -1
     private lateinit var mediaPlayer: MediaPlayer
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == LEFT_CHAT) {
             val layoutOne: View = LayoutInflater.from(parent.context)
@@ -125,8 +124,12 @@ class ChatAdapter(
                 onChatMessageClick.onChatImageClick(chatMessage.url)
             }
             ivRecordReceived.setOnClickListener {
-                if (currentPlayingPosition != -1)
-                    notifyItemChanged(currentPlayingPosition)
+
+                /*    if (currentPlayingPosition != -1) {
+                        isRefresh = true
+                        notifyItemChanged(currentPlayingPosition)
+                    }*/
+
 
                 if (adapterPosition != currentPlayingPosition) {
                     currentPlayingPosition = adapterPosition
@@ -136,6 +139,7 @@ class ChatAdapter(
                     }
 
                     ivRecordReceived.setImageResource(R.drawable.ic_pause_white)
+
                     startMediaPlayer(
                         chatMessage.url,
                         adapterPosition,
@@ -147,7 +151,6 @@ class ChatAdapter(
                     Log.e("MAX", mediaPlayer.duration.toString())
                     song_seekbar_received.max = mediaPlayer.duration
 
-
                     song_seekbar_received.setOnSeekBarChangeListener(object :
                         SeekBar.OnSeekBarChangeListener {
                         override fun onProgressChanged(
@@ -157,10 +160,10 @@ class ChatAdapter(
                         ) {
                             try {
                                 tvRecordedDurationReceived.text =
-                                    getDurestion(mediaPlayer.currentPosition.toLong()+1)
+                                    getDurestion(mediaPlayer.currentPosition.toLong() + 1)
                                 Log.e("Progress", progress.toString())
                             } catch (e: java.lang.Exception) {
-                                tvRecordedDurationReceived.text =chatMessage.duration
+                                tvRecordedDurationReceived.text = chatMessage.duration
                             }
                         }
 
@@ -172,18 +175,19 @@ class ChatAdapter(
                     if (::mediaPlayer.isInitialized) {
                         if (mediaPlayer.isPlaying) {
                             mediaPlayer.pause()
+                            ivRecordReceived.setImageResource(R.drawable.ic_play_white)
                         } else {
                             mediaPlayer.start()
+                            ivRecordReceived.setImageResource(R.drawable.ic_pause_white)
                         }
                     }
                 }
-
-
             }
         }
     }
 
-    inner class MessageSendProfileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MessageSendProfileViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
 
 
         fun bindSend(position: Int) = with(itemView) {
@@ -192,7 +196,10 @@ class ChatAdapter(
                 "ChatAdapter",
                 "MessageSendProfileViewHolder: ReceiverId: \t ${chatMessage.receiver}"
             )
-            Log.e("ChatAdapter", "MessageSendProfileViewHolder: SenderId: \t ${chatMessage.sender}")
+            Log.e(
+                "ChatAdapter",
+                "MessageSendProfileViewHolder: SenderId: \t ${chatMessage.sender}"
+            )
             if (chatMessage.message == Constants.FirebaseConstant.MSG_TYPE_IMAGE && chatMessage.url.isNotEmpty()) {
                 visibleSendMessage(flImageSend, llMessageSend, llRecordingSend, flImageSend)
                 GlideLib.loadImage(activity, ivImageSend, chatMessage.url)
@@ -224,10 +231,12 @@ class ChatAdapter(
             ivImageSend.setOnClickListener {
                 onChatMessageClick.onChatImageClick(chatMessage.url)
             }
-            song_seekbar_send.thumbTintList = ColorStateList.valueOf(Color.parseColor("#F30D46"))
+            song_seekbar_send.thumbTintList =
+                ColorStateList.valueOf(Color.parseColor("#F30D46"))
             song_seekbar_send.progressBackgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#595959"))
-            song_seekbar_send.progressTintList = ColorStateList.valueOf(Color.parseColor("#F30D46"))
+            song_seekbar_send.progressTintList =
+                ColorStateList.valueOf(Color.parseColor("#F30D46"))
 
             ivRecordSend.setOnClickListener {
                 if (currentPlayingPosition != -1)
@@ -260,10 +269,10 @@ class ChatAdapter(
                         ) {
                             try {
                                 tvRecordedDurationSend.text =
-                                    getDurestion(mediaPlayer.currentPosition.toLong()+1)
+                                    getDurestion(mediaPlayer.currentPosition.toLong() + 1)
                                 Log.e("Progress", progress.toString())
                             } catch (e: java.lang.Exception) {
-                                tvRecordedDurationSend.text =chatMessage.duration
+                                tvRecordedDurationSend.text = chatMessage.duration
                             }
                         }
 
