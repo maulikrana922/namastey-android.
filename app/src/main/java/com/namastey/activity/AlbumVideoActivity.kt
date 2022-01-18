@@ -850,7 +850,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
     private fun shareWhatsApp(videoBean: VideoBean) {
         try {
-            val pm: PackageManager = packageManager
+     /*       val pm: PackageManager = packageManager
             pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -865,7 +865,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 //                    Intent.EXTRA_STREAM,
 //                    Uri.parse(videoBean.video_url)
 //                )
-            startActivity(sendIntent)
+            startActivity(sendIntent)*/
+
+
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+            waIntent.setPackage("com.whatsapp")
+
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(waIntent, "Share with"))
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(
                 this@AlbumVideoActivity,

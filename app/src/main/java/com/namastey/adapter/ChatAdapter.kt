@@ -239,9 +239,9 @@ class ChatAdapter(
                 ColorStateList.valueOf(Color.parseColor("#F30D46"))
 
             ivRecordSend.setOnClickListener {
-                if (currentPlayingPosition != -1)
+                /*if (currentPlayingPosition != -1)
                     notifyItemChanged(currentPlayingPosition)
-
+*/
                 if (adapterPosition != currentPlayingPosition) {
                     currentPlayingPosition = adapterPosition
                     if (::mediaPlayer.isInitialized) {
@@ -299,8 +299,10 @@ class ChatAdapter(
                     if (::mediaPlayer.isInitialized) {
                         if (mediaPlayer.isPlaying) {
                             mediaPlayer.pause()
+                            ivRecordSend.setImageResource(R.drawable.ic_play_white)
                         } else {
                             mediaPlayer.start()
+                            ivRecordSend.setImageResource(R.drawable.ic_pause_white)
                         }
                     }
                 }
