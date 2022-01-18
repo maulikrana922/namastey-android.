@@ -454,6 +454,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.facebook) -> {
                     facebookLink = socialBean.link
                     if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "FacebookUserName")
                         tvFacebook.text = socialBean.username
                         tvFacebook.visibility = View.VISIBLE
                     }
@@ -531,6 +532,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 getString(R.string.instagram) -> {
                     if (socialBean.link.isNotEmpty()) {
 //                        tvInstaUserName.text = sessionManager.getStringValue("InstagramUsername")
+                        sessionManager.setStringValue(socialBean.username, "InstagramUsername")
                         tvInstaUserName.text = socialBean.username
                         tvInstaUserName.visibility = View.VISIBLE
                     }
@@ -627,6 +629,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.spotify) -> {
                     if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "SpotifyUsername")
                         tvSpotify.text = socialBean.username
                         tvSpotify.visibility = View.VISIBLE
                     }
@@ -675,6 +678,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 }
                 getString(R.string.twitter) -> {
                     if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "TwitterUserName")
                         tvTwitter.text = socialBean.username
                         tvTwitter.visibility = View.VISIBLE
                     }
