@@ -70,7 +70,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var pictureFile: File? = null
     private var recordDuration = ""
-
+    private lateinit var mediaPlayer: MediaPlayer
     //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private var storage = Firebase.storage
@@ -608,6 +608,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         super.onDestroy()
         if (::listenerRegistration.isInitialized)
             listenerRegistration.remove()
+
+        if (::mediaPlayer.isInitialized)
+            mediaPlayer.stop()
     }
 
     fun onClickSendMessage(view: View) {
@@ -898,6 +901,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         val intent = Intent(this@ChatActivity, ImageDisplayActivity::class.java)
         intent.putExtra("imageUrl", imageUrl)
         openActivity(intent)
+    }
+
+    override fun onItemViewClick(mediaPlayer: MediaPlayer) {
+        this.mediaPlayer=mediaPlayer
     }
 
     override fun onChatMessageClick(message: String, position: Int) {

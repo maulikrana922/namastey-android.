@@ -315,6 +315,7 @@ class ChatAdapter(
                     )
                 }
                 mediaPlayer.start()
+                onChatMessageClick.onItemViewClick(mediaPlayer)
                 val mHandler = Handler(Looper.getMainLooper())
                 activity.runOnUiThread(object : Runnable {
                     override fun run() {
