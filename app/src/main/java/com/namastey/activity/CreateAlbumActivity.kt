@@ -111,7 +111,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
     override fun onSuccess(msg: String) {
         Log.d("Success : ", msg)
 
-        openActivity(this@CreateAlbumActivity, ProfileActivity())
+//        openActivity(this@CreateAlbumActivity, ProfileActivity())
     }
 
     /**
@@ -255,7 +255,7 @@ class CreateAlbumActivity : BaseActivity<ActivityCreateAlbumBinding>(), CreateAl
 
             createAlbumViewModel.createProfile(jsonObject)
         } else {
-            openActivity(this@CreateAlbumActivity, ProfileActivity())
+//            openActivity(this@CreateAlbumActivity, ProfileActivity())
         }
     }
 

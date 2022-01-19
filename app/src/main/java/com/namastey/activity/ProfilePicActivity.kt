@@ -28,8 +28,6 @@ import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfilePicViewModel
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.ivProfileUser
 import kotlinx.android.synthetic.main.activity_profile_pic.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*

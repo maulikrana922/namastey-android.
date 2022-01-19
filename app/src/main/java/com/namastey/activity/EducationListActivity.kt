@@ -11,7 +11,6 @@ import com.namastey.adapter.EducationAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityEducationListBinding
-import com.namastey.fragment.EducationFragment
 import com.namastey.listeners.OnEducationItemClick
 import com.namastey.model.EducationBean
 import com.namastey.model.JobBean
@@ -136,21 +135,21 @@ class EducationListActivity : BaseActivity<ActivityEducationListBinding>(), Educ
     }
 
     fun onClickAddEducation(view: View) {
-        addFragment(
-            EducationFragment.getInstance(
-                true, EducationBean()
-            ),
-            Constants.EDUCATION_FRAGMENT
-        )
+//        addFragment(
+//            EducationFragment.getInstance(
+//                true, EducationBean()
+//            ),
+//            Constants.EDUCATION_FRAGMENT
+//        )
     }
 
     override fun onEducationItemClick(educationBean: EducationBean, position: Int) {
         this.position = position
-        addFragment(
-            EducationFragment.getInstance(
-                true, educationBean
-            ),
-            Constants.EDUCATION_FRAGMENT
-        )
+//        addFragment(
+//            EducationFragment.getInstance(
+//                true, educationBean
+//            ),
+//            Constants.EDUCATION_FRAGMENT
+//        )
     }
 }

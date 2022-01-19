@@ -18,7 +18,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.EditProfileActivity
 import com.namastey.activity.ProfileInterestActivity
 import com.namastey.customViews.AppPreferences
 import com.namastey.customViews.AuthenticationDialog
@@ -647,7 +646,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 "  &response_type=code"
 //        profileInterestViewModel.getInstagram(instagramUrl)
 
-        authenticationDialog = AuthenticationDialog(activity as EditProfileActivity, this)
+//        authenticationDialog = AuthenticationDialog(activity as EditProfileActivity, this)
         authenticationDialog.setCancelable(true)
 //        authenticationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 //        authenticationDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -697,12 +696,6 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
             (activity as ProfileInterestActivity).onActivityReenter(
                 Constants.ADD_LINK,
                 Intent()
-            )
-        } else if (activity is EditProfileActivity) {
-            targetFragment!!.onActivityResult(
-                Constants.REQUEST_CODE,
-                Activity.RESULT_OK,
-                Intent().putExtra("fromAddLink", true)
             )
         }
        // fragmentManager!!.popBackStack()

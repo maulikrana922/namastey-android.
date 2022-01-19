@@ -36,7 +36,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ShareAppViewModel
 import kotlinx.android.synthetic.main.dialog_following_user.view.*
-import kotlinx.android.synthetic.main.fragment_education.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
 import org.jetbrains.anko.doAsync
 import java.util.*

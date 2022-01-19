@@ -108,7 +108,6 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_member.view.*
 import kotlinx.android.synthetic.main.dialog_report_warning.*
-import kotlinx.android.synthetic.main.fragment_education.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

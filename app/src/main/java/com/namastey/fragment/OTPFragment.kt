@@ -81,7 +81,7 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
                 isFromDashboard = arguments!!.getBoolean("isFromDashboard", false)
             }
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                openActivity(requireActivity(), ProfileBasicInfoActivity())
+//                openActivity(requireActivity(), ProfileBasicInfoActivity())
             }else {
                 if (isFromDashboard)   // Open dashboard activity
                 {
@@ -102,9 +102,9 @@ class OTPFragment : BaseFragment<FragmentOtpBinding>(), OTPView {
                 ivSplashBackground.visibility = View.VISIBLE
 
                 if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                    val intent = Intent(requireActivity(),ProfileBasicInfoActivity::class.java)
-                    intent.putExtra("fromRegister",true)
-                    openActivity(intent)
+//                    val intent = Intent(requireActivity(),ProfileBasicInfoActivity::class.java)
+//                    intent.putExtra("fromRegister",true)
+//                    openActivity(intent)
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(Intent(activity, DashboardActivity::class.java))
