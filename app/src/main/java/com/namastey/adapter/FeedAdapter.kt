@@ -192,7 +192,7 @@ class FeedAdapter(
                 if (dashboardBean.who_can_comment == 1) {
                     if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
                         when (dashboardBean.comments) {
-                           0,1 -> {
+                           1 -> {
                                 tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
                                     .plus(activity.getString(R.string.comment))
                             }
@@ -213,7 +213,7 @@ class FeedAdapter(
                 } else {
                     if (dashboardBean.is_comment == 0) {
                         when (dashboardBean.comments) {
-                            0,1 -> {
+                            1 -> {
                                 tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
                                     .plus(activity.getString(R.string.comment))
                             }

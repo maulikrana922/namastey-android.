@@ -67,7 +67,7 @@ class AlbumDetailAdapter(
                 viewAlbumDetails.visibility = View.VISIBLE
                 llAddAlbum.visibility = View.GONE
                 tvVideoViewers.text = videoBean.viewers.toString()
-                if (videoBean.comments == 1 || videoBean.comments == 0) {
+                if (videoBean.comments == 1) {
                     tvVideoComment.text =
                         videoBean.comments.toString().plus(" ")
                             .plus(activity.getString(R.string.comment))

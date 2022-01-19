@@ -193,7 +193,7 @@ class AlbumVideoAdapter(
                 }
             }
 
-                            //tvFeedLike.text = activity.getString(R.string.like)
+            //tvFeedLike.text = activity.getString(R.string.like)
 //                if (videoBean.is_like == 1) {
 //                    tvFeedLike.text = activity.getString(R.string.liked)
 //                    tvFeedLike.setTextColor(
@@ -244,18 +244,38 @@ class AlbumVideoAdapter(
                 tvCommentFeed.text = activity.getString(R.string.comments_off)
             } else {
                 if (videoBean.who_can_comment == 1) {
-                    if (videoBean.is_comment == 0 && videoBean.is_follow == 1) {
-                        tvCommentFeed.text = videoBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
-                        showCommentProfilePic(videoBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
+                    if (videoBean.is_follow == 1) {
+                        if (videoBean.comments == 1) {
+                            tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                                .plus(activity.getString(R.string.comment))
+                        } else {
+                            tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                                .plus(activity.getString(R.string.comments))
+                        }
+                        showCommentProfilePic(
+                            videoBean,
+                            ivCommentFirst,
+                            ivCommentSecond,
+                            ivCommentThird
+                        )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
                 } else {
                     if (videoBean.is_comment == 0) {
-                        tvCommentFeed.text = videoBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
-                        showCommentProfilePic(videoBean,ivCommentFirst,ivCommentSecond,ivCommentThird)
+                        if (videoBean.comments == 1) {
+                            tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                                .plus(activity.getString(R.string.comment))
+                        } else {
+                            tvCommentFeed.text = videoBean.comments.toString().plus(" ")
+                                .plus(activity.getString(R.string.comments))
+                        }
+                        showCommentProfilePic(
+                            videoBean,
+                            ivCommentFirst,
+                            ivCommentSecond,
+                            ivCommentThird
+                        )
                     } else {
                         tvCommentFeed.text = activity.getString(R.string.comments_off)
                     }
@@ -285,12 +305,12 @@ class AlbumVideoAdapter(
                 onVideoClick.onUpnextClick(position)
             }
 
-            if (tvCommentFeed.text.contains(activity.getString(R.string.comments_off))){
+            if (tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {
                 tvCommentFeed.setOnClickListener { openCustomAlertDialog() }
             }
             if (videoBean.is_comment == 0 && !tvCommentFeed.text.contains(activity.getString(R.string.comments_off))) {
                 tvCommentFeed.setOnClickListener {
-                    onVideoClick.onCommentClick(videoBean.id,videoBean.user_id)
+                    onVideoClick.onCommentClick(videoBean.id, videoBean.user_id)
                 }
                 ivCommentFirst.setOnClickListener {
                     onVideoClick.onCommentClick(videoBean.id, videoBean.user_id)
@@ -310,6 +330,7 @@ class AlbumVideoAdapter(
         }
 
     }
+
     private fun showCommentProfilePic(
         videoBean: VideoBean,
         ivCommentFirst: ImageView,

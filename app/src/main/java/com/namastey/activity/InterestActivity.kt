@@ -33,6 +33,7 @@ import com.namastey.viewModel.ChooseInterestViewModel
 import kotlinx.android.synthetic.main.activity_edit_interest.*
 import kotlinx.android.synthetic.main.activity_interest.*
 import kotlinx.android.synthetic.main.activity_interest.llEditInterestTag
+import kotlinx.android.synthetic.main.row_sub_category.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import java.util.*
 import javax.inject.Inject
@@ -213,41 +214,66 @@ class InterestActivity : BaseActivity<ActivityInterestBinding>(), ChooseInterest
                         )
                     }
                     tvSubCategory.setOnClickListener {
-                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
-                                this,
-                                R.drawable.rounded_white_solid_white_corner
-                            )?.constantState
-                        ) {
-                            subCategoryIdList.add(subCategoryBean.id)
-                            ++profileTagCount
-                            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-                            Utils.roundShapeGradient(
-                                tvSubCategory, intArrayOf(
-                                    Color.parseColor(categoryBean.startColor),
-                                    Color.parseColor(categoryBean.endColor)
-                                )
-                            )
-                        } else {
-                            subCategoryIdList.remove(subCategoryBean.id)
-                            --profileTagCount
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
-                        }
 
                         if (selectInterestIdList.contains(subCategoryBean.id)) {
                             selectCategoryId.remove(categoryBean.id)
                             selectInterestIdList.remove(subCategoryBean.id)
+                            setItemBackGround(tvSubCategory,subCategoryBean,categoryBean)
                         } else {
-                            selectCategoryId.add(categoryBean.id)
-                            selectInterestIdList.add(subCategoryBean.id)
+                            if (selectInterestIdList.size < Constants.MIN_CHOOSE_INTEREST) {
+                                selectCategoryId.add(categoryBean.id)
+                                selectInterestIdList.add(subCategoryBean.id)
+                                setItemBackGround(tvSubCategory,subCategoryBean,categoryBean)
+                            } else {
+                                object : CustomAlertDialog(
+                                    this@InterestActivity,
+                                    resources.getString(R.string.msg_min_choose_interest),
+                                    getString(R.string.ok),
+                                    ""
+                                ) {
+                                    override fun onBtnClick(id: Int) {
+                                        dismiss()
+                                    }
+                                }.show()
+                            }
                         }
+
+                        tvCount.text = selectInterestIdList.size.toString().plus("/9")
+
                     }
+
                 }
 
                 llEditInterestTag.addView(view)
                 view.chipProfileTag.visibility = View.VISIBLE
+
+
             }
         }
 
+    }
+
+    fun setItemBackGround(tvSubCategory: TextView,subCategoryBean:CategoryBean,categoryBean:CategoryBean){
+
+        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                this,
+                R.drawable.rounded_white_solid_white_corner
+            )?.constantState
+        ) {
+            subCategoryIdList.add(subCategoryBean.id)
+            ++profileTagCount
+            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+            Utils.roundShapeGradient(
+                tvSubCategory, intArrayOf(
+                    Color.parseColor(categoryBean.startColor),
+                    Color.parseColor(categoryBean.endColor)
+                )
+            )
+        } else {
+            subCategoryIdList.remove(subCategoryBean.id)
+            --profileTagCount
+            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
+        }
     }
 
     override fun onSuccess(interestList: ArrayList<InterestBean>) {

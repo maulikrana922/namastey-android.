@@ -29,6 +29,8 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.SelectCategoryViewModel
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.activity_edit_interest.*
+import kotlinx.android.synthetic.main.activity_edit_interest.llEditInterestTag
+import kotlinx.android.synthetic.main.activity_interest.*
 import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
 import kotlinx.android.synthetic.main.view_profile_tag.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
@@ -162,7 +164,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
                     if (subCategoryBean.is_selected == 1) {
                         subCategoryIdList.add(subCategoryBean.id)
                         ++profileTagCount
-                       // tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                        // tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
                         Utils.roundShapeGradient(
                             tvSubCategory, intArrayOf(
                                 Color.parseColor(categoryBean.startColor),
@@ -170,38 +172,83 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
                             )
                         )
                     }
+                    tvEditCount.text = subCategoryIdList.size.toString().plus("/9")
+
                     tvSubCategory.setOnClickListener {
-                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
-                                this,
-                                R.drawable.rounded_white_solid_white_corner
-                            )?.constantState
-                        ) {
-                            subCategoryIdList.add(subCategoryBean.id)
-                            ++profileTagCount
-                            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-                            Utils.roundShapeGradient(
-                                tvSubCategory, intArrayOf(
-                                    Color.parseColor(categoryBean.startColor),
-                                    Color.parseColor(categoryBean.endColor)
-                                )
-                            )
-                        } else {
-                            subCategoryIdList.remove(subCategoryBean.id)
-                            --profileTagCount
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
-                        }
+                        /*  if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                                  this,
+                                  R.drawable.rounded_white_solid_white_corner
+                              )?.constantState
+                          ) {
+                              subCategoryIdList.add(subCategoryBean.id)
+                              ++profileTagCount
+                              //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                              Utils.roundShapeGradient(
+                                  tvSubCategory, intArrayOf(
+                                      Color.parseColor(categoryBean.startColor),
+                                      Color.parseColor(categoryBean.endColor)
+                                  )
+                              )
+                          } else {
+                              subCategoryIdList.remove(subCategoryBean.id)
+                              --profileTagCount
+                              tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
+                          }*/
                         if (selectedCategoryList.any { it.id == subCategoryBean.id }) {
                             selectedCategoryList.removeIf { bean -> bean.id == subCategoryBean.id }
+                            setItemBackGround(tvSubCategory, subCategoryBean, categoryBean)
                         } else {
-                            selectedCategoryList.add(subCategoryBean)
+                            if (selectedCategoryList.size < Constants.MIN_CHOOSE_INTEREST) {
+                                setItemBackGround(tvSubCategory, subCategoryBean, categoryBean)
+                                selectedCategoryList.add(subCategoryBean)
+                            } else {
+                                object : CustomAlertDialog(
+                                    this@EditInterestActivity,
+                                    resources.getString(R.string.msg_min_choose_interest),
+                                    getString(R.string.ok),
+                                    ""
+                                ) {
+                                    override fun onBtnClick(id: Int) {
+                                        dismiss()
+                                    }
+                                }.show()
+                            }
                         }
-
+                        tvEditCount.text = selectedCategoryList.size.toString().plus("/9")
                     }
                 }
 
                 llEditInterestTag.addView(view)
                 view.chipProfileTag.visibility = View.VISIBLE
             }
+        }
+    }
+
+
+    fun setItemBackGround(
+        tvSubCategory: TextView,
+        subCategoryBean: CategoryBean,
+        categoryBean: CategoryBean
+    ) {
+
+        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                this,
+                R.drawable.rounded_white_solid_white_corner
+            )?.constantState
+        ) {
+            subCategoryIdList.add(subCategoryBean.id)
+            ++profileTagCount
+            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+            Utils.roundShapeGradient(
+                tvSubCategory, intArrayOf(
+                    Color.parseColor(categoryBean.startColor),
+                    Color.parseColor(categoryBean.endColor)
+                )
+            )
+        } else {
+            subCategoryIdList.remove(subCategoryBean.id)
+            --profileTagCount
+            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
         }
     }
 
