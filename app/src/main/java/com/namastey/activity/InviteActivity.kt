@@ -92,6 +92,9 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
                     if (numeric) {
                         viewPhone.visibility = View.VISIBLE
                         tvContactName.text = "+91 ".plus(newText)
+                        if (newText.length>=10)
+                            tvInvite.visibility=View.VISIBLE
+                        else tvInvite.visibility=View.INVISIBLE
                     } else
                         viewPhone.visibility = View.GONE
                     adapter.filter(newText)

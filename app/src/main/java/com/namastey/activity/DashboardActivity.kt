@@ -28,8 +28,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -114,7 +112,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.startActivityForResult
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -174,7 +171,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
-    private var isFromProfileActivity=false
+    private var isFromProfileActivity = false
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -334,6 +331,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         } else {
             ivUser.setImageResource(R.drawable.ic_top_profile)
         }
+
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideApp.with(this@DashboardActivity)
                 .load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
@@ -700,22 +698,23 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun shareWhatsApp(dashboardBean: DashboardBean) {
         try {
-         /*   val pm: PackageManager = packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            sendIntent.type = "text/plain"
-            sendIntent.setPackage("com.whatsapp")
+            /*   val pm: PackageManager = packageManager
+               pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+               val sendIntent = Intent(Intent.ACTION_SEND)
+               sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+               sendIntent.type = "text/plain"
+               sendIntent.setPackage("com.whatsapp")
 
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
-            )
-            startActivity(sendIntent)*/
+               sendIntent.putExtra(
+                   Intent.EXTRA_TEXT,
+                   getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+               )
+               startActivity(sendIntent)*/
 
-             val waIntent = Intent(Intent.ACTION_SEND)
+            val waIntent = Intent(Intent.ACTION_SEND)
             waIntent.type = "text/plain"
-            val text = getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+            val text =
+                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
             waIntent.setPackage("com.whatsapp")
 
             waIntent.putExtra(Intent.EXTRA_TEXT, text)
@@ -1325,10 +1324,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         )
     }
 
-     private fun manageVisibility(view: View) {
+    private fun manageVisibility(view: View) {
 
         view.constLow.setOnClickListener {
-           // view.tvOfferLow.visibility = VISIBLE
+            // view.tvOfferLow.visibility = VISIBLE
             view.viewSelectedLow.visibility = View.VISIBLE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
@@ -1363,7 +1362,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             view.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-           // view.tvOfferLow.visibility = GONE
+            // view.tvOfferLow.visibility = GONE
             view.viewSelectedLow.visibility = View.GONE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
@@ -1385,7 +1384,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             view.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-           // view.tvOfferLow.visibility = GONE
+            // view.tvOfferLow.visibility = GONE
             view.viewSelectedLow.visibility = View.GONE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
@@ -1490,6 +1489,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                sessionManager.setBooleanValue(false,Constants.ISNOTIFICATION)
                 val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
                 intent.putExtra("isFromDashboard", true)
                 openActivity(intent)
@@ -1604,11 +1604,11 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } catch (e: Exception) {
                 Log.e("Exception", e.message.toString())
             }
-        }else if (requestCode == Constants.PROFILE_VIEW) {
+        } else if (requestCode == Constants.PROFILE_VIEW) {
             try {
-                val follow = data?.getIntExtra("result",0)
+                val follow = data?.getIntExtra("result", 0)
                 val dashboardBean = feedList[position]
-                    dashboardBean.is_follow = follow!!
+                dashboardBean.is_follow = follow!!
                 feedList[position] = dashboardBean
                 feedAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
@@ -2023,7 +2023,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
-    override fun onUserProfileClick(dashboardBean: DashboardBean,position: Int) {
+    override fun onUserProfileClick(dashboardBean: DashboardBean, position: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -2032,12 +2032,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
-            isFromProfileActivity=true
+            isFromProfileActivity = true
             this.position = position
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, dashboardBean.user_id)
             //openActivity(intent)
-            startActivityForResult(intent,Constants.PROFILE_VIEW)
+            startActivityForResult(intent, Constants.PROFILE_VIEW)
         }
     }
 
@@ -2263,6 +2263,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
 
     }
+
     private fun setupBillingClient(view: View) {
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
@@ -2786,6 +2787,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
         LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
             myBroadcastReceiver, IntentFilter("countDown")
         )
+        if (sessionManager.getBooleanValue(Constants.ISNOTIFICATION)) {
+            ivNotificationBg.visibility = View.VISIBLE
+        }else{
+            ivNotificationBg.visibility = View.INVISIBLE
+        }
     }
 
     override fun onPause() {

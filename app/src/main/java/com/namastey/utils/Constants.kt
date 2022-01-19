@@ -444,4 +444,5 @@ object Constants {
     const val NOTIFICATION_PENDING_INTENT = "notification-pending-intent"
     const val KEY_NOTIFICATION = "notification"
 
+    const val ISNOTIFICATION="isNotification"
 }

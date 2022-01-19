@@ -51,6 +51,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        SessionManager(applicationContext).setBooleanValue(true,Constants.ISNOTIFICATION)
         Log.e("MessageService", "Message data payload: " + remoteMessage.data)
         try {
             val mainJsonObject = JSONObject(remoteMessage.data as Map<*, *>)

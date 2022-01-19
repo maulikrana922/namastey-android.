@@ -153,6 +153,18 @@
             app:layout_constraintTop_toTopOf="@id/ivUser" />
 
         <ImageView
+            android:id="@+id/ivNotificationBg"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:elevation="@dimen/_4sdp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/ivInbox"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivInbox"
+            android:src="@drawable/ic_whatsapp_background"
+            />
+        <ImageView
             android:id="@+id/ivInbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

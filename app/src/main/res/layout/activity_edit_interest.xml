@@ -13,7 +13,7 @@
             type="com.namastey.viewModel.SelectCategoryViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
@@ -24,7 +24,8 @@
             android:id="@+id/llToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivEditInterestBack"
@@ -59,11 +60,26 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/interest"
             android:textSize="@dimen/actionBarTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llToolbar"
             app:typeface="MULI_SEMIBOLD" />
+
+        <com.namastey.customViews.CustomTextView
+            android:id="@+id/tvEditCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:text="0/9"
+            android:textColor="@color/colorRed"
+            app:layout_constraintBottom_toBottomOf="@+id/txtEditInterestTitle"
+            app:layout_constraintEnd_toEndOf="@+id/llToolbar"
+            app:layout_constraintTop_toTopOf="@+id/txtEditInterestTitle" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEditInterestTitle">
 
             <LinearLayout
                 android:id="@+id/llEditInterestTag"
@@ -73,7 +89,7 @@
                 android:paddingBottom="@dimen/_20sdp" />
         </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>
