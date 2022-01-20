@@ -13,7 +13,6 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.ChatActivity
 import com.namastey.activity.LikeProfileActivity
-import com.namastey.activity.MembershipActivity
 import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory

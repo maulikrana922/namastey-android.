@@ -840,7 +840,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     private fun stopRecording() {
-        recorder?.apply {
+        recorder.apply {
             stop()
             release()
         }
@@ -889,7 +889,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     fun onClickBuyNow(view: View) {
-        openActivity(this@ChatActivity, MembershipActivity())
+       // openActivity(this@ChatActivity, MembershipActivity())
     }
 
     override fun chatSettingData(isBlock: Int) {
@@ -1045,9 +1045,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private fun dialogReportUser() {
         object : CustomCommonNewAlertDialog(
             this,
-            matchesListBean!!.casual_name,
+            matchesListBean.casual_name,
             getString(R.string.msg_report_user),
-            matchesListBean!!.profile_pic,
+            matchesListBean.profile_pic,
             getString(R.string.confirm),
             resources.getString(R.string.cancel)
         ) {
@@ -1081,12 +1081,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
         bottomSheetDialogReport.tvReportSpam.setOnClickListener {
             bottomSheetDialogReport.dismiss()
-            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_spam))
+            chatViewModel.reportUser(matchesListBean.id, getString(R.string.its_spam))
         }
 
         bottomSheetDialogReport.tvReportInappropriate.setOnClickListener {
             bottomSheetDialogReport.dismiss()
-            chatViewModel.reportUser(matchesListBean!!.id, getString(R.string.its_inappropriate))
+            chatViewModel.reportUser(matchesListBean.id, getString(R.string.its_inappropriate))
         }
 
         bottomSheetDialogReport.show()
@@ -1095,9 +1095,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private fun dialogBlockUser(block: Int, msg: String) {
         object : CustomCommonNewAlertDialog(
             this,
-            matchesListBean!!.casual_name,
+            matchesListBean.casual_name,
             msg,
-            matchesListBean!!.profile_pic,
+            matchesListBean.profile_pic,
             getString(R.string.confirm),
             resources.getString(R.string.cancel)
         ) {
@@ -1105,7 +1105,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 when (id) {
                     btnAlertOk.id -> {
                         dismiss()
-                        chatViewModel.blockUser(matchesListBean!!.id, block)
+                        chatViewModel.blockUser(matchesListBean.id, block)
                     }
                 }
             }
