@@ -18,8 +18,8 @@ android {
         applicationId "com.namastey"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 16
-        versionName "1.7"
+        versionCode 17
+        versionName "1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        ndk {
 //            abiFilters 'armeabi-v7a', 'arm64-v8a'
