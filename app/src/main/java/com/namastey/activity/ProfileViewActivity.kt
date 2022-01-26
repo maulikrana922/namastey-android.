@@ -2282,6 +2282,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         appIntent.action = Intent.ACTION_VIEW
                         appIntent.data = uri
                         startActivity(appIntent)
+                    }else {
+                        val browserIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(instagramLink)
+                        )
+                        startActivity(browserIntent)
                     }
                 } catch (e: ActivityNotFoundException) {
                     val browserIntent = Intent(
