@@ -181,7 +181,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     true,
                     false,
-                    false
+                    false,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
 
@@ -206,7 +207,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    false
+                    false,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -729,7 +731,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    isSavedAlbum
+                    isSavedAlbum,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }

@@ -42,7 +42,10 @@ abstract class CustomCommonNewAlertDialog(
                 activity,
                 R.drawable.ic_block_new
             ), null, null, null
-        )
+        ) else if (msg == activity.getString(R.string.msg_boost_start)) {
+            tvAlertMsg.setCompoundDrawablesWithIntrinsicBounds(
+                null, null, null, null)
+        }
 
         btnAlertOk.setOnClickListener { v ->
             dismiss()

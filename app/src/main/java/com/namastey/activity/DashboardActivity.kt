@@ -75,6 +75,8 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_member.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_alert_new.*
+import kotlinx.android.synthetic.main.dialog_boost_complete.view.*
+import kotlinx.android.synthetic.main.dialog_boost_complete.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_member.view.*
 import kotlinx.android.synthetic.main.dialog_boost_member.view.constHigh
 import kotlinx.android.synthetic.main.dialog_boost_member.view.constLow
@@ -95,8 +97,6 @@ import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedHigh
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedLow
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedMedium
 import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
-import kotlinx.android.synthetic.main.dialog_boost_success.view.*
-import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
@@ -2102,18 +2102,19 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun showBoostStartConfirmationDialog() {
-        object : CustomCommonAlertDialog(
-            this@DashboardActivity,
-            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString().plus(" ")
-                .plus(getString(R.string.msg_boost_left)),
+
+        object : CustomCommonNewAlertDialog(
+            this,
+            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME),
             getString(R.string.msg_boost_start),
             sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
             getString(R.string.use_boost),
-            resources.getString(R.string.no_thanks)
+            resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnAlertOk.id -> {
+                        dismiss()
                         sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
                         sessionManager.setLongValue(
                             System.currentTimeMillis(),
@@ -2408,7 +2409,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val view: View =
-            LayoutInflater.from(this).inflate(R.layout.dialog_boost_success, viewGroup, false)
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_complete, viewGroup, false)
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
@@ -2430,9 +2431,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
             }
         }
 
-        view.tvNoThanks.setOnClickListener {
-            alertDialog.dismiss()
-        }
     }
 
     private fun showBoostPendingDialog(myTimer: Long) {

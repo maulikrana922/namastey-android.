@@ -24,7 +24,8 @@ class AlbumDetailAdapter(
     var onSelectUserItemClick: OnSelectUserItemClick,
     var fromEdit: Boolean,
     var fromFilter: Boolean,
-    var isSavedAlbum: Boolean
+    var isSavedAlbum: Boolean,
+    var size:Int
 
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
@@ -34,7 +35,7 @@ class AlbumDetailAdapter(
         )
     )
 
-    override fun getItemCount() = videoList.size
+    override fun getItemCount() = size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)

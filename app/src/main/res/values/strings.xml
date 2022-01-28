@@ -582,7 +582,7 @@
     <string name="month">Month</string>
     <string name="okay">Okay</string>
    <!-- <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best results.</string>-->
-    <string name="dialog_pending">You are visible to more people in your city.\n\nCarpe diem!.</string>
+    <string name="dialog_pending">You are being seen by more people. Keep swiping for best results.</string>
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
     <string name="buy_boost">Buy Boost</string>
