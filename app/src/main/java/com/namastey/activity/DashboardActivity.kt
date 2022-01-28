@@ -97,6 +97,7 @@ import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedHigh
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedLow
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedMedium
 import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
+import kotlinx.android.synthetic.main.dialog_boost_show.*
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
@@ -2102,18 +2103,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun showBoostStartConfirmationDialog() {
-
-        object : CustomCommonNewAlertDialog(
+        object : CustomBoostDialog(
             this,
-            sessionManager.getStringValue(Constants.KEY_CASUAL_NAME),
-            getString(R.string.msg_boost_start),
-            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-            getString(R.string.use_boost),
-            resources.getString(R.string.cancel)
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
-                    btnAlertOk.id -> {
+                    btnUseBoost.id -> {
                         dismiss()
                         sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
                         sessionManager.setLongValue(
@@ -2125,6 +2121,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 }
             }
         }.show()
+
     }
 
     private fun showCustomDialog(position: Int) {
