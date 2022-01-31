@@ -29,6 +29,9 @@ import com.namastey.utils.Utils
 import com.namastey.viewModel.SelectCategoryViewModel
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.activity_edit_interest.*
+import kotlinx.android.synthetic.main.activity_edit_interest.llEditInterestTag
+import kotlinx.android.synthetic.main.activity_interest.*
+import kotlinx.android.synthetic.main.row_filter_subcategory.view.*
 import kotlinx.android.synthetic.main.view_profile_tag.*
 import kotlinx.android.synthetic.main.view_profile_tag.view.*
 import java.util.*
@@ -161,36 +164,91 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
                     if (subCategoryBean.is_selected == 1) {
                         subCategoryIdList.add(subCategoryBean.id)
                         ++profileTagCount
-                        tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-
+                        // tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                        Utils.roundShapeGradient(
+                            tvSubCategory, intArrayOf(
+                                Color.parseColor(categoryBean.startColor),
+                                Color.parseColor(categoryBean.endColor)
+                            )
+                        )
                     }
+                    tvEditCount.text = subCategoryIdList.size.toString().plus("/9")
+
                     tvSubCategory.setOnClickListener {
-
-                        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
-                                this,
-                                R.drawable.rounded_white_solid_white_corner
-                            )?.constantState
-                        ) {
-                            subCategoryIdList.add(subCategoryBean.id)
-                            ++profileTagCount
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
-
-                        } else {
-                            subCategoryIdList.remove(subCategoryBean.id)
-                            --profileTagCount
-                            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
-                        }
+                        /*  if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                                  this,
+                                  R.drawable.rounded_white_solid_white_corner
+                              )?.constantState
+                          ) {
+                              subCategoryIdList.add(subCategoryBean.id)
+                              ++profileTagCount
+                              //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+                              Utils.roundShapeGradient(
+                                  tvSubCategory, intArrayOf(
+                                      Color.parseColor(categoryBean.startColor),
+                                      Color.parseColor(categoryBean.endColor)
+                                  )
+                              )
+                          } else {
+                              subCategoryIdList.remove(subCategoryBean.id)
+                              --profileTagCount
+                              tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
+                          }*/
                         if (selectedCategoryList.any { it.id == subCategoryBean.id }) {
                             selectedCategoryList.removeIf { bean -> bean.id == subCategoryBean.id }
+                            setItemBackGround(tvSubCategory, subCategoryBean, categoryBean)
                         } else {
-                            selectedCategoryList.add(subCategoryBean)
+                            if (selectedCategoryList.size < Constants.MIN_CHOOSE_INTEREST) {
+                                setItemBackGround(tvSubCategory, subCategoryBean, categoryBean)
+                                selectedCategoryList.add(subCategoryBean)
+                            } else {
+                                object : CustomAlertDialog(
+                                    this@EditInterestActivity,
+                                    resources.getString(R.string.msg_min_choose_interest),
+                                    getString(R.string.ok),
+                                    ""
+                                ) {
+                                    override fun onBtnClick(id: Int) {
+                                        dismiss()
+                                    }
+                                }.show()
+                            }
                         }
+                        tvEditCount.text = selectedCategoryList.size.toString().plus("/9")
                     }
                 }
 
                 llEditInterestTag.addView(view)
                 view.chipProfileTag.visibility = View.VISIBLE
             }
+        }
+    }
+
+
+    fun setItemBackGround(
+        tvSubCategory: TextView,
+        subCategoryBean: CategoryBean,
+        categoryBean: CategoryBean
+    ) {
+
+        if (tvSubCategory.background.constantState == ContextCompat.getDrawable(
+                this,
+                R.drawable.rounded_white_solid_white_corner
+            )?.constantState
+        ) {
+            subCategoryIdList.add(subCategoryBean.id)
+            ++profileTagCount
+            //tvSubCategory.setBackgroundResource(R.drawable.rounded_pink_solid_all_corner)
+            Utils.roundShapeGradient(
+                tvSubCategory, intArrayOf(
+                    Color.parseColor(categoryBean.startColor),
+                    Color.parseColor(categoryBean.endColor)
+                )
+            )
+        } else {
+            subCategoryIdList.remove(subCategoryBean.id)
+            --profileTagCount
+            tvSubCategory.setBackgroundResource(R.drawable.rounded_white_solid_white_corner)
         }
     }
 
@@ -222,7 +280,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
     }
 
     fun onEditSaveClick(view: View) {
-        if (selectedCategoryList.size >= Constants.MIN_CHOOSE_INTEREST) {
+        if (selectedCategoryList.size == Constants.MIN_CHOOSE_INTEREST) {
             editProfileApiCall()
         } else {
             object : CustomAlertDialog(
@@ -238,7 +296,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
 
     private fun editProfileApiCall() {
 
-        val subCategoryId=ArrayList<Int>()
+        val subCategoryId = ArrayList<Int>()
         val jsonArrayInterest = JsonArray()
         for (i in selectedCategoryList.indices)
             jsonArrayInterest.add(selectedCategoryList[i].id)
@@ -249,7 +307,7 @@ class EditInterestActivity : BaseActivity<ActivityEditInterestBinding>(),
         )
 
 
-       selectCategoryViewModel.editProfile(jsonObject)
+        selectCategoryViewModel.editProfile(jsonObject)
     }
 
     override fun onBackPressed() {

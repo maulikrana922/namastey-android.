@@ -260,7 +260,8 @@ open class PassportContentActivity : FragmentActivity(),
         context: Context,
         imageUrl: String,
         _name: String?
-    ): Bitmap? {
+    ): Bitmap {
+
         val marker: View =
             (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
                 R.layout.view_custom_image_marker,
@@ -269,12 +270,14 @@ open class PassportContentActivity : FragmentActivity(),
         val markerImage: CircleImageView =
             marker.findViewById<View>(R.id.ivUserProfile) as CircleImageView
         //markerImage.setImageResource(imageUrl)
-
-        GlideApp
-            .with(this@PassportContentActivity)
-            .load(imageUrl)
-            .into(markerImage)
-
+        try {
+            GlideApp
+                .with(this@PassportContentActivity)
+                .load(imageUrl)
+                .into(markerImage)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         marker.layoutParams = ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -289,6 +292,7 @@ open class PassportContentActivity : FragmentActivity(),
         val canvas = Canvas(bitmap)
         marker.draw(canvas)
         return bitmap
+
     }
 
     override fun onBackPressed() {

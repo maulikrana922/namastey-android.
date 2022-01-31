@@ -9,10 +9,12 @@ class SocialAccountBean() : Parcelable {
     var id: Long = 0
     var name: String = ""
     var link: String = ""
+    var username: String = ""
 
     constructor(parcel: Parcel) : this() {
         parcel.readLong()
         parcel.readString() ?: ""
+        parcel.readString()
         parcel.readString()
     }
 
@@ -20,6 +22,7 @@ class SocialAccountBean() : Parcelable {
         parcel.writeLong(id)
         parcel.writeString(name)
         parcel.writeString(link)
+        parcel.writeString(username)
     }
 
     override fun describeContents(): Int {

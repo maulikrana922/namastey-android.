@@ -1,15 +1,19 @@
 package com.namastey.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
@@ -17,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.devlomi.record_view.OnRecordListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
@@ -45,6 +50,7 @@ import kotlinx.android.synthetic.main.dialog_common_new_alert.*
 import java.io.File
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -63,7 +69,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var chatMsgList = ArrayList<ChatMessage>()
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var pictureFile: File? = null
-
+    private var recordDuration = ""
+    private lateinit var mediaPlayer: MediaPlayer
     //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private var storage = Firebase.storage
@@ -79,7 +86,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private lateinit var listenerRegistration: ListenerRegistration
 
     private val TAG = "ChatActivity"
-    private var recorder: MediaRecorder? = null
+    private lateinit var recorder: MediaRecorder
+
+    //lateinit var mediaRecorder: MediaRecorder
     private var voiceFileName: String? = ""
     private var isFromProfile = false
     private var isFromMessage = false
@@ -225,7 +234,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                         Log.d("TAG", "No such document")
                     }
                 }
-
                 chatAdapter =
                     ChatAdapter(this@ChatActivity, sessionManager.getUserId(), chatMsgList, this)
                 rvChat.adapter = chatAdapter
@@ -276,59 +284,226 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                     }
                 }
 
-                ivMic.setOnTouchListener(object : View.OnTouchListener {
-                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                        when (event?.action) {
-                            MotionEvent.ACTION_UP -> {
-                                if (matchesListBean.is_block == 0) {
-                                    if (matchesListBean.is_match == 1) {
-                                        isAudioPermissionGranted()
-                                        ivMic.setPadding(7, 7, 7, 7)
-                                    }
-                                }
-                                return true
-                            }
-                            MotionEvent.ACTION_DOWN -> {
-                                Log.d(TAG, "Call stop record....")
-                                if (matchesListBean.is_block == 0) {
-                                    if (matchesListBean.is_match == 1) {
-                                        ivMic.setPadding(0, 0, 0, 0)
-                                        stopRecording()
-                                    }
-                                }
-                            }
-                        }
+                /*   ivMic.setOnTouchListener(object : View.OnTouchListener {
+                       override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                           when (event?.action) {
+                               MotionEvent.ACTION_UP -> {
+                                   if (matchesListBean.is_block == 0) {
+                                       if (matchesListBean.is_match == 1) {
+                                           isAudioPermissionGranted()
+                                           ivMic.setPadding(7, 7, 7, 7)
+                                       }
+                                   }
+                                   return true
+                               }
+                               MotionEvent.ACTION_DOWN -> {
+                                   Log.d(TAG, "Call stop record....")
+                                   if (matchesListBean.is_block == 0) {
+                                       if (matchesListBean.is_match == 1) {
+                                           ivMic.setPadding(0, 0, 0, 0)
+                                           stopRecording()
+                                       }
+                                   }
+                               }
+                           }
 
-                        return v?.onTouchEvent(event) ?: true
-                    }
-                })
+                           return v?.onTouchEvent(event) ?: true
+                       }
+                   })*/
+
                 hideChatMoreButton(false)
+            }
+
+            //btnRecord.isListenForRecord = false
+            setVoiceRecorder()
+            if (ContextCompat.checkSelfPermission(
+                    this@ChatActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    this@ChatActivity,
+                    Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // recordView.setOnRecordListener(null)
+                ActivityCompat.requestPermissions(
+                    this@ChatActivity,
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO
+                    ),
+                    111
+                )
+            } else {
+//                btnRecord.setOnRecordClickListener(OnRecordClickListener {
+//                    Toast.makeText(this@ChatActivity, "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT)
+//                        .show()
+//                    Log.d("RecordButton", "RECORD BUTTON CLICKED")
+//                })
+
             }
 
         }
 //============================ For now this feature not release ============================
-//        edtMessage.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {}
-//            override fun beforeTextChanged(
-//                s: CharSequence?, start: Int,
-//                count: Int, after: Int
-//            ) {
-//            }
-//
-//            override fun onTextChanged(
-//                s: CharSequence, start: Int,
-//                before: Int, count: Int
-//            ) {
-//                if (s.isNotEmpty()) {
-//                    ivSend.visibility = View.VISIBLE
-//                    ivMic.visibility = View.GONE
-//                } else {
-//                    ivMic.visibility = View.VISIBLE
-//                    ivSend.visibility = View.GONE
-//                }
-//            }
-//        })
+        edtMessage.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(
+                s: CharSequence?, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.isNotEmpty()) {
+                    ivSend.visibility = View.VISIBLE
+                    btnRecord.visibility = View.GONE
+                } else {
+                    btnRecord.visibility = View.VISIBLE
+                    ivSend.visibility = View.GONE
+                }
+            }
+        })
 //============================ For now this feature not release ============================
+    }
+
+    private fun setVoiceRecorder() {
+
+
+        recordView.setCounterTimeColor(Color.parseColor("#a3a3a3"))
+        recordView.setSmallMicColor(ContextCompat.getColor(this@ChatActivity, R.color.colorAccent))
+        recordView.setSlideToCancelTextColor(Color.parseColor("#a3a3a3"))
+        recordView.setLessThanSecondAllowed(false)
+        recordView.setSlideToCancelText(getString(R.string.slide_to_cancel))
+        recordView.setCustomSounds(R.raw.record_start, R.raw.record_finished, R.raw.record_error)
+//        recordView.isRecordButtonGrowingAnimationEnabled = true
+
+        btnRecord.setRecordView(recordView)
+
+        recordView.setOnRecordListener(object : OnRecordListener {
+            override fun onStart() {
+                recordView.visibility = View.VISIBLE
+                edtMessage.visibility = View.GONE
+                //Start Recording..
+                Log.d("RecordView", "onStart")
+                if (ContextCompat.checkSelfPermission(
+                        this@ChatActivity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(
+                        this@ChatActivity,
+                        Manifest.permission.RECORD_AUDIO
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    recordView.setOnRecordListener(null)
+                    ActivityCompat.requestPermissions(
+                        this@ChatActivity,
+                        arrayOf(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.RECORD_AUDIO
+                        ),
+                        111
+                    )
+                } else {
+                    startVoice()
+                }
+            }
+
+            override fun onCancel() {
+                //On Swipe To Cancel
+                Log.d("RecordView", "onCancel")
+                recordView.visibility = View.GONE
+                edtMessage.visibility = View.VISIBLE
+            }
+
+            override fun onFinish(recordTime: Long) {
+                Log.d("RecordView", "onFinish")
+                recordView.visibility = View.GONE
+                edtMessage.visibility = View.VISIBLE
+                recorder.stop()
+                val voiceUri = Uri.fromFile(File(voiceFileName!!))
+                recordDuration = String.format("%02d:%02d ",
+                    recordTime.let { TimeUnit.MILLISECONDS.toMinutes(it) },
+                    recordTime.let { TimeUnit.MILLISECONDS.toSeconds(it) }
+                        .minus(TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(recordTime))))
+                Log.d("RecordTime", recordDuration)
+
+                uploadFile(voiceUri, false)
+            }
+
+
+            override fun onLessThanSecond() {
+                //When the record time is less than One Second
+                Log.d("RecordView", "onLessThanSecond")
+                recordView.visibility = View.GONE
+                edtMessage.visibility = View.VISIBLE
+            }
+        })
+
+    }
+
+    private fun startVoice() {
+        recordView.visibility = View.VISIBLE
+        if (ContextCompat.checkSelfPermission(
+                this@ChatActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this@ChatActivity,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@ChatActivity,
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO
+                ),
+                111
+            )
+        } else {
+
+            playSound(R.raw.record_start, true)
+        }
+    }
+
+    private fun playSound(soundRes: Int, isRecord: Boolean) {
+        try {
+            val player = MediaPlayer()
+            val afd = resources.openRawResourceFd(soundRes) ?: return
+            player.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            afd.close()
+            player.prepare()
+            player.start()
+            player.setOnCompletionListener { mp ->
+                mp.release()
+                if (isRecord) {
+                    try {
+                        MediaRecorderReady()
+                        recorder.prepare()
+                        recorder.start()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            player.isLooping = false
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun MediaRecorderReady() {
+        if (::recorder.isInitialized) {
+            recorder.release()
+            // recorder = null!!
+        }
+        recorder = MediaRecorder()
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        recorder.setOutputFile(voiceFileName)
     }
 
     fun hideChatMoreButton(isHide: Boolean) {
@@ -433,6 +608,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         super.onDestroy()
         if (::listenerRegistration.isInitialized)
             listenerRegistration.remove()
+
+        if (::mediaPlayer.isInitialized)
+            mediaPlayer.stop()
     }
 
     fun onClickSendMessage(view: View) {
@@ -460,8 +638,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0,
+            recordDuration
         )
+
         val chatId = if (sessionManager.getUserId() < matchesListBean.id)
             sessionManager.getUserId().toString().plus("_").plus(matchesListBean.id)
         else
@@ -516,7 +696,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             showMsg(getString(R.string.msg_block_user_chat))
         } else {
             if (matchesListBean.is_match == 1 || isFollowMe) {
-                selectImage()  //capturePhoto()
+                //selectImage()  //capturePhoto()
+                openGalleryForImage()
             }
         }
     }
@@ -592,8 +773,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     private fun uploadFile(photoUri: Uri, isImageUpload: Boolean) {
         chatViewModel.setIsLoading(true)
-
-        Log.d(TAG, "Upload file started....")
+        Log.d(TAG, "Upload file started.... $recordDuration")
         val fileStorage: StorageReference = if (isImageUpload) {
             storageRef.child(
                 Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
@@ -612,7 +792,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                     val imageUrl = it.toString()
                     chatViewModel.setIsLoading(false)
                     Log.d(TAG, "File upload success....")
-                    ivMic.setPadding(15, 15, 15, 15)
+                    // ivMic.setPadding(15, 15, 15, 15)
                     if (isImageUpload)
                         sendMessage(Constants.FirebaseConstant.MSG_TYPE_IMAGE, imageUrl)
                     else
@@ -664,7 +844,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             stop()
             release()
         }
-        recorder = null
+        recorder = null!!
         val voiceUri = Uri.fromFile(File(voiceFileName!!))
         Log.d(TAG, "Recording ended....")
         uploadFile(voiceUri, false)
@@ -691,8 +871,11 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     override fun onStop() {
         super.onStop()
-        recorder?.release()
-        recorder = null
+        if (::recorder.isInitialized) {
+            //recorder.stop()
+            recorder.release()
+        }
+        // recorder = null
         isChatActivityOpen = false
         userId = 0
 //        player?.release()
@@ -718,6 +901,10 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         val intent = Intent(this@ChatActivity, ImageDisplayActivity::class.java)
         intent.putExtra("imageUrl", imageUrl)
         openActivity(intent)
+    }
+
+    override fun onItemViewClick(mediaPlayer: MediaPlayer) {
+        this.mediaPlayer=mediaPlayer
     }
 
     override fun onChatMessageClick(message: String, position: Int) {
@@ -815,16 +1002,16 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private fun dialogMatchDeleteUser() {
         object : CustomCommonNewAlertDialog(
             this,
-            matchesListBean!!.casual_name,
+            matchesListBean.casual_name,
             getString(R.string.msg_delete_matches),
-            matchesListBean!!.profile_pic,
+            matchesListBean.profile_pic,
             getString(R.string.confirm),
             resources.getString(R.string.cancel)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
                     btnAlertOk.id -> {
-                        chatViewModel.deleteMatches(matchesListBean!!.id)
+                        chatViewModel.deleteMatches(matchesListBean.id)
                         dismiss()
                     }
                 }

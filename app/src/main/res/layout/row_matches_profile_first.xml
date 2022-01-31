@@ -65,9 +65,9 @@
                 android:layout_below="@+id/ivLike"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:elevation="@dimen/_8sdp"
                 android:gravity="center"
                 android:text="0"
-                android:elevation="@dimen/_8sdp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:typeface="MULI_EXTRA_BOLD" />

@@ -1,5 +1,6 @@
 package com.namastey.uiView
 
+import com.namastey.model.CategoryBean
 import com.namastey.model.InterestBean
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.roomDB.entity.User
@@ -16,4 +17,7 @@ interface ChooseInterestView : BaseView {
     fun onSuccessAllCategoryList(interestList: ArrayList<InterestSubCategoryBean>)
 
     fun onSuccessCreateOrUpdate(user: User)
+
+    fun onSuccessCategory(categoryBeanList: ArrayList<CategoryBean>)
+
 }

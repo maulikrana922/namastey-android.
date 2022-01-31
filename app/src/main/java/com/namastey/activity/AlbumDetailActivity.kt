@@ -181,7 +181,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     true,
                     false,
-                    false
+                    false,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
 
@@ -206,7 +207,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    false
+                    false,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }
@@ -652,7 +654,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
     override fun onItemClick(userId: Long, position: Int) {
         if (position == 0 && !isSavedAlbum) {
             this.position = 0
-            selectVideo()
+//            selectVideo()
+            isReadWritePermissionGranted()
         } else {
             this.position = position
             if (isSavedAlbum)
@@ -728,7 +731,8 @@ class AlbumDetailActivity : BaseActivity<ActivityAlbumDetailBinding>(), CreateAl
                     this,
                     fromEdit,
                     false,
-                    isSavedAlbum
+                    isSavedAlbum,
+                    postList.size
                 )
             rvAlbumDetail.adapter = albumDetailAdapter
         }

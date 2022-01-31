@@ -32,6 +32,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.namastey.customViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/9"
+            android:id="@+id/tvCount"
+            android:textColor="@color/colorRed"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
+        <com.namastey.customViews.CustomTextView
             android:id="@+id/tvInterest"
             style="@style/tvWrapBlackStyle"
             android:layout_marginStart="@dimen/_15sdp"
@@ -45,8 +56,12 @@
         <com.namastey.customViews.CustomTextView
             android:id="@+id/tvInterestMsg"
             style="@style/tvWrapBlackStyle"
+            android:layout_width="0dp"
+            android:textSize="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="@string/msg_interest"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvInterest"
             app:layout_constraintTop_toBottomOf="@id/tvInterest" />
 
@@ -58,6 +73,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_15sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/btnContinue"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,17 +81,32 @@
             app:spanCount="3"
             tools:listitem="@layout/row_choose_interest" />
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btnContinue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvInterestMsg">
+
+            <LinearLayout
+                android:id="@+id/llEditInterestTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_20sdp" />
+
+        </androidx.core.widget.NestedScrollView>
+
         <com.namastey.customViews.CustomButton
             android:id="@+id/btnContinue"
             style="@style/btnRedAllCornerStyle"
             android:layout_marginBottom="@dimen/_25sdp"
             android:onClick="onClickContinue"
+            android:stateListAnimator="@null"
             android:text="@string/continues"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:stateListAnimator="@null"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

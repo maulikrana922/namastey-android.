@@ -119,21 +119,36 @@
                     app:layout_constraintTop_toBottomOf="@id/rvSubcategory"
                     app:typeface="MULI_SEMIBOLD" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvFilterTranding"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nestedScrollView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:outlineSpotShadowColor="@color/colorGray"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvTranding"
-                    app:spanCount="2"
-                    tools:listitem="@layout/row_album_detail" />
+                    tools:context=".MainActivity">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFilterTranding"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:nestedScrollingEnabled="false"
+                            android:outlineSpotShadowColor="@color/colorGray"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="2"
+                            tools:listitem="@layout/row_album_detail" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+
                 <LinearLayout
                     android:id="@+id/llEmpty"
                     android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package com.namastey.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.gson.JsonObject
 import com.namastey.BR
 import com.namastey.R
@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.groupSelectInterest
 import kotlinx.android.synthetic.main.activity_settings.tvSelectInterest
 import kotlinx.android.synthetic.main.dialog_alert.*
-import java.io.IOException
+import kotlinx.io.errors.IOException
 import java.util.*
 import javax.inject.Inject
 
@@ -103,7 +103,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
             when (interestIn) {
 
                 1 -> {
-                    tvSelectInterest.text = getString(R.string.men)
+                    tvSelectInterest.text = getString(R.string.male)
                     tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_male_sign,
                         0,
@@ -114,7 +114,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 }
 
                 2 -> {
-                    tvSelectInterest.text = getString(R.string.female)
+                    tvSelectInterest.text = getString(R.string.women)
                     tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.ic_female_sign,
                         0,
@@ -293,8 +293,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations){
-                    Log.e("Location",location.latitude.toString())
+                for (location in locationResult.locations) {
+                    Log.e("Location", location.latitude.toString())
                 }
             }
         }
@@ -304,38 +304,69 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         locationManager.requestLocationUpdates(
             LocationManager.NETWORK_PROVIDER,
             MIN_TIME_FOR_UPDATE,
-            MIN_DISTANCE_FOR_UPDATE, this);
+            MIN_DISTANCE_FOR_UPDATE, this
+        )
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location ->
+                latitude = location.latitude
+                longitude = location.longitude
+
+                val geocoder = Geocoder(this, Locale.getDefault())
+
+                try {
+                    val addresses = geocoder.getFromLocation(
+                        latitude,
+                        longitude,
+                        1
+                    )
+                    val city = if (addresses.isNotEmpty())
+                        addresses[0].locality
+                    else  resources.getString(R.string.my_current_location)
 
 
-        if (locationManager != null) {
+                    if (currentLocationFromDB != null) {
+                        if (currentLocationFromDB!!.city != "" && currentLocationFromDB!!.state != "") {
+                            if (realLatitude == latitude && realLongitude == longitude) {
+                                tvMyCurrentLocation.text =
+                                    resources.getString(R.string.my_current_location)
+                            } else {
+                                tvMyCurrentLocation.text = currentLocationFromDB!!.city.plus(", ")
+                                    .plus(currentLocationFromDB!!.state)
+                            }
+                        } else tvMyCurrentLocation.text = city
+                    } else {
+                        tvMyCurrentLocation.text = city
+                    }
+
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+                }
+            }
+
+
+   /*     if (locationManager != null) {
             val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                Log.e("Location",location.latitude.toString())
+                Log.e("Location", location.latitude.toString())
                 latitude = location.latitude;
                 longitude = location.longitude;
             }
+        }*/
+
         }
-        val geocoder = Geocoder(this, Locale.getDefault())
-        try {
-            val addresses = geocoder.getFromLocation(
-                latitude,
-                longitude,
-                1
-            )
-            val city = addresses[0].locality
-            tvMyCurrentLocation.text = city
-        } catch (e: IOException) {
-            e.printStackTrace()
-            tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+
+        private val mLocationListener = LocationListener {
+            //your code here
         }
-    }
-    private val mLocationListener = LocationListener {
-        //your code here
-    }
-    private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
-        tvInterestMen.setTextColor(Color.GRAY)
-        tvInterestWomen.setTextColor(Color.GRAY)
-        tvInterestEveryone.setTextColor(Color.GRAY)
+
+        private fun setSelectedTextColor(view: TextView, imageView: ImageView) {
+            tvInterestMen.setTextColor(Color.GRAY)
+            tvInterestWomen.setTextColor(Color.GRAY)
+            tvInterestEveryone.setTextColor(Color.GRAY)
 
 /*
         ivMenSelect.visibility = View.GONE
@@ -343,194 +374,200 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         ivEveryoneSelect.visibility = View.GONE
 */
 
-        imageView.visibility = View.VISIBLE
+            imageView.visibility = View.VISIBLE
 
-        view.setTextColor(Color.RED)
+            view.setTextColor(Color.RED)
 
-    }
+        }
 
-    fun onClickSettingsBack(view: View) {
-        onBackPressed()
-    }
+        fun onClickSettingsBack(view: View) {
+            onBackPressed()
+        }
 
-    override fun onBackPressed() {
-        finishActivity()
-    }
+        override fun onBackPressed() {
+            finishActivity()
+        }
 
-    fun onClickSettingInterestIn(view: View) {
-        val jsonObject = JsonObject()
-        when (view) {
+        fun onClickSettingInterestIn(view: View) {
+            val jsonObject = JsonObject()
+            when (view) {
 
-            tvSelectInterest -> {
-                if (groupSelectInterest.visibility == View.VISIBLE)
+                tvSelectInterest -> {
+                    if (groupSelectInterest.visibility == View.VISIBLE)
+                        groupSelectInterest.visibility = View.GONE
+                    else
+                        groupSelectInterest.visibility = View.VISIBLE
+                }
+
+
+                tvInterestMen -> {
+                    interestIn = 1
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_male_sign,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
+
                     groupSelectInterest.visibility = View.GONE
-                else
-                    groupSelectInterest.visibility = View.VISIBLE
-            }
-
-
-            tvInterestMen -> {
-                interestIn = 1
-                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_male_sign,
-                    0,
-                    R.drawable.ic_drop_down,
-                    0
-                )
-
-                groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.men)
+                    tvSelectInterest.text = getString(R.string.men)
 //                setSelectedTextColor(tvInterestMen, ivMenSelect)
-            }
-            tvInterestWomen -> {
-                interestIn = 2
-                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_female_sign,
-                    0,
-                    R.drawable.ic_drop_down,
-                    0
-                )
+                }
+                tvInterestWomen -> {
+                    interestIn = 2
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_female_sign,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
 
-                groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.female)
+                    groupSelectInterest.visibility = View.GONE
+                    tvSelectInterest.text = getString(R.string.women)
 //                setSelectedTextColor(tvInterestWomen, ivWomenSelect)
-            }
-            tvInterestEveryone -> {
-                interestIn = 3
-                tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_non_binary,
-                    0,
-                    R.drawable.ic_drop_down,
-                    0
-                )
+                }
+                tvInterestEveryone -> {
+                    interestIn = 3
+                    tvSelectInterest.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_non_binary,
+                        0,
+                        R.drawable.ic_drop_down,
+                        0
+                    )
 
-                groupSelectInterest.visibility = View.GONE
-                tvSelectInterest.text = getString(R.string.everyone)
+                    groupSelectInterest.visibility = View.GONE
+                    tvSelectInterest.text = getString(R.string.everyone)
 //                setSelectedTextColor(tvInterestEveryone, ivEveryoneSelect)
-            }
+                }
 //            1 = Men
 //            2 = Women
 //            3 = Everyone
+            }
+            jsonObject.addProperty(Constants.INTERESTED_IN_GENDER, interestIn)
+            Log.d("CreateProfile Request:", jsonObject.toString())
+            settingsViewModel.editProfile(jsonObject)
+
         }
-        jsonObject.addProperty(Constants.INTERESTED_IN_GENDER, interestIn)
-        Log.d("CreateProfile Request:", jsonObject.toString())
-        settingsViewModel.editProfile(jsonObject)
 
-    }
+        override fun onSuccess(msg: String) {
+            NamasteyApplication.instance.setIsUpdateProfile(true)
+            sessionManager.setInterestIn(interestIn)
+            sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
+            sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)
+            sessionManager.setStringValue(distance, Constants.DISTANCE)
+            if (switchGlobal.isChecked)
+                sessionManager.setIntegerValue(1, Constants.KEY_GLOBAL)
+            else
+                sessionManager.setIntegerValue(0, Constants.KEY_GLOBAL)
+        }
 
-    override fun onSuccess(msg: String) {
-        NamasteyApplication.instance.setIsUpdateProfile(true)
-        sessionManager.setInterestIn(interestIn)
-        sessionManager.setStringValue(maxAge, Constants.KEY_AGE_MAX)
-        sessionManager.setStringValue(minAge, Constants.KEY_AGE_MIN)
-        sessionManager.setStringValue(distance, Constants.DISTANCE)
-        if (switchGlobal.isChecked)
-            sessionManager.setIntegerValue(1, Constants.KEY_GLOBAL)
-        else
-            sessionManager.setIntegerValue(0, Constants.KEY_GLOBAL)
-    }
+        override fun onSuccessHideProfile(message: String) {
+            if (switchHideProfile.isChecked)
+                sessionManager.setIntegerValue(1, Constants.IS_HIDE)
+            else
+                sessionManager.setIntegerValue(0, Constants.IS_HIDE)
+        }
 
-    override fun onSuccessHideProfile(message: String) {
-        if (switchHideProfile.isChecked)
-            sessionManager.setIntegerValue(1, Constants.IS_HIDE)
-        else
-            sessionManager.setIntegerValue(0, Constants.IS_HIDE)
-    }
+        override fun onSuccessProfileType(message: String) {
+            if (switchPrivateAccount.isChecked)
+                sessionManager.setIntegerValue(1, Constants.PROFILE_TYPE)
+            else
+                sessionManager.setIntegerValue(0, Constants.PROFILE_TYPE)
+        }
 
-    override fun onSuccessProfileType(message: String) {
-        if (switchPrivateAccount.isChecked)
-            sessionManager.setIntegerValue(1, Constants.PROFILE_TYPE)
-        else
-            sessionManager.setIntegerValue(0, Constants.PROFILE_TYPE)
-    }
+        override fun onLogoutSuccess(msg: String) {
+            sessionManager.logout()
+            val intent = Intent(this@SettingsActivity, SignUpActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            openActivity(intent)
+        }
 
-    override fun onLogoutSuccess(msg: String) {
-        sessionManager.logout()
-        val intent = Intent(this@SettingsActivity, SignUpActivity::class.java)
-        intent.flags =
-            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        openActivity(intent)
-    }
+        override fun onLogoutFailed(msg: String, error: Int) {
+        }
 
-    override fun onLogoutFailed(msg: String, error: Int) {
-    }
+        fun onClickLogout(view: View) {
 
-    fun onClickLogout(view: View) {
-
-        object : CustomAlertDialog(
-            this@SettingsActivity,
-            resources.getString(R.string.msg_logout),
-            getString(R.string.logout),
-            getString(R.string.cancel)
-        ) {
-            override fun onBtnClick(id: Int) {
-                when (id) {
-                    btnPos.id -> {
-                        settingsViewModel.logOut()
-                    }
-                    btnNeg.id -> {
-                        dismiss()
+            object : CustomAlertDialog(
+                this@SettingsActivity,
+                resources.getString(R.string.msg_logout),
+                getString(R.string.logout),
+                getString(R.string.cancel)
+            ) {
+                override fun onBtnClick(id: Int) {
+                    when (id) {
+                        btnPos.id -> {
+                            settingsViewModel.logOut()
+                        }
+                        btnNeg.id -> {
+                            dismiss()
+                        }
                     }
                 }
+            }.show()
+        }
+
+        fun onClickAccountSettings(view: View) {
+            openActivity(this@SettingsActivity, AccountSettingsActivity())
+        }
+
+        fun onClickMyCurrentLocation(view: View) {
+            //startSearchLocationScreen()
+
+//            object : NotAvailableFeatureDialog(
+//                this,
+//                getString(R.string.location_not_available),
+//                getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
+//            ) {
+//                override fun onBtnClick(id: Int) {
+//                    dismiss()
+//                }
+//            }.show()
+
+            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
+            //startSearchLocationScreen()
+                openActivity(this, PassportContentActivity())
+            else {
+                val intent = Intent(this@SettingsActivity, MemberActivity::class.java)
+                openActivity(intent)
             }
-        }.show()
-    }
+        }
 
-    fun onClickAccountSettings(view: View) {
-        openActivity(this@SettingsActivity, AccountSettingsActivity())
-    }
+        private fun startSearchLocationScreen() {
+            val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
+            intent.putExtra("latitude", realLatitude)
+            intent.putExtra("longitude", realLongitude)
+            intent.putExtra("isFromSearch", true)
+            openActivity(intent)
+        }
 
-    fun onClickMyCurrentLocation(view: View) {
-        //startSearchLocationScreen()
+        private fun getLocation() {
+            appLocationService = AppLocationService(this)
+            val gpsLocation: Location? =
+                appLocationService.getLocation(LocationManager.GPS_PROVIDER)
+            if (gpsLocation != null) {
+                realLatitude = gpsLocation.latitude
+                realLongitude = gpsLocation.longitude
+                Log.e("DashboardActivity", "realLatitude: $realLatitude")
+                Log.e("DashboardActivity", "realLongitude: $realLongitude")
+            } else {
+                tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
+            }
+        }
 
-        /* object : NotAvailableFeatureDialog(
-             this,
-             getString(R.string.location_not_available),
-             getString(R.string.alert_msg_feature_not_available), R.drawable.ic_location
-         ) {
-             override fun onBtnClick(id: Int) {
-                 dismiss()
-             }
-         }.show()*/
-
-//        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1)
-//            startSearchLocationScreen()
-//        else {
-//            val intent = Intent(this@SettingsActivity, MembershipActivity::class.java)
-//            intent.putExtra("isFromAirport", true)
-//            openActivity(intent)
-//        }
-    }
-
-    private fun startSearchLocationScreen() {
-        val intent = Intent(this@SettingsActivity, SearchLocationActivity::class.java)
-        intent.putExtra("latitude", latitude)
-        intent.putExtra("longitude", longitude)
-        intent.putExtra("isFromSearch", true)
-        openActivity(intent)
-    }
-
-    private fun getLocation() {
-        appLocationService = AppLocationService(this)
-        val gpsLocation: Location? = appLocationService.getLocation(LocationManager.GPS_PROVIDER)
-        if (gpsLocation != null) {
-            realLatitude = gpsLocation.latitude
-            realLongitude = gpsLocation.longitude
+        override fun onLocationChanged(location: Location) {
+            realLatitude = location.latitude
+            realLongitude = location.longitude
             Log.e("DashboardActivity", "realLatitude: $realLatitude")
             Log.e("DashboardActivity", "realLongitude: $realLongitude")
-        }else{
-            tvMyCurrentLocation.text = resources.getString(R.string.my_current_location)
         }
     }
 
-    override fun onLocationChanged(location: Location) {
-        realLatitude = location.latitude
-        realLongitude = location.longitude
-        Log.e("DashboardActivity", "realLatitude: $realLatitude")
-        Log.e("DashboardActivity", "realLongitude: $realLongitude")
+    private fun LocationManager.requestLocationUpdates(
+        networkProvider: String,
+        minTimeBwUpdates: Long,
+        minDistanceChangeForUpdates: Float,
+        settingsActivity: SettingsActivity
+    ) {
+
     }
-}
-
-private fun LocationManager.requestLocationUpdates(networkProvider: String, minTimeBwUpdates: Long, minDistanceChangeForUpdates: Float, settingsActivity: SettingsActivity) {
-
-}

@@ -31,9 +31,6 @@ import com.namastey.uiView.ProfileInterestView
 import com.namastey.utils.Constants
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationRequest
-import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
@@ -591,7 +588,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         when (p0) {
             ivCloseAddLink -> {
                 Utils.hideKeyboard(requireActivity())
-                fragmentManager!!.popBackStack()
+                //fragmentManager!!.popBackStack()
             }
             tvAddLinkSave -> {
                 createRequest()
@@ -607,7 +604,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 twitterLogin()
             }
             edtSpotify -> {
-                val builder: AuthenticationRequest.Builder =
+                /*val builder: AuthenticationRequest.Builder =
                     AuthenticationRequest.Builder(
                         getString(R.string.spotify_client_id),
                         AuthenticationResponse.Type.TOKEN,
@@ -621,7 +618,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                     requireActivity(),
                     Constants.REQUEST_SPOTIFY,
                     request
-                )
+                )*/
             }
             ivFacebookDelete -> {
                 edtFacebook.setText("")
@@ -672,7 +669,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
         }
 
         if (requestCode == Constants.REQUEST_SPOTIFY) {
-            val response =
+           /* val response =
                 AuthenticationClient.getResponse(resultCode, data)
             when (response.type) {
                 AuthenticationResponse.Type.TOKEN -> {
@@ -685,7 +682,7 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 else -> {
                     Log.e("Social Login", response.toString())
                 }
-            }
+            }*/
         }
     }
 
@@ -708,10 +705,10 @@ class AddLinksFragment : BaseFragment<FragmentAddLinksBinding>(), ProfileInteres
                 Intent().putExtra("fromAddLink", true)
             )
         }
-        fragmentManager!!.popBackStack()
+       // fragmentManager!!.popBackStack()
     }
 
-    override fun onSuccessSpotify(spotifyUrl: String) {
+    override fun onSuccessSpotify(spotifyUrl: String,name:String) {
         Log.e("Spotify URL : ", spotifyUrl)
         edtSpotify.setText(spotifyUrl)
     }

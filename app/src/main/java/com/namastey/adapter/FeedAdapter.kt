@@ -3,6 +3,7 @@ package com.namastey.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
@@ -18,16 +20,17 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
-import com.namastey.utils.*
-import kotlinx.android.synthetic.main.dialog_common_alert.*
+import com.namastey.utils.Constants
+import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.GlideLib
+import com.namastey.utils.SessionManager
 import kotlinx.android.synthetic.main.row_feed.view.*
 import me.tankery.lib.circularseekbar.CircularSeekBar
-import me.tankery.lib.circularseekbar.CircularSeekBar.OnCircularSeekBarChangeListener
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class FeedAdapter(
@@ -37,19 +40,28 @@ class FeedAdapter(
     var sessionManager: SessionManager
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private val TAG = "FeedAdapter"
-
+    private var progressPercentage: Int = 0
     val handlerVideo = Handler(activity.mainLooper)
-
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
-        LayoutInflater.from(parent.context).inflate(
-            R.layout.row_feed, parent, false
-        )
-    )
+    private var prevTimer: Long = 1
+    private var isCount = false
+    /*  override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = FeedViewHolder(
+          LayoutInflater.from(parent.context).inflate(
+              R.layout.row_feed, parent, false
+          )
+      )*/
 
     override fun getItemCount() = feedList.size
 
     override fun onBindViewHolder(holderFeed: FeedViewHolder, position: Int) {
         holderFeed.bind(position, activity)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedAdapter.FeedViewHolder {
+        return FeedViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.row_feed, parent, false
+            )
+        )
     }
 
     inner class FeedViewHolder(@param:NonNull private val parent: View) :
@@ -66,7 +78,7 @@ class FeedAdapter(
         lateinit var ivFeedFollow: ImageView
         lateinit var ivFeedBoost: ImageView
         lateinit var ivComment: ImageView
-
+        lateinit var progressBarBoost: ProgressBar
 
         lateinit var tvCommentFeed: TextView
         lateinit var tvCommentCount: TextView
@@ -104,7 +116,7 @@ class FeedAdapter(
             tvFeedView = parent.findViewById(R.id.tvFeedView)
             tvFeedShare = parent.findViewById(R.id.tvFeedShare)
             tvFeedBoost = parent.findViewById(R.id.tvFeedBoost)
-
+            progressBarBoost = parent.findViewById(R.id.progressBarBoost)
             animationVideoLike = parent.findViewById(R.id.animationVideoLike)
             animationBoost = parent.findViewById(R.id.animationBoost)
 
@@ -120,7 +132,7 @@ class FeedAdapter(
             Log.e("FeedAdapter", "position: \t $position")
 
             if (position == itemCount - 1) {
-                (context as DashboardActivity).getFeedListApi(0,false)
+                (context as DashboardActivity).getFeedListApi(0, false)
             }
 
             handlerVideo.removeCallbacksAndMessages(null)
@@ -179,8 +191,16 @@ class FeedAdapter(
             } else {
                 if (dashboardBean.who_can_comment == 1) {
                     if (dashboardBean.is_comment == 0 && dashboardBean.is_follow == 1) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
+                        when (dashboardBean.comments) {
+                           1 -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comment))
+                            }
+                            else -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comments))
+                            }
+                        }
                         showCommentProfilePic(
                             dashboardBean,
                             ivCommentFirst,
@@ -192,8 +212,16 @@ class FeedAdapter(
                     }
                 } else {
                     if (dashboardBean.is_comment == 0) {
-                        tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
-                            .plus(activity.getString(R.string.comments))
+                        when (dashboardBean.comments) {
+                            1 -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comment))
+                            }
+                            else -> {
+                                tvCommentFeed.text = dashboardBean.comments.toString().plus(" ")
+                                    .plus(activity.getString(R.string.comments))
+                            }
+                        }
                         showCommentProfilePic(
                             dashboardBean,
                             ivCommentFirst,
@@ -213,7 +241,7 @@ class FeedAdapter(
             GlideLib.loadImage(activity, ivFeedProfile, dashboardBean.profile_url)
 
             if (dashboardBean.is_match == 1) {
-                tvFeedLike.text = activity.getString(R.string.match)
+                tvFeedLike.text = activity.getString(R.string.matched)
                 tvFeedLike.setTextColor(
                     ContextCompat.getColor(
                         activity,
@@ -296,12 +324,12 @@ class FeedAdapter(
                     val btnText: String
                     isFollow = if (dashboardBean.is_follow == 1) {
                         0
-                //                        msg = context.resources.getString(R.string.msg_remove_post)
-                //                        btnText = context.resources.getString(R.string.remove)
+                        //                        msg = context.resources.getString(R.string.msg_remove_post)
+                        //                        btnText = context.resources.getString(R.string.remove)
                     } else {
                         1
-                //                        msg = context.resources.getString(R.string.msg_send_follow_request)
-                //                        btnText = context.resources.getString(R.string.send)
+                        //                        msg = context.resources.getString(R.string.msg_send_follow_request)
+                        //                        btnText = context.resources.getString(R.string.send)
                     }
                     onFeedItemClick.onClickFollow(
                         position,
@@ -387,13 +415,13 @@ class FeedAdapter(
             }
 
             ivFeedProfile.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedName.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedJob.setOnClickListener {
-                onFeedItemClick.onUserProfileClick(dashboardBean)
+                onFeedItemClick.onUserProfileClick(dashboardBean,position)
             }
             tvFeedLike.setOnClickListener {
                 if (dashboardBean.is_like == 1)
@@ -433,23 +461,23 @@ class FeedAdapter(
             if (SessionManager(context).getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
                 animationBoost.visibility = View.VISIBLE
                 circularSeekBar.visibility = View.VISIBLE
-               // tvFeedBoost.visibility = View.VISIBLE
+                // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
+                // boostAnimationProgress(itemView)
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
-               // tvFeedBoost.visibility = View.VISIBLE
+                isCount = false
+                // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost))
             }
 
-            boostAnimationProgress(itemView)
             Log.e(
                 "ExoPlayerRecyclerView",
                 "Bind : " + Calendar.getInstance().time.toString()
             )
         }
     }
-
 
     private fun showCommentProfilePic(
         dashboardBean: DashboardBean,
@@ -495,35 +523,40 @@ class FeedAdapter(
     }
 
     private fun boostAnimationProgress(itemView: View) {
-        val seekBar = itemView.findViewById(R.id.circularSeekBar) as CircularSeekBar
-        itemView.circularSeekBar.setOnSeekBarChangeListener(object :
-            OnCircularSeekBarChangeListener {
-            override fun onProgressChanged(
-                circularSeekBar: CircularSeekBar,
-                progress: Float,
-                fromUser: Boolean
-            ) {
-                val message = String.format(
-                    "Progress changed to %.2f, fromUser %s",
-                    progress,
-                    fromUser
-                )
-                var p = progress
-                p /= 100
-                //Log.e("FeedAdapter", message)
-                // Log.e("FeedAdapter", "progress: \t$progress")
-                //  Log.e("FeedAdapter", "p: \t$p")
-                //  Log.e("FeedAdapter", "fromUser: \t$fromUser")
-            }
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+            // showBoostFeatureNotAdded()
+//                =============== This feature currently not added ============
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
 
-            override fun onStopTrackingTouch(seekBar: CircularSeekBar) {
-                //  Log.e("FeedAdapter", "onStopTrackingTouch")
-            }
+                val interval = 1000L
+                    val currentTime = System.currentTimeMillis()
+                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+                    Log.e("DashboardActivity", "currentTime: $currentTime")
+                    Log.e("DashboardActivity", "storedTime: $storedTime")
+                    storedTime += TimeUnit.MINUTES.toMillis(1)
+                    prevTimer = storedTime - currentTime
+                    isCount = true
 
-            override fun onStartTrackingTouch(seekBar: CircularSeekBar) {
-                //  Log.e("FeedAdapter", "onStartTrackingTouch")
+                val numberOfSeconds: Int = prevTimer.toInt() / 1000
+                val factor = 100 / numberOfSeconds
+
+                val t: CountDownTimer
+                t = object : CountDownTimer(prevTimer, interval) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        prevTimer = millisUntilFinished
+                        val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                        progressPercentage = (numberOfSeconds - secondsRemaining) * factor
+                        Log.e("DashboardActivity", "Percentage: $progressPercentage")
+                        itemView.circularSeekBar.progress = progressPercentage.toFloat()
+                        // progressPercentage.toFloat()
+                    }
+
+                    override fun onFinish() {
+                        cancel()
+                    }
+                }.start()
             }
-        })
+        }
     }
 
     fun openCustomAlertDialog() {

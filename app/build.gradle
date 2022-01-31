@@ -18,8 +18,8 @@ android {
         applicationId "com.namastey"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 11
-        versionName "1.2"
+        versionCode 18
+        versionName "1.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        ndk {
 //            abiFilters 'armeabi-v7a', 'arm64-v8a'
@@ -31,8 +31,25 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField 'String', 'SERVER','"https://app.namasteyapp.com/api/"'
+            buildConfigField 'String', 'MESSAGES','"Messages"'
+            buildConfigField 'String', 'CHATS','"Chats"'
+            buildConfigField 'String', 'LAST_MESSAGE','"Last_message"'
+            buildConfigField 'String', 'IMAGES','"Images"'
+            buildConfigField 'String', 'VOICE','"Voice"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField 'String', 'SERVER','"https://staging.namasteyapp.com/api/"'
+            buildConfigField 'String', 'MESSAGES','"MessagesTest"'
+            buildConfigField 'String', 'CHATS','"Chats"'
+            buildConfigField 'String', 'LAST_MESSAGE','"Last_message"'
+            buildConfigField 'String', 'IMAGES','"ImagesTest"'
+            buildConfigField 'String', 'VOICE','"VoiceTest"'
+            debuggable true
+            minifyEnabled false
         }
     }
     dataBinding {
@@ -62,6 +79,11 @@ configurations.all {
         force 'com.snapchat.kit.sdk:core:1.4.0' + ' x86'
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -127,7 +149,7 @@ dependencies {
 
 //    Facebook
     //implementation 'com.facebook.android:facebook-login:[5,6)'
-    implementation 'com.facebook.android:facebook-login:11.2.0'
+    implementation 'com.facebook.android:facebook-login:12.2.0'
 
 
 //    Google play services
@@ -144,16 +166,15 @@ dependencies {
 //    ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 //    Login with SnapChat
-    implementation([
-            "com.snapchat.kit.sdk:login:1.4.0",
-            "com.snapchat.kit.sdk:core:1.4.0"
-    ])
+//    implementation([
+//            "com.snapchat.kit.sdk:login:1.4.0",
+//            "com.snapchat.kit.sdk:core:1.4.0"
+//    ])
     implementation project(path: ':dateandtimepicker')
 
 //    Login with spotify
-    implementation project(path: ':spotify-app-remote-release-0.7.1')
     implementation "com.google.code.gson:gson:2.8.5"
-    implementation 'com.spotify.android:auth:1.1.0'
+    implementation 'com.spotify.android:auth:1.2.5'
 
 //    For display thumb of video and select cover image
     implementation project(path: ':videothumb')
@@ -222,5 +243,5 @@ dependencies {
     implementation 'com.hbb20:ccp:2.4.7'
 
     implementation 'com.google.android.play:core-ktx:1.8.1'
-
+    implementation 'com.devlomi.record-view:record-view:2.0.1'
 }

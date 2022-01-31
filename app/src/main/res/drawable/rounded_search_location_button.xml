@@ -1,14 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
     <gradient android:startColor="@color/location_marker_color_blue"
         android:endColor="@color/location_marker_color_light_blue"
-        android:angle="@integer/google_play_services_version"/>
+        android:angle="@integer/google_play_services_version"
+        />
 
     <corners
         android:bottomLeftRadius="@dimen/_8sdp"
         android:topRightRadius="@dimen/_8sdp"
         android:topLeftRadius="@dimen/_8sdp"
         android:bottomRightRadius="@dimen/_8sdp"/>
+</shape>-->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/colorBlueLight" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/_8sdp"
+        android:topRightRadius="@dimen/_8sdp"
+        android:topLeftRadius="@dimen/_8sdp"
+        android:bottomRightRadius="@dimen/_8sdp"/>
+
+    <size
+        android:width="@dimen/_20sdp"
+        android:height="@dimen/_8sdp" />
 </shape>

@@ -36,7 +36,7 @@
     <string name="permission_required">Permission required</string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="gps_disable_message">GPS is not enabled. Do you want to go to settings menu?</string>
-    <string name="permission_denied_message">You have denied location permission Allow permission at setting</string>
+    <string name="permission_denied_message">you have denied location permission, kindly change your location settings to use namastey</string>
     <string name="permission_denied_storage_message">You have denied storage permission Allow permission at setting</string>
     <string name="permission_denied_camera_message">You have denied camera permission Allow permission at setting</string>
     <string name="permission_denied_contact_message">You have denied contact permission Allow permission at setting</string>
@@ -72,7 +72,7 @@
     <string name="connect_spotify">Connect Spotify</string>
     <string name="add_video">Add Video</string>
     <string name="msg_add_video_first">Upload atleast one video to match</string>
-    <string name="msg_add_video_second">You will need to upload videos to your albums to match with other namastey members</string>
+    <string name="msg_add_video_second">You need to upload genuine content showcasing your personality, keep it real!</string>
     <string name="msg_no_invite">Sorry! But you don’t have an invitation to join Namastey</string>
     <string name="msg_no_invite_second">To learn more about namastey, you can visit our Website</string>
     <string name="got_your_invitation">Got your invitation? Sign in</string>
@@ -102,7 +102,7 @@
     <string name="enter_your_email">Enter your email</string>
     <string name="name">Name</string>
     <string name="enter_your_name">Enter your full name</string>
-    <string name="choose_username">Choose a username for you</string>
+    <string name="choose_username">Choose your username</string>
     <string name="hint_full_name">Full Name</string>
     <string name="msg_gender">Let us know your gender</string>
     <string name="female">Female</string>
@@ -112,7 +112,7 @@
     <string name="msg_birthday">Help us calculate your age</string>
     <string name="msg_age">Select your preferred age range</string>
     <string name="you_can_always">You can always change it later</string>
-    <string name="select_maximum_distance">Select the maximum distance</string>
+    <string name="select_maximum_distance">Select your preferred search distance</string>
     <string name="msg_education">What is your educational qualification?</string>
     <string name="occupation">Occupation</string>
     <string name="msg_occupation">What do you do for a living?</string>
@@ -120,7 +120,7 @@
     <string name="add_profile_pic">Add Profile Picture</string>
     <string name="interest">Interest</string>
     <string name="hint_type_here">Type here...</string>
-    <string name="msg_interest">Choose at least 3 topics that interests you</string>
+    <string name="msg_interest">Choose 09 topics that best describe your personality</string>
     <string name="about_you">About you</string>
     <string name="msg_about_you">Tell people about yourself</string>
     <string name="empty_full_name">Please enter full name</string>
@@ -178,6 +178,7 @@
     <string name="like">Like</string>
     <string name="dislike">Dislike</string>
     <string name="comments">Comments</string>
+    <string name="comment">Comment</string>
     <string name="privacy">Privacy</string>
     <string name="block">Block</string>
     <string name="report">Report</string>
@@ -205,7 +206,7 @@
     <!--    Follow screen-->
     <string name="search">Search</string>
     <string name="msg_empty_following">When %1$s Start following people,you\'ll see them here </string>
-    <string name="msg_empty_following_title">%1$s are not following anyone</string>
+    <string name="msg_empty_following_title">%1$s is not following anyone</string>
     <string name="msg_empty_followers">When people start following %1$s, you\'ll see them here</string>
     <string name="msg_empty_followers_title">%1$s have no followers</string>
     <string name="msg_unfollow_user">Are you sure you want to Unfollow?</string>
@@ -237,7 +238,7 @@
     <string name="tv_no_video_found">No video found</string>
 
     <string name="select_filter">Select Filter</string>
-    <string name="msg_min_choose_interest">Please select at least 3</string>
+    <string name="msg_min_choose_interest">Please choose 09 topics that interest you</string>
     <string name="msg_min_language">Minimum 1 video language is mandatory</string>
     <string name="msg_select_gender">Please select gender</string>
 
@@ -266,6 +267,7 @@
     <string name="select_interest">Select Interest</string>
     <string name="im_interest_in">Interested In</string>
     <string name="men">Men</string>
+    <string name="male">Male</string>
     <string name="women">Women</string>
     <string name="everyone">Everyone</string>
     <string name="msg_select_interest_in">Please select any one</string>
@@ -464,7 +466,7 @@
     <string name="delete_user">Delete User</string>
     <string name="gif">Gif</string>
     <string name="enter_message">Message…</string>
-    <string name="readable_content">Readable content</string>
+    <string name="readable_content">voice note 🎵</string>
     <string name="msg_delete_matches">Do you wish to delete match?</string>
     <string name="msg_delete_chat">Are you sure you want to delete chat?</string>
     <string name="msg_delete_account">Are you sure you want to delete your account?</string>
@@ -502,6 +504,7 @@
     <string name="buy_now">Buy now</string>
     <string name="_1">1</string>
     <string name="most_popular">MOST POPULAR</string>
+    <string name="best_deal">Best Deal</string>
     <string name="continues">Continue</string>
     <string name="skip_the_line_to_get_more_matches">Skip the line to get more matches!</string>
     <string name="out_of_likes">Out of Likes!</string>
@@ -515,9 +518,9 @@
     <string name="your_3x_more_likes">You\'re 3x more likely to get a match!</string>
     <string name="month_with_them_instantly">"Match with them instantly "</string>
     <string name="out_of_boosts">Out of Boosts!</string>
-    <string name="need_more_boosts">Need more Boosts?</string>
+    <string name="need_more_boosts">Makes you stand out. Literally!</string>
     <string name="boost_day_remaining">Day remaining</string>
-    <string name="boost_next_free_boost">Until your next free Boost</string>
+    <string name="boost_next_free_boost">Until your next boost</string>
     <string name="_10_00_ea">$10.00/ea</string>
     <string name="boosts">Boosts</string>
     <string name="_5">5</string>
@@ -526,7 +529,8 @@
     <string name="boost_me">Boost Me</string>
     <string name="save_20">SAVE 20%</string>
     <string name="skip_the_line">Skip The Line</string>
-    <string name="you_got_to_85x_more_profile">You got up to 8.5X more profile views. \n Swipe to see who checked you out.</string>
+    <!--<string name="you_got_to_85x_more_profile">You got up to 8.5X more profile views. \n Swipe to see who checked you out.</string>-->
+    <string name="you_got_to_85x_more_profile">Hope this gets you settled! \nJust kidding  or are we?</string>
     <string name="_8_5x_n_views">8.5x \n views</string>
     <string name="boost_again">Boost Again</string>
     <string name="your_boost_was_a_success">Your boost was a success!</string>
@@ -565,8 +569,8 @@
     <string name="per_month">/mo</string>
     <string name="percentage">%</string>
     <string name="best_value">Best Value</string>
-    <string name="save_14">Save 14%</string>
-    <string name="save_32">Save 32%</string>
+    <string name="save_14">Save 25%</string>
+    <string name="save_32">Save 49%</string>
     <string name="each">/Each</string>
     <string name="get_boost_gold">Get Boost Gold</string>
     <string name="action_hide_album">Hide</string>
@@ -577,7 +581,8 @@
     <string name="boost">Boost</string>
     <string name="month">Month</string>
     <string name="okay">Okay</string>
-    <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best results.</string>
+   <!-- <string name="dialog_pending">You are been seeing by more people.\n Keep swiping for thr best results.</string>-->
+    <string name="dialog_pending">You are being seen by more people. Keep swiping for best results.</string>
     <string name="remaining">Remaining</string>
     <string name="go_to">Go to,</string>
     <string name="buy_boost">Buy Boost</string>
@@ -700,5 +705,9 @@
     <string name="user_unblock_success">User Unblock successfully.</string>
     <string name="terms_if_use">Terms of Use</string>
     <string name="allow_comment">Allow comments</string>
+    <string name="slide_to_cancel">Slide To Cancel</string>
+    <string name="location_services_need">Location services need to be \nturned on for this to work</string>
+    <string name="where_you_at">where you at</string>
+    <string name="go_to_setting_namastay"><![CDATA[Go to settings > namastey > location > enable location while using the app]]></string>
 
 </resources>

@@ -18,7 +18,7 @@ import org.buffer.android.thumby.util.ThumbyUtils
 import java.io.File
 
 
-class OpenCameraActivity : AppCompatActivity() {
+class  OpenCameraActivity : AppCompatActivity() {
     private var pictureFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

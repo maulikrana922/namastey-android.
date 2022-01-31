@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -33,8 +34,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.gowtham.library.utils.TrimType
 import com.gowtham.library.utils.TrimVideo
 import com.namastey.BR
@@ -58,10 +57,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.File
+import java.io.*
 import java.net.URI
 import java.util.*
 import javax.inject.Inject
@@ -99,8 +95,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var storage = Firebase.storage
     private var storageRef = storage.reference
     private val TAG = "ProfileViewActivtiy"
-    private lateinit var bitmapProfile : Bitmap
+    private lateinit var bitmapProfile: Bitmap
     private val PERMISSION_REQUEST_CODE = 101
+    private var facebookLink = ""
+    private var instagramLink = ""
+    private var sportify = ""
+    private var twitterLink = ""
+    private lateinit var profileBeanData:ProfileBean
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,8 +143,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             sessionManager.setStringValue(profileBean.jobs, Constants.KEY_JOB)
             sessionManager.setStringValue(profileBean.education, Constants.KEY_EDUCATION)
             sessionManager.setLanguageList(profileBean.languageBean)
-            var selectLanguageIdList:ArrayList<Int> = ArrayList()
-            for(languageListId in sessionManager.getLanguageList()){
+            var selectLanguageIdList: ArrayList<Int> = ArrayList()
+            for (languageListId in sessionManager.getLanguageList()) {
                 selectLanguageIdList.add(languageListId.id)
             }
             sessionManager.setLanguageIdList(selectLanguageIdList)
@@ -172,7 +173,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 profileBean.safetyBean.is_share,
                 Constants.KEY_IS_SHARE_PROFILE_SAFETY
             )
-           btnMembership.visibility = View.VISIBLE
+            btnMembership.visibility = View.VISIBLE
             Utils.rectangleCornerShapeGradient(
                 btnMembership, intArrayOf(
                     Color.parseColor("#3ED6EB"),
@@ -220,9 +221,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             when (profileBean.is_follow) {
                 1 -> btnProfileFollow.text = getString(R.string.un_follow)
                 2 -> btnProfileFollow.text = getString(R.string.pending)
-                else ->{
-                    if (profileBean.is_follow_me==1)
-                    btnProfileFollow.text = getString(R.string.followback)
+                else -> {
+                    if (profileBean.is_follow_me == 1)
+                        btnProfileFollow.text = getString(R.string.followback)
                     else btnProfileFollow.text = getString(R.string.follow)
                 }
             }
@@ -367,9 +368,13 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (profileBean.user_profile_type == 0) {
                 layoutPrivateAccount.visibility = View.GONE
                 rvAlbumList.visibility = View.VISIBLE
-                chipProfileSocial.visibility = View.VISIBLE
+                // chipProfileSocial.visibility = View.VISIBLE
             } else if (profileBean.user_profile_type == 1) {
                 chipProfileSocial.visibility = View.GONE
+                tvInstaUserName.visibility = View.GONE
+                tvFacebook.visibility = View.GONE
+                tvTwitter.visibility = View.GONE
+                tvSpotify.visibility = View.GONE
                 layoutPrivateAccount.visibility = View.VISIBLE
                 chipProfileInterest.visibility = View.GONE
                 tvInterestTitel.visibility = View.GONE
@@ -378,7 +383,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         } else {
             rvAlbumList.visibility = View.VISIBLE
             layoutPrivateAccount.visibility = View.GONE
-            chipProfileSocial.visibility = View.VISIBLE
+            // chipProfileSocial.visibility = View.VISIBLE
         }
 
     }
@@ -432,6 +437,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun socialAccountUI(data: ArrayList<SocialAccountBean>) {
 
         chipProfileSocial.removeAllViews()
+//        if (data.isEmpty()) {
+            tvInstaUserName.visibility = View.GONE
+            tvFacebook.visibility = View.GONE
+            tvTwitter.visibility = View.GONE
+            tvSpotify.visibility = View.GONE
+//        }
         for (socialBean in data) {
             val ivSocialIcon = ImageView(this@ProfileViewActivity)
             ivSocialIcon.layoutParams = LinearLayout.LayoutParams(
@@ -441,13 +452,19 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 //            ivSocialIcon.background = getDrawable(R.drawable.circle_white_solid)
             when (socialBean.name) {
                 getString(R.string.facebook) -> {
+                    facebookLink = socialBean.link
+                    if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "FacebookUserName")
+                        tvFacebook.text = socialBean.username
+                        tvFacebook.visibility = View.VISIBLE
+                    }
                     ivSocialIcon.setImageResource(R.drawable.ic_link_facebook)
                     ivSocialIcon.setOnClickListener {
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
                             if (profileBean.user_profile_type == 0) {
                                 val intent =
                                     packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                                if (intent != null) {
+//                                if (intent != null) {
 //                                    startActivity(
 //                                        Intent(
 //                                            Intent.ACTION_VIEW,
@@ -455,54 +472,54 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 ////                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
 //                                        )
 //                                    )
-                                    try {
-                                        val versionCode = packageManager.getPackageInfo(
-                                            "com.facebook.katana",
-                                            0
-                                        ).versionCode
-                                        if (versionCode >= 3002850) {
-                                            val uri =
-                                                Uri.parse("fb://facewebmodal/f?href=${socialBean.link}")
-                                            startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    uri
-                                                )
-                                            )
-                                        } else {
-                                            // open the Facebook app using the old method (fb://profile/id or fb://page/id)
-                                            startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    Uri.parse("fb://page/${socialBean.link}")
-                                                )
-                                            )
-                                        }
-                                    } catch (e: PackageManager.NameNotFoundException) {
-                                        // Facebook is not installed. Open the browser
+                                try {
+                                    val versionCode = packageManager.getPackageInfo(
+                                        "com.facebook.katana",
+                                        0
+                                    ).versionCode
+                                    if (versionCode >= 3002850) {
+                                        val uri =
+                                            Uri.parse("fb://facewebmodal/f?href=${socialBean.link}")
                                         startActivity(
                                             Intent(
                                                 Intent.ACTION_VIEW,
-                                                Uri.parse(socialBean.link)
+                                                uri
+                                            )
+                                        )
+                                    } else {
+                                        // open the Facebook app using the old method (fb://profile/id or fb://page/id)
+                                        startActivity(
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse("fb://page/${socialBean.link}")
                                             )
                                         )
                                     }
+                                } catch (e: PackageManager.NameNotFoundException) {
+                                    // Facebook is not installed. Open the browser
+                                    startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(socialBean.link)
+                                        )
+                                    )
                                 }
-                            } else if (profileBean.user_profile_type == 1) {
-                                //Do Nothing
                             }
+//                            } else if (profileBean.user_profile_type == 1) {
+//                                //Do Nothing
+//                            }
                         } else {
                             val intent =
                                 packageManager.getLaunchIntentForPackage("com.facebook.katana")
-                            if (intent != null) {
-                                startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse("fb://profile/".plus(socialBean.link))
-//                                            Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
-                                    )
+//                            if (intent != null) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+//                                        Uri.parse("fb://profile/".plus(socialBean.link))
+                                    Uri.parse("fb://facewebmodal/f?href=".plus(socialBean.link))
                                 )
-                            }
+                            )
+//                            }
                         }
 
 //                        else{
@@ -513,8 +530,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     }
                 }
                 getString(R.string.instagram) -> {
+                    if (socialBean.link.isNotEmpty()) {
+//                        tvInstaUserName.text = sessionManager.getStringValue("InstagramUsername")
+                        sessionManager.setStringValue(socialBean.username, "InstagramUsername")
+                        tvInstaUserName.text = socialBean.username
+                        tvInstaUserName.visibility = View.VISIBLE
+                    }
                     ivSocialIcon.setImageResource(R.drawable.ic_link_instagram)
-
+                    instagramLink = socialBean.link
                     ivSocialIcon.setOnClickListener {
                         Log.e("ProfileViewActivity", "Instagram Click: \t ${socialBean.link}")
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
@@ -561,7 +584,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                                     appIntent.action = Intent.ACTION_VIEW
                                     appIntent.data = uri
                                     startActivity(appIntent)
-                                }else{
+                                } else {
                                     val browserIntent = Intent(
                                         Intent.ACTION_VIEW,
                                         Uri.parse(socialBean.link)
@@ -605,6 +628,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     ivSocialIcon.setImageResource(R.drawable.ic_tiktok)
                 }
                 getString(R.string.spotify) -> {
+                    if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "SpotifyUsername")
+                        tvSpotify.text = socialBean.username
+                        tvSpotify.visibility = View.VISIBLE
+                    }
+                    sportify = socialBean.link
                     ivSocialIcon.setImageResource(R.drawable.ic_link_spotify)
                     ivSocialIcon.setOnClickListener {
                         if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
@@ -648,6 +677,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     ivSocialIcon.setImageResource(R.drawable.profile_link_linkedin)
                 }
                 getString(R.string.twitter) -> {
+                    if (socialBean.link.isNotEmpty()) {
+                        sessionManager.setStringValue(socialBean.username, "TwitterUserName")
+                        tvTwitter.text = socialBean.username
+                        tvTwitter.visibility = View.VISIBLE
+                    }
+                    twitterLink = socialBean.link
                     ivSocialIcon.setImageResource(R.drawable.ic_link_twitter)
                     ivSocialIcon.setOnClickListener {
 
@@ -827,17 +862,18 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickProfileBack(view: View) {
-        if(intent.hasExtra("isfromdelete")){
-            var intent = Intent(this@ProfileViewActivity,DashboardActivity::class.java)
+        if (intent.hasExtra("isfromdelete")) {
+            var intent = Intent(this@ProfileViewActivity, DashboardActivity::class.java)
             openActivity(intent)
-        }else{
+        } else {
             onBackPressed()
 
         }
     }
 
     fun onClickProfileImage(view: View) {
-        selectImage()
+        // selectImage()
+        isReadWritePermissionGranted()
     }
 
     private fun selectImage() {
@@ -946,7 +982,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private fun openGalleryForImage() {
 
         profileFile = File(
-            Constants.FILE_PATH,
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             System.currentTimeMillis().toString() + ".jpeg"
         )
 
@@ -995,7 +1031,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (data != null) {
                 val selectedImage = data.data
 
-                if (selectedImage != null) {
+          /*      if (selectedImage != null) {
 //                    val inputStream: InputStream?
                     try {
 //                        val selectedImage = data.data
@@ -1014,9 +1050,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         Log.d("Image Path", "Image Path  is $picturePath")
                         //profileFile = Utils.saveBitmapToFile(File(picturePath))
                         isProfilePic = true
-                        profileFile = Utils.saveBitmapToExtFilesDir(picturePath,this)
+                        profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
                         val bitmap: Bitmap = Utils.scaleBitmapDown(
-                            MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(profileFile)),
+                            MediaStore.Images.Media.getBitmap(
+                                contentResolver,
+                                Uri.fromFile(profileFile)
+                            ),
                             1200
                         )!!
                         //GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
@@ -1029,8 +1068,40 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                }*/
+
+                if (selectedImage != null) {
+                    val inputStream: InputStream?
+                    try {
+                        inputStream = contentResolver.openInputStream(selectedImage)
+                        if (!profileFile!!.exists()) {
+                            File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), System.currentTimeMillis().toString()).mkdirs()
+                        }
+                        val fileOutputStream = FileOutputStream(profileFile)
+                        if (inputStream != null) {
+                            Utils.copyInputStream(inputStream, fileOutputStream)
+                            inputStream.close()
+                        }
+                        fileOutputStream.close()
+                        if (profileFile != null) {
+                            Utils.applyExifInterface(profileFile!!.getAbsolutePath())
+                        }
+                        //Glide.with(this).load(profileFile!!.getAbsolutePath()).into(ivLoadImage);
+                        GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
+                        isProfilePic = true
+                        if (profileFile != null && profileFile!!.exists()) {
+                            isCameraOpen = true
+                            profileViewModel.updateProfilePic(profileFile!!)
+                        }
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
                 }
             }
+
         } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQUEST_CODE_CAMERA_IMAGE) {
             val imageFile = Utils.getCameraFile(this@ProfileViewActivity)
             val photoUri = FileProvider.getUriForFile(
@@ -1162,6 +1233,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onBackPressed() {
+        if (this::profileBeanData.isInitialized) {
+            val returnIntent = Intent()
+            returnIntent.putExtra("result", profileBeanData.is_follow)
+            setResult(RESULT_OK, returnIntent)
+        }
         finishActivity()
     }
 
@@ -1192,7 +1268,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     fun onClickAddVideo(view: View) {
-        selectVideo()
+        //selectVideo()
+        isReadWritePermissionGrantedVide()
     }
 
     /*    fun onClickProfileMore(view: View) {
@@ -1215,7 +1292,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         val fileStorage: StorageReference = storageRef.child(
             Constants.FirebaseConstant.IMAGES.plus("/").plus(System.currentTimeMillis())
         )
-        if (dashboardBean.profile_url!=null) {
+        if (dashboardBean.profile_url != null) {
             val baos = ByteArrayOutputStream()
             bitmapProfile.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
@@ -1262,7 +1339,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0, ""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
@@ -1383,14 +1460,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
-
+            profileBeanData=profile
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
             btnProfileFollow.text = resources.getString(R.string.un_follow)
         } else if (profileBean.is_follow == 0) {
             profileBean.followers -= 1
-            if (profileBean.is_follow_me==1)
-            btnProfileFollow.text = resources.getString(R.string.followback)
+            if (profileBean.is_follow_me == 1)
+                btnProfileFollow.text = resources.getString(R.string.followback)
             else btnProfileFollow.text = resources.getString(R.string.follow)
         } else if (profileBean.is_follow == 2) {
             btnProfileFollow.text = resources.getString(R.string.pending)
@@ -1560,9 +1637,16 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
             bottomSheetDialogShare.ivShareOther.setOnClickListener {
                 val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("label", getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + profileBean.username)
+                val clip = ClipData.newPlainText(
+                    "label",
+                    getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + profileBean.username
+                )
                 clipboard.setPrimaryClip(clip)
-                Toast.makeText(this@ProfileViewActivity, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ProfileViewActivity,
+                    getString(R.string.copied_to_clipboard),
+                    Toast.LENGTH_SHORT
+                ).show()
 //                val sendIntent = Intent()
 //                sendIntent.action = Intent.ACTION_SEND
 //                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
@@ -1604,6 +1688,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         bottomSheetDialogShare.show()
     }
+
     private fun shareInstagram(profileBean: ProfileBean) {
         var intent =
             packageManager.getLaunchIntentForPackage("com.instagram.android")
@@ -1734,14 +1819,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0, ""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
             else
                 profileBean.id.toString().plus("_").plus(sessionManager.getUserId())
 
-            uploadFile(profileBean,message, Uri.parse(profileBean.profile_url))
+            uploadFile(profileBean, message, Uri.parse(profileBean.profile_url))
 
 //            Firestore part
             db.collection(Constants.FirebaseConstant.MESSAGES)
@@ -1837,7 +1922,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     dismiss()
                 }
             }.show()
-        }else{
+        } else {
             object : CustomCommonNewAlertDialog(
                 this@ProfileViewActivity,
                 dashboardBean.casual_name,
@@ -2045,6 +2130,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                             openShareOptionDialog(profileBean)
                         }
                     }
+                } else {
+                    itemSaved.isVisible = true
+                    itemSetting.isVisible = true
                 }
             }
             R.id.action_saved -> {
@@ -2057,22 +2145,23 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
         return super.onOptionsItemSelected(item)
+
     }
 
     fun onClickMembership(view: View) {
 
-        val intent = Intent(this,MemberActivity::class.java)
+        val intent = Intent(this, MemberActivity::class.java)
         startActivity(intent)
 
-//                object : NotAvailableFeatureDialog(
-//            this,
-//            getString(R.string.membership_not_available),
-//            getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
-//        ) {
-//            override fun onBtnClick(id: Int) {
-//                dismiss()
-//            }
-//        }.show()
+/*               object : NotAvailableFeatureDialog(
+           this,
+           getString(R.string.membership_not_available),
+           getString(R.string.alert_msg_feature_not_available), R.drawable.ic_membership
+       ) {
+           override fun onBtnClick(id: Int) {
+               dismiss()
+           }
+       }.show()*/
 
     }
 
@@ -2124,4 +2213,203 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             PERMISSION_REQUEST_CODE
         )
     }
+
+    fun onClickFacebook(view: View) {
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+            if (profileBean.user_profile_type == 0) {
+                val intent =
+                    packageManager.getLaunchIntentForPackage("com.facebook.katana")
+                try {
+                    val versionCode = packageManager.getPackageInfo(
+                        "com.facebook.katana",
+                        0
+                    ).versionCode
+                    if (versionCode >= 3002850) {
+                        val uri =
+                            Uri.parse("fb://facewebmodal/f?href=${facebookLink}")
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                uri
+                            )
+                        )
+                    } else {
+                        // open the Facebook app using the old method (fb://profile/id or fb://page/id)
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("fb://page/${facebookLink}")
+                            )
+                        )
+                    }
+                } catch (e: PackageManager.NameNotFoundException) {
+                    // Facebook is not installed. Open the browser
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(facebookLink)
+                        )
+                    )
+                }
+            }
+//                            } else if (profileBean.user_profile_type == 1) {
+//                                //Do Nothing
+//                            }
+        } else {
+            val intent =
+                packageManager.getLaunchIntentForPackage("com.facebook.katana")
+//                            if (intent != null) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+//                                        Uri.parse("fb://profile/".plus(socialBean.link))
+                    Uri.parse("fb://facewebmodal/f?href=".plus(facebookLink))
+                )
+            )
+//                            }
+        }
+    }
+
+    fun onClickInstagram(view: View) {
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+            if (profileBean.user_profile_type == 0) {
+                val uri = Uri.parse(instagramLink)
+                try { //first try to open in instagram app
+                    val appIntent =
+                        packageManager.getLaunchIntentForPackage("com.instagram.android")
+                    if (appIntent != null) {
+                        appIntent.action = Intent.ACTION_VIEW
+                        appIntent.data = uri
+                        startActivity(appIntent)
+                    }else {
+                        val browserIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(instagramLink)
+                        )
+                        startActivity(browserIntent)
+                    }
+                } catch (e: ActivityNotFoundException) {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(instagramLink)
+                    )
+                    startActivity(browserIntent)
+                }
+
+            } else if (profileBean.user_profile_type == 1) {
+                //Do Nothing
+            }
+        } else {
+            val uri = Uri.parse(instagramLink)
+
+            try { //first try to open in instagram app
+                val appIntent =
+                    packageManager.getLaunchIntentForPackage("com.instagram.android")
+                if (appIntent != null) {
+                    appIntent.action = Intent.ACTION_VIEW
+                    appIntent.data = uri
+                    startActivity(appIntent)
+                } else {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(instagramLink)
+                    )
+                    startActivity(browserIntent)
+                }
+            } catch (e: ActivityNotFoundException) {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(instagramLink)
+                )
+                startActivity(browserIntent)
+            }
+
+        }
+    }
+
+    fun onClickTwitter(view: View) {
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+            if (profileBean.user_profile_type == 0) {
+                try {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(twitterLink)
+                        )
+                    )
+                } catch (e: java.lang.Exception) {
+                    val index = twitterLink.indexOf('=')
+                    val name: String? = if (index == -1) "" else twitterLink
+                        .substring(index + 1)
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/".plus(name))
+                        )
+                    )
+                }
+
+            } else if (profileBean.user_profile_type == 1) {
+                //Do Nothing
+            }
+        } else {
+            try {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(twitterLink)
+                    )
+                )
+            } catch (e: java.lang.Exception) {
+                val index = twitterLink.indexOf('=')
+                val name: String? = if (index == -1) "" else twitterLink
+                    .substring(index + 1)
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://twitter.com/".plus(name))
+                    )
+                )
+            }
+        }
+    }
+
+    fun onClickSpotify(view: View) {
+        if ((profileBean.is_follow == 0 || profileBean.is_follow == 2) && profileBean.user_id != sessionManager.getUserId()) {
+            if (profileBean.user_profile_type == 0) {
+                var intent =
+                    packageManager.getLaunchIntentForPackage("com.spotify.music")
+                if (intent != null) {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(sportify)
+                        )
+                    )
+                } else {
+                    intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse("market://details?id=com.spotify.music")
+                    startActivity(intent)
+                }
+            } else if (profileBean.user_profile_type == 1) {
+                //Do Nothing
+            }
+        } else {
+            var intent =
+                packageManager.getLaunchIntentForPackage("com.spotify.music")
+            if (intent != null) {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(sportify)
+                    )
+                )
+            } else {
+                intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("market://details?id=com.spotify.music")
+                startActivity(intent)
+            }
+        }
+    }
+
 }

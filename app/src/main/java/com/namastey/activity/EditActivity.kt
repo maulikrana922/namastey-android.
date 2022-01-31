@@ -208,10 +208,10 @@ class EditActivity : BaseActivity<ActivityEditBinding>(), ProfileBasicView {
 
         edtProfileUserName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-               if (s.toString().length >= 5) {
+                if (s.toString().length >= 5) {
                     Log.d("Username: ", "username :" + s.toString())
-                    if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME) != s.toString())
-                        profileBasicViewModel.checkUniqueUsername(s.toString())
+                    if (sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME).lowercase() != s.toString().lowercase())
+                        profileBasicViewModel.checkUniqueUsername(s.toString().lowercase())
                    else tvUserNameError.visibility = View.GONE
                } else {
                     tvUserNameError.visibility = View.GONE

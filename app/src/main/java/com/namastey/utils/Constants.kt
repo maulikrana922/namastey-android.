@@ -1,6 +1,7 @@
 package com.namastey.utils
 
 import android.os.Environment
+import com.namastey.BuildConfig
 import java.io.File
 
 object Constants {
@@ -14,15 +15,6 @@ object Constants {
         var CALLBACK_URL = "twittersdk://"
     }
 
-    object FirebaseConstant {
-        var MESSAGES = "Messages"
-        var CHATS = "Chats"
-        var LAST_MESSAGE = "Last_message"
-        var IMAGES = "Images"
-        var VOICE = "Voice"
-        var MSG_TYPE_IMAGE = "MsgTypeImage"
-        var MSG_TYPE_VOICE = "MsgTypeVoice"
-    }
 
     object InAppPurchaseConstants {
         var PACKAGE_NAME = "package_name"
@@ -42,13 +34,45 @@ object Constants {
     const val API_KEY = "Authorization"
     const val HVALUE = "L@titude2018"
 
-    //    Test url
-//    const val BASE = "https://testyourapp.online/namasteyapp/api/"
-//    const val SPOTIFY_REDIRECT_URL = "http://testyourapp.online/namasteyapp/"
+    //    Build config
+    const val BASE = BuildConfig.SERVER
+    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
 
-//    Live url
-    const val BASE = "https://app.namasteyapp.com/api/"
-    const val SPOTIFY_REDIRECT_URL = "https://app.namasteyapp.com/"
+    object FirebaseConstant {
+        var MESSAGES = BuildConfig.MESSAGES
+        var CHATS = BuildConfig.CHATS
+        var LAST_MESSAGE = BuildConfig.LAST_MESSAGE
+        var IMAGES = BuildConfig.IMAGES
+        var VOICE = BuildConfig.VOICE
+        var MSG_TYPE_IMAGE = "MsgTypeImage"
+        var MSG_TYPE_VOICE = "MsgTypeVoice"
+    }
+
+    //    Test url
+//    const val BASE = "https://staging.namasteyapp.com/api/"
+//    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
+//    object FirebaseConstant {
+//        var MESSAGES = "MessagesTest"
+//        var CHATS = "Chats"
+//        var LAST_MESSAGE = "Last_message"
+//        var IMAGES = "ImagesTest"
+//        var VOICE = "VoiceTest"
+//        var MSG_TYPE_IMAGE = "MsgTypeImage"
+//        var MSG_TYPE_VOICE = "MsgTypeVoice"
+//    }
+
+    //    Live url
+//    const val BASE = "https://app.namasteyapp.com/api/"
+//    const val SPOTIFY_REDIRECT_URL = "namasteyapp://spotify/callback"
+//    object FirebaseConstant {
+//        var MESSAGES = "Messages"
+//        var CHATS = "Chats"
+//        var LAST_MESSAGE = "Last_message"
+//        var IMAGES = "Images"
+//        var VOICE = "Voice"
+//        var MSG_TYPE_IMAGE = "MsgTypeImage"
+//        var MSG_TYPE_VOICE = "MsgTypeVoice"
+//    }
 
     //  const val BASE = "http://198.74.55.170/namasteyapp/api/"
     const val SPOTIFY_PROFILE_URL = "https://api.spotify.com/v1/me"
@@ -261,13 +285,14 @@ object Constants {
     const val KEY_BOOST_STAR_TIME = "KEY_BOOST_STAR_TIME"
     const val KEY_IS_PURCHASE = "KEY_IS_PURCHASE"
     const val KEY_INVITE_COUNT = "KEY_INVITE_COUNT"
-    const val KEY_PURCHASE_DATE= "KEY_PURCHASE_DATE"
+    const val KEY_PURCHASE_DATE = "KEY_PURCHASE_DATE"
     const val KEY_NO_OF_BOOST = "KEY_NO_OF_BOOST"
     const val KEY_CASUAL_NAME = "KEY_CASUAL_NAME"
     const val KEY_BIRTH_DAY = "KEY_BIRTH_DAY"
     const val KEY_IS_BOOST_ACTIVE = "KEY_IS_BOOST_ACTIVE"
     const val KEY_IS_INVITED = "KEY_IS_INVITED"
     const val ACTIVITY_EDIT = "ACTIVITY_EDIT"
+    const val ACTIVITY_TYPE = "ACTIVITY_TYPE"
     const val SOCIAL_ACCOUNTLIST = "socialAccountList"
     const val KEY_COUNT = "count"
     const val KEY_POSITION = "position"
@@ -378,7 +403,7 @@ object Constants {
 
 
     //    Other constants
-    const val MIN_CHOOSE_INTEREST = 3
+    const val MIN_CHOOSE_INTEREST = 9
     const val DATE_FORMATE_DISPLAY = "dd/MM/yyyy"
     const val DATE_FORMATE_API = "yyyy-MM-dd"
     const val DATE_FORMATE_CHAT = "MMM d, hh:mm a"
@@ -392,6 +417,7 @@ object Constants {
     const val PERMISSION_CONTACTS = 118
     const val PERMISSION_AUDIO = 116
     const val FILTER_OK = 107
+    const val PROFILE_VIEW = 105
     const val ADD_LINK = 108
     const val REQUEST_CODE = 109
     const val REQUEST_CODE_EDUCATION = 110
@@ -418,4 +444,5 @@ object Constants {
     const val NOTIFICATION_PENDING_INTENT = "notification-pending-intent"
     const val KEY_NOTIFICATION = "notification"
 
+    const val ISNOTIFICATION="isNotification"
 }

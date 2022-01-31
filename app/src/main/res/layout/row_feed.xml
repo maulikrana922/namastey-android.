@@ -180,16 +180,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:indeterminate="true"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:indeterminateOnly="true"
             android:indeterminateTint="@color/color_instagram"
             android:indeterminateTintMode="src_atop"
             android:max="30"
             android:progress="0"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/ivFeedBoost"
+            app:layout_constraintBottom_toTopOf="@id/tvFeedView"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
             app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
+
 
         <me.tankery.lib.circularseekbar.CircularSeekBar
             android:id="@+id/circularSeekBar"
@@ -205,7 +206,7 @@
             app:cs_disable_pointer="true"
             app:cs_end_angle="180"
             app:cs_maintain_equal_circle="true"
-            app:cs_progress="25"
+            app:cs_progress="0"
             app:cs_start_angle="-180"
             app:layout_constraintBottom_toTopOf="@id/tvFeedView"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
@@ -218,7 +219,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_8sdp"
             android:src="@drawable/ic_boost_send"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/tvFeedBoost"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
             app:layout_constraintStart_toStartOf="@id/tvFeedShare"
@@ -232,7 +233,7 @@
             android:gravity="center"
             android:text="0"
             android:textSize="12sp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/ivComment"
             app:layout_constraintEnd_toEndOf="@id/tvFeedShare"
             app:layout_constraintStart_toStartOf="@id/tvFeedShare" />
@@ -357,9 +358,10 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:elevation="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gl78"
+            app:layout_constraintBottom_toBottomOf="@+id/clUser"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
+            android:layout_marginBottom="@dimen/_20sdp"
             app:lottie_rawRes="@raw/video_like_heart"
             app:lottie_repeatMode="restart" />
 

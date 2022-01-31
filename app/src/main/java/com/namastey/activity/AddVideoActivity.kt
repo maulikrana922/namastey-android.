@@ -198,7 +198,8 @@ class AddVideoActivity : BaseActivity<ActivityAddVideoBinding>(), AddVideoView {
 
     fun onClickAddVideo(view: View) {
         //openActivity(this@AddVideoActivity, PostVideoActivity())
-        selectVideo()
+        //selectVideo()
+        isReadWritePermissionGrantedVide()
     }
 
     fun onClickSkip(view: View) {

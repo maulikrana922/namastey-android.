@@ -91,19 +91,20 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@drawable/rounded_boost_button"
+            android:drawableStart="@drawable/ic_boost_send"
+            android:drawablePadding="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/_30sdp"
+            android:stateListAnimator="@null"
             android:text="@string/boost"
             android:textColor="@color/white"
+            android:onClick="onClickBoost"
             android:textSize="@dimen/_16sdp"
-            android:gravity="center_vertical"
-            android:drawablePadding="@dimen/_5sdp"
-            android:paddingLeft="@dimen/_30sdp"
-            android:drawableStart="@drawable/ic_boost_send"
+            app:layout_constraintBottom_toBottomOf="@id/tvAirport"
             app:layout_constraintEnd_toStartOf="@+id/tvAirport"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tvAirport"
             app:layout_constraintTop_toTopOf="@id/tvAirport"
-            android:stateListAnimator="@null"
-            />
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

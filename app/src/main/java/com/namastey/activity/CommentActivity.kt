@@ -143,7 +143,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
     private fun addCommentsTextChangeListener() {
         mentionArrayAdapter.clear()
-        dashboardViewModel.getMentionList("")
+        //dashboardViewModel.getMentionList("")
         var strMention = ""
         edtComment.showSoftInputOnFocus
         edtComment.mentionColor =
@@ -151,15 +151,13 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         edtComment.mentionAdapter = mentionArrayAdapter
         edtComment.setMentionTextChangedListener { view, text ->
             Log.e("mention", text.toString())
-            mentionArrayAdapter.notifyDataSetChanged()
             strMention = text.toString()
-
-
+            dashboardViewModel.getMentionList(text.toString())
             Log.d("!!!!!!!!!!!!!!!!!!", strMention)
-            if (text.length == 1) {
-                lvMentionList.visibility = View.GONE
-            } else
-                lvMentionList.visibility = View.VISIBLE
+//            if (text.length == 1) {
+//                lvMentionList.visibility = View.GONE
+//            } else
+//                lvMentionList.visibility = View.VISIBLE
 
         }
 
@@ -167,11 +165,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
         lvMentionList.setOnItemClickListener { _, _, i, l ->
             val strName = edtComment.text.toString().replace(
-                strMention, "${
-                    mentionArrayAdapter.getItem(
-                        i
-                    ).toString()
-                }"
+                strMention, "${mentionArrayAdapter.getItem(i).toString()}"
             )
             edtComment.setText(strName)
             edtComment.setSelection(edtComment.text!!.length)
@@ -366,6 +360,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
     }
 
     override fun onSuccessMention(mentionList: ArrayList<MentionListBean>) {
+        mentionArrayAdapter.clear()
         if (mentionList.size > 0) {
             rvMentionLists.addItemDecoration(
                 DividerItemDecoration(
@@ -389,6 +384,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
         } else {
             rvMentionLists.visibility = View.GONE
         }
+
     }
 
 

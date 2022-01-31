@@ -28,17 +28,18 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.*
+import androidx.viewpager.widget.ViewPager
 import com.android.billingclient.api.*
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -71,11 +72,32 @@ import com.namastey.viewModel.DashboardViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_member.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_alert_new.*
+import kotlinx.android.synthetic.main.dialog_boost_complete.view.*
+import kotlinx.android.synthetic.main.dialog_boost_complete.view.btnAlertOk
+import kotlinx.android.synthetic.main.dialog_boost_member.view.*
+import kotlinx.android.synthetic.main.dialog_boost_member.view.constHigh
+import kotlinx.android.synthetic.main.dialog_boost_member.view.constLow
+import kotlinx.android.synthetic.main.dialog_boost_member.view.constMedium
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvNothanks
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvOfferHigh
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvOfferMedium
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextBoostHigh
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextBoostLow
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextBoostMedium
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextHigh
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextHighEachBoost
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextLow
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextLowEachBoost
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextMedium
+import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextMediumEachBoost
+import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedHigh
+import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedLow
+import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedMedium
 import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
-import kotlinx.android.synthetic.main.dialog_boost_success.view.*
-import kotlinx.android.synthetic.main.dialog_boost_success.view.btnAlertOk
+import kotlinx.android.synthetic.main.dialog_boost_show.*
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
@@ -83,8 +105,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_post_comment.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
-import kotlinx.android.synthetic.main.dialog_common_alert.btnAlertOk
-import kotlinx.android.synthetic.main.dialog_membership.view.*
+import kotlinx.android.synthetic.main.dialog_member.view.*
 import kotlinx.android.synthetic.main.dialog_report_warning.*
 import kotlinx.android.synthetic.main.fragment_education.*
 import kotlinx.android.synthetic.main.fragment_share_app.*
@@ -109,6 +130,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     OnSelectUserItemClick, OnMentionUserItemClick, LocationListener, OnSocialTextViewClick,
     CategoryAdapter.OnItemClickCategory, SubCategoryAdapter.OnItemClick, OnItemClick {
     private val TAG = "DashboardActivity"
+    private var inAppProductId = "b00200"
+    private val subscriptionSkuBoostList = listOf("b00100", "b00200", "b00300")
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -150,6 +173,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
+    private var isFromProfileActivity = false
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     lateinit var dbHelper: DBHelper
@@ -172,6 +196,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private val db = Firebase.firestore
     private var storage = Firebase.storage
     private var storageRef = storage.reference
+    private var isselected: Int = 0
+    private var subscriptionId = "000020"
+    private var selectedMonths = 1
 
     //In App Product Price
     private lateinit var billingClient: BillingClient
@@ -211,6 +238,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
         activityDashboardBinding = bindViewData()
         activityDashboardBinding.viewModel = dashboardViewModel
+
 
         startMaxLikeService()
         fusedLocationClient =
@@ -265,7 +293,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             return
         }
         LocationServices.getFusedLocationProviderClient(this@DashboardActivity)
-            .requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+            .requestLocationUpdates(mLocationRequest, mLocationCallback, null)
 
     }
 
@@ -294,7 +322,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.d("Days days : ", days.toString())
             Log.d(
                 "current time : ",
-                Utils.convertTimestampToChatFormat(System.currentTimeMillis()).toString()
+                Utils.convertTimestampToChatFormat(System.currentTimeMillis())
             )
             if (minutes > 30) {
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
@@ -305,6 +333,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         } else {
             ivUser.setImageResource(R.drawable.ic_top_profile)
         }
+
         if (sessionManager.getStringValue(Constants.KEY_PROFILE_URL).isNotEmpty()) {
             GlideApp.with(this@DashboardActivity)
                 .load(sessionManager.getStringValue(Constants.KEY_PROFILE_URL))
@@ -671,24 +700,28 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun shareWhatsApp(dashboardBean: DashboardBean) {
         try {
-            val pm: PackageManager = packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                sendIntent.type = "*/*"
-            sendIntent.type = "text/plain"
-            sendIntent.setPackage("com.whatsapp")
+            /*   val pm: PackageManager = packageManager
+               pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+               val sendIntent = Intent(Intent.ACTION_SEND)
+               sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+               sendIntent.type = "text/plain"
+               sendIntent.setPackage("com.whatsapp")
 
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(dashboardBean.video_url)
+               sendIntent.putExtra(
+                   Intent.EXTRA_TEXT,
+                   getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
+               )
+               startActivity(sendIntent)*/
 
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT,
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text =
                 getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + dashboardBean.username
-            )
-            startActivity(sendIntent)
+            waIntent.setPackage("com.whatsapp")
+
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(waIntent, "Share with"))
+
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(
                 this@DashboardActivity,
@@ -1076,67 +1109,47 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }.show()
     }
 
-    private fun setupBillingClient(view: View) {
-        billingClient = BillingClient.newBuilder(this)
-            .enablePendingPurchases()
-            .setListener(this)
-            .build()
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
-                    loadAllSubsSKUs(view)
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                Log.e(TAG, "setupBillingClient: Failed")
-
-            }
-        })
-    }
-
     private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
         val params = SkuDetailsParams
             .newBuilder()
-            .setSkusList(subscriptionSkuList)
-            .setType(BillingClient.SkuType.SUBS)
+            .setSkusList(subscriptionSkuBoostList)
+            .setType(BillingClient.SkuType.INAPP)
             .build()
 
         billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
-            // Process the result.
-            Log.e(TAG, "loadAllSubsSKUs: billingResult ${billingResult.responseCode}")
-            Log.e(TAG, "loadAllSubsSKUs: skuDetailsList $skuDetailsList")
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
                 for (i in skuDetailsList.indices) {
+
                     val skuDetails = skuDetailsList[i]
-                    if (skuDetails.sku == "000010") {
-                        val price = Utils.splitString(skuDetails.price, 1)
+                    // Log.e(TAG, "loadAllSubsSKUs: skuDetails $skuDetails")
+
+                    if (skuDetails.sku == subscriptionSkuBoostList[0]) {
+                        val price = Utils.splitString(skuDetails.price, 3)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
                         view.tvTextLowEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
-                    if (skuDetails.sku == "000020") {
-                        val price = Utils.splitString(skuDetails.price, 6)
+                    if (skuDetails.sku == subscriptionSkuBoostList[1]) {
+                        val price = Utils.splitString(skuDetails.price, 10)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
                         view.tvTextMediumEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
 
-                    if (skuDetails.sku == "000030") {
-                        val price = Utils.splitString(skuDetails.price, 12)
+                    if (skuDetails.sku == subscriptionSkuBoostList[2]) {
+                        val price = Utils.splitString(skuDetails.price, 20)
                         val currencySymbol =
                             CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                        Log.e(TAG, "loadAllSubsSKUs: currencySymbol $currencySymbol")
                         view.tvTextHighEachBoost.text =
-                            currencySymbol.plus(price).plus(resources.getString(R.string.per_month))
+                            currencySymbol.plus(price).plus(resources.getString(R.string.each))
                     }
-                    manageVisibility(view)
+
                 }
             } else if (billingResult.responseCode == 1) {
                 //user cancel
@@ -1176,20 +1189,20 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
                 Log.e(TAG, "purchaseToken: \t $purchase")
 
-                finish()
+                // finish()
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-            finish()
+            //finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
-            finish()
+            //finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
-            finish()
+            //finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Item Unavailable")
-            finish()
+            //finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
             Log.e(TAG, "onPurchasesUpdated Developer Error")
             finish()
@@ -1198,13 +1211,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item already owned")
-            finish()
+            //finish()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item not owned")
-            finish()
+            // finish()
         } else {
             Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
-            finish()
+            // finish()
         }
     }
 
@@ -1314,299 +1327,72 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     }
 
     private fun manageVisibility(view: View) {
-        val constHigh = view.findViewById<ConstraintLayout>(R.id.constHigh)
-        val constMedium = view.findViewById<ConstraintLayout>(R.id.constMedium)
-        val constLow = view.findViewById<ConstraintLayout>(R.id.constLow)
 
-        /*for (data in membershipViewList) {
-            val membershipType = data.membership_type
-            val price = data.price
-            val discount = data.discount_pr
-
-            Log.e("DashboardActivity", "numberOfBoost: \t $membershipType")
-            Log.e("DashboardActivity", "price: \t $price")
-            Log.e("DashboardActivity", "discount: \t $discount")
-
-            if (membershipType == 0) {
-                view.tvTextLowEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-            }
-
-            if (membershipType == 1) {
-                view.tvTextMediumEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-                        .plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))
-
-            }
-
-            if (membershipType == 2) {
-                view.tvTextHighEachBoost.text =
-                    resources.getString(R.string.dollars)
-                        .plus(price)
-                        .plus(resources.getString(R.string.per_month))
-                        .plus("\n")
-                        .plus(resources.getString(R.string.save))
-                        .plus(" ")
-                        .plus(discount)
-                        .plus(resources.getString(R.string.percentage))
-            }
-        }*/
-
-        constLow.setOnClickListener {
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.white
-                )
-            )
-            //  view.tvOfferLow.visibility = View.VISIBLE
+        view.constLow.setOnClickListener {
+            // view.tvOfferLow.visibility = VISIBLE
             view.viewSelectedLow.visibility = View.VISIBLE
+            view.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
 
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
+            view.tvOfferMedium.visibility = View.GONE
+            view.viewSelectedMedium.visibility = View.GONE
+            view.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
+            view.tvOfferHigh.visibility = View.GONE
+            view.viewSelectedHigh.visibility = View.GONE
+            view.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+
+            inAppProductId = subscriptionSkuBoostList[0]
         }
 
-        constMedium.setOnClickListener {
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.white
-                )
-            )
+        view.constMedium.setOnClickListener {
             view.tvOfferMedium.visibility = View.VISIBLE
             view.viewSelectedMedium.visibility = View.VISIBLE
+            view.tvTextMedium.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
 
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferHigh.visibility = View.INVISIBLE
-            view.viewSelectedHigh.visibility = View.INVISIBLE
+            view.tvOfferHigh.visibility = View.GONE
+            view.viewSelectedHigh.visibility = View.GONE
+            view.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
+            // view.tvOfferLow.visibility = GONE
+            view.viewSelectedLow.visibility = View.GONE
+            view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+            inAppProductId = subscriptionSkuBoostList[1]
         }
 
-        constHigh.setOnClickListener {
-            view.tvTextHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextBoostHigh.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.tvTextHighEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorBlueLight
-                )
-            )
-            view.viewBgHigh.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.white
-                )
-            )
+        view.constHigh.setOnClickListener {
             view.tvOfferHigh.visibility = View.VISIBLE
             view.viewSelectedHigh.visibility = View.VISIBLE
+            view.tvTextHigh.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text_red))
+            view.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
 
-            view.viewBgMedium.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferMedium.visibility = View.INVISIBLE
-            view.viewSelectedMedium.visibility = View.INVISIBLE
-            view.viewBgLow.setBackgroundColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorLightPink
-                )
-            )
-            view.tvOfferLow.visibility = View.INVISIBLE
-            view.viewSelectedLow.visibility = View.INVISIBLE
+            view.tvOfferMedium.visibility = View.GONE
+            view.viewSelectedMedium.visibility = View.GONE
+            view.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-            view.tvTextLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostLow.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextLowEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextBoostMedium.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
-            view.tvTextMediumEachBoost.setTextColor(
-                ContextCompat.getColor(
-                    this@DashboardActivity,
-                    R.color.colorDarkGray
-                )
-            )
+            // view.tvOfferLow.visibility = GONE
+            view.viewSelectedLow.visibility = View.GONE
+            view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+            view.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+            inAppProductId = subscriptionSkuBoostList[2]
+
         }
     }
 
@@ -1705,6 +1491,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
+                sessionManager.setBooleanValue(false,Constants.ISNOTIFICATION)
                 val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
                 intent.putExtra("isFromDashboard", true)
                 openActivity(intent)
@@ -1819,6 +1606,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } catch (e: Exception) {
                 Log.e("Exception", e.message.toString())
             }
+        } else if (requestCode == Constants.PROFILE_VIEW) {
+            try {
+                val follow = data?.getIntExtra("result", 0)
+                val dashboardBean = feedList[position]
+                dashboardBean.is_follow = follow!!
+                feedList[position] = dashboardBean
+                feedAdapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                Log.e("Exception", e.message.toString())
+            }
         }
     }
 
@@ -1909,25 +1706,30 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                         val dialog = builder.create()
                         dialog.show()
                     } else {
-                        val builder = AlertDialog.Builder(this)
-                        builder.setMessage(getString(R.string.permission_denied_message))
-                            .setTitle(getString(R.string.permission_required))
+                        /* val builder = AlertDialog.Builder(this)
+                         builder.setMessage(getString(R.string.permission_denied_message))
+                             .setTitle(getString(R.string.permission_required))
 
-                        builder.setPositiveButton(
-                            getString(R.string.go_to_settings)
-                        ) { dialog, id ->
-                            val intent = Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", packageName, null)
-                            )
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
-                        }
+                         builder.setPositiveButton(
+                             getString(R.string.go_to_settings)
+                         ) { dialog, id ->
+                             val intent = Intent(
+                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                 Uri.fromParts("package", packageName, null)
+                             )
+                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                             startActivity(intent)
+                             finish()
+                         }
 
-                        val dialog = builder.create()
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.show()
+                         val dialog = builder.create()
+                         dialog.setCanceledOnTouchOutside(false)
+                         dialog.show()*/
+
+                        tvNoOneMessage.text = getString(R.string.location_services_need)
+                        tvNoOne.text = getString(R.string.where_you_at)
+                        tvTurnOnGlobal.text = getString(R.string.go_to_setting_namastay)
+                        groupNoOne.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -2223,7 +2025,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
-    override fun onUserProfileClick(dashboardBean: DashboardBean) {
+    override fun onUserProfileClick(dashboardBean: DashboardBean, position: Int) {
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(
@@ -2232,9 +2034,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Constants.SIGNUP_FRAGMENT
             )
         } else {
+            isFromProfileActivity = true
+            this.position = position
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, dashboardBean.user_id)
-            openActivity(intent)
+            //openActivity(intent)
+            startActivityForResult(intent, Constants.PROFILE_VIEW)
         }
     }
 
@@ -2248,27 +2053,29 @@ private fun prepareAnimation(animation: Animation): Animation? {
 //            )
 //        } else {
         if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-            showBoostFeatureNotAdded()
+            // showBoostFeatureNotAdded()
 //                =============== This feature currently not added ============
-//                if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
-//                    val currentTime = System.currentTimeMillis()
-//                    var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-//                    Log.e("DashboardActivity", "currentTime: $currentTime")
-//                    Log.e("DashboardActivity", "storedTime: $storedTime")
-//                    storedTime += TimeUnit.MINUTES.toMillis(30)
-//                    timer = storedTime - currentTime
-//
-//                    showBoostPendingDialog(timer)
-//
-//                } else {
-//                    if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-//                        showBoostStartConfirmationDialog()
-//                    } else {
-//                        val intent = Intent(this@DashboardActivity, ProfileActivity::class.java)
-//                        intent.putExtra("fromBuyBoost", true)
-//                        openActivity(intent)
-//                    }
-//                }
+            if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
+                val currentTime = System.currentTimeMillis()
+                var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+                Log.e("DashboardActivity", "currentTime: $currentTime")
+                Log.e("DashboardActivity", "storedTime: $storedTime")
+                storedTime += TimeUnit.MINUTES.toMillis(30)
+                timer = storedTime - currentTime
+
+                showBoostPendingDialog(timer)
+
+            } else {
+                if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                    showBoostStartConfirmationDialog()
+                } else {
+                    /*   val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+                       intent.putExtra("fromBuyBoost", true)
+                       intent.putExtra("ownProfile", true)
+                       openActivity(intent)*/
+                    showBoostDialog(R.layout.dialog_boost_member)
+                }
+            }
 //                =============== This feature currently not added ============
 
         } else {
@@ -2296,18 +2103,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun showBoostStartConfirmationDialog() {
-        object : CustomCommonAlertDialog(
-            this@DashboardActivity,
-            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST).toString().plus(" ")
-                .plus(getString(R.string.msg_boost_left)),
-            getString(R.string.msg_boost_start),
-            sessionManager.getStringValue(Constants.KEY_PROFILE_URL),
-            getString(R.string.use_boost),
-            resources.getString(R.string.no_thanks)
+        object : CustomBoostDialog(
+            this,
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST)
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
-                    btnAlertOk.id -> {
+                    btnUseBoost.id -> {
+                        dismiss()
                         sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
                         sessionManager.setLongValue(
                             System.currentTimeMillis(),
@@ -2318,6 +2121,253 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 }
             }
         }.show()
+
+    }
+
+    private fun showCustomDialog(position: Int) {
+        selectedMonths = 1
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.dialog_member, viewGroup, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dashboardViewModel.setIsLoading(true)
+        alertDialog.show()
+
+        dialogView.constHigh.setOnClickListener {
+            isselected = 0
+            if (isselected == 0) {
+                dialogView.tvOfferHigh.visibility = View.VISIBLE
+                dialogView.viewSelectedHigh.visibility = View.VISIBLE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferMedium.visibility = View.GONE
+                dialogView.viewSelectedMedium.visibility = View.GONE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                //  dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                //dialogView.tvOfferLow.visibility = GONE
+                dialogView.viewSelectedLow.visibility = View.GONE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                subscriptionId = "000030"
+
+            }
+        }
+        dialogView.constMedium.setOnClickListener {
+            isselected = 1
+            if (isselected == 1) {
+                dialogView.tvOfferMedium.visibility = View.VISIBLE
+                dialogView.viewSelectedMedium.visibility = View.VISIBLE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+                //dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferHigh.visibility = View.GONE
+                dialogView.viewSelectedHigh.visibility = View.GONE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                //dialogView.tvOfferLow.visibility = GONE
+                dialogView.viewSelectedLow.visibility = View.GONE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                subscriptionId = "000020"
+
+            }
+        }
+        dialogView.constLow.setOnClickListener {
+            isselected = 2
+            if (isselected == 2) {
+                //dialogView.tvOfferLow.visibility = VISIBLE
+                dialogView.viewSelectedLow.visibility = View.VISIBLE
+                dialogView.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
+                dialogView.tvTextLowEachBoost.setTextColor(resources.getColor(R.color.color_text_red))
+
+                dialogView.tvOfferMedium.visibility = View.GONE
+                dialogView.viewSelectedMedium.visibility = View.GONE
+                dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
+                //dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                dialogView.tvOfferHigh.visibility = View.GONE
+                dialogView.viewSelectedHigh.visibility = View.GONE
+                dialogView.tvTextHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
+                dialogView.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
+
+                subscriptionId = "000010"
+
+            }
+        }
+        /*Show dialog slider*/
+        val viewpager = dialogView.findViewById<ViewPager>(R.id.viewpagerMembership)
+        val tabview = dialogView.findViewById<TabLayout>(R.id.tablayout)
+        setupBillingClient(dialogView)
+        viewpager.adapter =
+            MemberDialogSliderAdapter(this@DashboardActivity, membershipSliderArrayList)
+        tabview.setupWithViewPager(viewpager, true)
+        viewpager.currentItem = position
+
+
+        val timer: TimerTask = object : TimerTask() {
+            override fun run() {
+                this@DashboardActivity.runOnUiThread(Runnable {
+                    if (viewpager.currentItem < membershipSliderArrayList.size - 1) {
+                        viewpager.currentItem = viewpager.currentItem + 1
+                    } else {
+                        viewpager.currentItem = 0
+                    }
+                })
+            }
+        }
+        val time = Timer()
+        time.schedule(timer, 0, 5000)
+
+        dialogView.btnContinue.setOnClickListener {
+            alertDialog.dismiss()
+            val intent = Intent(this@DashboardActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.SUBSCRIPTION_ID, subscriptionId)
+            openActivity(intent)
+        }
+
+        dialogView.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        class SliderTime : TimerTask() {
+            override fun run() {
+                this@DashboardActivity.runOnUiThread(Runnable {
+                    if (vpSlide.currentItem < membershipSliderArrayList.size - 1) {
+                        vpSlide.currentItem = vpSlide.currentItem + 1
+                    } else {
+                        vpSlide.currentItem = 0
+                    }
+                })
+            }
+        }
+
+    }
+
+    private fun setupBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
+
+            private fun loadAllSubsSKUs(view: View) = if (billingClient.isReady) {
+                val params = SkuDetailsParams
+                    .newBuilder()
+                    .setSkusList(subscriptionSkuList)
+                    .setType(BillingClient.SkuType.SUBS)
+                    .build()
+
+                billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && skuDetailsList!!.isNotEmpty()) {
+                        for (i in skuDetailsList.indices) {
+
+                            val skuDetails = skuDetailsList[i]
+
+                            if (subscriptionSkuList.size >= 2) {
+                                if (skuDetails.sku == subscriptionSkuList[0]) {
+                                    val price = Utils.splitString(skuDetails.price, 1)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextLowEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+                                }
+
+                                if (skuDetails.sku == subscriptionSkuList[1]) {
+                                    val price = Utils.splitString(skuDetails.price, 6)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextMediumEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+
+                                }
+
+                                if (skuDetails.sku == subscriptionSkuList[2]) {
+                                    val price = Utils.splitString(skuDetails.price, 12)
+                                    val currencySymbol =
+                                        CurrencySymbol.getCurrencySymbol(skuDetails.priceCurrencyCode)
+                                    view.tvTextHighEachBoost.text =
+                                        currencySymbol.plus(price)
+                                            .plus(resources.getString(R.string.per_month))
+                                }
+
+                                dashboardViewModel.setIsLoading(false)
+                            }
+
+                        }
+                    } else if (billingResult.responseCode == 1) {
+                        //user cancel
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 2) {
+                        Toast.makeText(
+                            this@DashboardActivity,
+                            "Internet required for purchase",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 3) {
+                        Toast.makeText(
+                            this@DashboardActivity,
+                            "Incompatible Google Play Billing Version",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@querySkuDetailsAsync
+                    } else if (billingResult.responseCode == 7) {
+                        Toast.makeText(
+                            this@DashboardActivity,
+                            "you already own Premium",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        return@querySkuDetailsAsync
+                    } else
+                        Toast.makeText(
+                            this@DashboardActivity,
+                            "no skuDetails sorry",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                }
+            } else {
+                println("Billing Client not ready")
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
+
+            }
+        })
     }
 
     override fun onDescriptionClick(userName: String) {
@@ -2356,7 +2406,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
         val view: View =
-            LayoutInflater.from(this).inflate(R.layout.dialog_boost_success, viewGroup, false)
+            LayoutInflater.from(this).inflate(R.layout.dialog_boost_complete, viewGroup, false)
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
@@ -2366,12 +2416,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
-            showBoostStartConfirmationDialog()
+            if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                showBoostStartConfirmationDialog()
+            } else {
+                /*    val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
+                    intent.putExtra("fromBuyBoost", true)
+                    intent.putExtra("ownProfile", true)
+                    openActivity(intent)*/
+
+                showBoostDialog(R.layout.dialog_boost_member)
+            }
         }
 
-        view.tvNoThanks.setOnClickListener {
-            alertDialog.dismiss()
-        }
     }
 
     private fun showBoostPendingDialog(myTimer: Long) {
@@ -2431,6 +2487,103 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
     }
 
+    private fun showBoostDialog(layout: Int) {
+
+        var isFromProfile = true
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
+        val viewGroup: ViewGroup = findViewById(android.R.id.content)
+        val view: View = LayoutInflater.from(this).inflate(layout, viewGroup, false)
+        builder.setView(view)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        dashboardViewModel.setIsLoading(true)
+        alertDialog.show()
+
+        //view.llRecurringTextView.visibility = View.GONE
+        when {
+            sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0 -> {
+                view.tvOutOfBoost.text = getString(R.string.need_more_boosts)
+                view.tvBoostDayRemaining.visibility = View.GONE
+                view.tvNextFreeBoost.visibility = View.GONE
+            }
+            else -> {
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+                    val purchaseTimeStamp =
+                        Timestamp(sessionManager.getLongValue(Constants.KEY_PURCHASE_DATE))
+                    Log.d("purchase time : ", purchaseTimeStamp.time.toString())
+
+                    val date = Date(purchaseTimeStamp.time)
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date
+                    calendar.add(Calendar.DATE, 30)
+                    Log.d("expire time : ", calendar.time.toString())
+
+                    val currentDate = Calendar.getInstance()
+                    val diff: Long = calendar.timeInMillis - currentDate.timeInMillis
+                    val seconds = diff / 1000
+                    val minutes = seconds / 60
+                    val hours = minutes / 60
+                    val days = hours / 24
+
+                    Log.d("Days remaining : ", days.toString())
+                    Log.d("Days remaining : ", hours.toString())
+                    Log.d("Days remaining : ", minutes.toString())
+                    Log.d("current time : ", currentDate.time.toString())
+
+                    view.tvBoostDayRemaining.text =
+                        days.toString().plus(" ").plus(getString(R.string.boost_day_remaining))
+                    view.tvBoostDayRemaining.visibility = View.VISIBLE
+                    view.tvNextFreeBoost.visibility = View.VISIBLE
+                } else {
+                    view.tvOutOfBoost.text = getString(R.string.need_more_boosts)
+                    view.tvBoostDayRemaining.visibility = View.GONE
+                    view.tvNextFreeBoost.visibility = View.GONE
+                }
+            }
+        }
+        dashboardViewModel.setIsLoading(false)
+
+        manageVisibility(view)
+
+        setupBoostBillingClient(view)
+
+        view.btnBuyBoost.setOnClickListener {
+            alertDialog.dismiss()
+            val intent = Intent(this@DashboardActivity, InAppPurchaseActivity::class.java)
+            intent.putExtra(Constants.IN_APP_PRODUCT_ID, inAppProductId)
+            openActivity(intent)
+        }
+        view.tvNothanks.setOnClickListener {
+            alertDialog.dismiss()
+        }    // var timer = ""
+
+    }
+
+
+    private fun setupBoostBillingClient(view: View) {
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    Log.e(TAG, "setupBillingClient: Setup Billing Done")
+                    loadAllSubsSKUs(view)
+                }
+            }
+
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG, "setupBillingClient: Failed")
+
+            }
+        })
+    }
+
     override fun onSelectItemClick(userId: Long, position: Int) {
     }
 
@@ -2484,7 +2637,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     "2" -> { // for follow Notification
                         val matchesListBean =
                             intent.getParcelableExtra<MatchesListBean>("matchesListBean")
-                       // val profileBean: ProfileBean = ProfileBean()
+                        // val profileBean: ProfileBean = ProfileBean()
 //                        profileBean.user_id = sessionManager.getUserId()
 //                        profileBean.username = intent.getStringExtra("username")!!
 //                        profileBean.profileUrl =
@@ -2495,12 +2648,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
                             Intent(this@DashboardActivity, ProfileViewActivity::class.java)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 //                        intentProfileActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        var username=""
+                        var username = ""
                         username = if (intent.hasExtra(Constants.USERNAME))
                             intent.getStringExtra(Constants.USERNAME)!!
                         else sessionManager.getStringValue(Constants.USERNAME)
 
-                        intentProfileActivity.putExtra(Constants.USERNAME ,username)
+                        intentProfileActivity.putExtra(Constants.USERNAME, username)
                         intentProfileActivity.putExtra("isMyProfile", true)
                         startActivity(intentProfileActivity)
                         // addFragment(NotificationFragment(), Constants.NOTIFICATION_FRAGMENT)
@@ -2596,6 +2749,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
+
         if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting) {
             isFromSetting = false
             feedList.clear()
@@ -2629,6 +2783,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
         LocalBroadcastManager.getInstance(this@DashboardActivity).registerReceiver(
             myBroadcastReceiver, IntentFilter("countDown")
         )
+        if (sessionManager.getBooleanValue(Constants.ISNOTIFICATION)) {
+            ivNotificationBg.visibility = View.VISIBLE
+        }else{
+            ivNotificationBg.visibility = View.INVISIBLE
+        }
     }
 
     override fun onPause() {
@@ -2929,7 +3088,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onFailedMaxLike(msg: String, error: Int) {
         Log.e("DashboardActivity", "onFailedMaxLike: msg:\t  $msg \t error:\t  $error")
         sessionManager.setBooleanValue(true, Constants.KEY_MAX_USER_LIKE)
-        showMembershipDialog(1)
+//        showMembershipDialog(1)
     }
 
     override fun onSuccessMembershipList(membershipView: ArrayList<MembershipPriceBean>) {
@@ -2955,7 +3114,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessStartChat(msg: String) {
-        Log.e("msg",msg)
+        Log.e("msg", msg)
     }
 
     override fun onSuccess(list: ArrayList<DashboardBean>) {
@@ -3156,6 +3315,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             totalCount = 1
             videoIdList.clear()
             firstTime = true
+            feedAdapter.notifyDataSetChanged()
             getFeedListApi(subCategoryId, false)
 
         }
@@ -3256,7 +3416,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0, ""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)
@@ -3295,7 +3455,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     private fun sendMessageToMultiple(dashboardBean: DashboardBean) {
-        bottomSheetDialogShare.dismiss()
+        bottomSheetDialogShareApp.dismiss()
 
         for (profileBean in selectedShareProfile) {
             Log.e(TAG, "userId: \t $profileBean")
@@ -3312,7 +3472,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0, ""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
@@ -3361,8 +3521,18 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     fun onclickGlobal(view: View) {
-        val jsonObject = JsonObject()
-        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
-        dashboardViewModel.editProfile(jsonObject)
+        if (tvTurnOnGlobal.text.toString() == getString(R.string.go_to_setting_namastay)) {
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts("package", packageName, null)
+            )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        } else {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+            dashboardViewModel.editProfile(jsonObject)
+        }
     }
 }

@@ -62,7 +62,7 @@
 
             <com.namastey.customViews.CustomButton
                 android:id="@+id/btnAlertOk"
-                style="@style/btnRedStyle"
+                style="@style/btnRedAllCornerStyle"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:text="@string/done"
                 app:layout_constraintEnd_toEndOf="parent"

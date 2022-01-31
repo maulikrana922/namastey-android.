@@ -19,6 +19,8 @@ import java.io.File
 
 class ThumbyActivity : AppCompatActivity() {
 
+    private var pictureFile: File? = null
+
     companion object {
         const val EXTRA_THUMBNAIL_POSITION = "org.buffer.android.thumby.EXTRA_THUMBNAIL_POSITION"
         const val EXTRA_URI = "org.buffer.android.thumby.EXTRA_URI"
@@ -52,9 +54,20 @@ class ThumbyActivity : AppCompatActivity() {
 
     private fun initData() {
         rlGallery.setOnClickListener {
-            val i = Intent(this, OpenCameraActivity::class.java)
-            startActivityForResult(i, Constants.PERMISSION_CAMERA)
+//            val i = Intent(this, OpenCameraActivity::class.java)
+//            startActivityForResult(i, Constants.PERMISSION_CAMERA)
+            openGalleryForImage()
         }
+    }
+
+    private fun openGalleryForImage() {
+        pictureFile = File(
+            Constants.FILE_PATH,
+            System.currentTimeMillis().toString() + ".jpeg"
+        )
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, Constants.PERMISSION_GALLERY)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -154,20 +167,27 @@ class ThumbyActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.PERMISSION_CAMERA) {
-            val imagePath = data!!.getStringExtra(Constants.IMAGE_PATH)
-            videoUri = Uri.fromFile(File(imagePath))
-            val intent = Intent()
-            intent.putExtra(
-                EXTRA_THUMBNAIL_POSITION,
-                ((view_thumbnail.getDuration() / 100) * thumbs.currentProgress).toLong() * 1000
+        } else if (resultCode == Activity.RESULT_OK && requestCode == Constants.PERMISSION_GALLERY) {
+            val selectedImage = data!!.data
+            val filePathColumn =
+                arrayOf(MediaStore.Images.Media.DATA)
+            val cursor: Cursor? = this@ThumbyActivity.contentResolver.query(
+                selectedImage!!,
+                filePathColumn, null, null, null
             )
-            intent.putExtra(EXTRA_URI, videoUri)
+            cursor!!.moveToFirst()
+
+            val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+            val picturePath: String = cursor.getString(columnIndex)
+            cursor.close()
+            val intent = Intent()
+            intent.putExtra(EXTRA_URI, Uri.fromFile(File(picturePath)))
             intent.putExtra(Constants.IMAGE_TYPE, "Gallery")
             setResult(RESULT_OK, intent)
             finish()
-            Log.e("VideoUri :", videoUri.toString())
+            Log.e("GallaryImage :", picturePath.toString())
         }
+
 
     }
 }

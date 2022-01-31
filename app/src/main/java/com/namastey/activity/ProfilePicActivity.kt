@@ -10,6 +10,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -28,9 +29,11 @@ import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfilePicViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile.ivProfileUser
 import kotlinx.android.synthetic.main.activity_profile_pic.*
+import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
-import java.io.File
+import java.io.*
 import javax.inject.Inject
 
 class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePicView {
@@ -94,7 +97,7 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
 
     private fun openGalleryForImage() {
         profileFile = File(
-            Constants.FILE_PATH,
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             System.currentTimeMillis().toString() + ".jpeg"
         )
 
@@ -139,14 +142,14 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                     MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
                     1200
                 )!!
-                GlideLib.loadImageBitmap(this, ivProfilePic, bitmap)
+                GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
 
             } else if (requestCode == Constants.REQUEST_CODE_IMAGE) {
 
                 if (data != null) {
                     val selectedImage = data.data
 
-                    if (selectedImage != null) {
+                  /*  if (selectedImage != null) {
                         try {
                             val filePathColumn =
                                 arrayOf(MediaStore.Images.Media.DATA)
@@ -169,11 +172,42 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                                 applicationContext.packageName.plus(".provider"),
                                 profileFile!!
                             )
-                            GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
+                            //GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
+                            val bitmap: Bitmap = Utils.scaleBitmapDown(
+                                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                                1200
+                            )!!
+                            GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
 
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
+                    }*/
+
+                    if (selectedImage != null) {
+                        val inputStream: InputStream?
+                        try {
+                            inputStream = contentResolver.openInputStream(selectedImage)
+                            if (!profileFile!!.exists()) {
+                                File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), System.currentTimeMillis().toString()).mkdirs()
+                            }
+                            val fileOutputStream = FileOutputStream(profileFile)
+                            if (inputStream != null) {
+                                Utils.copyInputStream(inputStream, fileOutputStream)
+                                inputStream.close()
+                            }
+                            fileOutputStream.close()
+                            if (profileFile != null) {
+                                Utils.applyExifInterface(profileFile!!.getAbsolutePath())
+                            }
+                            //Glide.with(this).load(profileFile!!.getAbsolutePath()).into(ivLoadImage);
+                            GlideLib.loadImage(this, ivProfilePic, profileFile.toString())
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+
                     }
                 }
             }
@@ -202,7 +236,8 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
     }
 
     fun onClickPlus(view: View) {
-        selectImage()
+        //selectImage()
+        isReadWritePermissionGranted()
     }
 
     private fun isReadWritePermissionGranted() {

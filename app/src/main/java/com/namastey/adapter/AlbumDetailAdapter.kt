@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
 import com.namastey.customViews.CustomButton
-import com.namastey.customViews.CustomTextView
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
 import com.namastey.listeners.OnSelectUserItemClick
@@ -25,7 +24,8 @@ class AlbumDetailAdapter(
     var onSelectUserItemClick: OnSelectUserItemClick,
     var fromEdit: Boolean,
     var fromFilter: Boolean,
-    var isSavedAlbum: Boolean
+    var isSavedAlbum: Boolean,
+    var size:Int
 
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumDetailAdapter.ViewHolder>() {
 
@@ -35,7 +35,7 @@ class AlbumDetailAdapter(
         )
     )
 
-    override fun getItemCount() = videoList.size
+    override fun getItemCount() = size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -68,10 +68,15 @@ class AlbumDetailAdapter(
                 viewAlbumDetails.visibility = View.VISIBLE
                 llAddAlbum.visibility = View.GONE
                 tvVideoViewers.text = videoBean.viewers.toString()
-                tvVideoComment.text =
-                    videoBean.comments.toString().plus(" ")
-                        .plus(activity.getString(R.string.comments))
-
+                if (videoBean.comments == 1) {
+                    tvVideoComment.text =
+                        videoBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comment))
+                } else {
+                    tvVideoComment.text =
+                        videoBean.comments.toString().plus(" ")
+                            .plus(activity.getString(R.string.comments))
+                }
                 if (videoBean.cover_image_url != null)
                     GlideLib.loadImage(activity, ivVideoImage, videoBean.cover_image_url)
 
@@ -94,37 +99,42 @@ class AlbumDetailAdapter(
                         deleteDialog.setContentView(R.layout.dialog_delete)
                         deleteDialog.setCancelable(false)
                         deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                        deleteDialog.tvAlertMsg.text = resources.getString(R.string.video_delete_alert_msg)
-                        deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
-                        deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
+                        deleteDialog.tvAlertMsg.text =
+                            resources.getString(R.string.video_delete_alert_msg)
+                        deleteDialog.btnDeleteCancel.text =
+                            resources.getString(R.string.video_delete_btn_pos)
+                        deleteDialog.btnConfirm.text =
+                            resources.getString(R.string.video_delete_btn_neg)
 
-                        deleteDialog.findViewById<CustomButton>(R.id.btnConfirm).setOnClickListener {
-                            onItemClick.onItemClick(videoBean.id, position)
-                            notifyDataSetChanged()
-                            deleteDialog.dismiss()
-                        }
-                        deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel).setOnClickListener {
-                            deleteDialog.dismiss()
-                        }
+                        deleteDialog.findViewById<CustomButton>(R.id.btnConfirm)
+                            .setOnClickListener {
+                                onItemClick.onItemClick(videoBean.id, position)
+                                notifyDataSetChanged()
+                                deleteDialog.dismiss()
+                            }
+                        deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel)
+                            .setOnClickListener {
+                                deleteDialog.dismiss()
+                            }
                         deleteDialog.show()
 
-                       /* object : CustomAlertDialog(
-                            activity as Activity,
-                            resources.getString(R.string.msg_remove_post),
-                            activity.getString(R.string.yes),
-                            activity.getString(R.string.cancel)
-                        ) {
-                            override fun onBtnClick(id: Int) {
-                                when (id) {
-                                    btnPos.id -> {
-                                        onItemClick.onItemClick(videoBean.id, position)
-                                    }
-                                    btnNeg.id -> {
-                                        dismiss()
-                                    }
-                                }
-                            }
-                        }.show()*/
+                        /* object : CustomAlertDialog(
+                             activity as Activity,
+                             resources.getString(R.string.msg_remove_post),
+                             activity.getString(R.string.yes),
+                             activity.getString(R.string.cancel)
+                         ) {
+                             override fun onBtnClick(id: Int) {
+                                 when (id) {
+                                     btnPos.id -> {
+                                         onItemClick.onItemClick(videoBean.id, position)
+                                     }
+                                     btnNeg.id -> {
+                                         dismiss()
+                                     }
+                                 }
+                             }
+                         }.show()*/
                     }
                 }
 
@@ -164,7 +174,7 @@ class AlbumDetailAdapter(
                 if (fromEdit) {
                     if (videoList[position].album_name == activity.getString(R.string.saved)) {
                         onPostImageClick.onItemPostImageClick(position, videoList)
-                    }else{
+                    } else {
                         val videoListTemp = ArrayList(videoList)
                         videoListTemp.removeAt(0)  // Remove first position plus element
                         onPostImageClick.onItemPostImageClick(position - 1, videoListTemp)
@@ -175,7 +185,7 @@ class AlbumDetailAdapter(
                 }
 
             }
-            if(isSavedAlbum == true){
+            if (isSavedAlbum == true) {
                 val videoBean = videoList[position]
                 ivRemoveVideo.visibility = View.VISIBLE
                 ivRemoveVideo.setOnClickListener {
@@ -183,18 +193,22 @@ class AlbumDetailAdapter(
                     deleteDialog.setContentView(R.layout.dialog_delete)
                     deleteDialog.setCancelable(false)
                     deleteDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                    deleteDialog.tvAlertMsg.text = resources.getString(R.string.video_delete_alert_msg)
-                    deleteDialog.btnDeleteCancel.text = resources.getString(R.string.video_delete_btn_pos)
-                    deleteDialog.btnConfirm.text = resources.getString(R.string.video_delete_btn_neg)
+                    deleteDialog.tvAlertMsg.text =
+                        resources.getString(R.string.video_delete_alert_msg)
+                    deleteDialog.btnDeleteCancel.text =
+                        resources.getString(R.string.video_delete_btn_pos)
+                    deleteDialog.btnConfirm.text =
+                        resources.getString(R.string.video_delete_btn_neg)
 
                     deleteDialog.findViewById<CustomButton>(R.id.btnConfirm).setOnClickListener {
                         onItemClick.onItemClick(videoBean.id, position)
                         notifyDataSetChanged()
                         deleteDialog.dismiss()
                     }
-                    deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel).setOnClickListener {
-                        deleteDialog.dismiss()
-                    }
+                    deleteDialog.findViewById<CustomButton>(R.id.btnDeleteCancel)
+                        .setOnClickListener {
+                            deleteDialog.dismiss()
+                        }
                     deleteDialog.show()
                 }
             }

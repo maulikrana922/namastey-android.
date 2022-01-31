@@ -116,7 +116,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
 
     override fun onSuccessStartChat(msg: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onSuccessAddComment(commentBean: CommentBean) {
@@ -394,17 +393,18 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             AlbumVideoAdapter(videoList, this@AlbumVideoActivity, this, sessionManager)
         mRecyclerView!!.adapter = albumVideoAdapter
 
-        albumVideoAdapter.notifyDataSetChanged()
         if (firstTime) {
-            Handler(Looper.getMainLooper()).post {
+            firstTime = false
+            Handler(Looper.getMainLooper()).postDelayed({
                 mRecyclerView!!.playVideo(
                     false,
                     false,
                     position
                 )
-            }
-            firstTime = false
+            }, 2000)
         }
+
+
     }
 
     override fun onBackPressed() {
@@ -474,6 +474,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         viewDetailsVideo.visibility = View.VISIBLE
         groupUpnext.visibility = View.GONE
         albumVideoAdapter.isDisplayDetails = true
+        albumVideoAdapter.notifyDataSetChanged()
     }
 
     override fun onItemFollowingClick(dashboardBean: DashboardBean) {
@@ -651,7 +652,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             bottomSheetDialogShare.dismiss()
         }
         bottomSheetDialogShare.tv_user_name.text = videoBean.username
-        bottomSheetDialogShare.tv_Job.text = videoBean.job
+        bottomSheetDialogShare.tv_Job.text = videoBean.jobs
         if (videoBean.profile_url.isNotBlank()) {
             GlideLib.loadImage(
                 this@AlbumVideoActivity,
@@ -849,7 +850,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     }
     private fun shareWhatsApp(videoBean: VideoBean) {
         try {
-            val pm: PackageManager = packageManager
+     /*       val pm: PackageManager = packageManager
             pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -864,7 +865,16 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 //                    Intent.EXTRA_STREAM,
 //                    Uri.parse(videoBean.video_url)
 //                )
-            startActivity(sendIntent)
+            startActivity(sendIntent)*/
+
+
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+            waIntent.setPackage("com.whatsapp")
+
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(waIntent, "Share with"))
         } catch (e: PackageManager.NameNotFoundException) {
             Toast.makeText(
                 this@AlbumVideoActivity,
@@ -953,8 +963,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 filteredName.add(following)
             }
         }
-
-        userShareAdapter.filterList(filteredName)
+        if (filteredName.isNotEmpty())
+            userShareAdapter.filterList(filteredName)
     }
 
     private fun sendMessageToMultiple(videoBean: VideoBean) {
@@ -974,7 +984,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 "",
                 System.currentTimeMillis(),
                 0,
-                0
+                0,""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
@@ -1457,7 +1467,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0
+            0,""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)

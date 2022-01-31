@@ -92,6 +92,9 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
                     if (numeric) {
                         viewPhone.visibility = View.VISIBLE
                         tvContactName.text = "+91 ".plus(newText)
+                        if (newText.length>=10)
+                            tvInvite.visibility=View.VISIBLE
+                        else tvInvite.visibility=View.INVISIBLE
                     } else
                         viewPhone.visibility = View.GONE
                     adapter.filter(newText)
@@ -111,21 +114,41 @@ class InviteActivity : BaseActivity<ActivityInviteBinding>(), InviteView, OnInvi
         })
 
         tvInvite.setOnClickListener {
-            val sendIntent = Intent(Intent.ACTION_VIEW)
-            val number = "+91".plus(searchContact.query)
-            sendIntent.data = Uri.parse("sms:")
-            sendIntent.putExtra("address", number)
-            val message = String.format(
-                getString(R.string.invite_sms_send),
-                "",
-                "+91".plus(searchContact.query)
-            ).plus(" \n").plus(
-                getString(R.string.namastey_link)
-            )
+            if (sessionManager.getIntegerValue(Constants.KEY_INVITE_COUNT) > 0) {
+                val sendIntent = Intent(Intent.ACTION_VIEW)
+                val number = "+91".plus(searchContact.query)
+                sendIntent.data = Uri.parse("sms:")
+                sendIntent.putExtra("address", number)
+                val message = String.format(
+                    getString(R.string.invite_sms_send),
+                    "",
+                    "+91".plus(searchContact.query)
+                ).plus(" \n").plus(
+                    getString(R.string.namastey_link)
+                )
 
-            inviteUser(number)
-            sendIntent.putExtra("sms_body", message)
-            startActivity(sendIntent)
+                inviteUser(number)
+                sendIntent.putExtra("sms_body", message)
+                startActivity(sendIntent)
+            }else{
+                object : CustomAlertDialog(
+                    this@InviteActivity,
+                    resources.getString(R.string.msg_out_of_invite),
+                    getString(R.string.okay),
+                    getString(R.string.cancel)
+                ) {
+                    override fun onBtnClick(id: Int) {
+                        when (id) {
+                            btnPos.id -> {
+                                dismiss()
+                            }
+                            btnNeg.id -> {
+                                dismiss()
+                            }
+                        }
+                    }
+                }.show()
+            }
         }
         if (ActivityCompat.checkSelfPermission(
                 this,

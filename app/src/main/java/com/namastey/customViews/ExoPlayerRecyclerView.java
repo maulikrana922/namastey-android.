@@ -162,9 +162,9 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                     // There's a special case when the end of the list has been reached.
                     // Need to handle that with this bit of logic
                     if (!recyclerView.canScrollVertically(1)) {
-                        playVideo(true,false, -1);
+                        playVideo(true, false, -1);
                     } else {
-                        playVideo(false,false, -1);
+                        playVideo(false, false, -1);
                     }
                 }
             }
@@ -315,7 +315,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
 
         if (nextPosition != -1)
             targetPosition = nextPosition;
-       // Log.d(TAG, "playVideo: target position: " + targetPosition);
+        // Log.d(TAG, "playVideo: target position: " + targetPosition);
 
         // video is already playing so return
         if (isFirstTime)
@@ -344,9 +344,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
 //            targetPosition = 0;
 //            playPosition = 0;
 //        }
+
         View child = getChildAt(currentPosition);
         if (child == null) {
-            return;
+            child = getChildAt(0);
         }
 
         //FeedAdapter.FeedViewHolder holder = (FeedAdapter.FeedViewHolder) child.getTag();
@@ -360,16 +361,17 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             viewHolderParent = holder.itemView;
             mediaCoverImage = holder.mediaCoverImage;
             mediaContainer = holder.mediaContainer;
-        } else if (videoBeans.size() != 0){
+        } else if (videoBeans.size() != 0) {
             AlbumVideoAdapter.ViewHolder holder = (AlbumVideoAdapter.ViewHolder) child.getTag();
             if (holder == null) {
                 playPosition = -1;
                 return;
             }
+
             viewHolderParent = holder.itemView;
             mediaCoverImage = holder.mediaCoverImage;
             mediaContainer = holder.mediaContainer;
-        }else{
+        } else {
             return;
         }
 
@@ -386,7 +388,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             mediaUrl = videoBeans.get(targetPosition).getVideo_url();
         }
 
-       // Log.e("ExoPlayerView", "mediaUrl: " + mediaUrl);
+        // Log.e("ExoPlayerView", "mediaUrl: " + mediaUrl);
         if (mediaUrl != null) {
             MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(mediaUrl));
@@ -408,7 +410,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     private int getVisibleVideoSurfaceHeight(int playPosition) {
         int at = playPosition - ((LinearLayoutManager) Objects.requireNonNull(
                 getLayoutManager())).findFirstVisibleItemPosition();
-      //  Log.d(TAG, "getVisibleVideoSurfaceHeight: at: " + at);
+        //  Log.d(TAG, "getVisibleVideoSurfaceHeight: at: " + at);
 
         View child = getChildAt(at);
         if (child == null) {
@@ -480,10 +482,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     private void toggleVolume() {
         if (videoPlayer != null) {
             if (volumeState == VolumeState.OFF) {
-               // Log.d(TAG, "togglePlaybackState: enabling volume.");
+                // Log.d(TAG, "togglePlaybackState: enabling volume.");
                 setVolumeControl(VolumeState.ON);
             } else if (volumeState == VolumeState.ON) {
-              //  Log.d(TAG, "togglePlaybackState: disabling volume.");
+                //  Log.d(TAG, "togglePlaybackState: disabling volume.");
                 setVolumeControl(VolumeState.OFF);
             }
         }
@@ -492,7 +494,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
     public void onRestartPlayer() {
         if (videoPlayer != null) {
             //videoPlayer.setPlayWhenReady(true);
-            playVideo(false,true, -1);
+            playVideo(false, true, -1);
         }
     }
 

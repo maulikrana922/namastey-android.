@@ -39,6 +39,7 @@
             android:onClick="onClickSkip"
             android:padding="@dimen/_5sdp"
             android:text="@string/tv_skip"
+            android:visibility="invisible"
             android:textColor="@color/color_text_red"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/ivBack"

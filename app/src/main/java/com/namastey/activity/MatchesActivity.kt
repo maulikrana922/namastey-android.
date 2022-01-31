@@ -1,6 +1,5 @@
 package com.namastey.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -19,7 +18,6 @@ import com.namastey.adapter.MatchedProfileAdapter
 import com.namastey.adapter.MessagesAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMatchesBinding
-import com.namastey.databinding.FragmentMatchesProfileBinding
 import com.namastey.listeners.OnMatchesItemClick
 import com.namastey.model.ChatMessage
 import com.namastey.model.LikedUserCountBean
@@ -135,7 +133,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
     }
 
     fun onClickNotification(view: View) {
-        val intent = Intent(this@MatchesActivity,NotificationActivity::class.java)
+        val intent = Intent(this@MatchesActivity, NotificationActivity::class.java)
         openActivityForResult(intent, 105)
 //        openActivity(this@MatchesActivity, NotificationActivity())
     }
@@ -150,7 +148,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
 //
 //            else
 
-        } else  if (intent.hasExtra("onClickMatches")) {
+        } else if (intent.hasExtra("onClickMatches")) {
             onClickMatches = intent.getBooleanExtra("onClickMatches", false)
 //            userName = intent.getStringExtra("userName")!!
 //            if (onClickMatches)
@@ -170,7 +168,7 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         if (intent.hasExtra("onFollowRequest")) {
             val onFollowRequest = intent.getBooleanExtra("onFollowRequest", false)
             if (onFollowRequest) {
-                val intent = Intent(this@MatchesActivity,NotificationActivity::class.java)
+                val intent = Intent(this@MatchesActivity, NotificationActivity::class.java)
                 intent.putExtra("onFollowRequest", true)
                 openActivity(intent)
             }
@@ -284,26 +282,26 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
-            object : NotAvailableFeatureDialog(
-                this,
-                getString(R.string.see_who_likes_not_available),
-                getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
-            ) {
-                override fun onBtnClick(id: Int) {
-                    dismiss()
-                }
-            }.show()
-            //if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
-//            val intent = Intent(this, LikeProfileActivity::class.java)
-//            intent.putExtra("likeUserCount", likeUserCount)
-//            intent.putExtra("lastUserProfile", lastUserProfile)
-//            openActivity(intent)
-            // } else{
-            //   val intent = Intent(this, MembershipActivity::class.java)
-            //    intent.putExtra("isFromMatchProfile", true)
-            //    openActivity(intent)
-            //   }
+                      object : NotAvailableFeatureDialog(
+                          this,
+                          getString(R.string.see_who_likes_not_available),
+                          getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
+                      ) {
+                          override fun onBtnClick(id: Int) {
+                              dismiss()
+                          }
+                      }.show()
 
+//            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+//                val intent = Intent(this, LikeProfileActivity::class.java)
+//                intent.putExtra("likeUserCount", likeUserCount)
+//                intent.putExtra("lastUserProfile", lastUserProfile)
+//                openActivity(intent)
+//            } else {
+//                val intent = Intent(this, MemberActivity::class.java)
+//                intent.putExtra(Constants.ACTIVITY_TYPE, "MatchesActivity")
+//                startActivity(intent)
+//            }
         }
 
         messagesAdapter = MessagesAdapter(messageList, this, this, sessionManager)
@@ -387,9 +385,9 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 106){
+        if (resultCode == 106) {
             // Do nothing
-        }else if (requestCode == 105) {
+        } else if (requestCode == 105) {
             finishActivity()
         }
     }

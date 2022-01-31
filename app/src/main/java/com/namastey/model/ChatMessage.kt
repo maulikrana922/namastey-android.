@@ -10,11 +10,12 @@ class ChatMessage(
     var url: String,
     var timestamp: Long,
     var read: Int,
-    var unreadCount: Int
+    var unreadCount: Int,
+    var duration:String
 ) : Parcelable {
-    constructor() : this("", -1, -1, "", -1, 0,0)
+    constructor() : this("", -1, -1, "", -1, 0,0,"")
 
-    constructor(parcel: Parcel) : this("", -1, -1, "", -1, 0,0) {
+    constructor(parcel: Parcel) : this("", -1, -1, "", -1, 0,0,"") {
         message = parcel.readString() ?: ""
         sender = parcel.readLong() ?: 0
         receiver = parcel.readLong() ?: 0
@@ -22,6 +23,7 @@ class ChatMessage(
         timestamp = parcel.readLong() ?: 0
         read = parcel.readInt() ?: 0
         unreadCount = parcel.readInt()
+        duration=parcel.readString()?:""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -32,6 +34,7 @@ class ChatMessage(
         parcel.writeLong(timestamp)
         parcel.writeInt(read)
         parcel.writeInt(unreadCount)
+        parcel.writeString(duration)
     }
 
     override fun describeContents(): Int {

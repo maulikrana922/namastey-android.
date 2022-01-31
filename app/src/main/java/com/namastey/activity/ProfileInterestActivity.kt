@@ -281,7 +281,7 @@ class ProfileInterestActivity : BaseActivity<ActivityProfileInterestBinding>(),
         openActivity(this@ProfileInterestActivity, CreateAlbumActivity())
     }
 
-    override fun onSuccessSpotify(sporifyUrl: String) {
+    override fun onSuccessSpotify(sporifyUrl: String,name:String) {
     }
 
     override fun onSuccessInstagram(instagramData: InstagramData) {

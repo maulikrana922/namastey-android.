@@ -228,7 +228,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashNavigatorVie
                 }
                 Activity.RESULT_CANCELED -> {
                     Toast.makeText(this, "APP UPDATE CANCELED", Toast.LENGTH_LONG).show()
-                    splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
+                    finish()
+//                    splashViewModel.nextScreen(this@SplashActivity, sessionManager.isLoginUser())
                 }
                 ActivityResult.RESULT_IN_APP_UPDATE_FAILED ->{
                     Toast.makeText(this, "APP UPDATE FAILED", Toast.LENGTH_SHORT).show()
