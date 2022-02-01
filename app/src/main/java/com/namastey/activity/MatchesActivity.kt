@@ -282,26 +282,26 @@ class MatchesActivity : BaseActivity<ActivityMatchesBinding>(), MatchesProfileVi
         matchesProfileViewModel.getLikeUserCount()
 
         rlProfileMain.setOnClickListener {
-                      object : NotAvailableFeatureDialog(
-                          this,
-                          getString(R.string.see_who_likes_not_available),
-                          getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
-                      ) {
-                          override fun onBtnClick(id: Int) {
-                              dismiss()
-                          }
-                      }.show()
+            /*object : NotAvailableFeatureDialog(
+                this,
+                getString(R.string.see_who_likes_not_available),
+                getString(R.string.alert_msg_feature_not_available), R.drawable.ic_heart_like
+            ) {
+                override fun onBtnClick(id: Int) {
+                    dismiss()
+                }
+            }.show()*/
 
-//            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
-//                val intent = Intent(this, LikeProfileActivity::class.java)
-//                intent.putExtra("likeUserCount", likeUserCount)
-//                intent.putExtra("lastUserProfile", lastUserProfile)
-//                openActivity(intent)
-//            } else {
-//                val intent = Intent(this, MemberActivity::class.java)
-//                intent.putExtra(Constants.ACTIVITY_TYPE, "MatchesActivity")
-//                startActivity(intent)
-//            }
+            if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+                val intent = Intent(this, LikeProfileActivity::class.java)
+                intent.putExtra("likeUserCount", likeUserCount)
+                intent.putExtra("lastUserProfile", lastUserProfile)
+                openActivity(intent)
+            } else {
+                val intent = Intent(this, MemberActivity::class.java)
+                intent.putExtra(Constants.ACTIVITY_TYPE, "MatchesActivity")
+                startActivity(intent)
+            }
         }
 
         messagesAdapter = MessagesAdapter(messageList, this, this, sessionManager)

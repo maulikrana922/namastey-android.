@@ -73,22 +73,20 @@
                             app:typeface="MULI_EXTRA_BOLD" />
 
 
-                         <!--    <ImageView
-                                 android:id="@+id/ivProfileMore"
-                                 android:layout_width="wrap_content"
-                                 android:layout_height="wrap_content"
-                                 android:contentDescription="@string/app_name"
-                                 android:onClick="onClickProfileMore"
-                                 android:src="@drawable/ic_more"
-                                 android:visibility="gone"
-                                 android:layout_marginEnd="@dimen/_15sdp"
-                                 app:layout_constraintBottom_toBottomOf="@+id/icBackProfile"
-                                 app:layout_constraintEnd_toEndOf="parent"
-                                 app:layout_constraintTop_toTopOf="@id/icBackProfile"
-                                 app:tint="@color/color_black_text" />-->
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivSuperMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_star_yellow"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/icBackProfile"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/icBackProfile" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.appcompat.widget.Toolbar>
+
 
                 <com.namastey.customViews.RoundImageView
                     android:id="@+id/ivProfileUser"
@@ -124,84 +122,83 @@
                     android:id="@+id/tvInstaUserName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    app:typeface="MULI_REGULAR"
-                    android:drawablePadding="@dimen/_8sdp"
-                    android:textColor="@color/colorBlack"
-                    android:drawableStart="@drawable/ic_link_instagram"
-                    android:text="@string/user_name"
-                    android:visibility="gone"
-                    android:textSize="@dimen/_12sdp"
-                    android:onClick="onClickInstagram"
                     android:layout_marginTop="@dimen/_14sdp"
+                    android:drawableStart="@drawable/ic_link_instagram"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:gravity="center_vertical"
+                    android:onClick="onClickInstagram"
+                    android:text="@string/user_name"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAbouteDesc"
-                    />
+                    app:typeface="MULI_REGULAR" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvFacebook"
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    app:typeface="MULI_REGULAR"
-                    android:drawablePadding="@dimen/_8sdp"
-                    android:textColor="@color/colorBlack"
-                    android:drawableStart="@drawable/ic_link_facebook"
-                    android:text="@string/user_name"
-                    android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:drawableStart="@drawable/ic_link_facebook"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:gravity="center_vertical"
                     android:onClick="onClickFacebook"
+                    android:text="@string/user_name"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvInstaUserName"
-                    />
+                    app:typeface="MULI_REGULAR" />
+
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvTwitter"
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    app:typeface="MULI_REGULAR"
-                    android:drawablePadding="@dimen/_8sdp"
-                    android:textColor="@color/colorBlack"
-                    android:drawableStart="@drawable/ic_link_twitter"
-                    android:text="@string/user_name"
-                    android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:drawableStart="@drawable/ic_link_twitter"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:gravity="center_vertical"
                     android:onClick="onClickTwitter"
+                    android:text="@string/user_name"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvFacebook"
-                    />
+                    app:typeface="MULI_REGULAR" />
+
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvSpotify"
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    app:typeface="MULI_REGULAR"
-                    android:drawablePadding="@dimen/_8sdp"
-                    android:textColor="@color/colorBlack"
-                    android:drawableStart="@drawable/ic_link_spotify"
-                    android:text="@string/user_name"
-                    android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:drawableStart="@drawable/ic_link_spotify"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:gravity="center_vertical"
                     android:onClick="onClickSpotify"
+                    android:text="@string/user_name"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvTwitter"
-                    />
+                    app:typeface="MULI_REGULAR" />
+
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipProfileSocial"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:visibility="gone"
                     app:chipSpacingHorizontal="@dimen/_8sdp"
                     app:chipSpacingVertical="@dimen/_8sdp"
-                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/toolbar"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvSpotify" />
@@ -392,18 +389,17 @@
                     android:id="@+id/btnMembership"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/membership"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:textSize="16sp"
-                    android:onClick="onClickMembership"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
-                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
-                    app:layout_constraintTop_toBottomOf="@id/btnProfileFollow"
+                    android:onClick="onClickMembership"
                     android:stateListAnimator="@null"
-                    />
+                    android:text="@string/membership"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/cvFollowing"
+                    app:layout_constraintStart_toStartOf="@id/ivProfileUser"
+                    app:layout_constraintTop_toBottomOf="@id/btnProfileFollow" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvAboutLable"
@@ -422,13 +418,13 @@
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:maxLines="4"
+                    android:scrollbars="vertical"
                     android:textColor="@color/color_text"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toStartOf="@id/ivProfileUser"
                     app:layout_constraintTop_toBottomOf="@id/tvAboutLable"
-                    app:typeface="MULI_REGULAR"
-                    android:scrollbars="vertical"/>
+                    app:typeface="MULI_REGULAR" />
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/groupButtons"
@@ -455,13 +451,12 @@
                     android:onClick="onClickAddVideo"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
+                    android:stateListAnimator="@null"
                     android:text="@string/add_video"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnEditProfile"
-                    app:layout_constraintTop_toTopOf="@id/btnEditProfile"
-                    android:stateListAnimator="@null"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/btnEditProfile" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnEditProfile"
@@ -472,13 +467,12 @@
                     android:background="@drawable/rectangle_red_solid_all_corner_small"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickEditProfile"
+                    android:stateListAnimator="@null"
                     android:text="@string/edit_info"
                     android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnAddVideo"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/cvView"
-                    android:stateListAnimator="@null"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/cvView" />
 
                 <com.namastey.customViews.CustomButton
                     android:id="@+id/btnProfileFollow"
@@ -489,13 +483,12 @@
                     android:background="@drawable/rectangle_red_solid_all_corner_small"
                     android:minHeight="@dimen/_32sdp"
                     android:onClick="onClickFollowRequest"
+                    android:stateListAnimator="@null"
                     android:text="@string/follow"
                     android:textColor="@color/color_text_red"
                     app:layout_constraintEnd_toStartOf="@+id/btnProfileLike"
                     app:layout_constraintStart_toStartOf="@+id/ivProfileUser"
-                    app:layout_constraintTop_toBottomOf="@id/cvView"
-                    android:stateListAnimator="@null"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/cvView" />
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/btnProfileLike"
@@ -509,12 +502,11 @@
                     android:onClick="onClickProfileLike"
                     android:paddingStart="@dimen/_30sdp"
                     android:paddingEnd="@dimen/_30sdp"
+                    android:stateListAnimator="@null"
                     android:text="@string/match"
                     app:layout_constraintEnd_toEndOf="@id/cvFollowing"
                     app:layout_constraintStart_toEndOf="@+id/btnProfileFollow"
-                    app:layout_constraintTop_toTopOf="@id/btnProfileFollow"
-                    android:stateListAnimator="@null"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/btnProfileFollow" />
 
                 <!--<com.namastey.customViews.CustomTextView
                     android:id="@+id/btnProfileLike"

@@ -75,7 +75,6 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_member.*
 import kotlinx.android.synthetic.main.dialog_alert.*
 import kotlinx.android.synthetic.main.dialog_alert_new.*
-import kotlinx.android.synthetic.main.dialog_boost_complete.view.*
 import kotlinx.android.synthetic.main.dialog_boost_complete.view.btnAlertOk
 import kotlinx.android.synthetic.main.dialog_boost_member.view.*
 import kotlinx.android.synthetic.main.dialog_boost_member.view.constHigh
@@ -96,7 +95,6 @@ import kotlinx.android.synthetic.main.dialog_boost_member.view.tvTextMediumEachB
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedHigh
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedLow
 import kotlinx.android.synthetic.main.dialog_boost_member.view.viewSelectedMedium
-import kotlinx.android.synthetic.main.dialog_boost_not_available.view.*
 import kotlinx.android.synthetic.main.dialog_boost_show.*
 import kotlinx.android.synthetic.main.dialog_boost_time_pending.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_category.*
@@ -107,8 +105,6 @@ import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
 import kotlinx.android.synthetic.main.dialog_common_alert.*
 import kotlinx.android.synthetic.main.dialog_member.view.*
 import kotlinx.android.synthetic.main.dialog_report_warning.*
-import kotlinx.android.synthetic.main.fragment_education.*
-import kotlinx.android.synthetic.main.fragment_share_app.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -122,7 +118,6 @@ import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
@@ -297,6 +292,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     }
 
+
     private fun initData() {
         sessionManager.setLoginUser(true)
 //        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
@@ -384,6 +380,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             intentProfile.putExtra(Constants.USERNAME, intent.getStringExtra("username"))
             openActivity(intentProfile)
         }
+
     }
 
     private fun getVideoUrl() {
@@ -825,7 +822,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (::userShareAdapter.isInitialized)
             userShareAdapter.filterList(filteredName)
     }
-
 
     private fun shareFaceBook(dashboardBean: DashboardBean) {
         var facebookAppFound = false
@@ -1491,7 +1487,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                sessionManager.setBooleanValue(false,Constants.ISNOTIFICATION)
+                sessionManager.setBooleanValue(false, Constants.ISNOTIFICATION)
                 val intent = Intent(this@DashboardActivity, MatchesActivity::class.java)
                 intent.putExtra("isFromDashboard", true)
                 openActivity(intent)
@@ -2062,7 +2058,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 Log.e("DashboardActivity", "storedTime: $storedTime")
                 storedTime += TimeUnit.MINUTES.toMillis(30)
                 timer = storedTime - currentTime
-
                 showBoostPendingDialog(timer)
 
             } else {
@@ -2076,12 +2071,11 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     showBoostDialog(R.layout.dialog_boost_member)
                 }
             }
-//                =============== This feature currently not added ============
 
         } else {
             completeSignUpDialog()
         }
-//        }
+
     }
 
     private fun showBoostFeatureNotAdded() {
@@ -2410,13 +2404,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         builder.setView(view)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-        if (!(this@DashboardActivity as Activity).isFinishing) {
-            alertDialog.show()
-        }
-
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
             if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
+                alertDialog.cancel()
                 showBoostStartConfirmationDialog()
             } else {
                 /*    val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
@@ -2427,65 +2418,73 @@ private fun prepareAnimation(animation: Animation): Animation? {
                 showBoostDialog(R.layout.dialog_boost_member)
             }
         }
+        if (!(this@DashboardActivity as Activity).isFinishing) {
+            alertDialog.show()
+        }
+
 
     }
+
+
 
     private fun showBoostPendingDialog(myTimer: Long) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
-        val view: View =
+        val viewBoostDialog =
             LayoutInflater.from(this).inflate(R.layout.dialog_boost_time_pending, viewGroup, false)
-        builder.setView(view)
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        builder.setView(viewBoostDialog)
+        val boostAlertDialog = builder.create()
+        boostAlertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
 
         if (!(this@DashboardActivity as Activity).isFinishing()) {
-            alertDialog.show()
+            boostAlertDialog.show()
         }
 
         val interval = 1000L
         Log.e("DashboardActivity", "myTimer: $myTimer")
 
         if (myTimer.toString().contains("-")) {
-            alertDialog.dismiss()
+            boostAlertDialog.dismiss()
         }
-        val t: CountDownTimer
-        t = object : CountDownTimer(myTimer, interval) {
-            override fun onTick(millisUntilFinished: Long) {
-                val time = String.format(
-                    "%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                        TimeUnit.MILLISECONDS.toHours(
-                            millisUntilFinished
-                        )
-                    ), // The change is in this line
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                        TimeUnit.MILLISECONDS.toMinutes(
-                            millisUntilFinished
-                        )
-                    )
-                )
-//                Log.e("DashboardActivity", "Time: $time")
 
-                view.tvTimeRemaining.text =
-                    time.plus(" ").plus(resources.getString(R.string.remaining))
-            }
+        /*     val t: CountDownTimer
+             t = object : CountDownTimer(myTimer, interval) {
+                 override fun onTick(millisUntilFinished: Long) {
+                     val time = String.format(
+                         "%02d:%02d:%02d",
+                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                             TimeUnit.MILLISECONDS.toHours(
+                                 millisUntilFinished
+                             )
+                         ), // The change is in this line
+                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                             TimeUnit.MILLISECONDS.toMinutes(
+                                 millisUntilFinished
+                             )
+                         )
+                     )
+     //                Log.e("DashboardActivity", "Time: $time")
 
-            override fun onFinish() {
-                alertDialog.dismiss()
-                sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
-                feedAdapter.notifyDataSetChanged()
-                showBoostSuccessDialog()
-                cancel()
-            }
-        }.start()
+                     viewBoostDialog.tvTimeRemaining.text =
+                         time.plus(" ").plus(resources.getString(R.string.remaining))
+                 }
 
+                 override fun onFinish() {
+                     boostAlertDialog.dismiss()
+                     sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+                     feedAdapter.notifyDataSetChanged()
+                     showBoostSuccessDialog()
+                     cancel()
+                 }
+             }.start()
+*/
 
-        view.btnAlertOk.setOnClickListener {
-            alertDialog.dismiss()
+        viewBoostDialog.btnAlertOk.setOnClickListener {
+            boostAlertDialog.dismiss()
         }
     }
+
 
     private fun showBoostDialog(layout: Int) {
 
@@ -2516,7 +2515,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     val date = Date(purchaseTimeStamp.time)
                     val calendar = Calendar.getInstance()
                     calendar.time = date
-                    calendar.add(Calendar.DATE, 30)
+                    calendar.add(Calendar.DATE, 1)
                     Log.d("expire time : ", calendar.time.toString())
 
                     val currentDate = Calendar.getInstance()
@@ -2785,7 +2784,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         )
         if (sessionManager.getBooleanValue(Constants.ISNOTIFICATION)) {
             ivNotificationBg.visibility = View.VISIBLE
-        }else{
+        } else {
             ivNotificationBg.visibility = View.INVISIBLE
         }
     }

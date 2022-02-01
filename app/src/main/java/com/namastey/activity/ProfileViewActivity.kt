@@ -22,8 +22,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -825,6 +827,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
               profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(),sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
           }*/
 
+        TooltipCompat.setTooltipText(ivSuperMessage,"Super Message")
     }
 
     override fun onResume() {
