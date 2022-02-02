@@ -165,7 +165,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var mbNext = true
     private var mbLoading = true
     private lateinit var bitmapProfile: Bitmap
-
+    private val timeDurastion = 30
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var isFromSetting = false       // GPS enable and reload data
     private var isFromProfileActivity = false
@@ -194,6 +194,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var isselected: Int = 0
     private var subscriptionId = "000020"
     private var selectedMonths = 1
+
+    lateinit var viewBoostDialog: View
+    lateinit var boostAlertDialog: AlertDialog
 
     //In App Product Price
     private lateinit var billingClient: BillingClient
@@ -320,7 +323,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
                 "current time : ",
                 Utils.convertTimestampToChatFormat(System.currentTimeMillis())
             )
-            if (minutes > 30) {
+            if (minutes > timeDurastion) {
                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
             }
         }
@@ -381,6 +384,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             openActivity(intentProfile)
         }
 
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
+            startTimer()
+        }
     }
 
     private fun getVideoUrl() {
@@ -2052,14 +2058,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             // showBoostFeatureNotAdded()
 //                =============== This feature currently not added ============
             if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
-                val currentTime = System.currentTimeMillis()
-                var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
-                Log.e("DashboardActivity", "currentTime: $currentTime")
-                Log.e("DashboardActivity", "storedTime: $storedTime")
-                storedTime += TimeUnit.MINUTES.toMillis(30)
-                timer = storedTime - currentTime
                 showBoostPendingDialog(timer)
-
             } else {
                 if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
                     showBoostStartConfirmationDialog()
@@ -2425,15 +2424,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     }
 
-
-
     private fun showBoostPendingDialog(myTimer: Long) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DashboardActivity)
         val viewGroup: ViewGroup = findViewById(android.R.id.content)
-        val viewBoostDialog =
+        viewBoostDialog =
             LayoutInflater.from(this).inflate(R.layout.dialog_boost_time_pending, viewGroup, false)
         builder.setView(viewBoostDialog)
-        val boostAlertDialog = builder.create()
+        boostAlertDialog = builder.create()
         boostAlertDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
 
         if (!(this@DashboardActivity as Activity).isFinishing()) {
@@ -2447,42 +2444,83 @@ private fun prepareAnimation(animation: Animation): Animation? {
             boostAlertDialog.dismiss()
         }
 
-        /*     val t: CountDownTimer
-             t = object : CountDownTimer(myTimer, interval) {
-                 override fun onTick(millisUntilFinished: Long) {
-                     val time = String.format(
-                         "%02d:%02d:%02d",
-                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                             TimeUnit.MILLISECONDS.toHours(
-                                 millisUntilFinished
-                             )
-                         ), // The change is in this line
-                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                             TimeUnit.MILLISECONDS.toMinutes(
-                                 millisUntilFinished
-                             )
+        /* val t: CountDownTimer
+         t = object : CountDownTimer(myTimer, interval) {
+             override fun onTick(millisUntilFinished: Long) {
+                 val time = String.format(
+                     "%02d:%02d:%02d",
+                     TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                     TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                         TimeUnit.MILLISECONDS.toHours(
+                             millisUntilFinished
+                         )
+                     ), // The change is in this line
+                     TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                         TimeUnit.MILLISECONDS.toMinutes(
+                             millisUntilFinished
                          )
                      )
-     //                Log.e("DashboardActivity", "Time: $time")
+                 )
+ //                Log.e("DashboardActivity", "Time: $time")
 
-                     viewBoostDialog.tvTimeRemaining.text =
-                         time.plus(" ").plus(resources.getString(R.string.remaining))
-                 }
+                 viewBoostDialog.tvTimeRemaining.text =
+                     time.plus(" ").plus(resources.getString(R.string.remaining))
+             }
 
-                 override fun onFinish() {
-                     boostAlertDialog.dismiss()
-                     sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
-                     feedAdapter.notifyDataSetChanged()
-                     showBoostSuccessDialog()
-                     cancel()
-                 }
-             }.start()
-*/
+             override fun onFinish() {
+                 boostAlertDialog.dismiss()
+                 sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+                 feedAdapter.notifyDataSetChanged()
+                 showBoostSuccessDialog()
+                 cancel()
+             }
+         }.start()*/
 
         viewBoostDialog.btnAlertOk.setOnClickListener {
             boostAlertDialog.dismiss()
         }
+    }
+
+
+    fun startTimer() {
+        val currentTime = System.currentTimeMillis()
+        var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+        Log.e("DashboardActivity", "currentTime: $currentTime")
+        Log.e("DashboardActivity", "storedTime: $storedTime")
+        storedTime += TimeUnit.MINUTES.toMillis(timeDurastion.toLong())
+        timer = storedTime - currentTime
+        val t: CountDownTimer
+        t = object : CountDownTimer(timer, 1000L) {
+            override fun onTick(millisUntilFinished: Long) {
+                val time = String.format(
+                    "%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                        TimeUnit.MILLISECONDS.toHours(
+                            millisUntilFinished
+                        )
+                    ), // The change is in this line
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                        TimeUnit.MILLISECONDS.toMinutes(
+                            millisUntilFinished
+                        )
+                    )
+                )
+                //                Log.e("DashboardActivity", "Time: $time")
+                if (::viewBoostDialog.isInitialized)
+                    viewBoostDialog.tvTimeRemaining.text =
+                        time.plus(" ").plus(resources.getString(R.string.remaining))
+            }
+
+            override fun onFinish() {
+                if (::boostAlertDialog.isInitialized)
+                    boostAlertDialog.dismiss()
+                sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+                feedAdapter.notifyDataSetChanged()
+                showBoostSuccessDialog()
+                cancel()
+            }
+        }.start()
     }
 
 
@@ -2515,7 +2553,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
                     val date = Date(purchaseTimeStamp.time)
                     val calendar = Calendar.getInstance()
                     calendar.time = date
-                    calendar.add(Calendar.DATE, 1)
+                    calendar.add(Calendar.DATE, timeDurastion)
                     Log.d("expire time : ", calendar.time.toString())
 
                     val currentDate = Calendar.getInstance()
@@ -3110,6 +3148,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
             Constants.KEY_NO_OF_BOOST
         )
         feedAdapter.notifyDataSetChanged()
+        startTimer()
     }
 
     override fun onSuccessStartChat(msg: String) {
