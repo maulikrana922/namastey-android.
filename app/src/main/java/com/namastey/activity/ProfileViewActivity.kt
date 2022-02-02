@@ -6,7 +6,6 @@ import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -18,11 +17,7 @@ import android.provider.MediaStore
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.TooltipCompat
@@ -246,6 +241,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                     0
                 )
             } else {
+
+                if (profileBean.safetyBean.who_can_send_message == 2) {
+                    ivSuperMessage.visibility = View.VISIBLE
+                    ivSuperMessage.performLongClick()
+                }
+
                 when (profileBean.is_like) {
                     1 -> {
                         btnProfileLike.text = getString(R.string.liked)
@@ -826,6 +827,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         /*  else {
               profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(),sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
           }*/
+        /*-------------Super Message---------------*/
 
         TooltipCompat.setTooltipText(ivSuperMessage,"Super Message")
     }
@@ -2414,5 +2416,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
     }
-
+    fun onClickSuperMessage(view:View){
+        clickSendMessage(profileBean)
+    }
 }

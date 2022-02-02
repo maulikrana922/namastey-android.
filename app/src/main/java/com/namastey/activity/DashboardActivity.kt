@@ -387,6 +387,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
             startTimer()
         }
+
     }
 
     private fun getVideoUrl() {

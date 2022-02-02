@@ -278,7 +278,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
                 channel.enableLights(true)
                 channel.lightColor = Color.BLACK
-                channel.enableVibration(true)
                 channel.setSound(sound, attributes)
                 notificationManager.createNotificationChannel(channel)
             }
