@@ -11,6 +11,8 @@ class PurchaseBean() : Parcelable {
     var purchase_date: Long = 0
     var acknowledgementState: Int = 0
     var autoRenewing: Boolean = false
+    var is_active_boost:Int=0
+    var active_time:Int=0
     //var autoResumeTimeMillis: Long = 0
     var cancelReason: Int = 0
     var countryCode: String = ""
@@ -42,6 +44,8 @@ class PurchaseBean() : Parcelable {
         number_of_boost_available = parcel.readInt()
         purchase_date = parcel.readLong()
         acknowledgementState = parcel.readInt()
+        is_active_boost = parcel.readInt()
+        active_time = parcel.readInt()
         cancelReason = parcel.readInt()
         countryCode = parcel.readString()?: ""
         developerPayload = parcel.readString()?: ""
@@ -62,6 +66,8 @@ class PurchaseBean() : Parcelable {
         parcel.writeInt(number_of_boost_available)
         parcel.writeLong(purchase_date)
         parcel.writeInt(acknowledgementState)
+        parcel.writeInt(is_active_boost)
+        parcel.writeInt(active_time)
         parcel.writeInt(cancelReason)
         parcel.writeString(countryCode)
         parcel.writeString(developerPayload)

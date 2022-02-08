@@ -118,6 +118,7 @@ import java.sql.Timestamp
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpdatedListener,
@@ -298,7 +299,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun initData() {
         sessionManager.setLoginUser(true)
-//        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
+        //Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
 
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
@@ -382,10 +383,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             val intentProfile = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intentProfile.putExtra(Constants.USERNAME, intent.getStringExtra("username"))
             openActivity(intentProfile)
-        }
-
-        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE)) {
-            startTimer()
         }
 
     }
@@ -2441,7 +2438,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val interval = 1000L
         Log.e("DashboardActivity", "myTimer: $myTimer")
 
-        if (myTimer.toString().contains("-")) {
+        if (abs(myTimer).toString().contains("-")) {
             boostAlertDialog.dismiss()
         }
 
@@ -2483,15 +2480,22 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
 
-    fun startTimer() {
+    private fun startTimer() {
         val currentTime = System.currentTimeMillis()
-        var storedTime = sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+        val alarmCalendar = Calendar.getInstance()
+            alarmCalendar[Calendar.MINUTE] = sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME)
+        var storedTime = if (sessionManager.getIntegerValue(Constants.KEY_ACTIVE_BOOST) == 1 && sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME).toInt()==0 && sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME) != 0) {
+            alarmCalendar.timeInMillis
+        }
+         else sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+
+        storedTime += TimeUnit.MINUTES.toMillis(timeDurastion.toLong())
+
         Log.e("DashboardActivity", "currentTime: $currentTime")
         Log.e("DashboardActivity", "storedTime: $storedTime")
-        storedTime += TimeUnit.MINUTES.toMillis(timeDurastion.toLong())
         timer = storedTime - currentTime
         val t: CountDownTimer
-        t = object : CountDownTimer(timer, 1000L) {
+        t = object : CountDownTimer(abs(timer), 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 val time = String.format(
                     "%02d:%02d:%02d",
@@ -3134,6 +3138,8 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
+        Log.e("active_time", purchaseBean.active_time.toString())
+        Log.e("is_active_boost", purchaseBean.is_active_boost.toString())
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
         sessionManager.setIntegerValue(purchaseBean.invite_count, Constants.KEY_INVITE_COUNT)
         sessionManager.setLongValue(purchaseBean.purchase_date, Constants.KEY_PURCHASE_DATE)
@@ -3141,6 +3147,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
             purchaseBean.number_of_boost_available,
             Constants.KEY_NO_OF_BOOST
         )
+        sessionManager.setIntegerValue(purchaseBean.is_active_boost, Constants.KEY_ACTIVE_BOOST)
+        sessionManager.setIntegerValue(purchaseBean.active_time, Constants.KEY_ACTIVE_TIME)
+        if (sessionManager.getBooleanValue(Constants.KEY_IS_BOOST_ACTIVE) || purchaseBean.is_active_boost == 1) {
+            sessionManager.setBooleanValue(true, Constants.KEY_IS_BOOST_ACTIVE)
+            startTimer()
+        }
     }
 
     override fun onSuccessBoostUse(boostBean: BoostBean) {
