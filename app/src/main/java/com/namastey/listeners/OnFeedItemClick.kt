@@ -1,6 +1,8 @@
 package com.namastey.listeners
 
+import android.view.View
 import com.namastey.model.DashboardBean
+import me.tankery.lib.circularseekbar.CircularSeekBar
 
 interface OnFeedItemClick {
 
@@ -12,5 +14,6 @@ interface OnFeedItemClick {
     fun onPostViewer(postId: Long)
     fun onFeedBoost(userId: Long)
     fun onDescriptionClick(userName: String)
+    fun onBindViewItem(circularSeekBar: CircularSeekBar)
    // fun onScrollItem(position: Int, dashboardBean: DashboardBean, playerView: PlayerView)
 }

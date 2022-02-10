@@ -20,7 +20,6 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -48,7 +47,6 @@ import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.utils.Utils.rotateImage
 import com.namastey.viewModel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
@@ -244,7 +242,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
                 if (profileBean.safetyBean.who_can_send_message == 2) {
                     ivSuperMessage.visibility = View.VISIBLE
-                    ivSuperMessage.performLongClick()
+                   showPopupSuperMessage()
                 }
 
                 when (profileBean.is_like) {
@@ -301,6 +299,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
         fillValue(profileBean)
+    }
+
+    private fun showPopupSuperMessage() {
+        val layoutInflater = LayoutInflater.from(this)
+        val view: View =
+            layoutInflater.inflate(R.layout.layout_super_message, clMain, false)
+        val mPopupWindow = PopupWindow(
+            view,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        mPopupWindow.contentView = view
+        mPopupWindow.showAsDropDown(ivSuperMessage, 0, 0, Gravity.CENTER)
     }
 
     override fun onSuccess(profileUrl: String) {
@@ -827,9 +839,6 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         /*  else {
               profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(),sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
           }*/
-        /*-------------Super Message---------------*/
-
-        TooltipCompat.setTooltipText(ivSuperMessage,"Super Message")
     }
 
     override fun onResume() {

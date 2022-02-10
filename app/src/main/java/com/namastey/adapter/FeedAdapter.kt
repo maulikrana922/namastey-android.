@@ -464,6 +464,7 @@ class FeedAdapter(
                 // tvFeedBoost.visibility = View.VISIBLE
                 // ivFeedBoost.setImageDrawable(context.resources.getDrawable(R.drawable.ic_boost_brown))
                 // boostAnimationProgress(itemView)
+                onFeedItemClick.onBindViewItem(circularSeekBar)
             } else {
                 animationBoost.visibility = View.GONE
                 circularSeekBar.visibility = View.GONE
@@ -548,7 +549,6 @@ class FeedAdapter(
                         progressPercentage = (numberOfSeconds - secondsRemaining) * factor
                         Log.e("DashboardActivity", "Percentage: $progressPercentage")
                         itemView.circularSeekBar.progress = progressPercentage.toFloat()
-                        // progressPercentage.toFloat()
                     }
 
                     override fun onFinish() {

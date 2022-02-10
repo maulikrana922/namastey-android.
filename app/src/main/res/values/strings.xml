@@ -472,7 +472,7 @@
     <string name="msg_delete_account">Are you sure you want to delete your account?</string>
     <string name="it_s_spam">It\'s Spam</string>
     <string name="it_s_inappropriate">It\'s inappropriate</string>
-    <string name="msg_buy_namastey">Buy namastey gold to message.</string>
+    <string name="msg_buy_namastey">Buy Namastey Elite To Message.</string>
     <string name="msg_super_msg_left">You have %1$s super messages left.</string>
     <string name="msg_block_user_chat">To send a message please unblock this user</string>
 

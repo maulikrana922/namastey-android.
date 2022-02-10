@@ -110,6 +110,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.tankery.lib.circularseekbar.CircularSeekBar
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -176,7 +177,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
     private var mIntent: IntentFilter? = null
-
+    private lateinit var circularSeekBar:CircularSeekBar
     private var timer = 0L
     private var isFromProfile = false
     private var mRecyclerView: ExoPlayerRecyclerView? = null
@@ -2377,6 +2378,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         }
     }
 
+    override fun onBindViewItem(circularSeekBar: CircularSeekBar) {
+        this.circularSeekBar=circularSeekBar
+    }
+
     override fun onClickSocialText(userName: String) {
         if (sessionManager.isGuestUser()) {
             addFragment(
@@ -2494,6 +2499,10 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("DashboardActivity", "currentTime: $currentTime")
         Log.e("DashboardActivity", "storedTime: $storedTime")
         timer = storedTime - currentTime
+
+        val numberOfSeconds: Int = timer.toInt() / 100000
+        val factor = 100 / numberOfSeconds
+
         val t: CountDownTimer
         t = object : CountDownTimer(abs(timer), 1000L) {
             override fun onTick(millisUntilFinished: Long) {
@@ -2511,6 +2520,13 @@ private fun prepareAnimation(animation: Animation): Animation? {
                         )
                     )
                 )
+
+                /*if (::circularSeekBar.isInitialized) {
+                    val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                    val progressPercentage = (numberOfSeconds - secondsRemaining) * factor
+                    Log.e("DashboardActivity", "Percentage: $progressPercentage")
+                    circularSeekBar.progress = progressPercentage.toFloat()
+                }*/
                 //                Log.e("DashboardActivity", "Time: $time")
                 if (::viewBoostDialog.isInitialized)
                     viewBoostDialog.tvTimeRemaining.text =
