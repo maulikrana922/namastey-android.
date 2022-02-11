@@ -240,10 +240,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 )
             } else {
 
-                if (profileBean.safetyBean.who_can_send_message == 2) {
+
+                if (profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0) {
+                    Constants.isSuperMessage=true
                     ivSuperMessage.visibility = View.VISIBLE
                    showPopupSuperMessage()
-                }
+                }else Constants.isSuperMessage=false
+
+
 
                 when (profileBean.is_like) {
                     1 -> {

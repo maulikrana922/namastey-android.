@@ -447,4 +447,5 @@ object Constants {
     const val KEY_NOTIFICATION = "notification"
 
     const val ISNOTIFICATION="isNotification"
+    var isSuperMessage=false
 }

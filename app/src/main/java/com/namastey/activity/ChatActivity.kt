@@ -188,9 +188,14 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 R.color.colorWhite
                             )
                         )
-                    else
-                        viewBuyNow.visibility = View.VISIBLE
+                   // else
+                       // viewBuyNow.visibility = View.VISIBLE
                 }
+
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0)
+                    if (Constants.isSuperMessage)
+                        viewBuyNow.visibility = View.VISIBLE
+
 
                 voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
 
@@ -889,7 +894,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     fun onClickBuyNow(view: View) {
-        openActivity(this@ChatActivity, MembershipActivity())
+        openActivity(this@ChatActivity, MemberActivity())
     }
 
     override fun chatSettingData(isBlock: Int) {
