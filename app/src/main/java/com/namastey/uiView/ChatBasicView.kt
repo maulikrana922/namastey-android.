@@ -1,6 +1,7 @@
 package com.namastey.uiView
 
 import com.namastey.model.ChatMessage
+import com.namastey.model.SuperMessageBean
 import java.util.*
 
 interface ChatBasicView: BaseView {
@@ -9,5 +10,5 @@ interface ChatBasicView: BaseView {
     fun onSuccessDeleteMatches(msg: String)
     fun onSuccessAdminMessage(data: ArrayList<ChatMessage>)
     fun onSuccessMuteNotification(message: String)
-
+    fun onSuccessSuperMessage(msg: SuperMessageBean)
 }

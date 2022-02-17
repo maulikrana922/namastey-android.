@@ -300,7 +300,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     private fun initData() {
         sessionManager.setLoginUser(true)
-        //Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
+        Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
 
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
@@ -3156,12 +3156,17 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
         Log.e("active_time", purchaseBean.active_time.toString())
         Log.e("is_active_boost", purchaseBean.is_active_boost.toString())
+        Log.e("super_message", purchaseBean.number_of_message_available.toString())
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
         sessionManager.setIntegerValue(purchaseBean.invite_count, Constants.KEY_INVITE_COUNT)
         sessionManager.setLongValue(purchaseBean.purchase_date, Constants.KEY_PURCHASE_DATE)
         sessionManager.setIntegerValue(
             purchaseBean.number_of_boost_available,
             Constants.KEY_NO_OF_BOOST
+        )
+        sessionManager.setIntegerValue(
+            purchaseBean.number_of_message_available,
+            Constants.KEY_NO_OF_SUPER_MESSAGE
         )
         sessionManager.setIntegerValue(purchaseBean.is_active_boost, Constants.KEY_ACTIVE_BOOST)
         sessionManager.setIntegerValue(purchaseBean.active_time, Constants.KEY_ACTIVE_TIME)

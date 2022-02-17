@@ -14,6 +14,7 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentChatSettingsBinding
 import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
+import com.namastey.model.SuperMessageBean
 import com.namastey.uiView.ChatBasicView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
@@ -349,6 +350,11 @@ class ChatSettingsFragment : BaseFragment<FragmentChatSettingsBinding>(), ChatBa
             matchesListBean.is_notification = 1
         }
     }
+
+    override fun onSuccessSuperMessage(msg: SuperMessageBean) {
+
+    }
+
 
     interface onDataPassToActivity {
         fun chatSettingData(isBlock: Int)

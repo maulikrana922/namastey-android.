@@ -1,5 +1,6 @@
 package com.namastey.viewModel
 
+import com.namastey.R
 import com.namastey.networking.NetworkService
 import com.namastey.roomDB.DBHelper
 import com.namastey.uiView.BaseView
@@ -156,6 +157,30 @@ class ChatViewModel constructor(
                 }
             } catch (t: Throwable) {
 //                chatBasicView.onHandleException(t)
+            }
+        }
+    }
+
+    fun superMessageUse() {
+        job = GlobalScope.launch(Dispatchers.Main) {
+            try {
+                if (chatBasicView.isInternetAvailable()) {
+                    networkService.requestToSuperMessageUse().let { appResponse ->
+                        if (appResponse.status == Constants.OK)
+                           chatBasicView.onSuccessSuperMessage(appResponse.data!!)
+                        else
+                            chatBasicView.onFailed(
+                                appResponse.message,
+                                appResponse.error,
+                                appResponse.status
+                            )
+                    }
+                } else {
+
+                    chatBasicView.showMsg(R.string.no_internet)
+                }
+            } catch (t: Throwable) {
+                chatBasicView.onHandleException(t)
             }
         }
     }

@@ -47,7 +47,9 @@ import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.utils.Utils.rotateImage
 import com.namastey.viewModel.ProfileViewModel
+import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
+import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
@@ -240,8 +242,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 )
             } else {
 
-
-                if (profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0) {
+                if (profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 && sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0) {
                     Constants.isSuperMessage=true
                     ivSuperMessage.visibility = View.VISIBLE
                    showPopupSuperMessage()

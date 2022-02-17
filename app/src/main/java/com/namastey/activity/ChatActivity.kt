@@ -38,6 +38,7 @@ import com.namastey.fragment.ChatSettingsFragment
 import com.namastey.listeners.OnChatMessageClick
 import com.namastey.model.ChatMessage
 import com.namastey.model.MatchesListBean
+import com.namastey.model.SuperMessageBean
 import com.namastey.uiView.ChatBasicView
 import com.namastey.utils.*
 import com.namastey.viewModel.ChatViewModel
@@ -349,6 +350,9 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
 
         }
+
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)==0)
+            llChatBox.visibility=View.GONE
 //============================ For now this feature not release ============================
         edtMessage.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -602,6 +606,17 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
         }
     }
 
+    override fun onSuccessSuperMessage(superMessageBean: SuperMessageBean) {
+        Log.e("superMessage:",superMessageBean.number_of_message_available.toString())
+        sessionManager.setIntegerValue(
+            superMessageBean.number_of_message_available,
+            Constants.KEY_NO_OF_SUPER_MESSAGE
+        )
+        if (superMessageBean.number_of_message_available==0)
+            llChatBox.visibility=View.GONE
+    }
+
+
     override fun onSuccess(msg: String) {
 
     }
@@ -630,6 +645,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 sendMessage(edtMessage.text.toString(), "")
             }
         }
+        chatViewModel.superMessageUse()
     }
 
     private fun sendMessage(message: String, imageUrl: String) {
