@@ -743,4 +743,17 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     override fun onPurchasesUpdated(p0: BillingResult, p1: MutableList<Purchase>?) {
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+            cvMemberShip.visibility= VISIBLE
+            tlIndicator.visibility= View.INVISIBLE
+            vpSlide.visibility=GONE
+        }else {
+            tlIndicator.visibility= VISIBLE
+            cvMemberShip.visibility = GONE
+            vpSlide.visibility=VISIBLE
+        }
+    }
 }

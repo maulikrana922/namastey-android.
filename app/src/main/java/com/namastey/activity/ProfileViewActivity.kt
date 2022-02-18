@@ -242,11 +242,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 )
             } else {
 
-                if (profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 && sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0) {
-                    Constants.isSuperMessage=true
-                    ivSuperMessage.visibility = View.VISIBLE
-                   showPopupSuperMessage()
-                }else Constants.isSuperMessage=false
+           showSuperMessageIcon()
 
 
 
@@ -304,6 +300,14 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
         fillValue(profileBean)
+    }
+
+    private fun showSuperMessageIcon() {
+        if ((sessionManager.getUserId() !=profileBean.user_id && profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0) || (profileBean.safetyBean.who_can_send_message == 1  && profileBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0)){
+            Constants.isSuperMessage=true
+            ivSuperMessage.visibility = View.VISIBLE
+            showPopupSuperMessage()
+        }else Constants.isSuperMessage=false
     }
 
     private fun showPopupSuperMessage() {
@@ -848,7 +852,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onResume() {
         super.onResume()
-
+        showSuperMessageIcon()
         if (intent.hasExtra("ownProfile")) {
             Log.e("ProfileViewActivity", "profileBean, ")
             profileViewModel.getUserFullProfile("", "")

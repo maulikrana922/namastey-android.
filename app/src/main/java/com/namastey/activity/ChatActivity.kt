@@ -350,12 +350,13 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             }
 
         }
-
-        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)==0)
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)==0 && whoCanSendMessage == 2)
             llChatBox.visibility=View.GONE
+
 //============================ For now this feature not release ============================
         edtMessage.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+            }
             override fun beforeTextChanged(
                 s: CharSequence?, start: Int,
                 count: Int, after: Int
@@ -642,6 +643,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 sendMessage(edtMessage.text.toString(), "")
             else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER) {   // your can send 280 character with public account else purchase plan
                 Log.d("ChatActivity : ", "Count  $characterCount")
+                sendMessage(edtMessage.text.toString(), "")
+            }else if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0){
                 sendMessage(edtMessage.text.toString(), "")
             }
         }

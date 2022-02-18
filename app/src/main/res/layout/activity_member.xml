@@ -117,6 +117,70 @@
         app:layout_constraintTop_toBottomOf="@+id/llBottomLayout"
        />
 
+    <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:id="@+id/cvMemberShip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_slider_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/_32sdp">
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tv_slider_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:gravity="center"
+                android:text="@string/membership"
+                android:textColor="@color/color_text_red"
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:typeface="MULI_SEMIBOLD" />
+
+            <ImageView
+                android:id="@+id/iv_slider_Icon"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/ic_profile_membership"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_slider_title" />
+
+            <com.namastey.customViews.CustomTextView
+                android:id="@+id/tv_Text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Your membership is active now."
+                android:textColor="@color/color_black_text"
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_slider_Icon"
+                app:layout_constraintRight_toRightOf="@id/iv_slider_Icon"
+                app:layout_constraintTop_toBottomOf="@+id/iv_slider_Icon"
+                app:typeface="MULI_EXTRA_BOLD" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tlIndicator"
         android:layout_width="wrap_content"
