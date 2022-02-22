@@ -1,6 +1,7 @@
 package com.namastey.activity
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.location.Geocoder
@@ -12,6 +13,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationResult
@@ -29,6 +33,7 @@ import com.namastey.roomDB.entity.RecentLocations
 import com.namastey.uiView.SettingsView
 import com.namastey.utils.Constants
 import com.namastey.utils.CustomAlertDialog
+import com.namastey.utils.InAppPurchaseDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_gender.*
@@ -240,8 +245,68 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
                 val jsonObject = JsonObject()
                 when {
                     isChecked -> {
-                        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
-                        settingsViewModel.editProfile(jsonObject)
+                        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0) {
+                            switchGlobal.isChecked=false
+                            object : InAppPurchaseDialog(
+                                this@SettingsActivity
+                            ) {
+                                override fun onPurchasesUpdated(
+                                    billingResult: BillingResult,
+                                    purchases: MutableList<Purchase>?
+                                ) {
+                                    Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
+                                    Log.e(
+                                        TAG,
+                                        "onPurchasesUpdated: responseCode ${billingResult.responseCode}"
+                                    )
+                                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+                                        for (purchase in purchases) {
+                                            Log.e(TAG, "purchase: \t $purchase")
+                                            Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
+                                            Log.e(TAG, "purchaseToken: \t $purchase")
+
+                                            // finish()
+                                        }
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                                        Log.e(TAG, "onPurchasesUpdated User Cancelled")
+                                        //finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+                                        Log.e(TAG, "onPurchasesUpdated Service Unavailable")
+                                        //finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
+                                        Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
+                                        //finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+                                        Log.e(TAG, "onPurchasesUpdated Item Unavailable")
+                                        //finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+                                        Log.e(TAG, "onPurchasesUpdated Developer Error")
+                                        finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
+                                        Log.e(TAG, "onPurchasesUpdated  Error")
+                                        finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                                        Log.e(TAG, "onPurchasesUpdated Item already owned")
+                                        //finish()
+                                    } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
+                                        Log.e(TAG, "onPurchasesUpdated Item not owned")
+                                        // finish()
+                                    } else {
+                                        switchGlobal.isChecked=true
+                                        jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+                                        settingsViewModel.editProfile(jsonObject)
+                                        Log.e(
+                                            TAG,
+                                            "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}"
+                                        )
+                                        // finish()
+                                    }
+                                }
+                            }.show()
+                        }else {
+                            jsonObject.addProperty(Constants.IS_GLOBAL, 1)
+                            settingsViewModel.editProfile(jsonObject)
+                        }
                     }
                     else -> {
                         jsonObject.addProperty(Constants.IS_GLOBAL, 0)

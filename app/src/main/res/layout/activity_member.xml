@@ -168,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Your membership is active now."
+                android:text="Your membership is now active."
                 android:textColor="@color/color_black_text"
                 android:textSize="@dimen/_16sdp"
                 app:layout_constraintLeft_toLeftOf="@+id/iv_slider_Icon"

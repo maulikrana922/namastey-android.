@@ -18,13 +18,14 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.*
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -105,8 +106,10 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     private lateinit var bitmapProfile: Bitmap
     var mRecyclerView: ExoPlayerRecyclerView? = null
     var mLayoutManager: LinearLayoutManager? = null
+    private lateinit var mGrideManager: LinearLayoutManager
     private var firstTime = true
-
+    private var selectedMonths = 1
+    private var isselected: Int = 0
     override fun onSuccessAlbumList(arrayList: ArrayList<AlbumBean>) {
     }
 
@@ -188,7 +191,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         object : CustomAlertDialog(
             this,
             "You have reached your daily limit.",
-            getString(R.string.okay),""
+            getString(R.string.okay), ""
         ) {
             override fun onBtnClick(id: Int) {
                 when (id) {
@@ -371,9 +374,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         getVideoUrl(position)
         mLayoutManager!!.scrollToPositionWithOffset(position, 0);
 
-        //viewpagerAlbum.currentItem = position
-
     }
+
 
     private fun getVideoUrl(position: Int) {
         /* mRecyclerView!!.layoutManager =
@@ -522,9 +524,86 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onUpnextClick(position: Int) {
         groupUpnext.visibility = View.VISIBLE
+        mGrideManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        rvAlbumUpnext.layoutManager = mGrideManager
+        if (videoList.size > 10)
+            setAdapter(if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0) 10 else videoList.size)
+        else setAdapter(videoList.size)
+    }
+
+    private fun setAdapter(size: Int) {
         upnextVideoAdapter =
-            UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity)
+            UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity, size)
         rvAlbumUpnext.adapter = upnextVideoAdapter
+        var isLastPos = false
+        rvAlbumUpnext.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Log.d("TAG", "Last visible item is: ${mGrideManager.findLastVisibleItemPosition()}")
+                Log.d(
+                    "TAG",
+                    "end? : ${mGrideManager.findLastVisibleItemPosition() == mGrideManager.itemCount - 1}"
+                )
+                if (mGrideManager.findLastVisibleItemPosition() == size - 1) {
+                    if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && !isLastPos) {
+                        isLastPos = true
+                        object : InAppPurchaseDialog(
+                            this@AlbumVideoActivity
+                        ) {
+                            override fun onPurchasesUpdated(
+                                billingResult: BillingResult,
+                                purchases: MutableList<Purchase>?
+                            ) {
+                                Log.e(TAG, "onPurchasesUpdated: debugMessage $billingResult")
+                                Log.e(
+                                    TAG,
+                                    "onPurchasesUpdated: responseCode ${billingResult.responseCode}"
+                                )
+                                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+                                    for (purchase in purchases) {
+                                        Log.e(TAG, "purchase: \t $purchase")
+                                        Log.e(TAG, "purchaseToken: \t ${purchase.purchaseToken}")
+                                        Log.e(TAG, "purchaseToken: \t $purchase")
+
+                                        // finish()
+                                    }
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                                    Log.e(TAG, "onPurchasesUpdated User Cancelled")
+                                    //finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+                                    Log.e(TAG, "onPurchasesUpdated Service Unavailable")
+                                    //finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
+                                    Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
+                                    //finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
+                                    Log.e(TAG, "onPurchasesUpdated Item Unavailable")
+                                    //finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
+                                    Log.e(TAG, "onPurchasesUpdated Developer Error")
+                                    finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
+                                    Log.e(TAG, "onPurchasesUpdated  Error")
+                                    finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                                    Log.e(TAG, "onPurchasesUpdated Item already owned")
+                                    //finish()
+                                } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
+                                    Log.e(TAG, "onPurchasesUpdated Item not owned")
+                                    // finish()
+                                } else {
+                                    setAdapter(videoList.size)
+                                    Log.e(
+                                        TAG,
+                                        "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}"
+                                    )
+                                    // finish()
+                                }
+                            }
+                        }.show()
+                    }
+                } else isLastPos = false
+            }
+        })
     }
 
     override fun onClickSocialText(userName: String) {
@@ -627,8 +706,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
      * Need to reduce this code
      */
     private fun openShareOptionDialog(videoBean: VideoBean, position: Int) {
-        val message = intent.getIntExtra("message",0)
-        val followme =intent.getIntExtra("follow",0)
+        val message = intent.getIntExtra("message", 0)
+        val followme = intent.getIntExtra("follow", 0)
 
         Log.d("!!!!!!!!", message.toString())
         selectedShareProfile.clear()
@@ -761,13 +840,13 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         }
 
         bottomSheetDialogShare.ivShareMessage.setOnClickListener {
-            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)){
-                clickSendMessage(videoBean,message)
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
+                clickSendMessage(videoBean, message)
             }
         }
         bottomSheetDialogShare.tvShareMessage.setOnClickListener {
-            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)){
-                clickSendMessage(videoBean,message)
+            if (bottomSheetDialogShare.tvShareMessage.text == getString(R.string.send_message)) {
+                clickSendMessage(videoBean, message)
             }
         }
         //Bottom Icon
@@ -826,6 +905,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
         bottomSheetDialogShare.show()
     }
+
     private fun clickSendMessage(videoBean: VideoBean, message: Int) {
         val matchesListBean = MatchesListBean()
         matchesListBean.id = videoBean.user_id
@@ -848,29 +928,31 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             openActivity(intent)
         }
     }
+
     private fun shareWhatsApp(videoBean: VideoBean) {
         try {
-     /*       val pm: PackageManager = packageManager
-            pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            sendIntent.type = "text/plain"
-            sendIntent.setPackage("com.whatsapp")
+            /*       val pm: PackageManager = packageManager
+                   pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                   val sendIntent = Intent(Intent.ACTION_SEND)
+                   sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                   sendIntent.type = "text/plain"
+                   sendIntent.setPackage("com.whatsapp")
 
-            sendIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
-            )
-//                sendIntent.putExtra(
-//                    Intent.EXTRA_STREAM,
-//                    Uri.parse(videoBean.video_url)
-//                )
-            startActivity(sendIntent)*/
+                   sendIntent.putExtra(
+                       Intent.EXTRA_TEXT,
+                       getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+                   )
+       //                sendIntent.putExtra(
+       //                    Intent.EXTRA_STREAM,
+       //                    Uri.parse(videoBean.video_url)
+       //                )
+                   startActivity(sendIntent)*/
 
 
             val waIntent = Intent(Intent.ACTION_SEND)
             waIntent.type = "text/plain"
-            val text = getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
+            val text =
+                getString(R.string.dynamic_link_msg) + Constants.DYNAMIC_LINK + videoBean.username
             waIntent.setPackage("com.whatsapp")
 
             waIntent.putExtra(Intent.EXTRA_TEXT, text)
@@ -984,7 +1066,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 "",
                 System.currentTimeMillis(),
                 0,
-                0,""
+                0, ""
             )
             val chatId = if (sessionManager.getUserId() < profileBean.id)
                 sessionManager.getUserId().toString().plus("_").plus(profileBean.id)
@@ -1335,7 +1417,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                 videoList[position] = videoBean
                 albumVideoAdapter.notifyItemChanged(position)
             }
-        }else if (requestCode == 100) {
+        } else if (requestCode == 100) {
             try {
                 val count = data!!.getIntExtra(Constants.KEY_COUNT, 0)
                 val position = data.getIntExtra(Constants.KEY_POSITION, 0)
@@ -1345,8 +1427,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     Log.e("Count", count.toString());
                 }
                 mRecyclerView!!.playVideo(false, false, position)
-            }catch (e:Exception){
-                Log.e("Exception",e.message.toString())
+            } catch (e: Exception) {
+                Log.e("Exception", e.message.toString())
             }
         }
     }
@@ -1467,7 +1549,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             imageUrl,
             System.currentTimeMillis(),
             0,
-            0,""
+            0, ""
         )
         val chatId = if (sessionManager.getUserId() < dashboardBean.id)
             sessionManager.getUserId().toString().plus("_").plus(dashboardBean.id)

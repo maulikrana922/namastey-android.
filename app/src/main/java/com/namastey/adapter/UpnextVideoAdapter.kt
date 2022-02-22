@@ -14,7 +14,7 @@ import java.util.*
 class UpnextVideoAdapter(
     var videoList: ArrayList<VideoBean>,
     var activity: Context,
-    var onItemClick: OnItemClick
+    var onItemClick: OnItemClick, var size:Int
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<UpnextVideoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int) = ViewHolder(
@@ -23,7 +23,7 @@ class UpnextVideoAdapter(
         )
     )
 
-    override fun getItemCount() = videoList.size
+    override fun getItemCount() = size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
