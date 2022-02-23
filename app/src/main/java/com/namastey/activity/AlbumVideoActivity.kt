@@ -536,7 +536,8 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
             UpnextVideoAdapter(videoList, this@AlbumVideoActivity, this@AlbumVideoActivity, size)
         rvAlbumUpnext.adapter = upnextVideoAdapter
         var isLastPos = false
-        rvAlbumUpnext.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        if (sessionManager.getUserId()!=videoList[0].user_id)
+            rvAlbumUpnext.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 Log.d("TAG", "Last visible item is: ${mGrideManager.findLastVisibleItemPosition()}")
                 Log.d(
@@ -544,7 +545,7 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
                     "end? : ${mGrideManager.findLastVisibleItemPosition() == mGrideManager.itemCount - 1}"
                 )
                 if (mGrideManager.findLastVisibleItemPosition() == size - 1) {
-                    if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && !isLastPos) {
+                    if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && !isLastPos && videoList.size > 10) {
                         isLastPos = true
                         object : InAppPurchaseDialog(
                             this@AlbumVideoActivity

@@ -145,7 +145,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
         nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0) {
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && postList.size > 10) {
                     showCustomDialog(1)
                 }
             }
