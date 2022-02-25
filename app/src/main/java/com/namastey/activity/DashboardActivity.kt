@@ -3593,18 +3593,14 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     fun onclickGlobal(view: View) {
-        if (tvTurnOnGlobal.text.toString() == getString(R.string.go_to_setting_namastay)) {
-            val intent = Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts("package", packageName, null)
-            )
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            finish()
-        } else {
+
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1){
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.IS_GLOBAL, 1)
             dashboardViewModel.editProfile(jsonObject)
+        }else{
+            val intent = Intent(this@DashboardActivity,SettingsActivity::class.java)
+            openActivity(intent)
         }
     }
 }

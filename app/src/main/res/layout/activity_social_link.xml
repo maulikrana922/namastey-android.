@@ -96,8 +96,8 @@
                     android:gravity="center_vertical"
                     android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
-                    android:paddingEnd="@dimen/_20sdp"
                     android:paddingTop="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_facebook"
                     android:textColor="@color/color_blue_facebook"
@@ -132,9 +132,9 @@
                     android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_25sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_instagram"
-                    android:paddingEnd="@dimen/_25sdp"
                     android:textColor="@color/color_instagram"
                     app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
@@ -201,9 +201,9 @@
                     android:onClick="onClickButton"
                     android:paddingStart="@dimen/_10sdp"
                     android:paddingTop="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_20sdp"
                     android:paddingBottom="@dimen/_15sdp"
                     android:text="@string/connect_spotify"
-                    android:paddingEnd="@dimen/_20sdp"
                     android:textColor="@color/color_spotify"
                     app:layout_constraintEnd_toEndOf="@id/tvFacebook"
                     app:layout_constraintStart_toStartOf="@id/tvSocial"
@@ -223,6 +223,17 @@
                     app:layout_constraintTop_toTopOf="@+id/tvSpotify"
                     tools:ignore="ContentDescription" />
 
+
+                <com.namastey.customViews.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/please_use_a_social_media_account_that_is_most_representative_of_your_online_identity_as_it_will_be_used_for_verification_purposes"
+                    app:layout_constraintEnd_toEndOf="@+id/tvSpotify"
+                    app:layout_constraintStart_toStartOf="@+id/tvSpotify"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSpotify" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -231,12 +242,11 @@
             style="@style/btnRedAllCornerStyle"
             android:layout_marginBottom="@dimen/_25sdp"
             android:onClick="onClickContinue"
+            android:stateListAnimator="@null"
             android:text="@string/continues"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:stateListAnimator="@null"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -247,8 +257,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

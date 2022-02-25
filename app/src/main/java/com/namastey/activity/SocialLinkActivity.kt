@@ -25,9 +25,8 @@ import com.namastey.listeners.AuthenticationListener
 import com.namastey.model.InstagramData
 import com.namastey.model.SocialAccountBean
 import com.namastey.uiView.ProfileInterestView
-import com.namastey.utils.Constants
+import com.namastey.utils.*
 import com.namastey.utils.SessionManager
-import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileInterestViewModel
 import com.spotify.sdk.android.auth.*
 import com.spotify.sdk.android.auth.AuthorizationResponse
@@ -96,7 +95,7 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
             tvSkip.text = getString(R.string.done)
             btnContinue.visibility = View.GONE
-        }
+        }else tvSkip.visibility = View.GONE
 
         Utils.rectangleShapeBorder(
             tvFacebook,
@@ -486,14 +485,24 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         jsonObject.add("social_links_details", jsonArray)
         Log.e("AddLinkRequest : ", jsonObject.toString())
         if (intent.hasExtra(Constants.ACTIVITY_EDIT)) {
-            if (isEdit)
+           /* if (isEdit)
                 profileInterestViewModel.addSocialLink(jsonObject)
-            else finishActivity()
-        } else {
+            else finishActivity()*/
+
             if (!isEmpty)
+                showAlertDialog()
+            else profileInterestViewModel.addSocialLink(jsonObject)
+        } else {
+         /*   if (!isEmpty)
                 openActivity(this@SocialLinkActivity, AddVideoActivity())
             else
                 profileInterestViewModel.addSocialLink(jsonObject)
+*/
+            if (!isEmpty)
+               showAlertDialog()
+            else
+                profileInterestViewModel.addSocialLink(jsonObject)
+
         }
     }
 
@@ -543,6 +552,17 @@ class SocialLinkActivity : BaseActivity<ActivitySocialLinkBinding>(), Authentica
         }
     }
 
+    fun showAlertDialog(){
+        object : CustomAlertDialog(
+            this,
+            getString(R.string.social_link_alert_message),
+            getString(R.string.ok),""
+        ) {
+            override fun onBtnClick(id: Int) {
+                dismiss()
+            }
+        }.show()
+    }
     override fun onTokenReceived(auth_token: String?) {
         if (auth_token == null)
             return;
