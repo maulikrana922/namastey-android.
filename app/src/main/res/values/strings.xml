@@ -364,7 +364,7 @@
     <string name="msg_empty_video_desc">Please enter video description</string>
     <string name="msg_empty_cover_image">Please select cover image</string>
     <string name="msg_select_album">Please choose album</string>
-    <string name="msg_add_video">Please add video or skipp now</string>
+    <string name="msg_add_video">Add a video showing your face, you  can add more content later</string>
     <string name="select_album">Select album</string>
 
     <!--    Edit profile -->
