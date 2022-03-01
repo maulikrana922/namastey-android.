@@ -18,8 +18,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.viewModel.BaseViewModel
 import com.namastey.viewModel.EducationViewModel
 import kotlinx.android.synthetic.main.activity_education.*
-import kotlinx.android.synthetic.main.fragment_education.*
-import kotlinx.android.synthetic.main.fragment_job.*
 import java.util.ArrayList
 import javax.inject.Inject
 

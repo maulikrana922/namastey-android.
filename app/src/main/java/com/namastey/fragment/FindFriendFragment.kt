@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
-import com.namastey.activity.FollowingFollowersActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentFindFriendBinding
 import com.namastey.listeners.OnInteractionWithFragment

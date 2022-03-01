@@ -20,7 +20,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.hendraanggrian.appcompat.widget.SocialTextView
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnFeedItemClick
 import com.namastey.model.DashboardBean
 import com.namastey.utils.Constants

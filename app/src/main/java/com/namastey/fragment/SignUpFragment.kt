@@ -28,7 +28,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.DashboardActivity
-import com.namastey.activity.ProfileBasicInfoActivity
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentSignUpBinding
 import com.namastey.roomDB.entity.User

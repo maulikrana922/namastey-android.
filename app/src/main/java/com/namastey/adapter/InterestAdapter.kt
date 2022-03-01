@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.namastey.R
-import com.namastey.fragment.ChooseInterestFragment
 import com.namastey.listeners.OnImageItemClick
 import com.namastey.model.InterestSubCategoryBean
 import com.namastey.utils.GlideLib

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.namastey.BR
 import com.namastey.R
-import com.namastey.activity.EditProfileActivity
 import com.namastey.adapter.SelectCategoryAdapter
 import com.namastey.dagger.module.GlideApp
 import com.namastey.dagger.module.ViewModelFactory

@@ -14,8 +14,6 @@ import com.namastey.utils.CustomAlertDialog
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.BaseViewModel
 import kotlinx.android.synthetic.main.activity_birthday.*
-import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.fragment_select_gender.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

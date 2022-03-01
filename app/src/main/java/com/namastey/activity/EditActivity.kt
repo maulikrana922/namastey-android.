@@ -25,9 +25,6 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfileBasicViewModel
 import kotlinx.android.synthetic.main.activity_edit.*
-import kotlinx.android.synthetic.main.activity_name.*
-import kotlinx.android.synthetic.main.fragment_job.*
-import kotlinx.android.synthetic.main.view_profile_select_interest.*
 import java.util.*
 import javax.inject.Inject
 

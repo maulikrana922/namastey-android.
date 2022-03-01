@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -38,9 +37,6 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivitySignUpBinding
-import com.namastey.fragment.OTPFragment
-import com.namastey.fragment.SelectGenderFragment
-import com.namastey.fragment.SignupWithPhoneFragment
 import com.namastey.roomDB.entity.User
 import com.namastey.uiView.SignUpView
 import com.namastey.utils.Constants
@@ -379,13 +375,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
      */
     private fun signupWithPhone() {
         tvSkipSignUp.visibility = View.INVISIBLE
-        addFragment(
+       /* addFragment(
             SignupWithPhoneFragment.getInstance(
                 false,
                 isFromDashboard = false
             ),
             Constants.SIGNUP_WITH_PHONE_FRAGMENT
-        )
+        )*/
     }
 
   /*  private fun fetchUserData() {
@@ -541,10 +537,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     override fun skipLogin() {
         tvSkipSignUp.visibility = View.INVISIBLE
         sessionManager.setGuestUser(true)
-        addFragment(
+       /* addFragment(
             SelectGenderFragment.getInstance("user"),
             Constants.SELECT_GENDER_FRAGMENT
-        )
+        )*/
     }
 
     override fun onClickContinue() {
@@ -620,8 +616,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         if (videoLanguageFrgment != null || chooseInterestFragment != null) {
             supportFragmentManager.popBackStack()
         } else if (selectGenderFragment != null) {
-            if (SelectGenderFragment.datePickerDialog != null)
-                SelectGenderFragment.datePickerDialog!!.dismiss()
+//            if (SelectGenderFragment.datePickerDialog != null)
+//                SelectGenderFragment.datePickerDialog!!.dismiss()
 
             tvSkipSignUp.visibility = View.VISIBLE
             removeAllFragment()
