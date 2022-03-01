@@ -8,5 +8,6 @@ data class SuperMessageBean(
     val purchase_id: Int,
     val type: Int,
     val updated_at: String,
-    val user_id: Int
+    val user_id: Int,
+    val is_super_message_used:Int
 )

@@ -42,9 +42,7 @@ import com.namastey.model.SuperMessageBean
 import com.namastey.uiView.ChatBasicView
 import com.namastey.utils.*
 import com.namastey.viewModel.ChatViewModel
-import kotlinx.android.synthetic.main.activity_album_detail.*
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.activity_post_video.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_new_alert.*
@@ -648,7 +646,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 sendMessage(edtMessage.text.toString(), "")
             }
         }
-        chatViewModel.superMessageUse()
+        chatViewModel.superMessageUse(matchesListBean.id)
     }
 
     private fun sendMessage(message: String, imageUrl: String) {
