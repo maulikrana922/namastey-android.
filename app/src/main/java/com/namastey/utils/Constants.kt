@@ -191,7 +191,7 @@ object Constants {
     const val OK = 200
     const val ADMIN_BLOCK_USER_CODE = 404
     const val ADMIN_USER_UNDER_REVIEW = 406
-
+    const val USE_SUPER_MESSAGE = 408
     const val TIME_OUT: Long = 60
     const val CACHE_TIME = 432000
 
@@ -371,6 +371,7 @@ object Constants {
     const val MATCH_USER_ID = "match_user_id"
     const val IS_READ = "is_read"
     const val MESSAGE_USER_ID = "message_user_id"
+    const val MESSAGED_USER_ID = "messaged_user_id"
     const val IS_CHAT = "is_chat"
     const val PAGE = "page"
     const val LAT = "lat"

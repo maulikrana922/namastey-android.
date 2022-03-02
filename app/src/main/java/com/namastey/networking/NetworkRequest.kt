@@ -509,7 +509,7 @@ interface NetworkRequest {
 
     @FormUrlEncoded
     @POST(Constants.SUPER_MESSAGE_USE)
-    fun requestToSuperMessageUseAsync(@Field(Constants.MESSAGE_USER_ID) messageUserId: Long): Deferred<AppResponse<SuperMessageBean>>
+    fun requestToSuperMessageUseAsync(@Field(Constants.MESSAGED_USER_ID) messageUserId: Long): Deferred<AppResponse<SuperMessageBean>>
 
     @FormUrlEncoded
     @POST(Constants.INVITE_USER)

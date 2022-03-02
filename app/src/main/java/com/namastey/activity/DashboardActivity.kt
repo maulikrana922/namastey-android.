@@ -301,7 +301,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun initData() {
         sessionManager.setLoginUser(true)
         Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
-
+        Log.e("token:",sessionManager.getAccessToken())
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
         currentLocationFromDB = dbHelper.getLastRecentLocations()
