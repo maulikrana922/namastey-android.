@@ -28,17 +28,6 @@
                 android:background="@color/colorWhite">
 
                 <ImageView
-                    android:id="@+id/imgTop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/green_bar_three"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
                     android:id="@+id/ivPostVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,23 +48,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/ivPostVideo"
                     app:layout_constraintStart_toEndOf="@id/ivPostVideo"
                     app:layout_constraintTop_toTopOf="@id/ivPostVideo" />
-
-                <!-- <com.namastey.customViews.CustomEditText
-                     android:id="@+id/edtVideoDesc"
-                     android:layout_width="0dp"
-                     android:layout_height="wrap_content"
-                     android:layout_marginStart="@dimen/_15sdp"
-                     android:layout_marginTop="@dimen/_20sdp"
-                     android:background="@android:color/transparent"
-                     android:gravity="top"
-                     android:hint="@string/hint_video_desc"
-                     android:maxLines="4"
-                     android:minLines="4"
-                     android:padding="@dimen/_5sdp"
-                     app:layout_constraintEnd_toStartOf="@id/ivSelectCover"
-                     app:layout_constraintStart_toStartOf="parent"
-                     app:layout_constraintTop_toBottomOf="@id/imgTop"
-                     app:typeface="MULI_SEMIBOLD" />-->
 
                 <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                     android:id="@+id/edtVideoDesc"

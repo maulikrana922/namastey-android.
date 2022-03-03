@@ -58,7 +58,6 @@ import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityDashboardBinding
 import com.namastey.fcm.MyFirebaseMessagingService
 import com.namastey.fragment.NotificationFragment
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.*
 import com.namastey.location.AppLocationService
 import com.namastey.model.*
@@ -1484,12 +1483,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     fun onClickInbox(view: View) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 sessionManager.setBooleanValue(false, Constants.ISNOTIFICATION)
@@ -1747,12 +1740,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
      */
     override fun onClickFollow(position: Int, dashboardBean: DashboardBean, isFollow: Int) {
         if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 this.position = position
@@ -1768,12 +1755,6 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
         // if (sessionManager.isGuestUser() && dashboardBean.user_profile_type == 1) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         } else {
@@ -1783,12 +1764,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
 
     override fun onProfileLikeClick(position: Int, dashboardBean: DashboardBean, isLike: Int) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+
         } else {
             if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 this.position = position
@@ -1805,38 +1781,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         }
     }
 
-    /*fun animateHeart(view: ImageView) {
-    val scaleAnimation = ScaleAnimation(
-        0.0f, 1.0f, 0.0f, 1.0f,
-        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
-    )
-    prepareAnimation(scaleAnimation)
-    val alphaAnimation = AlphaAnimation(0.0f, 1.0f)
-    prepareAnimation(alphaAnimation)
-    val animation = AnimationSet(true)
-    animation.addAnimation(alphaAnimation)
-    animation.addAnimation(scaleAnimation)
-    animation.setDuration(700)
-    animation.setFillAfter(true)
-    view.startAnimation(animation)
-}p
-
-private fun prepareAnimation(animation: Animation): Animation? {
-    animation.setRepeatCount(1)
-    animation.setRepeatMode(Animation.REVERSE)
-    return animation
-}*/
     fun onClickDiscover(view: View) {
-//        if (sessionManager.isGuestUser()) {
-//            addFragment(
-//                SignUpFragment.getInstance(
-//                    true
-//                ),
-//                Constants.SIGNUP_FRAGMENT
-//            )
-//        } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-//            completeSignUpDialog()
-//        } else {
         feedList.clear()
         videoIdList.clear()
         currentPage = 1
@@ -1845,13 +1790,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
         intent.putExtra("categoryList", categoryBeanList)
         openActivityForResult(intent, Constants.FILTER_OK)
-//        }
-
-        /* feedList.clear()
-         dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
-         val intent = Intent(this@DashboardActivity, FilterActivity::class.java)
-         intent.putExtra("categoryList", categoryBeanList)
-         openActivityForResult(intent, Constants.FILTER_OK)*/
     }
 
     /**
@@ -1865,111 +1803,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         intent.putExtra("position", this.position)
         startActivityForResult(intent, 100)
     }
-
-    /*this.position = position
-    this.postId = postId
-    bottomSheetDialogComment = BottomSheetDialog(this@DashboardActivity, R.style.dialogStyle)
-    bottomSheetDialogComment.setContentView(
-        layoutInflater.inflate(
-            R.layout.dialog_bottom_post_comment,
-            null
-        )
-    )
-    bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
-    bottomSheetDialogComment.setCancelable(true)
-    deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
-
-    dashboardViewModel.getCommentList(postId)
-
-    bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-        if (sessionManager.isGuestUser()) {
-            bottomSheetDialogComment.dismiss()
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        } else {
-            if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-                if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-                    dashboardViewModel.addComment(
-                        postId,
-                        bottomSheetDialogComment.edtComment.text.toString()
-                    )
-                }
-            } else {
-                completeSignUpDialog()
-            }
-        }
-    }
-
-    bottomSheetDialogComment.edtComment.setOnClickListener {
-        if (sessionManager.isGuestUser()) {
-            bottomSheetDialogComment.dismiss()
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        }
-    }
-
-    addCommentsTextChangeListener()
-
-    bottomSheetDialogComment.ivCloseComment.setOnClickListener {
-        bottomSheetDialogComment.dismiss()
-    }
-
-    bottomSheetDialogComment.setOnDismissListener {
-        if (isUpdateComment) {
-            isUpdateComment = false
-            val dashboardBean = feedList[position]
-            dashboardBean.comments = commentCount
-            feedAdapter.notifyItemChanged(position)
-        }
-    }
-
-    bottomSheetDialogComment.show()
-}
-*/
-    /* private fun addCommentsTextChangeListener() {
-         mentionArrayAdapter.clear()
-         dashboardViewModel.getMentionList("")
-         var strMention = ""
-         bottomSheetDialogComment.edtComment.showSoftInputOnFocus
-         bottomSheetDialogComment.edtComment.mentionColor =
-             ContextCompat.getColor(this, R.color.colorBlack)
-         bottomSheetDialogComment.edtComment.mentionAdapter = mentionArrayAdapter
-         bottomSheetDialogComment.edtComment.setMentionTextChangedListener { view, text ->
-             Log.e("mention", text.toString())
-             mentionArrayAdapter.notifyDataSetChanged()
-             strMention = text.toString()
-             if (text.length == 1) {
-                 bottomSheetDialogComment.lvMentionList.visibility = View.GONE
-             } else bottomSheetDialogComment.lvMentionList.visibility = View.VISIBLE
-
-         }
-
-         bottomSheetDialogComment.lvMentionList.adapter = mentionArrayAdapter
-
-         bottomSheetDialogComment.lvMentionList.setOnItemClickListener { _, _, i, l ->
-             val strName = bottomSheetDialogComment.edtComment.text.toString().replace(
-                 strMention, "${
-                     mentionArrayAdapter.getItem(
-                         i
-                     ).toString()
-                 }"
-             )
-             bottomSheetDialogComment.edtComment.setText(strName)
-             bottomSheetDialogComment.edtComment.setSelection(bottomSheetDialogComment.edtComment.text!!.length)
-             bottomSheetDialogComment.lvMentionList.visibility = View.GONE
-
-
-         }
-     }*/
 
     fun onClickCategory(view: View) {
 
@@ -2028,12 +1861,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onUserProfileClick(dashboardBean: DashboardBean, position: Int) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+
         } else {
             isFromProfileActivity = true
             this.position = position
@@ -2045,14 +1873,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onFeedBoost(userId: Long) {
-//        if (sessionManager.isGuestUser()) {
-//            addFragment(
-//                SignUpFragment.getInstance(
-//                    true
-//                ),
-//                Constants.SIGNUP_FRAGMENT
-//            )
-//        } else {
         if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             // showBoostFeatureNotAdded()
 //                =============== This feature currently not added ============
@@ -2364,12 +2184,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onDescriptionClick(userName: String) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USERNAME, userName)
@@ -2384,12 +2198,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     override fun onClickSocialText(userName: String) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+
         } else {
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USERNAME, userName)
@@ -2656,12 +2465,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         )
         if (userProfileType == "1" && sessionManager.isGuestUser()) {
             bottomSheetDialogComment.dismiss()
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, userId)
@@ -3375,12 +3178,6 @@ private fun prepareAnimation(animation: Animation): Animation? {
         Log.e("Subcategory : ", subCategoryId.toString())
         bottomSheetCategoryDialog.dismiss()
         if (sessionManager.isGuestUser()) {
-            this.addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             feedList.clear()
             currentPage = 1

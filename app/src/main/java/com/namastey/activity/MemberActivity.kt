@@ -24,7 +24,6 @@ import com.namastey.adapter.MemberDialogSliderAdapter
 import com.namastey.adapter.MemberSliderAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityMemberBinding
-import com.namastey.fragment.SignUpFragment
 import com.namastey.model.MembershipPriceBean
 import com.namastey.model.MembershipSlide
 import com.namastey.uiView.MemberShipView
@@ -34,14 +33,8 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.MembershipViewModel
 import kotlinx.android.synthetic.main.activity_member.*
-import kotlinx.android.synthetic.main.dialog_boost_member.*
 import kotlinx.android.synthetic.main.dialog_boost_member.view.*
-import kotlinx.android.synthetic.main.dialog_boost_member.view.tvBoostDayRemaining
-import kotlinx.android.synthetic.main.dialog_boost_member.view.tvNextFreeBoost
-import kotlinx.android.synthetic.main.dialog_boost_member.view.tvOutOfBoost
-import kotlinx.android.synthetic.main.dialog_boosts.view.*
 import kotlinx.android.synthetic.main.dialog_member.view.*
-import kotlinx.android.synthetic.main.dialog_member.view.btnContinue
 import kotlinx.android.synthetic.main.dialog_member.view.constHigh
 import kotlinx.android.synthetic.main.dialog_member.view.constLow
 import kotlinx.android.synthetic.main.dialog_member.view.constMedium
@@ -83,6 +76,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private var isselected: Int = 0
     private val PERMISSION_REQUEST_CODE = 99
     private var inAppProductId = "b00200"
+
     //In App Product Price
     private lateinit var billingClient: BillingClient
     private val subscriptionSkuList = listOf("000010", "000020", "000030")
@@ -122,7 +116,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         val timer = Timer()
         timer.scheduleAtFixedRate(SliderTimer(), 4000, 6000)
 
-        if (intent.hasExtra(Constants.ACTIVITY_TYPE)){
+        if (intent.hasExtra(Constants.ACTIVITY_TYPE)) {
             showCustomDialog(3)
         }
     }
@@ -205,12 +199,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
 
             if (sessionManager.isGuestUser()) {
-                addFragment(
-                    SignUpFragment.getInstance(
-                        false
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
+
             } else {
                 if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     completeSignUpDialog()
@@ -218,7 +207,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                     addLocationPermission()
                 }
             }
-        }else showCustomDialog(1)
+        } else showCustomDialog(1)
     }
 
     private fun addLocationPermission() {
@@ -440,7 +429,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
         println("Billing Client not ready")
     }
 
-    fun onClickBoost(view: View){
+    fun onClickBoost(view: View) {
         showBoostDialog(R.layout.dialog_boost_member)
     }
 
@@ -466,8 +455,9 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 view.tvNextFreeBoost.visibility = View.GONE
             }
             else -> {
-                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1){
-                    val purchaseTimeStamp = Timestamp(sessionManager.getLongValue(Constants.KEY_PURCHASE_DATE))
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
+                    val purchaseTimeStamp =
+                        Timestamp(sessionManager.getLongValue(Constants.KEY_PURCHASE_DATE))
                     Log.d("purchase time : ", purchaseTimeStamp.time.toString())
 
                     val date = Date(purchaseTimeStamp.time)
@@ -488,10 +478,11 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                     Log.d("Days remaining : ", minutes.toString())
                     Log.d("current time : ", currentDate.time.toString())
 
-                    view.tvBoostDayRemaining.text = days.toString().plus(" ").plus(getString(R.string.boost_day_remaining))
+                    view.tvBoostDayRemaining.text =
+                        days.toString().plus(" ").plus(getString(R.string.boost_day_remaining))
                     view.tvBoostDayRemaining.visibility = View.VISIBLE
                     view.tvNextFreeBoost.visibility = View.VISIBLE
-                }else{
+                } else {
                     view.tvOutOfBoost.text = getString(R.string.need_more_boosts)
                     view.tvBoostDayRemaining.visibility = View.GONE
                     view.tvNextFreeBoost.visibility = View.GONE
@@ -519,7 +510,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     private fun manageVisibility(view: View) {
 
         view.constLow.setOnClickListener {
-           // view.tvOfferLow.visibility = VISIBLE
+            // view.tvOfferLow.visibility = VISIBLE
             view.viewSelectedLow.visibility = VISIBLE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text_red))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text_red))
@@ -554,7 +545,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
             view.tvTextBoostHigh.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextHighEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-           // view.tvOfferLow.visibility = GONE
+            // view.tvOfferLow.visibility = GONE
             view.viewSelectedLow.visibility = GONE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
@@ -576,7 +567,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
             view.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
 
-           // view.tvOfferLow.visibility = GONE
+            // view.tvOfferLow.visibility = GONE
             view.viewSelectedLow.visibility = GONE
             view.tvTextLow.setTextColor(resources.getColor(R.color.color_text))
             view.tvTextBoostLow.setTextColor(resources.getColor(R.color.color_text))
@@ -585,6 +576,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
 
         }
     }
+
     private fun showCustomDialog(position: Int) {
         selectedMonths = 1
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@MemberActivity)
@@ -612,7 +604,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
                 dialogView.tvTextMedium.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextBoostMedium.setTextColor(resources.getColor(R.color.color_text))
                 dialogView.tvTextMediumEachBoost.setTextColor(resources.getColor(R.color.color_text))
-              //  dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
+                //  dialogView.tvTextSaveBoost.setTextColor(resources.getColor(R.color.color_text))
 
                 //dialogView.tvOfferLow.visibility = GONE
                 dialogView.viewSelectedLow.visibility = GONE
@@ -746,13 +738,13 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
     override fun onResume() {
         super.onResume()
         if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
-            cvMemberShip.visibility= VISIBLE
-            tlIndicator.visibility= View.INVISIBLE
-            vpSlide.visibility=GONE
-        }else {
-            tlIndicator.visibility= VISIBLE
+            cvMemberShip.visibility = VISIBLE
+            tlIndicator.visibility = View.INVISIBLE
+            vpSlide.visibility = GONE
+        } else {
+            tlIndicator.visibility = VISIBLE
             cvMemberShip.visibility = GONE
-            vpSlide.visibility=VISIBLE
+            vpSlide.visibility = VISIBLE
         }
     }
 }

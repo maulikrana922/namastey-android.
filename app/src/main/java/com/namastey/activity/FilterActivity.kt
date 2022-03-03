@@ -21,7 +21,6 @@ import com.namastey.R
 import com.namastey.adapter.*
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityFilterBinding
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnCategoryItemClick
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnPostImageClick
@@ -118,12 +117,6 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (sessionManager.isGuestUser()) {
                     Utils.hideKeyboard(this@FilterActivity)
-                    addFragment(
-                        SignUpFragment.getInstance(
-                            true
-                        ),
-                        Constants.SIGNUP_FRAGMENT
-                    )
                 } else {
                     if (newText!!.isNotEmpty() && newText.trim().length >= 2) {
                         rvFilterSearch.visibility = View.VISIBLE
@@ -573,18 +566,8 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
     override fun onSubCategoryItemClick(subCategoryId: Int) {
         Log.d("Subcategory : ", subCategoryId.toString())
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+
         } else {
-//            val intent = Intent()
-//            intent.putExtra("fromSubCategory", true)
-//            intent.putExtra("subCategoryId", subCategoryId)
-//            setResult(Activity.RESULT_OK, intent)
-//            finish()
             followingClick = false
             postList.clear()
             postList = ArrayList()
@@ -682,12 +665,6 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
             categoryAdapter.notifyDataSetChanged()
         }
 
-//        if (isFollowingSelected) {
-//            isFollowingSelected = false
-//            deselectFollowing()
-//        } else {
-//            isFollowingSelected = true
-//
         followingClick = true
         postList.clear()
         postList = ArrayList()
@@ -699,7 +676,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
         tvTranding.visibility = View.GONE
         filterViewModel.getTredingVideoList(jsonObject)
         selectFollowing()
-//        }
+
     }
 
     private fun selectFollowing() {

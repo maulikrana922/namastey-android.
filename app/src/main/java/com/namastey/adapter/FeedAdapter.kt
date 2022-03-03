@@ -309,12 +309,6 @@ class FeedAdapter(
             ivFeedFollow.setOnClickListener {
 
                 if (sessionManager.isGuestUser()) {
-                    (activity as DashboardActivity).addFragment(
-                        SignUpFragment.getInstance(
-                            true
-                        ),
-                        Constants.SIGNUP_FRAGMENT
-                    )
                 } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     (activity as DashboardActivity).completeSignUpDialog()
                 } else {

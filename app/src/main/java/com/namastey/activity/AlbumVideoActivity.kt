@@ -40,7 +40,6 @@ import com.namastey.adapter.UserShareAdapter
 import com.namastey.customViews.ExoPlayerRecyclerView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityAlbumVideoBinding
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnSocialTextViewClick
@@ -425,12 +424,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
     override fun onPostEdit(position: Int, videoBean: VideoBean) {
 
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
@@ -450,9 +443,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         this.position = position
         Log.e("AlbumVideoActivity", "UserType: \t ${sessionManager.isGuestUser()}")
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(true), Constants.SIGNUP_FRAGMENT
-            )
         } else {
             if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                 completeSignUpDialog()
@@ -509,12 +499,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         Log.e("AlbumVideoActivity", "onSelectItemClick: \t userProfileType: $userProfileType")
         if (userProfileType == "1" && sessionManager.isGuestUser()) {
             bottomSheetDialogComment.dismiss()
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USER_ID, userId)
@@ -609,12 +593,6 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
 
     override fun onClickSocialText(userName: String) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else {
             val intent = Intent(this@AlbumVideoActivity, ProfileViewActivity::class.java)
             intent.putExtra(Constants.USERNAME, userName)
@@ -629,68 +607,9 @@ class AlbumVideoActivity : BaseActivity<ActivityAlbumVideoBinding>(), AlbumView,
         intent.putExtra(Constants.USER_ID, userId)
         startActivityForResult(intent, 100)
     }
-//        bottomSheetDialogComment = BottomSheetDialog(this@AlbumVideoActivity, R.style.dialogStyle)
-//        bottomSheetDialogComment.setContentView(
-//            layoutInflater.inflate(
-//                R.layout.dialog_bottom_post_comment,
-//                null
-//            )
-//        )
-//        bottomSheetDialogComment.window?.setBackgroundDrawableResource(android.R.color.transparent)
-//        bottomSheetDialogComment.window?.attributes?.windowAnimations = R.style.DialogAnimation
-//        bottomSheetDialogComment.setCancelable(true)
-//        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_white)!!
-//
-//        albumViewModel.getCommentList(postId)
-//
-//        bottomSheetDialogComment.edtComment.setOnClickListener {
-//            if (sessionManager.isGuestUser()) {
-//                bottomSheetDialogComment.dismiss()
-//                addFragment(
-//                    SignUpFragment.getInstance(
-//                        true
-//                    ),
-//                    Constants.SIGNUP_FRAGMENT
-//                )
-//            }
-//        }
-//
-//        bottomSheetDialogComment.ivCommentAdd.setOnClickListener {
-//            if (sessionManager.isGuestUser()) {
-//                bottomSheetDialogComment.dismiss()
-//                addFragment(
-//                    SignUpFragment.getInstance(
-//                        true
-//                    ),
-//                    Constants.SIGNUP_FRAGMENT
-//                )
-//            } else {
-//                if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
-//                    completeSignUpDialog()
-//                } else {
-//                    if (bottomSheetDialogComment.edtComment.text.toString().isNotBlank()) {
-//                        albumViewModel.addComment(
-//                            postId,
-//                            bottomSheetDialogComment.edtComment.text.toString()
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//        bottomSheetDialogComment.ivCloseComment.setOnClickListener {
-//            bottomSheetDialogComment.dismiss()
-//        }
-//        bottomSheetDialogComment.show()
-//    }
 
     override fun onShareClick(position: Int, videoBean: VideoBean) {
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
         } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
             completeSignUpDialog()
         } else {

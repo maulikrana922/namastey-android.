@@ -23,7 +23,6 @@ import com.namastey.R
 import com.namastey.adapter.CommentAdapter
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.ActivityCommentBinding
-import com.namastey.fragment.SignUpFragment
 import com.namastey.listeners.OnMentionUserItemClick
 import com.namastey.listeners.OnSelectUserItemClick
 import com.namastey.listeners.OnSocialTextViewClick
@@ -97,12 +96,6 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
         ivCommentAdd.setOnClickListener {
             if (sessionManager.isGuestUser()) {
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
             } else {
                 if (sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     if (edtComment.text.toString().isNotBlank()) {
@@ -119,12 +112,6 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
 
         edtComment.setOnClickListener {
             if (sessionManager.isGuestUser()) {
-                addFragment(
-                    SignUpFragment.getInstance(
-                        true
-                    ),
-                    Constants.SIGNUP_FRAGMENT
-                )
             }
         }
 
@@ -241,7 +228,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
                 ): Int {
                     if (sessionManager.getUserId() == userId) {
                         return super.getSwipeDirs(recyclerView, viewHolder)
-                    }else{
+                    } else {
                         if (data[viewHolder.adapterPosition].user_id != sessionManager.getUserId()) return 0
                     }
                     return super.getSwipeDirs(recyclerView, viewHolder)
@@ -428,12 +415,7 @@ class CommentActivity : BaseActivity<ActivityCommentBinding>(), DashboardView,
             "onSelectItemClick: \t userProfileType: $userProfileType"
         )
         if (userProfileType == "1" && sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(
-                    true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
+
         } else {
             val intent = Intent(this@CommentActivity, ProfileViewActivity::class.java)
             if (userId != sessionManager.getUserId())

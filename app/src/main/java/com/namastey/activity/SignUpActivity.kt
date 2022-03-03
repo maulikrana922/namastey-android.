@@ -45,14 +45,13 @@ import com.namastey.utils.SessionManager
 import com.namastey.utils.Utils
 import com.namastey.viewModel.SignUpViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlinx.android.synthetic.main.fragment_signup_with_phone.*
 import org.json.JSONException
 import java.util.*
 import javax.inject.Inject
 
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
-    SignUpView{
+    SignUpView {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -64,7 +63,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     private lateinit var signUpViewModel: SignUpViewModel
     private lateinit var loginManager: LoginManager
     private lateinit var callbackManager: CallbackManager
-   // private lateinit var mLoginStateChangedListener: LoginStateController
+
+    // private lateinit var mLoginStateChangedListener: LoginStateController
     private lateinit var googleSignInOptions: GoogleSignInOptions
     private lateinit var googleSignInClient: GoogleSignInClient
     private var firstName = ""
@@ -102,7 +102,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         videoViewSignup.setVideoURI(uri)
         videoViewSignup.start()
         androidId =
-            Settings.Secure.getString(this@SignUpActivity.contentResolver, Settings.Secure.ANDROID_ID)
+            Settings.Secure.getString(
+                this@SignUpActivity.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
 
         videoViewSignup.setOnPreparedListener { mp ->
             //Start Playback
@@ -123,7 +126,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                     Intent(Intent.ACTION_VIEW)
                 browserIntent.data = Uri.parse(getString(R.string.tv_policy_link))
                 startActivity(browserIntent)
-            }))
+            })
+        )
 
         initializeGoogleApi()
 
@@ -174,19 +178,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
 
-//        val cameraPermission = ContextCompat.checkSelfPermission(
-//            this,
-//            Manifest.permission.CAMERA
-//        )
-//
-//        val storagePermission = ContextCompat.checkSelfPermission(
-//            this,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//        )
-
-//        if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED || cameraPermission != PackageManager.PERMISSION_GRANTED ||
-//            storagePermission != PackageManager.PERMISSION_GRANTED
-//        )
         if (coarselocationPermission != PackageManager.PERMISSION_GRANTED || locationPermission != PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission to user")
             if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -271,16 +262,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             Log.w("SignUpActivity", "signInResult:failed code=" + e.statusCode)
         }
     }
-
-    /**
-     * Click on login with SnapChat
-     */
-/*
-    private fun loginWithSnapchat() {
-        SnapLogin.getAuthTokenManager(this).clearToken()
-        SnapLogin.getAuthTokenManager(this@SignUpActivity).startTokenGrant()
-    }
-*/
 
     /**
      * Click on continue with Google
@@ -370,45 +351,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
 
     }
 
-    /**
-     * click on sign up with phone/email
-     */
-    private fun signupWithPhone() {
-        tvSkipSignUp.visibility = View.INVISIBLE
-       /* addFragment(
-            SignupWithPhoneFragment.getInstance(
-                false,
-                isFromDashboard = false
-            ),
-            Constants.SIGNUP_WITH_PHONE_FRAGMENT
-        )*/
-    }
-
-  /*  private fun fetchUserData() {
-        val query = "{me{bitmoji{avatar},displayName,externalId}}"
-        SnapLogin.fetchUserData(this@SignUpActivity, query, null, this)
-    }*/
-
-    fun onLoginClick(view: View) {
-        when (view) {
-            llSignupWithPhone -> {
-                signupWithPhone()
-            }
-
-            llSignupWithFacebook -> {
-                facebookLogin()
-            }
-
-            llSignupWithGoogle -> {
-                googleLogin()
-            }
-
-            llSignupWithSnapchat -> {
-                //loginWithSnapchat()
-            }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Log.e("SignUpActivity", "resultCode: $resultCode")
@@ -428,41 +370,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         signUpViewModel.onDestroy()
         super.onDestroy()
     }
-
-/*    override fun onSuccess(p0: UserDataResponse?) {
-        val me = p0!!.data.me
-        val name = me.displayName
-        val avatar = me.bitmojiData.avatar
-        providerId = me.externalId
-
-        signUpViewModel.socialLogin(
-            email,
-            name,
-            Constants.SNAPCHAT,
-            providerId,
-            "",
-            sessionManager.getFirebaseToken()
-        )
-    }*/
-/*
-    override fun onFailure(p0: Boolean, p1: Int) {
-        signUpViewModel.setIsLoading(false)
-        print("onFailure")
-    }
-
-    override fun onLogout() {
-        print("onLogout")
-    }
-
-    override fun onLoginFailed() {
-        signUpViewModel.setIsLoading(false)
-        print("failed")
-    }
-
-    override fun onLoginSucceeded() {
-        signUpViewModel.setIsLoading(true)
-        fetchUserData()
-    }*/
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -535,30 +442,26 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
     }
 
     override fun skipLogin() {
-        tvSkipSignUp.visibility = View.INVISIBLE
         sessionManager.setGuestUser(true)
-       /* addFragment(
-            SelectGenderFragment.getInstance("user"),
-            Constants.SELECT_GENDER_FRAGMENT
-        )*/
     }
 
     override fun onClickContinue() {
-        if(Utils.isOpenRecently()) return
+        if (Utils.isOpenRecently()) return
 
-        if (signUpViewModel.isValidPhone(edtPhone.text.toString().trim())){
+        if (signUpViewModel.isValidPhone(edtPhone.text.toString().trim())) {
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.DEVICE_TYPE, Constants.ANDROID)
             jsonObject.addProperty(Constants.USER_UNIQUE_ID, androidId)
             Log.d("country code :", ccp.selectedCountryCodeAsInt.toString())
             jsonObject.addProperty(
                 Constants.MOBILE,
-                "+".plus(ccp.selectedCountryCodeAsInt.toString()).plus(edtPhone.text.toString().trim())
+                "+".plus(ccp.selectedCountryCodeAsInt.toString())
+                    .plus(edtPhone.text.toString().trim())
             )
             signUpViewModel.sendOTP(jsonObject)
 
-            val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
-            intent.putExtra(Constants.MOBILE,"sdfsdf")
+            val intent = Intent(this@SignUpActivity, OTPActivity::class.java)
+            intent.putExtra(Constants.MOBILE, "sdfsdf")
             openActivity(intent)
         }
     }
@@ -569,7 +472,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         sessionManager.setUserId(user.user_id)
 //        sessionManager.setStringValue(user.username,Constants.USERNAME)
         sessionManager.setUserPhone(user.mobile)
-       // edtPhone.text!!.clear()
+        // edtPhone.text!!.clear()
         Utils.hideKeyboard(this@SignUpActivity)
 //        val intent = Intent(this@SignUpActivity,OTPActivity::class.java)
 //        intent.putExtra(Constants.MOBILE,user.mobile)
@@ -577,30 +480,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         edtPhone.text!!.clear()
 
     }
-
-//    override fun onSuccessResponse(user: User) {
-//        Log.e("SignUpActivity", "user: ${user.token}")
-//        tvSkipSignUp.visibility = View.INVISIBLE
-//        sessionManager.setGuestUser(false)
-//        sessionManager.setAccessToken(user.token)
-//        sessionManager.setUserEmail(user.email)
-//        sessionManager.setUserPhone(user.mobile)
-//        sessionManager.setVerifiedUser(user.is_verified)
-//        sessionManager.setuserUniqueId(user.user_uniqueId)
-//        if (user.is_register == 1) {
-//            val intent = Intent(this@SignUpActivity,DashboardActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//            openActivity(intent)
-//        } else {
-//            addFragment(
-//                SelectGenderFragment.getInstance(
-//                    "user"
-//                ),
-//                Constants.SELECT_GENDER_FRAGMENT
-//            )
-//        }
-//
-//    }
 
     override fun onBackPressed() {
         val selectGenderFragment =
@@ -616,10 +495,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
         if (videoLanguageFrgment != null || chooseInterestFragment != null) {
             supportFragmentManager.popBackStack()
         } else if (selectGenderFragment != null) {
-//            if (SelectGenderFragment.datePickerDialog != null)
-//                SelectGenderFragment.datePickerDialog!!.dismiss()
-
-            tvSkipSignUp.visibility = View.VISIBLE
             removeAllFragment()
 
         } else if (signupWithPhoneFragment != null) {
@@ -627,7 +502,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
             if (childFm.backStackEntryCount > 0) {
                 childFm.popBackStack()
             } else {
-                tvSkipSignUp.visibility = View.VISIBLE
                 supportFragmentManager.popBackStack()
             }
         } else
@@ -645,7 +519,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(),
                 override fun updateDrawState(textPaint: TextPaint) {
                     // use this to change the link color
 //                    textPaint.color = Color.BLACK
-                    textPaint.typeface = Typeface.create(Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf"), Typeface.BOLD)
+                    textPaint.typeface = Typeface.create(
+                        Typeface.createFromAsset(context.assets, "DMSans-Bold.ttf"),
+                        Typeface.BOLD
+                    )
                     // toggle below value to enable/disable
                     // the underline shown below the clickable text
 //                    textPaint.isUnderlineText = true

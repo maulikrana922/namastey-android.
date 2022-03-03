@@ -3,18 +3,13 @@ package com.namastey.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
-import android.view.animation.RotateAnimation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
@@ -28,10 +23,7 @@ import com.namastey.utils.Constants
 import com.namastey.utils.GlideLib
 import com.namastey.utils.Utils
 import com.namastey.viewModel.ProfilePicViewModel
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.ivProfileUser
 import kotlinx.android.synthetic.main.activity_profile_pic.*
-import kotlinx.android.synthetic.main.activity_profile_view.*
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import java.io.*
 import javax.inject.Inject
@@ -149,47 +141,50 @@ class ProfilePicActivity : BaseActivity<ActivityProfilePicBinding>(), ProfilePic
                 if (data != null) {
                     val selectedImage = data.data
 
-                  /*  if (selectedImage != null) {
-                        try {
-                            val filePathColumn =
-                                arrayOf(MediaStore.Images.Media.DATA)
-                            val cursor: Cursor? = this@ProfilePicActivity.contentResolver.query(
-                                selectedImage,
-                                filePathColumn, null, null, null
-                            )
-                            cursor!!.moveToFirst()
+                    /*  if (selectedImage != null) {
+                          try {
+                              val filePathColumn =
+                                  arrayOf(MediaStore.Images.Media.DATA)
+                              val cursor: Cursor? = this@ProfilePicActivity.contentResolver.query(
+                                  selectedImage,
+                                  filePathColumn, null, null, null
+                              )
+                              cursor!!.moveToFirst()
 
-                            val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                            val picturePath: String = cursor.getString(columnIndex)
-                            cursor.close()
+                              val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                              val picturePath: String = cursor.getString(columnIndex)
+                              cursor.close()
 
-                            Log.d("Image Path", "Image Path  is $picturePath")
-                            //profileFile = Utils.saveBitmapToFile(File(picturePath))
-                            profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
+                              Log.d("Image Path", "Image Path  is $picturePath")
+                              //profileFile = Utils.saveBitmapToFile(File(picturePath))
+                              profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
 
-                            val photoUri = FileProvider.getUriForFile(
-                                this,
-                                applicationContext.packageName.plus(".provider"),
-                                profileFile!!
-                            )
-                            //GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
-                            val bitmap: Bitmap = Utils.scaleBitmapDown(
-                                MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
-                                1200
-                            )!!
-                            GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
+                              val photoUri = FileProvider.getUriForFile(
+                                  this,
+                                  applicationContext.packageName.plus(".provider"),
+                                  profileFile!!
+                              )
+                              //GlideLib.loadImage(this, ivProfilePic, photoUri.toString())
+                              val bitmap: Bitmap = Utils.scaleBitmapDown(
+                                  MediaStore.Images.Media.getBitmap(contentResolver, photoUri),
+                                  1200
+                              )!!
+                              GlideLib.loadImageBitmap(this, ivProfilePic, Utils.rotateImage(bitmap))
 
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }*/
+                          } catch (e: Exception) {
+                              e.printStackTrace()
+                          }
+                      }*/
 
                     if (selectedImage != null) {
                         val inputStream: InputStream?
                         try {
                             inputStream = contentResolver.openInputStream(selectedImage)
                             if (!profileFile!!.exists()) {
-                                File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), System.currentTimeMillis().toString()).mkdirs()
+                                File(
+                                    getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                                    System.currentTimeMillis().toString()
+                                ).mkdirs()
                             }
                             val fileOutputStream = FileOutputStream(profileFile)
                             if (inputStream != null) {

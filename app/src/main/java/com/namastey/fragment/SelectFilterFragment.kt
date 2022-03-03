@@ -1,6 +1,5 @@
 package com.namastey.fragment
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -22,7 +21,6 @@ import com.namastey.utils.GridSpacingItemDecoration
 import com.namastey.utils.SessionManager
 import com.namastey.viewModel.SelectFilterViewModel
 import kotlinx.android.synthetic.main.fragment_select_filter.*
-import java.util.*
 import javax.inject.Inject
 
 
@@ -31,6 +29,7 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var sessionManager: SessionManager
     private lateinit var fragmentSelectFilterBinding: FragmentSelectFilterBinding
@@ -78,19 +77,19 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         ivSelectFilter.setOnClickListener(this)
         mainSelectFilterView.setOnClickListener(this)
 
-        if (arguments!!.containsKey("subCategoryList")) {
+        if (requireArguments().containsKey("subCategoryList")) {
             subCategoryList =
-                arguments!!.getSerializable("subCategoryList") as ArrayList<CategoryBean>
+                requireArguments().getSerializable("subCategoryList") as ArrayList<CategoryBean>
 
             rvSelectFilter.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
-           // val subCategoryAdapter = SubCategoryAdapter(subCategoryList, requireActivity(), this)
+            // val subCategoryAdapter = SubCategoryAdapter(subCategoryList, requireActivity(), this)
             //rvSelectFilter.adapter = subCategoryAdapter
 
             val gd = GradientDrawable(
                 GradientDrawable.Orientation.TR_BL,
                 intArrayOf(
-                    Color.parseColor(arguments!!.getString("startColor")),
-                    Color.parseColor(arguments!!.getString("endColor"))
+                    Color.parseColor(requireArguments().getString("startColor")),
+                    Color.parseColor(requireArguments().getString("endColor"))
                 )
             )
 
@@ -115,20 +114,15 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         when (v) {
             ivSelectFilter -> {
                 if (sessionManager.isGuestUser()) {
-                    addFragment(
-                        SignUpFragment.getInstance(
-                            true
-                        ),
-                        Constants.SIGNUP_FRAGMENT
-                    )
+
                 } else if (!sessionManager.getBooleanValue(Constants.KEY_IS_COMPLETE_PROFILE)) {
                     (activity as DashboardActivity).completeSignUpDialog()
-                }else {
+                } else {
                     val intent = Intent(requireActivity(), FilterActivity::class.java)
-                    if (arguments!!.containsKey("categoryList")) {
+                    if (requireArguments().containsKey("categoryList")) {
                         intent.putExtra(
                             "categoryList",
-                            arguments!!.getSerializable("categoryList") as ArrayList<*>
+                            requireArguments().getSerializable("categoryList") as ArrayList<*>
                         )
                     }
                     openActivityForResult(requireActivity(), intent, Constants.FILTER_OK)
@@ -144,13 +138,8 @@ class SelectFilterFragment : BaseFragment<FragmentSelectFilterBinding>(), Select
         Log.d("Subcategory : ", subCategoryId.toString())
 
         if (sessionManager.isGuestUser()) {
-            addFragment(
-                SignUpFragment.getInstance(true
-                ),
-                Constants.SIGNUP_FRAGMENT
-            )
-        }else{
-            activity!!.onActivityReenter(
+        } else {
+            requireActivity().onActivityReenter(
                 Constants.REQUEST_CODE,
                 Intent().putExtra("fromSubCategory", true)
                     .putExtra("subCategoryId", subCategoryId)

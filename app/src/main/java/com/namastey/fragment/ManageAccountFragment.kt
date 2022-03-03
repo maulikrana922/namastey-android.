@@ -10,7 +10,6 @@ import com.namastey.BR
 import com.namastey.R
 import com.namastey.activity.AccountSettingsActivity
 import com.namastey.activity.SignUpActivity
-import com.namastey.customViews.CustomButton
 import com.namastey.customViews.CustomTextView
 import com.namastey.dagger.module.ViewModelFactory
 import com.namastey.databinding.FragmentManageAccountBinding

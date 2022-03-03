@@ -30,18 +30,6 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/llFilterBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/yellow_bar"
-                    android:contentDescription="@string/app_name"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <ImageView
                     android:id="@+id/ivFilterBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
