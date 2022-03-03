@@ -507,8 +507,9 @@ interface NetworkRequest {
     @GET(Constants.BOOST_USE)
     fun requestToBoostUseAsync(): Deferred<AppResponse<BoostBean>>
 
-    @GET(Constants.SUPER_MESSAGE_USE)
-    fun requestToSuperMessageUseAsync(): Deferred<AppResponse<SuperMessageBean>>
+    @FormUrlEncoded
+    @POST(Constants.SUPER_MESSAGE_USE)
+    fun requestToSuperMessageUseAsync(@Field(Constants.MESSAGED_USER_ID) messageUserId: Long): Deferred<AppResponse<SuperMessageBean>>
 
     @FormUrlEncoded
     @POST(Constants.INVITE_USER)

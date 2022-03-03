@@ -48,6 +48,7 @@ class ProfileBean() : Parcelable {
     var is_block: Int = 0
     var is_match: Int = 0
     var is_reported: Int = 0
+    var is_super_message_used:Int = 0
 
     @SerializedName("notification_tage")
     var notificationBean: ArrayList<NotificationOnOffBean> = ArrayList()
@@ -99,6 +100,7 @@ class ProfileBean() : Parcelable {
         safetyBean = parcel.readValue(SafetyBean::class.java.classLoader) as SafetyBean
         languageBean = parcel.createTypedArrayList(VideoLanguageBean) ?: ArrayList()
         sub_cat_tag = parcel.createTypedArrayList(InterestSubCategoryBean) ?: ArrayList()
+        is_super_message_used = parcel.readInt() ?: 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

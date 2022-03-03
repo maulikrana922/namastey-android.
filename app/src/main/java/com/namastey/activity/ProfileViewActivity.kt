@@ -99,6 +99,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var sportify = ""
     private var twitterLink = ""
     private lateinit var profileBeanData:ProfileBean
+    private lateinit var mPopupWindow :PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +116,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onSuccessResponse(profileBean: ProfileBean) {
         this.profileBean = profileBean
         if (profileBean.user_id == sessionManager.getUserId()) {
+            ivInvite.visibility=View.VISIBLE
             isMyProfile = true
             tvAboutLable.setText(R.string.about_me)
             groupButtons.visibility = View.VISIBLE
@@ -303,18 +305,23 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     private fun showSuperMessageIcon() {
-        if ((sessionManager.getUserId() !=profileBean.user_id && profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0) || (profileBean.safetyBean.who_can_send_message == 1  && profileBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0)){
-            Constants.isSuperMessage=true
-            ivSuperMessage.visibility = View.VISIBLE
-            showPopupSuperMessage()
-        }else Constants.isSuperMessage=false
+        if ((sessionManager.getUserId() !=profileBean.user_id && profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0 ) || (profileBean.safetyBean.who_can_send_message == 1  && profileBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0)){
+            if(profileBean.is_super_message_used==1) {
+                ivSuperMessage.visibility = View.GONE
+                if (::mPopupWindow.isInitialized) mPopupWindow.dismiss()
+            }
+            else {
+                ivSuperMessage.visibility = View.VISIBLE
+                showPopupSuperMessage()
+            }
+        }
     }
 
     private fun showPopupSuperMessage() {
         val layoutInflater = LayoutInflater.from(this)
         val view: View =
             layoutInflater.inflate(R.layout.layout_super_message, clMain, false)
-        val mPopupWindow = PopupWindow(
+         mPopupWindow = PopupWindow(
             view,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -848,6 +855,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         /*  else {
               profileViewModel.getUserFullProfile(sessionManager.getUserId().toString(),sessionManager.getStringValue(Constants.KEY_MAIN_USER_NAME))
           }*/
+
+
     }
 
     override fun onResume() {
@@ -1905,6 +1914,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 else -> intent.putExtra("isFollowMe", false)
             }
             intent.putExtra("whoCanSendMessage", profileBean.safetyBean.who_can_send_message)
+            intent.putExtra(Constants.SUPER_MESSAGE_USE,profileBean.is_super_message_used)
             openActivity(intent)
 //            } else if (profileBean.user_profile_type == 1) {
             //set Dialog
@@ -2436,5 +2446,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
     fun onClickSuperMessage(view:View){
         clickSendMessage(profileBean)
+    }
+    fun onClickInvite(view:View){
+        openActivity(this@ProfileViewActivity, InviteActivity())
     }
 }

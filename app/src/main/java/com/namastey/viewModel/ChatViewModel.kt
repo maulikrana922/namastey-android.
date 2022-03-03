@@ -161,11 +161,11 @@ class ChatViewModel constructor(
         }
     }
 
-    fun superMessageUse() {
+    fun superMessageUse(id: Long) {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 if (chatBasicView.isInternetAvailable()) {
-                    networkService.requestToSuperMessageUse().let { appResponse ->
+                    networkService.requestToSuperMessageUse(id).let { appResponse ->
                         if (appResponse.status == Constants.OK)
                            chatBasicView.onSuccessSuperMessage(appResponse.data!!)
                         else

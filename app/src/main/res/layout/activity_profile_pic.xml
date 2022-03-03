@@ -67,6 +67,19 @@
         app:layout_constraintStart_toStartOf="@id/ivProfilePic"
         app:layout_constraintEnd_toEndOf="@id/ivProfilePic"/>
 
+    <com.namastey.customViews.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:typeface="monospace"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="@+id/ivProfilePic"
+        app:layout_constraintStart_toStartOf="@+id/ivProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfilePic"
+        android:text="@string/kindly_upload_your_real_photo"
+        />
+
     <com.namastey.customViews.CustomButton
         android:id="@+id/btnContinue"
         style="@style/btnRedAllCornerStyle"

@@ -73,6 +73,15 @@
                             app:layout_constraintTop_toTopOf="@id/icBackProfile"
                             app:typeface="MULI_EXTRA_BOLD" />
 
+                        <ImageView
+                            android:id="@+id/ivInvite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_mail_new"
+                            android:onClick="onClickInvite"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toStartOf="@id/ivSuperMessage"
+                            />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivSuperMessage"
@@ -80,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_star_yellow"
-                            android:visibility="invisible"
+                            android:visibility="gone"
                             android:onClick="onClickSuperMessage"
                             app:layout_constraintBottom_toBottomOf="@+id/icBackProfile"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -218,6 +227,7 @@
                     app:layout_constraintStart_toEndOf="@id/ivProfileUser"
                     app:layout_constraintTop_toTopOf="@id/ivProfileUser"
                     app:typeface="MULI_EXTRA_BOLD" />
+
 
                 <com.namastey.customViews.CustomTextView
                     android:id="@+id/tvJob"

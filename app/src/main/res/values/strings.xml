@@ -711,5 +711,6 @@
     <string name="go_to_setting_namastay"><![CDATA[Go to settings > namastey > location > enable location while using the app]]></string>
     <string name="social_link_alert_message">Please add one social media handle so we can verify your identity</string>
     <string name="please_use_a_social_media_account_that_is_most_representative_of_your_online_identity_as_it_will_be_used_for_verification_purposes">Please use a social media account that is most representative of your online identity as it will be used for verification purposes</string>
+    <string name="kindly_upload_your_real_photo">Kindly upload your real photo</string>
 
 </resources>

@@ -573,9 +573,9 @@ class NetworkService(private val networkRequest: NetworkRequest) {
         withContext(Dispatchers.IO) {
             networkRequest.requestToBoostUseAsync().await()
         }
-    suspend fun requestToSuperMessageUse(): AppResponse<SuperMessageBean> =
+    suspend fun requestToSuperMessageUse(id: Long): AppResponse<SuperMessageBean> =
         withContext(Dispatchers.IO) {
-            networkRequest.requestToSuperMessageUseAsync().await()
+            networkRequest.requestToSuperMessageUseAsync(id).await()
         }
 
     suspend fun requestToSendInvitation(
