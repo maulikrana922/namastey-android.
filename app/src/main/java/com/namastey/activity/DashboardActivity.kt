@@ -347,7 +347,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.e("DashboardActivity", "isFromProfile: \t $isFromProfile")
         }
 
-        dashboardViewModel.getPurchaseStatus()
+
         //dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList(sessionManager.getUserId())
         // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
@@ -2610,7 +2610,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
-
+        dashboardViewModel.getPurchaseStatus()
         if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting) {
             isFromSetting = false
             feedList.clear()
