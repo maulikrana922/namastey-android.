@@ -58,7 +58,7 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
     private var interestIn = 0
     private var isTouched = false
     private var minAge = ""
-    private var maxAge = ""
+    private var maxAge = "0"
     private var distance = ""
     lateinit var dbHelper: DBHelper
     private lateinit var appDb: AppDB
@@ -156,7 +156,8 @@ class SettingsActivity : BaseActivity<ActivitySettingsBinding>(), SettingsView, 
         distance = sessionManager.getStringValue(Constants.DISTANCE)
 
         rangeSettingAge.setMaxStartValue(
-            sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
+            if(sessionManager.getStringValue(Constants.KEY_AGE_MAX) == "") maxAge.toFloat()
+            else sessionManager.getStringValue(Constants.KEY_AGE_MAX).toFloat()
         ).apply()
 
         rangeSettingAge.setMinStartValue(
