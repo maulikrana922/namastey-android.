@@ -32,7 +32,7 @@ class BirthdayActivity : BaseActivity<ActivityBirthdayBinding>() {
     var day = 0
     private var distance = ""
     private var minAge = ""
-    private var maxAge = ""
+    private var maxAge = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
