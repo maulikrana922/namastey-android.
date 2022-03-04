@@ -142,6 +142,7 @@ class ProfileBean() : Parcelable {
         parcel.writeValue(safetyBean)
         parcel.writeTypedList(languageBean)
         parcel.writeTypedList(sub_cat_tag)
+        parcel.writeInt(is_super_message_used)
     }
 
     override fun describeContents(): Int {
