@@ -347,7 +347,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             Log.e("DashboardActivity", "isFromProfile: \t $isFromProfile")
         }
 
-
+//        dashboardViewModel.getPurchaseStatus()
         //dashboardViewModel.getMembershipPriceList()
         dashboardViewModel.getCategoryList(sessionManager.getUserId())
         // dashboardViewModel.getNewFeedList(currentPage, 0, latitude, longitude)
@@ -390,7 +390,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun getVideoUrl() {
         /* mRecyclerView!!.layoutManager =
              LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
-        mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        mLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
 
         /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()
@@ -2218,7 +2218,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         view.btnAlertOk.setOnClickListener {
             alertDialog.dismiss()
             if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_BOOST) > 0) {
-                alertDialog.cancel()
+                alertDialog.dismiss()
                 showBoostStartConfirmationDialog()
             } else {
                 /*    val intent = Intent(this@DashboardActivity, ProfileViewActivity::class.java)
