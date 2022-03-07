@@ -2807,7 +2807,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     override fun onResume() {
         super.onResume()
         //Log.e("DashboardActivity", "onResume")
-
+        dashboardViewModel.getPurchaseStatus()
         if (NamasteyApplication.instance.isUpdateProfile() || isFromSetting) {
             isFromSetting = false
             feedList.clear()
