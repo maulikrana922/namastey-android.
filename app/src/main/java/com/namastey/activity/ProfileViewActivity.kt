@@ -98,7 +98,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var instagramLink = ""
     private var sportify = ""
     private var twitterLink = ""
-    private lateinit var profileBeanData:ProfileBean
+    private var profileBeanData = ProfileBean()
     private lateinit var mPopupWindow :PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -1265,11 +1265,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onBackPressed() {
-        if (this::profileBeanData.isInitialized) {
+       // if (this::profileBeanData.isInitialized) {
             val returnIntent = Intent()
-            returnIntent.putExtra("result", profileBeanData.is_follow)
+            returnIntent.putExtra("result", profileBeanData)
             setResult(RESULT_OK, returnIntent)
-        }
+
         finishActivity()
     }
 
@@ -1427,6 +1427,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
 //        isLike = dashboardBean.is_like
+        profileBeanData.is_like=dashboardBean.is_like
+        profileBeanData.is_match=dashboardBean.is_match
 
         profileBean.is_like = dashboardBean.is_like
 
@@ -1492,7 +1494,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
-            profileBeanData=profile
+            profileBeanData.is_follow=profile.is_follow
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
             btnProfileFollow.text = resources.getString(R.string.un_follow)

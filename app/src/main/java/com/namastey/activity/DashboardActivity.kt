@@ -1607,11 +1607,13 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             } catch (e: Exception) {
                 Log.e("Exception", e.message.toString())
             }
-        } else if (requestCode == Constants.PROFILE_VIEW) {
+        } else if (requestCode == Constants.PROFILE_VIEW && data != null) {
             try {
-                val follow = data?.getIntExtra("result", 0)
+                val model = data.getParcelableExtra<ProfileBean>("result") as ProfileBean
                 val dashboardBean = feedList[position]
-                dashboardBean.is_follow = follow!!
+                dashboardBean.is_follow = model.is_follow
+                dashboardBean.is_match = model.is_match
+                dashboardBean.is_like = model.is_like
                 feedList[position] = dashboardBean
                 feedAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
