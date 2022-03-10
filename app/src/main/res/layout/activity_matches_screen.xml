@@ -98,7 +98,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_50sdp"
                         android:gravity="center"
-                        android:text="@string/it_s_match"
+                        android:text="@string/congratulations"
                         android:textSize="40sp"
                         app:typeface="MULI_EXTRA_BOLD" />
 

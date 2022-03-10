@@ -356,9 +356,16 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
         }
 
-        if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2 && isSuperMessageUse == 1) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1 && isSuperMessageUse == 1))
+      /*  if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2 && isSuperMessageUse == 1) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1 && isSuperMessageUse == 1))
             llChatBox.visibility=View.GONE
         else if(matchesListBean.is_super_message_used == 1)
+            llChatBox.visibility=View.GONE*/
+
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 1){
+            if (whoCanSendMessage == 2 || whoCanSendMessage == 1){
+                llChatBox.visibility=View.GONE
+            }
+        } else if(matchesListBean.is_super_message_used == 1)
             llChatBox.visibility=View.GONE
 
 //============================ For now this feature not release ============================
@@ -622,8 +629,6 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             superMessageBean.number_of_message_available,
             Constants.KEY_NO_OF_SUPER_MESSAGE
         )
-        if (superMessageBean.number_of_message_available==0)
-            llChatBox.visibility=View.GONE
     }
 
 
@@ -657,8 +662,14 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                 sendMessage(edtMessage.text.toString(), "")
             }
         }
-        if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1))
-            chatViewModel.superMessageUse(matchesListBean.id)
+/*        if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1))
+            chatViewModel.superMessageUse(matchesListBean.id)*/
+
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 1){
+            if (whoCanSendMessage == 2 || whoCanSendMessage == 1){
+                chatViewModel.superMessageUse(matchesListBean.id)
+            }
+        }
     }
 
     private fun sendMessage(message: String, imageUrl: String) {

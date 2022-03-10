@@ -98,7 +98,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var instagramLink = ""
     private var sportify = ""
     private var twitterLink = ""
-    private var profileBeanData = ProfileBean()
+    private lateinit var profileBeanData :ProfileBean
     private lateinit var mPopupWindow :PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -305,7 +305,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     private fun showSuperMessageIcon() {
-        if ((sessionManager.getUserId() !=profileBean.user_id && profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0 ) || (profileBean.safetyBean.who_can_send_message == 1  && profileBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0)){
+/*        if ((sessionManager.getUserId() !=profileBean.user_id && profileBean.safetyBean.who_can_send_message == 2 && profileBean.is_follow == 0 &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0 )
+            || (profileBean.safetyBean.who_can_send_message == 1  && profileBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0)){
             if(profileBean.is_super_message_used==1) {
                 ivSuperMessage.visibility = View.GONE
                 if (::mPopupWindow.isInitialized) mPopupWindow.dismiss()
@@ -314,7 +315,21 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 ivSuperMessage.visibility = View.VISIBLE
                 showPopupSuperMessage()
             }
+        }*/
+
+        if(profileBean.is_super_message_used==0) {
+            if(sessionManager.getUserId() != profileBean.user_id && sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0) {
+                if (profileBean.safetyBean.who_can_send_message == 2 || (profileBean.safetyBean.who_can_send_message == 1 && profileBean.is_follow_me == 0)) {
+                    ivSuperMessage.visibility = View.VISIBLE
+                    showPopupSuperMessage()
+                }
+            }
         }
+        else {
+            ivSuperMessage.visibility = View.GONE
+            if (::mPopupWindow.isInitialized) mPopupWindow.dismiss()
+        }
+
     }
 
     private fun showPopupSuperMessage() {
@@ -861,7 +876,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onResume() {
         super.onResume()
-        showSuperMessageIcon()
+        //showSuperMessageIcon()
         if (intent.hasExtra("ownProfile")) {
             Log.e("ProfileViewActivity", "profileBean, ")
             profileViewModel.getUserFullProfile("", "")
@@ -1265,11 +1280,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onBackPressed() {
-       // if (this::profileBeanData.isInitialized) {
-            val returnIntent = Intent()
-            returnIntent.putExtra("result", profileBeanData)
-            setResult(RESULT_OK, returnIntent)
-
+       if (::profileBeanData.isInitialized) {
+           val returnIntent = Intent()
+           returnIntent.putExtra("result", profileBeanData)
+           setResult(RESULT_OK, returnIntent)
+       }
         finishActivity()
     }
 
@@ -1427,6 +1442,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
 //        isLike = dashboardBean.is_like
+        profileBeanData= ProfileBean()
         profileBeanData.is_like=dashboardBean.is_like
         profileBeanData.is_match=dashboardBean.is_match
 
@@ -1494,7 +1510,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
-            profileBeanData.is_follow=profile.is_follow
+        profileBeanData=ProfileBean()
+        profileBeanData.is_follow=profile.is_follow
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
             btnProfileFollow.text = resources.getString(R.string.un_follow)
