@@ -1609,7 +1609,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             }
         } else if (requestCode == Constants.PROFILE_VIEW && data != null) {
             try {
-                val model = data.getParcelableExtra<ProfileBean>("result") as ProfileBean
+                val model = data.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
                 val dashboardBean = feedList[position]
                 dashboardBean.is_follow = model.is_follow
                 dashboardBean.is_match = model.is_match

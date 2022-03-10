@@ -47,9 +47,7 @@ import com.namastey.uiView.ProfileView
 import com.namastey.utils.*
 import com.namastey.utils.Utils.rotateImage
 import com.namastey.viewModel.ProfileViewModel
-import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_profile_view.*
-import kotlinx.android.synthetic.main.activity_profile_view.ivProfileUser
 import kotlinx.android.synthetic.main.dialog_bottom_pick.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_feed_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_share_profile.*
@@ -98,8 +96,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     private var instagramLink = ""
     private var sportify = ""
     private var twitterLink = ""
-    private lateinit var profileBeanData :ProfileBean
-    private lateinit var mPopupWindow :PopupWindow
+    private var profileBeanData = ProfileBean()
+    private lateinit var mPopupWindow: PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,8 +113,11 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessResponse(profileBean: ProfileBean) {
         this.profileBean = profileBean
+        profileBeanData.is_follow = profileBean.is_follow
+        profileBeanData.is_match = profileBean.is_match
+        profileBeanData.is_follow = profileBean.is_follow
         if (profileBean.user_id == sessionManager.getUserId()) {
-            ivInvite.visibility=View.VISIBLE
+            ivInvite.visibility = View.VISIBLE
             isMyProfile = true
             tvAboutLable.setText(R.string.about_me)
             groupButtons.visibility = View.VISIBLE
@@ -244,7 +245,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 )
             } else {
 
-           showSuperMessageIcon()
+                showSuperMessageIcon()
 
 
 
@@ -317,15 +318,20 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }*/
 
-        if(profileBean.is_super_message_used==0) {
-            if(sessionManager.getUserId() != profileBean.user_id && sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0) {
+        if (profileBean.is_super_message_used == 0) {
+            if (sessionManager.getUserId() != profileBean.user_id && sessionManager.getIntegerValue(
+                    Constants.KEY_NO_OF_SUPER_MESSAGE
+                ) != 0
+            ) {
                 if (profileBean.safetyBean.who_can_send_message == 2 || (profileBean.safetyBean.who_can_send_message == 1 && profileBean.is_follow_me == 0)) {
                     ivSuperMessage.visibility = View.VISIBLE
                     showPopupSuperMessage()
+                } else {
+                    ivSuperMessage.visibility = View.GONE
+                    if (::mPopupWindow.isInitialized) mPopupWindow.dismiss()
                 }
             }
-        }
-        else {
+        } else {
             ivSuperMessage.visibility = View.GONE
             if (::mPopupWindow.isInitialized) mPopupWindow.dismiss()
         }
@@ -336,7 +342,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
         val layoutInflater = LayoutInflater.from(this)
         val view: View =
             layoutInflater.inflate(R.layout.layout_super_message, clMain, false)
-         mPopupWindow = PopupWindow(
+        mPopupWindow = PopupWindow(
             view,
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -484,10 +490,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
         chipProfileSocial.removeAllViews()
 //        if (data.isEmpty()) {
-            tvInstaUserName.visibility = View.GONE
-            tvFacebook.visibility = View.GONE
-            tvTwitter.visibility = View.GONE
-            tvSpotify.visibility = View.GONE
+        tvInstaUserName.visibility = View.GONE
+        tvFacebook.visibility = View.GONE
+        tvTwitter.visibility = View.GONE
+        tvSpotify.visibility = View.GONE
 //        }
         for (socialBean in data) {
             val ivSocialIcon = ImageView(this@ProfileViewActivity)
@@ -876,7 +882,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onResume() {
         super.onResume()
-        //showSuperMessageIcon()
+        if (!this@ProfileViewActivity.isFinishing)
+            showSuperMessageIcon()
+
         if (intent.hasExtra("ownProfile")) {
             Log.e("ProfileViewActivity", "profileBean, ")
             profileViewModel.getUserFullProfile("", "")
@@ -1078,51 +1086,54 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             if (data != null) {
                 val selectedImage = data.data
 
-          /*      if (selectedImage != null) {
-//                    val inputStream: InputStream?
-                    try {
-//                        val selectedImage = data.data
-                        val filePathColumn =
-                            arrayOf(MediaStore.Images.Media.DATA)
-                        val cursor: Cursor? = this@ProfileViewActivity.contentResolver.query(
-                            selectedImage,
-                            filePathColumn, null, null, null
-                        )
-                        cursor!!.moveToFirst()
+                /*      if (selectedImage != null) {
+      //                    val inputStream: InputStream?
+                          try {
+      //                        val selectedImage = data.data
+                              val filePathColumn =
+                                  arrayOf(MediaStore.Images.Media.DATA)
+                              val cursor: Cursor? = this@ProfileViewActivity.contentResolver.query(
+                                  selectedImage,
+                                  filePathColumn, null, null, null
+                              )
+                              cursor!!.moveToFirst()
 
-                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                        val picturePath: String = cursor.getString(columnIndex)
-                        cursor.close()
+                              val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+                              val picturePath: String = cursor.getString(columnIndex)
+                              cursor.close()
 
-                        Log.d("Image Path", "Image Path  is $picturePath")
-                        //profileFile = Utils.saveBitmapToFile(File(picturePath))
-                        isProfilePic = true
-                        profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
-                        val bitmap: Bitmap = Utils.scaleBitmapDown(
-                            MediaStore.Images.Media.getBitmap(
-                                contentResolver,
-                                Uri.fromFile(profileFile)
-                            ),
-                            1200
-                        )!!
-                        //GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
-                        GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap))
+                              Log.d("Image Path", "Image Path  is $picturePath")
+                              //profileFile = Utils.saveBitmapToFile(File(picturePath))
+                              isProfilePic = true
+                              profileFile = Utils.saveBitmapToExtFilesDir(picturePath, this)
+                              val bitmap: Bitmap = Utils.scaleBitmapDown(
+                                  MediaStore.Images.Media.getBitmap(
+                                      contentResolver,
+                                      Uri.fromFile(profileFile)
+                                  ),
+                                  1200
+                              )!!
+                              //GlideLib.loadImage(this, ivProfileUser, profileFile.toString())
+                              GlideLib.loadImageBitmap(this, ivProfileUser, rotateImage(bitmap))
 
-                        if (profileFile != null && profileFile!!.exists()) {
-                            isCameraOpen = true
-                            profileViewModel.updateProfilePic(profileFile!!)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }*/
+                              if (profileFile != null && profileFile!!.exists()) {
+                                  isCameraOpen = true
+                                  profileViewModel.updateProfilePic(profileFile!!)
+                              }
+                          } catch (e: Exception) {
+                              e.printStackTrace()
+                          }
+                      }*/
 
                 if (selectedImage != null) {
                     val inputStream: InputStream?
                     try {
                         inputStream = contentResolver.openInputStream(selectedImage)
                         if (!profileFile!!.exists()) {
-                            File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), System.currentTimeMillis().toString()).mkdirs()
+                            File(
+                                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                                System.currentTimeMillis().toString()
+                            ).mkdirs()
                         }
                         val fileOutputStream = FileOutputStream(profileFile)
                         if (inputStream != null) {
@@ -1280,11 +1291,9 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     }
 
     override fun onBackPressed() {
-       if (::profileBeanData.isInitialized) {
-           val returnIntent = Intent()
-           returnIntent.putExtra("result", profileBeanData)
-           setResult(RESULT_OK, returnIntent)
-       }
+        val returnIntent = Intent()
+        returnIntent.putExtra(Constants.PROFILE_BEAN, profileBeanData)
+        setResult(RESULT_OK, returnIntent)
         finishActivity()
     }
 
@@ -1442,12 +1451,10 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
     override fun onSuccessProfileLike(dashboardBean: DashboardBean) {
         Log.e("ProfileViewActivity", "onSuccessProfileLike: data: \t ${dashboardBean.is_like}")
 //        isLike = dashboardBean.is_like
-        profileBeanData= ProfileBean()
-        profileBeanData.is_like=dashboardBean.is_like
-        profileBeanData.is_match=dashboardBean.is_match
-
+        profileBeanData.is_like = dashboardBean.is_like
+        profileBeanData.is_match = dashboardBean.is_match
         profileBean.is_like = dashboardBean.is_like
-
+        profileBean.safetyBean.who_can_send_message = dashboardBean.who_can_send_message
         if (dashboardBean.is_match == 1) {
             btnProfileLike.text = getString(R.string.matched)
             btnProfileLike.setTextColor(
@@ -1510,8 +1517,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
 
     override fun onSuccessFollow(profile: ProfileBean) {
         profileBean.is_follow = profile.is_follow
-        profileBeanData=ProfileBean()
-        profileBeanData.is_follow=profile.is_follow
+        profileBeanData.is_follow = profile.is_follow
         if (profileBean.is_follow == 1) {
             profileBean.followers += 1
             btnProfileFollow.text = resources.getString(R.string.un_follow)
@@ -1554,7 +1560,8 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 bottomSheetDialogShare.iv_user_profile,
                 profileBean.profileUrl
             )
-            bitmapProfile = (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
+            bitmapProfile =
+                (bottomSheetDialogShare.iv_user_profile.drawable as BitmapDrawable).bitmap
         }
 
         bottomSheetDialogShare.tvShareBlock.text = getString(R.string.block)
@@ -1933,7 +1940,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                 else -> intent.putExtra("isFollowMe", false)
             }
             intent.putExtra("whoCanSendMessage", profileBean.safetyBean.who_can_send_message)
-            intent.putExtra(Constants.SUPER_MESSAGE_USE,profileBean.is_super_message_used)
+            intent.putExtra(Constants.SUPER_MESSAGE_USE, profileBean.is_super_message_used)
             openActivity(intent)
 //            } else if (profileBean.user_profile_type == 1) {
             //set Dialog
@@ -2333,7 +2340,7 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
                         appIntent.action = Intent.ACTION_VIEW
                         appIntent.data = uri
                         startActivity(appIntent)
-                    }else {
+                    } else {
                         val browserIntent = Intent(
                             Intent.ACTION_VIEW,
                             Uri.parse(instagramLink)
@@ -2463,10 +2470,12 @@ class ProfileViewActivity : BaseActivity<ActivityProfileViewBinding>(),
             }
         }
     }
-    fun onClickSuperMessage(view:View){
+
+    fun onClickSuperMessage(view: View) {
         clickSendMessage(profileBean)
     }
-    fun onClickInvite(view:View){
+
+    fun onClickInvite(view: View) {
         openActivity(this@ProfileViewActivity, InviteActivity())
     }
 }

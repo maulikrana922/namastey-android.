@@ -300,6 +300,8 @@ object Constants {
     const val SOCIAL_ACCOUNTLIST = "socialAccountList"
     const val KEY_COUNT = "count"
     const val KEY_POSITION = "position"
+    const val DASHBOARD_BEAN ="DashboardBean"
+
 
     //    field key
     const val ID = "id"

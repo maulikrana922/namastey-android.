@@ -665,7 +665,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 /*        if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1))
             chatViewModel.superMessageUse(matchesListBean.id)*/
 
-        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 1){
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 0){
             if (whoCanSendMessage == 2 || whoCanSendMessage == 1){
                 chatViewModel.superMessageUse(matchesListBean.id)
             }
