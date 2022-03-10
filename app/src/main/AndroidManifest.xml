@@ -213,6 +213,7 @@
         <activity
             android:name=".activity.DashboardActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -231,6 +232,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -327,7 +329,7 @@
 
         <service
             android:name=".receivers.MaxLikeService"
-            android:enabled="true" />
+            android:enabled="true"/>
 
         <receiver android:name=".receivers.MaxLikeReceiver" />
 
