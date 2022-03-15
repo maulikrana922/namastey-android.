@@ -2,6 +2,8 @@ package com.namastey.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
@@ -436,35 +438,35 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
                 this.purchaseTime = purchase.purchaseTime.toString()
                 this.purchaseState = purchase.purchaseState.toString()
 
-                finish()
+//                onBackPressed()
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
             Log.e(TAG, "onPurchasesUpdated User Cancelled")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Service Unavailable")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.BILLING_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Billing Unavailable")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
             Log.e(TAG, "onPurchasesUpdated Item Unavailable")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.DEVELOPER_ERROR) {
             Log.e(TAG, "onPurchasesUpdated Developer Error")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ERROR) {
             Log.e(TAG, "onPurchasesUpdated  Error")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item already owned")
-            finish()
+           finishActivity()
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
             Log.e(TAG, "onPurchasesUpdated Item not owned")
-            finish()
+           finishActivity()
         } else {
             Log.e(TAG, "onPurchasesUpdated: debugMessage ${billingResult.debugMessage}")
-            finish()
+           finishActivity()
         }
     }
 
@@ -542,6 +544,8 @@ class InAppPurchaseActivity : BaseActivity<ActivityInAppPurchaseBinding>(),
     }
 
     override fun onSuccessPurchaseStatus(purchaseBean: PurchaseBean) {
+        Log.e(TAG, "onSuccessPurchaseStatus: " + purchaseBean.is_purchase)
+        Log.e(TAG, "onSuccessPurchaseStatus: " + purchaseBean.number_of_boost_available)
         sessionManager.setIntegerValue(purchaseBean.is_purchase, Constants.KEY_IS_PURCHASE)
         sessionManager.setIntegerValue(
             purchaseBean.number_of_boost_available,

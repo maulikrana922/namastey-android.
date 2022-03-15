@@ -34,7 +34,8 @@
     </declare-styleable>
 
     <declare-styleable name="RoundImageView">
-        <attr name="cornerRadius" format="dimension" />
+        <attr name="cornerRadius" format="dimension" value="3" >
+        </attr>
         <attr name="roundedCorners">
             <flag name="topLeft" value="1" />
             <flag name="topRight" value="2" />

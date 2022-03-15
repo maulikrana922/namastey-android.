@@ -391,7 +391,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun getVideoUrl() {
         /* mRecyclerView!!.layoutManager =
              LinearLayoutManager(this, LinearLayout.VERTICAL, false)*/
-        mLayoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        mLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         mRecyclerView!!.layoutManager = mLayoutManager
 
         /* val linearSnapHelper: LinearSnapHelper = SnapHelperOneByOne()

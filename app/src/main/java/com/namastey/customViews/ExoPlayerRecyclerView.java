@@ -397,8 +397,10 @@ public class ExoPlayerRecyclerView extends RecyclerView {
 
             /*MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(Uri.parse(mediaUrl));*/
-            videoPlayer.prepare(audioSource);
-            videoPlayer.setPlayWhenReady(true);
+            if (videoPlayer != null) {
+                videoPlayer.prepare(audioSource);
+                videoPlayer.setPlayWhenReady(true);
+            }
 
         }
     }

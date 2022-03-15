@@ -145,8 +145,10 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
         nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && postList.size > 10) {
-                    showCustomDialog(1)
+                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && postList.size > 6) {
+                    if(!followingClick){
+                        showCustomDialog(1)
+                    }
                 }
             }
         })
@@ -545,7 +547,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
      */
     override fun onCategoryItemClick(categoryBean: CategoryBean) {
         isFollowingSelected = false
-
+        followingClick = false
         deselectFollowing()
         setSubcategoryList(
             categoryBean.sub_category,
@@ -573,6 +575,7 @@ class FilterActivity : BaseActivity<ActivityFilterBinding>(), FilterView,
 
     override fun onSubCategoryItemClick(subCategoryId: Int) {
         Log.d("Subcategory : ", subCategoryId.toString())
+        followingClick = false
         if (sessionManager.isGuestUser()) {
             addFragment(
                 SignUpFragment.getInstance(

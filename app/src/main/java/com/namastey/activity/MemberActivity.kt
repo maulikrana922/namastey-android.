@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -746,6 +747,7 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
 
     override fun onResume() {
         super.onResume()
+        Log.e(TAG, "onResume: " +  sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE))
         if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
             cvMemberShip.visibility= VISIBLE
             tlIndicator.visibility= View.INVISIBLE
@@ -755,5 +757,15 @@ class MemberActivity : BaseActivity<ActivityMemberBinding>(),
             cvMemberShip.visibility = GONE
             vpSlide.visibility=VISIBLE
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.e(TAG, "onRestart: " + "OnRestart :)" )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e(TAG, "onStart: " + "OnStart :)" )
     }
 }
