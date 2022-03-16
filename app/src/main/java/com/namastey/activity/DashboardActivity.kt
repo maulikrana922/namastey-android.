@@ -190,6 +190,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var userIdList: ArrayList<Long> = ArrayList()
     private var noOfCall = 0
     private var totalCount = 1
+    private var totalFeedCount = 1
+    private var isAllFeedFetched = false
     private val db = Firebase.firestore
     private var storage = Firebase.storage
     private var storageRef = storage.reference
@@ -440,6 +442,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         // var userListJsonArray
 
         Log.e("DashboardActivity", "totalCount: \t $totalCount")
+        Log.e("DashboardActivity", "FeedList: \t ${feedList.size}")
+        Log.e("DashboardActivity", "totalFeedCount: \t ${totalFeedCount}")
         Log.e("DashboardActivity", "userIdList: \t ${userIdList.size}")
 
         if (totalCount >= 10) {
@@ -466,9 +470,17 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         val jsonParser = JsonParser()
         val gsonObject = jsonParser.parse(jsonObject.toString()) as JsonObject
         Log.e("DashboardActivity", "jsonObject: \t $gsonObject")
-
-        if (totalCount != 0)
+        Log.e("DashboardActivity", "jsonObject1: \t" + userIdList.size)
+        Log.e("DashboardActivity", "jsonObject2: \t" + totalFeedCount)
+        Log.e("DashboardActivity","Condition - "+ ((userIdList.size==totalFeedCount).toString()))
+        Log.e("DashboardActivity","Flag - " + (isAllFeedFetched.toString()))
+        if (feedList.size==totalFeedCount)
+            isAllFeedFetched = true
+        if(!isAllFeedFetched){
             dashboardViewModel.getNewFeedListV2(gsonObject)
+        }
+
+
 
         // userIdList.clear()
     }
@@ -1418,6 +1430,9 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
         Log.e("DashboardActivity", "onSuccessNewFeed: total\t $total")
         totalCount = total
+        if(totalFeedCount==1){
+            totalFeedCount = total;
+        }
         feedList.addAll(dashboardList)
 
 

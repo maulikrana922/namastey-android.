@@ -152,7 +152,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+                videoPlayer.stop();
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (mediaCoverImage != null) {
                         // show the old thumbnail
@@ -164,6 +164,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
                     if (!recyclerView.canScrollVertically(1)) {
                         playVideo(true, false, -1);
                     } else {
+                        videoPlayer.retry();
                         playVideo(false, false, -1);
                     }
                 }
@@ -172,6 +173,7 @@ public class ExoPlayerRecyclerView extends RecyclerView {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                videoPlayer.stop();
             }
         });
 
