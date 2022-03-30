@@ -24,7 +24,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -156,7 +155,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private var position = -1
     private var commentCount = -1
     private var isUpdateComment = false
-    private var fileUrl = ""
+    private var isTimerStart = true
     private var postId = 0L
     private var notification: Notification = Notification()
     private var fragmentRefreshListener: FragmentRefreshListener? = null
@@ -177,7 +176,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private lateinit var appDb: AppDB
     private var currentLocationFromDB: RecentLocations? = null
     private var mIntent: IntentFilter? = null
-    private lateinit var circularSeekBar:CircularSeekBar
+    private lateinit var circularSeekBar: CircularSeekBar
     private var timer = 0L
     private var isFromProfile = false
     private var mRecyclerView: ExoPlayerRecyclerView? = null
@@ -303,7 +302,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
     private fun initData() {
         sessionManager.setLoginUser(true)
         Log.e("DashboardActivity", "FireBaseToken: ${sessionManager.getFirebaseToken()}")
-        Log.e("token:",sessionManager.getAccessToken())
+        Log.e("token:", sessionManager.getAccessToken())
         appDb = AppDB.getAppDataBase(this)!!
         dbHelper = DBHelper(appDb)
         currentLocationFromDB = dbHelper.getLastRecentLocations()
@@ -472,14 +471,16 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         Log.e("DashboardActivity", "jsonObject: \t $gsonObject")
         Log.e("DashboardActivity", "jsonObject1: \t" + userIdList.size)
         Log.e("DashboardActivity", "jsonObject2: \t" + totalFeedCount)
-        Log.e("DashboardActivity","Condition - "+ ((userIdList.size==totalFeedCount).toString()))
-        Log.e("DashboardActivity","Flag - " + (isAllFeedFetched.toString()))
-        if (feedList.size==totalFeedCount)
+        Log.e(
+            "DashboardActivity",
+            "Condition - " + ((userIdList.size == totalFeedCount).toString())
+        )
+        Log.e("DashboardActivity", "Flag - " + (isAllFeedFetched.toString()))
+        if (feedList.size == totalFeedCount)
             isAllFeedFetched = true
-        if(!isAllFeedFetched){
+        if (!isAllFeedFetched) {
             dashboardViewModel.getNewFeedListV2(gsonObject)
         }
-
 
 
         // userIdList.clear()
@@ -1430,7 +1431,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
         Log.e("DashboardActivity", "onSuccessNewFeed: ${dashboardList.size}")
         Log.e("DashboardActivity", "onSuccessNewFeed: total\t $total")
         totalCount = total
-        if(totalFeedCount==1){
+        if (totalFeedCount == 1) {
             totalFeedCount = total;
         }
         feedList.addAll(dashboardList)
@@ -1624,7 +1625,8 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>(), PurchasesUpd
             }
         } else if (requestCode == Constants.PROFILE_VIEW && data != null) {
             try {
-                val model = data.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
+                val model =
+                    data.getParcelableExtra<ProfileBean>(Constants.PROFILE_BEAN) as ProfileBean
                 val dashboardBean = feedList[position]
                 dashboardBean.is_follow = model.is_follow
                 dashboardBean.is_match = model.is_match
@@ -2396,7 +2398,7 @@ private fun prepareAnimation(animation: Animation): Animation? {
     }
 
     override fun onBindViewItem(circularSeekBar: CircularSeekBar) {
-        this.circularSeekBar=circularSeekBar
+        this.circularSeekBar = circularSeekBar
     }
 
     override fun onClickSocialText(userName: String) {
@@ -2505,60 +2507,65 @@ private fun prepareAnimation(animation: Animation): Animation? {
     private fun startTimer() {
         val currentTime = System.currentTimeMillis()
         val alarmCalendar = Calendar.getInstance()
-            alarmCalendar[Calendar.MINUTE] = sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME)
-        var storedTime = if (sessionManager.getIntegerValue(Constants.KEY_ACTIVE_BOOST) == 1 && sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME).toInt()==0 && sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME) != 0) {
-            alarmCalendar.timeInMillis
-        }
-         else sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
+        alarmCalendar[Calendar.MINUTE] = sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME)
+        var storedTime =
+            if (sessionManager.getIntegerValue(Constants.KEY_ACTIVE_BOOST) == 1 && sessionManager.getLongValue(
+                    Constants.KEY_BOOST_STAR_TIME
+                ).toInt() == 0 && sessionManager.getIntegerValue(Constants.KEY_ACTIVE_TIME) != 0
+            ) {
+                alarmCalendar.timeInMillis
+            } else sessionManager.getLongValue(Constants.KEY_BOOST_STAR_TIME)
 
         storedTime += TimeUnit.MINUTES.toMillis(timeDurastion.toLong())
-
+        val millis = TimeUnit.MINUTES.toMillis(1)
         Log.e("DashboardActivity", "currentTime: $currentTime")
         Log.e("DashboardActivity", "storedTime: $storedTime")
         timer = storedTime - currentTime
+        Log.e("DashboardActivity", "timer: $timer")
 
-        val numberOfSeconds: Int = timer.toInt() / 100000
-        val factor = 100 / numberOfSeconds
-
-        val t: CountDownTimer
-        t = object : CountDownTimer(abs(timer), 1000L) {
-            override fun onTick(millisUntilFinished: Long) {
-                val time = String.format(
-                    "%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                        TimeUnit.MILLISECONDS.toHours(
-                            millisUntilFinished
-                        )
-                    ), // The change is in this line
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                        TimeUnit.MILLISECONDS.toMinutes(
-                            millisUntilFinished
+        if (isTimerStart) {
+            isTimerStart = false
+            val countDownTimer = object : CountDownTimer(abs(timer), 1000L) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val time = String.format(
+                        "%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                            TimeUnit.MILLISECONDS.toHours(
+                                millisUntilFinished
+                            )
+                        ), // The change is in this line
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                            TimeUnit.MILLISECONDS.toMinutes(
+                                millisUntilFinished
+                            )
                         )
                     )
-                )
 
-                /*if (::circularSeekBar.isInitialized) {
+                    /*if (::circularSeekBar.isInitialized) {
                     val secondsRemaining = (millisUntilFinished / 1000).toInt()
                     val progressPercentage = (numberOfSeconds - secondsRemaining) * factor
                     Log.e("DashboardActivity", "Percentage: $progressPercentage")
                     circularSeekBar.progress = progressPercentage.toFloat()
                 }*/
-                //                Log.e("DashboardActivity", "Time: $time")
-                if (::viewBoostDialog.isInitialized)
-                    viewBoostDialog.tvTimeRemaining.text =
-                        time.plus(" ").plus(resources.getString(R.string.remaining))
-            }
+                    if (::viewBoostDialog.isInitialized)
+                        viewBoostDialog.tvTimeRemaining.text =
+                            time.plus(" ").plus(resources.getString(R.string.remaining))
+                }
 
-            override fun onFinish() {
-                if (::boostAlertDialog.isInitialized)
-                    boostAlertDialog.dismiss()
-                sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
-                feedAdapter.notifyDataSetChanged()
-                showBoostSuccessDialog()
-                cancel()
+                override fun onFinish() {
+                    isTimerStart = true
+                    if (::boostAlertDialog.isInitialized)
+                        boostAlertDialog.dismiss()
+                    sessionManager.setBooleanValue(false, Constants.KEY_IS_BOOST_ACTIVE)
+                    feedAdapter.notifyDataSetChanged()
+                    showBoostSuccessDialog()
+                    cancel()
+                }
             }
-        }.start()
+            countDownTimer.start()
+        }
+
     }
 
 
@@ -3611,12 +3618,12 @@ private fun prepareAnimation(animation: Animation): Animation? {
 
     fun onclickGlobal(view: View) {
 
-        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1){
+        if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 1) {
             val jsonObject = JsonObject()
             jsonObject.addProperty(Constants.IS_GLOBAL, 1)
             dashboardViewModel.editProfile(jsonObject)
-        }else{
-            val intent = Intent(this@DashboardActivity,SettingsActivity::class.java)
+        } else {
+            val intent = Intent(this@DashboardActivity, SettingsActivity::class.java)
             openActivity(intent)
         }
     }
