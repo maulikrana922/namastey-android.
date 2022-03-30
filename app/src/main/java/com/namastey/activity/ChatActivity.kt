@@ -48,7 +48,6 @@ import kotlinx.android.synthetic.main.dialog_bottom_report.*
 import kotlinx.android.synthetic.main.dialog_common_new_alert.*
 import java.io.File
 import java.io.IOException
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -71,6 +70,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var recordDuration = ""
     private var isSuperMessageUse = 0
     private lateinit var mediaPlayer: MediaPlayer
+
     //    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 //    private var myChatRef: DatabaseReference = database.reference
     private var storage = Firebase.storage
@@ -96,6 +96,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     private var whoCanSendMessage: Int = -1
     private var isFollowMe = false
     private var characterCount: Int = 0
+
     companion object {
         var isChatActivityOpen = false
         var userId: Long = 0L
@@ -122,13 +123,12 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     private fun initData() {
         if (intent.hasExtra(Constants.SUPER_MESSAGE_USE))
-            isSuperMessageUse=intent.getIntExtra(Constants.SUPER_MESSAGE_USE,0)
+            isSuperMessageUse = intent.getIntExtra(Constants.SUPER_MESSAGE_USE, 0)
 
 
         if (intent.hasExtra("matchesListBean")) {
             matchesListBean =
                 intent.getParcelableExtra<MatchesListBean>("matchesListBean") as MatchesListBean
-
 
 
 //            Log.e("ChatActivity", "matchesListBean id\t  ${matchesListBean.id}")
@@ -193,14 +193,14 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
                                 R.color.colorWhite
                             )
                         )
-                   // else
-                       // viewBuyNow.visibility = View.VISIBLE
                 }
-//                if ((sessionManager.getUserId() != userId && whoCanSendMessage == 2  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0) || (whoCanSendMessage == 1  && matchesListBean.is_follow_me == 0  &&  sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0))
-//                    viewBuyNow.visibility = View.VISIBLE
 
-                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) == 0)
-                    viewBuyNow.visibility = View.VISIBLE
+
+/*                if (sessionManager.getIntegerValue(Constants.KEY_IS_PURCHASE) == 0 && sessionManager.getIntegerValue(
+                        Constants.KEY_NO_OF_SUPER_MESSAGE
+                    ) == 0
+                )
+                    viewBuyNow.visibility = View.VISIBLE*/
 
 
                 voiceFileName = "${externalCacheDir?.absolutePath}/voicerecord.mp3"
@@ -356,22 +356,24 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
         }
 
-      /*  if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2 && isSuperMessageUse == 1) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1 && isSuperMessageUse == 1))
-            llChatBox.visibility=View.GONE
-        else if(matchesListBean.is_super_message_used == 1)
-            llChatBox.visibility=View.GONE*/
 
-        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 1){
-            if (whoCanSendMessage == 2 || whoCanSendMessage == 1){
-                llChatBox.visibility=View.GONE
-            }
-        } else if(matchesListBean.is_super_message_used == 1)
-            llChatBox.visibility=View.GONE
+        if (isSuperMessageUse == 0)
+            if (sessionManager.getUserId() != matchesListBean.id)
+                if (matchesListBean.who_can_send_message == 2 || (matchesListBean.who_can_send_message == 1 && matchesListBean.is_follow_me == 0)) {
+                    llChatBox.visibility = View.GONE
+                    viewBuyNow.visibility = View.VISIBLE
+                } else {
+                    llChatBox.visibility = View.VISIBLE
+                    viewBuyNow.visibility = View.GONE
+                }
+        else llChatBox.visibility = View.GONE
+
 
 //============================ For now this feature not release ============================
         edtMessage.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
+
             override fun beforeTextChanged(
                 s: CharSequence?, start: Int,
                 count: Int, after: Int
@@ -623,8 +625,8 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     override fun onSuccessSuperMessage(superMessageBean: SuperMessageBean) {
-        Log.e("superMessage:",superMessageBean.number_of_message_available.toString())
-        llChatBox.visibility=View.GONE
+        Log.e("superMessage:", superMessageBean.number_of_message_available.toString())
+        llChatBox.visibility = View.GONE
         sessionManager.setIntegerValue(
             superMessageBean.number_of_message_available,
             Constants.KEY_NO_OF_SUPER_MESSAGE
@@ -658,15 +660,15 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
             else if (isFromProfile && whoCanSendMessage == 0 && characterCount <= Constants.MAX_CHARACTER) {   // your can send 280 character with public account else purchase plan
                 Log.d("ChatActivity : ", "Count  $characterCount")
                 sendMessage(edtMessage.text.toString(), "")
-            }else if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)!=0){
+            } else if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0) {
                 sendMessage(edtMessage.text.toString(), "")
             }
         }
 /*        if ((sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 2) || (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE)>0 && whoCanSendMessage == 1))
             chatViewModel.superMessageUse(matchesListBean.id)*/
 
-        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 0){
-            if (whoCanSendMessage == 2 || whoCanSendMessage == 1){
+        if (sessionManager.getIntegerValue(Constants.KEY_NO_OF_SUPER_MESSAGE) != 0 && isSuperMessageUse == 0) {
+            if (whoCanSendMessage == 2 || whoCanSendMessage == 1) {
                 chatViewModel.superMessageUse(matchesListBean.id)
             }
         }
@@ -949,7 +951,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
     }
 
     override fun onItemViewClick(mediaPlayer: MediaPlayer) {
-        this.mediaPlayer=mediaPlayer
+        this.mediaPlayer = mediaPlayer
     }
 
     override fun onChatMessageClick(message: String, position: Int) {
@@ -1199,7 +1201,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(), ChatBasicView,
 
     override fun onFailed(msg: String, error: Int, status: Int) {
         super.onFailed(msg, error, status)
-           if(status== Constants.USE_SUPER_MESSAGE)
-               llChatBox.visibility=View.GONE
+        if (status == Constants.USE_SUPER_MESSAGE)
+            llChatBox.visibility = View.GONE
     }
 }
